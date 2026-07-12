@@ -1,63 +1,92 @@
 # UX Decisions
 
-This document records important product decisions.
+This document records important GrowWithHR product and UX decisions.
 
 ---
 
 ## Homepage
 
-Decision
+Decision: Homepage should inspire rather than explain every detail.
 
-Homepage should inspire rather than explain.
-
-Reason
-
-Reduce cognitive load.
+Reason: Executive users need fast orientation and confidence before exploring deeper content.
 
 ---
 
-## Assessment
+## Assessment Introduction
 
-Decision
+Decision: Use animated, short text beats before the assessment form.
 
-Convert long forms into guided multi-step experience.
-
-Reason
-
-Increase completion rate.
+Reason: The experience should feel guided and premium, not like a static survey. Short beats reduce cognitive load and make the assessment feel like a sequence of executive scenes.
 
 ---
 
-## Navigation
+## Assessment Structure
 
-Decision
+Decision: Convert long forms into a guided multi-step experience.
 
-Minimal navigation with grouped secondary pages.
-
-Reason
-
-Cleaner executive experience.
+Reason: Progressive disclosure improves completion quality and allows privacy notices to appear near sensitive questions.
 
 ---
 
-## Intelligence Core
+## No-Storage Policy
 
-Decision
+Decision: The current assessment should not store data anywhere.
 
-Visual representation instead of static diagram.
+Reason: The user requested a client-side-only experience with explicit notice that leaving midway requires starting fresh. This avoids hidden persistence and reduces friction around sensitive business information.
 
-Reason
+Implications:
 
-Improve engagement while demonstrating AI reasoning.
+- No localStorage.
+- No sessionStorage.
+- No cookies.
+- No backend persistence.
+- No Google Drive upload.
+- No CRM export.
+- No HRTechify admin dashboard.
+- No save-and-resume link.
 
 ---
 
-## Recommendations
+## Contact Capture
 
-Decision
+Decision: Include a contact-capture step but keep it current-tab only in this build.
 
-Explain every recommendation.
+Reason: The product flow can demonstrate where contact details belong without implying that a lead is stored, emailed, or exported before a consent-based integration exists.
 
-Reason
+---
 
-Trust is more important than automation.
+## Privacy Signaling
+
+Decision: Place privacy/data-handling copy directly near sensitive questions.
+
+Reason: Companies may be sharing headcount, funding, hiring plans, and expansion plans. The user should not have to search for how that information is handled.
+
+---
+
+## Reports
+
+Decision: Generate a deterministic rules-based report rather than a static demo.
+
+Reason: Even simple personalization creates more value than a generic sample page and gives users a clear reason to complete the assessment.
+
+---
+
+## Benchmarking
+
+Decision: Use directional, rules-based benchmarking language only.
+
+Reason: The current build does not include a verified external benchmark database. The UI must not imply external authority or exact peer ranking.
+
+---
+
+## Typography
+
+Decision: Use the advisory dashboard font stack in the new UX layer.
+
+Reason: Consistent typography makes the React/Next.js-ready components feel like part of the existing GrowWithHR experience.
+
+Font stack:
+
+```css
+font-family: "Inter", "Segoe UI", sans-serif;
+```

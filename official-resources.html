@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Government Sources | GrowWithHR</title>
+  <meta name="description" content="Official government sources used by GrowWithHR to support compliance guidance.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="official-resources-page">
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html#home" class="brand">
+      <img src="assets/hrtechify-logo.png" class="nav-logo" alt="HRTechify Logo">
+      <div><div class="brand-name">HRTechify</div><div class="product-name">GrowWithHR</div></div>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Open Navigation">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#platform">Platform</a>
+      <a href="analyze-company.html">Analyze My Company</a>
+      <a href="official-resources.html" aria-current="page">Official Sources</a>
+      <a href="sample-advisory-report.html">Advisory</a>
+      <div class="nav-dropdown">
+        <button class="dropdown-toggle" type="button">More <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="dropdown-menu">
+          <a href="index.html#about">About</a>
+          <a href="index.html#privacy">Privacy</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <a href="analyze-company.html" class="nav-cta">Analyze My Company</a>
+  </div>
+</nav>
+
+<header class="hero compact-hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">Verified Sources</div>
+      <h1>Official Government Resources</h1>
+      <p class="hero-description">A dedicated reference page for official government sources used to validate GrowWithHR compliance guidance.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="updates-section compact-section">
+    <div class="container">
+      <div class="section-heading">
+        <div class="section-tag">SOURCE LIBRARY</div>
+        <h2>Official references used by GrowWithHR</h2>
+        <p>These links point to government and statutory resources. Always verify final obligations with current official notifications and qualified counsel.</p>
+      </div>
+      <div id="officialResourcesContainer" class="updates-grid" aria-live="polite">
+        <div class="update-card">Loading official resources...</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name">GrowWithHR Public</div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
+
+<script>
+const container = document.getElementById('officialResourcesContainer');
+fetch('data/official-resources.json')
+  .then((response) => response.json())
+  .then((data) => {
+    const resources = data.resources || [];
+    container.innerHTML = resources.map((resource) => `
+      <article class="update-card">
+        <div class="update-type">${resource.type || 'Official Source'}</div>
+        <h3>${resource.name || 'Official Resource'}</h3>
+        <p>${resource.description || ''}</p>
+        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="secondary-btn">Visit Official Website →</a>
+      </article>
+    `).join('');
+    if (data.lastVerified) {
+      container.insertAdjacentHTML('beforeend', `<article class="update-card"><div class="update-type">Last verified</div><p>${data.lastVerified}</p></article>`);
+    }
+  })
+  .catch(() => {
+    container.innerHTML = '<div class="update-card">Unable to load official resources. Please try again later.</div>';
+  });
+const hamburger=document.getElementById('hamburger');const navLinks=document.getElementById('navLinks');if(hamburger&&navLinks){hamburger.addEventListener('click',()=>navLinks.classList.toggle('active'));document.querySelectorAll('#navLinks a').forEach(link=>link.addEventListener('click',()=>navLinks.classList.remove('active')));}
+</script>
+</body>
+</html>

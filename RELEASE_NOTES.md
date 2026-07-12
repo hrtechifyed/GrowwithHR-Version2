@@ -1,131 +1,97 @@
-# GrowWithHR v0.10.0-beta
+# GrowWithHR v0.11.0-beta
 
-Codename
-
-Executive Intelligence
+Codename: Executive Assessment UX Layer
 
 ---
 
 ## Overview
 
-This release establishes the first complete beta version of GrowWithHR's Executive Intelligence platform.
+This release updates the documentation and codebase direction around a new modular executive assessment UX layer. The new layer introduces animated scenes, a wizard-style flow, explicit privacy notices, current-tab state management, and a deterministic personalized report generator.
 
-The release introduces a premium executive experience centered around Company DNA, explainable HR intelligence, and AI-assisted advisory generation.
+The most important product decision in this release is that the current assessment does **not** store user data anywhere.
 
 ---
 
 ## Highlights
 
-### Executive Intelligence Core
+### Animated Executive Assessment Intro
 
-A dynamic visualization engine that demonstrates how Company DNA, Growth Stage, Organizational Context, and Recommendation Logic interact to generate executive recommendations.
+The new assessment starts with short, sequential text beats rather than a static paragraph. The user sees a guided executive introduction before moving into the assessment form.
 
----
+### Wizard-Style Assessment Flow
 
-### Company DNA
+The new `WizardForm` component separates the flow into scenes:
 
-The platform now evaluates organizations across four key dimensions:
+1. Welcome and animated introduction.
+2. Company context questions.
+3. Contact capture for the open tab only.
+4. Personalized advisory report.
 
-- Company
-- Workforce
-- Operations
-- Growth
+### No-Storage Data Policy
 
-These inputs form the foundation for all advisory recommendations.
+The current build uses open-tab memory only.
 
----
+- No localStorage.
+- No sessionStorage.
+- No cookies.
+- No backend database.
+- No Google Drive upload.
+- No CRM export.
+- No HRTechify admin dashboard.
+- No email delivery.
+- No cross-device resume link.
 
-### Executive Assessment
+If a user leaves midway, refreshes, closes the tab, or switches devices, they must start fresh.
 
-A structured Company DNA assessment captures organizational context to generate personalized executive guidance.
+### Personalized Report Generator
 
----
+The report generator creates a rules-based advisory using the user's company context. It includes:
 
-### Platform Intelligence
+- Company-specific summary.
+- Risk level.
+- Maturity score.
+- Operating archetype.
+- Directional benchmark language.
+- CFO and HR viewpoints.
+- Priority actions.
 
-New intelligence modules include:
+### Privacy and Trust Signaling
 
-- Compliance Intelligence
-- Organization Intelligence
-- Talent Intelligence
-- Leadership Intelligence
-- Performance Intelligence
-- Learning Intelligence
-- Rewards Intelligence
+Privacy notices now appear directly near sensitive assessment areas and in a dedicated privacy component. The copy clearly explains what is and is not stored.
 
----
+### Visual Consistency
 
-### Explainable Recommendations
-
-Recommendations are generated using:
-
-- Organization Profile
-- Growth Stage
-- Applicable Regulations
-- Regulatory Updates
-
-Every recommendation is designed to be transparent and traceable.
-
----
-
-### Official Sources
-
-Executive guidance is supported using official government references wherever applicable.
-
----
-
-### User Experience
-
-Major improvements include:
-
-- Premium executive dashboard
-- Glassmorphism interface
-- Interactive intelligence graph
-- Improved card hierarchy
-- Responsive layouts
-- Cleaner navigation
-- Enhanced visual consistency
+The new UX components use the same font family as the advisory dashboard: `Inter`, `Segoe UI`, `sans-serif`.
 
 ---
 
 ## Current Beta Scope
 
-Included
+Included:
 
-- Landing experience
-- Executive Intelligence Core
-- Company DNA assessment
-- Platform capabilities
-- Advisory preview
-- Official resources
-- Privacy
-- About
-- Contact
+- Static landing and advisory pages from the existing prototype.
+- New React/TypeScript assessment UX components.
+- Current-tab-only state management.
+- No-storage privacy messaging.
+- Rules-based personalized report generation.
+- Unit-test examples for key UX behavior.
 
----
+Not included:
 
-## Planned Next Release
-
-Version
-
-v0.11.0
-
-Focus
-
-Executive Assessment Experience
-
-Key objectives:
-
-- Guided multi-step assessment
-- Progressive disclosure
-- Simplified assessment interface
-- AI-assisted data collection
-- Improved navigation
-- Dedicated platform pages
-- Reduced homepage information density
+- Production backend.
+- Persistent user accounts.
+- Saved reports.
+- Save-and-resume.
+- Admin dashboards.
+- CRM/email/Google Drive integrations.
 
 ---
 
-Thank you for supporting the GrowWithHR beta.
+## Next Release Focus
 
-We look forward to building the next generation of AI-powered executive HR intelligence.
+The next release should focus on integration quality:
+
+- Wire the React UX layer into a runnable application shell.
+- Add a confirmed test/build toolchain with lockfile.
+- Replace static examples with live routes.
+- Decide whether future storage is required and document consent requirements before implementation.

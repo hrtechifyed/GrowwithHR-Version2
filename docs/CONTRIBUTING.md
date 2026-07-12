@@ -2,42 +2,45 @@
 
 Thank you for contributing to GrowWithHR.
 
-The project is built around modular architecture, executive-grade UX and explainable AI. Every contribution should improve clarity, maintainability and scalability.
+The project is built around modular architecture, executive-grade UX, explainable recommendations, and privacy-first handling of sensitive company information.
+
+---
+
+## Current Privacy Rule
+
+Do not add persistence without explicit approval and documentation.
+
+Current assessment data must remain:
+
+- In the open browser tab only.
+- Not stored in localStorage or sessionStorage.
+- Not written to cookies.
+- Not sent to a backend.
+- Not exported to CRM, email, Google Drive, or dashboards.
+
+If a feature would allow users to resume later, send reports, or let HRTechify view submissions, it requires a separate privacy and consent design before implementation.
 
 ---
 
 ## Branch Strategy
 
-main
-Production-ready code.
-
-develop
-Integration branch for completed features.
-
-feature/*
-New features.
-
-release/*
-Release stabilization.
-
-hotfix/*
-Critical production fixes.
+- `main`: production-ready code.
+- `develop`: integration branch for completed features.
+- `feature/*`: new features.
+- `release/*`: release stabilization.
+- `hotfix/*`: critical production fixes.
 
 ---
 
 ## Commit Convention
 
-Examples
+Examples:
 
-feat: add recommendation engine rotation
-
-fix: resolve intelligence graph alignment
-
-refactor: simplify assessment layout
-
-style: improve hero spacing
-
-docs: update architecture
+- `feat: add animated assessment intro`
+- `fix: clarify no-storage privacy copy`
+- `refactor: simplify assessment state store`
+- `style: align wizard typography with advisory dashboard`
+- `docs: update architecture for no-storage assessment`
 
 ---
 
@@ -45,21 +48,23 @@ docs: update architecture
 
 - Feature works as intended.
 - No console errors.
-- Responsive behaviour verified.
+- Responsive behavior verified.
 - Existing functionality not broken.
-- CSS scoped to component.
-- JavaScript remains modular.
-- Documentation updated if architecture changes.
+- CSS is scoped to the component or existing design system.
+- JavaScript/TypeScript remains modular.
+- Documentation updated if architecture, privacy, storage, or UX flow changes.
+- No new data persistence has been added without explicit approval.
 
 ---
 
 ## Coding Principles
 
-- Avoid global CSS.
-- Prefer component-scoped styles.
-- One JavaScript module should have one responsibility.
-- Reuse existing design tokens.
-- Keep interfaces consistent.
+- Keep components self-contained.
+- Prefer typed interfaces for new React/TypeScript work.
+- Reuse the advisory dashboard font stack: `Inter`, `Segoe UI`, `sans-serif`.
+- Use accessible labels, keyboard support, and visible validation states.
+- Keep copy executive-friendly and transparent.
+- Avoid claims about backend, CRM, email, Google Drive, or dashboards unless those features are actually implemented.
 
 ---
 
@@ -67,8 +72,9 @@ docs: update architecture
 
 Every change should improve at least one of:
 
-- Simplicity
-- Performance
-- Explainability
-- Executive experience
-- Maintainability
+- Simplicity.
+- Privacy clarity.
+- Performance.
+- Explainability.
+- Executive experience.
+- Maintainability.

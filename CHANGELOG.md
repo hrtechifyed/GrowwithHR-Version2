@@ -4,68 +4,85 @@ All notable changes to GrowWithHR are documented here.
 
 ---
 
-## [v0.10.0-beta] - Executive Intelligence
+## [v0.11.0-beta] - Executive Assessment UX Layer
 
-Release Date:
-YYYY-MM-DD
+Release Date: 2026-07-12
 
 ### Added
 
-- Executive Intelligence landing page
-- Company DNA intelligence cards
-- Growth Stage intelligence
-- Recommendation Basis intelligence
-- Interactive Intelligence Core visualization
-- Executive advisory preview
-- Platform capabilities carousel
-- Executive assessment framework
-- Official government resources section
-- Privacy section
-- About section
-- Contact section
-- Premium glass navigation
-- Responsive navigation
-- Advisory preview page
+- React/Next.js-ready executive assessment UX structure under `apps/web/src`.
+- Animated, beat-by-beat intro copy for the executive assessment welcome flow.
+- Scene transition wrapper for cinematic assessment steps.
+- Wizard-style assessment component with company context fields and responsive layout.
+- Contact-capture component that works in the open tab only.
+- Rules-based personalized report generator with maturity score, risk level, archetype, benchmarks, CFO view, and HR view.
+- Privacy and data-handling components that explicitly explain the no-storage model.
+- Zustand assessment store for current-tab state management.
+- TypeScript types for assessment, lead, session, report, and UI state.
+- Unit-test examples for animated text and personalized report generation.
 
-### Improved
+### Changed
 
-- Hero layout redesigned
-- Intelligence graph centering
-- Card spacing and alignment
-- Dynamic recommendation rotation
-- Dynamic growth stage rotation
-- Dynamic Company DNA rotation
-- Executive styling throughout homepage
-- Improved typography
-- Glassmorphism components
-- Executive dashboard presentation
+- Assessment data policy is now documented as **current-tab memory only**.
+- Save-and-resume has been intentionally removed from the current implementation.
+- Users are explicitly told that if they leave, refresh, close the tab, or switch devices, they must start fresh.
+- New UX components use the advisory dashboard font stack: `Inter`, `Segoe UI`, `sans-serif`.
+- Documentation now avoids claims about server storage, CRM export, Google Drive upload, dashboards, authentication, or completed production infrastructure that does not exist in this repository.
 
-### Fixed
+### Not Included in Current Build
 
-- Intelligence graph alignment
-- Hero content spacing
-- Company DNA card symmetry
-- Growth Stage synchronization
-- Recommendation animation consistency
-- Card layout refinements
-- Navigation structure
-- Hero responsiveness
-
-### Known Issues
-
-- Assessment experience is still a long-form layout
-- Navigation dropdown requires final UX polish
-- Navigation active indicator requires refinement
-- Capability carousel will be redesigned
-- Mobile optimization is ongoing
+- No localStorage/sessionStorage/cookie persistence.
+- No backend API for saving assessment answers.
+- No HRTechify admin dashboard.
+- No CRM export.
+- No Google Drive upload.
+- No email delivery.
+- No cross-device resume link.
 
 ---
 
-## Upcoming (v0.11.0)
+## [v0.10.0-beta] - Executive Intelligence
 
-- Multi-step executive assessment
-- Progressive disclosure
-- Guided assessment wizard
-- Reduced homepage clutter
-- Interactive advisory experience
-- Dedicated platform pages
+Release Date: Earlier beta
+
+### Added
+
+- Executive Intelligence landing page.
+- Company DNA intelligence cards.
+- Growth Stage intelligence.
+- Recommendation Basis intelligence.
+- Interactive Intelligence Core visualization.
+- Executive advisory preview.
+- Platform capabilities carousel.
+- Executive assessment framework.
+- Official government resources section.
+- Privacy section.
+- About section.
+- Contact section.
+- Premium glass navigation.
+- Responsive navigation.
+- Advisory preview page.
+
+### Improved
+
+- Hero layout redesigned.
+- Intelligence graph centering.
+- Card spacing and alignment.
+- Dynamic recommendation rotation.
+- Dynamic growth stage rotation.
+- Dynamic Company DNA rotation.
+- Executive styling throughout homepage.
+- Improved typography.
+- Glassmorphism components.
+- Executive dashboard presentation.
+
+### Fixed
+
+- Intelligence graph alignment.
+- Hero content spacing.
+- Company DNA card symmetry.
+- Growth Stage synchronization.
+- Recommendation animation consistency.
+- Card layout refinements.
+- Navigation structure.
+- Hero responsiveness.
