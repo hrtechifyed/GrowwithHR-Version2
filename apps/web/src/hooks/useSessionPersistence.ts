@@ -1,43 +1,44 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { sessionPersistenceService } from '../services/sessionPersistenceService';
 import type { ComponentStatus, SessionSnapshot } from '../types/uiTypes';
 
 /**
- * Hook for displaying the no-storage policy and holding only current-tab memory.
- *
- * @returns In-memory draft state, a no-storage notice, and clear/hold actions.
- * @example const { noStorageNotice } = useSessionPersistence();
+ * React hook wrapper around browser-only session persistence.
+ * @returns session state, save/restore/clear actions, and status for UI messages.
+ * @example const { saveSession, resumeLink } = useSessionPersistence();
  */
 export function useSessionPersistence() {
   const [session, setSession] = useState<SessionSnapshot | null>(null);
+  const [resumeLink, setResumeLink] = useState('');
   const [status, setStatus] = useState<ComponentStatus>({ state: 'idle' });
-  const noStorageNotice = sessionPersistenceService.getNoStorageNotice();
 
-  /**
-   * Holds a draft only in JavaScript memory for the active tab.
-   * @param snapshot - Current wizard state.
-   * @returns Current-tab snapshot, never persisted to browser storage.
-   * @example holdCurrentTabDraft({ id: crypto.randomUUID(), currentStep: 'company', companyData: {} });
-   */
-  const holdCurrentTabDraft = useCallback((snapshot: Parameters<typeof sessionPersistenceService.holdInMemory>[0]) => {
-    const draft = sessionPersistenceService.holdInMemory(snapshot);
-    setSession(draft);
-    setStatus({ state: 'success', message: noStorageNotice });
-    return draft;
-  }, [noStorageNotice]);
+  useEffect(() => {
+    const restored = sessionPersistenceService.restore();
+    if (restored) setSession(restored);
+  }, []);
 
-  /**
-   * Clears the active tab's temporary draft.
-   * @returns void.
-   * @example clearCurrentTabDraft();
-   */
-  const clearCurrentTabDraft = useCallback(() => {
-    sessionPersistenceService.clearCurrentTab();
+  const saveSession = useCallback((snapshot: Parameters<typeof sessionPersistenceService.save>[0]) => {
+    try {
+      setStatus({ state: 'loading', message: 'Saving in this browser...' });
+      const saved = sessionPersistenceService.save(snapshot);
+      setSession(saved);
+      setResumeLink(sessionPersistenceService.createResumeLink(saved.id));
+      setStatus({ state: 'success', message: 'Progress saved locally. Copy the resume link if needed.' });
+      return saved;
+    } catch (error) {
+      setStatus({ state: 'error', message: error instanceof Error ? error.message : 'Unable to save progress.' });
+      return null;
+    }
+  }, []);
+
+  const clearSession = useCallback(() => {
+    sessionPersistenceService.clear();
     setSession(null);
+    setResumeLink('');
     setStatus({ state: 'idle' });
   }, []);
 
-  return { session, status, noStorageNotice, holdCurrentTabDraft, clearCurrentTabDraft };
+  return { session, resumeLink, status, saveSession, clearSession };
 }
