@@ -1,0 +1,284 @@
+{
+  "lawId": "CENTRAL-POSH",
+  "lawName": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+  "shortName": "POSH Act",
+  "authority": "Ministry of Women and Child Development",
+  "sourceId": "MWCD",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Provides protection against sexual harassment of women at the workplace and establishes mechanisms for prevention, prohibition and redressal.",
+
+  "definitions": [
+
+    {
+      "id": "POSH-DEF-001",
+      "term": "Aggrieved Woman",
+      "definition": "A woman alleging sexual harassment at a workplace under the Act."
+    },
+
+    {
+      "id": "POSH-DEF-002",
+      "term": "Employer",
+      "definition": "Person responsible for management, supervision and control of the workplace."
+    },
+
+    {
+      "id": "POSH-DEF-003",
+      "term": "Workplace",
+      "definition": "Workplace as defined under the POSH Act."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+
+      "id": "POSH-001",
+
+      "title": "Adopt a POSH Policy",
+
+      "priority": "Mandatory",
+
+      "category": "POSH",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": ["*"],
+
+        "industries": ["*"]
+
+      },
+
+      "description": "Adopt and communicate a policy prohibiting sexual harassment at the workplace.",
+
+      "sourceId": "MWCD",
+
+      "citations": [
+
+        {
+          "reference": "POSH Act, 2013"
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "POSH-002",
+
+      "title": "Constitute Internal Committee Where Applicable",
+
+      "priority": "Mandatory",
+
+      "category": "POSH",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 10
+        },
+
+        "entityTypes": ["*"],
+
+        "industries": ["*"]
+
+      },
+
+      "description": "Constitute an Internal Committee where the statutory threshold is met.",
+
+      "sourceId": "MWCD",
+
+      "citations": [
+
+        {
+          "reference": "POSH Act"
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "POSH-003",
+
+      "title": "Conduct POSH Awareness Programmes",
+
+      "priority": "Mandatory",
+
+      "category": "Training",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": ["*"],
+
+        "industries": ["*"]
+
+      },
+
+      "description": "Conduct periodic awareness and sensitisation programmes for employees.",
+
+      "sourceId": "MWCD",
+
+      "citations": [
+
+        {
+          "reference": "POSH Act"
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "POSH-004",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": ["*"],
+
+        "industries": ["*"]
+
+      },
+
+      "description": "Display notices relating to prohibition of sexual harassment and complaint mechanisms.",
+
+      "sourceId": "MWCD",
+
+      "citations": [
+
+        {
+          "reference": "POSH Act"
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "POSH-005",
+
+      "title": "Maintain Complaint Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": ["*"],
+
+        "industries": ["*"]
+
+      },
+
+      "description": "Maintain records relating to complaints, inquiries and actions taken in accordance with statutory requirements.",
+
+      "sourceId": "MWCD",
+
+      "citations": [
+
+        {
+          "reference": "POSH Act"
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "POSH-006",
+
+      "title": "Submit Annual Reporting Where Applicable",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 10
+        },
+
+        "entityTypes": ["*"],
+
+        "industries": ["*"]
+
+      },
+
+      "description": "Complete annual reporting obligations relating to the Internal Committee wherever applicable.",
+
+      "sourceId": "MWCD",
+
+      "citations": [
+
+        {
+          "reference": "POSH Act"
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "exceptions": [
+
+    {
+
+      "id": "POSH-EX-001",
+
+      "title": "Internal Committee Threshold",
+
+      "description": "Constitution of an Internal Committee depends upon the statutory threshold prescribed under the Act."
+
+    }
+
+  ],
+
+  "references": [
+
+    {
+
+      "sourceId": "MWCD"
+
+    },
+
+    {
+
+      "sourceId": "INDIACODE"
+
+    }
+
+  ]
+
+}

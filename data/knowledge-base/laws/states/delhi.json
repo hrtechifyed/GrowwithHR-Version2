@@ -1,0 +1,270 @@
+{
+  "stateId": "DL",
+  "stateName": "Delhi",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of NCT of Delhi",
+    "sourceId": "DL-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in the National Capital Territory of Delhi.",
+
+  "rules": [
+
+    {
+      "id": "DL-001",
+
+      "title": "Review Delhi Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Delhi Shops and Establishments Act is applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "DL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Delhi Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "DL-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and prescribed notices required under Delhi labour laws.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "DL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Delhi Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "DL-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices, abstracts and employee information required under Delhi labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "DL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Delhi Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "DL-004",
+
+      "title": "Review Working Hours, Leave and Weekly Holiday Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Delhi-specific provisions governing working hours, overtime, weekly holidays and employee leave.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "DL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Delhi Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "DL-005",
+
+      "title": "Review Minimum Wage Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Minimum Wages",
+
+      "description": "Ensure employee wages comply with the latest minimum wage notifications issued for Delhi.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "DL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Delhi Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "DL-006",
+
+      "title": "Review Professional Tax Applicability",
+
+      "priority": "Information",
+
+      "category": "Professional Tax",
+
+      "description": "Delhi presently does not levy Professional Tax. Monitor future legislative changes if applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "DL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Delhi Tax Legislation"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "DLR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual review covering registrations, wage compliance, statutory records and labour inspections."
+    },
+
+    {
+      "id": "DLR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital compliance calendar for labour filings, inspections, licence renewals and statutory due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "DL-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

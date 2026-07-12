@@ -1,0 +1,278 @@
+{
+  "stateId": "MP",
+  "stateName": "Madhya Pradesh",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Madhya Pradesh",
+    "sourceId": "MP-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Madhya Pradesh.",
+
+  "rules": [
+
+    {
+      "id": "MP-001",
+
+      "title": "Review Madhya Pradesh Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Madhya Pradesh Shops and Establishments Act is applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Madhya Pradesh Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "MP-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and notices prescribed under Madhya Pradesh labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Madhya Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "MP-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and employee information required under Madhya Pradesh labour laws.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Madhya Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "MP-004",
+
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Madhya Pradesh provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Madhya Pradesh Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "MP-005",
+
+      "title": "Review Professional Tax Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Professional Tax",
+
+      "description": "Determine whether Professional Tax registration, deduction and return filing obligations apply in Madhya Pradesh.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Madhya Pradesh Vritti Kar Adhiniyam (Professional Tax)"
+        }
+      ]
+    },
+
+    {
+      "id": "MP-006",
+
+      "title": "Review Labour Welfare Fund Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Labour Welfare",
+
+      "description": "Review employer obligations relating to the Madhya Pradesh Labour Welfare Fund, where applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Madhya Pradesh Labour Welfare Fund legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "MP-007",
+
+      "title": "Review State Labour Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "State Notifications",
+
+      "description": "Monitor labour department notifications, exemptions and compliance circulars issued by the Government of Madhya Pradesh.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "MP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Government of Madhya Pradesh Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "MPR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual audit covering statutory registrations, payroll compliance, labour welfare and inspection readiness."
+    },
+
+    {
+      "id": "MPR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital calendar for statutory filings, licence renewals, inspections and labour compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "MP-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

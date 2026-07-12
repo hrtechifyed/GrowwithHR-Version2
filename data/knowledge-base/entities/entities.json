@@ -1,0 +1,359 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-07-05",
+
+  "entities": [
+
+    {
+      "id": "PRIVATE_LIMITED",
+
+      "name": "Private Limited Company",
+
+      "description": "Company incorporated under the Companies Act, 2013.",
+
+      "mandatoryRules": [
+
+        "EPFO",
+        "ESIC",
+        "POSH",
+        "GRATUITY",
+        "BONUS",
+        "CODE_ON_WAGES",
+        "OSHWC"
+
+      ],
+
+      "recommendedRules": [
+
+        "Employment Agreements",
+        "Employee Handbook",
+        "Payroll Compliance Review",
+        "HR Documentation"
+
+      ]
+
+    },
+
+    {
+      "id": "PUBLIC_LIMITED_LISTED",
+
+      "name": "Public Limited Company (Listed)",
+
+      "description": "Listed public company governed by the Companies Act and SEBI regulations.",
+
+      "mandatoryRules": [
+
+        "EPFO",
+        "ESIC",
+        "POSH",
+        "GRATUITY",
+        "BONUS",
+        "CODE_ON_WAGES",
+        "OSHWC"
+
+      ],
+
+      "recommendedRules": [
+
+        "Leadership Development",
+        "Succession Planning",
+        "HR Governance Framework",
+        "Internal HR Audit"
+
+      ]
+
+    },
+
+    {
+      "id": "PUBLIC_LIMITED_UNLISTED",
+
+      "name": "Public Limited Company (Unlisted)",
+
+      "description": "Unlisted public company incorporated under the Companies Act.",
+
+      "mandatoryRules": [
+
+        "EPFO",
+        "ESIC",
+        "POSH",
+        "GRATUITY",
+        "BONUS",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Performance Management Framework",
+        "Policy Governance",
+        "Compliance Calendar"
+
+      ]
+
+    },
+
+    {
+      "id": "LLP",
+
+      "name": "Limited Liability Partnership (LLP)",
+
+      "description": "Business entity registered under the LLP Act.",
+
+      "mandatoryRules": [
+
+        "EPFO",
+        "ESIC",
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Employment Agreements",
+        "Payroll Documentation",
+        "Employee Handbook"
+
+      ]
+
+    },
+
+    {
+      "id": "PROPRIETORSHIP",
+
+      "name": "Proprietorship",
+
+      "description": "Business owned by a single proprietor.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Basic HR Documentation",
+        "Employment Records"
+
+      ]
+
+    },
+
+    {
+      "id": "PARTNERSHIP",
+
+      "name": "Partnership Firm",
+
+      "description": "Business registered under the Partnership Act.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Employment Agreements",
+        "Payroll Review"
+
+      ]
+
+    },
+
+    {
+      "id": "OPC",
+
+      "name": "One Person Company",
+
+      "description": "Single shareholder company incorporated under the Companies Act.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Employee Records",
+        "Employment Agreements"
+
+      ]
+
+    },
+
+    {
+      "id": "SECTION8",
+
+      "name": "Section 8 Company",
+
+      "description": "Not-for-profit company incorporated under Section 8 of the Companies Act.",
+
+      "mandatoryRules": [
+
+        "EPFO",
+        "ESIC",
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Volunteer Governance",
+        "Safeguarding Policy",
+        "Board Approved HR Policies"
+
+      ]
+
+    },
+
+    {
+      "id": "TRUST",
+
+      "name": "Trust",
+
+      "description": "Registered charitable or private trust.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Volunteer Governance",
+        "Payroll Documentation"
+
+      ]
+
+    },
+
+    {
+      "id": "SOCIETY",
+
+      "name": "Society",
+
+      "description": "Society registered under the Societies Registration Act.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "HR Documentation",
+        "Volunteer Governance"
+
+      ]
+
+    },
+
+    {
+      "id": "NGO",
+
+      "name": "NGO",
+
+      "description": "Non-government organisation.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Field Workforce Policy",
+        "Volunteer Governance",
+        "Safeguarding Policy"
+
+      ]
+
+    },
+
+    {
+      "id": "DPIIT_STARTUP",
+
+      "name": "DPIIT Recognized Startup",
+
+      "description": "Startup recognised by DPIIT.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Founder Agreements",
+        "Employee Handbook",
+        "Performance Framework",
+        "Manager Capability Development"
+
+      ]
+
+    },
+
+    {
+      "id": "GOVERNMENT",
+
+      "name": "Government Entity",
+
+      "description": "Government department or statutory authority.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Service Rules Compliance",
+        "Training Framework"
+
+      ]
+
+    },
+
+    {
+      "id": "EDUCATIONAL_INSTITUTION",
+
+      "name": "Educational Institution",
+
+      "description": "School, college, university or educational organisation.",
+
+      "mandatoryRules": [
+
+        "POSH",
+        "CODE_ON_WAGES"
+
+      ],
+
+      "recommendedRules": [
+
+        "Faculty Contracts",
+        "Background Verification",
+        "Academic Workforce Planning"
+
+      ]
+
+    }
+
+  ]
+}

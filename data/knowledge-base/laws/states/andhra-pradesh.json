@@ -1,0 +1,200 @@
+{
+  "stateId": "AP",
+  "stateName": "Andhra Pradesh",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Andhra Pradesh",
+    "sourceId": "AP-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Andhra Pradesh.",
+
+  "rules": [
+
+    {
+      "id": "AP-001",
+
+      "title": "Review Andhra Pradesh Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Andhra Pradesh Shops and Establishments legislation is applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Andhra Pradesh Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "AP-002",
+
+      "title": "Maintain Statutory Registers",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain registers, records and notices prescribed under Andhra Pradesh labour laws.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Andhra Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AP-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices required under applicable Andhra Pradesh labour laws.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Andhra Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AP-004",
+
+      "title": "Review State Holidays and Leave Requirements",
+
+      "priority": "Mandatory",
+
+      "category": "Leave",
+
+      "description": "Ensure compliance with state-specific holidays, leave and weekly off requirements applicable in Andhra Pradesh.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Andhra Pradesh Labour Rules"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "APR-001",
+
+      "title": "Annual Labour Compliance Review",
+
+      "description": "Conduct an annual review of state labour law compliance."
+
+    },
+
+    {
+      "id": "APR-002",
+
+      "title": "Digitise Statutory Registers",
+
+      "description": "Maintain electronic compliance records wherever legally permissible."
+
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "AP-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

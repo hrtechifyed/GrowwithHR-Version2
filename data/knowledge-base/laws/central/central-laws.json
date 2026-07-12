@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "lastVerified": "2026-07-05",
+  "country": "India",
+  "status": "Active",
+  "rules": [],
+  "references": [
+    {
+      "sourceId": "MOL"
+    },
+    {
+      "sourceId": "EPFO"
+    },
+    {
+      "sourceId": "ESIC"
+    },
+    {
+      "sourceId": "INDIACODE"
+    }
+  ]
+}

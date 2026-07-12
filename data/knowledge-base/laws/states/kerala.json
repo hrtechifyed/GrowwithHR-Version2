@@ -1,0 +1,278 @@
+{
+  "stateId": "KL",
+  "stateName": "Kerala",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Commissionerate, Government of Kerala",
+    "sourceId": "KL-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Kerala.",
+
+  "rules": [
+
+    {
+      "id": "KL-001",
+
+      "title": "Review Kerala Shops and Commercial Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Kerala Shops and Commercial Establishments Act is applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Kerala Shops and Commercial Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "KL-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and prescribed notices under Kerala labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Kerala Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "KL-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and employee information required under Kerala labour laws.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Kerala Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "KL-004",
+
+      "title": "Review Working Hours, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Kerala provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Kerala Shops and Commercial Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "KL-005",
+
+      "title": "Review Kerala Labour Welfare Fund Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Labour Welfare",
+
+      "description": "Review employer obligations relating to the Kerala Labour Welfare Fund, including employer and employee contributions where applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Kerala Labour Welfare Fund Act"
+        }
+      ]
+    },
+
+    {
+      "id": "KL-006",
+
+      "title": "Review Minimum Wage Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Minimum Wages",
+
+      "description": "Ensure employee wages comply with the latest Kerala minimum wage notifications for the applicable scheduled employment.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Kerala Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "KL-007",
+
+      "title": "Review State Labour Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "State Notifications",
+
+      "description": "Monitor notifications issued by the Government of Kerala affecting labour law compliance.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "KL-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Government of Kerala Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "KLR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual audit covering statutory registrations, labour welfare, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "KLR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital calendar for statutory returns, labour inspections, licence renewals and compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "KL-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

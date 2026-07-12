@@ -1,0 +1,161 @@
+{
+  "industries": [
+    {
+      "id": "it_saas",
+      "name": "Information Technology / SaaS",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Information Security",
+        "Remote Workforce Governance",
+        "Performance Management",
+        "Employee Handbook"
+      ]
+    },
+    {
+      "id": "consulting",
+      "name": "Consulting & Professional Services",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Employment Contracts",
+        "Client Confidentiality",
+        "Performance Management",
+        "Workforce Planning"
+      ]
+    },
+    {
+      "id": "manufacturing",
+      "name": "Manufacturing",
+      "riskLevel": "High",
+      "recommendedFocus": [
+        "Factory Compliance",
+        "Safety Policies",
+        "Contract Labour Compliance",
+        "Industrial Relations"
+      ]
+    },
+    {
+      "id": "retail",
+      "name": "Retail",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Shift Management",
+        "Attendance Compliance",
+        "POSH Compliance",
+        "Payroll Governance"
+      ]
+    },
+    {
+      "id": "healthcare",
+      "name": "Healthcare",
+      "riskLevel": "High",
+      "recommendedFocus": [
+        "Shift Workforce Governance",
+        "Professional Licensing",
+        "Patient Data Confidentiality",
+        "Compliance Monitoring"
+      ]
+    },
+    {
+      "id": "education",
+      "name": "Education",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Faculty Contracts",
+        "POSH Compliance",
+        "Background Verification",
+        "Policy Framework"
+      ]
+    },
+    {
+      "id": "financial_services",
+      "name": "Financial Services",
+      "riskLevel": "High",
+      "recommendedFocus": [
+        "Governance",
+        "Audit Readiness",
+        "Regulatory Compliance",
+        "Employee Accountability"
+      ]
+    },
+    {
+      "id": "logistics",
+      "name": "Logistics & Transportation",
+      "riskLevel": "High",
+      "recommendedFocus": [
+        "Contract Labour Compliance",
+        "Shift Management",
+        "Safety Governance",
+        "Payroll Compliance"
+      ]
+    },
+    {
+      "id": "construction",
+      "name": "Construction",
+      "riskLevel": "Very High",
+      "recommendedFocus": [
+        "Contract Labour Compliance",
+        "Worker Safety",
+        "Site Compliance",
+        "Statutory Registrations"
+      ]
+    },
+    {
+      "id": "hospitality",
+      "name": "Hospitality",
+      "riskLevel": "High",
+      "recommendedFocus": [
+        "Shift Workforce Governance",
+        "POSH Compliance",
+        "Attendance Controls",
+        "Payroll Compliance"
+      ]
+    },
+    {
+      "id": "ecommerce",
+      "name": "E-Commerce",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Warehouse Workforce Compliance",
+        "Contractor Governance",
+        "Performance Management",
+        "Payroll Compliance"
+      ]
+    },
+    {
+      "id": "startup",
+      "name": "Startup",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Foundational Compliance",
+        "Policy Framework",
+        "Workforce Planning",
+        "Manager Capability Building"
+      ]
+    },
+    {
+    "id": "semiconductor",
+    "name": "Semiconductor",
+    "riskLevel": "High",
+    "recommendedFocus": [
+      "Workforce Planning",
+      "Shift Workforce Governance",
+      "Engineering Talent Retention",
+      "Safety Compliance",
+      "Contractor Governance",
+      "Information Security"
+    ]
+  },
+    {
+      "id": "other",
+      "name": "Other",
+      "riskLevel": "Medium",
+      "recommendedFocus": [
+        "Compliance Monitoring",
+        "HR Governance",
+        "Policy Framework",
+        "Workforce Planning"
+      ]
+    }
+  ]
+}
+

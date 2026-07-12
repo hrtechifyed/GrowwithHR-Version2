@@ -1,0 +1,202 @@
+{
+  "stateId": "TN",
+  "stateName": "Tamil Nadu",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Welfare and Skill Development Department, Government of Tamil Nadu",
+    "sourceId": "TN-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Tamil Nadu.",
+
+  "rules": [
+
+    {
+      "id": "TN-001",
+      "title": "Review Tamil Nadu Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the Tamil Nadu Shops and Establishments Act is applicable.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Tamil Nadu Shops and Establishments Act, 1947"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records, attendance registers, wage registers and notices prescribed under Tamil Nadu labour legislation.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Tamil Nadu Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices, abstracts and employee information required under Tamil Nadu labour laws.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Tamil Nadu Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Tamil Nadu provisions governing working hours, spread-over, overtime, leave, holidays and weekly offs.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Tamil Nadu Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-005",
+      "title": "Review Tamil Nadu Labour Welfare Fund Compliance",
+      "priority": "Mandatory",
+      "category": "Labour Welfare",
+      "description": "Review employer obligations relating to the Tamil Nadu Labour Welfare Fund including periodic employer and employee contributions.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Tamil Nadu Labour Welfare Fund Act"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-006",
+      "title": "Review Professional Tax Compliance",
+      "priority": "Mandatory",
+      "category": "Professional Tax",
+      "description": "Determine applicability of Professional Tax levied by local bodies such as Municipal Corporations, Municipalities and Town Panchayats, and ensure registration, deduction and payment wherever applicable.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Tamil Nadu Municipal Laws relating to Professional Tax"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-007",
+      "title": "Review Tamil Nadu Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest Tamil Nadu minimum wage notifications applicable to the scheduled employment.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Tamil Nadu Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "TN-008",
+      "title": "Monitor Tamil Nadu Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Tamil Nadu.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TN-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Tamil Nadu Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "TNR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering labour registrations, Labour Welfare Fund, Professional Tax, statutory records and inspection readiness."
+    },
+
+    {
+      "id": "TNR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for Professional Tax due dates, Labour Welfare Fund contributions, statutory filings, inspections and licence renewals."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "TN-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

@@ -1,0 +1,246 @@
+{
+  "stateId": "LD",
+  "stateName": "Lakshadweep",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Administration of the Union Territory of Lakshadweep",
+    "sourceId": "LD-LABOUR"
+  },
+
+  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Lakshadweep.",
+
+  "rules": [
+
+    {
+      "id": "LD-001",
+
+      "title": "Review Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the applicable Shops and Establishments legislation is required.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LD-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Lakshadweep Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "LD-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and prescribed notices under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LD-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Lakshadweep Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "LD-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and employee information required under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LD-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Lakshadweep Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "LD-004",
+
+      "title": "Review Working Hours, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with applicable provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LD-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Lakshadweep Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "LD-005",
+
+      "title": "Review Minimum Wage Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Minimum Wages",
+
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Lakshadweep.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LD-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Lakshadweep Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "LD-006",
+
+      "title": "Monitor Union Territory Labour Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "State Notifications",
+
+      "description": "Review labour department notifications, circulars and amendments issued by the Union Territory Administration.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LD-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Lakshadweep Labour Department Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "LDR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual audit covering registrations, payroll compliance, statutory records and inspection readiness."
+    },
+
+    {
+      "id": "LDR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital compliance calendar for statutory filings, inspections, licence renewals and compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "LD-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

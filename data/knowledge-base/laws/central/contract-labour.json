@@ -1,0 +1,308 @@
+{
+  "lawId": "CENTRAL-CLRA",
+  "lawName": "Contract Labour (Regulation and Abolition) Act, 1970",
+  "shortName": "CLRA Act",
+  "authority": "Ministry of Labour & Employment",
+  "sourceId": "MOL",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Regulates the employment of contract labour in certain establishments and provides for registration, licensing and welfare of contract workers.",
+
+  "definitions": [
+
+    {
+      "id": "CLRA-DEF-001",
+      "term": "Principal Employer",
+      "definition": "Employer responsible for compliance under the Act."
+    },
+
+    {
+      "id": "CLRA-DEF-002",
+      "term": "Contractor",
+      "definition": "Person undertaking work through contract labour."
+    },
+
+    {
+      "id": "CLRA-DEF-003",
+      "term": "Contract Labour",
+      "definition": "Worker engaged through a contractor."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+
+      "id": "CLRA-001",
+
+      "title": "Review Applicability of the CLRA Act",
+
+      "priority": "Mandatory",
+
+      "category": "Contract Labour",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 20
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Determine whether the establishment is covered under the Contract Labour (Regulation and Abolition) Act.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Contract Labour (Regulation and Abolition) Act, 1970"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "CLRA-002",
+
+      "title": "Principal Employer Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Registration",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 20
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Obtain registration as Principal Employer wherever required.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "CLRA Registration"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "CLRA-003",
+
+      "title": "Engage Licensed Contractors",
+
+      "priority": "Mandatory",
+
+      "category": "Contract Labour",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 20
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Ensure contractors possess valid licences wherever required under the Act.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "CLRA Licensing"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "CLRA-004",
+
+      "title": "Provide Statutory Welfare Facilities",
+
+      "priority": "Mandatory",
+
+      "category": "Contract Labour",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 20
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Ensure welfare and amenity provisions applicable under the Act are complied with.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "CLRA Welfare Provisions"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "CLRA-005",
+
+      "title": "Maintain Registers and Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 20
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Maintain statutory registers and records relating to contract labour.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "CLRA Rules"
+
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "exceptions": [
+
+    {
+
+      "id": "CLRA-EX-001",
+
+      "title": "Applicability Threshold",
+
+      "description": "Coverage depends on statutory applicability and notified conditions."
+
+    }
+
+  ],
+
+  "references": [
+
+    {
+
+      "sourceId": "MOL"
+
+    },
+
+    {
+
+      "sourceId": "INDIACODE"
+
+    }
+
+  ]
+
+}

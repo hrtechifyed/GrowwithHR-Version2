@@ -1,0 +1,203 @@
+[
+    {
+        "category": "Technology",
+        "items": [
+            "Information Technology",
+            "Software Products",
+            "Software Services",
+            "SaaS",
+            "Artificial Intelligence",
+            "Machine Learning",
+            "Cyber Security",
+            "Cloud Computing",
+            "Data Analytics",
+            "IT Enabled Services (ITES)",
+            "Business Process Outsourcing (BPO)",
+            "Knowledge Process Outsourcing (KPO)",
+            "Gaming",
+            "Electronics",
+            "Semiconductors"
+        ]
+    },
+    {
+        "category": "Manufacturing",
+        "items": [
+            "General Manufacturing",
+            "Automobile",
+            "Auto Components",
+            "Aerospace",
+            "Defence Manufacturing",
+            "Steel",
+            "Cement",
+            "Chemicals",
+            "Petrochemicals",
+            "Textiles",
+            "Garments",
+            "Leather",
+            "Paper",
+            "Packaging",
+            "Plastic Products",
+            "Furniture",
+            "Consumer Durables",
+            "Industrial Equipment"
+        ]
+    },
+    {
+        "category": "Healthcare & Life Sciences",
+        "items": [
+            "Healthcare",
+            "Hospital",
+            "Clinic",
+            "Pharmaceutical",
+            "Medical Devices",
+            "Biotechnology",
+            "Diagnostics",
+            "Laboratory",
+            "Telemedicine"
+        ]
+    },
+    {
+        "category": "Financial Services",
+        "items": [
+            "Banking",
+            "NBFC",
+            "Insurance",
+            "FinTech",
+            "Microfinance",
+            "Wealth Management",
+            "Stock Broking",
+            "Investment Management"
+        ]
+    },
+    {
+        "category": "Retail & Commerce",
+        "items": [
+            "Retail",
+            "Wholesale",
+            "E-Commerce",
+            "Marketplace",
+            "Consumer Goods",
+            "FMCG",
+            "Luxury Goods"
+        ]
+    },
+    {
+        "category": "Hospitality & Tourism",
+        "items": [
+            "Hotel",
+            "Restaurant",
+            "Food Services",
+            "Travel",
+            "Tourism",
+            "Events",
+            "Entertainment"
+        ]
+    },
+    {
+        "category": "Education",
+        "items": [
+            "School",
+            "Higher Education",
+            "EdTech",
+            "Vocational Training",
+            "Research"
+        ]
+    },
+    {
+        "category": "Infrastructure",
+        "items": [
+            "Construction",
+            "Real Estate",
+            "Infrastructure",
+            "Architecture",
+            "Engineering",
+            "Mining"
+        ]
+    },
+    {
+        "category": "Logistics",
+        "items": [
+            "Logistics",
+            "Supply Chain",
+            "Transportation",
+            "Shipping",
+            "Ports",
+            "Warehousing",
+            "Courier"
+        ]
+    },
+    {
+        "category": "Energy & Utilities",
+        "items": [
+            "Power",
+            "Renewable Energy",
+            "Oil & Gas",
+            "Utilities",
+            "Water Management"
+        ]
+    },
+    {
+        "category": "Agriculture",
+        "items": [
+            "Agriculture",
+            "AgriTech",
+            "Food Processing",
+            "Dairy",
+            "Fisheries",
+            "Forestry"
+        ]
+    },
+    {
+        "category": "Professional Services",
+        "items": [
+            "Consulting",
+            "Legal Services",
+            "Accounting",
+            "Audit",
+            "Human Resources",
+            "Recruitment",
+            "Staffing",
+            "Marketing",
+            "Advertising",
+            "Public Relations",
+            "Design"
+        ]
+    },
+    {
+        "category": "Media",
+        "items": [
+            "Media",
+            "Publishing",
+            "Television",
+            "Radio",
+            "Film Production",
+            "Digital Media"
+        ]
+    },
+    {
+        "category": "Telecommunications",
+        "items": [
+            "Telecommunications",
+            "Internet Service Provider",
+            "Network Infrastructure"
+        ]
+    },
+    {
+        "category": "Government & Non-Profit",
+        "items": [
+            "Government",
+            "Public Administration",
+            "NGO",
+            "Social Enterprise",
+            "Development Sector"
+        ]
+    },
+    {
+        "category": "Other",
+        "items": [
+            "Diversified Business",
+            "Conglomerate",
+            "Other"
+        ]
+    }
+]

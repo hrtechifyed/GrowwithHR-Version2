@@ -1,0 +1,481 @@
+{
+  "version": "6.3",
+  "lastUpdated": "2026-06-19",
+
+"employeeThresholdRules": {
+
+  "10": {
+
+    "mandatoryRuleIds": [
+      "POSH-001"
+    ],
+
+    "recommended": [
+      "Basic Employee Handbook",
+      "Leave Policy",
+      "Attendance Management Process",
+      "Employment Documentation Review"
+    ]
+
+  },
+
+  "20": {
+
+    "mandatoryRuleIds": [
+      "EPFO-001"
+    ],
+
+    "recommended": [
+      "Employee Handbook",
+      "Code of Conduct",
+      "Grievance Redressal Framework",
+      "Performance Management Process",
+      "Employee Data Management Framework"
+    ]
+
+  },
+
+  "50": {
+
+    "mandatoryRuleIds": [
+
+      "EPFO-002",
+      "EPFO-003",
+      "EPFO-004",
+      "EPFO-005",
+
+      "ESIC-001",
+
+      "GRAT-001"
+
+    ],
+
+    "recommended": [
+
+      "Formal HR Policies",
+
+      "Performance Management Framework",
+
+      "Workforce Compliance Calendar",
+
+      "Manager Capability Development",
+
+      "Structured Onboarding Program",
+
+      "Workforce Planning Framework",
+
+      "Internal HR Governance Reviews"
+
+    ]
+
+  },
+
+  "100": {
+
+    "mandatoryRuleIds": [
+
+      "BONUS-001",
+
+      "MB-001"
+
+    ],
+
+    "recommended": [
+
+      "Formal HR Governance Framework",
+
+      "HRIS Implementation",
+
+      "Workforce Analytics",
+
+      "Leadership Development Framework",
+      
+      "Organization Development Framework",     
+
+      "Succession Planning Framework",
+      
+      "Total Rewards Framework"
+      
+
+    ]
+
+  }
+
+},
+  "entityRules": {
+
+    "Private Limited Company": {
+      "mandatory": [
+        "Employment Agreements",
+        "Statutory Employee Records",
+        "Payroll Compliance Review"
+      ]
+    },
+
+    "Limited Liability Partnership (LLP)": {
+      "mandatory": [
+        "Employment Agreements",
+        "Payroll Compliance Review"
+      ]
+    },
+
+    "Proprietorship": {
+      "mandatory": [
+        "Employment Records",
+        "Basic HR Documentation"
+      ]
+    },
+
+    "Partnership Firm": {
+      "mandatory": [
+        "Employment Records",
+        "Payroll Compliance Review"
+      ]
+    },
+
+    "One Person Company (OPC)": {
+      "mandatory": [
+        "Employment Agreements",
+        "Employment Records"
+      ]
+    },
+
+    "Public Limited Company (Unlisted)": {
+      "mandatory": [
+        "Employment Agreements",
+        "Payroll Compliance Review",
+        "Statutory Employee Records"
+      ]
+    },
+
+    "Public Limited Company (Listed)": {
+      "mandatory": [
+        "Employment Agreements",
+        "Payroll Compliance Review",
+        "Statutory Employee Records",
+        "Formal HR Governance Framework"
+      ]
+    },
+
+    "Section 8 Company": {
+      "mandatory": [
+        "Employment Agreements",
+        "Employee Records",
+        "Board Approved HR Policies"
+      ],
+      "recommended": [
+        "Volunteer Governance Framework",
+        "Safeguarding Policy",
+        "Employee Handbook"
+      ]
+    },
+
+    "Trust": {
+      "mandatory": [
+        "Employment Records",
+        "Payroll Documentation",
+        "Basic HR Policies"
+      ],
+      "recommended": [
+        "Volunteer Management Framework",
+        "Code of Conduct"
+      ]
+    },
+
+    "Society": {
+      "mandatory": [
+        "Employment Records",
+        "Payroll Compliance Review",
+        "HR Documentation"
+      ],
+      "recommended": [
+        "Employee Handbook",
+        "Volunteer Governance"
+      ]
+    },
+
+    "NGO": {
+      "mandatory": [
+        "Employment Records",
+        "Employment Agreements",
+        "Payroll Documentation"
+      ],
+      "recommended": [
+        "Volunteer Governance Framework",
+        "Field Workforce Policy",
+        "Safeguarding Policy"
+      ]
+    },
+
+    "DPIIT Recognized Startup": {
+      "mandatory": [
+        "Employment Agreements",
+        "Employee Records",
+        "Foundational HR Policies"
+      ],
+      "recommended": [
+        "Employee Handbook",
+        "Performance Framework",
+        "Workforce Planning",
+        "Manager Capability Development"
+      ]
+    },
+
+    "Government Entity": {
+      "mandatory": [
+        "Service Rules Compliance",
+        "Employee Records",
+        "HR Governance Framework"
+      ],
+      "recommended": [
+        "Training Framework",
+        "Workforce Planning",
+        "Performance Governance"
+      ]
+    },
+
+    "Educational Institution": {
+      "mandatory": [
+        "Faculty Contracts",
+        "Employee Records",
+        "POSH Compliance"
+      ],
+      "recommended": [
+        "Background Verification",
+        "Academic Workforce Planning",
+        "Policy Framework"
+      ]
+    }
+  },
+
+  "stateRules": {
+
+    "Karnataka": {
+      "mandatory": [
+        "Karnataka Shops & Establishments Compliance",
+        "Professional Tax Compliance"
+      ]
+    },
+
+    "Maharashtra": {
+      "mandatory": [
+        "Maharashtra Shops & Establishments Compliance",
+        "Professional Tax Compliance"
+      ]
+    },
+
+    "Tamil Nadu": {
+      "mandatory": [
+        "Tamil Nadu Shops & Establishments Compliance"
+      ]
+    },
+
+    "Delhi": {
+      "mandatory": [
+        "Delhi Shops & Establishments Compliance"
+      ]
+    },
+
+    "Telangana": {
+      "mandatory": [
+        "Telangana Shops & Establishments Compliance",
+        "Professional Tax Compliance"
+      ]
+    }
+  },
+
+  "industryRules": {
+
+    "Information Technology / SaaS": {
+      "recommended": [
+        "Remote Work Policy",
+        "Information Security Policy",
+        "Performance Management Framework",
+        "Employee Handbook"
+      ]
+    },
+
+
+        "Semiconductor": {
+      "recommended": [
+        "Shift Workforce Governance",
+        "Engineering Talent Retention Strategy",
+        "Information Security Policy",
+        "Workforce Planning Framework",
+        "Safety Compliance Program",
+        "Contractor Governance Framework",
+        "Payroll Compliance Review"
+      ]
+    },
+    
+    "Consulting & Professional Services": {
+      "recommended": [
+        "Employment Contracts",
+        "Client Confidentiality Framework",
+        "Performance Management Framework",
+        "Workforce Planning Process"
+      ]
+    },
+
+    "Manufacturing": {
+      "recommended": [
+        "Safety Policy",
+        "Shift Management Framework",
+        "Contract Labour Governance",
+        "Industrial Relations Framework"
+      ]
+    },
+
+    "Retail": {
+      "recommended": [
+        "Shift Scheduling Framework",
+        "Attendance Monitoring Process",
+        "POSH Compliance Review",
+        "Payroll Governance"
+      ]
+    },
+
+    "Healthcare": {
+      "recommended": [
+        "Clinical Workforce Governance",
+        "Employee Health Compliance",
+        "Patient Data Confidentiality",
+        "Compliance Monitoring"
+      ]
+    },
+
+    "Education": {
+      "recommended": [
+        "Faculty Contracts",
+        "POSH Compliance Framework",
+        "Background Verification Process",
+        "Policy Governance"
+      ]
+    },
+
+    "Financial Services": {
+      "recommended": [
+        "Code of Conduct",
+        "Information Security Policy",
+        "Audit Readiness",
+        "Regulatory Compliance Monitoring"
+      ]
+    },
+
+    "Logistics & Transportation": {
+      "recommended": [
+        "Contract Labour Governance",
+        "Shift Management Framework",
+        "Safety Governance",
+        "Payroll Compliance Review"
+      ]
+    },
+
+    "Construction": {
+      "recommended": [
+        "Worker Safety Framework",
+        "Contract Labour Compliance",
+        "Site Compliance Monitoring",
+        "Statutory Registration Reviews"
+      ]
+    },
+
+    "Hospitality": {
+      "recommended": [
+        "Shift Workforce Governance",
+        "Attendance Controls",
+        "POSH Compliance",
+        "Payroll Governance"
+      ]
+    },
+
+    "E-Commerce": {
+      "recommended": [
+        "Warehouse Workforce Compliance",
+        "Contractor Governance",
+        "Performance Management",
+        "Payroll Governance"
+      ]
+    },
+
+    "Startup": {
+      "recommended": [
+        "Foundational HR Compliance",
+        "Employee Handbook",
+        "Workforce Planning",
+        "Manager Capability Building"
+      ]
+    },
+
+    "Other": {
+      "recommended": [
+        "HR Governance",
+        "Policy Framework",
+        "Compliance Monitoring",
+        "Workforce Planning"
+      ]
+    }
+  },
+
+  "futureReadiness": {
+
+"20": [
+"Review EPF applicability as workforce scales",
+"Establish foundational HR policies",
+"Implement structured employee documentation"
+],
+
+"50": [
+"Formal grievance process",
+"Structured onboarding",
+"Manager training",
+"Compliance calendar",
+"Workforce planning framework"
+],
+
+"100": [
+"HRIS implementation",
+"Workforce analytics",
+"Leadership development",
+"Policy governance reviews",
+"Internal HR audit readiness"
+],
+
+"250": [
+"Internal compliance audits",
+"Talent management framework",
+"Organisation design review",
+"Succession planning",
+"People analytics maturity"
+],
+
+"500": [
+"Enterprise workforce governance",
+"Integrated people strategy",
+"Leadership pipeline development",
+"Advanced workforce planning",
+"HR operating model review"
+]
+},
+
+  "sources": [
+    {
+      "name": "Ministry of Labour & Employment",
+      "url": "https://labour.gov.in"
+    },
+    {
+      "name": "Employees' Provident Fund Organisation (EPFO)",
+      "url": "https://www.epfindia.gov.in"
+    },
+    {
+      "name": "Employees' State Insurance Corporation (ESIC)",
+      "url": "https://www.esic.gov.in"
+    },
+    {
+      "name": "India Code",
+      "url": "https://www.indiacode.nic.in"
+    }
+  ],
+
+  "disclaimer": "This report is intended for informational purposes only and should not be considered legal, regulatory or HR advice. Users should obtain professional review before acting on compliance obligations."
+}

@@ -1,0 +1,270 @@
+{
+  "stateId": "JK",
+  "stateName": "Jammu and Kashmir",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Jammu and Kashmir",
+    "sourceId": "JK-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Jammu and Kashmir.",
+
+  "rules": [
+
+    {
+      "id": "JK-001",
+
+      "title": "Review Jammu and Kashmir Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the applicable Shops and Establishments legislation is required.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "JK-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Jammu and Kashmir Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "JK-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and prescribed notices under Jammu and Kashmir labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "JK-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Jammu and Kashmir Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "JK-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and abstracts required under applicable labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "JK-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Jammu and Kashmir Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "JK-004",
+
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Jammu and Kashmir provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "JK-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Jammu and Kashmir Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "JK-005",
+
+      "title": "Review Minimum Wage Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Minimum Wages",
+
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Jammu and Kashmir.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "JK-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Jammu and Kashmir Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "JK-006",
+
+      "title": "Review Labour Welfare Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Labour Welfare",
+
+      "description": "Review state labour welfare requirements, notifications and employer obligations applicable in Jammu and Kashmir.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "JK-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Jammu and Kashmir Labour Welfare legislation"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "JKR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual review of registrations, statutory records, wage compliance and inspection readiness."
+    },
+
+    {
+      "id": "JKR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital calendar for statutory filings, licence renewals, inspections and labour law due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "JK-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

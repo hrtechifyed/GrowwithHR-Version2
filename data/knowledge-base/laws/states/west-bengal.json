@@ -1,0 +1,250 @@
+{
+  "stateId": "WB",
+  "stateName": "West Bengal",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of West Bengal",
+    "sourceId": "WB-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in West Bengal.",
+
+  "rules": [
+
+    {
+      "id": "WB-001",
+      "title": "Review West Bengal Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the West Bengal Shops and Establishments Act is applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "West Bengal Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, wage registers, attendance registers and prescribed notices under West Bengal labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable West Bengal Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices and employee information required under West Bengal labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable West Bengal Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with West Bengal provisions governing working hours, overtime, leave, holidays and weekly offs.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "West Bengal Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-005",
+      "title": "Review Professional Tax Compliance",
+      "priority": "Mandatory",
+      "category": "Professional Tax",
+      "description": "Determine whether Professional Tax registration, deduction, return filing and payment obligations apply under West Bengal law.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "West Bengal State Tax on Professions, Trades, Callings and Employments Act, 1979"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-006",
+      "title": "Review Labour Welfare Fund Compliance",
+      "priority": "Mandatory",
+      "category": "Labour Welfare",
+      "description": "Review employer obligations relating to the West Bengal Labour Welfare Fund including employer and employee contributions where applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "West Bengal Labour Welfare Fund Act"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-007",
+      "title": "Review West Bengal Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest West Bengal minimum wage notifications applicable to the scheduled employment.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of West Bengal Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "WB-008",
+      "title": "Monitor West Bengal Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of West Bengal.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "WB-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of West Bengal Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "WBR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering statutory registrations, Professional Tax, Labour Welfare Fund, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "WBR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for Professional Tax returns, Labour Welfare Fund contributions, statutory filings, inspections and licence renewals."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "WB-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

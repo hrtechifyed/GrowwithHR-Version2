@@ -1,0 +1,214 @@
+{
+  "stateId": "GA",
+  "stateName": "Goa",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Goa",
+    "sourceId": "GA-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Goa.",
+
+  "rules": [
+
+    {
+      "id": "GA-001",
+
+      "title": "Review Goa Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Goa Shops and Establishments legislation is applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "GA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Goa Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "GA-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and notices prescribed under Goa labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "GA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Goa Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "GA-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and abstracts required under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "GA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Goa Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "GA-004",
+
+      "title": "Review Working Hours, Weekly Holidays and Leave",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Goa-specific provisions relating to working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "GA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Goa Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "GA-005",
+
+      "title": "Review Professional Tax Obligations",
+
+      "priority": "Mandatory",
+
+      "category": "Professional Tax",
+
+      "description": "Determine whether Professional Tax registration, deduction and payment obligations apply in Goa.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "GA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Goa Tax on Professions, Trades, Callings and Employments legislation"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "GAR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual review of registrations, statutory records, wage compliance and inspection readiness."
+    },
+
+    {
+      "id": "GAR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital compliance calendar for licence renewals, statutory filings and labour inspections."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "GA-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

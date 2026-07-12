@@ -1,0 +1,276 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 02
+   Base Styles
+   Version : v0.10.0-beta
+========================================================== */
+
+/* ==========================================
+   RESET
+========================================== */
+
+*,
+*::before,
+*::after{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+/* ==========================================
+   HTML
+========================================== */
+
+html{
+
+    scroll-behavior:smooth;
+
+    font-size:16px;
+
+}
+
+/* ==========================================
+   BODY
+========================================== */
+
+body{
+
+    background:var(--gradient-dark);
+
+    color:var(--text-primary);
+
+    font-family:"Inter","Segoe UI",sans-serif;
+
+    font-size:1rem;
+
+    line-height:1.6;
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
+}
+
+/* ==========================================
+   LINKS
+========================================== */
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+    transition:var(--transition-normal);
+
+}
+
+a:hover{
+
+    text-decoration:none;
+
+}
+
+/* ==========================================
+   IMAGES
+========================================== */
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+    height:auto;
+
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+button{
+
+    font:inherit;
+
+    cursor:pointer;
+
+    border:none;
+
+    outline:none;
+
+    background:none;
+
+}
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+input,
+select,
+textarea{
+
+    font:inherit;
+
+    outline:none;
+
+}
+
+/* ==========================================
+   LISTS
+========================================== */
+
+ul,
+ol{
+
+    list-style:none;
+
+}
+
+/* ==========================================
+   SECTION
+========================================== */
+
+section{
+
+    position:relative;
+
+    width:100%;
+
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.container{
+
+    width:min(86%,var(--container-width));
+
+    max-width:1320px;
+
+    margin-inline:auto;
+
+    padding-inline:24px;
+
+}
+/* ==========================================
+   COMMON SPACING
+========================================== */
+
+.compact-section{
+
+    padding:110px 0;
+
+}
+
+/* ==========================================
+   GLASS PANEL
+========================================== */
+
+.glass{
+
+    background:var(--glass-bg);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid var(--glass-border);
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-md);
+
+}
+
+/* ==========================================
+   CARD
+========================================== */
+
+.card{
+
+    background:var(--bg-card);
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-sm);
+
+    transition:var(--transition-normal);
+
+}
+
+.card:hover{
+
+    background:var(--bg-card-hover);
+
+    transform:translateY(-6px);
+
+}
+
+/* ==========================================
+   DIVIDER
+========================================== */
+
+.divider{
+
+    width:100%;
+
+    height:1px;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+/* ==========================================
+   SELECTION
+========================================== */
+
+::selection{
+
+    background:var(--brand-orange);
+
+    color:#fff;
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:var(--bg-secondary);
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:linear-gradient(
+        180deg,
+        var(--brand-gold),
+        var(--brand-orange)
+    );
+
+    border-radius:999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--brand-red);
+
+}

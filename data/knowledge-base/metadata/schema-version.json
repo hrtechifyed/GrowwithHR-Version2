@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "knowledgeBaseVersion": "1.0.0",
+  "engineCompatibility": {
+    "minimumVersion": "7.0.0",
+    "recommendedVersion": "7.0.0"
+  },
+  "release": {
+    "name": "GrowItWithHR Knowledge Base",
+    "codename": "Genesis",
+    "releaseDate": "2026-07-05",
+    "lastUpdated": "2026-07-05"
+  },
+  "maintainer": {
+    "organisation": "GrowItWithHR",
+    "repository": "Knowledge Base",
+    "support": "support@growitwithhr.com"
+  },
+  "validation": {
+    "strictMode": true,
+    "allowDeprecatedRules": false,
+    "requireSourceId": true,
+    "requireLastVerified": true,
+    "requireUniqueRuleIds": true
+  },
+  "features": {
+    "stateRules": true,
+    "centralRules": true,
+    "industryRules": true,
+    "entityRules": true,
+    "employeeThresholdRules": true,
+    "futureReadiness": true,
+    "citations": true,
+    "sourceRegistry": true,
+    "confidenceLevels": true
+  }
+}

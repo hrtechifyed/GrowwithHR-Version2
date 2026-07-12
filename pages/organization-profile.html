@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Organization Profile | GrowWithHR</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>Organization Profile</h1>
+
+        <p>
+            Tell us about your organization. GrowWithHR will determine
+            the People Requirements applicable to your business.
+        </p>
+
+    </header>
+
+    <form id="organizationProfileForm">
+
+        <!-- ===================================================== -->
+        <!-- SECTION 1 -->
+        <!-- ===================================================== -->
+
+        <section class="profile-section">
+
+            <h2>1. Legal Identity</h2>
+
+            <div class="form-group">
+
+                <label for="companyName">
+                    Organization Name *
+                </label>
+
+                <input
+                    type="text"
+                    id="companyName"
+                    autocomplete="off"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="entityType">
+
+                    Legal Entity Type *
+
+                </label>
+
+                <select
+                    id="entityType"
+                    required>
+
+                    <option value="">
+
+                        Select Entity Type
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="yearOfIncorporation">
+
+                    Year of Incorporation *
+
+                </label>
+
+                <input
+                    type="number"
+                    id="yearOfIncorporation"
+                    min="1800"
+                    max="2100"
+                    required>
+
+            </div>
+
+        </section>
+
+        <hr>
+
+        <!-- ===================================================== -->
+        <!-- SECTION 2 -->
+        <!-- ===================================================== -->
+
+        <section class="profile-section">
+
+            <h2>2. Business</h2>
+
+            <div class="form-group">
+
+                <label for="industry">
+
+                    Industry *
+
+                </label>
+
+                <select
+                    id="industry"
+                    required>
+
+                    <option value="">
+
+                        Select Industry
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="natureOfBusiness">
+
+                    Nature of Business *
+
+                </label>
+
+                <select
+                    id="natureOfBusiness"
+                    required>
+
+                    <option value="">
+
+                        Select Nature of Business
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+        <hr>
+
+              <!-- ===================================================== -->
+        <!-- SECTION 3 -->
+        <!-- ===================================================== -->
+
+        <section class="profile-section">
+
+            <h2>3. Operations</h2>
+
+            <div class="form-group">
+
+                <label>
+
+                    Operating Locations
+
+                </label>
+
+                <div id="locationsContainer">
+
+                    <div class="location-row">
+
+                        <select class="country">
+
+                            <option value="">
+
+                                Select Country
+
+                            </option>
+
+                        </select>
+
+                        <select class="state">
+
+                            <option value="">
+
+                                Select State
+
+                            </option>
+
+                        </select>
+
+                        <input
+                            type="text"
+                            class="city"
+                            placeholder="City">
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="addLocation">
+
+                    + Add Another Location
+
+                </button>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Work Model
+
+                </label>
+
+                <select id="workModel">
+
+                    <option value="">
+
+                        Select Work Model
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Establishment Types
+
+                </label>
+
+                <div id="establishmentTypes">
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <hr>
+
+        <!-- ===================================================== -->
+        <!-- SECTION 4 -->
+        <!-- ===================================================== -->
+
+        <section class="profile-section">
+
+            <h2>4. Workforce</h2>
+
+            <div class="form-group">
+
+                <label>
+
+                    Permanent Employees
+
+                </label>
+
+                <input
+                    type="number"
+                    id="permanent"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Contract Employees
+
+                </label>
+
+                <input
+                    type="number"
+                    id="contract"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Interns
+
+                </label>
+
+                <input
+                    type="number"
+                    id="interns"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Apprentices
+
+                </label>
+
+                <input
+                    type="number"
+                    id="apprentices"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Consultants
+
+                </label>
+
+                <input
+                    type="number"
+                    id="consultants"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Gig Workers
+
+                </label>
+
+                <input
+                    type="number"
+                    id="gigWorkers"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Current Employees
+
+                </label>
+
+                <input
+                    type="number"
+                    id="currentEmployees"
+                    readonly>
+
+            </div>
+
+        </section>
+
+        <hr>
+                <!-- ===================================================== -->
+        <!-- SECTION 5 -->
+        <!-- ===================================================== -->
+
+        <section class="profile-section">
+
+            <h2>5. Growth</h2>
+
+            <div class="form-group">
+
+                <label>
+
+                    Projected Employees
+
+                </label>
+
+                <input
+                    type="number"
+                    id="projectedEmployees"
+                    min="0"
+                    value="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Projection Period
+
+                </label>
+
+                <select id="projectionPeriod">
+
+                    <option value="6">6 Months</option>
+
+                    <option value="12" selected>12 Months</option>
+
+                    <option value="24">24 Months</option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+        <hr>
+
+        <!-- ===================================================== -->
+        <!-- SECTION 6 -->
+        <!-- ===================================================== -->
+
+        <section class="profile-section">
+
+            <h2>6. Organization Status</h2>
+
+            <div id="organizationStatus">
+
+            </div>
+
+        </section>
+
+        <hr>
+
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                id="saveOrganization">
+
+                Save Organization Profile
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script src="../js/company/company.js"></script>
+
+<script src="../js/company/company-storage.js"></script>
+
+<script src="../js/company/organization-profile.js"></script>
+
+</body>
+
+</html>

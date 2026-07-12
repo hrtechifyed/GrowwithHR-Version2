@@ -1,0 +1,1018 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 06
+   Hero
+   Version : v0.10.0-beta
+========================================================== */
+
+/* ==========================================
+   HERO
+========================================== */
+
+.hero{
+
+    position:relative;
+
+    min-height:720px;
+
+    display:flex;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    background:var(--gradient-dark);
+
+    padding:130px 0 60px;
+
+}
+
+/* ==========================================
+   BACKGROUND
+========================================== */
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        radial-gradient(circle at 12% 18%,rgba(255,176,0,.18),transparent 30%),
+
+        radial-gradient(circle at 88% 20%,rgba(37,99,235,.16),transparent 34%),
+
+        radial-gradient(circle at 75% 82%,rgba(255,122,0,.14),transparent 35%);
+
+    pointer-events:none;
+
+}
+
+.hero-bg-grid{
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+        linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+
+        linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+
+    background-size:60px 60px;
+
+    mask-image:radial-gradient(circle,white 35%,transparent 90%);
+
+    opacity:.35;
+
+}
+
+/* ==========================================
+   LAYOUT
+========================================== */
+
+.hero-layout{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:24px;
+
+}
+
+/* ==========================================
+   LEFT
+========================================== */
+
+.hero-content{
+
+    width:100%;
+
+    max-width:1100px;
+
+    margin:0 auto;
+
+}
+
+.hero-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:rgba(255,176,0,.10);
+
+    border:1px solid rgba(255,176,0,.20);
+
+    color:var(--brand-gold);
+
+    font-weight:600;
+
+    margin-bottom:20px;
+
+}
+
+.hero-content h1{
+
+    margin-bottom:18px;
+
+}
+
+.hero-content h1 span{
+
+    background:var(--gradient-brand);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.hero-description{
+
+    max-width:640px;
+
+    margin:0 auto 38px;
+
+    color:var(--text-secondary);
+
+    font-size:1.05rem;
+
+    line-height:1.75;
+
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.hero-actions{
+
+    gap:14px;
+
+    margin-bottom:24px;
+
+}
+
+.primary-btn{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:16px 32px;
+
+    border-radius:999px;
+
+    background:var(--gradient-brand);
+
+    color:white;
+
+    font-weight:600;
+
+   box-shadow:0 6px 18px rgba(255,176,0,.12);
+
+    transition:.3s;
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.secondary-btn{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:16px 32px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    transition:.3s;
+
+}
+
+.secondary-btn:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+/* ==========================================
+   TRUST
+========================================== */
+
+.trust-strip{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.trust-strip div{
+
+   padding:8px 14px;
+
+    font-size:.88rem;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:var(--text-secondary);
+
+}
+
+/* ==========================================
+   HERO PRODUCT
+========================================== */
+
+.hero-workspace{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+}
+
+.workspace-window{
+
+   width:min(100%, 980px);
+
+   max-width:980px;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(24px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+   box-shadow:0 6px 18px rgba(255,176,0,.12);
+
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+}
+
+.workspace-header{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:18px 22px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.workspace-dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+}
+
+.workspace-dot.red{
+
+    background:#ff5f57;
+
+}
+
+.workspace-dot.yellow{
+
+    background:#febc2e;
+
+}
+
+.workspace-dot.green{
+
+    background:#28c840;
+
+}
+
+.workspace-title{
+
+    margin-left:12px;
+
+    font-weight:600;
+
+}
+
+/* ==========================================
+   PRODUCT LAYOUT
+========================================== */
+.hero-dashboard-layout{
+
+    display:grid;
+
+    grid-template-rows:auto 1fr;
+
+    grid-template-areas:
+        "top"
+        "graph";
+
+    gap:24px;
+
+    padding:22px;
+
+    min-height:auto;
+
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.hero-sidebar{
+
+    grid-area:top;
+
+    display:grid;
+
+    grid-template-columns:repeat(3, 1fr);
+
+    gap:20px;
+
+    align-items:stretch;
+
+    width:100%;
+   
+}
+
+.company-dna-card{
+
+   display:flex;
+
+   flex-direction:column;
+
+   justify-content:flex-start;
+
+    min-height:240px; 
+   
+    gap:24px;
+
+    padding:24px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.growth-stage,
+.recommendation-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    gap:24px
+
+    min-height:240px;
+
+    padding:24px;
+
+     background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+   
+
+}
+
+.company-dna-card h3,
+.growth-stage h3,
+.recommendation-card h3{
+
+    margin:0 0 28px;
+
+    font-size:1.65rem;
+
+    font-weight:700;
+
+    line-height:1.1;
+   
+    margin-bottom:24px;
+
+}
+
+.growth-stages{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:14px 18px;
+
+    margin-top:18px;
+
+}
+
+
+.sidebar-divider{
+
+    height:1px;
+
+    background:
+
+        rgba(255,255,255,.08);
+
+}
+
+/* ==========================================
+   GRAPH
+========================================== */
+
+.hero-graph{
+
+    grid-area:graph;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    align-items:center;
+
+    width:100%;
+
+    min-height:420px;
+
+}
+
+
+.workspace-card{
+
+    padding:22px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+/* ==========================================
+   COMPANY DNA
+========================================== */
+/* ==========================================
+   SHARED SELECTOR COMPONENT
+========================================== */
+
+.dna-pillars,
+.growth-stage-list,
+.recommendation-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    width:100%;
+
+    align-items:stretch;
+
+}
+
+
+.dna-item i{
+
+    width:18px;
+
+    text-align:center;
+
+    font-size:1rem;
+
+    transition:.35s;
+
+}
+
+.dna-item span{
+
+    font-size:.92rem;
+
+    font-weight:600;
+
+}
+
+.dna-item::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:10px;
+
+    bottom:10px;
+
+    width:4px;
+
+    border-radius:999px;
+
+    background:transparent;
+
+    transition:.35s;
+
+}
+
+
+.dna-item.active::before{
+
+    background:
+
+        var(--gradient-brand);
+
+    box-shadow:
+
+        0 0 16px rgba(255,176,0,.45);
+
+}
+
+.dna-item.active i,
+.stage-item.active i,
+.recommendation-item.active i{
+
+    color:var(--brand-gold);
+
+    transform:scale(1.15);
+
+}
+
+@keyframes dnaPulse{
+
+    0%{
+
+        box-shadow:0 0 0 rgba(255,176,0,0);
+
+    }
+
+    50%{
+
+        box-shadow:0 6px 18px rgba(255,176,0,.12);
+
+    }
+
+    100%{
+
+        box-shadow:0 6px 18px rgba(255,176,0,.12);
+
+    }
+
+}
+
+.dna-item.active,
+.stage-item.active,
+.recommendation-item.active{
+
+    animation:dnaPulse 2s infinite;
+
+}
+
+.workspace-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:rgba(255,176,0,.25);
+
+   box-shadow:0 6px 18px rgba(255,176,0,.12);
+
+}
+
+.workspace-card span{
+
+    display:block;
+
+    color:var(--text-muted);
+
+    font-size:.82rem;
+
+    margin-bottom:8px;
+
+}
+
+.workspace-card strong{
+
+    display:block;
+
+    line-height:1.5;
+
+}
+
+.hero-checklist{
+
+    display:grid;
+
+    gap:10px;
+
+    margin-top:10px;
+
+}
+
+.hero-checklist li{
+
+    position:relative;
+
+    padding-left:22px;
+
+    color:var(--text-secondary);
+
+    font-size:.9rem;
+
+}
+
+.hero-checklist li::before{
+
+    content:"✓";
+
+    position:absolute;
+
+    left:0;
+
+    color:var(--brand-gold);
+
+}
+
+
+/* ==========================================
+   SHARED CARD ITEMS
+========================================== */
+
+.dna-item,
+.stage-item,
+.recommendation-item{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    width:100%;
+
+    min-height:64px;
+
+    padding:0 22px;
+
+    gap:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:transparent;
+
+    color:var(--text-secondary);
+
+    cursor:pointer;
+
+    transition:all .35s ease;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    text-align:left;
+
+}
+
+.dna-item i,
+.stage-item i,
+.recommendation-item i{
+
+    width:24px;
+
+    min-width:24px;
+
+    text-align:center;
+
+    font-size:1.15rem;
+
+}
+
+.dna-item span,
+.stage-item span,
+.recommendation-item span{
+
+    flex:1;
+
+    line-height:1.2;
+
+}
+/* ==========================================
+   ACTIVE CARD ITEM
+========================================== */
+
+.dna-item.active,
+.stage-item.active,
+.recommendation-item.active{
+
+    width:100%;
+   
+    background:rgba(255,176,0,.08);
+
+    color:var(--brand-gold);
+
+    box-shadow:0 6px 18px rgba(255,176,0,.12);
+
+}
+
+
+.dna-item:hover,
+.stage-item:hover,
+.recommendation-item:hover{
+
+color:var(--brand-gold);
+
+}
+
+/* ==========================================
+   INTELLIGENCE CORE
+========================================== */
+
+.intelligence-core{
+   
+   display:none;
+
+}
+
+.dna-core-wrapper{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:620px;
+
+    height:390px;
+
+    margin:0 auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:visible;
+
+}
+
+
+#dnaCoreCanvas{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    border-radius:24px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,176,0,.10),
+            transparent 72%
+        );
+
+}
+
+.dna-label{
+
+    position:absolute;
+
+    color:#ffffff;
+
+    font-size:.50rem;
+
+    font-weight:600;
+
+    text-shadow:
+
+        0 0 10px rgba(0,0,0,.5);
+
+    pointer-events:none;
+
+}
+
+@media (max-width: 600px){
+    .dna-label{
+        font-size:.58rem;
+    }
+}
+
+.core-title{
+
+    margin:0;
+
+    font-size:1.45rem;
+
+    font-weight:700;
+
+    line-height:1.2;
+
+    white-space:nowrap;
+
+}
+
+
+.core-subtitle{
+
+    margin-top:8px;
+
+    color:var(--text-secondary);
+
+    font-size:.92rem;
+
+    line-height:1.5;
+
+}
+
+
+/* ==========================================
+   HERO GLOW
+========================================== */
+
+@keyframes dnaGlow{
+
+0%{
+
+transform:scale(.98);
+
+filter:drop-shadow(0 0 20px rgba(255,176,0,.20));
+
+}
+
+50%{
+
+transform:scale(1.03);
+
+filter:drop-shadow(0 0 40px rgba(255,176,0,.45));
+
+}
+
+100%{
+
+transform:scale(.98);
+
+filter:drop-shadow(0 0 20px rgba(255,176,0,.20));
+
+}
+
+}
+.hero-glow{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(120px);
+
+    opacity:.55;
+
+}
+
+.hero-glow-1{
+
+    width:380px;
+
+    height:380px;
+
+    top:-120px;
+
+    right:-120px;
+
+    background:rgba(255,176,0,.18);
+
+}
+
+.hero-glow-2{
+
+    width:320px;
+
+    height:320px;
+
+    left:-100px;
+
+    bottom:-100px;
+
+    background:rgba(37,99,235,.14);
+
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.hero-footer{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:20px 24px 22px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    min-height:92px;
+
+}
+
+/* Homepage Hero Only */
+
+.hero-home h1{
+
+    font-size:clamp(3.8rem,6vw,5.4rem);
+
+    line-height:1.06;
+
+    max-width:1000px;
+
+}
+/* ==========================================
+   HOMEPAGE HERO ONLY
+========================================== */
+
+.hero-home .hero-description{
+
+    max-width:720px;
+
+    margin-top:28px;
+
+    margin-bottom:38px;
+
+    font-size:1.18rem;
+
+    line-height:1.7;
+
+}
+.hero-home{
+
+    max-width:1180px;
+
+    margin:0 auto;
+
+}

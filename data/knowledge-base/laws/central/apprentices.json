@@ -1,0 +1,308 @@
+{
+  "lawId": "CENTRAL-APPRENTICES",
+  "lawName": "Apprentices Act, 1961",
+  "shortName": "Apprentices Act",
+  "authority": "Ministry of Skill Development and Entrepreneurship",
+  "sourceId": "MOL",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Regulates apprenticeship training in designated trades and prescribes obligations for employers engaging apprentices.",
+
+  "definitions": [
+
+    {
+      "id": "APP-DEF-001",
+      "term": "Apprentice",
+      "definition": "A person undergoing apprenticeship training under a contract of apprenticeship."
+    },
+
+    {
+      "id": "APP-DEF-002",
+      "term": "Employer",
+      "definition": "Any person employing apprentices under the Act."
+    },
+
+    {
+      "id": "APP-DEF-003",
+      "term": "Apprenticeship Training",
+      "definition": "Training provided in accordance with the Apprentices Act."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+
+      "id": "APP-001",
+
+      "title": "Review Applicability of Apprentices Act",
+
+      "priority": "Mandatory",
+
+      "category": "Training",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Assess whether the establishment is required or eligible to engage apprentices under the Act.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Apprentices Act, 1961"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "APP-002",
+
+      "title": "Execute Apprenticeship Contract",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Execute apprenticeship contracts wherever apprentices are engaged.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Apprentices Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "APP-003",
+
+      "title": "Provide Prescribed Training",
+
+      "priority": "Mandatory",
+
+      "category": "Training",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Provide apprenticeship training in accordance with the approved training programme.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Apprentices Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "APP-004",
+
+      "title": "Pay Prescribed Stipend",
+
+      "priority": "Mandatory",
+
+      "category": "Payroll",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Pay stipend to apprentices in accordance with applicable provisions.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Apprentices Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "APP-005",
+
+      "title": "Maintain Apprentice Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Maintain records relating to apprenticeship contracts, attendance and training.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Apprentices Rules"
+
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "exceptions": [
+
+    {
+
+      "id": "APP-EX-001",
+
+      "title": "Trade and Establishment Specific Requirements",
+
+      "description": "Apprenticeship obligations vary depending on the establishment, designated trade and applicable notifications."
+
+    }
+
+  ],
+
+  "references": [
+
+    {
+
+      "sourceId": "MOL"
+
+    },
+
+    {
+
+      "sourceId": "INDIACODE"
+
+    }
+
+  ]
+
+}

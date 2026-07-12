@@ -1,0 +1,246 @@
+{
+  "stateId": "LA",
+  "stateName": "Ladakh",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour & Employment Department, Administration of the Union Territory of Ladakh",
+    "sourceId": "LA-LABOUR"
+  },
+
+  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Ladakh.",
+
+  "rules": [
+
+    {
+      "id": "LA-001",
+
+      "title": "Review Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the applicable Shops and Establishments legislation is required.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Ladakh Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "LA-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and prescribed notices under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Ladakh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "LA-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and employee information required under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Ladakh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "LA-004",
+
+      "title": "Review Working Hours, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with provisions governing working hours, overtime, leave and weekly holidays applicable in Ladakh.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Ladakh Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "LA-005",
+
+      "title": "Review Minimum Wage Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Minimum Wages",
+
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Ladakh.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Ladakh Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "LA-006",
+
+      "title": "Monitor Union Territory Labour Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "State Notifications",
+
+      "description": "Review labour department notifications, circulars and amendments issued by the Union Territory Administration.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "LA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Ladakh Labour Department Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "LAR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual audit covering registrations, payroll compliance, statutory records and inspection readiness."
+    },
+
+    {
+      "id": "LAR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital compliance calendar for statutory filings, inspections, licence renewals and compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "LA-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

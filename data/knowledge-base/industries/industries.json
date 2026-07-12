@@ -1,0 +1,285 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-07-05",
+
+  "industries": [
+
+    {
+      "id": "IT_SAAS",
+      "name": "Information Technology / SaaS",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH",
+        "CODE_ON_WAGES"
+      ],
+
+      "recommendedRules": [
+        "Remote Work Policy",
+        "Information Security Policy",
+        "Data Privacy Framework",
+        "Performance Management Framework",
+        "Employee Handbook"
+      ]
+    },
+
+    {
+      "id": "SEMICONDUCTOR",
+      "name": "Semiconductor",
+      "riskLevel": "High",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "OSHWC",
+        "CODE_ON_WAGES"
+      ],
+
+      "recommendedRules": [
+        "Shift Workforce Governance",
+        "Safety Compliance Programme",
+        "Engineering Talent Retention",
+        "Contractor Governance",
+        "Workforce Planning"
+      ]
+    },
+
+    {
+      "id": "CONSULTING",
+      "name": "Consulting & Professional Services",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Client Confidentiality Framework",
+        "Employment Agreements",
+        "Performance Management",
+        "Knowledge Management"
+      ]
+    },
+
+    {
+      "id": "MANUFACTURING",
+      "name": "Manufacturing",
+      "riskLevel": "High",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "OSHWC",
+        "CONTRACT_LABOUR",
+        "CODE_ON_WAGES"
+      ],
+
+      "recommendedRules": [
+        "Safety Policy",
+        "Machine Safety Audits",
+        "Industrial Relations Framework",
+        "Shift Management",
+        "Incident Reporting"
+      ]
+    },
+
+    {
+      "id": "RETAIL",
+      "name": "Retail",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Attendance Monitoring",
+        "Shift Scheduling",
+        "Store Compliance",
+        "Payroll Governance"
+      ]
+    },
+
+    {
+      "id": "HEALTHCARE",
+      "name": "Healthcare",
+      "riskLevel": "High",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "OSHWC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Clinical Workforce Governance",
+        "Patient Data Confidentiality",
+        "Hospital Infection Control",
+        "Medical Records Governance"
+      ]
+    },
+
+    {
+      "id": "EDUCATION",
+      "name": "Education",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Faculty Governance",
+        "Background Verification",
+        "Academic Workforce Planning",
+        "Student Safety Framework"
+      ]
+    },
+
+    {
+      "id": "FINANCIAL_SERVICES",
+      "name": "Financial Services",
+      "riskLevel": "High",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Information Security",
+        "Code of Conduct",
+        "Fraud Prevention",
+        "Audit Readiness"
+      ]
+    },
+
+    {
+      "id": "LOGISTICS",
+      "name": "Logistics & Transportation",
+      "riskLevel": "High",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "OSHWC",
+        "CONTRACT_LABOUR"
+      ],
+
+      "recommendedRules": [
+        "Fleet Safety",
+        "Driver Compliance",
+        "Shift Governance",
+        "Contract Labour Governance",
+        "Journey Risk Management"
+      ]
+    },
+
+    {
+      "id": "CONSTRUCTION",
+      "name": "Construction",
+      "riskLevel": "Very High",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "OSHWC",
+        "CONTRACT_LABOUR"
+      ],
+
+      "recommendedRules": [
+        "Site Safety",
+        "Permit to Work",
+        "PPE Compliance",
+        "Contractor Safety Management",
+        "Accident Investigation"
+      ]
+    },
+
+    {
+      "id": "HOSPITALITY",
+      "name": "Hospitality",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Guest Safety",
+        "Shift Workforce Governance",
+        "Attendance Controls",
+        "Food Safety Coordination"
+      ]
+    },
+
+    {
+      "id": "ECOMMERCE",
+      "name": "E-Commerce",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "EPFO",
+        "ESIC",
+        "POSH"
+      ],
+
+      "recommendedRules": [
+        "Warehouse Workforce Compliance",
+        "Delivery Workforce Governance",
+        "Performance Management",
+        "Contractor Governance"
+      ]
+    },
+
+    {
+      "id": "STARTUP",
+      "name": "Startup",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "POSH",
+        "CODE_ON_WAGES"
+      ],
+
+      "recommendedRules": [
+        "Founder Governance",
+        "Employee Handbook",
+        "People Strategy",
+        "Performance Framework",
+        "Manager Capability Development"
+      ]
+    },
+
+    {
+      "id": "OTHER",
+      "name": "Other",
+      "riskLevel": "Medium",
+
+      "mandatoryRules": [
+        "POSH",
+        "CODE_ON_WAGES"
+      ],
+
+      "recommendedRules": [
+        "HR Governance",
+        "Policy Framework",
+        "Compliance Monitoring",
+        "Workforce Planning"
+      ]
+    }
+
+  ]
+}

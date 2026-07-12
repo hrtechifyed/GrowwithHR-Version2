@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+
+  "fields": {
+
+    "id": "",
+
+    "title": "",
+
+    "category": "",
+
+    "priority": "",
+
+    "jurisdiction": "",
+
+    "authority": "",
+
+    "law": "",
+
+    "applicability": {
+
+      "entityTypes": [],
+
+      "industries": [],
+
+      "employeeCount": {
+
+        "min": 0,
+
+        "max": 999999
+
+      },
+
+      "womenEmployees": "any",
+
+      "contractWorkers": "any",
+
+      "factory": "any",
+
+      "warehouse": "any"
+
+    },
+
+    "recommendation": "",
+
+    "sourceId": "",
+
+    "lastVerified": ""
+  }
+}

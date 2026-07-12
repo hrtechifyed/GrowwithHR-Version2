@@ -1,0 +1,306 @@
+{
+  "stateId": "KA",
+  "stateName": "Karnataka",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Department of Labour, Government of Karnataka",
+    "sourceId": "KA-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Karnataka.",
+
+  "rules": [
+
+    {
+      "id": "KA-001",
+
+      "title": "Review Karnataka Shops and Commercial Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Karnataka Shops and Commercial Establishments Act is applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Karnataka Shops and Commercial Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "KA-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and notices prescribed under Karnataka labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Karnataka Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "KA-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices, abstracts and employee information required under Karnataka labour laws.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Karnataka Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "KA-004",
+
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Karnataka provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Karnataka Shops and Commercial Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "KA-005",
+
+      "title": "Review Karnataka Professional Tax Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Professional Tax",
+
+      "description": "Determine whether Professional Tax registration, enrolment, deduction, return filing and payment obligations apply under Karnataka law.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Karnataka Tax on Professions, Trades, Callings and Employments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "KA-006",
+
+      "title": "Review Karnataka Labour Welfare Fund Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Labour Welfare",
+
+      "description": "Review employer obligations relating to the Karnataka Labour Welfare Fund, including employee and employer contributions where applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Karnataka Labour Welfare Fund Act"
+        }
+      ]
+    },
+
+    {
+      "id": "KA-007",
+
+      "title": "Review State Notification Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "State Notifications",
+
+      "description": "Monitor Karnataka Government notifications relating to labour law amendments, exemptions and compliance requirements.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "KA-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Government of Karnataka Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "KAR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual audit covering registrations, payroll compliance, statutory records and labour inspections."
+    },
+
+    {
+      "id": "KAR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital calendar for licence renewals, statutory returns, labour inspections and compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "KA-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

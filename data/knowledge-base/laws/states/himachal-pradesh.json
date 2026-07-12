@@ -1,0 +1,246 @@
+{
+  "stateId": "HP",
+  "stateName": "Himachal Pradesh",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour & Employment Department, Government of Himachal Pradesh",
+    "sourceId": "HP-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Himachal Pradesh.",
+
+  "rules": [
+
+    {
+      "id": "HP-001",
+
+      "title": "Review Himachal Pradesh Shops and Commercial Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Himachal Pradesh Shops and Commercial Establishments legislation is applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "HP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Himachal Pradesh Shops and Commercial Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "HP-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and notices prescribed under Himachal Pradesh labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "HP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Himachal Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "HP-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices, abstracts and employee information required under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "HP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Himachal Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "HP-004",
+
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Himachal Pradesh provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "HP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Himachal Pradesh Shops and Commercial Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "HP-005",
+
+      "title": "Review Minimum Wage Notifications",
+
+      "priority": "Mandatory",
+
+      "category": "Minimum Wages",
+
+      "description": "Ensure wages comply with the latest minimum wage notifications applicable in Himachal Pradesh.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "HP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Himachal Pradesh Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "HP-006",
+
+      "title": "Review Labour Welfare Fund Compliance",
+
+      "priority": "Mandatory",
+
+      "category": "Labour Welfare",
+
+      "description": "Review employer obligations relating to the Himachal Pradesh Labour Welfare Fund, where applicable.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "HP-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Himachal Pradesh Labour Welfare Fund legislation"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "HPR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual review of registrations, labour records, wage compliance and inspection readiness."
+    },
+
+    {
+      "id": "HPR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour law due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "HP-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

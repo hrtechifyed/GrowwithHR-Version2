@@ -1,0 +1,87 @@
+[
+    {
+        "category": "Business Entities",
+        "items": [
+            "Private Limited Company",
+            "Public Limited Company",
+            "One Person Company (OPC)",
+            "Limited Liability Partnership (LLP)",
+            "Partnership Firm",
+            "Sole Proprietorship",
+            "Hindu Undivided Family (HUF)",
+            "Producer Company",
+            "Nidhi Company"
+        ]
+    },
+    {
+        "category": "Non-Profit Organisations",
+        "items": [
+            "Section 8 Company",
+            "Trust",
+            "Society",
+            "Co-operative Society",
+            "Multi-State Co-operative Society"
+        ]
+    },
+    {
+        "category": "Government",
+        "items": [
+            "Central Government",
+            "State Government",
+            "Union Territory Administration",
+            "Public Sector Undertaking (PSU)",
+            "Autonomous Body",
+            "Statutory Body",
+            "Local Authority",
+            "Municipality",
+            "Municipal Corporation",
+            "Panchayat",
+            "Port Trust",
+            "Development Authority",
+            "Cantonment Board"
+        ]
+    },
+    {
+        "category": "Education",
+        "items": [
+            "School",
+            "College",
+            "University",
+            "Deemed University",
+            "Training Institute",
+            "Research Institution"
+        ]
+    },
+    {
+        "category": "Healthcare",
+        "items": [
+            "Hospital",
+            "Clinic",
+            "Diagnostic Centre",
+            "Nursing Home",
+            "Medical College"
+        ]
+    },
+    {
+        "category": "International",
+        "items": [
+            "Foreign Company",
+            "Branch Office",
+            "Liaison Office",
+            "Project Office",
+            "Embassy",
+            "Consulate",
+            "International Organisation"
+        ]
+    },
+    {
+        "category": "Others",
+        "items": [
+            "Religious Institution",
+            "Political Organisation",
+            "Professional Association",
+            "Trade Association",
+            "Other"
+        ]
+    }
+]

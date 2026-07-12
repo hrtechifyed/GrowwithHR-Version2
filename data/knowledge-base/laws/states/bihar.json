@@ -1,0 +1,234 @@
+{
+  "stateId": "BR",
+  "stateName": "Bihar",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Resources Department, Government of Bihar",
+    "sourceId": "BR-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Bihar.",
+
+  "rules": [
+
+    {
+      "id": "BR-001",
+
+      "title": "Review Bihar Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Bihar Shops and Establishments legislation is applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "BR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Bihar Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "BR-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain all registers, employment records and notices prescribed under Bihar labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "BR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Bihar Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "BR-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display all statutory notices required under Bihar labour laws at the workplace.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "BR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Bihar Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "BR-004",
+
+      "title": "Review Working Hours, Leave and Weekly Holiday Requirements",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with Bihar-specific provisions governing working hours, overtime, leave and weekly holidays.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "BR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Bihar Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "BR-005",
+
+      "title": "Review Labour Welfare Fund Requirements",
+
+      "priority": "Mandatory",
+
+      "category": "Labour Welfare",
+
+      "description": "Review whether any Bihar-specific labour welfare obligations or contributions apply to the establishment.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "BR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Bihar Labour Welfare legislation"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "BRR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct a yearly audit covering labour registrations, statutory records and employment documentation."
+    },
+
+    {
+      "id": "BRR-002",
+
+      "title": "Digital Statutory Register Management",
+
+      "description": "Maintain digital statutory registers and a compliance calendar for inspections and renewals."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "BR-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

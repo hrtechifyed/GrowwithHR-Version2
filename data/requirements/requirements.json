@@ -1,0 +1,120 @@
+[
+    {
+        "id": "appointment-letter",
+        "title": "Appointment Letters",
+        "domain": "Compliance",
+        "classification": "Mandatory",
+        "conditions": [],
+        "description": "Issue appointment letters to employees."
+    },
+
+    {
+        "id": "shops-establishment",
+        "title": "Shops & Establishment Registration",
+        "domain": "Compliance",
+        "classification": "Mandatory",
+        "conditions": [
+            {
+                "field": "countries",
+                "operator": "includes",
+                "value": "India"
+            }
+        ],
+        "description": "Applicable to commercial establishments operating in India."
+    },
+
+    {
+        "id": "posh",
+        "title": "POSH Compliance",
+        "domain": "Compliance",
+        "classification": "Mandatory",
+        "conditions": [
+            {
+                "field": "totalEmployees",
+                "operator": ">=",
+                "value": 10
+            },
+            {
+                "field": "countries",
+                "operator": "includes",
+                "value": "India"
+            }
+        ],
+        "description": "Sexual Harassment of Women at Workplace compliance."
+    },
+
+    {
+        "id": "gratuity",
+        "title": "Gratuity",
+        "domain": "Compliance",
+        "classification": "Mandatory",
+        "conditions": [
+            {
+                "field": "totalEmployees",
+                "operator": ">=",
+                "value": 10
+            }
+        ],
+        "description": "Payment of Gratuity Act applicability."
+    },
+
+    {
+        "id": "employee-handbook",
+        "title": "Employee Handbook",
+        "domain": "Policy",
+        "classification": "Recommended",
+        "conditions": [
+            {
+                "field": "totalEmployees",
+                "operator": ">=",
+                "value": 10
+            }
+        ],
+        "description": "Employee handbook containing workplace policies."
+    },
+
+    {
+        "id": "performance-framework",
+        "title": "Performance Management Framework",
+        "domain": "Performance",
+        "classification": "Recommended",
+        "conditions": [
+            {
+                "field": "totalEmployees",
+                "operator": ">=",
+                "value": 25
+            }
+        ],
+        "description": "Structured performance management framework."
+    },
+
+    {
+        "id": "manager-training",
+        "title": "Manager Training",
+        "domain": "Leadership",
+        "classification": "Recommended",
+        "conditions": [
+            {
+                "field": "totalEmployees",
+                "operator": ">=",
+                "value": 40
+            }
+        ],
+        "description": "Training program for first-time managers."
+    },
+
+    {
+        "id": "succession-planning",
+        "title": "Succession Planning",
+        "domain": "Talent",
+        "classification": "Recommended",
+        "conditions": [
+            {
+                "field": "totalEmployees",
+                "operator": ">=",
+                "value": 100
+            }
+        ],
+        "description": "Identify and prepare successors for critical roles."
+    }
+]

@@ -1,0 +1,113 @@
+[
+    {
+        "category": "Startup & Business Recognition",
+        "multiple": true,
+        "items": [
+            "DPIIT Recognized Startup",
+            "Startup India Registered",
+            "MSME / Udyam Registered",
+            "NSIC Registered"
+        ]
+    },
+    {
+        "category": "Corporate Structure",
+        "multiple": true,
+        "items": [
+            "Holding Company",
+            "Subsidiary",
+            "Wholly Owned Subsidiary",
+            "Associate Company",
+            "Joint Venture",
+            "Group Company",
+            "Listed Company",
+            "Unlisted Company",
+            "Family Owned Business",
+            "Founder Led Business",
+            "Professionally Managed Company"
+        ]
+    },
+    {
+        "category": "Foreign Investment",
+        "multiple": true,
+        "items": [
+            "Foreign Company",
+            "Foreign Owned Company",
+            "Indian Subsidiary of Foreign Company",
+            "Joint Venture with Foreign Company",
+            "FDI Received"
+        ]
+    },
+    {
+        "category": "Special Economic & Tax Zones",
+        "multiple": true,
+        "items": [
+            "SEZ Unit",
+            "STPI Unit",
+            "EOU (Export Oriented Unit)",
+            "IFSC Unit",
+            "GIFT City Entity"
+        ]
+    },
+    {
+        "category": "Employment Related",
+        "multiple": true,
+        "items": [
+            "Apprentices Employed",
+            "Contract Labour Engaged",
+            "Gig Workforce",
+            "Fixed Term Employment",
+            "Remote Workforce",
+            "International Employees"
+        ]
+    },
+    {
+        "category": "Operational Characteristics",
+        "multiple": true,
+        "items": [
+            "Manufacturing Unit",
+            "Factory",
+            "Warehouse",
+            "Retail Chain",
+            "Branch Offices",
+            "Project Offices",
+            "Multiple States",
+            "Multiple Countries",
+            "24x7 Operations",
+            "Shift Operations"
+        ]
+    },
+    {
+        "category": "Regulated Sector",
+        "multiple": true,
+        "items": [
+            "Banking",
+            "Insurance",
+            "NBFC",
+            "FinTech",
+            "Healthcare",
+            "Pharmaceutical",
+            "Education",
+            "Mining",
+            "Power & Energy",
+            "Telecommunications",
+            "Aviation",
+            "Shipping",
+            "Defence",
+            "Media",
+            "Food Business"
+        ]
+    },
+    {
+        "category": "Quality & Management Certifications",
+        "multiple": true,
+        "items": [
+            "ISO 9001",
+            "ISO 14001",
+            "ISO 27001",
+            "ISO 45001",
+            "CMMI",
+            "SOC 2",
+            "Great Place To Work Certified"
+        ]
+    }
+]

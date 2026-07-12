@@ -1,0 +1,181 @@
+{
+  "lawId": "CENTRAL-EPFO",
+  "lawName": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
+  "shortName": "EPF Act",
+  "authority": "Employees' Provident Fund Organisation",
+  "sourceId": "EPFO",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Provides provident fund, pension and insurance benefits to eligible employees and prescribes employer obligations relating to registration, contributions and statutory compliance.",
+
+  "definitions": [
+    {
+      "id": "EPFO-DEF-001",
+      "term": "Establishment",
+      "definition": "An establishment to which the Act applies in accordance with the Act and notifications."
+    },
+    {
+      "id": "EPFO-DEF-002",
+      "term": "Employee",
+      "definition": "An employee covered under the Act as applicable."
+    },
+    {
+      "id": "EPFO-DEF-003",
+      "term": "Employer",
+      "definition": "The person or organisation responsible for compliance under the Act."
+    }
+  ],
+
+  "rules": [
+
+    {
+      "id": "EPFO-001",
+      "title": "Review EPF Applicability",
+      "priority": "Mandatory",
+      "category": "Provident Fund",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 20
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Determine whether the establishment is required to obtain EPF registration based on applicable legal criteria.",
+
+      "sourceId": "EPFO",
+
+      "citations": [
+        {
+          "reference": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952"
+        }
+      ]
+    },
+
+    {
+      "id": "EPFO-002",
+      "title": "Employer Registration",
+      "priority": "Mandatory",
+      "category": "Registration",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 20
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Where applicable, complete employer registration with EPFO.",
+
+      "sourceId": "EPFO",
+
+      "citations": [
+        {
+          "reference": "EPFO Employer Registration"
+        }
+      ]
+    },
+
+    {
+      "id": "EPFO-003",
+      "title": "Employee Enrollment",
+      "priority": "Mandatory",
+      "category": "Provident Fund",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 20
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Enroll eligible employees under the EPF scheme.",
+
+      "sourceId": "EPFO",
+
+      "citations": [
+        {
+          "reference": "EPFO Membership"
+        }
+      ]
+    },
+
+    {
+      "id": "EPFO-004",
+      "title": "Monthly Contributions",
+      "priority": "Mandatory",
+      "category": "Payroll",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 20
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Deposit employer and employee provident fund contributions within the prescribed timelines.",
+
+      "sourceId": "EPFO",
+
+      "citations": [
+        {
+          "reference": "EPFO Contribution Requirements"
+        }
+      ]
+    },
+
+    {
+      "id": "EPFO-005",
+      "title": "Maintain EPF Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 20
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Maintain prescribed employee records and contribution records.",
+
+      "sourceId": "EPFO",
+
+      "citations": [
+        {
+          "reference": "EPFO Record Maintenance"
+        }
+      ]
+    }
+
+  ],
+
+  "exceptions": [
+
+    {
+      "id": "EPFO-EX-001",
+      "title": "Voluntary Coverage",
+      "description": "Certain establishments may seek voluntary coverage subject to applicable provisions."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "EPFO"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

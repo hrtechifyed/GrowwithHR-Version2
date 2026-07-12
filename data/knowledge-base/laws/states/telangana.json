@@ -1,0 +1,218 @@
+{
+  "stateId": "TS",
+  "stateName": "Telangana",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Telangana",
+    "sourceId": "TS-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Telangana.",
+
+  "rules": [
+
+    {
+      "id": "TS-001",
+      "title": "Review Telangana Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the Telangana Shops and Establishments Act is applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Telangana Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records, attendance records and prescribed notices under Telangana labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Telangana Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices, abstracts and employee information required under Telangana labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Telangana Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Telangana provisions governing working hours, spread-over, overtime, leave and weekly holidays.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Telangana Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-005",
+      "title": "Review Telangana Professional Tax Compliance",
+      "priority": "Mandatory",
+      "category": "Professional Tax",
+      "description": "Determine whether Professional Tax registration, enrolment, deduction, return filing and payment obligations apply under Telangana law.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Telangana Tax on Professions, Trades, Callings and Employments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-006",
+      "title": "Review Telangana Labour Welfare Fund Compliance",
+      "priority": "Mandatory",
+      "category": "Labour Welfare",
+      "description": "Review employer obligations relating to the Telangana Labour Welfare Fund including employer and employee contribution requirements where applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Telangana Labour Welfare Fund Act"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-007",
+      "title": "Review Telangana Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest Telangana minimum wage notifications applicable to the scheduled employment.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Telangana Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "TS-008",
+      "title": "Monitor Telangana Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Telangana.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "TS-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Telangana Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "TSR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering labour registrations, Professional Tax, Labour Welfare Fund, statutory records and inspection readiness."
+    },
+
+    {
+      "id": "TSR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for Professional Tax returns, Labour Welfare Fund contributions, statutory filings, inspections and licence renewals."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "TS-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

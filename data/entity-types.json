@@ -1,0 +1,81 @@
+{
+  "businessEntities": [
+    {
+      "id": "proprietorship",
+      "name": "Proprietorship",
+      "category": "Business"
+    },
+    {
+      "id": "partnership",
+      "name": "Partnership Firm",
+      "category": "Business"
+    },
+    {
+      "id": "llp",
+      "name": "Limited Liability Partnership (LLP)",
+      "category": "Business"
+    },
+    {
+      "id": "opc",
+      "name": "One Person Company (OPC)",
+      "category": "Business"
+    },
+    {
+      "id": "private_limited",
+      "name": "Private Limited Company",
+      "category": "Business"
+    },
+    {
+      "id": "public_unlisted",
+      "name": "Public Limited Company (Unlisted)",
+      "category": "Business"
+    },
+    {
+      "id": "public_listed",
+      "name": "Public Limited Company (Listed)",
+      "category": "Business"
+    }
+  ],
+
+  "nonProfitEntities": [
+    {
+      "id": "section8",
+      "name": "Section 8 Company",
+      "category": "Non-Profit"
+    },
+    {
+      "id": "trust",
+      "name": "Trust",
+      "category": "Non-Profit"
+    },
+    {
+      "id": "society",
+      "name": "Society",
+      "category": "Non-Profit"
+    },
+    {
+      "id": "ngo",
+      "name": "NGO",
+      "category": "Non-Profit"
+    }
+  ],
+
+  "specialCategories": [
+    {
+      "id": "dpiit_startup",
+      "name": "DPIIT Recognized Startup",
+      "category": "Special"
+    },
+    {
+      "id": "government_entity",
+      "name": "Government Entity",
+      "category": "Special"
+    },
+    {
+      "id": "educational_institution",
+      "name": "Educational Institution",
+      "category": "Special"
+    }
+  ]
+}
+

@@ -1,0 +1,768 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 07
+   Homepage
+   Version : v0.10.0-beta
+========================================================== */
+
+
+/* ==========================================
+   HOW IT WORKS
+========================================== */
+
+.how-section{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:var(--bg-secondary);
+
+}
+
+.how-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        radial-gradient(circle at top left,
+        rgba(255,176,0,.08),
+        transparent 35%),
+
+        radial-gradient(circle at bottom right,
+        rgba(37,99,235,.08),
+        transparent 40%);
+
+    pointer-events:none;
+
+}
+
+.how-grid{
+
+    position:relative;
+
+    z-index:2;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:32px;
+
+    margin-top:70px;
+
+}
+
+.how-card{
+
+    background:var(--gradient-card);
+
+    border:1px solid var(--glass-border);
+
+    border-radius:24px;
+
+    backdrop-filter:blur(22px);
+
+    padding:42px;
+
+    transition:all .35s ease;
+
+    box-shadow:var(--shadow-md);
+
+    cursor:default;
+
+}
+
+.how-card:hover{
+
+    transform:translateY(-10px);
+
+    border-color:rgba(255,176,0,.35);
+
+    box-shadow:
+        var(--shadow-lg),
+        var(--glow-brand);
+
+}
+
+.how-number{
+
+    width:64px;
+
+    height:64px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    margin-bottom:24px;
+
+    background:var(--gradient-brand);
+
+    color:#fff;
+
+    font-size:1.05rem;
+
+    font-weight:700;
+
+}
+
+.how-card h3{
+
+    margin-bottom:16px;
+
+}
+
+.how-card p{
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+
+/* ==========================================
+   CAPABILITIES
+========================================== */
+
+.capabilities-section{
+
+    position:relative;
+
+    background:var(--bg-primary);
+
+}
+
+
+/* ==========================================
+   PREMIUM CAROUSEL
+========================================== */
+
+.capability-carousel{
+
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:70px 1fr 70px;
+
+    gap:28px;
+
+    align-items:center;
+
+    margin-top:70px;
+
+}
+
+.carousel-track{
+
+    display:grid;
+
+    grid-template-columns:repeat(8,360px);
+
+    gap:24px;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    padding:12px 0;
+
+    scroll-snap-type:x mandatory;
+
+    scroll-behavior:smooth;
+
+    scrollbar-width:none;
+
+    align-items:stretch;
+
+}
+
+.carousel-track::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.capability-slide{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    scroll-snap-align:center;
+
+    min-height:340px;
+
+    padding:38px;
+
+    border-radius:28px;
+
+    background:var(--gradient-card);
+
+    border:1px solid var(--glass-border);
+
+    backdrop-filter:blur(24px);
+
+    transition:all .35s ease;
+
+    box-shadow:var(--shadow-md);
+
+    cursor:default;
+
+}
+
+.capability-slide:hover{
+
+    transform:
+        translateY(-12px)
+        scale(1.02);
+
+    border-color:rgba(255,176,0,.35);
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,.35),
+        0 0 40px rgba(255,176,0,.20);
+
+}
+
+.capability-slide.active{
+
+    border-color:rgba(255,176,0,.45);
+
+    box-shadow:
+        var(--shadow-lg),
+        var(--glow-brand);
+
+}
+
+.capability-icon{
+
+    width:72px;
+
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:24px;
+
+    border-radius:20px;
+
+    background:var(--gradient-brand);
+
+    color:#fff;
+
+    font-size:1.8rem;
+
+    box-shadow:
+
+        0 15px 35px rgba(255,122,0,.25);
+
+}
+
+.capability-slide h3{
+
+    margin-bottom:18px;
+
+}
+
+.capability-slide p{
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+    flex:1;
+
+}
+
+.carousel-arrow{
+
+    width:56px;
+
+    height:56px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:1.4rem;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.carousel-arrow:hover{
+
+    background:var(--gradient-brand);
+
+    transform:scale(1.08);
+
+}
+
+
+/* ==========================================
+   ASSESSMENT
+========================================== */
+
+.assessment-section{
+
+    background:var(--bg-secondary);
+
+}
+
+.assessment-panel{
+
+    background:var(--gradient-card);
+
+    border:1px solid var(--glass-border);
+
+    border-radius:32px;
+
+    padding:60px;
+
+    backdrop-filter:blur(24px);
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+
+/* ==========================================
+   COMPANY DNA WIZARD
+========================================== */
+
+.wizard-progress{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:20px;
+
+    margin-bottom:60px;
+
+}
+
+.wizard-step{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.wizard-step span{
+
+    width:56px;
+
+    height:56px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:var(--text-secondary);
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.wizard-step.active span{
+
+    background:var(--gradient-brand);
+
+    color:white;
+
+    transform:scale(1.08);
+
+    box-shadow:var(--glow-brand);
+
+}
+
+.wizard-step small{
+
+    color:var(--text-muted);
+
+    font-size:.82rem;
+
+}
+
+.wizard-step.active small{
+
+    color:var(--brand-gold);
+
+}
+
+.wizard-line{
+
+    width:90px;
+
+    height:2px;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+
+/* ==========================================
+   SUMMARY CARD
+========================================== */
+
+.summary-card.glass{
+
+    margin-top:36px;
+
+    padding:34px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+}
+
+.summary-card.glass h3{
+
+    margin-bottom:24px;
+
+}
+
+.action-list{
+
+    display:grid;
+
+    gap:16px;
+
+}
+
+.action-list li{
+
+    position:relative;
+
+    padding-left:28px;
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+.action-list li::before{
+
+    content:"✓";
+
+    position:absolute;
+
+    left:0;
+
+    color:var(--brand-gold);
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media(max-width:992px){
+
+    .how-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .capability-carousel{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .carousel-arrow{
+
+        display:none;
+
+    }
+
+    .carousel-track{
+
+        grid-template-columns:repeat(8,300px);
+
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+    .assessment-panel{
+
+        padding:32px 24px;
+
+    }
+
+    .wizard-progress{
+
+        flex-wrap:wrap;
+
+        gap:12px;
+
+    }
+
+    .wizard-line{
+
+        display:none;
+
+    }
+
+    .carousel-track{
+
+        grid-template-columns:repeat(8,260px);
+
+    }
+
+    .capability-slide{
+
+        min-height:300px;
+
+        padding:28px;
+
+    }
+
+}
+
+/* ==========================================
+   SPRINT 4 UI REFINEMENTS
+========================================== */
+
+.compact-section{
+    padding-top:88px;
+    padding-bottom:88px;
+}
+
+.hero-home{
+    text-align:center;
+}
+
+.hero-actions,
+.trust-strip{
+    display:flex;
+    justify-content:center;
+}
+
+.hero-content h1{
+    font-size:clamp(2.5rem,2.2vw,3.6rem);
+}
+
+.section-heading h2,
+.contact-card h2{
+    font-size:clamp(1.5rem,2.4vw,2rem);
+}
+
+.how-card,
+.capability-slide,
+.value-card,
+.update-card,
+.summary-card,
+.wizard-card,
+.contact-card{
+    border-radius:24px;
+    border:1px solid var(--glass-border);
+    box-shadow:var(--shadow-md);
+}
+
+.capability-carousel{
+    width:100%;
+}
+
+.carousel-track{
+    display:flex;
+    width:100%;
+    padding:12px 2px 20px;
+    overflow:hidden;
+    gap:0;
+}
+
+.capability-slide{
+    flex:0 0 100%;
+    width:100%;
+}
+
+.wizard-step span{
+    animation:wizardPulse 8s infinite;
+}
+
+.wizard-step:nth-child(1) span{ animation-delay:0s; }
+.wizard-step:nth-child(3) span{ animation-delay:2s; }
+.wizard-step:nth-child(5) span{ animation-delay:4s; }
+.wizard-step:nth-child(7) span{ animation-delay:6s; }
+
+@keyframes wizardPulse{
+    0%,22%{
+        background:var(--gradient-brand);
+        color:#fff;
+        transform:scale(1.08);
+        box-shadow:var(--glow-brand);
+    }
+    28%,100%{
+        background:rgba(255,255,255,.05);
+        color:var(--text-secondary);
+        transform:scale(1);
+        box-shadow:none;
+    }
+}
+
+@media(max-width:992px){
+    .compact-section{
+        padding-top:72px;
+        padding-bottom:72px;
+    }
+
+    .capability-slide{
+        flex-basis:min(320px, calc(100vw - 48px));
+        width:min(320px, calc(100vw - 48px));
+    }
+}
+
+
+/* ==========================================
+   TRUST SECTION
+========================================== */
+
+.trust-section{
+    text-align:center;
+}
+
+.trust-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:28px;
+    margin-top:56px;
+}
+
+.trust-card{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    padding:36px 30px;
+    transition:.35s ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.trust-card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(95,180,255,.25);
+    box-shadow:0 24px 60px rgba(0,0,0,.18);
+}
+
+.trust-icon{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-bottom:22px;
+    background:var(--gradient-brand);
+    color:white;
+    box-shadow:var(--glow-brand);
+}
+
+.trust-card h3{
+    margin-bottom:14px;
+}
+
+.trust-card p{
+    opacity:.85;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.trust-features{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-top:auto;
+}
+
+.trust-features span{
+    background:rgba(255,255,255,.06);
+    border-radius:999px;
+    padding:8px 14px;
+    font-size:.85rem;
+}
+
+.trust-card ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.trust-card li{
+    margin:10px 0;
+    opacity:.9;
+}
+
+.contact-email{
+    margin-top:18px;
+    font-weight:600;
+    opacity:.8;
+}

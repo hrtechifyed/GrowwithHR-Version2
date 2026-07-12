@@ -1,0 +1,20 @@
+{
+  "resources": [
+    {
+      "name": "EPFO",
+      "url": "https://www.epfindia.gov.in/site_en/"
+    },
+    {
+      "name": "ESIC",
+      "url": "https://esic.gov.in/"
+    },
+    {
+      "name": "Ministry of Labour",
+      "url": "https://www.labour.gov.in/"
+    },
+    {
+      "name": "India Code",
+      "url": "https://www.indiacode.nic.in/"
+    }
+  ]
+}

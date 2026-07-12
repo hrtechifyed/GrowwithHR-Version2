@@ -1,0 +1,188 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-06-22",
+
+  "scoring": {
+    "note": "Compliance Readiness Score is illustrative and based on a preliminary rules framework. It should not be considered legal advice."
+  },
+
+  "employeeBands": [
+    {
+      "range": "1-5",
+      "stage": "Founder Led"
+    },
+    {
+      "range": "6-9",
+      "stage": "Early Team"
+    },
+    {
+      "range": "10-19",
+      "stage": "Growing Team"
+    },
+    {
+      "range": "20-49",
+      "stage": "Scaling Business"
+    },
+    {
+      "range": "50-99",
+      "stage": "Structured Growth"
+    },
+    {
+      "range": "100-249",
+      "stage": "Emerging Enterprise"
+    },
+    {
+      "range": "250-499",
+      "stage": "Mature Organisation"
+    },
+    {
+      "range": "500-999",
+      "stage": "Large Employer"
+    },
+    {
+      "range": "1000-4999",
+      "stage": "Enterprise"
+    },
+    {
+      "range": "5000-9999",
+      "stage": "Large Enterprise"
+    },
+    {
+      "range": "10000-24999",
+      "stage": "National Employer"
+    },
+    {
+      "range": "25000-49999",
+      "stage": "Major Employer"
+    },
+    {
+      "range": "50000-99999",
+      "stage": "Strategic Employer"
+    },
+    {
+      "range": "100000+",
+      "stage": "Mega Employer"
+    }
+  ],
+
+  "mandatoryActions": [
+    {
+      "priority": "Immediate",
+      "title": "Shops & Establishments Compliance",
+      "timeline": "0-30 Days",
+      "reason": "Applicable establishment compliance requirements should be reviewed based on state regulations."
+    },
+    {
+      "priority": "Immediate",
+      "title": "Employment Documentation Review",
+      "timeline": "0-30 Days",
+      "reason": "Ensure offer letters, contracts and onboarding documentation are maintained."
+    },
+    {
+      "priority": "Short Term",
+      "title": "Payroll Compliance Review",
+      "timeline": "30-90 Days",
+      "reason": "Periodic payroll reviews reduce statutory risk."
+    },
+    {
+      "priority": "Short Term",
+      "title": "POSH Framework Assessment",
+      "timeline": "30-90 Days",
+      "reason": "Review workplace harassment prevention obligations."
+    }
+  ],
+
+  "recommendedHRActions": [
+    {
+      "priority": 1,
+      "title": "Create Employee Handbook",
+      "timeline": "0-30 Days",
+      "recommendedWhen": "Employee count exceeds 10",
+      "benefit": "Improves governance and employee clarity."
+    },
+    {
+      "priority": 2,
+      "title": "Implement Performance Management Framework",
+      "timeline": "30-90 Days",
+      "recommendedWhen": "Employee count exceeds 20",
+      "benefit": "Improves accountability and growth planning."
+    },
+    {
+      "priority": 3,
+      "title": "Develop Manager Capability Program",
+      "timeline": "60-180 Days",
+      "recommendedWhen": "Multiple reporting layers exist",
+      "benefit": "Reduces people-management risk."
+    },
+    {
+      "priority": 4,
+      "title": "Establish Workforce Planning Process",
+      "timeline": "90-365 Days",
+      "recommendedWhen": "Business is scaling rapidly",
+      "benefit": "Improves hiring efficiency and workforce forecasting."
+    }
+  ],
+
+  "riskAlerts": [
+    {
+      "title": "Founder Dependency Risk",
+      "description": "Compliance ownership appears concentrated with founders."
+    },
+    {
+      "title": "Workforce Governance Risk",
+      "description": "Growing organisations require increasing process maturity."
+    },
+    {
+      "title": "Documentation Risk",
+      "description": "Policies and procedures should be reviewed regularly."
+    }
+  ],
+
+  "futureReadiness": [
+    {
+      "threshold": "50 Employees",
+      "actions": [
+        "Formal grievance process",
+        "Structured onboarding",
+        "Manager training"
+      ]
+    },
+    {
+      "threshold": "100 Employees",
+      "actions": [
+        "HRIS implementation",
+        "Workforce analytics",
+        "Leadership development"
+      ]
+    },
+    {
+      "threshold": "250 Employees",
+      "actions": [
+        "Internal compliance audits",
+        "Talent management framework",
+        "Organisation design review"
+      ]
+    }
+  ],
+
+  "sources": [
+    {
+      "name": "Ministry of Labour & Employment",
+      "url": "https://labour.gov.in"
+    },
+    {
+      "name": "EPFO",
+      "url": "https://www.epfindia.gov.in"
+    },
+    {
+      "name": "ESIC",
+      "url": "https://www.esic.gov.in"
+    },
+    {
+      "name": "India Code",
+      "url": "https://www.indiacode.nic.in"
+    }
+  ],
+
+  "disclaimer": "This report is intended for informational purposes only and should not be considered legal or HR advice. Users should obtain professional review before acting on compliance obligations."
+}

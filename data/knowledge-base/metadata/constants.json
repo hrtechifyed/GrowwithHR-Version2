@@ -1,0 +1,114 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-07-05",
+
+  "priorities": [
+    "Mandatory",
+    "Recommended",
+    "Future"
+  ],
+
+  "ruleStatus": [
+    "Active",
+    "Deprecated",
+    "Superseded",
+    "Archived"
+  ],
+
+  "confidenceLevels": [
+    "Government Notification",
+    "Government Portal",
+    "Government Circular",
+    "Judicial Interpretation",
+    "GrowItWithHR Advisory"
+  ],
+
+  "categories": [
+    "Registration",
+    "Employment",
+    "Payroll",
+    "Provident Fund",
+    "Employee State Insurance",
+    "Minimum Wages",
+    "Working Hours",
+    "Leave",
+    "POSH",
+    "Gratuity",
+    "Bonus",
+    "Contract Labour",
+    "Industrial Relations",
+    "Occupational Safety",
+    "Factories",
+    "Shops & Establishments",
+    "Professional Tax",
+    "Labour Welfare Fund",
+    "Apprentices",
+    "Child Labour",
+    "Training",
+    "Governance",
+    "Documentation",
+    "Compliance Calendar",
+    "Workforce Planning"
+  ],
+
+  "entityTypes": {
+    "PRIVATE_LIMITED": "Private Limited Company",
+    "PUBLIC_LIMITED_LISTED": "Public Limited Company (Listed)",
+    "PUBLIC_LIMITED_UNLISTED": "Public Limited Company (Unlisted)",
+    "LLP": "Limited Liability Partnership (LLP)",
+    "PROPRIETORSHIP": "Proprietorship",
+    "PARTNERSHIP": "Partnership Firm",
+    "OPC": "One Person Company",
+    "SECTION8": "Section 8 Company",
+    "TRUST": "Trust",
+    "SOCIETY": "Society",
+    "NGO": "NGO",
+    "DPIIT_STARTUP": "DPIIT Recognized Startup",
+    "GOVERNMENT": "Government Entity",
+    "EDUCATIONAL_INSTITUTION": "Educational Institution"
+  },
+
+  "industryTypes": {
+    "IT_SAAS": "Information Technology / SaaS",
+    "SEMICONDUCTOR": "Semiconductor",
+    "CONSULTING": "Consulting & Professional Services",
+    "MANUFACTURING": "Manufacturing",
+    "RETAIL": "Retail",
+    "HEALTHCARE": "Healthcare",
+    "EDUCATION": "Education",
+    "FINANCIAL_SERVICES": "Financial Services",
+    "LOGISTICS": "Logistics & Transportation",
+    "CONSTRUCTION": "Construction",
+    "HOSPITALITY": "Hospitality",
+    "ECOMMERCE": "E-Commerce",
+    "STARTUP": "Startup",
+    "OTHER": "Other"
+  },
+
+  "employeeBands": {
+    "MICRO": {
+      "min": 1,
+      "max": 9
+    },
+    "SMALL": {
+      "min": 10,
+      "max": 19
+    },
+    "GROWING": {
+      "min": 20,
+      "max": 49
+    },
+    "MID": {
+      "min": 50,
+      "max": 99
+    },
+    "LARGE": {
+      "min": 100,
+      "max": 249
+    },
+    "ENTERPRISE": {
+      "min": 250,
+      "max": 999999
+    }
+  }
+}

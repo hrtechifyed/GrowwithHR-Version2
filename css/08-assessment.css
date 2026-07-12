@@ -1,0 +1,374 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 08
+   Assessment
+   Version : v0.10.0-beta
+========================================================== */
+
+/* ==========================================
+   ASSESSMENT SECTION
+========================================== */
+
+.assessment-section{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:var(--bg-secondary);
+
+}
+
+.assessment-section::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        radial-gradient(circle at top right,
+        rgba(255,176,0,.08),
+        transparent 35%),
+
+        radial-gradient(circle at bottom left,
+        rgba(37,99,235,.08),
+        transparent 40%);
+
+    pointer-events:none;
+
+}
+
+.assessment-panel{
+
+    position:relative;
+
+    z-index:2;
+
+    background:var(--gradient-card);
+
+    border:1px solid var(--glass-border);
+
+    border-radius:32px;
+
+    backdrop-filter:blur(24px);
+
+    box-shadow:var(--shadow-lg);
+
+    padding:60px;
+
+}
+
+/* ==========================================
+   WRAPPER
+========================================== */
+
+.assessment-wrapper{
+
+    max-width:1120px;
+
+    margin:0 auto;
+
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.assessment-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:34px;
+
+}
+
+/* ==========================================
+   COMPANY DNA CARDS
+========================================== */
+
+.assessment-group{
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:34px;
+
+    transition:all .30s ease;
+
+}
+
+.assessment-group:hover{
+
+    border-color:rgba(255,176,0,.25);
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 20px 45px rgba(0,0,0,.22);
+
+}
+
+.assessment-group h3{
+
+    margin-bottom:28px;
+
+}
+
+/* ==========================================
+   GRID
+========================================== */
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:24px;
+
+}
+
+/* ==========================================
+   FORM GROUP
+========================================== */
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.form-group label{
+
+    color:var(--text-secondary);
+
+    font-size:.92rem;
+
+    font-weight:600;
+
+}
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+.form-group input,
+
+.form-group select{
+
+    width:100%;
+
+    padding:16px 18px;
+
+    border-radius:16px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:#111827;
+
+    color:var(--text-primary);
+
+    transition:all .30s ease;
+
+}
+
+.form-group input::placeholder{
+
+    color:var(--text-muted);
+
+}
+
+.form-group input:hover,
+
+.form-group select:hover{
+
+    border-color:rgba(255,176,0,.25);
+
+}
+
+.form-group input:focus,
+
+.form-group select:focus{
+
+    border-color:var(--brand-orange);
+
+    box-shadow:
+
+        0 0 0 4px rgba(255,176,0,.12);
+
+}
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.summary-card{
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:34px;
+
+}
+
+.summary-card h3{
+
+    margin-bottom:24px;
+
+}
+
+/* ==========================================
+   ACTION LIST
+========================================== */
+
+.action-list{
+
+    display:grid;
+
+    gap:16px;
+
+}
+
+.action-list li{
+
+    position:relative;
+
+    padding-left:28px;
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+.action-list li::before{
+
+    content:"✓";
+
+    position:absolute;
+
+    left:0;
+
+    color:var(--brand-gold);
+
+    font-weight:700;
+
+}
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+#generateReport{
+
+    width:100%;
+
+    margin-top:18px;
+
+    padding:20px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:var(--gradient-brand);
+
+    color:white;
+
+    font-size:1rem;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:all .30s ease;
+
+    box-shadow:var(--glow-brand);
+
+}
+
+#generateReport:hover{
+
+    transform:translateY(-4px);
+
+}
+
+/* ==========================================
+   REPORT
+========================================== */
+
+.report-container{
+
+    margin-top:70px;
+
+}
+
+/* ==========================================
+   INPUT LIST
+========================================== */
+
+input[list]{
+
+    appearance:none;
+
+}
+
+/* ==========================================
+   SELECT
+========================================== */
+
+select{
+
+    appearance:none;
+
+}
+
+select option{
+
+    background:var(--bg-card);
+
+    color:var(--text-primary);
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+    .assessment-panel{
+
+        padding:30px 22px;
+
+    }
+
+    .assessment-group{
+
+        padding:26px;
+
+    }
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

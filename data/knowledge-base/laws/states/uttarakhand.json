@@ -1,0 +1,183 @@
+{
+  "stateId": "UK",
+  "stateName": "Uttarakhand",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Uttarakhand",
+    "sourceId": "UK-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Uttarakhand.",
+
+  "rules": [
+
+    {
+      "id": "UK-001",
+      "title": "Review Uttarakhand Shops and Commercial Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the Uttarakhand Shops and Commercial Establishments Act is applicable.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Uttarakhand Shops and Commercial Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "UK-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, wage records, attendance records and prescribed notices under Uttarakhand labour legislation.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Uttarakhand Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "UK-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices and employee information required under Uttarakhand labour legislation.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Uttarakhand Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "UK-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Uttarakhand provisions governing working hours, overtime, leave, holidays and weekly offs.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Uttarakhand Shops and Commercial Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "UK-005",
+      "title": "Review Labour Welfare Fund Compliance",
+      "priority": "Mandatory",
+      "category": "Labour Welfare",
+      "description": "Review employer obligations relating to the Uttarakhand Labour Welfare Fund, where applicable.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Uttarakhand Labour Welfare Fund Act"
+        }
+      ]
+    },
+
+    {
+      "id": "UK-006",
+      "title": "Review Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Uttarakhand.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Uttarakhand Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "UK-007",
+      "title": "Monitor Uttarakhand Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Uttarakhand.",
+      "applicability": {
+        "employeeCount": { "min": 1 },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+      "sourceId": "UK-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Uttarakhand Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "UKR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering statutory registrations, labour welfare, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "UKR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for statutory filings, licence renewals, inspections and labour compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "UK-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

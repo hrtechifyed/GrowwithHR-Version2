@@ -1,0 +1,268 @@
+{
+  "lawId": "CENTRAL-BONUS",
+  "lawName": "Payment of Bonus Act, 1965",
+  "shortName": "Bonus Act",
+  "authority": "Ministry of Labour & Employment",
+  "sourceId": "MOL",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Provides for payment of statutory bonus to eligible employees employed in establishments covered under the Act.",
+
+  "definitions": [
+
+    {
+      "id": "BONUS-DEF-001",
+      "term": "Employee",
+      "definition": "Employee eligible under the Payment of Bonus Act."
+    },
+
+    {
+      "id": "BONUS-DEF-002",
+      "term": "Accounting Year",
+      "definition": "Accounting year as defined under the Act."
+    },
+
+    {
+      "id": "BONUS-DEF-003",
+      "term": "Salary or Wage",
+      "definition": "Salary or wage as defined under the Act."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+
+      "id":"BONUS-001",
+
+      "title":"Review Bonus Applicability",
+
+      "priority":"Mandatory",
+
+      "category":"Bonus",
+
+      "applicability":{
+
+        "employeeCount":{
+
+          "min":20
+
+        },
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Determine whether the establishment falls within the scope of the Payment of Bonus Act.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Payment of Bonus Act, 1965"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"BONUS-002",
+
+      "title":"Identify Eligible Employees",
+
+      "priority":"Mandatory",
+
+      "category":"Bonus",
+
+      "applicability":{
+
+        "employeeCount":{
+
+          "min":20
+
+        },
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Determine employee eligibility for statutory bonus in accordance with applicable provisions.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Payment of Bonus Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"BONUS-003",
+
+      "title":"Calculate Statutory Bonus",
+
+      "priority":"Mandatory",
+
+      "category":"Payroll",
+
+      "applicability":{
+
+        "employeeCount":{
+
+          "min":20
+
+        },
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Calculate bonus payable using the statutory formula and applicable limits.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Payment of Bonus Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"BONUS-004",
+
+      "title":"Disburse Bonus Within Prescribed Timeline",
+
+      "priority":"Mandatory",
+
+      "category":"Payroll",
+
+      "applicability":{
+
+        "employeeCount":{
+
+          "min":20
+
+        },
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Ensure statutory bonus is paid within the prescribed timelines.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Payment of Bonus Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"BONUS-005",
+
+      "title":"Maintain Bonus Registers",
+
+      "priority":"Mandatory",
+
+      "category":"Documentation",
+
+      "applicability":{
+
+        "employeeCount":{
+
+          "min":20
+
+        },
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Maintain statutory records relating to bonus computation and payment.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Payment of Bonus Rules"
+
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "exceptions":[
+
+    {
+
+      "id":"BONUS-EX-001",
+
+      "title":"Eligibility Conditions",
+
+      "description":"Bonus eligibility depends upon the provisions of the Act including salary limits, qualifying service and other statutory conditions."
+
+    }
+
+  ],
+
+  "references":[
+
+    {
+
+      "sourceId":"MOL"
+
+    },
+
+    {
+
+      "sourceId":"INDIACODE"
+
+    }
+
+  ]
+
+}

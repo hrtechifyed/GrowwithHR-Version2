@@ -1,0 +1,212 @@
+{
+  "lawId": "CENTRAL-CHILD-LABOUR",
+  "lawName": "Child and Adolescent Labour (Prohibition and Regulation) Act, 1986",
+  "shortName": "Child Labour Act",
+  "authority": "Ministry of Labour & Employment",
+  "sourceId": "MOL",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Prohibits employment of children in all occupations and regulates employment of adolescents in accordance with the Act and applicable rules.",
+
+  "definitions": [
+
+    {
+      "id": "CL-DEF-001",
+      "term": "Child",
+      "definition": "A person who has not completed fourteen years of age."
+    },
+
+    {
+      "id": "CL-DEF-002",
+      "term": "Adolescent",
+      "definition": "A person who has completed fourteen years but has not completed eighteen years."
+    },
+
+    {
+      "id": "CL-DEF-003",
+      "term": "Employer",
+      "definition": "Employer responsible for compliance under the Act."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+
+      "id":"CL-001",
+
+      "title":"Prohibit Employment of Children",
+
+      "priority":"Mandatory",
+
+      "category":"Employment",
+
+      "applicability":{
+
+        "employeeCount":{"min":1},
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Ensure no child is employed in violation of the provisions of the Act.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Child and Adolescent Labour (Prohibition and Regulation) Act, 1986"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"CL-002",
+
+      "title":"Review Adolescent Employment",
+
+      "priority":"Mandatory",
+
+      "category":"Employment",
+
+      "applicability":{
+
+        "employeeCount":{"min":1},
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Ensure adolescent employment complies with statutory restrictions and applicable conditions.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Child Labour Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"CL-003",
+
+      "title":"Maintain Age Verification Records",
+
+      "priority":"Mandatory",
+
+      "category":"Documentation",
+
+      "applicability":{
+
+        "employeeCount":{"min":1},
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Maintain records supporting age verification of employees wherever required.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Child Labour Rules"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id":"CL-004",
+
+      "title":"Display Statutory Notices",
+
+      "priority":"Mandatory",
+
+      "category":"Documentation",
+
+      "applicability":{
+
+        "employeeCount":{"min":1},
+
+        "entityTypes":["*"],
+
+        "industries":["*"]
+
+      },
+
+      "description":"Display notices where required under applicable statutory provisions.",
+
+      "sourceId":"MOL",
+
+      "citations":[
+
+        {
+
+          "reference":"Child Labour Rules"
+
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "exceptions":[
+
+    {
+
+      "id":"CL-EX-001",
+
+      "title":"Statutory Exceptions",
+
+      "description":"Employment of adolescents is subject to statutory restrictions, prohibited occupations and prescribed conditions."
+
+    }
+
+  ],
+
+  "references":[
+
+    {
+
+      "sourceId":"MOL"
+
+    },
+
+    {
+
+      "sourceId":"INDIACODE"
+
+    }
+
+  ]
+
+}

@@ -1,0 +1,184 @@
+{
+    "title": "Company Profile",
+
+    "sections": [
+
+        {
+            "id": "organization",
+            "title": "Organization",
+            "fields": [
+
+                {
+                    "id": "companyName",
+                    "label": "Company Name",
+                    "type": "text",
+                    "required": true
+                },
+
+                {
+                    "id": "entityType",
+                    "label": "Entity Type",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Private Limited",
+                        "Public Limited",
+                        "LLP",
+                        "Partnership",
+                        "Proprietorship",
+                        "One Person Company",
+                        "Section 8 Company",
+                        "Trust",
+                        "Society"
+                    ]
+                },
+
+                {
+                    "id": "industry",
+                    "label": "Industry",
+                    "type": "text",
+                    "required": true
+                },
+
+                {
+                    "id": "natureOfBusiness",
+                    "label": "Nature of Business",
+                    "type": "text",
+                    "required": true
+                },
+
+                {
+                    "id": "yearOfIncorporation",
+                    "label": "Year of Incorporation",
+                    "type": "number",
+                    "required": true
+                }
+
+            ]
+        },
+
+        {
+            "id": "operations",
+            "title": "Operations",
+            "fields": [
+
+                {
+                    "id": "countries",
+                    "label": "Countries of Operation",
+                    "type": "tags",
+                    "required": true
+                },
+
+                {
+                    "id": "states",
+                    "label": "States of Operation",
+                    "type": "tags",
+                    "required": true
+                },
+
+                {
+                    "id": "cities",
+                    "label": "Cities of Operation",
+                    "type": "tags",
+                    "required": true
+                },
+
+                {
+                    "id": "workModel",
+                    "label": "Work Model",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Office",
+                        "Remote",
+                        "Hybrid",
+                        "Factory",
+                        "Warehouse",
+                        "Retail"
+                    ]
+                }
+
+            ]
+        },
+
+        {
+            "id": "workforce",
+            "title": "Workforce",
+            "fields": [
+
+                {
+                    "id": "permanent",
+                    "label": "Permanent Employees",
+                    "type": "number",
+                    "required": true
+                },
+
+                {
+                    "id": "contract",
+                    "label": "Contract Employees",
+                    "type": "number",
+                    "required": true
+                },
+
+                {
+                    "id": "interns",
+                    "label": "Interns",
+                    "type": "number",
+                    "required": true
+                },
+
+                {
+                    "id": "apprentices",
+                    "label": "Apprentices",
+                    "type": "number",
+                    "required": true
+                },
+
+                {
+                    "id": "consultants",
+                    "label": "Consultants",
+                    "type": "number",
+                    "required": true
+                },
+
+                {
+                    "id": "gigWorkers",
+                    "label": "Gig Workers",
+                    "type": "number",
+                    "required": true
+                }
+
+            ]
+        },
+
+        {
+            "id": "growth",
+            "title": "Growth",
+            "fields": [
+
+                {
+                    "id": "projectedEmployees",
+                    "label": "Projected Employees (Next 12 Months)",
+                    "type": "number",
+                    "required": true
+                },
+
+                {
+                    "id": "expandingStates",
+                    "label": "Expanding to New States",
+                    "type": "boolean",
+                    "required": true
+                },
+
+                {
+                    "id": "internationalHiring",
+                    "label": "Planning International Hiring",
+                    "type": "boolean",
+                    "required": true
+                }
+
+            ]
+        }
+
+    ]
+}

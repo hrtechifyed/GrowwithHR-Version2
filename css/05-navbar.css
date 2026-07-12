@@ -1,0 +1,477 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 05
+   Navbar
+   Version : v0.11.0
+========================================================== */
+
+
+/* ==========================================
+   NAVBAR
+========================================== */
+
+.navbar{
+
+    position:fixed;
+
+    top:18px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:min(1380px,calc(100% - 48px));
+
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    z-index:1000;
+
+    border-radius:22px;
+
+    background:rgba(12,18,32,.72);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 12px 36px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.05);
+
+}
+
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.nav-container{
+
+    width:min(94%,var(--container-width));
+
+    margin:0 auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:28px;
+
+}
+
+
+/* ==========================================
+   BRAND
+========================================== */
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    text-decoration:none;
+
+    flex-shrink:0;
+
+}
+
+.nav-logo{
+
+    width:52px;
+
+    height:52px;
+
+    object-fit:contain;
+
+    transition:.35s;
+
+}
+
+.brand:hover .nav-logo{
+
+    transform:rotate(-6deg) scale(1.05);
+
+}
+
+.brand-name{
+
+    font-size:.72rem;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    color:rgba(255,255,255,.65);
+
+    line-height:1.1;
+
+}
+
+.product-name{
+
+    font-size:1.05rem;
+
+    font-weight:700;
+
+    color:#fff;
+
+    line-height:1.2;
+
+}
+
+
+/* ==========================================
+   NAV LINKS
+========================================== */
+
+.nav-links{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:20px;
+
+}
+
+.nav-links a{
+
+    position:relative;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:8px 10px;
+
+    text-decoration:none;
+
+    font-size:.86rem;
+
+    font-weight:500;
+
+    letter-spacing:.3px;
+
+    color:var(--text-secondary);
+
+    transition:color .25s ease;
+
+}
+
+.nav-links a:hover{
+
+    color:#fff;
+
+}
+
+.nav-links a::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:-8px;
+
+    transform:translateX(-50%);
+
+    width:0;
+
+    height:2px;
+
+    border-radius:999px;
+
+    background:var(--brand-gold);
+
+    transition:width .25s ease;
+
+}
+
+.nav-links a:hover::after,
+
+.nav-links a.active::after{
+
+    width:70%;
+
+}
+
+
+/* ==========================================
+   DROPDOWN
+========================================== */
+
+.nav-dropdown{
+
+    position:relative;
+
+}
+
+.nav-dropdown::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:100%;
+
+    width:100%;
+
+    height:12px;
+
+}
+
+.dropdown-toggle{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:none;
+
+    border:none;
+
+    cursor:pointer;
+
+    color:var(--text-secondary);
+
+    font:inherit;
+
+    font-size:.86rem;
+
+    font-weight:500;
+
+    padding:8px 10px;
+
+}
+
+.dropdown-toggle:hover{
+
+    color:#fff;
+
+}
+
+.dropdown-menu{
+
+    position:absolute;
+
+    top:100%;
+
+    left:0;
+
+    min-width:190px;
+
+    padding:8px 0;
+
+    border-radius:14px;
+
+    background:rgba(18,22,34,.96);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.25);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:translateY(8px);
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s;
+
+    z-index:1000;
+
+}
+
+.dropdown-menu a{
+
+    display:block;
+
+    width:100%;
+
+    padding:12px 18px;
+
+}
+
+.dropdown-menu a::after{
+
+    display:none;
+
+}
+
+.nav-dropdown:hover .dropdown-menu{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(0);
+
+}
+
+
+/* ==========================================
+   CTA
+========================================== */
+
+.nav-cta{
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:190px;
+
+    height:46px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+    color:#fff;
+
+    background:linear-gradient(90deg,#ffb000,#ff7a00);
+
+    box-shadow:0 10px 24px rgba(255,122,0,.25);
+
+    transition:.25s;
+
+}
+
+.nav-cta::after{
+
+    display:none;
+
+}
+
+.nav-cta:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 18px 40px rgba(255,122,0,.35);
+
+}
+
+
+/* ==========================================
+   HAMBURGER
+========================================== */
+
+.hamburger{
+
+    display:none;
+
+    background:none;
+
+    border:none;
+
+    color:#fff;
+
+    font-size:1.4rem;
+
+    cursor:pointer;
+
+}
+
+
+/* ==========================================
+   SCROLLED
+========================================== */
+
+.navbar.scrolled{
+
+    background:rgba(5,7,11,.92);
+
+    box-shadow:0 18px 45px rgba(0,0,0,.35);
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:992px){
+
+    .hamburger{
+
+        display:block;
+
+    }
+
+    .nav-links{
+
+        position:absolute;
+
+        top:82px;
+
+        left:0;
+
+        right:0;
+
+        display:none;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+        padding:28px;
+
+        background:rgba(5,7,11,.98);
+
+        backdrop-filter:blur(24px);
+
+        border-bottom:1px solid rgba(255,255,255,.08);
+
+    }
+
+    .nav-links.active{
+
+        display:flex;
+
+    }
+
+    .nav-cta{
+
+        width:100%;
+
+    }
+
+}

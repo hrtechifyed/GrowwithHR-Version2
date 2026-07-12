@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-07-05",
+
+  "central": {
+
+    "MOL": {
+      "authority": "Ministry of Labour & Employment",
+      "website": "https://labour.gov.in",
+      "type": "Central Government",
+      "reviewFrequency": "Monthly"
+    },
+
+    "EPFO": {
+      "authority": "Employees' Provident Fund Organisation",
+      "website": "https://www.epfindia.gov.in",
+      "type": "Central Government",
+      "reviewFrequency": "Monthly"
+    },
+
+    "ESIC": {
+      "authority": "Employees' State Insurance Corporation",
+      "website": "https://www.esic.gov.in",
+      "type": "Central Government",
+      "reviewFrequency": "Monthly"
+    },
+
+    "INDIACODE": {
+      "authority": "India Code",
+      "website": "https://www.indiacode.nic.in",
+      "type": "Government Legal Repository",
+      "reviewFrequency": "Monthly"
+    },
+
+    "MCA": {
+      "authority": "Ministry of Corporate Affairs",
+      "website": "https://www.mca.gov.in",
+      "type": "Central Government",
+      "reviewFrequency": "Monthly"
+    }
+
+  },
+
+  "states": {
+
+  }
+
+}

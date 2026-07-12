@@ -1,0 +1,83 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-07-05",
+
+  "central": {
+
+    "MOL": {
+      "id": "MOL",
+      "authority": "Ministry of Labour & Employment",
+      "website": "https://labour.gov.in",
+      "type": "Central Government",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    },
+
+    "INDIACODE": {
+      "id": "INDIACODE",
+      "authority": "India Code",
+      "website": "https://www.indiacode.nic.in",
+      "type": "Official Legal Repository",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    },
+
+    "EPFO": {
+      "id": "EPFO",
+      "authority": "Employees' Provident Fund Organisation",
+      "website": "https://www.epfindia.gov.in",
+      "type": "Statutory Authority",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    },
+
+    "ESIC": {
+      "id": "ESIC",
+      "authority": "Employees' State Insurance Corporation",
+      "website": "https://www.esic.gov.in",
+      "type": "Statutory Authority",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    },
+
+    "MCA": {
+      "id": "MCA",
+      "authority": "Ministry of Corporate Affairs",
+      "website": "https://www.mca.gov.in",
+      "type": "Central Government",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    },
+
+    "MWCD": {
+      "id": "MWCD",
+      "authority": "Ministry of Women and Child Development",
+      "website": "https://wcd.gov.in",
+      "type": "Central Government",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    },
+
+    "CBDT": {
+      "id": "CBDT",
+      "authority": "Central Board of Direct Taxes",
+      "website": "https://incometaxindia.gov.in",
+      "type": "Central Government",
+      "jurisdiction": "India",
+      "reviewFrequency": "Monthly",
+      "status": "Active"
+    }
+
+  },
+
+  "states": {
+
+  }
+
+}

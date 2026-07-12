@@ -1,0 +1,320 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 04
+   Layout System
+   Version : v0.10.0-beta
+========================================================== */
+
+/* ==========================================
+   MAIN WRAPPER
+========================================== */
+
+main{
+
+    width:100%;
+
+    position:relative;
+
+}
+
+/* ==========================================
+   CONTAINERS
+========================================== */
+
+.container{
+
+    width:min(92%,var(--container-width));
+
+    margin-inline:auto;
+
+}
+
+.container-sm{
+
+    width:min(90%,960px);
+
+    margin-inline:auto;
+
+}
+
+.container-lg{
+
+    width:min(96%,1440px);
+
+    margin-inline:auto;
+
+}
+
+/* ==========================================
+   FLEX
+========================================== */
+
+.flex{
+
+    display:flex;
+
+}
+
+.flex-center{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.flex-between{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+}
+
+.flex-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/* ==========================================
+   GRID
+========================================== */
+
+.grid{
+
+    display:grid;
+
+    gap:var(--space-4);
+
+}
+
+.grid-2{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:var(--space-4);
+
+}
+
+.grid-3{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:var(--space-4);
+
+}
+
+.grid-4{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:var(--space-4);
+
+}
+
+/* ==========================================
+   SECTION SPACING
+========================================== */
+
+.section{
+
+    padding:var(--space-7) 0;
+
+}
+
+.section-sm{
+
+    padding:var(--space-6) 0;
+
+}
+
+.section-lg{
+
+    padding:140px 0;
+
+}
+
+/* ==========================================
+   PAGE WIDTH HELPERS
+========================================== */
+
+.max-640{
+
+    max-width:640px;
+
+}
+
+.max-720{
+
+    max-width:720px;
+
+}
+
+.max-960{
+
+    max-width:960px;
+
+}
+
+.max-1200{
+
+    max-width:1200px;
+
+}
+
+/* ==========================================
+   GAP HELPERS
+========================================== */
+
+.gap-sm{
+
+    gap:var(--space-2);
+
+}
+
+.gap-md{
+
+    gap:var(--space-3);
+
+}
+
+.gap-lg{
+
+    gap:var(--space-5);
+
+}
+
+/* ==========================================
+   ALIGNMENT
+========================================== */
+
+.align-start{
+
+    align-items:flex-start;
+
+}
+
+.align-center{
+
+    align-items:center;
+
+}
+
+.align-end{
+
+    align-items:flex-end;
+
+}
+
+.justify-start{
+
+    justify-content:flex-start;
+
+}
+
+.justify-center{
+
+    justify-content:center;
+
+}
+
+.justify-between{
+
+    justify-content:space-between;
+
+}
+
+.justify-end{
+
+    justify-content:flex-end;
+
+}
+
+/* ==========================================
+   WIDTH
+========================================== */
+
+.w-100{
+
+    width:100%;
+
+}
+
+.h-100{
+
+    height:100%;
+
+}
+
+/* ==========================================
+   OVERFLOW
+========================================== */
+
+.overflow-hidden{
+
+    overflow:hidden;
+
+}
+
+/* ==========================================
+   POSITION
+========================================== */
+
+.relative{
+
+    position:relative;
+
+}
+
+.absolute{
+
+    position:absolute;
+
+}
+
+.fixed{
+
+    position:fixed;
+
+}
+
+/* ==========================================
+   Z INDEX
+========================================== */
+
+.z-1{
+
+    z-index:1;
+
+}
+
+.z-10{
+
+    z-index:10;
+
+}
+
+.z-100{
+
+    z-index:100;
+
+}
+
+.z-1000{
+
+    z-index:1000;
+
+}

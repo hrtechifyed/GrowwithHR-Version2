@@ -1,0 +1,260 @@
+{
+  "lawId": "CENTRAL-EMP-COMP",
+  "lawName": "Employees' Compensation Act, 1923",
+  "shortName": "Employees' Compensation Act",
+  "authority": "Ministry of Labour & Employment",
+  "sourceId": "MOL",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Provides compensation to employees or their dependants for injury, occupational disease or death arising out of and in the course of employment.",
+
+  "definitions": [
+
+    {
+      "id": "EC-DEF-001",
+      "term": "Employee",
+      "definition": "Employee covered under the Employees' Compensation Act."
+    },
+
+    {
+      "id": "EC-DEF-002",
+      "term": "Employer",
+      "definition": "Employer responsible for statutory compensation obligations."
+    },
+
+    {
+      "id": "EC-DEF-003",
+      "term": "Occupational Injury",
+      "definition": "Personal injury arising out of and in the course of employment."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+
+      "id": "EC-001",
+
+      "title": "Review Applicability",
+
+      "priority": "Mandatory",
+
+      "category": "Employment",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Determine whether the establishment has obligations under the Employees' Compensation Act.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Employees' Compensation Act, 1923"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "EC-002",
+
+      "title": "Provide Statutory Compensation",
+
+      "priority": "Mandatory",
+
+      "category": "Employment",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Provide compensation where liability arises under the Act.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Employees' Compensation Act"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "EC-003",
+
+      "title": "Report Workplace Accidents",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Maintain and report workplace accidents wherever required under applicable law.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Employees' Compensation Rules"
+
+        }
+
+      ]
+
+    },
+
+    {
+
+      "id": "EC-004",
+
+      "title": "Maintain Compensation Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+
+        "employeeCount": {
+
+          "min": 1
+
+        },
+
+        "entityTypes": [
+
+          "*"
+
+        ],
+
+        "industries": [
+
+          "*"
+
+        ]
+
+      },
+
+      "description": "Maintain records relating to compensation claims, payments and supporting documentation.",
+
+      "sourceId": "MOL",
+
+      "citations": [
+
+        {
+
+          "reference": "Employees' Compensation Act"
+
+        }
+
+      ]
+
+    }
+
+  ],
+
+  "exceptions": [
+
+    {
+
+      "id": "EC-EX-001",
+
+      "title": "Statutory Exceptions",
+
+      "description": "Compensation liability is subject to the provisions, exclusions and conditions prescribed under the Act."
+
+    }
+
+  ],
+
+  "references": [
+
+    {
+
+      "sourceId": "MOL"
+
+    },
+
+    {
+
+      "sourceId": "INDIACODE"
+
+    }
+
+  ]
+
+}

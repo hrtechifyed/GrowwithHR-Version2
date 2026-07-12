@@ -1,0 +1,198 @@
+{
+  "stateId": "AR",
+  "stateName": "Arunachal Pradesh",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Department of Labour, Employment & Skill Development, Government of Arunachal Pradesh",
+    "sourceId": "AR-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Arunachal Pradesh.",
+
+  "rules": [
+
+    {
+      "id": "AR-001",
+
+      "title": "Review Arunachal Pradesh Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the applicable Shops and Establishments legislation is required.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Arunachal Pradesh Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "AR-002",
+
+      "title": "Maintain Statutory Registers",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain registers, records and notices prescribed under applicable labour laws.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Arunachal Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AR-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display notices required under applicable state labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Arunachal Pradesh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AR-004",
+
+      "title": "Review Working Hours, Leave and Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Leave",
+
+      "description": "Ensure compliance with state-specific provisions relating to working hours, weekly holidays and leave.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AR-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Arunachal Pradesh Labour Rules"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "ARR-001",
+
+      "title": "Annual Labour Compliance Review",
+
+      "description": "Conduct an annual review of compliance with applicable state labour laws."
+    },
+
+    {
+      "id": "ARR-002",
+
+      "title": "Digitise Labour Compliance Records",
+
+      "description": "Maintain electronic labour compliance records wherever legally permissible."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "AR-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

@@ -1,0 +1,200 @@
+{
+  "stateId": "ML",
+  "stateName": "Meghalaya",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Meghalaya",
+    "sourceId": "ML-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Meghalaya.",
+
+  "rules": [
+
+    {
+      "id": "ML-001",
+      "title": "Review Meghalaya Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the applicable Meghalaya Shops and Establishments legislation is required.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "ML-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Meghalaya Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "ML-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records and prescribed notices under Meghalaya labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "ML-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Meghalaya Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "ML-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices and employee information required under applicable labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "ML-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Meghalaya Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "ML-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Meghalaya provisions governing working hours, overtime, leave and weekly holidays.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "ML-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Meghalaya Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "ML-005",
+      "title": "Review Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Meghalaya.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "ML-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Meghalaya Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "ML-006",
+      "title": "Monitor State Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments and circulars issued by the Government of Meghalaya.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "ML-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Meghalaya Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "MLR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering statutory registrations, labour records, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "MLR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "ML-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

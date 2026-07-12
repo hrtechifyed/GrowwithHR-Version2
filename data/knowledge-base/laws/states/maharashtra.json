@@ -1,0 +1,250 @@
+{
+  "stateId": "MH",
+  "stateName": "Maharashtra",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Department of Labour, Government of Maharashtra",
+    "sourceId": "MH-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Maharashtra.",
+
+  "rules": [
+
+    {
+      "id": "MH-001",
+      "title": "Review Maharashtra Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the Maharashtra Shops and Establishments (Regulation of Employment and Conditions of Service) Act is applicable to the establishment.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Maharashtra Shops and Establishments (Regulation of Employment and Conditions of Service) Act, 2017"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records and notices prescribed under Maharashtra labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Maharashtra Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices, abstracts and employee information required under Maharashtra labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Maharashtra Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Maharashtra provisions governing working hours, overtime, leave, holidays and weekly offs.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Maharashtra Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-005",
+      "title": "Review Maharashtra Professional Tax Compliance",
+      "priority": "Mandatory",
+      "category": "Professional Tax",
+      "description": "Determine whether Professional Tax registration, enrolment, deduction, return filing and payment obligations apply under Maharashtra law.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Maharashtra State Tax on Professions, Trades, Callings and Employments Act, 1975"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-006",
+      "title": "Review Maharashtra Labour Welfare Fund Compliance",
+      "priority": "Mandatory",
+      "category": "Labour Welfare",
+      "description": "Review employer obligations relating to the Maharashtra Labour Welfare Fund, including contribution requirements where applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Bombay Labour Welfare Fund Act, 1953"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-007",
+      "title": "Review Maharashtra Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Maharashtra.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Maharashtra Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "MH-008",
+      "title": "Monitor Maharashtra Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department circulars, amendments, notifications and compliance updates issued by the Government of Maharashtra.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "MH-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Maharashtra Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "MHR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering labour registrations, professional tax, labour welfare fund, statutory records and inspection readiness."
+    },
+
+    {
+      "id": "MHR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for licence renewals, labour inspections, professional tax returns and statutory due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "MH-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

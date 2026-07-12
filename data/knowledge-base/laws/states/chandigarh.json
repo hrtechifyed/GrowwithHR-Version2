@@ -1,0 +1,214 @@
+{
+  "stateId": "CH",
+  "stateName": "Chandigarh",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Chandigarh Administration",
+    "sourceId": "CH-LABOUR"
+  },
+
+  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Chandigarh.",
+
+  "rules": [
+
+    {
+      "id": "CH-001",
+
+      "title": "Review Chandigarh Shops and Commercial Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Punjab Shops and Commercial Establishments Act, as applicable to Chandigarh, is required.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "CH-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Punjab Shops and Commercial Establishments Act as applicable to Chandigarh"
+        }
+      ]
+    },
+
+    {
+      "id": "CH-002",
+
+      "title": "Maintain Statutory Registers and Employment Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, employee records and prescribed notices required under applicable labour laws.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "CH-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Chandigarh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "CH-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display statutory notices and abstracts required under applicable labour legislation.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "CH-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Chandigarh Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "CH-004",
+
+      "title": "Review Working Hours, Overtime and Weekly Holidays",
+
+      "priority": "Mandatory",
+
+      "category": "Working Conditions",
+
+      "description": "Ensure compliance with provisions governing working hours, overtime, rest intervals and weekly holidays.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "CH-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Chandigarh Shops & Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "CH-005",
+
+      "title": "Review Professional Tax Applicability",
+
+      "priority": "Information",
+
+      "category": "Professional Tax",
+
+      "description": "Verify whether any professional tax obligations apply based on the governing laws applicable to Chandigarh.",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+
+      "sourceId": "CH-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Chandigarh Tax Provisions"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "CHR-001",
+
+      "title": "Annual Labour Compliance Review",
+
+      "description": "Conduct an annual review of labour law registrations, statutory records and workplace compliance."
+    },
+
+    {
+      "id": "CHR-002",
+
+      "title": "Digital Compliance Register",
+
+      "description": "Maintain a digital compliance calendar for inspections, renewals and statutory due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "CH-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

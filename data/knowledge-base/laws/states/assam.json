@@ -1,0 +1,234 @@
+{
+  "stateId": "AS",
+  "stateName": "Assam",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Welfare Department, Government of Assam",
+    "sourceId": "AS-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Assam.",
+
+  "rules": [
+
+    {
+      "id": "AS-001",
+
+      "title": "Review Assam Shops and Establishments Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Shops & Establishments",
+
+      "description": "Determine whether registration under the Assam Shops and Establishments legislation is applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AS-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Assam Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "AS-002",
+
+      "title": "Maintain Statutory Registers and Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Maintain statutory registers, records and notices prescribed under Assam labour laws.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AS-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Assam Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AS-003",
+
+      "title": "Display Statutory Notices",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "description": "Display notices required under applicable Assam labour legislation.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AS-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Assam Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AS-004",
+
+      "title": "Review Working Hours, Weekly Offs and Leave",
+
+      "priority": "Mandatory",
+
+      "category": "Leave",
+
+      "description": "Ensure compliance with Assam-specific provisions relating to working hours, weekly holidays and leave.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AS-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Assam Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "AS-005",
+
+      "title": "Verify Professional Tax Applicability",
+
+      "priority": "Mandatory",
+
+      "category": "Professional Tax",
+
+      "description": "Review applicability of the Assam Profession, Trades, Callings and Employments Tax provisions, where applicable.",
+
+      "applicability": {
+
+        "employeeCount": {
+          "min": 1
+        },
+
+        "entityTypes": [
+          "*"
+        ],
+
+        "industries": [
+          "*"
+        ]
+
+      },
+
+      "sourceId": "AS-LABOUR",
+
+      "citations": [
+        {
+          "reference": "Applicable Assam Professional Tax legislation"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "ASR-001",
+
+      "title": "Annual Labour Compliance Audit",
+
+      "description": "Conduct an annual audit covering registrations, registers, notices and statutory filings."
+    },
+
+    {
+      "id": "ASR-002",
+
+      "title": "Digital Compliance Calendar",
+
+      "description": "Maintain a digital calendar for statutory renewals, inspections and labour compliance deadlines."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "AS-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

@@ -1,0 +1,43 @@
+{
+    "companyName": "",
+    "entityType": "",
+    "industry": "",
+    "natureOfBusiness": "",
+    "yearOfIncorporation": "",
+
+    "countries": [
+        "India"
+    ],
+
+    "states": [],
+
+    "cities": [],
+
+    "workModel": "",
+
+    "workforce": {
+
+        "permanent": 0,
+
+        "contract": 0,
+
+        "interns": 0,
+
+        "apprentices": 0,
+
+        "consultants": 0,
+
+        "gigWorkers": 0
+
+    },
+
+    "growth": {
+
+        "projectedEmployees": 0,
+
+        "expandingStates": false,
+
+        "internationalHiring": false
+
+    }
+}

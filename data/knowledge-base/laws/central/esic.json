@@ -1,0 +1,228 @@
+{
+  "lawId": "CENTRAL-ESIC",
+  "lawName": "Employees' State Insurance Act, 1948",
+  "shortName": "ESI Act",
+  "authority": "Employees' State Insurance Corporation",
+  "sourceId": "ESIC",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "overview": "Provides medical, sickness, maternity, disablement, dependant and other statutory social security benefits to eligible employees through the Employees' State Insurance Scheme administered by ESIC. :contentReference[oaicite:0]{index=0}",
+
+  "definitions": [
+
+    {
+      "id": "ESIC-DEF-001",
+      "term": "Employee",
+      "definition": "An employee covered under the Employees' State Insurance Act and the applicable scheme."
+    },
+
+    {
+      "id": "ESIC-DEF-002",
+      "term": "Employer",
+      "definition": "The establishment or person responsible for compliance under the Act."
+    },
+
+    {
+      "id": "ESIC-DEF-003",
+      "term": "Insured Person",
+      "definition": "An employee registered under the Employees' State Insurance Scheme."
+    }
+
+  ],
+
+  "rules": [
+
+    {
+      "id": "ESIC-001",
+
+      "title": "Review ESI Applicability",
+
+      "priority": "Mandatory",
+
+      "category": "Employee State Insurance",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 10
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Determine whether the establishment is required to register under the Employees' State Insurance Scheme based on applicable legal criteria and notified coverage. :contentReference[oaicite:1]{index=1}",
+
+      "sourceId": "ESIC",
+
+      "citations": [
+        {
+          "reference": "Employees' State Insurance Act, 1948"
+        }
+      ]
+    },
+
+    {
+      "id": "ESIC-002",
+
+      "title": "Employer Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Registration",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 10
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Register the establishment with ESIC where coverage applies. :contentReference[oaicite:2]{index=2}",
+
+      "sourceId": "ESIC",
+
+      "citations": [
+        {
+          "reference": "ESIC Employer Registration"
+        }
+      ]
+    },
+
+    {
+      "id": "ESIC-003",
+
+      "title": "Employee Registration",
+
+      "priority": "Mandatory",
+
+      "category": "Employee State Insurance",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 10
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Register eligible employees under the Employees' State Insurance Scheme. :contentReference[oaicite:3]{index=3}",
+
+      "sourceId": "ESIC",
+
+      "citations": [
+        {
+          "reference": "ESIC Insured Person Registration"
+        }
+      ]
+    },
+
+    {
+      "id": "ESIC-004",
+
+      "title": "Monthly ESI Contributions",
+
+      "priority": "Mandatory",
+
+      "category": "Payroll",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 10
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Deposit employer and employee contributions within the prescribed timelines at the applicable contribution rates. :contentReference[oaicite:4]{index=4}",
+
+      "sourceId": "ESIC",
+
+      "citations": [
+        {
+          "reference": "ESIC Contribution"
+        }
+      ]
+    },
+
+    {
+      "id": "ESIC-005",
+
+      "title": "Maintain ESI Records",
+
+      "priority": "Mandatory",
+
+      "category": "Documentation",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 10
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Maintain statutory registers, wage records and contribution records required under the scheme. :contentReference[oaicite:5]{index=5}",
+
+      "sourceId": "ESIC",
+
+      "citations": [
+        {
+          "reference": "ESIC Record Maintenance"
+        }
+      ]
+    },
+
+    {
+      "id": "ESIC-006",
+
+      "title": "Facilitate Statutory Benefits",
+
+      "priority": "Mandatory",
+
+      "category": "Employee State Insurance",
+
+      "applicability": {
+        "employeeCount": {
+          "min": 10
+        },
+        "entityTypes": ["*"],
+        "industries": ["*"]
+      },
+
+      "description": "Ensure eligible employees are able to access statutory medical and cash benefits available under the ESI Scheme. :contentReference[oaicite:6]{index=6}",
+
+      "sourceId": "ESIC",
+
+      "citations": [
+        {
+          "reference": "Employees' State Insurance Scheme"
+        }
+      ]
+    }
+
+  ],
+
+  "exceptions": [
+
+    {
+      "id": "ESIC-EX-001",
+      "title": "Coverage depends on notified applicability",
+      "description": "Applicability varies based on notified establishments, employee coverage criteria and other legal provisions. The engine should evaluate these before recommending compliance actions. :contentReference[oaicite:7]{index=7}"
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "ESIC"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

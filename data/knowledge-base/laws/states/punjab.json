@@ -1,0 +1,225 @@
+{
+  "stateId": "PB",
+  "stateName": "Punjab",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Department of Labour, Government of Punjab",
+    "sourceId": "PB-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Punjab.",
+
+  "rules": [
+
+    {
+      "id": "PB-001",
+      "title": "Review Punjab Shops and Commercial Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the Punjab Shops and Commercial Establishments Act is applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Punjab Shops and Commercial Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "PB-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records and prescribed notices under Punjab labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Punjab Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "PB-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices and employee information required under Punjab labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Punjab Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "PB-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Punjab provisions governing working hours, overtime, leave and weekly holidays.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Punjab Shops and Commercial Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "PB-005",
+      "title": "Review Labour Welfare Fund Compliance",
+      "priority": "Mandatory",
+      "category": "Labour Welfare",
+      "description": "Review employer obligations relating to the Punjab Labour Welfare Fund, where applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Punjab Labour Welfare Fund legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "PB-006",
+      "title": "Review Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Punjab.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Punjab Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "PB-007",
+      "title": "Monitor Punjab Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Punjab.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PB-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Punjab Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "PBR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering statutory registrations, labour welfare, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "PBR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for statutory filings, licence renewals, inspections and labour compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "PB-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

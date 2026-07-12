@@ -1,0 +1,200 @@
+{
+  "stateId": "PY",
+  "stateName": "Puducherry",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Puducherry",
+    "sourceId": "PY-LABOUR"
+  },
+
+  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Puducherry.",
+
+  "rules": [
+
+    {
+      "id": "PY-001",
+      "title": "Review Puducherry Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the Puducherry Shops and Establishments legislation is applicable.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PY-LABOUR",
+      "citations": [
+        {
+          "reference": "Puducherry Shops and Establishments Act"
+        }
+      ]
+    },
+
+    {
+      "id": "PY-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records and prescribed notices under Puducherry labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PY-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Puducherry Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "PY-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices and employee information required under applicable Puducherry labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PY-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Puducherry Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "PY-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Puducherry provisions governing working hours, overtime, leave and weekly holidays.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PY-LABOUR",
+      "citations": [
+        {
+          "reference": "Puducherry Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "PY-005",
+      "title": "Review Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Puducherry.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PY-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Puducherry Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "PY-006",
+      "title": "Monitor Puducherry Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments and circulars issued by the Government of Puducherry.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "PY-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Puducherry Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "PYR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering statutory registrations, labour records, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "PYR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "PY-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}

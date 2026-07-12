@@ -1,0 +1,350 @@
+/* ==========================================================
+   HRTECHIFY DESIGN SYSTEM
+   Module 00
+   Global Design System
+   Version : v2.0.0
+========================================================== */
+
+
+/* ==========================================================
+   GOOGLE FONTS
+========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap');
+
+
+/* ==========================================================
+   ROOT
+========================================================== */
+
+:root{
+
+/* ----------------------------------------------------------
+   BRAND
+---------------------------------------------------------- */
+
+--brand-primary:#FF7A00;
+--brand-secondary:#FFB000;
+--brand-accent:#FF914D;
+
+/* ----------------------------------------------------------
+   TEXT
+---------------------------------------------------------- */
+
+--text-primary:#F8FAFC;
+--text-secondary:#CBD5E1;
+--text-muted:#94A3B8;
+--text-dark:#0F172A;
+
+/* ----------------------------------------------------------
+   BACKGROUND
+---------------------------------------------------------- */
+
+--bg-primary:#09111F;
+--bg-secondary:#101B2F;
+--bg-card:rgba(255,255,255,.05);
+--bg-card-hover:rgba(255,255,255,.08);
+
+/* ----------------------------------------------------------
+   BORDERS
+---------------------------------------------------------- */
+
+--border:rgba(255,255,255,.08);
+--border-hover:rgba(255,176,0,.28);
+
+/* ----------------------------------------------------------
+   GRADIENTS
+---------------------------------------------------------- */
+
+--gradient-brand:
+linear-gradient(
+135deg,
+#FF7A00,
+#FFB000
+);
+
+--gradient-card:
+linear-gradient(
+180deg,
+rgba(255,255,255,.06),
+rgba(255,255,255,.03)
+);
+
+/* ----------------------------------------------------------
+   SHADOWS
+---------------------------------------------------------- */
+
+--shadow-sm:
+0 6px 20px rgba(0,0,0,.12);
+
+--shadow-md:
+0 12px 35px rgba(0,0,0,.18);
+
+--shadow-lg:
+0 20px 60px rgba(0,0,0,.25);
+
+/* ----------------------------------------------------------
+   RADIUS
+---------------------------------------------------------- */
+
+--radius-sm:10px;
+--radius-md:16px;
+--radius-lg:24px;
+--radius-pill:999px;
+
+/* ----------------------------------------------------------
+   SPACING
+---------------------------------------------------------- */
+
+--space-xs:8px;
+--space-sm:12px;
+--space-md:16px;
+--space-lg:24px;
+--space-xl:32px;
+--space-2xl:48px;
+--space-3xl:64px;
+--space-4xl:96px;
+
+/* ----------------------------------------------------------
+   TRANSITIONS
+---------------------------------------------------------- */
+
+--transition-fast:.2s ease;
+
+--transition:
+all .3s ease;
+
+--transition-slow:
+all .45s ease;
+
+}
+
+
+/* ==========================================================
+   GLOBAL RESET
+========================================================== */
+
+*,
+*::before,
+*::after{
+
+box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
+}
+
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+html{
+
+scroll-behavior:smooth;
+
+}
+
+body{
+
+font-family:'Inter',sans-serif;
+
+background:var(--bg-primary);
+
+color:var(--text-primary);
+
+font-size:16px;
+
+line-height:1.7;
+
+overflow-x:hidden;
+
+}
+
+
+/* ==========================================================
+   TYPOGRAPHY
+========================================================== */
+
+h1,
+h2{
+
+font-family:'Fraunces',serif;
+
+font-weight:500;
+
+letter-spacing:-.02em;
+
+line-height:1.2;
+
+}
+
+h3,
+h4,
+h5,
+h6{
+
+font-family:'Inter',sans-serif;
+
+font-weight:700;
+
+}
+
+h1{
+
+font-size:clamp(2.8rem,5vw,4.5rem);
+
+}
+
+h2{
+
+font-size:clamp(2rem,4vw,3rem);
+
+}
+
+h3{
+
+font-size:1.4rem;
+
+}
+
+p{
+
+color:var(--text-secondary);
+
+}
+
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+a{
+
+text-decoration:none;
+
+color:inherit;
+
+transition:var(--transition);
+
+}
+
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+button{
+
+font-family:'Inter',sans-serif;
+
+cursor:pointer;
+
+transition:var(--transition);
+
+border:none;
+
+outline:none;
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+
+}
+
+
+/* ==========================================================
+   IMAGES
+========================================================== */
+
+img{
+
+display:block;
+
+max-width:100%;
+
+height:auto;
+
+}
+
+
+/* ==========================================================
+   CARD
+========================================================== */
+
+.glass-card{
+
+background:var(--gradient-card);
+
+border:1px solid var(--border);
+
+border-radius:var(--radius-lg);
+
+backdrop-filter:blur(18px);
+
+box-shadow:var(--shadow-md);
+
+transition:var(--transition);
+
+}
+
+.glass-card:hover{
+
+transform:translateY(-6px);
+
+border-color:var(--border-hover);
+
+box-shadow:var(--shadow-lg);
+
+}
+
+
+/* ==========================================================
+   SECTION
+========================================================== */
+
+.section{
+
+padding:clamp(70px,8vw,120px) 0;
+
+}
+
+.compact-section{
+
+padding:clamp(50px,6vw,80px) 0;
+
+}
+
+
+/* ==========================================================
+   CONTAINER
+========================================================== */
+
+.container{
+
+width:min(1200px,92%);
+
+margin-inline:auto;
+
+}
+
+
+/* ==========================================================
+   UTILITIES
+========================================================== */
+
+.text-center{
+
+text-align:center;
+
+}
+
+.hidden{
+
+display:none!important;
+
+}

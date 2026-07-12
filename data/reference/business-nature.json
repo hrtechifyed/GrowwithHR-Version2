@@ -1,0 +1,176 @@
+[
+    {
+        "category": "Technology",
+        "items": [
+            "Software Product Development",
+            "Software Services",
+            "Software Consulting",
+            "SaaS Platform",
+            "Mobile Application Development",
+            "Web Application Development",
+            "Artificial Intelligence Solutions",
+            "Machine Learning Solutions",
+            "Cyber Security Services",
+            "Cloud Services",
+            "Data Analytics",
+            "IT Infrastructure Services",
+            "Managed IT Services",
+            "Business Process Outsourcing",
+            "Knowledge Process Outsourcing"
+        ]
+    },
+    {
+        "category": "Manufacturing",
+        "items": [
+            "Manufacturing",
+            "Assembly",
+            "Fabrication",
+            "Processing",
+            "Packaging",
+            "Contract Manufacturing",
+            "OEM Manufacturing",
+            "Job Work",
+            "Food Processing",
+            "Pharmaceutical Manufacturing",
+            "Chemical Manufacturing",
+            "Textile Manufacturing",
+            "Automobile Manufacturing",
+            "Electronics Manufacturing"
+        ]
+    },
+    {
+        "category": "Sales & Commerce",
+        "items": [
+            "Retail Sales",
+            "Wholesale Trading",
+            "Import",
+            "Export",
+            "Import and Export",
+            "Distribution",
+            "E-Commerce",
+            "Marketplace Operations",
+            "Franchise Operations"
+        ]
+    },
+    {
+        "category": "Professional Services",
+        "items": [
+            "Management Consulting",
+            "HR Consulting",
+            "Legal Services",
+            "Accounting Services",
+            "Audit Services",
+            "Tax Advisory",
+            "Recruitment Services",
+            "Staffing Services",
+            "Training Services",
+            "Business Advisory"
+        ]
+    },
+    {
+        "category": "Healthcare",
+        "items": [
+            "Hospital Services",
+            "Clinical Services",
+            "Diagnostic Services",
+            "Medical Laboratory",
+            "Telemedicine",
+            "Healthcare Consulting"
+        ]
+    },
+    {
+        "category": "Education",
+        "items": [
+            "School Education",
+            "Higher Education",
+            "Professional Training",
+            "Skill Development",
+            "Online Education",
+            "Corporate Training"
+        ]
+    },
+    {
+        "category": "Construction & Infrastructure",
+        "items": [
+            "Construction",
+            "Civil Contracting",
+            "Infrastructure Development",
+            "Engineering Services",
+            "Architecture Services",
+            "Interior Design"
+        ]
+    },
+    {
+        "category": "Logistics",
+        "items": [
+            "Transportation",
+            "Warehousing",
+            "Supply Chain Management",
+            "Freight Forwarding",
+            "Courier Services",
+            "Last Mile Delivery"
+        ]
+    },
+    {
+        "category": "Hospitality",
+        "items": [
+            "Hotel Operations",
+            "Restaurant Operations",
+            "Catering",
+            "Travel Services",
+            "Tour Operations",
+            "Event Management"
+        ]
+    },
+    {
+        "category": "Financial Services",
+        "items": [
+            "Banking Services",
+            "Lending",
+            "Insurance Services",
+            "Investment Services",
+            "Payment Services",
+            "Financial Advisory"
+        ]
+    },
+    {
+        "category": "Media",
+        "items": [
+            "Publishing",
+            "Broadcasting",
+            "Film Production",
+            "Content Creation",
+            "Digital Marketing",
+            "Advertising"
+        ]
+    },
+    {
+        "category": "Agriculture",
+        "items": [
+            "Agriculture",
+            "Dairy",
+            "Fisheries",
+            "Food Production",
+            "AgriTech Services"
+        ]
+    },
+    {
+        "category": "Government & Non-Profit",
+        "items": [
+            "Public Administration",
+            "Social Welfare",
+            "Charitable Activities",
+            "Research",
+            "Community Development"
+        ]
+    },
+    {
+        "category": "Other",
+        "items": [
+            "Multi-Business Operations",
+            "Holding Company Activities",
+            "Investment Holding",
+            "Other"
+        ]
+    }
+]

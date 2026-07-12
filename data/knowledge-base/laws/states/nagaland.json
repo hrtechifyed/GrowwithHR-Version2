@@ -1,0 +1,200 @@
+{
+  "stateId": "NL",
+  "stateName": "Nagaland",
+  "lastVerified": "2026-07-05",
+  "status": "Active",
+
+  "authority": {
+    "department": "Labour Department, Government of Nagaland",
+    "sourceId": "NL-LABOUR"
+  },
+
+  "overview": "State-specific labour law requirements applicable to establishments operating in Nagaland.",
+
+  "rules": [
+
+    {
+      "id": "NL-001",
+      "title": "Review Nagaland Shops and Establishments Registration",
+      "priority": "Mandatory",
+      "category": "Shops & Establishments",
+      "description": "Determine whether registration under the applicable Nagaland Shops and Establishments legislation is required.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "NL-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Nagaland Shops and Establishments legislation"
+        }
+      ]
+    },
+
+    {
+      "id": "NL-002",
+      "title": "Maintain Statutory Registers and Employment Records",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Maintain statutory registers, employee records and prescribed notices under Nagaland labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "NL-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Nagaland Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "NL-003",
+      "title": "Display Statutory Notices",
+      "priority": "Mandatory",
+      "category": "Documentation",
+      "description": "Display statutory notices and employee information required under applicable labour legislation.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "NL-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Nagaland Labour Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "NL-004",
+      "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
+      "priority": "Mandatory",
+      "category": "Working Conditions",
+      "description": "Ensure compliance with Nagaland provisions governing working hours, overtime, leave and weekly holidays.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "NL-LABOUR",
+      "citations": [
+        {
+          "reference": "Applicable Nagaland Shops and Establishments Rules"
+        }
+      ]
+    },
+
+    {
+      "id": "NL-005",
+      "title": "Review Minimum Wage Notifications",
+      "priority": "Mandatory",
+      "category": "Minimum Wages",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Nagaland.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "NL-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Nagaland Minimum Wage Notifications"
+        }
+      ]
+    },
+
+    {
+      "id": "NL-006",
+      "title": "Monitor State Labour Notifications",
+      "priority": "Mandatory",
+      "category": "State Notifications",
+      "description": "Review labour department notifications, amendments and circulars issued by the Government of Nagaland.",
+      "applicability": {
+        "employeeCount": {
+          "min": 1
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ]
+      },
+      "sourceId": "NL-LABOUR",
+      "citations": [
+        {
+          "reference": "Government of Nagaland Labour Notifications"
+        }
+      ]
+    }
+
+  ],
+
+  "recommended": [
+
+    {
+      "id": "NLR-001",
+      "title": "Annual Labour Compliance Audit",
+      "description": "Conduct an annual audit covering statutory registrations, labour records, payroll compliance and inspection readiness."
+    },
+
+    {
+      "id": "NLR-002",
+      "title": "Digital Compliance Calendar",
+      "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour compliance due dates."
+    }
+
+  ],
+
+  "references": [
+
+    {
+      "sourceId": "NL-LABOUR"
+    },
+
+    {
+      "sourceId": "MOL"
+    },
+
+    {
+      "sourceId": "INDIACODE"
+    }
+
+  ]
+
+}
