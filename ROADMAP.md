@@ -4,286 +4,119 @@
 
 ---
 
-# Vision
+## Vision
 
-GrowWithHR aims to become the world's most trusted AI-powered Executive HR Intelligence Platform, helping founders, business leaders, HR professionals, consultants, and advisors make faster, better and explainable people decisions.
-
-Rather than functioning as a traditional HR software, GrowWithHR is being built as an Executive Intelligence Platform that combines organizational context, statutory compliance, governance frameworks and AI to provide actionable recommendations throughout a company's growth journey.
+GrowWithHR aims to become a trusted executive HR intelligence platform that helps founders, business leaders, HR professionals, consultants, and advisors make explainable people, compliance, and growth-readiness decisions.
 
 ---
 
-# Product Principles
+## Product Principles
 
-Every feature developed for GrowWithHR follows these principles:
-
-- Executive First
-- AI with Explainability
-- Official Source Driven
-- Privacy by Design
-- Progressive Disclosure
-- Premium Enterprise Experience
-- Modular & Scalable Architecture
+- Executive first.
+- Explainable recommendations.
+- Official-source awareness.
+- Privacy by design.
+- Progressive disclosure.
+- Premium enterprise experience.
+- Modular and maintainable architecture.
 
 ---
 
-# Development Roadmap
+## Phase 1 — Executive Intelligence Prototype
+
+Status: ✅ Beta foundation
+
+Completed:
+
+- Premium landing experience.
+- Company DNA framework.
+- Executive Intelligence Core.
+- Interactive intelligence visualization.
+- Growth Stage intelligence.
+- Recommendation intelligence.
+- Static executive assessment.
+- Advisory preview.
+- Official government resources.
+- Responsive glassmorphism UI.
 
 ---
 
-# Phase 1 — Executive Intelligence Platform
-Status: ✅ Beta
+## Phase 2 — Executive Assessment UX Layer
 
-Objective
+Status: ✅ Initial implementation, integration pending
 
-Build the foundation of the Executive Intelligence Platform.
+Completed in the new UX layer:
 
-Completed
+- Animated assessment intro.
+- Scene transitions.
+- Wizard-style assessment component.
+- Contact-capture component without persistence.
+- Explicit no-storage notices.
+- Privacy and data-handling panel.
+- Rules-based personalized report generator.
+- Zustand current-tab state store.
+- TypeScript assessment/report types.
+- Unit-test examples.
 
-- Premium landing experience
-- Company DNA framework
-- Executive Intelligence Core
-- Interactive intelligence visualization
-- Dynamic Company DNA
-- Growth Stage Intelligence
-- Recommendation Intelligence
-- Executive Assessment
-- Advisory Preview
-- Platform Capability Showcase
-- Official Government Resources
-- Privacy & About pages
-- Responsive UI
-- Glassmorphism Design System
+Important constraint:
 
-Version
+- Current build does not save progress. If the user leaves midway, they must start fresh.
 
-v0.10.x Beta
+Next work:
 
----
-
-# Phase 2 — Executive Assessment Experience
-Status: In Progress
-
-Objective
-
-Transform the assessment into an AI-guided executive experience.
-
-Planned
-
-- Multi-step assessment wizard
-- Progressive disclosure
-- Smart progress tracking
-- AI guidance during assessment
-- Context-aware questions
-- Executive summary before submission
-- Improved validation
-- Mobile-first assessment flow
-- Assessment autosave
-
-Target
-
-v0.11.x
+- Integrate the UX layer into a runnable app route.
+- Add a reliable dependency lockfile and test runner setup.
+- Expand test coverage for the complete assessment flow.
+- QA mobile, tablet, and desktop behavior.
 
 ---
 
-# Phase 3 — Executive Advisory Platform
+## Phase 3 — Report Quality and Explainability
 
-Objective
+Status: Planned
 
-Generate comprehensive executive advisory reports.
+Planned:
 
-Features
+- Stronger report sections.
+- Clearer recommendation evidence.
+- Better maturity scoring explanation.
+- More transparent benchmark methodology.
+- Export-ready report layout.
 
-- AI-generated executive summaries
-- Risk prioritization
-- Compliance roadmap
-- HR governance recommendations
-- Workforce strategy recommendations
-- Growth readiness scoring
-- Maturity scoring
-- Actionable implementation roadmap
-- Executive PDF reports
+Storage note:
 
-Target
-
-v0.12.x
+- Exports should be generated client-side unless a future consent-based storage model is approved.
 
 ---
 
-# Phase 4 — Personalized Intelligence
+## Phase 4 — Optional Persistence and Integrations
 
-Objective
+Status: Not started
 
-Move beyond static reports into continuous advisory.
+Potential features only after explicit privacy review and consent design:
 
-Features
+- Email delivery.
+- Google Drive storage in an HRTechify-controlled folder.
+- CRM export.
+- Admin dashboard.
+- Save-and-resume links.
+- User accounts.
+- Saved report history.
 
-- User accounts
-- Company profiles
-- Saved assessments
-- Report history
-- Personalized dashboard
-- Regulatory monitoring
-- Company timeline
-- Notification center
-- Advisory updates
-
-Target
-
-v1.0
+These features are intentionally not present in the current build.
 
 ---
 
-# Phase 5 — GrowWithHR AI Coach
+## Phase 5 — GrowWithHR AI Coach
 
-Objective
+Status: Future concept
 
-Provide an always-available AI executive advisor.
+Potential features:
 
-Features
+- Natural-language advisory conversations.
+- Scenario planning.
+- HR strategy guidance.
+- Compliance Q&A.
+- Organizational design support.
 
-- Natural language conversations
-- Company-specific AI memory
-- HR strategy guidance
-- Organizational design advice
-- Leadership coaching
-- Policy recommendations
-- Compliance Q&A
-- Scenario planning
-- Executive decision support
-
-Target
-
-v1.x
-
----
-
-# Phase 6 — HR Operating System
-
-Objective
-
-Expand GrowWithHR into a complete Executive HR Operating System.
-
-Modules
-
-- Compliance Intelligence
-- Organization Intelligence
-- Workforce Intelligence
-- Talent Intelligence
-- Leadership Intelligence
-- Learning Intelligence
-- Performance Intelligence
-- Rewards Intelligence
-- Culture Intelligence
-- Engagement Intelligence
-- Workforce Analytics
-- AI Company Coach
-
-Target
-
-v2.x
-
----
-
-# Enterprise Platform
-
-Future enterprise capabilities include:
-
-- Multi-company management
-- Consultant dashboard
-- Advisor workspace
-- Team collaboration
-- Role-based permissions
-- Approval workflows
-- API integrations
-- SSO
-- Audit logs
-- Enterprise reporting
-
----
-
-# Intelligence Modules
-
-Current
-
-- Company DNA
-- Growth Stage Intelligence
-- Recommendation Engine
-
-Upcoming
-
-- Compliance Intelligence
-- Organization Intelligence
-- Workforce Intelligence
-- Talent Intelligence
-- Learning Intelligence
-- Performance Intelligence
-- Rewards Intelligence
-- Leadership Intelligence
-- Culture Intelligence
-- Risk Intelligence
-
----
-
-# Platform Integrations
-
-Planned integrations include:
-
-- Ministry of Labour
-- EPFO
-- ESIC
-- MCA
-- Income Tax
-- GST
-- DigiLocker
-- Slack
-- Microsoft Teams
-- Google Workspace
-- Microsoft 365
-
----
-
-# Long-Term Vision
-
-GrowWithHR will evolve from:
-
-Company Assessment
-
-↓
-
-Executive Advisory
-
-↓
-
-Continuous Intelligence
-
-↓
-
-AI Executive Coach
-
-↓
-
-Executive HR Operating System
-
----
-
-# Success Metrics
-
-The long-term success of GrowWithHR will be measured by:
-
-- Faster executive decision-making
-- Reduced compliance risk
-- Improved organizational maturity
-- Better workforce governance
-- Higher founder confidence
-- Explainable AI recommendations
-- Increased customer trust
-
----
-
-# Guiding Philosophy
-
-> Tell us about your company.
->
-> We'll tell you what matters next.
-
-This principle will continue to guide every product decision, ensuring GrowWithHR remains focused on simplifying complex people and compliance decisions through trustworthy, explainable AI.
+Any AI memory or user profile persistence must be designed with explicit user consent and clear retention rules.

@@ -4,556 +4,152 @@
 
 ---
 
-# Overview
+## Overview
 
-GrowWithHR is designed as a modular AI-powered Executive HR Intelligence Platform.
+GrowWithHR currently combines two layers:
 
-The architecture emphasizes:
+1. The original static HTML/CSS/JavaScript prototype.
+2. A new React/Next.js-ready TypeScript UX layer under `apps/web/src`.
 
-- Separation of concerns
-- Modular UI components
-- Explainable recommendation logic
-- Progressive feature expansion
-- Scalable front-end architecture
-
-The objective is to enable new intelligence modules, advisory capabilities and workflows without requiring large-scale refactoring.
+The new UX layer is intended to improve separation of concerns, accessibility, privacy messaging, and future maintainability without changing the current no-storage product policy.
 
 ---
 
-# High-Level Architecture
+## Current Data Architecture
 
-```
-                 User
+The current assessment is **client-side only and no-storage**.
 
-                   │
+```text
+Open Browser Tab
+    │
+    ▼
+React/Zustand in-memory state
+    │
+    ├── Assessment inputs
+    ├── Contact fields
+    └── Generated report
 
-                   ▼
-
-        Executive Assessment
-
-                   │
-
-                   ▼
-
-            Company DNA Engine
-
-                   │
-
-         ┌─────────┴─────────┐
-
-         ▼                   ▼
-
- Growth Stage         Recommendation Engine
-
-         │                   │
-
-         └─────────┬─────────┘
-
-                   ▼
-
-          Intelligence Core
-
-                   │
-
-                   ▼
-
-          Advisory Generator
-
-                   │
-
-                   ▼
-
-       Executive Advisory Report
+No persistence layer is connected.
 ```
 
----
+Data is not written to:
 
-# Core Architecture Layers
+- localStorage.
+- sessionStorage.
+- Cookies.
+- Backend APIs.
+- Databases.
+- Google Drive.
+- CRM systems.
+- Email systems.
+- HRTechify admin dashboards.
 
-## 1. Presentation Layer
-
-Responsible for:
-
-- User Interface
-- Navigation
-- Animations
-- Hero Experience
-- Cards
-- Dashboard
-- Assessment
-- Reports
-
-Technology
-
-- HTML5
-- CSS3
-- JavaScript
+If the user refreshes, closes the tab, navigates away, or switches devices, the assessment starts fresh.
 
 ---
 
-## 2. Company DNA Layer
+## High-Level UX Flow
 
-The Company DNA model represents organizational context.
-
-Current dimensions:
-
-- Company
-- Workforce
-- Operations
-- Growth
-
-Future dimensions:
-
-- Culture
-- Leadership
-- Financial Maturity
-- Risk Profile
-- Workforce Analytics
-
----
-
-## 3. Intelligence Layer
-
-Responsible for converting Company DNA into executive insights.
-
-Current engines:
-
-- Company DNA Intelligence
-- Growth Stage Intelligence
-- Recommendation Intelligence
-
-Future engines:
-
-- Compliance Intelligence
-- Organization Intelligence
-- Talent Intelligence
-- Rewards Intelligence
-- Leadership Intelligence
-- Culture Intelligence
-
----
-
-## 4. Recommendation Layer
-
-Inputs
-
-- Company DNA
-- Growth Stage
-- Applicable Laws
-- Organization Profile
-
-Outputs
-
-- Compliance
-- Governance
-- Workforce
-- Growth
-- Executive Actions
-
-Future
-
-- AI reasoning
-- Confidence scoring
-- Risk prioritization
-
----
-
-## 5. Advisory Layer
-
-Produces:
-
-- Executive Summary
-- Key Risks
-- Priority Actions
-- Applicable Laws
-- Governance Recommendations
-- HR Strategy
-- Growth Roadmap
-
----
-
-# Frontend Structure
-
-```
-index.html
-
-styles/
-
-    01-design-system.css
-
-    02-layout.css
-
-    03-components.css
-
-    04-hero.css
-
-    05-navbar.css
-
-    06-homepage.css
-
-    07-assessment.css
-
-    08-report.css
-
-scripts/
-
-    app.js
-
-    intelligence-core.js
-
-    report-generator.js
-
-    official-resources.js
+```text
+Start Executive Assessment
+        │
+        ▼
+Animated intro beats
+        │
+        ▼
+Company context wizard
+        │
+        ▼
+Current-tab-only contact capture
+        │
+        ▼
+Rules-based personalized advisory report
 ```
 
 ---
 
-# UI Philosophy
+## Core Frontend Layers
 
-The UI follows Progressive Disclosure.
+### 1. Static Prototype Layer
 
-Information is revealed only when required.
+Location: repository root HTML/CSS/JS files.
 
-Flow:
+Responsibilities:
 
-Landing Page
+- Existing landing pages.
+- Existing advisory dashboard page.
+- Existing static assets and JSON data.
+- Current visual identity and glassmorphism system.
 
-↓
+### 2. New UX Component Layer
 
-Assessment
+Location: `apps/web/src/components/UX`.
 
-↓
+Responsibilities:
 
-Executive Intelligence
+- Animated executive intro.
+- Scene transitions.
+- Wizard-style assessment.
+- Contact capture.
+- Privacy and data-handling UI.
+- Personalized report rendering.
 
-↓
+### 3. State Layer
 
-Executive Advisory
+Location: `apps/web/src/stores/assessmentStore.ts`.
 
-↓
+Responsibilities:
 
-Detailed Reports
+- Holds assessment answers in current-tab memory.
+- Holds contact fields in current-tab memory.
+- Holds generated report data in current-tab memory.
+- Validates required fields.
 
----
+### 4. Service Layer
 
-# Component Hierarchy
+Location: `apps/web/src/services/sessionPersistenceService.ts`.
 
-Landing Page
+Responsibilities:
 
-```
-Navbar
+- Documents and enforces no persistent storage.
+- Allows temporary current-tab memory snapshots only.
+- Rejects remote storage attempts.
 
-Hero
+### 5. Type Layer
 
-Platform
+Location: `apps/web/src/types/uiTypes.ts`.
 
-Assessment
+Responsibilities:
 
-Resources
-
-Privacy
-
-About
-
-Contact
-
-Footer
-```
-
-Hero
-
-```
-Hero
-
-├── Company DNA
-
-├── Growth Stage
-
-├── Recommendation Basis
-
-├── Intelligence Core
-
-└── Executive Preview
-```
-
-Assessment
-
-```
-Assessment
-
-├── Company
-
-├── Workforce
-
-├── Operations
-
-├── Growth
-
-└── Advisory Generation
-```
+- Defines assessment input types.
+- Defines contact data types.
+- Defines report output types.
+- Defines UI state types.
 
 ---
 
-# Intelligence Core
+## Design System Alignment
 
-Purpose
+The new UX layer uses the advisory dashboard typography stack:
 
-Visual representation of the recommendation engine.
-
-Responsibilities
-
-- Company DNA visualization
-- Node relationships
-- Recommendation highlighting
-- Executive interaction
-- Animation
-
-Current
-
-Three.js
-
-Future
-
-Interactive recommendation explorer
-
----
-
-# Recommendation Engine
-
-Current Inputs
-
-Company
-
-↓
-
-People
-
-↓
-
-Operations
-
-↓
-
-Growth
-
-↓
-
-Applicable Laws
-
-↓
-
-Recommendations
-
-Future
-
-Dynamic AI reasoning pipeline
-
-```
-Company DNA
-
-↓
-
-LLM
-
-↓
-
-Reasoning Layer
-
-↓
-
-Validation Layer
-
-↓
-
-Official Sources
-
-↓
-
-Executive Recommendation
+```css
+font-family: "Inter", "Segoe UI", sans-serif;
 ```
 
----
-
-# Styling Architecture
-
-Design Language
-
-- Premium SaaS
-- Executive Dashboard
-- Glassmorphism
-- Explainable AI
-- Low Cognitive Load
-
-Tokens
-
-- Colors
-- Typography
-- Shadows
-- Radius
-- Spacing
-- Animations
+Components also preserve the premium, glass-like visual direction through rounded cards, soft shadows, calm colors, and responsive layouts.
 
 ---
 
-# JavaScript Philosophy
-
-Each module should have one responsibility.
-
-Example
-
-```
-app.js
-
-↓
-
-Assessment Logic
-
-↓
-
-Animation Controllers
-
-↓
-
-Carousel
-
-↓
-
-Rotators
-```
-
-```
-intelligence-core.js
-
-↓
-
-Graph Rendering
-
-↓
-
-Node Highlighting
-
-↓
-
-Animation
-
-↓
-
-Relationships
-```
-
-Avoid mixing business logic with rendering logic.
-
----
-
-# Future Backend
-
-```
-Frontend
-
-↓
-
-API Gateway
-
-↓
-
-Recommendation Service
-
-↓
-
-Compliance Service
-
-↓
-
-AI Service
-
-↓
-
-Official Sources
-
-↓
-
-Database
-```
-
----
-
-# Scalability Principles
-
-Every new module should:
-
-- Be independently deployable
-- Be reusable
-- Avoid global CSS
-- Avoid global JavaScript
-- Use modular architecture
-- Keep concerns isolated
-
----
-
-# Coding Standards
-
-HTML
-
-- Semantic
-- Accessible
-- Modular
-
-CSS
-
-- Component scoped
-- Design token driven
-- No unnecessary global overrides
-
-JavaScript
-
-- Single responsibility
-- Modular
-- Event driven
-- Minimal DOM coupling
-
----
-
-# Repository Philosophy
-
-The repository is organized around product modules rather than pages.
-
-Each module should be independently maintainable and extensible.
-
----
-
-# Future Modules
-
-- Executive Dashboard
-- AI Company Coach
-- Saved Reports
-- Compliance Timeline
-- Regulatory Monitor
-- Organization Designer
-- Policy Builder
-- HR Knowledge Hub
-- Consultant Workspace
-- Enterprise Portal
-
----
-
-# Architecture Goals
-
-GrowWithHR is being built to become an extensible Executive HR Intelligence Platform rather than a single-purpose HR assessment application.
-
-Every architectural decision should support:
-
-- Simplicity
-- Explainability
-- Scalability
-- Trust
-- Premium User Experience
-
----
-
-# Guiding Principle
-
-> Build once.
->
-> Extend forever.
-
-The architecture should enable continuous expansion without requiring major redesigns or breaking existing functionality.
+## Future Architecture Considerations
+
+Any future persistence feature must be designed as a separate, consent-based architecture decision. This includes:
+
+- Save-and-resume.
+- Email delivery.
+- Google Drive storage.
+- CRM export.
+- Admin dashboard.
+- User accounts.
+- Saved reports.
+
+Until those features are explicitly implemented and documented, the architecture remains open-tab memory only.

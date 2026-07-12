@@ -2,102 +2,100 @@
 
 ## Design Philosophy
 
-Executive software should feel calm, trustworthy and focused.
+Executive software should feel calm, trustworthy, focused, and transparent.
 
 ---
 
 ## Principles
 
-- Premium SaaS
-- Executive-first
-- Progressive disclosure
-- Low cognitive load
-- Explainable AI
-- Consistent spacing
-- Clear visual hierarchy
+- Premium SaaS feel.
+- Executive-first language.
+- Progressive disclosure.
+- Low cognitive load.
+- Explainable recommendations.
+- Consistent spacing.
+- Clear visual hierarchy.
+- Privacy notices near sensitive questions.
 
 ---
 
-## Colours
+## Typography
 
-Primary
+Primary font stack:
 
-Gold → Orange Gradient
+```css
+font-family: "Inter", "Segoe UI", sans-serif;
+```
 
-Secondary
+This stack is used by the advisory dashboard and must also be used by the new executive assessment UX components.
 
-Executive Blue
+Hierarchy:
 
-Neutral
+- H1: hero or page title only.
+- H2: major scene or section title.
+- H3: card title or panel title.
+- Body: 16px baseline.
+- Caption/helper text: 13–14px.
 
-Glass Black
+---
 
-Typography
+## Colors
 
-Primary
+Primary:
 
-Inter
+- Executive blue.
+- Gold/orange accent gradients where already used.
 
-Hierarchy
+Neutral:
 
-H1
+- Soft white cards.
+- Glass black overlays.
+- Light blue privacy/info panels.
 
-Hero only
+Status colors:
 
-H2
-
-Section titles
-
-H3
-
-Card titles
-
-Body
-
-16px
-
-Caption
-
-13–14px
+- Error: accessible red.
+- Success: accessible green.
+- Info: calm blue.
 
 ---
 
 ## Border Radius
 
-Cards
-
-24px
-
-Buttons
-
-10px
-
-Badges
-
-999px
+- Cards: 20–32px.
+- Buttons: 999px for pill CTAs or 10–14px for utility controls.
+- Badges: 999px.
 
 ---
 
 ## Shadows
 
-Soft
-
-Medium
-
-Large
-
-Glow
+Use soft, premium shadows. Avoid heavy or harsh shadows.
 
 ---
 
 ## Animations
 
-250–350ms
+- Purposeful, not decorative.
+- Short scene transitions.
+- Respect `prefers-reduced-motion`.
+- Text reveals should use short beats rather than long paragraphs.
 
-Ease
+---
 
-Minimal
+## Accessibility
 
-Purposeful
+- Minimum interactive target: 44px height.
+- Use ARIA labels for controls and live regions.
+- Support keyboard navigation for animated content.
+- Keep validation messages visible and associated with inputs.
 
-Never decorative.
+---
+
+## Privacy UI Pattern
+
+Sensitive assessment sections should include a short data-handling notice stating:
+
+- Data is only in the open tab.
+- Nothing is stored or sent.
+- If the user leaves, they must start fresh.

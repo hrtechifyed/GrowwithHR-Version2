@@ -1,0 +1,67 @@
+/* ==========================================
+   Responsive Utilities and Cross-Page Fixes
+   ========================================== */
+
+/* This file is intentionally present because styles.css and assessment pages
+   import it directly. It centralizes small responsive fixes shared across the
+   static GrowWithHR pages. */
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+}
+
+[aria-current="page"] {
+  color: var(--brand-gold, #ffb000);
+}
+
+.analyze-redirect-section .summary-card,
+.resources-redirect-section .summary-card {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Remove the orange vertical active bar from the Company DNA card while keeping
+   active text/icon styling intact. */
+.company-dna-card .dna-item::before,
+.company-dna-card .dna-item.active::before {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 1024px) {
+  .hero-dashboard-layout,
+  .hero-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .updates-grid,
+  .how-grid,
+  .capabilities-grid,
+  .trust-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .updates-grid,
+  .how-grid,
+  .capabilities-grid,
+  .trust-grid,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compact-section {
+    padding-block: 56px;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .nav-cta {
+    min-height: 44px;
+  }
+}
