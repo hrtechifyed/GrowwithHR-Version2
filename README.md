@@ -1,4 +1,4 @@
-# GrowWithHR
+# GrowWithHRV2
 
 **GrowWithHR** is an executive HR intelligence and advisory prototype by HRTechify. It helps founders, business leaders, and HR professionals explore company context, statutory compliance, growth readiness, and people-governance priorities through explainable recommendations.
 
