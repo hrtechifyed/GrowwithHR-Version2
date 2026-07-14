@@ -95,7 +95,10 @@ const organizationProfile = {
 
 };
 
-        const observations = [];
+        const observations =
+    this.buildExecutiveObservations(
+        company
+    );
 
         const risks = [];
 
