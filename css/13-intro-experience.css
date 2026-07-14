@@ -620,3 +620,63 @@
     transform: translateY(0);
 
 }
+
+
+.coach-typing {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: opacity .25s ease;
+
+}
+
+.coach-typing.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+}
+
+.coach-typing::before,
+.coach-typing::after {
+
+    content: "";
+
+}
+
+.coach-typing.active {
+
+    animation: coachTypingPulse .8s infinite ease-in-out;
+
+}
+
+@keyframes coachTypingPulse {
+
+    0% {
+
+        opacity: .35;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: .35;
+
+    }
+
+}
