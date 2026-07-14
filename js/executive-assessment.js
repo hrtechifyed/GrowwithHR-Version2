@@ -2130,7 +2130,8 @@ resetAssessment() {
 
         this.bindBeforeUnload();
 
-         this.showLanding();
+       this.startAssessment();
+
 
     }
 }
