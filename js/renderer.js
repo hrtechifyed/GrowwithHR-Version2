@@ -240,94 +240,460 @@ function renderExecutiveSummary(reportData) {
     `;
 
 }
+
+
+function renderCompanyProfile(reportData) {
+
+    const profile =
+        reportData.organizationProfile || {};
+
+    return `
+
+        <div class="executive-card-grid">
+
+            ${renderMetricCard(
+
+                "Company",
+
+                profile.companyName || "-",
+
+                "Organization"
+
+            )}
+
+            ${renderMetricCard(
+
+                "Industry",
+
+                profile.industry || "-",
+
+                "Business Sector"
+
+            )}
+
+            ${renderMetricCard(
+
+                "Entity",
+
+                profile.entityType || "-",
+
+                "Legal Structure"
+
+            )}
+
+            ${renderMetricCard(
+
+                "Work Model",
+
+                profile.workModel || "-",
+
+                "Operating Model"
+
+            )}
+
+            ${renderMetricCard(
+
+                "Employees",
+
+                profile.currentEmployees ?? "-",
+
+                "Current"
+
+            )}
+
+            ${renderMetricCard(
+
+                "Projected",
+
+                profile.projectedEmployees ?? "-",
+
+                "Planned"
+
+            )}
+
+        </div>
+
+    `;
+
+}
+
+function renderObservations(reportData) {
+
+    const observations =
+        asArray(reportData.observations);
+
+    if (!observations.length) {
+
+        return renderEmptyState(
+
+            "No executive observations available."
+
+        );
+
+    }
+
+    return observations.map(
+
+        observation => `
+
+            <div class="executive-card">
+
+                <h4>
+
+                    ${escapeHTML(
+                        observation.title
+                    )}
+
+                </h4>
+
+                <p>
+
+                    ${escapeHTML(
+                        observation.description
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+
+    ).join("");
+
+}
+
+function renderRisks(reportData) {
+
+    const risks =
+        asArray(reportData.risks);
+
+    if (!risks.length) {
+
+        return renderEmptyState(
+
+            "No executive risks identified."
+
+        );
+
+    }
+
+    return risks.map(
+
+        risk => `
+
+            <div class="executive-card executive-risk">
+
+                <h4>
+
+                    ${escapeHTML(
+                        risk.title
+                    )}
+
+                </h4>
+
+                <p>
+
+                    ${escapeHTML(
+                        risk.description
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+
+    ).join("");
+
+}
+
+function renderOpportunities(reportData) {
+
+    const opportunities =
+        asArray(
+            reportData.opportunities
+        );
+
+    if (!opportunities.length) {
+
+        return renderEmptyState(
+
+            "No executive opportunities identified."
+
+        );
+
+    }
+
+    return opportunities.map(
+
+        opportunity => `
+
+            <div class="executive-card executive-opportunity">
+
+                <h4>
+
+                    ${escapeHTML(
+                        opportunity.title
+                    )}
+
+                </h4>
+
+                <p>
+
+                    ${escapeHTML(
+                        opportunity.description
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+
+    ).join("");
+
+}
+
+function renderInsights(reportData) {
+
+    const insights =
+        asArray(
+            reportData.insights
+        );
+
+    if (!insights.length) {
+
+        return renderEmptyState(
+
+            "No executive insights available."
+
+        );
+
+    }
+
+    return insights.map(
+
+        insight => `
+
+            <div class="executive-card executive-insight">
+
+                <h4>
+
+                    ${escapeHTML(
+                        insight.title
+                    )}
+
+                </h4>
+
+                <p>
+
+                    ${escapeHTML(
+                        insight.description
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+
+    ).join("");
+
+}
+
+
+function renderRecommendations(reportData) {
+
+    const recommendations =
+        asArray(
+            reportData.recommendations
+        );
+
+    if (!recommendations.length) {
+
+        return renderEmptyState(
+
+            "No recommendations generated."
+
+        );
+
+    }
+
+    return recommendations.map(
+
+        recommendation => `
+
+            <div class="executive-card executive-recommendation">
+
+                <h4>
+
+                    ${escapeHTML(
+                        recommendation.title
+                    )}
+
+                </h4>
+
+                <p>
+
+                    ${escapeHTML(
+                        recommendation.description
+                    )}
+
+                </p>
+
+                <span class="recommendation-priority">
+
+                    Priority:
+                    ${escapeHTML(
+                        recommendation.priority || "-"
+                    )}
+
+                </span>
+
+            </div>
+
+        `
+
+    ).join("");
+
+}
+
+
+
+
+
+
+
 function renderDashboardLayout(reportData) {
-    const root = getDashboardRoot();
+
+    const root =
+        getDashboardRoot();
 
     if (!root) {
         return;
     }
 
     root.innerHTML = `
-        <div class="executive-dashboard" id="executiveDashboard">
+
+        <div
+            class="executive-dashboard"
+            id="executiveDashboard">
+
             ${renderExecutiveSummary(reportData)}
 
-            <div class="journey-rail" aria-label="Dashboard journey">
-                <span>1 Executive Summary</span>
-                <span>2 Choose a Category</span>
-                <span>3 Expand a Rule</span>
-                <span>4 Official Sources</span>
-                <span>5 Download</span>
+            <div
+                class="journey-rail">
+
+                <span>Executive Summary</span>
+
+                <span>Company Profile</span>
+
+                <span>Insights</span>
+
+                <span>Recommendations</span>
+
             </div>
 
-            <div class="dashboard-quick-actions" aria-label="Advisory categories">
-                <button class="dashboard-nav-card" type="button" data-target="complianceSection">
-                    <span class="nav-card-kicker">Mandatory</span>
-                    <strong>Compliance</strong>
-                    <span>View →</span>
-                </button>
-                <button class="dashboard-nav-card" type="button" data-target="peopleSection">
-                    <span class="nav-card-kicker">Recommended</span>
-                    <strong>People</strong>
-                    <span>View →</span>
-                </button>
-                <button class="dashboard-nav-card" type="button" data-target="growthSection">
-                    <span class="nav-card-kicker">Future</span>
-                    <strong>Growth</strong>
-                    <span>View →</span>
-                </button>
-                <button class="dashboard-nav-card" type="button" data-target="expansionSection">
-                    <span class="nav-card-kicker">Planner</span>
-                    <strong>Expansion</strong>
-                    <span>View →</span>
-                </button>
-            </div>
+            <div
+                class="dashboard-workspace">
 
-            <details class="dashboard-download-menu">
-                <summary>Download options <span>+</span></summary>
-                <div class="download-actions">
-                    <button class="primary-btn" type="button" id="downloadReportButton">Download Report</button>
-                    <button class="primary-btn" type="button" id="downloadPackButton">Download Advisory Pack</button>
-                </div>
-            </details>
+                <main
+                    class="dashboard-content">
 
-            <div class="dashboard-workspace">
-                <main class="dashboard-content">
                     ${renderSectionShell(
-                        "complianceSection",
-                        "Compliance Obligations",
-                        "Mandatory statutory obligations and next actions",
-                        typeof renderCompliance === "function" ? renderCompliance(reportData) : renderEmptyState("Compliance module is not loaded."),
+
+                        "companyProfile",
+
+                        "Company Profile",
+
+                        "Organization overview",
+
+                        renderCompanyProfile(reportData),
+
                         true
+
                     )}
+
                     ${renderSectionShell(
-                        "peopleSection",
-                        "HR Governance",
-                        "Recommended people practices",
-                        typeof renderPeopleStrategy === "function" ? renderPeopleStrategy(reportData) : renderEmptyState("People module is not loaded."),
+
+                        "executiveObservations",
+
+                        "Executive Observations",
+
+                        "Business observations",
+
+                        renderObservations(reportData),
+
                         false
+
                     )}
+
                     ${renderSectionShell(
-                        "growthSection",
-                        "Organisation Growth",
-                        "Future operating model recommendations",
-                        typeof renderGrowthReadiness === "function" ? renderGrowthReadiness(reportData) : renderEmptyState("Growth module is not loaded."),
+
+                        "executiveRisks",
+
+                        "Executive Risks",
+
+                        "Potential business risks",
+
+                        renderRisks(reportData),
+
                         false
+
                     )}
+
                     ${renderSectionShell(
-                        "expansionSection",
-                        "Expansion Planner",
-                        "State comparison and expansion readiness",
-                        typeof renderExpansionAdvisor === "function" ? renderExpansionAdvisor(reportData) : renderEmptyState("Expansion module is not loaded."),
+
+                        "executiveOpportunities",
+
+                        "Executive Opportunities",
+
+                        "Growth opportunities",
+
+                        renderOpportunities(reportData),
+
                         false
+
                     )}
+
+                    ${renderSectionShell(
+
+                        "executiveInsights",
+
+                        "Executive Insights",
+
+                        "Cross-functional intelligence",
+
+                        renderInsights(reportData),
+
+                        false
+
+                    )}
+
+                    ${renderSectionShell(
+
+                        "executiveRecommendations",
+
+                        "Recommendations",
+
+                        "Recommended actions",
+
+                        renderRecommendations(reportData),
+
+                        false
+
+                    )}
+
                 </main>
+
             </div>
+
         </div>
+
     `;
 
     bindAccordionEvents();
-    bindDashboardActions(reportData);
-    bindDashboardNavigation();
+
 }
 
 function bindAccordionEvents() {
