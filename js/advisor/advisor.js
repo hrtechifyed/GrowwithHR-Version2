@@ -9,7 +9,7 @@
  */
 
 import companyDNA from "../core/company-dna.js";
-
+import recommendationEngine from "../core/recommendation-engine.js";
 import organizationService from "../modules/organization/service.js";
 import hiringService from "../modules/hiring/service.js";
 import performanceService from "../modules/performance/service.js";
@@ -63,7 +63,7 @@ buildExecutiveContext(company) {
 
 }
     
-    buildExecutiveObservations(company) {
+    buildExecutiveObservations(executiveContext) {
 
         const observations = [];
 
@@ -273,6 +273,67 @@ buildExecutiveRisks(executiveContext, observations) {
     }
 
     return opportunities;
+    }
+
+    buildExecutiveSummary(
+    executiveContext,
+    observations,
+    risks,
+    opportunities
+) {
+
+    const summary = {
+
+        title: "Executive Summary",
+
+        overview: "",
+
+        highlights: [],
+
+        focusAreas: []
+
+    };
+
+    if (executiveContext.growthPlanned) {
+
+        summary.highlights.push(
+            "The organization is preparing for workforce expansion."
+        );
+
+        summary.focusAreas.push(
+            "Scale HR operations to support business growth."
+        );
+
+    }
+
+    if (executiveContext.operatesInMultipleStates) {
+
+        summary.highlights.push(
+            "Operations span multiple states."
+        );
+
+        summary.focusAreas.push(
+            "Standardize HR and compliance practices across locations."
+        );
+
+    }
+
+    if (executiveContext.workModel === "Hybrid") {
+
+        summary.highlights.push(
+            "The organization operates with a hybrid workforce."
+        );
+
+        summary.focusAreas.push(
+            "Strengthen communication and people management practices."
+        );
+
+    }
+
+    summary.overview =
+        summary.highlights.join(" ");
+
+    return summary;
 
 }
 
@@ -365,6 +426,15 @@ const organizationProfile = {
         risks
     );
 
+        const executiveSummary =
+    this.buildExecutiveSummary(
+        executiveContext,
+        observations,
+        risks,
+        opportunities
+    );
+
+        
         const recommendations = [];
         
         return {
@@ -382,6 +452,8 @@ const organizationProfile = {
     risks,
 
     opportunities,
+
+    executiveSummary,
 
     recommendations,
     
