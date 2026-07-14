@@ -1069,3 +1069,42 @@
     transform: translateY(0);
 
 }
+
+#introActions {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease,
+        visibility .8s ease;
+
+}
+
+#introActions.is-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+}
+
+#startAssessment {
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+
+}
+
+#startAssessment:hover {
+
+    transform: translateY(-2px);
+
+}
