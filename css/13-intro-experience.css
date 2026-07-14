@@ -476,3 +476,46 @@
     color:#f7a600;
 
 }
+
+.coach-typing {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(4px);
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease,
+        visibility .25s ease;
+
+}
+
+.coach-typing.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+}
+
+.coach-line {
+
+    display: none;
+
+    opacity: 0;
+
+    transition: opacity .35s ease;
+
+}
+
+.coach-line.active {
+
+    display: block;
+
+    opacity: 1;
+
+}
