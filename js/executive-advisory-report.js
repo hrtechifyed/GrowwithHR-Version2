@@ -46,191 +46,100 @@ class ExecutiveAdvisoryReport {
 
     const data = this.reportData;
 
-    const setValue = (element, value, fallback = "Not Provided") => {
-
-        if (!element) return;
-
-        element.textContent =
-            value && String(value).trim() !== ""
-                ? value
-                : fallback;
-
-    };
-
-    setValue(
-        this.companyName,
-        data.companyName
-    );
-
-    setValue(
-        this.companyState,
-        data.primaryState
-    );
-
-    setValue(
-        this.companyIndustry,
-        data.industry
-    );
-
-    setValue(
-        this.companyEntity,
-        data.entity
-    );
-
-    setValue(
-        this.employeeCount,
-        data.employees
-    );
-
-    /* ------------------------------------------
-       Determine Growth Stage
-    ------------------------------------------ */
-
-    let stage = "Developing";
-
-    const employees =
-        parseInt(data.employees || 0, 10);
-
-    if (employees <= 20) {
-
-        stage = "Startup";
-
-    }
-
-    else if (employees <= 100) {
-
-        stage = "Growth";
-
-    }
-
-    else if (employees <= 500) {
-
-        stage = "Scaling";
-
-    }
-
-    else if (employees > 500) {
-
-        stage = "Enterprise";
-
-    }
-
-    setValue(
-        this.growthStage,
-        stage
-    );
-
-}
-
-       generateExecutiveSummary() {
-
-    const data = this.reportData;
-
-    const company =
-        data.companyName || "your organisation";
-
     const employees =
         parseInt(data.employees || 0);
 
-    const workModel =
-        data.workModel || "your current operating model";
-
-    const peopleFunction =
-        data.peopleFunction || "its current people structure";
-
-    const hiring =
-        data.hiringPlans || "current hiring plans";
-
-    let maturity = "Developing";
-
-    let overallStatus = "Stable";
-
-    let mandatory = 3;
-
-    let recommendations = 8;
-
-    let future = 5;
+    let stage =
+        "Developing Organisation";
 
     if (employees >= 500) {
 
-        maturity = "Enterprise";
-
-        overallStatus = "Advanced";
-
-        mandatory = 12;
-
-        recommendations = 15;
-
-        future = 10;
+        stage =
+            "Enterprise Organisation";
 
     }
 
     else if (employees >= 100) {
 
-        maturity = "Scaling";
-
-        overallStatus = "Progressing";
-
-        mandatory = 8;
-
-        recommendations = 12;
-
-        future = 8;
+        stage =
+            "Scaling Organisation";
 
     }
 
     else if (employees >= 20) {
 
-        maturity = "Growth";
-
-        overallStatus = "Developing";
-
-        mandatory = 5;
-
-        recommendations = 10;
-
-        future = 6;
+        stage =
+            "Growth Organisation";
 
     }
 
-    const headline =
-        `${company} Executive Advisory`;
-
-    const summary =
-        `${company} currently operates with approximately ${employees || "an unspecified number of"} employees using a ${workModel.toLowerCase()} work model. The organisation's people function is currently supported through ${peopleFunction.toLowerCase()}. Based on the assessment responses, the organisation demonstrates characteristics of a ${maturity.toLowerCase()} organisation with ${hiring.toLowerCase()}. This advisory identifies immediate compliance priorities, strategic workforce improvements and long-term organisational initiatives designed to support sustainable growth.`;
-
     document.getElementById(
-        "executiveHeadline"
-    ).textContent = headline;
-
-    document.getElementById(
-        "executiveSummary"
-    ).textContent = summary;
-
-    document.getElementById(
-        "mandatoryCount"
-    ).textContent = mandatory;
-
-    document.getElementById(
-        "recommendationCount"
-    ).textContent = recommendations;
-
-    document.getElementById(
-        "futureCount"
-    ).textContent = future;
-
-    document.getElementById(
-        "overallStatus"
-    ).textContent = maturity;
-
-    document.getElementById(
-        "overallRisk"
+        "companyName"
     ).textContent =
-        `${maturity} Organisation`;
+        data.companyName || "Not Provided";
+
+    document.getElementById(
+        "companyIndustry"
+    ).textContent =
+        data.industry || "Not Provided";
+
+    document.getElementById(
+        "employeeCount"
+    ).textContent =
+        employees || "Not Provided";
+
+    document.getElementById(
+        "peopleStructure"
+    ).textContent =
+        data.peopleFunction || "Not Provided";
+
+    document.getElementById(
+        "organisationStage"
+    ).textContent =
+        stage;
+
+    let focus = "";
+
+    if (
+
+        data.peopleFunction ===
+        "No Formal HR/People Function"
+
+    ) {
+
+        focus =
+            "Establish a structured people function before organisational growth introduces unnecessary complexity.";
+
+    }
+
+    else if (
+
+        data.peopleFunction ===
+        "Single HR Professional"
+
+    ) {
+
+        focus =
+            "Expand the existing HR capability into a strategic people function capable of supporting future growth.";
+
+    }
+
+    else {
+
+        focus =
+            "Leverage the existing HR capability to strengthen leadership, workforce planning and organisational effectiveness.";
+
+    }
+
+    document.getElementById(
+        "executiveFocus"
+    ).textContent =
+        focus;
 
 }
 
-      generateCompliance() {
+       
+   generateCompliance() {
 
     const container =
         document.getElementById("complianceContainer");
