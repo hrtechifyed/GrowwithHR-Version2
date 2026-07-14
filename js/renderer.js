@@ -90,40 +90,156 @@ function renderSectionShell(id, title, subtitle, content, expanded) {
 }
 
 function renderExecutiveSummary(reportData) {
-    const mandatoryCount = asArray(reportData.mandatory).length;
-    const recommendedCount = asArray(reportData.recommended).length;
-    const futureCount = asArray(reportData.future).length;
-    const totalActions = mandatoryCount + recommendedCount + futureCount;
+
+    const profile =
+        reportData.organizationProfile || {};
+
+    const summary =
+        reportData.executiveSummary || {};
 
     return `
-        <section class="executive-summary-card executive-summary-hero" aria-labelledby="executiveSummaryTitle">
+
+        <section
+            class="executive-summary-card executive-summary-hero"
+            aria-labelledby="executiveSummaryTitle">
+
             <div class="summary-hero-copy">
-                <p class="eyebrow">Executive Compliance Summary</p>
-                <h2 id="executiveSummaryTitle">A single executive view of obligations, governance, and growth readiness.</h2>
-                <p>
-                    Advisory assessment for <strong>${escapeHTML(reportData.entity)}</strong>
-                    operating in <strong>${escapeHTML(reportData.state)}</strong>
-                    within <strong>${escapeHTML(reportData.industry)}</strong>.
+
+                <p class="eyebrow">
+
+                    Executive Advisory Report
+
                 </p>
+
+                <h2 id="executiveSummaryTitle">
+
+                    Executive Intelligence Overview
+
+                </h2>
+
+                <p>
+
+                    Executive advisory generated for
+
+                    <strong>
+
+                        ${escapeHTML(
+                            profile.companyName ||
+                            "Organization"
+                        )}
+
+                    </strong>
+
+                    operating within
+
+                    <strong>
+
+                        ${escapeHTML(
+                            profile.industry ||
+                            "Unknown Industry"
+                        )}
+
+                    </strong>.
+
+                </p>
+
             </div>
 
-            <div class="executive-profile-strip" aria-label="Assessment profile">
-                ${renderMetricCard("State", reportData.state || "Not specified", "Operating location")}
-                ${renderMetricCard("Entity", reportData.entity || "Not specified", "Business profile")}
-                ${renderMetricCard("Industry", reportData.industry || "Not specified", "Sector lens")}
-                ${renderMetricCard("Employees", reportData.employeeBand || "Not specified", "Current scale")}
+            <div
+                class="executive-profile-strip">
+
+                ${renderMetricCard(
+
+                    "Employees",
+
+                    profile.currentEmployees ?? "-",
+
+                    "Current Workforce"
+
+                )}
+
+                ${renderMetricCard(
+
+                    "Projected",
+
+                    profile.projectedEmployees ?? "-",
+
+                    "Growth Plan"
+
+                )}
+
+                ${renderMetricCard(
+
+                    "Industry",
+
+                    profile.industry ?? "-",
+
+                    "Business"
+
+                )}
+
+                ${renderMetricCard(
+
+                    "Work Model",
+
+                    profile.workModel ?? "-",
+
+                    "Operating Model"
+
+                )}
+
             </div>
 
-            <div class="executive-meta-grid executive-status-grid">
-                ${renderMetricCard("Mandatory", mandatoryCount, "Compliance obligations")}
-                ${renderMetricCard("Recommendations", recommendedCount, "HR governance")}
-                ${renderMetricCard("Future", futureCount, "Organisation growth")}
-                ${renderMetricCard("Status", totalActions ? "Action Required" : "No Actions", "Advisory outcome")}
+            <div
+                class="executive-meta-grid executive-status-grid">
+
+                ${renderMetricCard(
+
+                    "Observations",
+
+                    summary.observationCount ?? 0,
+
+                    "Executive Findings"
+
+                )}
+
+                ${renderMetricCard(
+
+                    "Risks",
+
+                    summary.riskCount ?? 0,
+
+                    "Potential Risks"
+
+                )}
+
+                ${renderMetricCard(
+
+                    "Opportunities",
+
+                    summary.opportunityCount ?? 0,
+
+                    "Improvement Areas"
+
+                )}
+
+                ${renderMetricCard(
+
+                    "Recommendations",
+
+                    summary.recommendationCount ?? 0,
+
+                    "Recommended Actions"
+
+                )}
+
             </div>
+
         </section>
-    `;
-}
 
+    `;
+
+}
 function renderDashboardLayout(reportData) {
     const root = getDashboardRoot();
 
