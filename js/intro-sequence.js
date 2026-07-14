@@ -300,19 +300,75 @@ const timeline = [
         }
     },
 
-    /* --------------------------------------------------
-       COACH
-    -------------------------------------------------- */
+/* --------------------------------------------------
+   COACH
+-------------------------------------------------- */
 
-    ...coachLines.map((_, index) => ({
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 0)
+},
 
-        section: "coach",
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 1)
+},
 
-        duration: TIMING.coach,
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 2)
+},
 
-        action: () => activate(coachLines, index)
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 3)
+},
 
-    })),
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 4)
+},
+
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 5)
+},
+
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 6)
+},
+
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 7)
+},
+
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 8)
+},
+
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 9)
+},
+
+{
+    section: "coach",
+    duration: TIMING.coach,
+    action: () => activate(coachLines, 10)
+},
 
     /* --------------------------------------------------
        CTA
@@ -339,169 +395,10 @@ function next(delay) {
     state.timer = setTimeout(runTimeline, Math.max(0, delay));
 
 }
-        /* --------------------------------------------------
-           HERO
-        -------------------------------------------------- */
-
-        {
-            section: "hero",
-            duration: TIMING.hero,
-            action: () => {}
-        },
-
-        /* --------------------------------------------------
-           INTRO MESSAGES
-        -------------------------------------------------- */
-
-        {
-            section: "messages",
-            duration: TIMING.message,
-            action: () => activate(messageScenes, 0)
-        },
-
-        {
-            section: "messages",
-            duration: TIMING.message,
-            action: () => activate(messageScenes, 1)
-        },
-
-        {
-            section: "messages",
-            duration: TIMING.lastMessage,
-            action: () => activate(messageScenes, 2)
-        },
-
-        /* --------------------------------------------------
-           EXECUTIVE BRIEFING
-        -------------------------------------------------- */
-
-        {
-            section: "cards",
-            duration: TIMING.card,
-            action: () => activate(briefingCards, 0)
-        },
-
-        {
-            section: "cards",
-            duration: TIMING.card,
-            action: () => activate(briefingCards, 1)
-        },
-
-        {
-            section: "cards",
-            duration: TIMING.card,
-            action: () => activate(briefingCards, 2)
-        },
-
-        {
-            section: "cards",
-            duration: TIMING.card,
-            action: () => activate(briefingCards, 3)
-        },
-
-        {
-            section: "cards",
-            duration: TIMING.card,
-            action: () => activate(briefingCards, 4)
-        },
-
-        {
-            section: "cards",
-            duration: TIMING.card,
-            action: () => activate(briefingCards, 5)
-        },
-
-        /* --------------------------------------------------
-           TRANSITION
-        -------------------------------------------------- */
-
-{
-    section: "transition",
-    duration: 6000,
-
-    action: () => {
-
-        const transitionMessage =
-            document.getElementById("transitionMessage");
-
-        if (!transitionMessage) return;
-
-        const messages = [
-
-            "Every recommendation begins with understanding your organisation.",
-
-            "Every organisation is unique.",
-
-            "So every Executive Advisory should be too."
-
-        ];
-
-        let index = 0;
-
-        transitionMessage.textContent = messages[index];
-
-        const interval = setInterval(() => {
-
-            index++;
-
-            if (index >= messages.length) {
-
-                clearInterval(interval);
-
-                return;
-
-            }
-
-            transitionMessage.classList.remove("visible");
-
-            setTimeout(() => {
-
-                transitionMessage.textContent = messages[index];
-
-                transitionMessage.classList.add("visible");
-
-            }, 300);
-
-        }, 1800);
-
-        transitionMessage.classList.add("visible");
-
-    }
-
-},
-/* --------------------------------------------------
-   COACH
--------------------------------------------------- */
-
-...coachLines.map((_, index) => ({
-
-    section: "coach",
-
-    duration: TIMING.coach,
-
-    action: () => activate(coachLines, index)
-
-})),
-
-/* --------------------------------------------------
-   CTA
--------------------------------------------------- */
-
-{
-    section: "actions",
-    duration: 0,
-    action: () => {}
-}
-
-                                 
 
     /* ==========================================================
        TIMELINE PLAYER
-       (continues in Part 3)
     ========================================================== */
-/* ==========================================================
-   TIMELINE PLAYER
-========================================================== */
 
 function runTimeline() {
 
@@ -917,4 +814,4 @@ initialize();
 
 window.startAssessment = startAssessment;
 
-});                    
+});
