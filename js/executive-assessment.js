@@ -1332,16 +1332,24 @@ if (this.onWelcome) {
 
     showReview() {
 
-     console.log("SHOW REVIEW");
+      console.log("SHOW REVIEW");
 
-    console.log("Before hideAll", this.reviewScreen.hidden);
+      console.log("Before hideAll", this.reviewScreen.hidden);
 
         this.hideAll();
+
+       this.workspace.hidden = true;
+
 
        console.log("After hideAll", this.reviewScreen.hidden);
 
 
         this.reviewScreen.hidden = false;
+
+       window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+      });
 
         console.log("After showing", this.reviewScreen.hidden);
 
