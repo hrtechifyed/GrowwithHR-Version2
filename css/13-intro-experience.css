@@ -1,85 +1,150 @@
 /* ==========================================================
    EXECUTIVE INTRO EXPERIENCE
-   GrowWithHR
 ========================================================== */
 
-#introApp{
+.exec-intro{
 
     width:100%;
-    max-width:920px;
-    margin:0 auto;
-    min-height:70vh;
+    min-height:calc(100vh - 110px);
 
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
 
-    padding:80px 32px;
+    padding:80px 24px;
 
     text-align:center;
 
+    overflow:hidden;
+
 }
 
-.exec-intro-logo{
+/* ----------------------------------------------------------
+   Screens
+---------------------------------------------------------- */
 
-    width:90px;
-    height:90px;
+.intro-screen{
+
+    width:100%;
+    max-width:900px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+}
+
+/* ----------------------------------------------------------
+   Logo
+---------------------------------------------------------- */
+
+.intro-logo{
+
+    width:140px;
+
+    height:140px;
 
     object-fit:contain;
 
-    margin-bottom:28px;
+    margin-bottom:32px;
 
 }
 
-.exec-intro-title{
+/* ----------------------------------------------------------
+   Typography
+---------------------------------------------------------- */
 
-    font-size:2.6rem;
+.intro-title{
+
+    font-size:3rem;
+
     font-weight:700;
 
     line-height:1.15;
 
-    margin-bottom:12px;
+    margin-bottom:16px;
+
+    color:#ffffff;
 
 }
 
-.exec-intro-subtitle{
+.intro-subtitle{
 
-    font-size:1.05rem;
+    font-size:1.15rem;
 
-    opacity:.72;
+    color:rgba(255,255,255,.72);
 
-    margin-bottom:80px;
+    margin-bottom:72px;
 
 }
 
-.exec-scene{
+.intro-message{
 
     max-width:760px;
 
-    min-height:120px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
-
-}
-
-.exec-scene h2{
-
-    font-size:2rem;
+    font-size:2.2rem;
 
     font-weight:600;
 
-    line-height:1.4;
+    line-height:1.45;
+
+    color:white;
 
 }
 
-.exec-hidden{
+/* ----------------------------------------------------------
+   Cards
+---------------------------------------------------------- */
+
+.intro-card-container{
+
+    width:100%;
+
+    max-width:760px;
+
+}
+
+/* ----------------------------------------------------------
+   Coach
+---------------------------------------------------------- */
+
+.coach-conversation{
+
+    width:100%;
+
+    max-width:760px;
+
+}
+
+/* ----------------------------------------------------------
+   Buttons
+---------------------------------------------------------- */
+
+#introActions{
+
+    margin-top:60px;
+
+    gap:18px;
+
+}
+
+/* ----------------------------------------------------------
+   Hide everything except Hero
+---------------------------------------------------------- */
+
+#introMessages,
+
+#introCards,
+
+#introTransition,
+
+#coachIntroduction,
+
+#introActions{
 
     display:none;
 
