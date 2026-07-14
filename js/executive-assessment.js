@@ -1846,6 +1846,10 @@ resetAssessment() {
 
         this.workspace.hidden = false;
 
+        this.updateProgress();
+   
+        this.updateProgressBar();
+
         this.showWelcomeMessage();
 
     }
