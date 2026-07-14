@@ -588,6 +588,331 @@ buildRecommendations(
 
 }
 
+
+    buildSWOT(
+    executiveContext,
+    observations,
+    risks,
+    opportunities
+) {
+
+    const swot = {
+
+        strengths: [],
+
+        weaknesses: [],
+
+        opportunities: [],
+
+        threats: []
+
+    };
+
+    if (executiveContext.workModel === "Hybrid") {
+
+        swot.strengths.push({
+
+            title:
+                "Flexible workforce model",
+
+            description:
+                "The organization has adopted a hybrid work model that supports workforce flexibility."
+
+        });
+
+    }
+
+    if (executiveContext.growthPlanned) {
+
+        swot.opportunities.push({
+
+            title:
+                "Business growth",
+
+            description:
+                "Planned workforce expansion provides an opportunity to strengthen people operations."
+
+        });
+
+    }
+
+    if (executiveContext.operatesInMultipleStates) {
+
+        swot.weaknesses.push({
+
+            title:
+                "Operational complexity",
+
+            description:
+                "Operating across multiple states increases administrative complexity."
+
+        });
+
+    }
+
+    if (risks.length) {
+
+        swot.threats.push({
+
+            title:
+                "People and compliance risks",
+
+            description:
+                "Growth and geographic expansion may increase operational and compliance risks."
+
+        });
+
+    }
+
+    return swot;
+
+}
+
+buildPriorityMatrix(
+    recommendations
+) {
+
+    const matrix = {
+
+        immediate: [],
+
+        shortTerm: [],
+
+        mediumTerm: [],
+
+        longTerm: []
+
+    };
+
+    recommendations.forEach(
+        recommendation => {
+
+            switch (
+                recommendation.priority
+            ) {
+
+                case "High":
+
+                    matrix.immediate.push(
+                        recommendation
+                    );
+
+                    break;
+
+                case "Medium":
+
+                    matrix.shortTerm.push(
+                        recommendation
+                    );
+
+                    break;
+
+                case "Low":
+
+                    matrix.mediumTerm.push(
+                        recommendation
+                    );
+
+                    break;
+
+                default:
+
+                    matrix.longTerm.push(
+                        recommendation
+                    );
+
+            }
+
+        }
+    );
+
+    return matrix;
+
+}
+
+
+    buildNext90Days(
+    priorityMatrix
+) {
+
+    return {
+
+        first30Days: [
+
+            ...priorityMatrix.immediate
+
+        ],
+
+        days31To60: [
+
+            ...priorityMatrix.shortTerm
+
+        ],
+
+        days61To90: [
+
+            ...priorityMatrix.mediumTerm
+
+        ]
+
+    };
+
+}
+    
+
+buildLongTermRoadmap(
+    executiveContext,
+    recommendations
+) {
+
+    return {
+
+        next6Months: recommendations.filter(
+            recommendation =>
+                recommendation.priority === "Medium"
+        ),
+
+        next12Months: recommendations.filter(
+            recommendation =>
+                recommendation.priority === "Low"
+        ),
+
+        strategicInitiatives: [
+
+            {
+                title:
+                    "Strengthen People Strategy",
+
+                description:
+                    "Continue building scalable HR practices aligned with business growth."
+
+            },
+
+            {
+                title:
+                    "Improve Organizational Capability",
+
+                description:
+                    "Invest in governance, leadership and workforce capability for long-term sustainability."
+
+            }
+
+        ]
+
+    };
+
+}
+
+buildWorkforceAnalytics(
+    organizationProfile,
+    executiveContext
+) {
+
+    return {
+
+        currentEmployees:
+
+            organizationProfile.currentEmployees,
+
+        projectedEmployees:
+
+            organizationProfile.projectedEmployees,
+
+        employeeGrowth:
+
+            (
+                organizationProfile.projectedEmployees ?? 0
+            ) -
+            (
+                organizationProfile.currentEmployees ?? 0
+            ),
+
+        workModel:
+
+            organizationProfile.workModel,
+
+        operatingCountries:
+
+            (
+                organizationProfile
+                    .operatingCountries || []
+            ).length,
+
+        operatingStates:
+
+            (
+                organizationProfile
+                    .operatingStates || []
+            ).length,
+
+        operatingCities:
+
+            (
+                organizationProfile
+                    .operatingCities || []
+            ).length,
+
+        growthPlanned:
+
+            executiveContext.growthPlanned
+
+    };
+
+}
+
+buildComplianceIndicators(
+    executiveContext,
+    risks,
+    recommendations
+) {
+
+    return {
+
+        operatingAcrossStates:
+
+            executiveContext
+                .operatesInMultipleStates,
+
+        operatingAcrossCountries:
+
+            executiveContext
+                .operatesInMultipleCountries,
+
+        complianceRisks:
+
+            risks.filter(
+
+                risk =>
+
+                    risk.category ===
+                    "Compliance"
+
+            ),
+
+        highPriorityActions:
+
+            recommendations.filter(
+
+                recommendation =>
+
+                    recommendation.priority ===
+                    "High"
+
+            ),
+
+        governanceRequired:
+
+            executiveContext
+                .operatesInMultipleStates ||
+
+            executiveContext
+                .operatesInMultipleCountries
+
+    };
+
+}    
+
+    
     
     analyze(context = {}) {
 
@@ -700,9 +1025,7 @@ const organizationProfile = {
         organizationProfile,
         executiveContext
     );
-
-        
-        
+    
 
 const insights =
     this.buildCrossModuleInsights(
@@ -720,7 +1043,50 @@ const insights =
         opportunities
     );
 
-        return {
+
+    const swot =
+    this.buildSWOT(
+        executiveContext,
+        observations,
+        risks,
+        opportunities
+    );
+
+
+    const priorityMatrix =
+    this.buildPriorityMatrix(
+        recommendations
+    );    
+
+
+    const next90Days =
+    this.buildNext90Days(
+        priorityMatrix
+    );
+
+
+    const longTermRoadmap =
+    this.buildLongTermRoadmap(
+        executiveContext,
+        recommendations
+    );
+
+
+    const workforceAnalytics =
+    this.buildWorkforceAnalytics(
+        organizationProfile,
+        executiveContext
+    );
+
+
+     const complianceIndicators =
+    this.buildComplianceIndicators(
+        executiveContext,
+        risks,
+        recommendations
+    );   
+        
+    return {
 
     company,
  
@@ -729,6 +1095,18 @@ const insights =
     organizationSnapshot,
     
     executiveSummary,
+    
+    swot,
+
+    priorityMatrix,    
+
+    next90Days,
+    
+    longTermRoadmap,
+
+    workforceAnalytics,
+    
+    complianceIndicators,
     
     executiveNarrative,
     
