@@ -6,6 +6,7 @@
 
     width:100%;
     min-height:calc(100vh - 110px);
+    position:relative;
 
     display:flex;a
     flex-direction:column;
@@ -159,6 +160,8 @@
 .exec-intro{
 
     width:100%;
+
+    position:relative;
 
     max-width:1100px;
 
