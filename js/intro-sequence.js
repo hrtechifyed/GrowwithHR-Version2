@@ -82,7 +82,7 @@ const TYPING_DELAY = 700;
        TIMINGS
     ========================================================== */
 
- const TIMING = {
+const TIMING = {
 
     hero: 2000,
 
@@ -92,11 +92,13 @@ const TYPING_DELAY = 700;
 
     card: 2250,
 
-    transition: 4200,
+    transition: 3500,
 
     typing: 700,
 
-    coach: 1900
+    coach: 1900,
+
+    cta: 800
 
 };
 
