@@ -1127,6 +1127,13 @@ showLanding() {
     ========================================================== */
     next() {
 
+    console.log("NEXT");
+    console.log("onWelcome:", this.onWelcome);
+    console.log("started:", this.started);
+    console.log("currentStep:", this.currentStep);
+    console.log("currentQuestion:", this.currentQuestion);
+
+
 if (this.onWelcome) {
 
     this.onWelcome = false;
