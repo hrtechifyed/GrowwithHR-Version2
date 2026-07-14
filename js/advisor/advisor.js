@@ -402,6 +402,129 @@ buildRecommendations(
 
 }
 
+    buildExecutiveNarrative(
+    organizationProfile,
+    observations,
+    risks,
+    opportunities,
+    insights,
+    recommendations
+) {
+
+    const paragraphs = [];
+
+    if (organizationProfile.currentEmployees) {
+
+        paragraphs.push(
+
+            `The organization currently employs ${organizationProfile.currentEmployees} people${organizationProfile.projectedEmployees ? ` with plans to grow to ${organizationProfile.projectedEmployees} employees.` : "."}`
+
+        );
+
+    }
+
+    if (observations.length) {
+
+        paragraphs.push(
+
+            `The assessment identified ${observations.length} key executive observations relating to workforce, operations and organizational readiness.`
+
+        );
+
+    }
+
+    if (risks.length) {
+
+        paragraphs.push(
+
+            `Several business risks were identified that may require proactive planning before future growth or organizational expansion.`
+
+        );
+
+    }
+
+    if (opportunities.length) {
+
+        paragraphs.push(
+
+            `The organization also has multiple opportunities to strengthen its people practices and operational maturity.`
+
+        );
+
+    }
+
+    if (recommendations.length) {
+
+        paragraphs.push(
+
+            `Executive recommendations have been generated to help leadership prioritize practical next steps.`
+
+        );
+
+    }
+
+    return paragraphs;
+
+}
+
+
+
+    buildOrganizationSnapshot(
+    organizationProfile,
+    executiveContext
+) {
+
+    return {
+
+        company:
+
+            organizationProfile.companyName,
+
+        entityType:
+
+            organizationProfile.entityType,
+
+        industry:
+
+            organizationProfile.industry,
+
+        workModel:
+
+            organizationProfile.workModel,
+
+        currentEmployees:
+
+            organizationProfile.currentEmployees,
+
+        projectedEmployees:
+
+            organizationProfile.projectedEmployees,
+
+        operatingStates:
+
+            (
+                organizationProfile.operatingStates || []
+            ).length,
+
+        operatingCountries:
+
+            (
+                organizationProfile.operatingCountries || []
+            ).length,
+
+        operatingCities:
+
+            (
+                organizationProfile.operatingCities || []
+            ).length,
+
+        growthPlanned:
+
+            executiveContext.growthPlanned
+
+    };
+
+}
     
     buildExecutiveSummary(
     executiveContext,
@@ -562,6 +685,25 @@ const organizationProfile = {
         opportunities
     );
 
+        const executiveNarrative =
+    this.buildExecutiveNarrative(
+        organizationProfile,
+        observations,
+        risks,
+        opportunities,
+        insights,
+        recommendations
+    );
+
+        const organizationSnapshot =
+    this.buildOrganizationSnapshot(
+        organizationProfile,
+        executiveContext
+    );
+
+        
+        
+
 const insights =
     this.buildCrossModuleInsights(
         executiveContext,
@@ -583,8 +725,12 @@ const insights =
     company,
  
     organizationProfile,
+
+    organizationSnapshot,
     
     executiveSummary,
+    
+    executiveNarrative,
     
     executiveContext,
             
