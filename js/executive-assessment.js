@@ -1173,11 +1173,15 @@ showLanding() {
 
             );
 
-        this.updateCoachMessage(
+        this.setCoachMessage(
 
-            acknowledgement
+            acknowledgement,
+
+            false
 
         );
+
+        this.autoSave();
 
         setTimeout(() => {
 
@@ -1402,7 +1406,13 @@ showLanding() {
 
         let index = 0;
 
-        this.loadingMessage.textContent = messages[index];
+                this.animateTextChange(
+
+            this.loadingMessage,
+
+            messages[index]
+
+        );
 
         const timer = setInterval(() => {
 
@@ -1418,7 +1428,13 @@ showLanding() {
 
             }
 
-            this.loadingMessage.textContent = messages[index];
+                        this.animateTextChange(
+
+                this.loadingMessage,
+
+                messages[index]
+
+            );
 
         }, 1400);
 
@@ -1431,6 +1447,8 @@ showLanding() {
     ========================================================== */
 
     showSuccess() {
+
+        this.completeAssessment();
 
         this.hideAll();
 
@@ -1559,36 +1577,45 @@ showLanding() {
     /* ==========================================================
        STEP TRANSITION MESSAGE
     ========================================================== */
+showStepIntroduction() {
 
-    showStepIntroduction() {
+    const introductions = [
 
-        const introductions = [
+        "Thank you. We now have a better understanding of your organisation. Let's now talk about your people.",
 
-            "Thank you. We now have a better understanding of your organisation. Let's now talk about your people.",
+        "Thank you for sharing that. I'd now love to learn more about how your organisation works and creates value... In simple terms how do you operate?",
 
-            "Thank you for sharing that. I'd now love to learn more about how your organisation works and creates value... In simple terms how do you operate?",
+        "Excellent. Looking ahead, where do you see your organisation heading in the future."
 
-            "Excellent. Looking ahead, where do you see your organisation heading in the future?"
+    ];
 
-        ];
+    if (
 
-        if (
+        this.currentStep > 0 &&
 
-            this.currentStep > 0 &&
+        this.currentStep <= introductions.length
 
-            this.currentStep <= introductions.length
+    ) {
 
-        ) {
+        this.setCoachMessage(
 
-            this.updateCoachMessage(
+            introductions[this.currentStep - 1],
 
-                introductions[this.currentStep - 1]
+            true
 
-            );
+        );
 
-        }
+        this.animateTextChange(
+
+            this.footerMessage,
+
+            `Preparing ${this.steps[this.currentStep]}...`
+
+        );
 
     }
+
+}
 
     /* ==========================================================
        AUTO SAVE
@@ -1643,8 +1670,19 @@ showLanding() {
                 return;
 
             }
-
             this.responses = JSON.parse(savedData);
+
+            if (
+
+                typeof this.responses !== "object" ||
+
+                this.responses === null
+
+            ) {
+
+                this.responses = {};
+
+            }
 
         }
 
@@ -1790,6 +1828,8 @@ resetAssessment() {
     startAssessment() {
 
         this.started = true;
+
+        this.completed = false;
 
         this.restoreSession();
 
@@ -2051,6 +2091,14 @@ resetAssessment() {
 
         this.completed = false;
 
+        this.onWelcome = false;
+
+        localStorage.removeItem(
+
+            "growwithhr-assessment"
+
+        );
+
     }
 
 
@@ -2065,6 +2113,8 @@ resetAssessment() {
 
         this.restoreSession();
 
+        this.refreshUI();
+
         this.bindKeyboardShortcuts();
 
         this.bindExitEvents();
@@ -2072,9 +2122,7 @@ resetAssessment() {
         this.bindBeforeUnload();
 
     }
-
 }
-
 /* ==========================================================
    SAFE EVENT BINDING
 ========================================================== */
