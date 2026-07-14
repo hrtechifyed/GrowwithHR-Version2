@@ -275,6 +275,134 @@ buildExecutiveRisks(executiveContext, observations) {
     return opportunities;
     }
 
+buildRecommendations(
+    executiveContext,
+    observations,
+    risks,
+    opportunities
+)
+    
+    
+    {
+
+    recommendationEngine.clear();
+
+    if (executiveContext.growthPlanned) {
+
+        recommendationEngine.create({
+
+            module: "organization",
+
+            category: "Growth",
+
+            title:
+                "Prepare HR processes for workforce expansion",
+
+            description:
+                "Review hiring, onboarding and workforce planning processes before planned employee growth accelerates.",
+
+            priority: "High"
+
+        });
+
+    }
+
+    if (executiveContext.operatesInMultipleStates) {
+
+        recommendationEngine.create({
+
+            module: "organization",
+
+            category: "Compliance",
+
+            title:
+                "Standardize HR policies across operating locations",
+
+            description:
+                "Create consistent HR documentation, policies and operating procedures across all locations.",
+
+            priority: "High"
+
+        });
+
+    }
+
+    if (executiveContext.workModel === "Hybrid") {
+
+        recommendationEngine.create({
+
+            module: "organization",
+
+            category: "People",
+
+            title:
+                "Strengthen hybrid workforce practices",
+
+            description:
+                "Define consistent communication, collaboration and performance expectations for hybrid teams.",
+
+            priority: "Medium"
+
+        });
+
+    }
+
+    return recommendationEngine.list();
+
+}
+
+   buildCrossModuleInsights(
+    executiveContext,
+    observations,
+    risks,
+    opportunities
+) {
+
+    const insights = [];
+
+    if (
+        executiveContext.growthPlanned &&
+        executiveContext.operatesInMultipleStates
+    ) {
+
+        insights.push({
+
+            id: "growth-governance",
+
+            title:
+                "Growth is increasing organizational complexity",
+
+            description:
+                "Planned workforce expansion across multiple operating locations is likely to increase HR coordination, governance and compliance requirements."
+
+        });
+
+    }
+
+    if (
+        executiveContext.workModel === "Hybrid" &&
+        executiveContext.operatesInMultipleStates
+    ) {
+
+        insights.push({
+
+            id: "distributed-workforce",
+
+            title:
+                "Distributed workforce requires consistent operating practices",
+
+            description:
+                "Hybrid work combined with geographically distributed operations benefits from standardized people processes and communication."
+
+        });
+
+    }
+
+    return insights;
+
+}
+
+    
     buildExecutiveSummary(
     executiveContext,
     observations,
@@ -426,6 +554,22 @@ const organizationProfile = {
         risks
     );
 
+        const recommendations =
+    this.buildRecommendations(
+        executiveContext,
+        observations,
+        risks,
+        opportunities
+    );
+
+const insights =
+    this.buildCrossModuleInsights(
+        executiveContext,
+        observations,
+        risks,
+        opportunities
+    );
+        
         const executiveSummary =
     this.buildExecutiveSummary(
         executiveContext,
@@ -434,14 +578,13 @@ const organizationProfile = {
         opportunities
     );
 
-        
-        const recommendations = [];
-        
         return {
 
     company,
  
     organizationProfile,
+    
+    executiveSummary,
     
     executiveContext,
             
@@ -453,7 +596,7 @@ const organizationProfile = {
 
     opportunities,
 
-    executiveSummary,
+    insights,
 
     recommendations,
     
