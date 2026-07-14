@@ -19,39 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     "use strict";
 
-    window.executiveAssessment = {
-
-        start() {
-
-            const landingScreen =
-                document.getElementById("landingScreen");
-
-            const conversationWorkspace =
-                document.getElementById("conversationWorkspace");
-
-            if (landingScreen) {
-
-                landingScreen.hidden = true;
-
-            }
-
-            if (conversationWorkspace) {
-
-                conversationWorkspace.hidden = false;
-
-            }
-
-            if (typeof initializeAssessment === "function") {
-
-                initializeAssessment();
-
-            }
-
-        }
-
-    };
-
-    /* ==========================================================
+      /* ==========================================================
        DOM REFERENCES
     ========================================================== */
 
@@ -610,7 +578,6 @@ window.introEngine = {
 
 };
 
-window.startAssessment = startAssessment;
 
     /* ==========================================================
        INTRODUCTION ENTRY POINT
@@ -670,19 +637,7 @@ function skipIntroduction() {
     startAssessment();
 
 }
-    /* ==========================================================
-       CTA
-    ========================================================== */
 
-function beginConversation() {
-
-    state.skipped = false;
-
-    stopTimeline();
-
-    startAssessment();
-
-}
 
     /* ==========================================================
        EVENT LISTENERS
