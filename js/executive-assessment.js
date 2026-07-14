@@ -1332,6 +1332,8 @@ if (this.onWelcome) {
 
     showReview() {
 
+       console.log("SHOW REVIEW");
+
         this.hideAll();
 
         this.reviewScreen.hidden = false;
