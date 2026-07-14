@@ -136,8 +136,6 @@
    Hide everything except Hero
 ---------------------------------------------------------- */
 
-#introCards,
-
 #introTransition,
 
 #coachIntroduction,
@@ -248,5 +246,81 @@
     color:#ffffff;
 
     margin:0;
+
+}
+
+/* ==========================================================
+   EXECUTIVE BRIEFING CARDS
+========================================================== */
+
+.intro-card{
+
+    display:none;
+
+    width:min(760px,92vw);
+
+    padding:clamp(28px,5vw,48px);
+
+    border-radius:28px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    text-align:center;
+
+    margin:auto;
+
+}
+
+.intro-card.active{
+
+    display:block;
+
+}
+
+.intro-card-icon{
+
+    font-size:clamp(2.8rem,5vw,4rem);
+
+    margin-bottom:24px;
+
+}
+
+.intro-card h2{
+
+    font-size:clamp(2rem,4vw,2.8rem);
+
+    margin-bottom:20px;
+
+    color:white;
+
+}
+
+.intro-card p{
+
+    font-size:clamp(1rem,2vw,1.2rem);
+
+    line-height:1.8;
+
+    color:rgba(255,255,255,.82);
+
+    margin-bottom:24px;
+
+}
+
+.intro-card span{
+
+    display:block;
+
+    font-size:.95rem;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+    color:#f7a600;
 
 }
