@@ -680,3 +680,28 @@
     }
 
 }
+
+
+.coach-line {
+
+    display: none;
+
+    opacity: 0;
+
+    transform: translateY(12px);
+
+    transition:
+        opacity .4s ease,
+        transform .4s ease;
+
+}
+
+.coach-line.active {
+
+    display: block;
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+}
