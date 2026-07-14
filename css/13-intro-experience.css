@@ -218,3 +218,37 @@
     margin-bottom:0;
 
 }
+
+/* ==========================================================
+   INTRO SCENES
+========================================================== */
+
+.intro-scene{
+
+    display:none;
+
+    width:min(760px,92vw);
+
+    margin:auto;
+
+}
+
+.intro-scene.active{
+
+    display:block;
+
+}
+
+.intro-scene h2{
+
+    font-size:clamp(2rem,4vw,3.5rem);
+
+    font-weight:600;
+
+    line-height:1.35;
+
+    color:#ffffff;
+
+    margin:0;
+
+}
