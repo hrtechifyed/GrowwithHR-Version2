@@ -521,50 +521,55 @@ window.introEngine = {
        ASSESSMENT HANDOFF
     ========================================================== */
 
-    function startAssessment() {
+function startAssessment() {
 
-        stopTimeline();
+    stopTimeline();
 
-        hideAllSections();
+    hideAllSections();
 
-        /*
-         * =====================================================
-         * IMPORTANT
-         *
-         * DO NOT CHANGE THIS FUNCTION.
-         *
-         * We will connect it to the existing
-         * executive-assessment.js in Part 8.
-         *
-         * Until then this is simply a placeholder.
-         * =====================================================
-         */
+    if (coachTyping) {
 
-        console.log("Starting Executive Assessment...");
+        coachTyping.classList.remove("active");
 
     }
+
+    activate(messageScenes, -1);
+
+    activate(briefingCards, -1);
+
+    activate(coachLines, -1);
+
+    console.log("Starting Executive Assessment...");
+
+}
 
     /* ==========================================================
        SKIP INTRODUCTION
     ========================================================== */
 
-    function skipIntroduction() {
+function skipIntroduction() {
 
-        state.skipped = true;
+    state.skipped = true;
 
-        startAssessment();
+    stopTimeline();
 
-    }
+    startAssessment();
+
+}
 
     /* ==========================================================
        CTA
     ========================================================== */
 
-    function beginConversation() {
+function beginConversation() {
 
-        startAssessment();
+    state.skipped = false;
 
-    }
+    stopTimeline();
+
+    startAssessment();
+
+}
 
     /* ==========================================================
        EVENT LISTENERS
@@ -752,12 +757,8 @@ if (coachTyping) {
 }
    
    
-/* ==========================================================
-       START ENGINE
-       (continues in Part 6)
-    ========================================================== */
+initialize();
 
-   initialize();
+window.startAssessment = startAssessment;
 
-});
-                          
+});                    
