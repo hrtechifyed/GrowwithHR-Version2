@@ -52,10 +52,48 @@ class AdvisorEngine {
 
         ];
 
+const organizationProfile = {
+
+    companyName:
+        company.company.companyName,
+
+    entityType:
+        company.company.entityType,
+
+    industry:
+        company.company.industry,
+
+    natureOfBusiness:
+        company.company.natureOfBusiness,
+
+    workModel:
+        company.company.workModel,
+
+    operatingCountries:
+        company.company.countries,
+
+    operatingStates:
+        company.company.states,
+
+    operatingCities:
+        company.company.cities,
+
+    currentEmployees:
+        company.getTotalEmployees(),
+
+    projectedEmployees:
+        company.company.growth
+            ?.projectedEmployees ?? null
+
+};
+
+        
         return {
 
- company,
-
+    company,
+ 
+    organizationProfile,
+            
     modules,
 
     observations: [],
