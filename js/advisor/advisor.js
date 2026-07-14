@@ -52,35 +52,21 @@ class AdvisorEngine {
 
         ];
 
-        const totalScore =
-            modules.reduce(
-
-                (total, module) =>
-                    total + module.score,
-
-                0
-
-            );
-
-        const overallScore =
-            modules.length > 0
-
-                ? Math.round(
-                    totalScore /
-                    modules.length
-                )
-
-                : 0;
-
         return {
 
-            company,
+ company,
 
-            overallScore,
+    modules,
 
-            modules,
+    observations: [],
 
-            context
+    risks: [],
+
+    opportunities: [],
+
+    recommendations: [],
+
+    context
 
         };
 
