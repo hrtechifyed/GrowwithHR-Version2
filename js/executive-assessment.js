@@ -959,7 +959,6 @@ showLanding() {
        RENDER CURRENT QUESTION
     ========================================================== */
     renderCurrentQuestion() {
-       console.log("RENDER CURRENT QUESTION");
 
         const step = this.questionBank[this.currentStep];
 
@@ -1128,14 +1127,7 @@ showLanding() {
     ========================================================== */
     next() {
 
-    console.log("NEXT");
-    console.log("onWelcome:", this.onWelcome);
-    console.log("started:", this.started);
-    console.log("currentStep:", this.currentStep);
-    console.log("currentQuestion:", this.currentQuestion);
-
-
-if (this.onWelcome) {
+   if (this.onWelcome) {
 
     this.onWelcome = false;
 
@@ -1186,8 +1178,6 @@ if (this.onWelcome) {
         this.autoSave();
 
       setTimeout(() => {
-
-    console.log("GOING TO NEXT QUESTION");
 
     this.goToNextQuestion();
 
@@ -1332,28 +1322,22 @@ if (this.onWelcome) {
 
     showReview() {
 
-      console.log("SHOW REVIEW");
+     showReview() {
 
-      console.log("Before hideAll", this.reviewScreen.hidden);
+    this.hideAll();
 
-        this.hideAll();
+    this.workspace.hidden = true;
 
-       this.workspace.hidden = true;
+    this.reviewScreen.hidden = false;
 
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
 
-       console.log("After hideAll", this.reviewScreen.hidden);
+    this.conversationContainer.innerHTML = "";
 
-
-        this.reviewScreen.hidden = false;
-
-       window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-      });
-
-        console.log("After showing", this.reviewScreen.hidden);
-
-        this.reviewContainer.innerHTML = "";
+    this.reviewContainer.innerHTML = "";
 
         this.questionBank.forEach(step => {
 
@@ -1556,15 +1540,11 @@ if (this.onWelcome) {
 
     goToNextQuestion() {
 
-    console.log("goToNextQuestion", this.currentStep, this.currentQuestion);
-
     const step = this.questionBank[this.currentStep];
 
     if (this.currentQuestion < step.questions.length - 1) {
 
         this.currentQuestion++;
-
-        console.log("NEXT QUESTION");
 
         this.renderCurrentQuestion();
 
@@ -1577,8 +1557,6 @@ if (this.onWelcome) {
         this.currentStep++;
 
         this.currentQuestion = 0;
-
-        console.log("NEXT STEP");
 
         this.updateProgress();
 
@@ -1594,11 +1572,7 @@ if (this.onWelcome) {
 
     }
 
-    console.log("ABOUT TO SHOW REVIEW");
-
     this.showReview();
-
-    console.log("SHOW REVIEW FINISHED");
 }
 
     /* ==========================================================
