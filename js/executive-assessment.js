@@ -965,12 +965,6 @@ showLanding() {
     /* ==========================================================
        RENDER CURRENT QUESTION
     ========================================================== */
-console.log(
-    "renderCurrentQuestion()",
-    this.currentStep,
-    this.currentQuestion
-);
-   
     renderCurrentQuestion() {
 
         const step = this.questionBank[this.currentStep];
@@ -1138,13 +1132,6 @@ console.log(
     /* ==========================================================
        NEXT
     ========================================================== */
-
-   console.log(
-    "next()",
-    this.onWelcome,
-    this.currentStep,
-    this.currentQuestion
-);
     next() {
 
 if (this.onWelcome) {
