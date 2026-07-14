@@ -1540,50 +1540,51 @@ if (this.onWelcome) {
     ========================================================== */
 
     goToNextQuestion() {
-       console.log(
-    "goToNextQuestion",
-    this.currentStep,
-    this.currentQuestion
-);
 
-        const step =
-            this.questionBank[this.currentStep];
+    console.log("goToNextQuestion", this.currentStep, this.currentQuestion);
 
-        if (this.currentQuestion < step.questions.length - 1) {
+    const step = this.questionBank[this.currentStep];
 
-            this.currentQuestion++;
+    if (this.currentQuestion < step.questions.length - 1) {
 
-            this.renderCurrentQuestion();
+        this.currentQuestion++;
 
-            return;
+        console.log("NEXT QUESTION");
 
-        }
+        this.renderCurrentQuestion();
 
-        if (this.currentStep < this.questionBank.length - 1) {
-
-            this.currentStep++;
-
-            this.currentQuestion = 0;
-
-            this.updateProgress();
-
-            this.showStepIntroduction();
-
-            setTimeout(() => {
-
-                this.renderCurrentQuestion();
-
-            }, 1800);
-
-            return;
-
-        }
-
-        this.showReview();
+        return;
 
     }
 
+    if (this.currentStep < this.questionBank.length - 1) {
 
+        this.currentStep++;
+
+        this.currentQuestion = 0;
+
+        console.log("NEXT STEP");
+
+        this.updateProgress();
+
+        this.showStepIntroduction();
+
+        setTimeout(() => {
+
+            this.renderCurrentQuestion();
+
+        }, 1800);
+
+        return;
+
+    }
+
+    console.log("ABOUT TO SHOW REVIEW");
+
+    this.showReview();
+
+    console.log("SHOW REVIEW FINISHED");
+}
 
     /* ==========================================================
        STEP TRANSITION MESSAGE
