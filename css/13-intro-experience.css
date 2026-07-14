@@ -834,3 +834,73 @@
     transform: translateY(0);
 
 }
+
+#introTransition {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 420px;
+
+}
+
+#transitionMessage {
+
+    max-width: 760px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.5rem;
+
+}
+
+#transitionMessage p {
+
+    margin: 0;
+
+    opacity: 0;
+
+    transform: translateY(20px);
+
+    animation: transitionMessageFade .8s ease forwards;
+
+}
+
+#transitionMessage p:nth-child(2) {
+
+    animation-delay: .8s;
+
+}
+
+#transitionMessage p:nth-child(3) {
+
+    animation-delay: 1.6s;
+
+}
+
+@keyframes transitionMessageFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
