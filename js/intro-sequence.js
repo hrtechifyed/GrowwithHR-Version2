@@ -51,8 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
        document.querySelectorAll(".coach-line")
    );
    
-   const coachTyping =
-       document.getElementById("coachTyping");
+const coachTyping =
+    document.getElementById("coachTyping");
+
+const TYPING_DELAY = 700;
 
     const skipButton =
         document.getElementById("skipIntro");
@@ -363,39 +365,39 @@ function runTimeline() {
 
     showSection(step.section);
 
-    if (step.section === "coach") {
+if (step.section === "coach") {
+
+    if (coachTyping) {
+
+        coachTyping.classList.add("active");
+
+    }
+
+    clearTimer();
+
+    state.timer = setTimeout(() => {
 
         if (coachTyping) {
 
-            coachTyping.classList.add("active");
+            coachTyping.classList.remove("active");
 
         }
 
-        clearTimer();
+        if (typeof step.action === "function") {
 
-        state.timer = setTimeout(() => {
+            step.action();
 
-            if (coachTyping) {
+        }
 
-                coachTyping.classList.remove("active");
+        state.stepIndex++;
 
-            }
+        next(step.duration);
 
-            if (typeof step.action === "function") {
+    }, TYPING_DELAY);
 
-                step.action();
+    return;
 
-            }
-
-            state.stepIndex++;
-
-            next(step.duration);
-
-        }, TIMING.typing);
-
-        return;
-
-    }
+}
 
     if (typeof step.action === "function") {
 
