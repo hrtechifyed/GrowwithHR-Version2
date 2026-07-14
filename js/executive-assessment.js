@@ -466,6 +466,23 @@ showLanding() {
 
     }
 
+showScreen(screen) {
+
+    this.landingScreen.hidden = true; 
+    this.workspace.hidden = true;
+    this.reviewScreen.hidden = true;
+    this.loadingScreen.hidden = true;
+    this.successScreen.hidden = true;
+
+    screen.hidden = false;
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+   
     /* ==========================================================
        STEP DATA
     ========================================================== */
@@ -1322,27 +1339,13 @@ showLanding() {
 
     showReview() {
 
-    this.hideAll();
+           this.showScreen(this.reviewScreen);
+         
+           this.reviewContainer.innerHTML = "";
+         
+           this.conversationContainer.innerHTML = "";
 
-    this.workspace.hidden = true;
-
-   this.reviewScreen.hidden = false;
-   
-   // Ensure the previous assessment UI is completely hidden
-   this.workspace.hidden = true;
-   
-   // Move user to the review screen
-   window.scrollTo({
-       top: 0,
-       behavior: "smooth"
-   });
-
-    this.reviewContainer.innerHTML = "";
-
-   // Clear completed conversation
-   this.conversationContainer.innerHTML = "";
-
-        this.questionBank.forEach(step => {
+           this.questionBank.forEach(step => {
 
             const section = document.createElement("div");
 
@@ -1386,9 +1389,7 @@ showLanding() {
 
     generateReport() {
 
-        this.hideAll();
-
-        this.loadingScreen.hidden = false;
+        this.showScreen(this.loadingScreen);
 
         this.runLoadingSequence();
 
@@ -1458,15 +1459,13 @@ showLanding() {
        SUCCESS
     ========================================================== */
 
-    showSuccess() {
+showSuccess() {
 
-        this.completeAssessment();
+    this.completeAssessment();
 
-        this.hideAll();
+    this.showScreen(this.successScreen);
 
-        this.successScreen.hidden = false;
-
-    }
+}
 
 
 
@@ -1850,9 +1849,7 @@ resetAssessment() {
 
         this.currentQuestion = 0;
 
-        this.hideAll();
-
-        this.workspace.hidden = false;
+        this.showScreen(this.workspace);
 
         this.updateProgress();
    
