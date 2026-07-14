@@ -1809,16 +1809,21 @@ resetAssessment() {
        REFRESH UI
     ========================================================== */
 
-    refreshUI() {
+   refreshUI() {
 
-        this.updateProgress();
+    if (!this.started) {
 
-        this.updateProgressBar();
-
-        this.updateFooterMessage();
+        return;
 
     }
 
+    this.updateProgress();
+
+    this.updateProgressBar();
+
+    this.updateFooterMessage();
+
+}
 
 
     /* ==========================================================
