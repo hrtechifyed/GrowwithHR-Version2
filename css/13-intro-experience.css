@@ -904,3 +904,23 @@
     }
 
 }
+
+#introActions {
+
+    opacity: 0;
+
+    transform: translateY(30px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+
+}
+
+#introActions.is-active {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+}
