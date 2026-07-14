@@ -1473,13 +1473,19 @@ showSuccess() {
        OPEN REPORT
     ========================================================== */
 
-    openReport() {
+openReport() {
 
-        window.location.href =
-            "sample-advisory-report.html";
+    // Save assessment responses
+    localStorage.setItem(
+        "growwithhr-report",
+        JSON.stringify(this.responses)
+    );
 
-    }
+    // Open the advisory report
+    window.location.href =
+        "sample-advisory-report.html";
 
+}
     /* ==========================================================
        COACH ACKNOWLEDGEMENT
     ========================================================== */
