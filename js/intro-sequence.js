@@ -137,11 +137,13 @@ function hideAllSections() {
 
     });
 
-    if (coachTyping) {
+if (coachTyping) {
 
-        coachTyping.classList.remove("active");
+    coachTyping.classList.remove("active");
 
-    }
+    coachTyping.setAttribute("aria-hidden", "true");
+
+}
 
 }
 
@@ -370,6 +372,8 @@ if (step.section === "coach") {
     if (coachTyping) {
 
         coachTyping.classList.add("active");
+
+        coachTyping.setAttribute("aria-hidden", "false");
 
     }
 
