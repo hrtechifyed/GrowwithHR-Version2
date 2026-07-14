@@ -298,7 +298,8 @@ function activate(list, index) {
 
 {
     section: "transition",
-    duration: TIMING.transition,
+    duration: 6000,
+
     action: () => {
 
         const transitionMessage =
@@ -306,17 +307,49 @@ function activate(list, index) {
 
         if (!transitionMessage) return;
 
-        transitionMessage.innerHTML = `
-            <p>Every recommendation begins with understanding your organisation.</p>
-            <p>Every organisation is unique.</p>
-            <p>So every Executive Advisory should be too.</p>
-        `;
+        const messages = [
+
+            "Every recommendation begins with understanding your organisation.",
+
+            "Every organisation is unique.",
+
+            "So every Executive Advisory should be too."
+
+        ];
+
+        let index = 0;
+
+        transitionMessage.textContent = messages[index];
+
+        const interval = setInterval(() => {
+
+            index++;
+
+            if (index >= messages.length) {
+
+                clearInterval(interval);
+
+                return;
+
+            }
+
+            transitionMessage.classList.remove("visible");
+
+            setTimeout(() => {
+
+                transitionMessage.textContent = messages[index];
+
+                transitionMessage.classList.add("visible");
+
+            }, 300);
+
+        }, 1800);
+
+        transitionMessage.classList.add("visible");
 
     }
+
 },
-
-        
-
 /* --------------------------------------------------
    COACH
 -------------------------------------------------- */
