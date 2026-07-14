@@ -63,9 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
 ========================================================== */
 
 const introMessages = document.querySelectorAll(".intro-scene");
+const introCards = document.querySelectorAll(".intro-card");
+   
 
 let currentScene = 0;
-
+let currentCard = 0;
+   
 function showMessage(index){
 
     introMessages.forEach(scene=>{
@@ -78,11 +81,25 @@ function showMessage(index){
 
 }
 
+function showCard(index){
+
+    introCards.forEach(card=>{
+
+        card.classList.remove("active");
+
+    });
+
+    introCards[index].classList.add("active");
+
+}
+   
 function playIntroMessages(){
 
     if(currentScene >= introMessages.length){
 
-        showStep(2);
+        currentCard = 0;
+
+        playCards();
 
         return;
 
@@ -100,6 +117,26 @@ function playIntroMessages(){
 
 }
 
+function playCards(){
+
+    if(currentCard >= introCards.length){
+
+        showStep(4);
+
+        return;
+
+    }
+
+    showStep(2);
+
+    showCard(currentCard);
+
+    currentCard++;
+
+    setTimeout(playCards,2250);
+
+}
+   
 /* ---------- START ---------- */
 
 showStep(0);
