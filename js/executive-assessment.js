@@ -1369,6 +1369,10 @@ showLanding() {
 
         });
 
+         this.backButton.hidden = true;
+
+         this.nextButton.hidden = true;
+
     }
 
 
