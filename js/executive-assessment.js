@@ -2129,6 +2129,8 @@ resetAssessment() {
 
         this.bindBeforeUnload();
 
+         this.showLanding();
+
     }
 }
 /* ==========================================================
