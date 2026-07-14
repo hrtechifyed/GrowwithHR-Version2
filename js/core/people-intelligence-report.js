@@ -27,6 +27,9 @@ class PeopleIntelligenceReport {
             company:
                 analysis.company,
 
+            organizationProfile:
+                analysis.organizationProfile,
+
             modules:
                 analysis.modules,
             observations: analysis.observations,
