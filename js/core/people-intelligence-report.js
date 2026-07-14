@@ -106,10 +106,6 @@ recommendationCount: report.recommendations.length,
             moduleCount:
                 report.modules.length,
 
-            recommendationCount:
-                report.recommendations
-                    .length,
-
             priorityCount:
                 report.priorities
                     .length
