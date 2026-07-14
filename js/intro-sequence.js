@@ -47,9 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".intro-card")
     );
 
-    const coachLines = Array.from(
-        document.querySelectorAll(".coach-line")
-    );
+   const coachLines = Array.from(
+       document.querySelectorAll(".coach-line")
+   );
+   
+   const coachTyping =
+       document.getElementById("coachTyping");
 
     const skipButton =
         document.getElementById("skipIntro");
@@ -151,22 +154,25 @@ function showSection(name) {
 
 }
 
-    function activate(list, index) {
+function activate(list, index) {
 
-        list.forEach(item => {
+    list.forEach(item => {
 
-            item.classList.remove("active");
+        item.classList.remove("active");
 
-        });
+        item.setAttribute("aria-hidden", "true");
 
-        if (list[index]) {
+    });
 
-            list[index].classList.add("active");
+    if (list[index]) {
 
-        }
+        list[index].classList.add("active");
+
+        list[index].setAttribute("aria-hidden", "false");
 
     }
 
+}
     function next(delay) {
 
         clearTimer();
@@ -353,40 +359,79 @@ function showSection(name) {
     ========================================================== */
 
 
-      function runTimeline() {
+     function runTimeline() {
 
-        if (state.skipped) {
+    if (state.skipped) {
 
-            return;
-
-        }
-
-        if (state.stepIndex >= timeline.length) {
-
-            return;
-
-        }
-
-        const step = timeline[state.stepIndex];
-
-        showSection(step.section);
-
-        if (typeof step.action === "function") {
-
-            step.action();
-
-        }
-
-        state.stepIndex++;
-
-        if (step.duration > 0) {
-
-            next(step.duration);
-
-        }
+        return;
 
     }
 
+    if (state.stepIndex >= timeline.length) {
+
+        return;
+
+    }
+
+    const step = timeline[state.stepIndex];
+
+    showSection(step.section);
+
+    if (step.section === "coach") {
+
+        const typing = document.getElementById("coachTyping");
+
+        if (typing) {
+
+            typing.classList.add("active");
+
+        }
+
+        clearTimer();
+
+        state.timer = setTimeout(() => {
+
+            if (typing) {
+
+                typing.classList.remove("active");
+
+            }
+
+            if (typeof step.action === "function") {
+
+                step.action();
+
+            }
+
+            state.stepIndex++;
+
+            if (step.duration > 0) {
+
+                next(step.duration);
+
+            }
+
+        }, 700);
+
+        return;
+
+    }
+
+    if (typeof step.action === "function") {
+
+        step.action();
+
+    }
+
+    state.stepIndex++;
+
+    if (step.duration > 0) {
+
+        next(step.duration);
+
+    }
+
+}
     /* ==========================================================
        ENGINE CONTROLS
     ========================================================== */
@@ -413,23 +458,29 @@ function showSection(name) {
 
     }
 
-    function resetTimeline() {
+function resetTimeline() {
 
-        stopTimeline();
+    stopTimeline();
 
-        state.stepIndex = 0;
+    state.stepIndex = 0;
 
-        state.skipped = false;
+    state.skipped = false;
 
-        hideAllSections();
+    hideAllSections();
 
-        activate(messageScenes, -1);
+    activate(messageScenes, -1);
 
-        activate(briefingCards, -1);
+    activate(briefingCards, -1);
 
-        activate(coachLines, -1);
+    activate(coachLines, -1);
+
+    if (coachTyping) {
+
+        coachTyping.classList.remove("active");
 
     }
+
+}
 
     /* ==========================================================
        PUBLIC API
@@ -603,52 +654,53 @@ function showSection(name) {
        (Available only from browser console)
     ========================================================== */
 
-    window.introDebug = {
+window.introDebug = {
 
-        hero() {
+    hero() {
 
-            showSection("hero");
+        showSection("hero");
 
-        },
+    },
 
-        messages() {
+    messages() {
 
-            showSection("messages");
+        showSection("messages");
 
-        },
+    },
 
-        cards() {
+    cards() {
 
-            showSection("cards");
+        showSection("cards");
 
-        },
+    },
 
-        transition() {
+    transition() {
 
-            showSection("transition");
+        showSection("transition");
 
-        },
+    },
 
-        coach() {
+    coach() {
 
-            showSection("coach");
+        showSection("coach");
 
-        },
+        activate(coachLines, 0);
 
-        actions() {
+    },
 
-            showSection("actions");
+    actions() {
 
-        },
+        showSection("actions");
 
-        restart() {
+    },
 
-            initialize();
+    restart() {
 
-        }
+        initialize();
 
-    };
+    }
 
+};
     /* ==========================================================
        ACCESSIBILITY
     ========================================================== */
@@ -659,23 +711,36 @@ function showSection(name) {
 
     );
 
-    if (prefersReducedMotion.matches) {
+   if (prefersReducedMotion.matches) {
 
-        TIMING.hero = 500;
+    TIMING.hero = 500;
 
-        TIMING.message = 500;
+    TIMING.message = 500;
 
-        TIMING.lastMessage = 700;
+    TIMING.lastMessage = 700;
 
-        TIMING.card = 700;
+    TIMING.card = 700;
 
-        TIMING.transition = 500;
+    TIMING.transition = 500;
 
-        TIMING.coach = 700;
+    TIMING.coach = 700;
 
-    }
+}
 
-    /* ==========================================================
+coachLines.forEach(line => {
+
+    line.setAttribute("aria-hidden", "true");
+
+});
+
+if (coachTyping) {
+
+    coachTyping.classList.remove("active");
+
+}
+   
+   
+/* ==========================================================
        START ENGINE
        (continues in Part 6)
     ========================================================== */
