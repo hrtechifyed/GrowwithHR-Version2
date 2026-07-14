@@ -4,7 +4,7 @@
  * Executive Dashboard
  * -----------------------------------------------------------------------------
  * File      : js/core/executive-dashboard.js
- * Version   : 1.0.0
+ * Version   : 2.0.0
  * =============================================================================
  */
 
@@ -26,6 +26,17 @@ class ExecutiveDashboard {
                 context
             );
 
+        // Temporary validation
+        console.log(
+            "Advisor Analysis",
+            analysis
+        );
+
+        console.log(
+            "People Report",
+            report
+        );
+
         return {
 
             generatedAt:
@@ -34,11 +45,26 @@ class ExecutiveDashboard {
             company:
                 analysis.company,
 
-            overallScore:
-                analysis.overallScore,
+            organizationProfile:
+                analysis.organizationProfile,
 
-            moduleScores:
+            executiveContext:
+                analysis.executiveContext,
+
+            modules:
                 analysis.modules,
+
+            observations:
+                analysis.observations,
+
+            risks:
+                analysis.risks,
+
+            opportunities:
+                analysis.opportunities,
+
+            insights:
+                analysis.insights,
 
             graph:
                 intelligenceGraph.summary(),
@@ -67,23 +93,30 @@ class ExecutiveDashboard {
 
                 dashboard.company
                     ?.company
-                    ?.legalName || "",
-
-            overallScore:
-                dashboard.overallScore,
+                    ?.companyName || "",
 
             moduleCount:
-                dashboard.moduleScores
+                dashboard.modules
+                    .length,
+
+            observationCount:
+                dashboard.observations
+                    .length,
+
+            riskCount:
+                dashboard.risks
+                    .length,
+
+            opportunityCount:
+                dashboard.opportunities
+                    .length,
+
+            insightCount:
+                dashboard.insights
                     .length,
 
             recommendationCount:
-                dashboard
-                    .recommendations
-                    .length,
-
-            priorityCount:
-                dashboard
-                    .priorities
+                dashboard.recommendations
                     .length
 
         };
