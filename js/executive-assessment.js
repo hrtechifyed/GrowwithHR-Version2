@@ -2136,6 +2136,8 @@ resetAssessment() {
 
         this.bindBeforeUnload();
 
+        this.hideAll();   
+
        this.startAssessment();
 
 
