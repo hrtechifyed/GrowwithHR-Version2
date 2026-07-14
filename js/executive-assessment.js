@@ -73,13 +73,6 @@ class ExecutiveAssessment {
 
         this.bindEvents();
 
-
-        /* ==========================================
-           INITIAL STATE
-        ========================================== */
-
-        this.showLanding();
-
     }
 
 
