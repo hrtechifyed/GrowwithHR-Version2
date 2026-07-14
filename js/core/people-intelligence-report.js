@@ -27,11 +27,15 @@ class PeopleIntelligenceReport {
             company:
                 analysis.company,
 
-            overallScore:
-                analysis.overallScore,
-
             modules:
                 analysis.modules,
+            observations: analysis.observations,
+
+risks: analysis.risks,
+
+opportunities: analysis.opportunities,
+
+recommendations: analysis.recommendations,
 
             executiveSummary:
                 this.executiveSummary(
@@ -54,31 +58,30 @@ class PeopleIntelligenceReport {
 
     }
 
-    executiveSummary(analysis = {}) {
+    executiveSummary(analysis) {
 
-        return {
+    return {
 
-            overallScore:
-                analysis.overallScore || 0,
+        moduleCount:
+            (analysis.modules || []).length,
 
-            moduleCount:
-                (analysis.modules || [])
-                    .length,
+        observationCount:
+            (analysis.observations || []).length,
 
-            status:
+        riskCount:
+            (analysis.risks || []).length,
 
-                analysis.overallScore >= 90
-                    ? "Excellent"
-                    : analysis.overallScore >= 75
-                        ? "Good"
-                        : analysis.overallScore >= 60
-                            ? "Needs Attention"
-                            : "Critical"
+        opportunityCount:
+            (analysis.opportunities || []).length,
 
-        };
+        recommendationCount:
+            (analysis.recommendations || []).length
 
-    }
+    };
 
+}
+
+    
     dashboard(context = {}) {
 
         const report =
@@ -92,8 +95,13 @@ class PeopleIntelligenceReport {
                     ?.company
                     ?.legalName || "",
 
-            overallScore:
-                report.overallScore,
+           observationCount: report.observations.length,
+
+riskCount: report.risks.length,
+
+opportunityCount: report.opportunities.length,
+
+recommendationCount: report.recommendations.length,
 
             moduleCount:
                 report.modules.length,
