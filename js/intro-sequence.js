@@ -680,5 +680,7 @@ function showSection(name) {
        (continues in Part 6)
     ========================================================== */
 
-   
+   initialize();
+
+});
                           
