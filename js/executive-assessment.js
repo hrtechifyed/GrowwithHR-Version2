@@ -298,6 +298,50 @@ class ExecutiveAssessment {
 
         }
 
+               const homeButtons = document.querySelectorAll(
+
+            "[data-action='back-home']"
+
+        );
+
+        homeButtons.forEach(button => {
+
+            button.addEventListener(
+
+                "click",
+
+                () => this.showLanding()
+
+            );
+
+        });
+
+               const officialSourcesButton =
+
+            document.getElementById("officialSources");
+
+        if (officialSourcesButton) {
+
+            officialSourcesButton.addEventListener(
+
+                "click",
+
+                () => {
+
+                    window.open(
+
+                        "official-resources.html",
+
+                        "_blank"
+
+                    );
+
+                }
+
+            );
+
+        }
+
     }
 
 
@@ -306,15 +350,110 @@ class ExecutiveAssessment {
        INITIAL VIEW
     ========================================================== */
 
-    showLanding() {
+showLanding() {
 
-        this.hideAll();
+    this.hideAll();
 
-        this.landingScreen.hidden = false;
+       this.started = false;
+
+    this.completed = false;
+
+    this.currentStep = 0;
+
+    this.currentQuestion = 0;
+
+    this.onWelcome = false;
+
+    this.landingScreen.hidden = false;
+
+    if (this.questionBank) {
+
+        this.updateProgress();
+
+        this.updateProgressBar();
 
     }
 
+    this.animateTextChange(
 
+        this.footerMessage,
+
+        ""
+
+    );
+
+    if (this.conversationContainer) {
+
+        this.conversationContainer.innerHTML = "";
+
+    }
+
+       if (this.backButton) {
+
+        this.backButton.hidden = true;
+
+    }
+
+    if (this.nextButton) {
+
+        this.nextButton.innerHTML =
+
+            `Begin <i class="fa-solid fa-arrow-right"></i>`;
+
+    }
+
+    this.setCoachMessage(
+
+        "",
+
+        true
+
+    );
+
+    if (this.progressBar) {
+
+        this.progressBar.style.width = "0%";
+
+    }
+
+    if (this.stepIndicator) {
+
+        this.stepIndicator.textContent = "Welcome";
+
+    }
+
+    if (this.stepTitle) {
+
+        this.stepTitle.textContent =
+
+            "Let's begin by understanding your organisation.";
+
+    }
+
+    if (this.stepDescription) {
+
+        this.stepDescription.textContent = "";
+
+    }
+
+       if (this.reviewContainer) {
+
+        this.reviewContainer.innerHTML = "";
+
+    }
+
+    if (this.loadingMessage) {
+
+        this.loadingMessage.textContent = "";
+
+    }
+
+    if (this.responses) {
+
+        this.responses = {};
+
+    }
+}
 
     /* ==========================================================
        HIDE ALL SCREENS
@@ -1523,28 +1662,29 @@ class ExecutiveAssessment {
        RESET ASSESSMENT
     ========================================================== */
 
-    resetAssessment() {
+resetAssessment() {
 
-        this.currentStep = 0;
+    this.currentStep = 0;
 
-        this.currentQuestion = 0;
+    this.currentQuestion = 0;
 
-        this.started = false;
+    this.started = false;
 
-        this.completed = false;
+    this.completed = false;
 
-        this.responses = {};
+    this.onWelcome = false;
 
-        localStorage.removeItem(
+    this.responses = {};
 
-            "growwithhr-assessment"
+    localStorage.removeItem(
 
-        );
+        "growwithhr-assessment"
 
-        this.showLanding();
+    );
 
-    }
+    this.showLanding();
 
+}
 
 
     /* ==========================================================
