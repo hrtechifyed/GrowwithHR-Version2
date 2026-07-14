@@ -1044,3 +1044,28 @@
     transform: translateY(12px);
 
 }
+
+#introActions {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease,
+        visibility .8s ease;
+
+}
+
+#introActions.is-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+}
