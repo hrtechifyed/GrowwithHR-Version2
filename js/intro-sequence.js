@@ -101,18 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
        HELPERS
     ========================================================== */
 
-    function clearTimer() {
+function clearTimer() {
 
-        if (state.timer) {
+    if (state.timer !== null) {
 
-            clearTimeout(state.timer);
+        clearTimeout(state.timer);
 
-            state.timer = null;
-
-        }
+        state.timer = null;
 
     }
 
+}
+
+   
    /* ==========================================================
    FADE TRANSITION ENGINE
 ========================================================== */
@@ -132,6 +133,12 @@ function hideAllSections() {
 
     });
 
+    if (coachTyping) {
+
+        coachTyping.classList.remove("active");
+
+    }
+
 }
 
 function showSection(name) {
@@ -140,52 +147,72 @@ function showSection(name) {
 
     if (!nextSection) return;
 
-    hideAllSections();
+    Object.values(sections).forEach(section => {
 
-    requestAnimationFrame(() => {
+        if (!section) return;
 
-        nextSection.classList.remove("fade-out");
+        if (section === nextSection) {
 
-        nextSection.classList.add(
-            "is-active",
-            "fade-in"
-        );
+            section.classList.remove("fade-out");
+
+            section.classList.add(
+                "is-active",
+                "fade-in"
+            );
+
+        } else {
+
+            section.classList.remove(
+                "is-active",
+                "fade-in"
+            );
+
+            section.classList.add("fade-out");
+
+        }
 
     });
 
 }
-
 function activate(list, index) {
 
     list.forEach((item, itemIndex) => {
 
-        item.classList.toggle("active", itemIndex === index);
+        const active = itemIndex === index;
+
+        item.classList.toggle("active", active);
 
         item.setAttribute(
             "aria-hidden",
-            itemIndex === index ? "false" : "true"
+            active ? "false" : "true"
         );
 
     });
 
-}
-   
-   
-   function next(delay) {
+    if (list === coachLines && coachTyping) {
 
-        clearTimer();
-
-        state.timer = setTimeout(runTimeline, delay);
+        coachTyping.classList.remove("active");
 
     }
 
-    /* ==========================================================
-       TIMELINE
-       (continues in Part 2)
-    ========================================================== */
+}
+   
+   
+ function next(delay) {
+
+    clearTimer();
+
+    if (!state.running || state.skipped) {
+
+        return;
+
+    }
+
+    state.timer = setTimeout(runTimeline, Math.max(0, delay));
+
+}
 
 
-                              const timeline = [
 
         /* --------------------------------------------------
            HERO
@@ -263,17 +290,28 @@ function activate(list, index) {
            TRANSITION
         -------------------------------------------------- */
 
-        {
-            section: "transition",
-            duration: TIMING.transition,
-            action: () => {}
-        },
+{
+    section: "transition",
+    duration: TIMING.transition,
+    action: () => {
 
-        /* --------------------------------------------------
-           COACH
-        -------------------------------------------------- */
+        const transitionMessage =
+            document.getElementById("transitionMessage");
 
-       /* --------------------------------------------------
+        if (!transitionMessage) return;
+
+        transitionMessage.innerHTML = `
+            <p>Every recommendation begins with understanding your organisation.</p>
+            <p>Every organisation is unique.</p>
+            <p>So every Executive Advisory should be too.</p>
+        `;
+
+    }
+},
+
+        
+
+/* --------------------------------------------------
    COACH
 -------------------------------------------------- */
 
@@ -296,56 +334,111 @@ function activate(list, index) {
     duration: 0,
     action: () => {}
 }
-        /* --------------------------------------------------
-           CTA
-        -------------------------------------------------- */
 
-        {
-            section: "actions",
-            duration: 0,
-            action: () => {}
-        }
-
-    ];
+                                 
 
     /* ==========================================================
        TIMELINE PLAYER
        (continues in Part 3)
     ========================================================== */
+/* ==========================================================
+   TIMELINE PLAYER
+========================================================== */
 
+function runTimeline() {
 
-const TIMING = {
+    if (state.skipped) return;
 
-    hero: 2000,
+    if (state.stepIndex >= timeline.length) {
 
-    message: 2000,
+        showSection("actions");
 
-    lastMessage: 2500,
+        return;
 
-    card: 2250,
+    }
 
-    transition: 2000,
+    const step = timeline[state.stepIndex];
 
-    typing: 700,
+    showSection(step.section);
 
-    coach: 1900
+    if (step.section === "coach") {
 
-};
+        if (coachTyping) {
 
-   
+            coachTyping.classList.add("active");
+
+        }
+
+        clearTimer();
+
+        state.timer = setTimeout(() => {
+
+            if (coachTyping) {
+
+                coachTyping.classList.remove("active");
+
+            }
+
+            if (typeof step.action === "function") {
+
+                step.action();
+
+            }
+
+            state.stepIndex++;
+
+            next(step.duration);
+
+        }, TIMING.typing);
+
+        return;
+
+    }
+
+    if (typeof step.action === "function") {
+
+        step.action();
+
+    }
+
+    state.stepIndex++;
+
+    if (step.duration > 0) {
+
+        next(step.duration);
+
+    }
+
+}
+
+                                 
    /* ==========================================================
        ENGINE CONTROLS
     ========================================================== */
 
 function startTimeline() {
 
-    resetTimeline();
+    clearTimer();
 
     state.running = true;
 
     state.skipped = false;
 
     state.stepIndex = 0;
+
+    showSection("hero");
+
+    activate(messageScenes, -1);
+
+    activate(briefingCards, -1);
+
+    activate(coachLines, -1);
+
+    if (coachTyping) {
+
+        coachTyping.classList.remove("active");
+
+    }
 
     next(TIMING.hero);
 
@@ -367,11 +460,13 @@ function stopTimeline() {
 
 function resetTimeline() {
 
-    stopTimeline();
+    clearTimer();
 
-    state.stepIndex = 0;
+    state.running = false;
 
     state.skipped = false;
+
+    state.stepIndex = 0;
 
     hideAllSections();
 
@@ -390,6 +485,8 @@ function resetTimeline() {
     showSection("hero");
 
 }
+
+   
     /* ==========================================================
        PUBLIC API
     ========================================================== */
@@ -540,6 +637,12 @@ function initialize() {
 
     resetTimeline();
 
+    state.running = true;
+
+    state.skipped = false;
+
+    state.stepIndex = 0;
+
     showSection("hero");
 
     activate(messageScenes, -1);
@@ -554,18 +657,15 @@ function initialize() {
 
     }
 
-    state.running = true;
-
-    state.stepIndex = 0;
-
     next(TIMING.hero);
 
 }
 
-   /* ==========================================================
+   
+/* ==========================================================
        DEBUG UTILITIES
        (Available only from browser console)
-    ========================================================== */
+ ========================================================== */
 
 window.introDebug = {
 
