@@ -80,22 +80,23 @@ document.addEventListener("DOMContentLoaded", () => {
        TIMINGS
     ========================================================== */
 
-    const TIMING = {
+  const TIMING = {
 
-        hero: 2000,
+    hero: 2000,
 
-        message: 2000,
+    message: 2000,
 
-        lastMessage: 2500,
+    lastMessage: 2500,
 
-        card: 2250,
+    card: 2250,
 
-        transition: 2000,
+    transition: 2000,
 
-        coach: 1900
+    typing: 700,
 
-    };
+    coach: 1900
 
+};
     /* ==========================================================
        HELPERS
     ========================================================== */
