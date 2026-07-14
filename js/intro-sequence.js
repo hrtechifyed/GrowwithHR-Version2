@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
        TIMINGS
     ========================================================== */
 
-  const TIMING = {
+ const TIMING = {
 
     hero: 2000,
 
@@ -90,14 +90,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     card: 2250,
 
-    transition: 2000,
+    transition: 4200,
 
     typing: 700,
 
     coach: 1900
 
 };
-    /* ==========================================================
+
+   
+/* ==========================================================
        HELPERS
     ========================================================== */
 
