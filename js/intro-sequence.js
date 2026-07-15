@@ -77,6 +77,27 @@ const TYPING_DELAY = 700;
         skipped: false
 
     };
+   
+
+/* ==========================================================
+   SCREEN ORDER
+========================================================== */
+
+const SCREEN_SEQUENCE = [
+
+    "hero",
+
+    "messages",
+
+    "cards",
+
+    "transition",
+
+    "coach",
+
+    "actions"
+
+];
 
     /* ==========================================================
        TIMINGS
@@ -126,62 +147,78 @@ function clearTimer() {
 
 function hideAllSections() {
 
-    Object.values(sections).forEach(section => {
+    SCREEN_SEQUENCE.forEach(name => {
+
+        const section = sections[name];
 
         if (!section) return;
 
         section.classList.remove(
+
             "is-active",
+
             "fade-in"
+
         );
 
         section.classList.add("fade-out");
 
     });
 
-if (coachTyping) {
+    if (coachTyping) {
 
-    coachTyping.classList.remove("active");
+        coachTyping.classList.remove("active");
 
-    coachTyping.setAttribute("aria-hidden", "true");
+        coachTyping.setAttribute(
 
-}
+            "aria-hidden",
+
+            "true"
+
+        );
+
+    }
 
 }
 
 function showSection(name) {
 
-    const nextSection = sections[name];
+    SCREEN_SEQUENCE.forEach(screenName => {
 
-    if (!nextSection) return;
+        const screen = sections[screenName];
 
-    Object.values(sections).forEach(section => {
+        if (!screen) return;
 
-        if (!section) return;
+        const active = screenName === name;
 
-        if (section === nextSection) {
+        screen.classList.toggle(
 
-            section.classList.remove("fade-out");
+            "is-active",
 
-            section.classList.add(
-                "is-active",
-                "fade-in"
-            );
+            active
 
-        } else {
+        );
 
-            section.classList.remove(
-                "is-active",
-                "fade-in"
-            );
+        screen.classList.toggle(
 
-            section.classList.add("fade-out");
+            "fade-in",
 
-        }
+            active
+
+        );
+
+        screen.classList.toggle(
+
+            "fade-out",
+
+            !active
+
+        );
 
     });
 
 }
+   
 function activate(list, index) {
 
     list.forEach((item, itemIndex) => {
