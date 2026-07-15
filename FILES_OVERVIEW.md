@@ -1,6 +1,6 @@
 # GrowWithHR File Overview
 
-This document explains the major files and folders in the GrowWithHR public assessment and executive advisory tool. Current documentation version: v1.1.0.
+This document explains the major files and folders in the GrowWithHR public assessment and executive advisory tool.
 
 ## Entry Pages
 
