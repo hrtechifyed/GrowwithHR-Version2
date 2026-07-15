@@ -2,6 +2,25 @@
    EXECUTIVE INTRO EXPERIENCE
 ========================================================== */
 
+.exec-intro{
+
+    width:100%;
+    min-height:calc(100vh - 110px);
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:80px 24px;
+
+    text-align:center;
+
+    overflow:hidden;
+
+}
+
 /* ----------------------------------------------------------
    Screens
 ---------------------------------------------------------- */
@@ -24,13 +43,23 @@
    Logo
 ---------------------------------------------------------- */
 
+.intro-logo{
+
+    width:140px;
+
+    height:140px;
+
+    object-fit:contain;
+
+    margin-bottom:32px;
+
+}
+
 /* ----------------------------------------------------------
    Typography
 ---------------------------------------------------------- */
 
 .intro-title{
-
-    margin:0;
 
     font-size:3rem;
 
@@ -38,7 +67,9 @@
 
     line-height:1.15;
 
-    color:#fff;
+    margin-bottom:16px;
+
+    color:#ffffff;
 
 }
 
@@ -48,9 +79,7 @@
 
     color:rgba(255,255,255,.72);
 
-    margin-top:20px;
-
-    margin-bottom:0;
+    margin-bottom:72px;
 
 }
 
@@ -160,6 +189,20 @@
 
 }
 
+.intro-title{
+
+    margin:0;
+
+}
+
+.intro-subtitle{
+
+    margin-top:20px;
+
+    margin-bottom:0;
+
+}
+
 /* ==========================================================
    INTRO SCENES
 ========================================================== */
@@ -218,15 +261,13 @@
 
     margin:auto;
 
-   max-width: 720px;
-
 }
 
 .intro-card.active{
 
     display:block;
 
-
+}
 
 .intro-card-icon{
 
@@ -346,7 +387,19 @@
 
 }
 
+@media(max-width:768px){
 
+    .coach-card{
+
+        flex-direction:column;
+
+        align-items:center;
+
+        text-align:center;
+
+    }
+
+}
 
 /* ==========================================================
    INTRO ENGINE
@@ -358,8 +411,7 @@
 
     opacity:0;
 
-    transition:
-    opacity .6s ease;
+    transition:opacity .6s ease;
 
 }
 
@@ -376,58 +428,6 @@
     display:flex;
 
     opacity:1;
-
-}
-
-.intro-screen.fade-in{
-
-    animation:introFadeIn .6s ease forwards;
-
-}
-
-.intro-screen.fade-out{
-
-    animation:introFadeOut .35s ease forwards;
-
-}
-
-@keyframes introFadeIn{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(12px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-@keyframes introFadeOut{
-
-    from{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-    to{
-
-        opacity:0;
-
-        transform:translateY(-12px);
-
-    }
 
 }
 
@@ -465,6 +465,82 @@
 
 }
 
+.intro-screen {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .6s ease,
+        visibility .6s ease;
+
+}
+
+.intro-screen.is-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+.intro-screen.fade-in {
+
+    animation: introFadeIn .6s ease forwards;
+
+}
+
+.intro-screen.fade-out {
+
+    animation: introFadeOut .35s ease forwards;
+
+}
+
+@keyframes introFadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(12px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+@keyframes introFadeOut {
+
+    from {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+    to {
+
+        opacity: 0;
+
+        transform: translateY(-12px);
+
+    }
+
+}
+
 .intro-scene,
 .intro-card,
 .coach-line {
@@ -472,7 +548,6 @@
     opacity: 0;
 
     transform: translateY(10px);
-    transform-origin: left center;
 
     transition:
         opacity .45s ease,
@@ -518,9 +593,37 @@
 
 .coach-typing.active {
 
+    animation: coachTypingPulse .8s infinite ease-in-out;
+
+}
+
+.coach-typing.active {
+
     opacity:1;
 
     visibility:visible;
+
+}
+
+@keyframes coachTypingPulse {
+
+    0% {
+
+        opacity: .35;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: .35;
+
+    }
 
 }
 
@@ -742,6 +845,31 @@
 
 }
 
+#introActions {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease,
+        visibility .8s ease;
+
+}
+
+#introActions.is-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+}
+
 #startAssessment {
 
     transition:
@@ -759,11 +887,77 @@
 /* ==========================================================================
    v1.1 Intro Flow Refinements
 ========================================================================== */
+.exec-intro {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.intro-screen {
+    width: min(980px, 94vw);
+    min-height: min(560px, calc(100vh - 220px));
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-skip-btn {
+    position: fixed;
+    top: 112px;
+    right: max(24px, calc((100vw - 1180px) / 2));
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(12px);
+}
+
 #introActions {
     display: none !important;
 }
 
+.intro-card {
+    max-width: 720px;
+    margin: auto;
+}
 
+@media (max-width: 720px) {
+    .intro-skip-btn {
+        top: 96px;
+        right: 18px;
+    }
+
+    .intro-screen {
+        min-height: min(560px, calc(100vh - 170px));
+    }
+}
+.intro-screen {
+    perspective: 1400px;
+}
+
+.intro-scene {
+    width: min(760px, 92vw);
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(28px, 5vw, 56px);
+    border-radius: 28px;
+    background:
+        linear-gradient(135deg, rgba(247,166,0,.14), rgba(255,255,255,.055)),
+        rgba(7,13,26,.94);
+    border: 1px solid rgba(247,166,0,.28);
+    box-shadow:
+        0 28px 80px rgba(0,0,0,.32),
+        inset 4px 0 0 rgba(247,166,0,.76);
+}
+
+.intro-card,
+.intro-scene.active,
+.intro-card.active {
+    transform-origin: left center;
+}
 
 .intro-screen.fade-in .intro-scene.active,
 .intro-screen.fade-in .intro-card.active {
@@ -782,25 +976,3 @@
         filter: blur(0);
     }
 }
-
-@media(max-width:768px){
-
-    .coach-card{
-
-        flex-direction:column;
-
-        align-items:center;
-
-        text-align:center;
-
-    }
-
-}
-
-@media (max-width: 720px) {
-    .intro-skip-btn {
-        top: 96px;
-        right: 18px;
-    }
-
-   }
