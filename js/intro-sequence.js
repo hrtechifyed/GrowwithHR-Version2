@@ -219,28 +219,57 @@ function showSection(name) {
 
 }
    
-function activate(list, index) {
+/* ==========================================================
+   ACTIVATE COLLECTION ITEM
+========================================================== */
 
-    list.forEach((item, itemIndex) => {
+function activate(collection, activeIndex) {
 
-        const active = itemIndex === index;
+    collection.forEach((item, index) => {
 
-        item.classList.toggle("active", active);
+        const isActive = index === activeIndex;
+
+        item.classList.toggle("active", isActive);
 
         item.setAttribute(
             "aria-hidden",
-            active ? "false" : "true"
+            isActive ? "false" : "true"
         );
 
     });
 
-    if (list === coachLines && coachTyping) {
+    if (collection === coachLines && coachTyping) {
 
         coachTyping.classList.remove("active");
 
+        coachTyping.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
     }
 
+}   
+
+
+/* ==========================================================
+   TIMELINE HELPERS
+========================================================== */
+
+function timelineStep(section, duration, action = null) {
+
+    return {
+
+        section,
+
+        duration,
+
+        action
+
+    };
+
 }
+
    
    
 const timeline = [
@@ -249,34 +278,33 @@ const timeline = [
        HERO
     -------------------------------------------------- */
 
-    {
-        section: "hero",
-        duration: TIMING.hero,
-        action: () => {}
-    },
+   timelineStep(
+    "hero",
+    TIMING.hero
+),
 
     /* --------------------------------------------------
        INTRO MESSAGES
     -------------------------------------------------- */
 
-    {
-        section: "messages",
-        duration: TIMING.message,
-        action: () => activate(messageScenes, 0)
-    },
+  timelineStep(
+    "messages",
+    TIMING.message,
+    () => activate(messageScenes, 0)
+),
 
-    {
-        section: "messages",
-        duration: TIMING.message,
-        action: () => activate(messageScenes, 1)
-    },
+   
+timelineStep(
+    "messages",
+    TIMING.message,
+    () => activate(messageScenes, 1)
+),
 
-    {
-        section: "messages",
-        duration: TIMING.lastMessage,
-        action: () => activate(messageScenes, 2)
-    },
-
+  timelineStep(
+    "messages",
+    TIMING.lastMessage,
+    () => activate(messageScenes, 2)
+),
     /* --------------------------------------------------
        EXECUTIVE BRIEFING
     -------------------------------------------------- */
