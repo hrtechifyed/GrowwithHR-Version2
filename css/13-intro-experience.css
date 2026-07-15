@@ -28,14 +28,20 @@
 .intro-screen{
 
     width:100%;
-    max-width:900px;
 
     display:flex;
+
     flex-direction:column;
+
     justify-content:center;
+
     align-items:center;
 
     margin:auto;
+
+    min-height:560px;
+
+    text-align:center;
 
 }
 
@@ -200,6 +206,30 @@
     margin-top:20px;
 
     margin-bottom:0;
+
+}
+
+/* ==========================================================
+   INTRO STAGE
+========================================================== */
+
+.intro-stage{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:900px;
+
+    min-height:560px;
+
+    margin:0 auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
 }
 
@@ -975,4 +1005,21 @@
         transform: rotateY(0) translateX(0) scale(1);
         filter: blur(0);
     }
+}
+
+
+@media (max-width:768px){
+
+    .intro-stage{
+
+        min-height:480px;
+
+    }
+
+    .intro-screen{
+
+        min-height:480px;
+
+    }
+
 }
