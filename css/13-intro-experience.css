@@ -1,11 +1,140 @@
 /* ==========================================================
-   GROWWITHHR
    EXECUTIVE INTRO EXPERIENCE
-   Version: 2.0
 ========================================================== */
 
+.exec-intro{
+
+    width:100%;
+    min-height:calc(100vh - 110px);
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:80px 24px;
+
+    text-align:center;
+
+    overflow:hidden;
+
+}
+
+/* ----------------------------------------------------------
+   Screens
+---------------------------------------------------------- */
+
+.intro-screen{
+
+    width:100%;
+    max-width:900px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+}
+
+/* ----------------------------------------------------------
+   Logo
+---------------------------------------------------------- */
+
+.intro-logo{
+
+    width:140px;
+
+    height:140px;
+
+    object-fit:contain;
+
+    margin-bottom:32px;
+
+}
+
+/* ----------------------------------------------------------
+   Typography
+---------------------------------------------------------- */
+
+.intro-title{
+
+    font-size:3rem;
+
+    font-weight:700;
+
+    line-height:1.15;
+
+    margin-bottom:16px;
+
+    color:#ffffff;
+
+}
+
+.intro-subtitle{
+
+    font-size:1.15rem;
+
+    color:rgba(255,255,255,.72);
+
+    margin-bottom:72px;
+
+}
+
+.intro-message{
+
+    max-width:760px;
+
+    font-size:2.2rem;
+
+    font-weight:600;
+
+    line-height:1.45;
+
+    color:white;
+
+}
+
+/* ----------------------------------------------------------
+   Cards
+---------------------------------------------------------- */
+
+.intro-card-container{
+
+    width:100%;
+
+    max-width:760px;
+
+}
+
+/* ----------------------------------------------------------
+   Coach
+---------------------------------------------------------- */
+
+.coach-conversation{
+
+    width:100%;
+
+    max-width:760px;
+
+}
+
+/* ----------------------------------------------------------
+   Buttons
+---------------------------------------------------------- */
+
+#introActions{
+
+    margin-top:60px;
+
+    gap:18px;
+
+}
+
 /* ==========================================================
-   EXECUTIVE LANDING
+   OVERRIDE EXECUTIVE ASSESSMENT LAYOUT
 ========================================================== */
 
 .exec-landing{
@@ -28,37 +157,15 @@
 
 }
 
-/* ==========================================================
-   INTRO CONTAINER
-========================================================== */
-
 .exec-intro{
+
+    width:100%;
 
     position:relative;
 
-    width:100%;
-
     max-width:1100px;
 
-    min-height:calc(100vh - 180px);
-
-    margin:0 auto;
-
-    overflow:hidden;
-
-}
-
-/* ==========================================================
-   INTRO SCREENS
-========================================================== */
-
-.intro-screen{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
+    margin:auto;
 
     display:flex;
 
@@ -68,75 +175,7 @@
 
     align-items:center;
 
-    text-align:center;
-
-    padding:40px 24px;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    pointer-events:none;
-
-    transition:
-
-        opacity .60s ease,
-
-        transform .60s ease,
-
-        visibility .60s ease;
-
 }
-
-.intro-screen.is-active{
-
-    display:flex;
-
-    opacity:1;
-
-    visibility:visible;
-
-    pointer-events:auto;
-
-}
-
-/* ==========================================================
-   HERO
-========================================================== */
-
-#introHero{
-
-    z-index:10;
-
-}
-
-#introMessages{
-
-    z-index:20;
-
-}
-
-#introCards{
-
-    z-index:30;
-
-}
-
-#introTransition{
-
-    z-index:40;
-
-}
-
-#coachIntroduction{
-
-    z-index:50;
-
-}
-
-/* ==========================================================
-   BRANDING
-========================================================== */
 
 .intro-logo{
 
@@ -144,11 +183,9 @@
 
     height:120px;
 
-    object-fit:contain;
-
     display:block;
 
-    margin:0 auto 40px;
+    margin:0 auto 40px auto;
 
 }
 
@@ -156,149 +193,53 @@
 
     margin:0;
 
-    font-size:clamp(2.8rem,6vw,4rem);
-
-    font-weight:700;
-
-    line-height:1.15;
-
-    color:#FFFFFF;
-
 }
 
 .intro-subtitle{
 
     margin-top:20px;
 
-    font-size:1.2rem;
-
-    line-height:1.8;
-
-    color:rgba(255,255,255,.72);
-
-    max-width:760px;
+    margin-bottom:0;
 
 }
 
 /* ==========================================================
-   EXECUTIVE MESSAGE
-========================================================== */
-
-.intro-message{
-
-    max-width:760px;
-
-    margin:auto;
-
-    font-size:clamp(2rem,5vw,3rem);
-
-    font-weight:600;
-
-    line-height:1.45;
-
-    color:#FFFFFF;
-
-}
-
-/* ==========================================================
-   EXECUTIVE SCENES
+   INTRO SCENES
 ========================================================== */
 
 .intro-scene{
 
+    display:none;
+
     width:min(760px,92vw);
 
-    min-height:260px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
-
-    padding:clamp(28px,5vw,56px);
-
     margin:auto;
-
-    border-radius:28px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(247,166,0,.14),
-            rgba(255,255,255,.05)
-        ),
-        rgba(7,13,26,.94);
-
-    border:1px solid rgba(247,166,0,.28);
-
-    box-shadow:
-        0 28px 80px rgba(0,0,0,.32),
-        inset 4px 0 0 rgba(247,166,0,.76);
-
-    opacity:0;
-
-    transform:translateY(10px);
-
-    transition:
-        opacity .45s ease,
-        transform .45s ease;
 
 }
 
 .intro-scene.active{
 
-    opacity:1;
-
-    transform:translateY(0);
+    display:block;
 
 }
 
 .intro-scene h2{
 
-    margin:0;
-
-    font-size:clamp(2rem,4vw,3.4rem);
+    font-size:clamp(2rem,4vw,3.5rem);
 
     font-weight:600;
 
     line-height:1.35;
 
-    color:#FFFFFF;
+    color:#ffffff;
 
-}
-
-.intro-scene p{
-
-    margin-top:28px;
-
-    max-width:620px;
-
-    font-size:1.1rem;
-
-    line-height:1.9;
-
-    color:rgba(255,255,255,.82);
+    margin:0;
 
 }
 
 /* ==========================================================
    EXECUTIVE BRIEFING CARDS
 ========================================================== */
-
-.intro-card-container{
-
-    width:100%;
-
-    max-width:760px;
-
-    margin:auto;
-
-}
 
 .intro-card{
 
@@ -308,43 +249,23 @@
 
     padding:clamp(28px,5vw,48px);
 
-    margin:auto;
-
-    text-align:center;
-
     border-radius:28px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.05),
-            rgba(255,255,255,.03)
-        );
+    background:rgba(255,255,255,.04);
 
     border:1px solid rgba(255,255,255,.08);
 
     backdrop-filter:blur(20px);
 
-    box-shadow:
-        0 24px 60px rgba(0,0,0,.28);
+    text-align:center;
 
-    opacity:0;
-
-    transform:translateY(12px);
-
-    transition:
-        opacity .45s ease,
-        transform .45s ease;
+    margin:auto;
 
 }
 
 .intro-card.active{
 
     display:block;
-
-    opacity:1;
-
-    transform:translateY(0);
 
 }
 
@@ -358,23 +279,23 @@
 
 .intro-card h2{
 
-    margin-bottom:20px;
-
     font-size:clamp(2rem,4vw,2.8rem);
 
-    color:#FFFFFF;
+    margin-bottom:20px;
+
+    color:white;
 
 }
 
 .intro-card p{
 
-    margin-bottom:24px;
-
     font-size:clamp(1rem,2vw,1.2rem);
 
-    line-height:1.9;
+    line-height:1.8;
 
     color:rgba(255,255,255,.82);
+
+    margin-bottom:24px;
 
 }
 
@@ -382,67 +303,13 @@
 
     display:block;
 
-    font-size:.92rem;
+    font-size:.95rem;
 
-    font-weight:600;
-
-    letter-spacing:.10em;
+    letter-spacing:.08em;
 
     text-transform:uppercase;
 
-    color:#F7A600;
-
-}
-
-/* ==========================================================
-   PAGE TURN EFFECT
-========================================================== */
-
-.intro-card,
-
-.intro-scene.active{
-
-    transform-origin:left center;
-
-    perspective:1400px;
-
-}
-
-.intro-screen.fade-in .intro-card.active,
-
-.intro-screen.fade-in .intro-scene.active{
-
-    animation:introPageTurnIn .72s cubic-bezier(.2,.8,.2,1) both;
-
-}
-
-@keyframes introPageTurnIn{
-
-    from{
-
-        opacity:0;
-
-        transform:
-            rotateY(-13deg)
-            translateX(20px)
-            scale(.985);
-
-        filter:blur(4px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:
-            rotateY(0)
-            translateX(0)
-            scale(1);
-
-        filter:blur(0);
-
-    }
+    color:#f7a600;
 
 }
 
@@ -450,65 +317,33 @@
    COACH INTRODUCTION
 ========================================================== */
 
-.coach-conversation{
-
-    width:100%;
-
-    max-width:820px;
-
-    margin:auto;
-
-}
-
-
-
 .coach-card{
+
+    width:min(820px,92vw);
 
     display:flex;
 
-    align-items:flex-start;
-
     gap:32px;
 
-    padding:clamp(28px,5vw,48px);
+    align-items:flex-start;
+
+    padding:clamp(24px,4vw,42px);
 
     border-radius:28px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.05),
-            rgba(255,255,255,.03)
-        );
+    background:rgba(255,255,255,.05);
 
     border:1px solid rgba(255,255,255,.08);
 
     backdrop-filter:blur(20px);
 
-    box-shadow:
-        0 24px 70px rgba(0,0,0,.30);
-
 }
-
-
-
-/* ==========================================================
-   COACH AVATAR
-========================================================== */
-
-.coach-avatar{
-
-    flex-shrink:0;
-
-}
-
-
 
 .coach-avatar-circle{
 
-    width:76px;
+    width:72px;
 
-    height:76px;
+    height:72px;
 
     border-radius:50%;
 
@@ -518,188 +353,39 @@
 
     align-items:center;
 
-    background:#F7A600;
-
-    color:#111111;
-
-    font-size:1.25rem;
+    font-size:1.2rem;
 
     font-weight:700;
 
-    box-shadow:
-        0 10px 30px rgba(247,166,0,.35);
+    background:#f7a600;
+
+    color:#111;
 
 }
-
-
-
-/* ==========================================================
-   COACH DIALOGUE
-========================================================== */
 
 .coach-dialogue{
 
     flex:1;
 
-    text-align:left;
-
 }
-
-
 
 .coach-line{
 
     display:none;
 
-    font-size:clamp(1.05rem,2vw,1.35rem);
+    font-size:clamp(1.1rem,2vw,1.35rem);
 
-    line-height:1.9;
+    line-height:1.8;
 
-    color:#FFFFFF;
-
-    opacity:0;
-
-    transform:translateY(12px);
-
-    transition:
-        opacity .45s ease,
-        transform .45s ease;
+    color:white;
 
 }
-
-
 
 .coach-line.active{
 
     display:block;
 
-    opacity:1;
-
-    transform:translateY(0);
-
 }
-
-
-
-/* ==========================================================
-   COACH TYPING
-========================================================== */
-
-.coach-typing{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:6px;
-
-    margin-top:18px;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:
-        opacity .30s ease,
-        visibility .30s ease;
-
-}
-
-
-
-.coach-typing.active{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-
-
-.coach-typing span{
-
-    display:inline-block;
-
-    width:7px;
-
-    height:7px;
-
-    border-radius:50%;
-
-    background:#F7A600;
-
-    animation:coachTypingDots 1.2s infinite ease-in-out;
-
-}
-
-
-
-.coach-typing span:nth-child(2){
-
-    animation-delay:.2s;
-
-}
-
-
-
-.coach-typing span:nth-child(3){
-
-    animation-delay:.4s;
-
-}
-
-
-
-@keyframes coachTypingDots{
-
-    0%,80%,100%{
-
-        opacity:.30;
-
-        transform:translateY(0);
-
-    }
-
-    40%{
-
-        opacity:1;
-
-        transform:translateY(-4px);
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   COACH MESSAGE TRANSITION
-========================================================== */
-
-.coach-line.fade-out{
-
-    opacity:0;
-
-    transform:translateY(-8px);
-
-}
-
-
-
-.coach-line.fade-in{
-
-    opacity:1;
-
-    transform:translateY(0);
-
-}
-
-
-
-/* ==========================================================
-   MOBILE
-========================================================== */
 
 @media(max-width:768px){
 
@@ -711,185 +397,39 @@
 
         text-align:center;
 
-        gap:24px;
-
-    }
-
-
-
-    .coach-dialogue{
-
-        text-align:center;
-
-    }
-
-
-
-    .coach-avatar-circle{
-
-        width:68px;
-
-        height:68px;
-
-        font-size:1.1rem;
-
     }
 
 }
 
 /* ==========================================================
-   INTRO TRANSITION
+   INTRO ENGINE
 ========================================================== */
 
-#introTransition{
+.intro-screen{
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
-
-    min-height:420px;
-
-}
-
-
-
-#transitionMessage{
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:22px;
-
-    width:min(760px,92vw);
-
-    min-height:140px;
-
-    text-align:center;
-
-    font-size:clamp(1.2rem,2vw,1.6rem);
-
-    font-weight:500;
-
-    line-height:1.8;
+    display:none;
 
     opacity:0;
 
-    transform:translateY(12px);
-
-    transition:
-
-        opacity .45s ease,
-
-        transform .45s ease;
+    transition:opacity .6s ease;
 
 }
 
+#introHero{
 
-
-#transitionMessage.visible{
+    display:flex;
 
     opacity:1;
 
-    transform:translateY(0);
-
 }
 
+.intro-screen.is-active{
 
+    display:flex;
 
-#transitionMessage p{
-
-    margin:0;
-
-    color:#FFFFFF;
+    opacity:1;
 
 }
-
-
-
-#transitionMessage p:nth-child(2){
-
-    animation-delay:.8s;
-
-}
-
-
-
-#transitionMessage p:nth-child(3){
-
-    animation-delay:1.6s;
-
-}
-
-
-
-@keyframes transitionMessageFade{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(20px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   INTRO ACTIONS
-========================================================== */
-
-#introActions{
-
-    display:none !important;
-
-}
-
-
-
-/* ==========================================================
-   START ASSESSMENT BUTTON
-========================================================== */
-
-#startAssessment{
-
-    transition:
-
-        transform .35s ease,
-
-        box-shadow .35s ease,
-
-        background .35s ease;
-
-}
-
-
-
-#startAssessment:hover{
-
-    transform:translateY(-3px);
-
-}
-
-
 
 /* ==========================================================
    SKIP BUTTON
@@ -897,751 +437,542 @@
 
 .intro-skip-btn{
 
-    position:fixed;
+    position:absolute;
 
-    top:112px;
+    top:32px;
 
-    right:max(24px,calc((100vw - 1180px)/2));
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:10px 16px;
+    right:32px;
 
     border:none;
 
-    border-radius:999px;
+    background:none;
 
-    background:rgba(255,255,255,.08);
+    color:rgba(255,255,255,.72);
 
-    border:1px solid rgba(255,255,255,.12);
-
-    backdrop-filter:blur(12px);
-
-    color:rgba(255,255,255,.80);
-
-    font-size:.92rem;
+    font-size:.95rem;
 
     cursor:pointer;
 
-    z-index:999;
+    transition:.3s;
 
-    transition:
-
-        background .30s ease,
-
-        color .30s ease,
-
-        transform .30s ease;
+    z-index:100;
 
 }
-
-
 
 .intro-skip-btn:hover{
 
-    background:rgba(247,166,0,.15);
-
-    color:#F7A600;
-
-    transform:translateY(-2px);
+    color:#f7a600;
 
 }
 
+.intro-screen {
 
+    opacity: 0;
 
-/* ==========================================================
-   SCREEN ENGINE
-========================================================== */
+    visibility: hidden;
 
-.intro-screen.fade-in{
-
-    animation:introFadeIn .60s ease forwards;
-
-}
-
-
-
-.intro-screen.fade-out{
-
-    animation:introFadeOut .35s ease forwards;
-
-}
-
-
-
-@keyframes introFadeIn{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(14px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-
-
-@keyframes introFadeOut{
-
-    from{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-    to{
-
-        opacity:0;
-
-        transform:translateY(-14px);
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   MICRO ANIMATIONS
-========================================================== */
-
-.intro-scene,
-
-.intro-card,
-
-.coach-card{
-
-    will-change:
-
-        opacity,
-
-        transform;
-
-}
-
-
-
-.intro-card:hover{
-
-    transform:translateY(-4px);
-
-}
-
-
-
-.coach-card:hover{
-
-    transform:translateY(-3px);
-
-}
-
-
-/* ==========================================================
-   RESPONSIVE LAYOUT
-========================================================== */
-
-@media (max-width:1200px){
-
-    .exec-intro{
-
-        max-width:1000px;
-
-        padding:0 24px;
-
-    }
-
-}
-
-
-
-@media (max-width:992px){
-
-    .exec-intro{
-
-        min-height:calc(100vh - 150px);
-
-    }
-
-    .intro-screen{
-
-        padding:32px 20px;
-
-    }
-
-    .intro-logo{
-
-        width:100px;
-
-        height:100px;
-
-        margin-bottom:28px;
-
-    }
-
-    .intro-title{
-
-        font-size:clamp(2.3rem,6vw,3.2rem);
-
-    }
-
-    .intro-subtitle{
-
-        font-size:1.05rem;
-
-        line-height:1.7;
-
-    }
-
-    .intro-message{
-
-        font-size:clamp(1.8rem,5vw,2.5rem);
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   TABLETS
-========================================================== */
-
-@media (max-width:768px){
-
-    .exec-landing{
-
-        padding:24px 18px !important;
-
-    }
-
-    .exec-intro{
-
-        min-height:auto;
-
-    }
-
-    .intro-screen{
-
-        width:100%;
-
-        min-height:auto;
-
-        padding:24px 16px;
-
-    }
-
-    .intro-scene,
-
-    .intro-card,
-
-    .coach-card{
-
-        width:100%;
-
-        max-width:100%;
-
-        border-radius:22px;
-
-    }
-
-    .intro-scene{
-
-        padding:28px;
-
-    }
-
-    .intro-card{
-
-        padding:28px;
-
-    }
-
-    .coach-card{
-
-        padding:28px;
-
-    }
-
-    .intro-logo{
-
-        width:88px;
-
-        height:88px;
-
-        margin-bottom:24px;
-
-    }
-
-    .intro-title{
-
-        font-size:2.2rem;
-
-    }
-
-    .intro-subtitle{
-
-        font-size:1rem;
-
-    }
-
-    .intro-message{
-
-        font-size:1.75rem;
-
-        line-height:1.55;
-
-    }
-
-    .intro-card h2{
-
-        font-size:2rem;
-
-    }
-
-    .intro-card p{
-
-        font-size:1rem;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   MOBILE PHONES
-========================================================== */
-
-@media (max-width:576px){
-
-    .exec-landing{
-
-        padding:20px 14px !important;
-
-    }
-
-    .intro-screen{
-
-        padding:20px 12px;
-
-    }
-
-    .intro-logo{
-
-        width:72px;
-
-        height:72px;
-
-        margin-bottom:20px;
-
-    }
-
-    .intro-title{
-
-        font-size:1.9rem;
-
-        line-height:1.2;
-
-    }
-
-    .intro-subtitle{
-
-        font-size:.95rem;
-
-        margin-top:16px;
-
-    }
-
-    .intro-message{
-
-        font-size:1.55rem;
-
-    }
-
-    .intro-scene{
-
-        padding:24px;
-
-        min-height:220px;
-
-    }
-
-    .intro-card{
-
-        padding:24px;
-
-    }
-
-    .coach-card{
-
-        padding:24px;
-
-    }
-
-    .coach-line{
-
-        font-size:1rem;
-
-        line-height:1.8;
-
-    }
-
-    .intro-card-icon{
-
-        font-size:3rem;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   VERY SMALL DEVICES
-========================================================== */
-
-@media (max-width:380px){
-
-    .intro-title{
-
-        font-size:1.7rem;
-
-    }
-
-    .intro-message{
-
-        font-size:1.35rem;
-
-    }
-
-    .intro-scene{
-
-        padding:20px;
-
-    }
-
-    .intro-card{
-
-        padding:20px;
-
-    }
-
-    .coach-card{
-
-        padding:20px;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   LANDSCAPE PHONES
-========================================================== */
-
-@media (max-height:700px){
-
-    .exec-intro{
-
-        min-height:auto;
-
-    }
-
-    .intro-screen{
-
-        padding-top:24px;
-
-        padding-bottom:24px;
-
-    }
-
-    .intro-logo{
-
-        width:70px;
-
-        height:70px;
-
-        margin-bottom:18px;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   TOUCH DEVICES
-========================================================== */
-
-@media (hover:none){
-
-    .intro-card:hover,
-
-    .coach-card:hover{
-
-        transform:none;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   SAFE AREA (iPhone)
-========================================================== */
-
-@supports (padding:max(0px)){
-
-    .intro-screen{
-
-        padding-left:max(20px,env(safe-area-inset-left));
-
-        padding-right:max(20px,env(safe-area-inset-right));
-
-    }
-
-}
-
-/* ==========================================================
-   ACCESSIBILITY
-========================================================== */
-
-.intro-screen:focus-visible,
-
-.intro-card:focus-visible,
-
-.coach-card:focus-visible,
-
-.intro-skip-btn:focus-visible,
-
-button:focus-visible,
-
-a:focus-visible{
-
-    outline:2px solid #F7A600;
-
-    outline-offset:4px;
-
-}
-
-
-
-/* ==========================================================
-   TEXT SELECTION
-========================================================== */
-
-::selection{
-
-    background:#F7A600;
-
-    color:#111111;
-
-}
-
-
-
-/* ==========================================================
-   IMAGE SAFETY
-========================================================== */
-
-img{
-
-    max-width:100%;
-
-    height:auto;
-
-}
-
-
-
-/* ==========================================================
-   HORIZONTAL RULES
-========================================================== */
-
-hr{
-
-    border:none;
-
-    height:1px;
-
-    background:rgba(255,255,255,.08);
-
-    margin:60px 0;
-
-}
-
-
-
-/* ==========================================================
-   PERFORMANCE
-========================================================== */
-
-.exec-intro,
-
-.intro-screen,
-
-.intro-scene,
-
-.intro-card,
-
-.coach-card{
-
-    backface-visibility:hidden;
-
-    transform-style:preserve-3d;
-
-}
-
-
-
-.intro-scene,
-
-.intro-card,
-
-.coach-card{
-
-    will-change:
-
-        opacity,
-
-        transform;
-
-}
-
-
-
-/* ==========================================================
-   REDUCED MOTION
-========================================================== */
-
-@media (prefers-reduced-motion:reduce){
-
-    *{
-
-        animation:none !important;
-
-        transition:none !important;
-
-        scroll-behavior:auto !important;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   PRINT
-========================================================== */
-
-@media print{
-
-    .intro-skip-btn,
-
-    #introActions{
-
-        display:none !important;
-
-    }
-
-}
-
-
-
-/* ==========================================================
-   FINAL POLISH
-========================================================== */
-
-.intro-card,
-
-.intro-scene,
-
-.coach-card{
+    pointer-events: none;
 
     transition:
+        opacity .6s ease,
+        visibility .6s ease;
 
-        transform .35s ease,
+}
 
-        box-shadow .35s ease,
+.intro-screen.is-active {
 
-        border-color .35s ease,
+    opacity: 1;
 
-        opacity .35s ease;
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+.intro-screen.fade-in {
+
+    animation: introFadeIn .6s ease forwards;
+
+}
+
+.intro-screen.fade-out {
+
+    animation: introFadeOut .35s ease forwards;
+
+}
+
+@keyframes introFadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(12px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+@keyframes introFadeOut {
+
+    from {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+    to {
+
+        opacity: 0;
+
+        transform: translateY(-12px);
+
+    }
+
+}
+
+.intro-scene,
+.intro-card,
+.coach-line {
+
+    opacity: 0;
+
+    transform: translateY(10px);
+
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+
+}
+
+.intro-scene.active,
+.intro-card.active,
+.coach-line.active {
+
+    opacity: 1;
+
+    transform: translateY(0);
 
 }
 
 
+.coach-typing {
 
-.intro-card:hover,
+    display:inline-flex;
 
-.intro-scene:hover,
+    align-items:center;
 
-.coach-card:hover{
+    gap:6px;
 
-    border-color:rgba(247,166,0,.45);
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+
+}
+
+.coach-typing::before,
+.coach-typing::after {
+
+    content: "";
+
+}
+
+.coach-typing.active {
+
+    animation: coachTypingPulse .8s infinite ease-in-out;
+
+}
+
+.coach-typing.active {
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+@keyframes coachTypingPulse {
+
+    0% {
+
+        opacity: .35;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: .35;
+
+    }
+
+}
+
+.coach-typing.active::after {
+
+    content: "";
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
 
     box-shadow:
+        0 0 0 currentColor,
+        10px 0 0 currentColor,
+        20px 0 0 currentColor;
 
-        0 32px 90px rgba(0,0,0,.35);
+    animation: coachDots .9s infinite ease-in-out;
+
+}
+
+@keyframes coachDots {
+
+    0%,100% {
+
+        opacity: .35;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+}
+
+.coach-typing.active span {
+
+    display: inline-block;
+
+    animation: coachTypingDot 1.2s infinite ease-in-out;
+
+}
+
+.coach-typing.active span:nth-child(2) {
+
+    animation-delay: .2s;
+
+}
+
+.coach-typing.active span:nth-child(3) {
+
+    animation-delay: .4s;
+
+}
+
+@keyframes coachTypingDot {
+
+    0%, 80%, 100% {
+
+        opacity: .3;
+
+        transform: translateY(0);
+
+    }
+
+    40% {
+
+        opacity: 1;
+
+        transform: translateY(-3px);
+
+    }
 
 }
 
 
+#introTransition {
 
-/* ==========================================================
-   UTILITY CLASSES
-========================================================== */
+    display: flex;
 
-.hidden{
+    align-items: center;
 
-    display:none !important;
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 420px;
+
+}
+
+#transitionMessage p {
+
+    margin: 0;
+
+    opacity: 0;
+
+    transform: translateY(20px);
+
+    animation: transitionMessageFade .8s ease forwards;
+
+}
+
+#transitionMessage p:nth-child(2) {
+
+    animation-delay: .8s;
+
+}
+
+#transitionMessage p:nth-child(3) {
+
+    animation-delay: 1.6s;
+
+}
+
+@keyframes transitionMessageFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
 
 }
 
 
+.coach-typing span {
 
-.invisible{
+    display: inline-block;
 
-    visibility:hidden !important;
+    opacity: .3;
+
+    animation: coachTypingDots 1.2s infinite ease-in-out;
+
+}
+
+.coach-typing span:nth-child(2) {
+
+    animation-delay: .2s;
+
+}
+
+.coach-typing span:nth-child(3) {
+
+    animation-delay: .4s;
+
+}
+
+@keyframes coachTypingDots {
+
+    0%, 80%, 100% {
+
+        opacity: .3;
+
+        transform: translateY(0);
+
+    }
+
+    40% {
+
+        opacity: 1;
+
+        transform: translateY(-4px);
+
+    }
 
 }
 
 
+#transitionMessage {
 
-.fade-in{
+    display: flex;
 
-    animation:introFadeIn .6s ease forwards;
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 120px;
+
+    text-align: center;
+
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+
+    font-weight: 500;
+
+    line-height: 1.7;
+
+    transition:
+        opacity .4s ease,
+        transform .4s ease;
 
 }
 
+#transitionMessage.visible {
 
+    opacity: 1;
 
-.fade-out{
-
-    animation:introFadeOut .35s ease forwards;
+    transform: translateY(0);
 
 }
 
+#transitionMessage:not(.visible) {
 
+    opacity: 0;
 
-/* ==========================================================
-   END OF FILE
-========================================================== */
+    transform: translateY(12px);
+
+}
+
+#introActions {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease,
+        visibility .8s ease;
+
+}
+
+#introActions.is-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+}
+
+#startAssessment {
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+
+}
+
+#startAssessment:hover {
+
+    transform: translateY(-2px);
+
+}
+
+/* ==========================================================================
+   v1.1 Intro Flow Refinements
+========================================================================== */
+.exec-intro {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.intro-screen {
+    width: min(980px, 94vw);
+    min-height: min(560px, calc(100vh - 220px));
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-skip-btn {
+    position: fixed;
+    top: 112px;
+    right: max(24px, calc((100vw - 1180px) / 2));
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(12px);
+}
+
+#introActions {
+    display: none !important;
+}
+
+.intro-card {
+    max-width: 720px;
+    margin: auto;
+}
+
+@media (max-width: 720px) {
+    .intro-skip-btn {
+        top: 96px;
+        right: 18px;
+    }
+
+    .intro-screen {
+        min-height: min(560px, calc(100vh - 170px));
+    }
+}
+.intro-screen {
+    perspective: 1400px;
+}
+
+.intro-scene {
+    width: min(760px, 92vw);
+    min-height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(28px, 5vw, 56px);
+    border-radius: 28px;
+    background:
+        linear-gradient(135deg, rgba(247,166,0,.14), rgba(255,255,255,.055)),
+        rgba(7,13,26,.94);
+    border: 1px solid rgba(247,166,0,.28);
+    box-shadow:
+        0 28px 80px rgba(0,0,0,.32),
+        inset 4px 0 0 rgba(247,166,0,.76);
+}
+
+.intro-card,
+.intro-scene.active,
+.intro-card.active {
+    transform-origin: left center;
+}
+
+.intro-screen.fade-in .intro-scene.active,
+.intro-screen.fade-in .intro-card.active {
+    animation: introPageTurnIn .72s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes introPageTurnIn {
+    from {
+        opacity: 0;
+        transform: rotateY(-13deg) translateX(20px) scale(.985);
+        filter: blur(4px);
+    }
+    to {
+        opacity: 1;
+        transform: rotateY(0) translateX(0) scale(1);
+        filter: blur(0);
+    }
+}
