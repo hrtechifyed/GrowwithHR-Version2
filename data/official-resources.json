@@ -1,36 +1,40 @@
 {
     "lastVerified": "2026-07-09",
     "resources": [
-
         {
+            "name": "Ministry of Labour & Employment",
             "authority": "Ministry of Labour & Employment",
             "type": "Central Government",
-            "website": "https://labour.gov.in"
+            "description": "Official website for Ministry of Labour & Employment.",
+            "url": "https://labour.gov.in"
         },
-
         {
+            "name": "Employees' Provident Fund Organisation",
             "authority": "Employees' Provident Fund Organisation",
             "type": "Statutory Authority",
-            "website": "https://www.epfindia.gov.in"
+            "description": "Official website for Employees' Provident Fund Organisation.",
+            "url": "https://www.epfindia.gov.in"
         },
-
         {
+            "name": "Employees' State Insurance Corporation",
             "authority": "Employees' State Insurance Corporation",
             "type": "Statutory Authority",
-            "website": "https://www.esic.gov.in"
+            "description": "Official website for Employees' State Insurance Corporation.",
+            "url": "https://www.esic.gov.in"
         },
-
         {
+            "name": "India Code",
             "authority": "India Code",
             "type": "Official Legal Repository",
-            "website": "https://www.indiacode.nic.in"
+            "description": "Official website for India Code.",
+            "url": "https://www.indiacode.nic.in"
         },
-
         {
+            "name": "Ministry of Corporate Affairs",
             "authority": "Ministry of Corporate Affairs",
             "type": "Central Government",
-            "website": "https://www.mca.gov.in"
+            "description": "Official website for Ministry of Corporate Affairs.",
+            "url": "https://www.mca.gov.in"
         }
-
     ]
 }

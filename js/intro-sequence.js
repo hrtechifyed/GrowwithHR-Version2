@@ -416,7 +416,7 @@ function runTimeline() {
 
     if (state.stepIndex >= timeline.length) {
 
-        showSection("actions");
+        startAssessment();
 
         return;
 
@@ -597,6 +597,12 @@ function startAssessment() {
 
     const conversationWorkspace =
         document.getElementById("conversationWorkspace");
+
+    if (skipButton) {
+
+        skipButton.hidden = true;
+
+    }
 
     if (landingScreen) {
 

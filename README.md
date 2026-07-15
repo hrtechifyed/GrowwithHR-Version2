@@ -88,7 +88,7 @@ apps/web/src/
 
 ## Current Status
 
-Version: `v0.11.0-beta`
+Version: `v0.12.0-beta`
 
 The platform is still a prototype/beta. The new assessment UX layer is modular and typed, but it is not yet wired into a full deployed Next.js application shell in this repository.
 

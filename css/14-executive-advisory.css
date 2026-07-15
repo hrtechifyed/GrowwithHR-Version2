@@ -1,6 +1,6 @@
 /* ==========================================================
    GROWWITHHR EXECUTIVE ADVISORY
-   Version 1.0
+   Version 1.1
 ========================================================== */
 
 
@@ -2044,4 +2044,54 @@ hr{
 
     }
 
+}
+
+/* ==========================================================================
+   v1.1 Advisory Polish and Print Watermark
+========================================================================== */
+.exec-card,
+.recommendation-card,
+.reference-card,
+.timeline-item,
+.update-card,
+.trust-card {
+    animation: advisorySoftIn .55s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes advisorySoftIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.sample-advisory-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: url("../assets/hrtechify-logo.png") center 45% / 220px auto no-repeat;
+    z-index: 0;
+}
+
+.sample-download-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+@media print {
+    .sample-advisory-page::before {
+        opacity: .055;
+    }
+
+    .sample-download-actions,
+    .navbar {
+        display: none !important;
+    }
 }

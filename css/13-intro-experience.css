@@ -883,3 +883,52 @@
     transform: translateY(-2px);
 
 }
+
+/* ==========================================================================
+   v1.1 Intro Flow Refinements
+========================================================================== */
+.exec-intro {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.intro-screen {
+    width: min(980px, 94vw);
+    min-height: min(560px, calc(100vh - 220px));
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-skip-btn {
+    position: fixed;
+    top: 112px;
+    right: max(24px, calc((100vw - 1180px) / 2));
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(12px);
+}
+
+#introActions {
+    display: none !important;
+}
+
+.intro-card {
+    max-width: 720px;
+    margin: auto;
+}
+
+@media (max-width: 720px) {
+    .intro-skip-btn {
+        top: 96px;
+        right: 18px;
+    }
+
+    .intro-screen {
+        min-height: min(560px, calc(100vh - 170px));
+    }
+}

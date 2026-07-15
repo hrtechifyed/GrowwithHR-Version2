@@ -548,6 +548,10 @@ showScreen(screen) {
 
                             "LLP",
 
+                            "One Person Company",
+
+                            "DPIIT Recognized Startup",
+
                             "Partnership",
 
                             "Proprietorship",
@@ -570,7 +574,7 @@ showScreen(screen) {
 
                         id: "industry",
 
-                        type: "text",
+                        type: "select",
 
                         icon: "fa-industry",
 
@@ -579,8 +583,23 @@ showScreen(screen) {
                         helper:
                             "Examples include Manufacturing, IT Services, Healthcare or Retail.",
 
-                        placeholder:
-                            "Industry"
+                        options: [
+                            "Information Technology / SaaS",
+                            "Consulting & Professional Services",
+                            "Manufacturing",
+                            "Retail",
+                            "Healthcare",
+                            "Education",
+                            "Financial Services",
+                            "FinTech",
+                            "Semiconductor",
+                            "FMCG / Consumer Goods",
+                            "EdTech",
+                            "Logistics",
+                            "Hospitality",
+                            "Construction",
+                            "Other"
+                        ]
 
                     },
 
@@ -595,10 +614,10 @@ showScreen(screen) {
                         label: "How would you describe your primary business?",
 
                         helper:
-                            "A short description is sufficient.",
+                            "Briefly describe what you sell or deliver. Example: We provide cloud payroll software to mid-sized Indian companies. Use letters, numbers, commas, full stops and hyphens only.",
 
                         placeholder:
-                            "Nature of Business"
+                            "Example: We manufacture automotive components for OEM clients"
 
                     },
 
@@ -606,7 +625,7 @@ showScreen(screen) {
 
                         id: "founded",
 
-                        type: "number",
+                        type: "select",
 
                         icon: "fa-calendar",
 
@@ -615,8 +634,10 @@ showScreen(screen) {
                         helper:
                             "An approximate year is perfectly acceptable if you're unsure.(but this is one year you won't like to forget \ud83d\ude1c)",
 
-                        placeholder:
-                            "Year"
+                        options: Array.from(
+                            { length: new Date().getFullYear() - 1899 },
+                            (_, index) => String(new Date().getFullYear() - index)
+                        )
 
                     }
 
@@ -656,7 +677,7 @@ showScreen(screen) {
                         label: "Approximately how many employees work with your organisation?",
 
                         helper:
-                            "An approximate figure is sufficient."
+                            "Enter a positive whole number only. Example: 75."
 
                     },
 
@@ -755,7 +776,7 @@ showScreen(screen) {
 
                         id: "primaryState",
 
-                        type: "text",
+                        type: "select",
 
                         icon: "fa-location-dot",
 
@@ -764,8 +785,16 @@ showScreen(screen) {
                         helper:
                             "If you operate in multiple locations, enter the state where your headquarters or principal office is located.",
 
-                        placeholder:
-                            "Primary State"
+                        options: [
+                            "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+                            "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+                            "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+                            "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+                            "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+                            "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands",
+                            "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi (NCT)",
+                            "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+                        ]
 
                     },
 
@@ -1016,10 +1045,10 @@ showScreen(screen) {
             `fa-solid ${question.icon}`;
 
         card.getElementById("coachContext").textContent =
-            "Take your time. Thoughtful responses may help us better understand your organisation.";
+            question.helper || "Share the closest accurate response available today.";
 
         card.getElementById("questionText").textContent =
-            question.label;
+            "";
 
         card.getElementById("questionExplanation").textContent =
             question.helper;
@@ -1063,6 +1092,8 @@ showScreen(screen) {
                 element.placeholder =
                     question.placeholder || "";
 
+                element.pattern = "[A-Za-z0-9 .,/&()\\-]+";
+
                 break;
 
             case "number":
@@ -1076,6 +1107,14 @@ showScreen(screen) {
 
                 element.placeholder =
                     question.placeholder || "";
+
+                element.min = "0";
+                element.step = "1";
+                element.inputMode = "numeric";
+                element.pattern = "[0-9]*";
+                element.addEventListener("input", () => {
+                    element.value = element.value.replace(/[^0-9]/g, "");
+                });
 
                 break;
 
@@ -1274,6 +1313,31 @@ showScreen(screen) {
         const value =
             field.value.trim();
 
+        if (question.type === "number") {
+            const numericValue = Number(value);
+            if (!/^\d+$/.test(value) || numericValue < 0) {
+                field.focus();
+                alert("Please enter a positive whole number only.");
+                return false;
+            }
+            if (question.id === "founded" && numericValue > new Date().getFullYear()) {
+                field.focus();
+                alert("Please enter a valid year that is not in the future.");
+                return false;
+            }
+            if (question.id === "remoteWorkforce" && numericValue > 100) {
+                field.focus();
+                alert("Please enter a remote workforce percentage between 0 and 100.");
+                return false;
+            }
+        }
+
+        if (["nature", "companyName"].includes(question.id) && /[^A-Za-z0-9 .,/&()\-]/.test(value)) {
+            field.focus();
+            alert("Please use letters, numbers and basic punctuation only.");
+            return false;
+        }
+
         if (value === "") {
 
             field.focus();
@@ -1342,6 +1406,8 @@ showScreen(screen) {
            this.showScreen(this.reviewScreen);
          
            this.reviewContainer.innerHTML = "";
+
+           this.renderContactCapture();
          
            this.conversationContainer.innerHTML = "";
 
@@ -1383,11 +1449,41 @@ showScreen(screen) {
 
 
 
+    renderContactCapture() {
+        const contact = document.createElement("div");
+        contact.className = "exec-review-item";
+        contact.innerHTML = `
+            <h3>Advisory Recipient</h3>
+            <p>Please share who should receive this advisory reference.</p>
+            <input id="recipientName" class="exec-input" type="text" placeholder="Full name" value="${this.responses.recipientName || ''}" required>
+            <input id="recipientEmail" class="exec-input" type="email" placeholder="Email address" value="${this.responses.recipientEmail || ''}" required>
+        `;
+        this.reviewContainer.appendChild(contact);
+    }
+
+    saveContactCapture() {
+        const name = document.getElementById("recipientName");
+        const email = document.getElementById("recipientEmail");
+        if (!name || !email || !name.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value.trim())) {
+            alert("Please enter your name and a valid email address before generating the advisory.");
+            if (name && !name.value.trim()) name.focus(); else if (email) email.focus();
+            return false;
+        }
+        this.responses.recipientName = name.value.trim();
+        this.responses.recipientEmail = email.value.trim();
+        this.autoSave();
+        return true;
+    }
+
     /* ==========================================================
        GENERATE REPORT
     ========================================================== */
 
     generateReport() {
+
+        if (!this.saveContactCapture()) {
+            return;
+        }
 
         this.showScreen(this.loadingScreen);
 
@@ -1617,15 +1713,40 @@ showStepIntroduction() {
 
         );
 
+        this.renderSegmentTransitionCard(
+            this.steps[this.currentStep],
+            introductions[this.currentStep - 1]
+        );
+
         this.animateTextChange(
 
             this.footerMessage,
 
-            `Preparing ${this.steps[this.currentStep]}...`
+            `Entering ${this.steps[this.currentStep]} section...`
 
         );
 
     }
+
+}
+
+
+renderSegmentTransitionCard(title, message) {
+
+    if (!this.conversationContainer) {
+
+        return;
+
+    }
+
+    this.conversationContainer.innerHTML = `
+        <article class="exec-segment-card exec-fade-in">
+            <span>Next Section</span>
+            <h2>${title}</h2>
+            <p>${message}</p>
+            <div class="exec-segment-progress">Preparing your next set of questions...</div>
+        </article>
+    `;
 
 }
 

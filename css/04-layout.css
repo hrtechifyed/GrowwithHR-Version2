@@ -318,3 +318,14 @@ main{
     z-index:1000;
 
 }
+
+/* Global footer scale refinement */
+.footer-logo {
+    width: 42px !important;
+    max-height: 42px;
+    object-fit: contain;
+}
+
+.footer-brand {
+    gap: 12px;
+}
