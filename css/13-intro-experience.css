@@ -653,8 +653,7 @@
 .intro-card span,
 .intro-keywords span,
 .intro-stage-label {
-    font-family: "Brush Script MT", "Segoe Script", "Lucida Handwriting", cursive;
-    font-weight: 400 !important;
+    font-family: inherit;
 }
 
 .intro-card :where(h2) { font-size: clamp(1.55rem, 3vw, 2.35rem); }
@@ -749,4 +748,161 @@
     0% { opacity: 0; transform: translate3d(0, 28px, -80px) rotate(0deg) scale(.94); }
     18%, 68% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
     100% { opacity: 0; transform: translate3d(36vw, -34vh, 0) rotate(10deg) scale(.92); }
+}
+
+/* v0.13 Advisory shared stage and time-driven stack states */
+.advisory-experience-stage {
+    display: grid;
+    justify-items: center;
+    width: min(100%, 1180px);
+    margin-inline: auto;
+}
+
+.advisory-experience-stage > :where(.exec-landing, .exec-workspace, .exec-review-screen, .exec-loading-screen, .exec-success-screen) {
+    width: 100%;
+}
+
+.advisory-experience-stage .intro-stage {
+    isolation: isolate;
+    min-height: min(72dvh, 640px);
+    height: auto;
+}
+
+.intro-brand-name {
+    margin-bottom: 10px;
+    color: var(--brand-gold);
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.exec-intro :where(.intro-screen, .intro-scene, .intro-card, .intro-transition-scene, .coach-card) {
+    font-family: var(--font-primary, Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+
+.advisory-experience-stage .intro-screen.is-active {
+    display: grid;
+}
+
+.exec-intro :where(.intro-scene, .intro-card, .intro-transition-scene, .coach-card) {
+    grid-area: 1 / 1;
+    transform-origin: center top;
+    will-change: opacity, transform, filter;
+}
+
+.exec-intro :where(.intro-scene.is-hidden, .intro-card.is-hidden, .intro-transition-scene.is-hidden, .coach-card.is-hidden) {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.exec-intro :where(.intro-scene.is-active, .intro-card.is-active, .intro-transition-scene.is-active, .coach-card.is-active) {
+    display: block;
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
+    animation: advisoryStackIn .68s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.exec-intro :where(.intro-scene.is-behind, .intro-card.is-behind, .intro-transition-scene.is-behind, .coach-card.is-behind) {
+    display: block;
+    opacity: .72;
+    filter: blur(2px);
+    transform: translate3d(0, -18px, 0) scale(.94);
+    pointer-events: none;
+    animation: advisoryStackBehind .68s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.exec-intro :where(.intro-scene.is-leaving, .intro-card.is-leaving, .intro-transition-scene.is-leaving, .coach-card.is-leaving) {
+    display: block;
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate3d(0, -24px, 0) scale(.92);
+    pointer-events: none;
+}
+
+@keyframes advisoryStackIn {
+    from { opacity: 0; filter: blur(1px); transform: translate3d(0, 28px, 0) scale(.98); }
+    to { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes advisoryStackBehind {
+    from { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0) scale(1); }
+    to { opacity: .72; filter: blur(2px); transform: translate3d(0, -18px, 0) scale(.94); }
+}
+
+.intro-keywords-sequential span {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: advisoryKeywordIn .45s ease both;
+}
+
+.intro-keywords-sequential span:nth-child(2) { animation-delay: .35s; }
+.intro-keywords-sequential span:nth-child(3) { animation-delay: .7s; }
+
+@keyframes advisoryKeywordIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.intro-stage-label,
+.exec-footer-message,
+.exec-review-actions,
+.exec-loading-message,
+.exec-success-card p,
+.advisory-report-actions {
+    text-align: center;
+    margin-inline: auto;
+}
+
+.advisory-welcome-card {
+    align-items: center;
+}
+
+.advisory-welcome-card .coach-line {
+    display: block;
+    margin: 0;
+}
+
+.exec-review-card :where(label, .exec-validation-message) {
+    display: block;
+    text-align: left;
+}
+
+.exec-validation-message {
+    min-height: 1.35em;
+    margin-top: 10px;
+    color: #fecaca;
+    font-size: .92rem;
+}
+
+.advisory-report-summary {
+    display: grid;
+    gap: 14px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.advisory-report-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    padding-top: 12px;
+}
+
+@media (max-width: 760px) {
+    .advisory-experience-stage .intro-stage { min-height: min(76dvh, 620px); }
+    .exec-review-actions,
+    .advisory-report-actions { flex-direction: column; align-items: stretch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .exec-intro :where(.intro-scene.is-active, .intro-card.is-active, .intro-transition-scene.is-active, .coach-card.is-active),
+    .exec-intro :where(.intro-scene.is-behind, .intro-card.is-behind, .intro-transition-scene.is-behind, .coach-card.is-behind),
+    .intro-keywords-sequential span {
+        animation: none !important;
+        transform: none !important;
+        filter: none !important;
+    }
 }

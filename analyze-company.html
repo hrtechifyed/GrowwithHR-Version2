@@ -99,8 +99,9 @@
     <div class="exec-container">
 
         <section
-            class="exec-shell"
-            id="assessmentShell">
+            class="exec-shell advisory-experience-stage"
+            id="assessmentShell"
+            data-testid="advisory-experience-stage">
 
           <!-- ==========================================================
      LANDING SCREEN
@@ -125,7 +126,7 @@
 
         <!-- STORY STAGE -->
 
-<div class="intro-stage" aria-live="polite">
+<div class="intro-stage" aria-live="polite" data-testid="advisory-intro-stage">
 
 <section
     id="introHero"
@@ -136,6 +137,8 @@
         src="assets/hrtechify-logo.png"
         alt="HRTechify"
         class="intro-logo">
+
+    <div class="intro-brand-name">HRTechify</div>
 
     <h1 class="intro-title">
 
@@ -159,21 +162,23 @@
     id="introMessages"
     class="intro-screen">
 
-    <article class="intro-scene active" data-scene="1">
+    <article class="intro-scene active" data-scene="1" data-testid="advisory-story-scene">
         <h2>Every organisation has a story.</h2>
+        <p>Every decision shapes its future.</p>
     </article>
 
-    <article class="intro-scene" data-scene="2">
+    <article class="intro-scene" data-scene="2" data-testid="advisory-story-scene">
         <h2>Growth changes everything.</h2>
+        <div class="intro-keywords intro-keywords-sequential"><span>Structure</span><span>People</span><span>Responsibilities</span></div>
     </article>
 
-    <article class="intro-scene" data-scene="3">
+    <article class="intro-scene" data-scene="3" data-testid="advisory-story-scene">
         <h2>Great organisations don't react.</h2>
+        <p>They prepare.</p>
     </article>
 
-    <article class="intro-scene" data-scene="4">
+    <article class="intro-scene" data-scene="4" data-testid="advisory-story-scene">
         <h2>Let's understand yours.</h2>
-        <p>We will translate your context into executive guidance.</p>
     </article>
 
 </section>
@@ -186,60 +191,44 @@
     id="introCards"
     class="intro-screen">
 
-    <!-- CARD 1 -->
-
-    <article
-        class="intro-card active"
-        data-card="1">
-
+    <article class="intro-card active" data-card="1" data-testid="advisory-briefing-card">
         <div class="intro-card-icon">🧬</div>
-
         <h2>Company DNA</h2>
-
-        <p>
-
-            We begin by understanding what makes your organisation distinct.
-
-        </p>
-
-        <span>
-
-            Industry • Size • Structure • Operating Model
-
-        </span>
-
+        <p>Who are you becoming?</p>
+        <div class="intro-keywords"><span>Identity</span><span>Culture</span><span>Purpose</span></div>
+        <span class="intro-stage-label">Understanding Identity</span>
     </article>
 
-    <article class="intro-card" data-card="2">
+    <article class="intro-card" data-card="2" data-testid="advisory-briefing-card">
         <div class="intro-card-icon">📈</div>
-        <span class="intro-stage-label">Assessing Maturity</span>
         <h2>Growth Stage</h2>
-        <p>Every stage of growth introduces new people, compliance and leadership responsibilities.</p>
+        <p>Where are you today?</p>
         <div class="intro-keywords"><span>Startup</span><span>Growth</span><span>Scale</span><span>Enterprise</span></div>
+        <span class="intro-stage-label">Assessing Maturity</span>
     </article>
 
-    <!-- CARD 3 -->
+    <article class="intro-card" data-card="3" data-testid="advisory-briefing-card">
+        <div class="intro-card-icon">👥</div>
+        <h2>People</h2>
+        <p>Your greatest advantage.</p>
+        <div class="intro-keywords"><span>Leadership</span><span>Capability</span><span>Culture</span></div>
+        <span class="intro-stage-label">Evaluating Capability</span>
+    </article>
 
-    <article
-        class="intro-card"
-        data-card="3">
+    <article class="intro-card" data-card="4" data-testid="advisory-briefing-card">
+        <div class="intro-card-icon">⚖️</div>
+        <h2>Responsibilities</h2>
+        <p>Growth creates obligations.</p>
+        <div class="intro-keywords"><span>Governance</span><span>Compliance</span><span>Risk</span></div>
+        <span class="intro-stage-label">Reviewing Governance</span>
+    </article>
 
-        <div class="intro-card-icon">🏢</div>
-
-        <h2>Organisation Story</h2>
-
-        <p>
-
-            Your answers help Coach HRTechify prepare recommendations that fit your organisation, not generic best practices.
-
-        </p>
-
-        <span>
-
-            Context • Responsibilities • Next Actions
-
-        </span>
-
+    <article class="intro-card" data-card="5" data-testid="advisory-briefing-card">
+        <div class="intro-card-icon">🌱</div>
+        <h2>Future</h2>
+        <p>Every decision leaves a legacy.</p>
+        <div class="intro-keywords"><span>Strategy</span><span>Execution</span><span>Impact</span></div>
+        <span class="intro-stage-label">Preparing Recommendations</span>
     </article>
 
 </section>
@@ -250,12 +239,9 @@
             id="introTransition"
             class="intro-screen">
 
-            <article class="intro-transition-scene active" data-transition="1">
-                <h2>One final step.</h2>
-            </article>
-
-            <article class="intro-transition-scene" data-transition="2">
-                <h2>Meet Coach HRTechify.</h2>
+            <article class="intro-transition-scene active" data-transition="1" data-testid="advisory-final-invitation">
+                <h2>Willing to share the story of your organization?</h2>
+                <p>We are listening!!</p>
             </article>
 
         </section>
@@ -270,49 +256,20 @@
     id="coachIntroduction"
     class="intro-screen">
 
-    <div class="coach-card">
-
-        <div class="coach-avatar">
-
-            <div class="coach-avatar-circle">
-
-                GH
-
-            </div>
-
+    <div class="coach-card advisory-welcome-card" data-testid="advisory-welcome-line" hidden>
+        <div class="coach-avatar" aria-hidden="true">
+            <div class="coach-avatar-circle">GH</div>
         </div>
-
-        <div class="coach-dialogue">
-
-            <div
-                id="coachTyping"
-                class="coach-typing">
-
-                ● ● ●
-
-            </div>
-
-            <div
-                id="coachMessageContainer">
-
-                <p class="coach-line active">Hello, I'm Coach HRTechify.</p>
-
-                <p class="coach-line">I'll analyse your organisation across strategy, people, governance and compliance.</p>
-
-                <p class="coach-line">Let's begin.</p>
-
-            </div>
-
-        </div>
-
+        <p id="coachMessageContainer" class="coach-line active">Welcome to HRTechify — let's begin your Executive Advisory assessment.</p>
     </div>
 
     <div id="introActions" class="intro-actions" aria-hidden="true">
         <button
             id="startAssessment"
             type="button"
-            class="exec-primary-btn intro-begin-btn">
-            Begin Assessment
+            class="exec-primary-btn intro-begin-btn"
+            data-testid="begin-executive-assessment">
+            Begin Executive Assessment
         </button>
     </div>
 
@@ -989,6 +946,8 @@
 <script>
 document.addEventListener("DOMContentLoaded",()=>{const hamburger=document.getElementById("hamburger");const navLinks=document.getElementById("navLinks");if(!hamburger||!navLinks)return;hamburger.addEventListener("click",()=>{const open=navLinks.classList.toggle("active");hamburger.setAttribute("aria-expanded",String(open));});document.querySelectorAll("#navLinks a").forEach(link=>link.addEventListener("click",()=>{navLinks.classList.remove("active");hamburger.setAttribute("aria-expanded","false");}));});
 </script>
+<footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name" id="productVersion">GrowWithHR Public </div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
+
 </body>
 
 </html>

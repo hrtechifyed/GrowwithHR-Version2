@@ -1,12 +1,13 @@
 /* ==========================================================
-   GrowWithHR Executive Introduction Engine
-   Version 2.1
-   ----------------------------------------------------------
-   Single fixed Story Stage: Hero → story cards → briefing cards → Coach.
+   GrowWithHR Executive Advisory Presentation Engine
+   Time-driven shared-stage stack: Brand → story → briefing → invitation.
 ========================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
+
+    const e2eMode = new URLSearchParams(window.location.search).get("e2e") === "1";
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const sections = {
         hero: document.getElementById("introHero"),
@@ -16,313 +17,217 @@ document.addEventListener("DOMContentLoaded", () => {
         coach: document.getElementById("coachIntroduction")
     };
 
+    const stage = document.querySelector(".intro-stage");
     const messageScenes = Array.from(document.querySelectorAll(".intro-scene"));
     const briefingCards = Array.from(document.querySelectorAll(".intro-card"));
-    const coachLines = Array.from(document.querySelectorAll(".coach-line"));
-    const coachTyping = document.getElementById("coachTyping");
+    const transitionScenes = Array.from(document.querySelectorAll(".intro-transition-scene"));
+    const welcomeCard = document.querySelector(".advisory-welcome-card");
     const introActions = document.getElementById("introActions");
     const skipButton = document.getElementById("skipIntro");
     const beginButton = document.getElementById("startAssessment");
 
+    const TIMING = e2eMode ? {
+        hero: 250,
+        scene: 220,
+        card: 220,
+        transition: 120,
+        welcome: 220
+    } : prefersReducedMotion.matches ? {
+        hero: 700,
+        scene: 800,
+        card: 800,
+        transition: 120,
+        welcome: 900
+    } : {
+        hero: 2000,
+        scene: 2700,
+        card: 2700,
+        transition: 650,
+        welcome: 1750
+    };
+
     const state = {
-        stepIndex: 0,
         timer: null,
+        transitionTimer: null,
+        index: 0,
         running: false,
-        skipped: false,
-        complete: false
+        paused: false,
+        activePanel: null,
+        activeItem: null,
+        advisoryState: "brand"
     };
 
-    const TIMING = {
-        hero: 2800,
-        message: 2300,
-        lastMessage: 2600,
-        card: 2400,
-        transition: 2200,
-        typing: 550,
-        coach: 1450
-    };
+    const steps = [
+        { advisoryState: "brand", section: "hero", item: sections.hero, duration: TIMING.hero },
+        ...messageScenes.map((item, index) => ({ advisoryState: "story", section: "messages", item, duration: TIMING.scene, index })),
+        ...briefingCards.map((item, index) => ({ advisoryState: "briefing", section: "cards", item, duration: TIMING.card, index })),
+        { advisoryState: "invitation", section: "transition", item: transitionScenes[0], duration: Infinity }
+    ].filter(step => step.item);
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (prefersReducedMotion.matches) {
-        TIMING.hero = 900;
-        TIMING.message = 700;
-        TIMING.lastMessage = 900;
-        TIMING.card = 900;
-        TIMING.transition = 700;
-        TIMING.typing = 150;
-        TIMING.coach = 650;
+    function clearTimers() {
+        if (state.timer) clearTimeout(state.timer);
+        if (state.transitionTimer) clearTimeout(state.transitionTimer);
+        state.timer = null;
+        state.transitionTimer = null;
     }
 
-    function clearTimer() {
-        if (state.timer !== null) {
-            clearTimeout(state.timer);
-            state.timer = null;
+    function setHidden(element, hidden) {
+        if (!element) return;
+        element.classList.toggle("is-hidden", hidden);
+        element.setAttribute("aria-hidden", hidden ? "true" : "false");
+        if (hidden) element.setAttribute("inert", "");
+        else element.removeAttribute("inert");
+    }
+
+    function resetItems() {
+        [...messageScenes, ...briefingCards, ...transitionScenes].forEach(item => {
+            item.classList.remove("is-active", "is-entering", "is-behind", "is-leaving", "active");
+            setHidden(item, true);
+        });
+        if (welcomeCard) {
+            welcomeCard.classList.remove("is-active", "is-entering", "is-behind", "is-leaving");
+            welcomeCard.hidden = true;
+            setHidden(welcomeCard, true);
+        }
+    }
+
+    function showSection(name) {
+        Object.entries(sections).forEach(([key, section]) => {
+            if (!section) return;
+            const active = key === name;
+            section.classList.toggle("is-active", active);
+            section.classList.toggle("fade-in", active);
+            section.classList.toggle("fade-out", !active);
+            section.setAttribute("aria-hidden", active ? "false" : "true");
+            if (!active) section.setAttribute("inert", "");
+            else section.removeAttribute("inert");
+        });
+    }
+
+    function activateItem(nextItem) {
+        const previous = state.activeItem;
+
+        if (previous && previous !== nextItem) {
+            previous.classList.remove("is-active", "is-entering", "active");
+            previous.classList.add("is-behind");
+            setHidden(previous, false);
+            state.transitionTimer = setTimeout(() => {
+                previous.classList.remove("is-behind", "is-leaving");
+                setHidden(previous, true);
+            }, TIMING.transition);
+        }
+
+        nextItem.hidden = false;
+        setHidden(nextItem, false);
+        nextItem.classList.remove("is-hidden", "is-behind", "is-leaving");
+        nextItem.classList.add("is-entering", "is-active", "active");
+        state.activeItem = nextItem;
+    }
+
+
+    function setTransitionMessage() {
+        const transitionMessage = document.getElementById("transitionMessage");
+        if (transitionMessage) {
+            transitionMessage.textContent = "Willing to share the story of your organization?";
         }
     }
 
     function setActionsVisible(visible) {
         if (!introActions) return;
-
         introActions.classList.toggle("is-visible", visible);
         introActions.setAttribute("aria-hidden", visible ? "false" : "true");
+        if (visible) introActions.removeAttribute("inert");
+        else introActions.setAttribute("inert", "");
+        if (beginButton) beginButton.disabled = !visible;
     }
 
-    function hideAllSections() {
-        Object.values(sections).forEach(section => {
-            if (!section) return;
+    function runStep() {
+        if (!state.running || state.paused) return;
+        const step = steps[state.index];
+        if (!step) return;
 
-            section.classList.remove("is-active", "fade-in");
-            section.classList.add("fade-out");
-            section.setAttribute("aria-hidden", "true");
-        });
-
-        if (coachTyping) {
-            coachTyping.classList.remove("active");
-            coachTyping.setAttribute("aria-hidden", "true");
-        }
-
-        setActionsVisible(false);
-    }
-
-    function showSection(name) {
-        const nextSection = sections[name];
-
-        if (!nextSection) return;
-
-        Object.values(sections).forEach(section => {
-            if (!section) return;
-
-            const active = section === nextSection;
-
-            section.classList.toggle("is-active", active);
-            section.classList.toggle("fade-in", active);
-            section.classList.toggle("fade-out", !active);
-            section.setAttribute("aria-hidden", active ? "false" : "true");
-        });
-    }
-
-    function activate(list, index) {
-        list.forEach((item, itemIndex) => {
-            const active = itemIndex === index;
-
-            item.classList.toggle("active", active);
-            item.setAttribute("aria-hidden", active ? "false" : "true");
-        });
-
-        if (list === coachLines && coachTyping) {
-            coachTyping.classList.remove("active");
-            coachTyping.setAttribute("aria-hidden", "true");
-        }
-    }
-
-    function setTransitionMessage() {
-        const transitionMessage = document.getElementById("transitionMessage");
-
-        if (!transitionMessage) return;
-
-        transitionMessage.textContent = "Coach HRTechify is ready to guide your assessment.";
-    }
-
-    const timeline = [
-        { section: "hero", duration: TIMING.hero, action: () => {} },
-        { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 0) },
-        { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 1) },
-        { section: "messages", duration: TIMING.lastMessage, action: () => activate(messageScenes, 2) },
-        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 0) },
-        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 1) },
-        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 2) },
-        { section: "transition", duration: TIMING.transition, action: setTransitionMessage },
-        ...coachLines.map((line, index) => ({
-            section: "coach",
-            duration: TIMING.coach,
-            action: () => activate(coachLines, index)
-        }))
-    ];
-
-    function next(delay) {
-        clearTimer();
-
-        if (!state.running || state.skipped || state.complete) return;
-
-        state.timer = setTimeout(runTimeline, Math.max(0, delay));
-    }
-
-    function completeIntro() {
-        state.running = false;
-        state.complete = true;
-        setActionsVisible(true);
-    }
-
-    function runTimeline() {
-        if (state.skipped || state.complete) return;
-
-        if (state.stepIndex >= timeline.length) {
-            completeIntro();
-            return;
-        }
-
-        const step = timeline[state.stepIndex];
-
+        state.advisoryState = step.advisoryState;
+        if (stage) stage.dataset.state = step.advisoryState;
         showSection(step.section);
+        activateItem(step.item);
+        setActionsVisible(step.advisoryState === "invitation");
 
-        if (step.section === "coach") {
-            if (coachTyping) {
-                coachTyping.classList.add("active");
-                coachTyping.setAttribute("aria-hidden", "false");
-            }
-
-            clearTimer();
-            state.timer = setTimeout(() => {
-                if (coachTyping) {
-                    coachTyping.classList.remove("active");
-                    coachTyping.setAttribute("aria-hidden", "true");
-                }
-
-                step.action();
-                state.stepIndex += 1;
-                next(step.duration);
-            }, TIMING.typing);
-
+        if (step.advisoryState === "invitation") {
+            state.running = false;
+            if (beginButton) beginButton.focus({ preventScroll: true });
             return;
         }
 
-        step.action();
-        state.stepIndex += 1;
-        next(step.duration);
+        state.timer = setTimeout(() => {
+            state.index += 1;
+            runStep();
+        }, step.duration);
     }
 
     function startTimeline() {
-        clearTimer();
+        clearTimers();
+        resetItems();
+        setActionsVisible(false);
+        state.index = 0;
         state.running = true;
-        state.skipped = false;
-        state.complete = false;
-        state.stepIndex = 0;
-
-        hideAllSections();
-        activate(messageScenes, -1);
-        activate(briefingCards, -1);
-        activate(coachLines, -1);
-
-        runTimeline();
+        state.paused = false;
+        state.activeItem = null;
+        runStep();
     }
 
-    function stopTimeline() {
-        clearTimer();
+    function showInvitationImmediately() {
+        clearTimers();
+        resetItems();
+        state.index = steps.length - 1;
         state.running = false;
-
-        if (coachTyping) {
-            coachTyping.classList.remove("active");
-            coachTyping.setAttribute("aria-hidden", "true");
-        }
+        const finalStep = steps[state.index];
+        if (!finalStep) return;
+        showSection(finalStep.section);
+        activateItem(finalStep.item);
+        setActionsVisible(true);
     }
 
-    function resetTimeline() {
-        clearTimer();
-        state.running = false;
-        state.skipped = false;
-        state.complete = false;
-        state.stepIndex = 0;
-
-        hideAllSections();
-        activate(messageScenes, -1);
-        activate(briefingCards, -1);
-        activate(coachLines, -1);
-    }
-
-    function startAssessment() {
-        stopTimeline();
-
-        const landingScreen = document.getElementById("landingScreen");
-        const conversationWorkspace = document.getElementById("conversationWorkspace");
-
-        if (skipButton) skipButton.hidden = true;
-        if (landingScreen) landingScreen.hidden = true;
-        if (conversationWorkspace) conversationWorkspace.hidden = false;
-
-        if (
-            window.executiveAssessment &&
-            typeof window.executiveAssessment.start === "function"
-        ) {
-            window.executiveAssessment.start();
-        }
-    }
-
-    function skipIntroduction() {
-        if (state.skipped) return;
-
-        state.skipped = true;
-        clearTimer();
-        stopTimeline();
+    function beginAssessment() {
+        if (!beginButton || beginButton.disabled) return;
+        clearTimers();
+        beginButton.disabled = true;
+        setActionsVisible(false);
         showSection("coach");
-        activate(coachLines, Math.max(0, coachLines.length - 1));
-        completeIntro();
-
-        const beginTarget = beginButton || introActions;
-        if (beginTarget && typeof beginTarget.scrollIntoView === "function") {
-            beginTarget.scrollIntoView({ block: "center", inline: "center" });
+        resetItems();
+        if (welcomeCard) {
+            welcomeCard.hidden = false;
+            setHidden(welcomeCard, false);
+            welcomeCard.classList.add("is-active", "is-entering");
+            state.activeItem = welcomeCard;
         }
+        if (stage) stage.dataset.state = "welcome";
 
-        if (beginButton && typeof beginButton.focus === "function") {
-            beginButton.focus({ preventScroll: true });
-        }
+        state.timer = setTimeout(() => {
+            if (window.executiveAssessment && typeof window.executiveAssessment.startAssessment === "function") {
+                window.executiveAssessment.startAssessment();
+            }
+        }, TIMING.welcome);
     }
-
-    if (skipButton) skipButton.addEventListener("click", skipIntroduction);
-    if (beginButton) beginButton.addEventListener("click", startAssessment);
 
     document.addEventListener("visibilitychange", () => {
-        if (!state.running) return;
-
         if (document.hidden) {
-            clearTimer();
-        } else {
-            runTimeline();
+            state.paused = true;
+            clearTimers();
+        } else if (state.running) {
+            state.paused = false;
+            runStep();
         }
     });
 
-    window.introEngine = {
+    if (skipButton) skipButton.addEventListener("click", showInvitationImmediately);
+    if (beginButton) beginButton.addEventListener("click", beginAssessment);
+
+    window.introSequence = {
         start: startTimeline,
-        stop: stopTimeline,
-        reset: resetTimeline,
-        next: runTimeline,
-        skip: skipIntroduction,
-        startAssessment,
-        restart: startTimeline,
-        state
+        showInvitation: showInvitationImmediately,
+        beginAssessment,
+        getState: () => ({ ...state })
     };
-
-    window.introDebug = {
-        hero() {
-            showSection("hero");
-        },
-        messages(index = 0) {
-            showSection("messages");
-            activate(messageScenes, index);
-        },
-        cards(index = 0) {
-            showSection("cards");
-            activate(briefingCards, index);
-        },
-        transition() {
-            showSection("transition");
-            setTransitionMessage();
-        },
-        coach(index = 0) {
-            showSection("coach");
-            activate(coachLines, index);
-            setActionsVisible(index >= coachLines.length - 1);
-        },
-        restart() {
-            startTimeline();
-        }
-    };
-
-    messageScenes.forEach(scene => scene.setAttribute("aria-hidden", "true"));
-    briefingCards.forEach(card => card.setAttribute("aria-hidden", "true"));
-    coachLines.forEach(line => line.setAttribute("aria-hidden", "true"));
-    setActionsVisible(false);
 
     startTimeline();
-    window.startAssessment = startAssessment;
 });
