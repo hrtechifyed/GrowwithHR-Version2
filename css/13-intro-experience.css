@@ -1,978 +1,502 @@
 /* ==========================================================
-   EXECUTIVE INTRO EXPERIENCE
+   GrowWithHR Executive Intro Experience v2.0
+   1. Layout & Header
+   2. Story Stage
+   3. Coach
+   4. Engine & Animations
+   5. Responsive
+   6. Utilities & Polish
 ========================================================== */
 
-.exec-intro{
+/* ==========================================================
+   1. Layout & Header
+========================================================== */
 
-    width:100%;
-    min-height:calc(100vh - 110px);
-    position:relative;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    padding:80px 24px;
-
-    text-align:center;
-
-    overflow:hidden;
-
+.exec-landing {
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    min-height: calc(100vh - 90px);
+    min-height: calc(100dvh - 90px);
+    padding: clamp(24px, 5vw, 56px) 24px !important;
+    overflow-x: hidden;
 }
 
-/* ----------------------------------------------------------
-   Screens
----------------------------------------------------------- */
-
-.intro-screen{
-
-    width:100%;
-    max-width:900px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    margin:auto;
-
+.exec-intro {
+    position: relative;
+    width: min(100%, 1100px);
+    min-height: calc(100vh - 180px);
+    min-height: calc(100dvh - 180px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    overflow: hidden;
 }
 
-/* ----------------------------------------------------------
-   Logo
----------------------------------------------------------- */
-
-.intro-logo{
-
-    width:140px;
-
-    height:140px;
-
-    object-fit:contain;
-
-    margin-bottom:32px;
-
+.intro-header {
+    width: min(100%, 900px);
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    padding-top: clamp(8px, 2vh, 28px);
 }
 
-/* ----------------------------------------------------------
-   Typography
----------------------------------------------------------- */
-
-.intro-title{
-
-    font-size:3rem;
-
-    font-weight:700;
-
-    line-height:1.15;
-
-    margin-bottom:16px;
-
-    color:#ffffff;
-
+.intro-hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.intro-subtitle{
-
-    font-size:1.15rem;
-
-    color:rgba(255,255,255,.72);
-
-    margin-bottom:72px;
-
+.intro-logo {
+    width: clamp(84px, 10vw, 120px);
+    height: clamp(84px, 10vw, 120px);
+    display: block;
+    object-fit: contain;
+    margin: 0 auto clamp(18px, 3vw, 32px);
 }
 
-.intro-message{
-
-    max-width:760px;
-
-    font-size:2.2rem;
-
-    font-weight:600;
-
-    line-height:1.45;
-
-    color:white;
-
+.intro-title {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #ffffff;
 }
 
-/* ----------------------------------------------------------
-   Cards
----------------------------------------------------------- */
-
-.intro-card-container{
-
-    width:100%;
-
-    max-width:760px;
-
-}
-
-/* ----------------------------------------------------------
-   Coach
----------------------------------------------------------- */
-
-.coach-conversation{
-
-    width:100%;
-
-    max-width:760px;
-
-}
-
-/* ----------------------------------------------------------
-   Buttons
----------------------------------------------------------- */
-
-#introActions{
-
-    margin-top:60px;
-
-    gap:18px;
-
+.intro-subtitle {
+    margin: 16px 0 0;
+    font-size: clamp(.95rem, 1.5vw, 1.15rem);
+    line-height: 1.45;
+    color: rgba(255, 255, 255, .72);
 }
 
 /* ==========================================================
-   OVERRIDE EXECUTIVE ASSESSMENT LAYOUT
+   2. Story Stage
 ========================================================== */
 
-.exec-landing{
-
-    display:flex !important;
-
-    justify-content:center !important;
-
-    align-items:center !important;
-
-    min-height:calc(100vh - 90px);
-
-    padding:40px 24px !important;
-
-}
-
-.exec-landing-card{
-
-    all:unset;
-
-}
-
-.exec-intro{
-
-    width:100%;
-
-    position:relative;
-
-    max-width:1100px;
-
-    margin:auto;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-.intro-logo{
-
-    width:120px;
-
-    height:120px;
-
-    display:block;
-
-    margin:0 auto 40px auto;
-
-}
-
-.intro-title{
-
-    margin:0;
-
-}
-
-.intro-subtitle{
-
-    margin-top:20px;
-
-    margin-bottom:0;
-
-}
-
-/* ==========================================================
-   INTRO SCENES
-========================================================== */
-
-.intro-scene{
-
-    display:none;
-
-    width:min(760px,92vw);
-
-    margin:auto;
-
-}
-
-.intro-scene.active{
-
-    display:block;
-
-}
-
-.intro-scene h2{
-
-    font-size:clamp(2rem,4vw,3.5rem);
-
-    font-weight:600;
-
-    line-height:1.35;
-
-    color:#ffffff;
-
-    margin:0;
-
-}
-
-/* ==========================================================
-   EXECUTIVE BRIEFING CARDS
-========================================================== */
-
-.intro-card{
-
-    display:none;
-
-    width:min(760px,92vw);
-
-    padding:clamp(28px,5vw,48px);
-
-    border-radius:28px;
-
-    background:rgba(255,255,255,.04);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(20px);
-
-    text-align:center;
-
-    margin:auto;
-
-}
-
-.intro-card.active{
-
-    display:block;
-
-}
-
-.intro-card-icon{
-
-    font-size:clamp(2.8rem,5vw,4rem);
-
-    margin-bottom:24px;
-
-}
-
-.intro-card h2{
-
-    font-size:clamp(2rem,4vw,2.8rem);
-
-    margin-bottom:20px;
-
-    color:white;
-
-}
-
-.intro-card p{
-
-    font-size:clamp(1rem,2vw,1.2rem);
-
-    line-height:1.8;
-
-    color:rgba(255,255,255,.82);
-
-    margin-bottom:24px;
-
-}
-
-.intro-card span{
-
-    display:block;
-
-    font-size:.95rem;
-
-    letter-spacing:.08em;
-
-    text-transform:uppercase;
-
-    color:#f7a600;
-
-}
-
-/* ==========================================================
-   COACH INTRODUCTION
-========================================================== */
-
-.coach-card{
-
-    width:min(820px,92vw);
-
-    display:flex;
-
-    gap:32px;
-
-    align-items:flex-start;
-
-    padding:clamp(24px,4vw,42px);
-
-    border-radius:28px;
-
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(20px);
-
-}
-
-.coach-avatar-circle{
-
-    width:72px;
-
-    height:72px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-size:1.2rem;
-
-    font-weight:700;
-
-    background:#f7a600;
-
-    color:#111;
-
-}
-
-.coach-dialogue{
-
-    flex:1;
-
-}
-
-.coach-line{
-
-    display:none;
-
-    font-size:clamp(1.1rem,2vw,1.35rem);
-
-    line-height:1.8;
-
-    color:white;
-
-}
-
-.coach-line.active{
-
-    display:block;
-
-}
-
-@media(max-width:768px){
-
-    .coach-card{
-
-        flex-direction:column;
-
-        align-items:center;
-
-        text-align:center;
-
-    }
-
-}
-
-/* ==========================================================
-   INTRO ENGINE
-========================================================== */
-
-.intro-screen{
-
-    display:none;
-
-    opacity:0;
-
-    transition:opacity .6s ease;
-
-}
-
-#introHero{
-
-    display:flex;
-
-    opacity:1;
-
-}
-
-.intro-screen.is-active{
-
-    display:flex;
-
-    opacity:1;
-
-}
-
-/* ==========================================================
-   SKIP BUTTON
-========================================================== */
-
-.intro-skip-btn{
-
-    position:absolute;
-
-    top:32px;
-
-    right:32px;
-
-    border:none;
-
-    background:none;
-
-    color:rgba(255,255,255,.72);
-
-    font-size:.95rem;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-    z-index:100;
-
-}
-
-.intro-skip-btn:hover{
-
-    color:#f7a600;
-
+.intro-stage {
+    width: min(100%, 900px);
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-areas: "stage";
+    align-items: start;
+    justify-items: center;
+    padding-top: clamp(36px, 7vh, 72px);
+    padding-bottom: clamp(20px, 5vh, 48px);
 }
 
 .intro-screen {
-
+    grid-area: stage;
+    width: min(100%, 820px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     opacity: 0;
-
     visibility: hidden;
-
     pointer-events: none;
-
-    transition:
-        opacity .6s ease,
-        visibility .6s ease;
-
 }
 
 .intro-screen.is-active {
-
     opacity: 1;
-
     visibility: visible;
-
     pointer-events: auto;
-
 }
 
-.intro-screen.fade-in {
-
-    animation: introFadeIn .6s ease forwards;
-
+.intro-scene {
+    display: none;
+    width: min(100%, 760px);
 }
 
-.intro-screen.fade-out {
-
-    animation: introFadeOut .35s ease forwards;
-
+.intro-scene.active {
+    display: block;
 }
 
-@keyframes introFadeIn {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateY(12px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0);
-
-    }
-
+.intro-scene h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: #ffffff;
 }
 
-@keyframes introFadeOut {
-
-    from {
-
-        opacity: 1;
-
-        transform: translateY(0);
-
-    }
-
-    to {
-
-        opacity: 0;
-
-        transform: translateY(-12px);
-
-    }
-
+.intro-message {
+    width: min(100%, 760px);
+    margin: 0;
+    font-size: clamp(1.75rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: #ffffff;
 }
 
-.intro-scene,
-.intro-card,
+.intro-card {
+    display: none;
+    width: min(100%, 760px);
+    padding: clamp(28px, 5vw, 48px);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, .04);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .22);
+    backdrop-filter: blur(20px);
+    text-align: center;
+}
+
+.intro-card.active {
+    display: block;
+}
+
+.intro-card-icon {
+    margin-bottom: 22px;
+    font-size: clamp(2.1rem, 4vw, 3rem);
+}
+
+.intro-card h2 {
+    margin: 0 0 18px;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.intro-card p {
+    margin: 0 auto 20px;
+    max-width: 620px;
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, .78);
+}
+
+.intro-card span {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    color: rgba(255, 255, 255, .68);
+    font-size: .9rem;
+    line-height: 1.4;
+}
+
+/* ==========================================================
+   3. Coach
+========================================================== */
+
+.coach-card {
+    width: min(100%, 760px);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: flex-start;
+    padding: clamp(26px, 4vw, 42px);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, .045);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .22);
+    backdrop-filter: blur(22px);
+    text-align: left;
+}
+
+.coach-avatar {
+    flex: 0 0 auto;
+}
+
+.coach-avatar-circle {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f6b04d, #e8792e);
+    color: #111827;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    box-shadow: 0 16px 36px rgba(232, 121, 46, .28);
+}
+
+.coach-dialogue {
+    min-width: 0;
+}
+
+.coach-typing {
+    display: none;
+    margin-bottom: 12px;
+    color: rgba(255, 255, 255, .66);
+    letter-spacing: .28em;
+}
+
+.coach-typing.active {
+    display: block;
+}
+
 .coach-line {
+    display: none;
+    margin: 0;
+    font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+    font-weight: 500;
+    line-height: 1.55;
+    color: #ffffff;
+}
 
-    opacity: 0;
+.coach-line.active {
+    display: block;
+}
 
-    transform: translateY(10px);
+/* ==========================================================
+   4. Engine & Animations
+========================================================== */
 
-    transition:
-        opacity .45s ease,
-        transform .45s ease;
+.fade-in {
+    animation: introFadeIn .48s ease both;
+}
 
+.fade-out {
+    animation: introFadeOut .22s ease both;
 }
 
 .intro-scene.active,
 .intro-card.active,
-.coach-line.active {
-
-    opacity: 1;
-
-    transform: translateY(0);
-
+.coach-line.active,
+.intro-message {
+    animation: introContentIn .58s cubic-bezier(.2, .8, .2, 1) both;
 }
 
-
-.coach-typing {
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:6px;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:
-        opacity .25s ease,
-        visibility .25s ease;
-
-}
-
-.coach-typing::before,
-.coach-typing::after {
-
-    content: "";
-
-}
-
-.coach-typing.active {
-
-    animation: coachTypingPulse .8s infinite ease-in-out;
-
-}
-
-.coach-typing.active {
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-@keyframes coachTypingPulse {
-
-    0% {
-
-        opacity: .35;
-
-    }
-
-    50% {
-
-        opacity: 1;
-
-    }
-
-    100% {
-
-        opacity: .35;
-
-    }
-
-}
-
-.coach-typing.active::after {
-
-    content: "";
-
-    width: 6px;
-
-    height: 6px;
-
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 0 currentColor,
-        10px 0 0 currentColor,
-        20px 0 0 currentColor;
-
-    animation: coachDots .9s infinite ease-in-out;
-
-}
-
-@keyframes coachDots {
-
-    0%,100% {
-
-        opacity: .35;
-
-    }
-
-    50% {
-
-        opacity: 1;
-
-    }
-
-}
-
-.coach-typing.active span {
-
-    display: inline-block;
-
-    animation: coachTypingDot 1.2s infinite ease-in-out;
-
-}
-
-.coach-typing.active span:nth-child(2) {
-
-    animation-delay: .2s;
-
-}
-
-.coach-typing.active span:nth-child(3) {
-
-    animation-delay: .4s;
-
-}
-
-@keyframes coachTypingDot {
-
-    0%, 80%, 100% {
-
-        opacity: .3;
-
-        transform: translateY(0);
-
-    }
-
-    40% {
-
-        opacity: 1;
-
-        transform: translateY(-3px);
-
-    }
-
-}
-
-
-#introTransition {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    min-height: 420px;
-
-}
-
-#transitionMessage p {
-
-    margin: 0;
-
-    opacity: 0;
-
-    transform: translateY(20px);
-
-    animation: transitionMessageFade .8s ease forwards;
-
-}
-
-#transitionMessage p:nth-child(2) {
-
-    animation-delay: .8s;
-
-}
-
-#transitionMessage p:nth-child(3) {
-
-    animation-delay: 1.6s;
-
-}
-
-@keyframes transitionMessageFade {
-
+@keyframes introFadeIn {
     from {
-
         opacity: 0;
-
-        transform: translateY(20px);
-
     }
 
     to {
-
         opacity: 1;
-
-        transform: translateY(0);
-
     }
-
 }
 
-
-.coach-typing span {
-
-    display: inline-block;
-
-    opacity: .3;
-
-    animation: coachTypingDots 1.2s infinite ease-in-out;
-
-}
-
-.coach-typing span:nth-child(2) {
-
-    animation-delay: .2s;
-
-}
-
-.coach-typing span:nth-child(3) {
-
-    animation-delay: .4s;
-
-}
-
-@keyframes coachTypingDots {
-
-    0%, 80%, 100% {
-
-        opacity: .3;
-
-        transform: translateY(0);
-
-    }
-
-    40% {
-
+@keyframes introFadeOut {
+    from {
         opacity: 1;
-
-        transform: translateY(-4px);
-
     }
 
+    to {
+        opacity: 0;
+    }
 }
 
+@keyframes introContentIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
 
-#transitionMessage {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-height: 120px;
-
-    text-align: center;
-
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-
-    font-weight: 500;
-
-    line-height: 1.7;
-
-    transition:
-        opacity .4s ease,
-        transform .4s ease;
-
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-#transitionMessage.visible {
+/* ==========================================================
+   5. Responsive
+========================================================== */
 
-    opacity: 1;
+@media (max-width: 992px) {
+    .exec-landing {
+        min-height: calc(100vh - 72px);
+        min-height: calc(100dvh - 72px);
+        padding: 28px 18px !important;
+    }
 
-    transform: translateY(0);
+    .exec-intro {
+        min-height: calc(100vh - 128px);
+        min-height: calc(100dvh - 128px);
+    }
 
+    .intro-stage {
+        padding-top: clamp(30px, 6vh, 56px);
+    }
 }
 
-#transitionMessage:not(.visible) {
+@media (max-width: 720px) {
+    .exec-landing {
+        align-items: flex-start !important;
+        padding: 18px 16px 28px !important;
+    }
 
-    opacity: 0;
+    .exec-intro {
+        width: 100%;
+        min-height: calc(100vh - 88px);
+        min-height: calc(100dvh - 88px);
+        overflow: visible;
+    }
 
-    transform: translateY(12px);
+    .intro-header {
+        padding-top: 4px;
+    }
 
+    .intro-logo {
+        width: clamp(70px, 22vw, 92px);
+        height: clamp(70px, 22vw, 92px);
+        margin-bottom: 14px;
+    }
+
+    .intro-title {
+        font-size: clamp(1.55rem, 8vw, 2.05rem);
+    }
+
+    .intro-subtitle {
+        margin-top: 10px;
+        font-size: .92rem;
+    }
+
+    .intro-stage {
+        padding-top: 30px;
+        padding-bottom: 18px;
+    }
+
+    .intro-scene h2 {
+        font-size: clamp(1.55rem, 8vw, 2.35rem);
+        line-height: 1.28;
+    }
+
+    .intro-card {
+        padding: 24px 18px;
+        border-radius: 22px;
+    }
+
+    .intro-card span {
+        white-space: normal;
+    }
+
+    .coach-card {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 24px 18px;
+        border-radius: 22px;
+        text-align: center;
+    }
+
+    .coach-avatar {
+        display: flex;
+        justify-content: center;
+    }
+
+    .coach-avatar-circle {
+        width: 56px;
+        height: 56px;
+    }
 }
 
-#introActions {
+@media (max-width: 420px) {
+    .exec-landing {
+        padding-inline: 12px !important;
+    }
 
-    opacity: 0;
+    .intro-stage {
+        padding-top: 24px;
+    }
 
-    visibility: hidden;
-
-    transform: translateY(24px);
-
-    transition:
-        opacity .8s ease,
-        transform .8s ease,
-        visibility .8s ease;
-
+    .intro-card p {
+        line-height: 1.55;
+    }
 }
 
-#introActions.is-active {
+@media (max-height: 560px) and (orientation: landscape) {
+    .exec-landing {
+        padding-block: 12px !important;
+    }
 
-    opacity: 1;
+    .exec-intro {
+        min-height: auto;
+        overflow: visible;
+    }
 
-    visibility: visible;
+    .intro-logo {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 8px;
+    }
 
-    transform: translateY(0);
+    .intro-title {
+        font-size: clamp(1.35rem, 4vw, 1.8rem);
+    }
 
+    .intro-subtitle {
+        margin-top: 6px;
+        font-size: .82rem;
+    }
+
+    .intro-stage {
+        padding-top: 18px;
+        padding-bottom: 12px;
+    }
+
+    .intro-scene h2 {
+        font-size: clamp(1.4rem, 4vw, 2rem);
+    }
+
+    .intro-card,
+    .coach-card {
+        padding: 18px;
+    }
 }
 
-#startAssessment {
-
-    transition:
-        transform .35s ease,
-        box-shadow .35s ease;
-
-}
-
-#startAssessment:hover {
-
-    transform: translateY(-2px);
-
-}
-
-/* ==========================================================================
-   v1.1 Intro Flow Refinements
-========================================================================== */
-.exec-intro {
-    min-height: calc(100vh - 180px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.intro-screen {
-    width: min(980px, 94vw);
-    min-height: min(560px, calc(100vh - 220px));
-    align-items: center;
-    justify-content: center;
-}
+/* ==========================================================
+   6. Utilities & Polish
+========================================================== */
 
 .intro-skip-btn {
-    position: fixed;
-    top: 112px;
-    right: max(24px, calc((100vw - 1180px) / 2));
-    padding: 10px 14px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, .12);
     border-radius: 999px;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.12);
-    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, .06);
+    color: rgba(255, 255, 255, .74);
+    font: inherit;
+    font-size: .92rem;
+    cursor: pointer;
+    backdrop-filter: blur(14px);
+}
+
+.intro-skip-btn:hover,
+.intro-skip-btn:focus-visible {
+    border-color: rgba(255, 255, 255, .24);
+    background: rgba(255, 255, 255, .1);
+    color: #ffffff;
+    outline: none;
 }
 
 #introActions {
-    display: none !important;
-}
-
-.intro-card {
-    max-width: 720px;
-    margin: auto;
+    min-height: 44px;
 }
 
 @media (max-width: 720px) {
     .intro-skip-btn {
-        top: 96px;
-        right: 18px;
+        position: relative;
+        align-self: flex-end;
+        margin-bottom: 12px;
+        padding-inline: 14px;
+        font-size: .85rem;
     }
-
-    .intro-screen {
-        min-height: min(560px, calc(100vh - 170px));
-    }
-}
-.intro-screen {
-    perspective: 1400px;
 }
 
-.intro-scene {
-    width: min(760px, 92vw);
-    min-height: 260px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(28px, 5vw, 56px);
-    border-radius: 28px;
-    background:
-        linear-gradient(135deg, rgba(247,166,0,.14), rgba(255,255,255,.055)),
-        rgba(7,13,26,.94);
-    border: 1px solid rgba(247,166,0,.28);
-    box-shadow:
-        0 28px 80px rgba(0,0,0,.32),
-        inset 4px 0 0 rgba(247,166,0,.76);
-}
-
-.intro-card,
-.intro-scene.active,
-.intro-card.active {
-    transform-origin: left center;
-}
-
-.intro-screen.fade-in .intro-scene.active,
-.intro-screen.fade-in .intro-card.active {
-    animation: introPageTurnIn .72s cubic-bezier(.2,.8,.2,1) both;
-}
-
-@keyframes introPageTurnIn {
-    from {
-        opacity: 0;
-        transform: rotateY(-13deg) translateX(20px) scale(.985);
-        filter: blur(4px);
-    }
-    to {
-        opacity: 1;
-        transform: rotateY(0) translateX(0) scale(1);
-        filter: blur(0);
+@media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .fade-out,
+    .intro-scene.active,
+    .intro-card.active,
+    .coach-line.active,
+    .intro-message {
+        animation: none;
     }
 }

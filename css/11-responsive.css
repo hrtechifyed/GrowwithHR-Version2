@@ -65,3 +65,77 @@ video {
     min-height: 44px;
   }
 }
+
+/* Production demo responsive hardening: prevents accidental mobile overflow
+   without changing the desktop visual language. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container,
+  .section-container,
+  .exec-container,
+  .report-container,
+  .dashboard-container {
+    width: min(100%, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+  }
+
+  .section,
+  .compact-section,
+  .exec-main,
+  .advisory-page,
+  .dashboard-page {
+    overflow-x: hidden;
+  }
+
+  .hero-actions,
+  .report-actions,
+  .exec-review-actions,
+  .exec-modal-actions,
+  .modal-actions {
+    flex-wrap: wrap;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .exec-primary-btn,
+  .exec-secondary-btn,
+  .nav-cta {
+    white-space: normal;
+  }
+
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .container,
+  .section-container,
+  .exec-container,
+  .report-container,
+  .dashboard-container {
+    width: min(100%, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+  }
+}
