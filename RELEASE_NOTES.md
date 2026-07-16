@@ -1,41 +1,22 @@
-# GrowWithHR v0.12.2-beta
+# GrowWithHR v0.12.0-beta
 
-Codename: Executive Advisory Experience v3 & Homepage Mobile
-
----
-
-## v0.12.2-beta Executive Advisory Experience v3
-
-- Updated the intro narrative to Brand Reveal, Identity, Growth, Leadership, Transition, executive briefing cards, Coach HRTechify and Executive Assessment CTA.
-- Adjusted intro timing toward a 45–60 second premium executive onboarding experience.
-- Hardened homepage mobile layout for intelligence cards and the capability carousel with dedicated desktop, laptop, tablet and mobile breakpoints.
-
----
-
-## v0.12.1-beta Production Demo Fixes
-
-- Begin Assessment remains an explicit user action and hands off to the existing assessment flow.
-- New sessions clear previous in-progress assessment inputs.
-- Name and email capture remains required before report generation.
-- Advisory report generation is validated across 50 dynamic scenarios.
-- Trust, explainability and traceability are prioritised over larger AI-model selection.
-- About, Privacy and Contact cards are presented horizontally on larger screens, with GDPR reference links in Privacy.
+Codename: Intro Experience v2.0 & Production Readiness
 
 ---
 
 ## Overview
 
-This release updates the Executive Advisory introduction to the v3 narrative flow, improves homepage mobile compatibility for the carousel and intelligence sections, and keeps the product roadmap focused on trust, explainability, traceability, and production readiness.
+This release updates GrowWithHR documentation around the Executive Intro Experience v2.0, production-readiness planning, commercial compliance-advisory roadmap, recommendation traceability, and responsive device-layout QA.
 
-The most important product decision in this release is that the brand reveal appears once, then fades away so the rest of the experience focuses on the user's organisation before handing off to the executive assessment.
+The most important product decision in this release is that the intro should become a persistent executive briefing header with a fixed content anchor, while the broader product roadmap moves GrowWithHR toward a traceable AI Executive Advisory Platform.
 
 ---
 
 ## Highlights
 
-### Executive Advisory Experience v3
+### Persistent-Hero Executive Intro v2.0
 
-The intro now follows a concise executive narrative: brand reveal, identity, growth, leadership, transition, executive briefing cards, Coach HRTechify, and an explicit Executive Assessment CTA.
+The intro direction is now a persistent executive briefing header. The hero appears immediately, Message 1 appears immediately, and messages, cards, coach content, and actions all start from the same fixed content anchor below the header.
 
 
 ### Production Readiness Roadmap
@@ -131,6 +112,6 @@ The next release should focus on integration quality:
 
 ## Intro Experience v2.0 and Production Readiness Alignment
 
-Version: `v0.12.2-beta`
+Version: `v0.12.0-beta`
 
 This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.

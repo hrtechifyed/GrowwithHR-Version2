@@ -1,6 +1,6 @@
 # GrowWithHR Intro Experience v2.0 & Production Readiness Master Plan
 
-Version: `v0.12.2-beta`
+Version: `v0.12.0-beta`
 Status: Working Draft
 Product: GrowWithHR — AI Executive Advisory Platform
 Last Updated: 2026-07-16
@@ -204,9 +204,3 @@ Overall estimate: approximately 65–70% production-ready.
 | Tablet landscape | 1024px, 1180px | Cards and coach remain centered, readable, and anchored below the persistent hero. |
 | Laptop | 1280px, 1366px, 1440px | Premium briefing composition, stable hero, no progressive downward drift. |
 | Desktop | 1536px, 1920px | Executive-grade spacing, centered stage, no duplicate content or layout overflow. |
-
----
-
-## Executive Advisory Experience v3 Update
-
-The current intro direction is v3: the brand reveal appears once for approximately two seconds, fades away, and is followed by Identity, Growth, Leadership, Transition, Company DNA, Growth Stage, People, Responsibilities, Future, Coach HRTechify, and the Executive Assessment CTA. The hero is not persistent in v3; the story remains in one fixed stage and the assessment starts only after the user selects the explicit Begin Executive Assessment action.

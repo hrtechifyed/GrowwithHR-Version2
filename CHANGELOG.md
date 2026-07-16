@@ -4,42 +4,6 @@ All notable changes to GrowWithHR are documented here.
 
 ---
 
-## [v0.12.2-beta] - Executive Advisory Experience v3 and Homepage Mobile
-
-Release Date: 2026-07-16
-
-### Added
-
-- Added Executive Advisory Experience v3 narrative flow with brand reveal, identity, growth, leadership, transition, briefing cards, Coach HRTechify and Executive Assessment CTA.
-- Added homepage mobile compatibility hardening for carousel and intelligence card sections.
-
-### Changed
-
-- Updated intro sequence duration toward the 45–60 second executive storytelling target.
-- Reworked homepage carousel and intelligence sections with dedicated desktop, laptop, tablet and mobile breakpoints.
-- Improved intro transitions with a more cinematic executive animation rhythm.
-
----
-
-## [v0.12.1-beta] - Trust, Assessment Handoff and Report Validation
-
-Release Date: 2026-07-16
-
-### Added
-
-- Added 50-scenario dynamic advisory report validation.
-- Added explicit trust, explainability and traceability product principle for recommendations.
-- Added GDPR reference links in the privacy information card.
-
-### Changed
-
-- Begin Assessment now opens the assessment question flow through the existing static handoff.
-- New assessment sessions clear previous in-progress inputs.
-- More-info cards now use horizontal card layouts on larger screens.
-- Intro and assessment cards use larger branded icons and HRTechify orange-accented card treatments.
-
----
-
 ## [v0.12.0-beta] - Intro Experience v2.0 and Production Readiness Plan
 
 Release Date: 2026-07-16
@@ -143,6 +107,6 @@ Release Date: Earlier beta
 
 ## Intro Experience v2.0 and Production Readiness Alignment
 
-Version: `v0.12.2-beta`
+Version: `v0.12.0-beta`
 
 This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.

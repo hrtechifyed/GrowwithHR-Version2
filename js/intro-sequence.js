@@ -1,6 +1,6 @@
 /* ==========================================================
    GrowWithHR Executive Introduction Engine
-   Version 3.0
+   Version 2.1
    ----------------------------------------------------------
    Single fixed Story Stage: Hero → story cards → briefing cards → Coach.
 ========================================================== */
@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const messageScenes = Array.from(document.querySelectorAll(".intro-scene"));
     const briefingCards = Array.from(document.querySelectorAll(".intro-card"));
-    const transitionScenes = Array.from(document.querySelectorAll(".intro-transition-scene"));
     const coachLines = Array.from(document.querySelectorAll(".coach-line"));
     const coachTyping = document.getElementById("coachTyping");
     const introActions = document.getElementById("introActions");
@@ -34,13 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const TIMING = {
-        hero: 2000,
-        message: 3000,
-        lastMessage: 3200,
-        card: 4000,
-        transition: 3000,
-        typing: 500,
-        coach: 2500
+        hero: 2800,
+        message: 2300,
+        lastMessage: 2600,
+        card: 2400,
+        transition: 2200,
+        typing: 550,
+        coach: 1450
     };
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -129,15 +128,11 @@ document.addEventListener("DOMContentLoaded", () => {
         { section: "hero", duration: TIMING.hero, action: () => {} },
         { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 0) },
         { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 1) },
-        { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 2) },
-        { section: "messages", duration: TIMING.lastMessage, action: () => activate(messageScenes, 3) },
+        { section: "messages", duration: TIMING.lastMessage, action: () => activate(messageScenes, 2) },
         { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 0) },
         { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 1) },
         { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 2) },
-        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 3) },
-        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 4) },
-        { section: "transition", duration: TIMING.transition, action: () => activate(transitionScenes, 0) },
-        { section: "transition", duration: TIMING.transition, action: () => activate(transitionScenes, 1) },
+        { section: "transition", duration: TIMING.transition, action: setTransitionMessage },
         ...coachLines.map((line, index) => ({
             section: "coach",
             duration: TIMING.coach,
@@ -207,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
         hideAllSections();
         activate(messageScenes, -1);
         activate(briefingCards, -1);
-        activate(transitionScenes, -1);
         activate(coachLines, -1);
 
         runTimeline();
@@ -233,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
         hideAllSections();
         activate(messageScenes, -1);
         activate(briefingCards, -1);
-        activate(transitionScenes, -1);
         activate(coachLines, -1);
     }
 
@@ -252,11 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
             typeof window.executiveAssessment.start === "function"
         ) {
             window.executiveAssessment.start();
-        } else if (
-            window.executiveAssessment &&
-            typeof window.executiveAssessment.startAssessment === "function"
-        ) {
-            window.executiveAssessment.startAssessment();
         }
     }
 
@@ -321,7 +309,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     messageScenes.forEach(scene => scene.setAttribute("aria-hidden", "true"));
     briefingCards.forEach(card => card.setAttribute("aria-hidden", "true"));
-    transitionScenes.forEach(scene => scene.setAttribute("aria-hidden", "true"));
     coachLines.forEach(line => line.setAttribute("aria-hidden", "true"));
     setActionsVisible(false);
 

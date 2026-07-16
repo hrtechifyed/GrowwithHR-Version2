@@ -1,6 +1,6 @@
 {
   "name": "growitwithhr",
-  "version": "0.12.2-beta",
+  "version": "0.12.0-beta",
   "description": "GrowItWithHR Compliance Monitoring Engine",
   "main": "scripts/scrape-updates.js",
   "dependencies": {
@@ -16,7 +16,6 @@
   },
   "scripts": {
     "test:ux": "jest apps/web/src/components/UX/__tests__ --passWithNoTests",
-    "test:frontend": "node tests/frontend-production-checks.js && node tests/report-dynamic-scenarios.js",
-    "test:report": "node tests/report-dynamic-scenarios.js"
+    "test:frontend": "node tests/frontend-production-checks.js"
   }
 }
