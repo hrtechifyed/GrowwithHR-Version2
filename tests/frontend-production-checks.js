@@ -30,7 +30,7 @@ function count(source, needle) {
 }
 
 // Intro HTML architecture checks.
-assertIncludes(html, '<div class="intro-stage" aria-live="polite">', 'A single fixed story stage is required.');
+assertIncludes(html, '<div class="intro-stage" aria-live="polite" data-testid="advisory-intro-stage">', 'A single fixed story stage is required.');
 assert(!html.includes('<div class="intro-header">'), 'Intro header wrapper should not exist because the hero is not persistent.');
 assertIncludes(html, 'id="introHero"\n    class="intro-screen intro-hero"', 'Hero must be a single intro-screen inside the story stage.');
 assert.strictEqual(count(html, 'id="introHero"'), 1, 'Hero must render exactly once.');
@@ -44,10 +44,10 @@ assert(html.indexOf('id="coachIntroduction"') < html.indexOf('id="conversationWo
 // Intro JavaScript behavior checks.
 assertIncludes(introJs, 'hero: document.getElementById("introHero")', 'Hero must be part of the opening story stage timeline.');
 assertIncludes(introJs, 'TIMING.hero', 'Opening hero duration is required before Scene 1.');
-assertIncludes(introJs, 'completeIntro()', 'Intro must finish by revealing the Begin Assessment action instead of auto-starting.');
+assertIncludes(introJs, 'advisoryState === "invitation"', 'Intro must finish by revealing the Begin Assessment action instead of auto-starting.');
 assertIncludes(introJs, 'setActionsVisible(true)', 'Begin Assessment must become visible after coach completion.');
 assertIncludes(read('js/executive-assessment.js'), 'this.renderCurrentQuestion();', 'Begin Assessment should open the assessment question field directly.');
-assertIncludes(introJs, 'skipIntroduction', 'Skip behavior must remain available.');
+assertIncludes(introJs, 'showInvitationImmediately', 'Skip behavior must remain available.');
 
 // Intro CSS structure and duplicate checks.
 ['1. Fixed Intro Layout', '2. Story Stage & Executive Cards', '3. Coach & Begin Assessment', '4. Engine & Animations', '5. Responsive', '6. Utilities & Polish'].forEach((section) => {
