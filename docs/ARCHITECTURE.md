@@ -153,3 +153,10 @@ Any future persistence feature must be designed as a separate, consent-based arc
 - Saved reports.
 
 Until those features are explicitly implemented and documented, the architecture remains open-tab memory only.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
