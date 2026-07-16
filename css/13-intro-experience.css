@@ -111,13 +111,11 @@
     text-align: center;
 }
 
-.intro-scene,
-.intro-card {
+.exec-intro :where(.intro-scene, .intro-card) {
     display: none;
 }
 
-.intro-scene.active,
-.intro-card.active {
+.exec-intro :where(.intro-scene.active, .intro-card.active) {
     display: block;
 }
 
@@ -703,4 +701,52 @@
     .capability-slide { flex-basis: min(82vw, 320px); width: min(82vw, 320px); max-width: min(82vw, 320px); }
     .more-info-page .compact-hero { padding-top: 92px; padding-bottom: 20px; }
     .more-info-page .trust-section.compact-section { padding-top: 24px; }
+}
+
+/* Priority UI fixes: keep intro, assessment and preview in one consistent card stage. */
+.intro-stage,
+.exec-workspace,
+.exec-review-screen,
+.exec-loading-screen,
+.exec-success-screen {
+    max-width: min(100%, 940px);
+    margin-inline: auto;
+}
+
+.intro-screen#introMessages,
+.intro-screen#introCards {
+    perspective: 1400px;
+}
+
+
+.exec-conversation-container,
+.exec-review-card,
+.exec-loading-card,
+.exec-success-card {
+    max-width: min(100%, 760px);
+    margin-inline: auto;
+}
+
+.exec-segment-card .exec-segment-progress::before {
+    content: "";
+    display: inline-block;
+    width: .7em;
+    height: .7em;
+    margin-right: .55em;
+    border-radius: 999px;
+    background: currentColor;
+    animation: execLoadingPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes execLoadingPulse { to { opacity: .35; transform: scale(.72); } }
+
+.intro-screen > .intro-scene.active,
+.intro-screen > .intro-card.active {
+    animation: introStackCardExit 2.15s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes introStackCardExit {
+    0% { opacity: 0; transform: translate3d(0, 28px, -80px) rotate(0deg) scale(.94); }
+    18%, 68% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translate3d(36vw, -34vh, 0) rotate(10deg) scale(.92); }
 }

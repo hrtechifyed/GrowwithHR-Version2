@@ -53,7 +53,7 @@
             <div><div class="brand-name">HRTechify</div><div class="product-name">GrowWithHR</div></div>
         </a>
 
-        <button class="hamburger" id="hamburger" aria-label="Open Navigation">☰</button>
+        <button class="hamburger" id="hamburger" aria-label="Open Navigation" aria-expanded="false">☰</button>
 
         <div class="nav-links" id="navLinks">
             <a href="index.html#platform">Platform</a>
@@ -161,17 +161,14 @@
 
     <article class="intro-scene active" data-scene="1">
         <h2>Every organisation has a story.</h2>
-        <p>Every decision shapes its future.</p>
     </article>
 
     <article class="intro-scene" data-scene="2">
         <h2>Growth changes everything.</h2>
-        <div class="intro-keywords"><span>Structure</span><span>People</span><span>Responsibilities</span></div>
     </article>
 
     <article class="intro-scene" data-scene="3">
         <h2>Great organisations don't react.</h2>
-        <p>They prepare.</p>
     </article>
 
     <article class="intro-scene" data-scene="4">
@@ -988,6 +985,10 @@
 
 </noscript>
 
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{const hamburger=document.getElementById("hamburger");const navLinks=document.getElementById("navLinks");if(!hamburger||!navLinks)return;hamburger.addEventListener("click",()=>{const open=navLinks.classList.toggle("active");hamburger.setAttribute("aria-expanded",String(open));});document.querySelectorAll("#navLinks a").forEach(link=>link.addEventListener("click",()=>{navLinks.classList.remove("active");hamburger.setAttribute("aria-expanded","false");}));});
+</script>
 </body>
 
 </html>

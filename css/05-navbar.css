@@ -475,3 +475,35 @@
     }
 
 }
+
+/* Glass navigation and reliable mobile menu state. */
+.navbar {
+    background: rgba(8, 18, 32, .58) !important;
+    border-bottom: 1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+@media (max-width: 860px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 16px;
+        right: 16px;
+        padding: 18px;
+        border: 1px solid rgba(255,255,255,.16);
+        border-radius: 22px;
+        background: rgba(8, 18, 32, .9);
+        backdrop-filter: blur(18px) saturate(150%);
+        -webkit-backdrop-filter: blur(18px) saturate(150%);
+        box-shadow: 0 24px 70px rgba(0,0,0,.28);
+        flex-direction: column;
+        align-items: stretch;
+        z-index: 1000;
+    }
+
+    .nav-links.active,
+    .nav-links.is-open { display: flex !important; }
+    .hamburger { display: inline-flex !important; align-items: center; justify-content: center; }
+}
