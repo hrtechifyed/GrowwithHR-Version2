@@ -415,7 +415,7 @@
 
     justify-content:flex-start;
 
-    gap:24px
+    gap:24px;
 
     min-height:240px;
 
@@ -1015,4 +1015,46 @@ filter:drop-shadow(0 0 20px rgba(255,176,0,.20));
 
     margin:0 auto;
 
+}
+
+/* v0.12.4 home hero sequencing: Sample Advisory CTA first, intelligence workspace second. */
+.hero-v2 .hero-layout {
+    grid-template-columns: 1fr !important;
+    gap: clamp(28px, 5vw, 54px);
+}
+
+.hero-v2 .hero-content.hero-home {
+    text-align: center;
+}
+
+.hero-v2 .hero-actions {
+    justify-content: center;
+}
+
+.hero-v2 .hero-workspace {
+    margin-top: 0;
+}
+
+.hero-v2 .workspace-window {
+    width: min(100%, 820px);
+}
+
+.hero-v2 .hero-dashboard-layout {
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "top"
+        "graph"
+        "footer";
+}
+
+.hero-v2 .hero-sidebar {
+    grid-template-columns: 1fr !important;
+}
+
+.hero-v2 .hero-sidebar .workspace-card {
+    min-height: auto;
+}
+
+.hero-v2 .hero-footer {
+    grid-area: footer;
 }
