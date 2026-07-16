@@ -131,6 +131,17 @@
     ====================================================== */
 
     --container-width:1280px;
+    --page-max-width: min(1440px, 100%);
+    --page-gutter: clamp(16px, 4vw, 48px);
+    --content-narrow: 720px;
+    --content-medium: 960px;
+    --content-wide: 1180px;
+    --section-space: clamp(48px, 8vw, 96px);
+    --card-gap: clamp(16px, 2.5vw, 28px);
+    --card-min-width: 280px;
+    --navbar-height: clamp(68px, 8vw, 84px);
+    --font-size-body-fluid: clamp(1rem, .96rem + .18vw, 1.125rem);
+    --font-size-heading-fluid: clamp(2rem, 1.35rem + 3vw, 4.5rem);
 
     /* ======================================================
        ANIMATION

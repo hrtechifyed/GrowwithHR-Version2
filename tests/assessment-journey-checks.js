@@ -47,7 +47,8 @@ includes(analyze, "What's yours — or what are you going to build your story ar
 includes(analyze, 'Welcome to GrowWithHR. We are curious to know about your story and guide you basis that.', 'Coach welcome copy must match requested content.');
 includes(introCss, 'advisorySingleCardIn', 'Intro scenes/cards must use single-card advisory transition animation.');
 includes(introJs, 'skipIntroduction', 'Skip button journey must be wired.');
-includes(introJs, 'beginTarget.scrollIntoView', 'Skip must take users to Begin Assessment.');
+assert(!introJs.includes('scrollIntoView'), 'Skip must change state inside the shared stage without scrolling to a separate section.');
+includes(introJs, 'beginButton.focus({ preventScroll: true })', 'Skip must focus Begin Assessment without moving the page.');
 
 // Assessment navigation and progress.
 includes(assessmentJs, 'this.renderCurrentQuestion();', 'Begin Assessment must render the first question.');

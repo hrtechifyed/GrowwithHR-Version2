@@ -483,10 +483,9 @@ showScreen(screen, stateName = "assessment") {
         this.shell.dataset.state = stateName;
     }
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    if (!this.shell?.classList.contains("advisory-experience-stage")) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
 }
    
@@ -2153,6 +2152,8 @@ resetAssessment() {
 
     startAssessment() {
 
+        window.GWHR_LOG?.("[GrowWithHR:ASSESSMENT]", { initialized: true, state: "assessment" });
+
         this.started = true;
 
         this.completed = false;
@@ -2170,6 +2171,11 @@ resetAssessment() {
         this.currentQuestion = 0;
 
         this.showScreen(this.workspace, "assessment");
+        if (this.landingScreen) {
+            this.landingScreen.hidden = true;
+            this.landingScreen.setAttribute("aria-hidden", "true");
+            this.landingScreen.setAttribute("inert", "");
+        }
 
         this.onWelcome = false;
 

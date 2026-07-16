@@ -1514,3 +1514,15 @@
         transform: translateY(-8px);
     }
 }
+
+/* v0.12.6 fluid assessment stage */
+.exec-main { padding-block: var(--navbar-height, 76px) clamp(32px, 6vw, 64px); }
+.exec-container { width: min(var(--content-wide, 1180px), calc(100% - (var(--page-gutter, 24px) * 2))); margin-inline: auto; }
+.exec-shell { width: 100%; }
+.exec-workspace { min-height: auto; justify-content: start; width: 100%; }
+.exec-conversation-container { width: 100%; }
+.exec-conversation-card { width: min(100%, 920px); margin-inline: auto; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+@media (max-width: 767px) {
+  .exec-conversation-card { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .exec-main { padding-top: var(--navbar-height, 72px); }
+}

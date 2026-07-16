@@ -1,6 +1,6 @@
 # GrowWithHR Product Roadmap
 
-Version: `v0.12.0-beta`
+Version: `v0.12.1-beta`
 Last Updated: 2026-07-16
 
 ---

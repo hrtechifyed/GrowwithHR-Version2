@@ -193,10 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (stage) stage.dataset.state = "welcome";
         setActionsVisible(true);
 
-        const beginTarget = beginButton || introActions;
-        if (beginTarget && typeof beginTarget.scrollIntoView === "function") {
-            beginTarget.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
         if (beginButton) beginButton.focus({ preventScroll: true });
     }
 
@@ -219,8 +215,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (stage) stage.dataset.state = "welcome";
 
+        state.advisoryState = "assessment";
         state.timer = setTimeout(() => {
             if (window.executiveAssessment && typeof window.executiveAssessment.startAssessment === "function") {
+                if (stage) stage.dataset.state = "assessment";
                 window.executiveAssessment.startAssessment();
             }
         }, TIMING.welcome);
@@ -238,6 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (skipButton) skipButton.addEventListener("click", skipIntroduction);
     if (beginButton) beginButton.addEventListener("click", beginAssessment);
+
+    window.GWHR_LOG?.("[GrowWithHR:INTRO]", { initialized: true, sceneCount: messageScenes.length, state: state.advisoryState });
 
     window.introSequence = {
         start: startTimeline,

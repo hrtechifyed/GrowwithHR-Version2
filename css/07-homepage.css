@@ -1333,3 +1333,14 @@ body > footer.exec-footer {
     text-align: center;
     margin-inline: auto;
 }
+
+/* v0.12.6 rolling-card enablement gate */
+.rolling-card-group.rolling-card-fallback > .rolling-card {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+    z-index: auto !important;
+}
+@media print {
+    .rolling-card-group > .rolling-card { position: static !important; transform: none !important; }
+}

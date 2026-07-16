@@ -959,3 +959,24 @@ body .exec-intro :where(.intro-scene.is-behind, .intro-card.is-behind, .intro-tr
         font-size: clamp(1.35rem, 7vw, 1.9rem);
     }
 }
+
+/* v0.12.6 shared advisory stage: one active state owns the visual anchor */
+.advisory-experience-stage {
+    min-height: min(100%, 76dvh);
+    align-content: start;
+}
+
+.advisory-experience-stage > [hidden] {
+    display: none !important;
+}
+
+.advisory-experience-stage[data-state="assessment"] .exec-workspace,
+.advisory-experience-stage[data-state="section-transition"] .exec-workspace,
+.advisory-experience-stage[data-state="assessment-complete"] .exec-review-screen,
+.advisory-experience-stage[data-state="user-name"] .exec-review-screen,
+.advisory-experience-stage[data-state="user-email"] .exec-review-screen,
+.advisory-experience-stage[data-state="generating"] .exec-loading-screen,
+.advisory-experience-stage[data-state="report-ready"] .exec-success-screen,
+.advisory-experience-stage[data-state="report-error"] .exec-review-screen {
+    width: 100%;
+}

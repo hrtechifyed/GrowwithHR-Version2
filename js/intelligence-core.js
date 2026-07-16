@@ -7,7 +7,7 @@ import * as THREE from "three";
 ========================================================== */
 
 const container = document.getElementById("dnaCoreCanvas");
-console.log("HRTECHIFY Intelligence Core v2 Loaded");
+window.GWHR_LOG?.("[GrowWithHR:LAYOUT]", { component: "intelligence-core", initialized: Boolean(container) });
 
 if(container){
 
@@ -52,7 +52,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(
 
-    window.devicePixelRatio
+    Math.min(window.devicePixelRatio || 1, 2)
 
 );
 
@@ -868,39 +868,27 @@ animate();
    RESIZE
 ========================================================== */
 
-window.addEventListener(
+let resizeTimer = null;
+function resizeGraph(){
+    const rect = container.getBoundingClientRect();
+    const width = Math.max(260, Math.floor(rect.width || container.clientWidth));
+    const height = Math.max(260, Math.floor(rect.height || container.clientHeight || width * 0.75));
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(width, height, false);
+    updateLabels();
+}
+function scheduleResize(){
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(resizeGraph, 120);
+}
 
-    "resize",
-
-    ()=>{
-
-        const width =
-
-            container.clientWidth;
-
-        const height =
-
-            container.clientHeight;
-
-        camera.aspect =
-
-            width / height;
-
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(
-
-            width,
-
-            height
-
-        );
-
-        updateLabels();
-
-    }
-
-);
+if ("ResizeObserver" in window) {
+    new ResizeObserver(scheduleResize).observe(container);
+}
+window.addEventListener("resize", scheduleResize);
+window.addEventListener("orientationchange", scheduleResize);
 
 /* ==========================================================
    INITIAL LABEL POSITION

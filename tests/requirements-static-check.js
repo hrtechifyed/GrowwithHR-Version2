@@ -26,15 +26,25 @@ assert(home.indexOf('View Sample Advisory') < home.indexOf('Executive Intelligen
 assert(home.includes('href="sample-advisory-report.html"'), 'sample advisory CTA must link to the sample advisory page');
 
 const heroCss = read('css/06-hero.css');
-assert(heroCss.includes('grid-template-columns: 1fr !important;'), 'executive intelligence cards must stack instead of sitting side by side');
+assert(heroCss.includes('grid-template-columns: minmax(min(100%, 260px), clamp(260px, 26vw, 360px)) minmax(0, 1fr);'), 'executive intelligence must use responsive navigation + graph columns');
 assert(heroCss.includes('introStackCardEnter'), 'executive intelligence cards must use scene-style stacked animation');
 
 const introJs = read('js/intro-sequence.js');
-assert(introJs.includes('activate(messageScenes, 3)'), 'fourth intro scene must be part of the timeline');
+assert(introJs.includes('steps = ['), 'intro sequence must define an explicit state timeline');
+assert(introJs.includes('state.advisoryState = "assessment"'), 'intro must hand off to assessment in the shared state model');
 
 const introCss = read('css/13-intro-experience.css');
 assert(!introCss.includes('Brush Script MT'), 'briefing cards must not switch to the old cursive font');
 assert(introCss.includes('font-family: inherit;'), 'briefing cards should inherit the scene font');
+
+
+const variablesCss = read('css/01-variables.css');
+['--page-max-width', '--page-gutter', '--content-narrow', '--content-medium', '--content-wide', '--section-space', '--card-gap', '--navbar-height'].forEach((token) => {
+  assert(variablesCss.includes(token), `responsive token ${token} must exist`);
+});
+const buildMarker = read('js/build-marker.js');
+assert(buildMarker.includes('window.GWHR_BUILD_ID'), 'development build marker must be exposed');
+assert(!home.includes('backupstyles.css'), 'obsolete backup stylesheet must not be loaded by home');
 
 const assessmentJs = read('js/executive-assessment.js');
 assert(assessmentJs.includes('pendingQuestionRender'), 'assessment should guard pending question renders');
