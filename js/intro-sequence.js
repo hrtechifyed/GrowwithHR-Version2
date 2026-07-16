@@ -79,6 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
         else element.removeAttribute("inert");
     }
 
+
+    function setActionsVisible(visible) {
+        if (!introActions) return;
+
+        introActions.classList.toggle("is-visible", visible);
+        introActions.setAttribute("aria-hidden", visible ? "false" : "true");
+
+        if (visible) introActions.removeAttribute("inert");
+        else introActions.setAttribute("inert", "");
+
+        if (beginButton) {
+            beginButton.disabled = false;
+            beginButton.tabIndex = visible ? 0 : -1;
+        }
+    }
+
     function resetItems() {
         [...messageScenes, ...briefingCards, ...transitionScenes].forEach(item => {
             item.classList.remove("is-active", "is-entering", "is-behind", "is-leaving", "active");
@@ -169,11 +185,22 @@ document.addEventListener("DOMContentLoaded", () => {
         resetItems();
         state.index = steps.length - 1;
         state.running = false;
+        state.paused = false;
         const finalStep = steps[state.index];
         if (!finalStep) return;
         showSection(finalStep.section);
         activateItem(finalStep.item);
         setActionsVisible(true);
+
+        const beginTarget = beginButton || introActions;
+        if (beginTarget && typeof beginTarget.scrollIntoView === "function") {
+            beginTarget.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        if (beginButton) beginButton.focus({ preventScroll: true });
+    }
+
+    function skipIntroduction() {
+        showInvitationImmediately();
     }
 
     function beginAssessment() {
@@ -208,12 +235,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    if (skipButton) skipButton.addEventListener("click", showInvitationImmediately);
+    if (skipButton) skipButton.addEventListener("click", skipIntroduction);
     if (beginButton) beginButton.addEventListener("click", beginAssessment);
 
     window.introSequence = {
         start: startTimeline,
         showInvitation: showInvitationImmediately,
+        skipIntroduction,
         beginAssessment,
         getState: () => ({ ...state })
     };

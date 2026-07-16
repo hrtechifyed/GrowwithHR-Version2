@@ -1444,7 +1444,7 @@ showScreen(screen, stateName = "assessment") {
 
                this.generateButton.disabled = false;
                this.generateButton.innerHTML =
-                   `Generate Executive Advisory <i class="fa-solid fa-wand-magic-sparkles"></i>`;
+                   `Generate Advisory <i class="fa-solid fa-wand-magic-sparkles"></i>`;
 
            }
 
@@ -1576,7 +1576,7 @@ showScreen(screen, stateName = "assessment") {
                 <div id="contactValidation" class="exec-validation-message" role="alert" aria-live="polite"></div>
             </div>`;
         this.generateButton.disabled = false;
-        this.generateButton.innerHTML = `Generate Report <i class="fa-solid fa-wand-magic-sparkles"></i>`;
+        this.generateButton.innerHTML = `Generate Advisory <i class="fa-solid fa-wand-magic-sparkles"></i>`;
         const input = document.getElementById("recipientEmail");
         if (input) input.focus({ preventScroll: true });
     }
@@ -1628,7 +1628,7 @@ showScreen(screen, stateName = "assessment") {
     showInputPreview() {
         this.showScreen(this.reviewScreen, "report-ready");
         this.reportStage = "preview";
-        this.setReviewHeader("Executive Advisory Ready", "Your advisory preview is ready to download.");
+        this.setReviewHeader("Executive Advisory Ready", "Input preview is ready to download.");
         const organisation = this.responses.companyName || "Not provided";
         const date = new Date().toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
         this.reviewContainer.innerHTML = `
@@ -1647,11 +1647,11 @@ showScreen(screen, stateName = "assessment") {
         this.isDownloading = true;
         try {
             const html = this.buildDownloadableReport();
-            const blob = new Blob([html], { type: "text/html" });
+            const blob = new Blob([html], { type: "application/pdf" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.download = "GrowWithHR-Executive-Advisory.html";
+            link.download = "HRTechify-GrowWithHR-illustrative-advisory.pdf";
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -1666,7 +1666,7 @@ showScreen(screen, stateName = "assessment") {
 
     buildDownloadableReport() {
         const rows = Object.entries(this.responses).map(([key, value]) => `<tr><th>${key}</th><td>${value}</td></tr>`).join("");
-        return `<!doctype html><html><head><meta charset="utf-8"><title>HRTechify GrowWithHR Advisory</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eaf4ff}.page{max-width:980px;margin:0 auto;padding:48px}.brand{text-align:center;color:#7dd3fc}.card{background:linear-gradient(135deg,rgba(14,165,233,.18),rgba(20,184,166,.12));border:1px solid rgba(125,211,252,.28);border-radius:28px;padding:32px}h1{text-align:center;color:#fff}table{width:100%;border-collapse:collapse;margin-top:24px}th,td{padding:14px;border-bottom:1px solid rgba(255,255,255,.14);text-align:left}th{color:#7dd3fc;text-transform:capitalize}</style></head><body><main class="page"><section class="card"><div class="brand"><strong>HRTechify</strong><br><span>GrowWithHR</span></div><h1>Executive Advisory</h1><p>Prepared for ${this.responses.recipientName || "Recipient"}. This browser-generated advisory preview uses the information captured in the assessment.</p><table>${rows}</table></section></main></body></html>`;
+        return `<!doctype html><html><head><meta charset="utf-8"><title>HRTechify GrowWithHR Advisory</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eaf4ff}.page{max-width:980px;margin:0 auto;padding:48px}.brand{text-align:center;color:#7dd3fc}.card{background:linear-gradient(135deg,rgba(14,165,233,.18),rgba(20,184,166,.12));border:1px solid rgba(125,211,252,.28);border-radius:28px;padding:32px}h1{text-align:center;color:#fff}table{width:100%;border-collapse:collapse;margin-top:24px}th,td{padding:14px;border-bottom:1px solid rgba(255,255,255,.14);text-align:left}th{color:#7dd3fc;text-transform:capitalize}</style></head><body><main class="page"><section class="card"><div class="brand"><strong>HRTechify</strong><br><span>GrowWithHR</span></div><h1>Executive Advisory</h1><p>Brand palette: deep navy page, cyan highlights, white report text.</p><p>Prepared for ${this.responses.recipientName || "Recipient"}. This browser-generated advisory preview uses the information captured in the assessment.</p><table>${rows}</table></section></main></body></html>`;
     }
 
     /* ==========================================================
@@ -1855,7 +1855,7 @@ openReport() {
             this.conversationContainer.innerHTML = "";
             this.renderCurrentQuestion();
 
-        }, 2800);
+        }, 3200);
 
         return;
 
