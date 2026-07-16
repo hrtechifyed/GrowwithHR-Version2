@@ -633,5 +633,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <script>
 document.addEventListener("DOMContentLoaded",()=>{const hamburger=document.getElementById("hamburger");const navLinks=document.getElementById("navLinks");if(!hamburger||!navLinks)return;hamburger.addEventListener("click",()=>{const open=navLinks.classList.toggle("active");hamburger.setAttribute("aria-expanded",String(open));});document.querySelectorAll("#navLinks a").forEach(link=>link.addEventListener("click",()=>{navLinks.classList.remove("active");hamburger.setAttribute("aria-expanded","false");}));});
 </script>
+<script src="js/sticky-card-debug.js"></script>
 </body>
 </html>

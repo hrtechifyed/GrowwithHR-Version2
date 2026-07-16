@@ -37,14 +37,14 @@ assert.strictEqual(count(html, 'id="introHero"'), 1, 'Hero must render exactly o
 assert.strictEqual(count(html, 'id="coachIntroduction"'), 1, 'Coach must render exactly once.');
 assert.strictEqual(count(html, 'id="startAssessment"'), 1, 'Begin Assessment button must render exactly once.');
 assert(html.indexOf('id="introHero"') < html.indexOf('id="introMessages"'), 'Hero must appear before messages.');
-assert(html.indexOf('id="introMessages"') < html.indexOf('id="introCards"'), 'Messages must appear before cards.');
-assert(html.indexOf('id="introCards"') < html.indexOf('id="coachIntroduction"'), 'Cards must appear before coach.');
+assert(html.indexOf('id="introMessages"') < html.indexOf('id="coachIntroduction"'), 'Single story must appear before coach.');
+assert(!html.includes('data-testid="advisory-briefing-card"'), 'Intro briefing story cards should not render in the shortened journey.');
 assert(html.indexOf('id="coachIntroduction"') < html.indexOf('id="conversationWorkspace"'), 'Coach must stay in the intro before the assessment workspace.');
 
 // Intro JavaScript behavior checks.
 assertIncludes(introJs, 'hero: document.getElementById("introHero")', 'Hero must be part of the opening story stage timeline.');
 assertIncludes(introJs, 'TIMING.hero', 'Opening hero duration is required before Scene 1.');
-assertIncludes(introJs, 'advisoryState === "invitation"', 'Intro must finish by revealing the Begin Assessment action instead of auto-starting.');
+assertIncludes(introJs, 'advisoryState === "welcome"', 'Intro must finish on the Coach welcome before the Begin Assessment action.');
 assertIncludes(introJs, 'setActionsVisible(true)', 'Begin Assessment must become visible after coach completion.');
 assertIncludes(read('js/executive-assessment.js'), 'this.renderCurrentQuestion();', 'Begin Assessment should open the assessment question field directly.');
 assertIncludes(introJs, 'showInvitationImmediately', 'Skip behavior must remain available.');

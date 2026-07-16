@@ -1,6 +1,6 @@
 /* ==========================================================
    GrowWithHR Executive Advisory Presentation Engine
-   Time-driven shared-stage stack: Brand → story → briefing → invitation.
+   Time-driven shared-stage stack: Brand → single story → Coach welcome → Begin Assessment.
 ========================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -59,9 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const steps = [
         { advisoryState: "brand", section: "hero", item: sections.hero, duration: TIMING.hero },
-        ...messageScenes.map((item, index) => ({ advisoryState: "story", section: "messages", item, duration: TIMING.scene, index })),
-        ...briefingCards.map((item, index) => ({ advisoryState: "briefing", section: "cards", item, duration: TIMING.card, index })),
-        { advisoryState: "invitation", section: "transition", item: transitionScenes[0], duration: e2eMode ? 220 : 1600 }
+        ...messageScenes.slice(0, 1).map((item, index) => ({ advisoryState: "story", section: "messages", item, duration: TIMING.scene, index })),
+        { advisoryState: "welcome", section: "coach", item: welcomeCard, duration: TIMING.welcome }
     ].filter(step => step.item);
 
     function clearTimers() {
@@ -153,13 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (stage) stage.dataset.state = step.advisoryState;
         showSection(step.section);
         activateItem(step.item);
-        setActionsVisible(step.advisoryState === "invitation");
+        setActionsVisible(step.advisoryState === "welcome");
 
-        if (step.advisoryState === "invitation") {
-            state.timer = setTimeout(() => {
-                if (!state.running) return;
-                beginAssessment();
-            }, step.duration);
+        if (step.advisoryState === "welcome") {
+            state.running = false;
+            state.complete = true;
             return;
         }
 
@@ -188,8 +185,12 @@ document.addEventListener("DOMContentLoaded", () => {
         state.paused = false;
         const finalStep = steps[state.index];
         if (!finalStep) return;
-        showSection(finalStep.section);
-        activateItem(finalStep.item);
+        showSection("coach");
+        if (welcomeCard) {
+            welcomeCard.hidden = false;
+            activateItem(welcomeCard);
+        }
+        if (stage) stage.dataset.state = "welcome";
         setActionsVisible(true);
 
         const beginTarget = beginButton || introActions;

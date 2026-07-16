@@ -41,10 +41,10 @@ includes(homeCss, 'grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))',
 includes(homeCss, '@media (max-width: 760px)', 'Mobile homepage breakpoint must exist.');
 
 // Executive advisory intro.
-ordered(analyze, ['id="introHero"', 'id="introMessages"', 'id="introCards"', 'id="coachIntroduction"', 'id="conversationWorkspace"'], 'Intro journey');
-includes(analyze, 'Every decision shapes its future.', 'Scene 1 second statement must match approved content.');
-includes(analyze, '<span>Structure</span><span>People</span><span>Responsibilities</span>', 'Scene 2 keywords must match approved content.');
-includes(analyze, 'They prepare.</p>', 'Scene 3 second statement must match approved content.');
+ordered(analyze, ['id="introHero"', 'id="introMessages"', 'id="coachIntroduction"', 'id="conversationWorkspace"'], 'Intro journey');
+includes(analyze, 'Every organization has a story.', 'Single intro scene headline must match requested content.');
+includes(analyze, "What's yours — or what are you going to build your story around?", 'Single intro scene prompt must match requested content.');
+includes(analyze, 'Welcome to GrowWithHR. We are curious to know about your story and guide you basis that.', 'Coach welcome copy must match requested content.');
 includes(introCss, 'advisorySingleCardIn', 'Intro scenes/cards must use single-card advisory transition animation.');
 includes(introJs, 'skipIntroduction', 'Skip button journey must be wired.');
 includes(introJs, 'beginTarget.scrollIntoView', 'Skip must take users to Begin Assessment.');
