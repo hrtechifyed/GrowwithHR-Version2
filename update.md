@@ -13,3 +13,10 @@ This repository is a working copy of GrowWithHR with recent updates for the exec
 Assessment data is held only in the open browser tab. It is not stored in localStorage, sessionStorage, cookies, backend services, Google Drive, CRM, email tools, or HRTechify admin dashboards.
 
 If the user leaves midway, refreshes, closes the tab, or switches devices, they must start fresh.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
