@@ -82,3 +82,61 @@ Check mobile, tablet, and desktop:
 - Edge.
 - Safari.
 - Firefox.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
+
+
+---
+
+## Intro Experience v2.0 Device Layout Test Cases
+
+Run these checks after the persistent-hero intro is implemented in HTML, JavaScript, and CSS.
+
+### Mobile Portrait
+
+- Viewports: 360x740, 390x844, 430x932.
+- Hero is visible immediately.
+- Message 1 is visible immediately without a three-second delay.
+- Stage content starts at the same Y-coordinate for messages, cards, coach, and actions.
+- No horizontal scrolling occurs.
+- Tap targets are at least 44px high.
+
+### Mobile Landscape
+
+- Viewports: 640x360, 844x390, 932x430.
+- Reduced spacing keeps the hero and active stage content visible.
+- Skip button remains reachable.
+- Content does not progressively move downward between scenes.
+
+### Tablet Portrait
+
+- Viewports: 768x1024 and 820x1180.
+- Persistent hero remains fixed at the top of the intro composition.
+- Cards, transition content, coach card, and actions share the same content anchor.
+- Cards remain readable without overflow.
+
+### Tablet Landscape
+
+- Viewports: 1024x768 and 1180x820.
+- Stage width is comfortable and centered.
+- Cards and coach card do not stretch excessively.
+- Scene transitions do not shift the intro header.
+
+### Laptop
+
+- Viewports: 1280x800, 1366x768, 1440x900.
+- Intro feels like a premium executive briefing rather than a slideshow.
+- Hero and stage composition remains balanced above the fold.
+- No duplicate CSS selector behavior or unexpected overrides appear in computed styles.
+
+### Desktop
+
+- Viewports: 1536x864 and 1920x1080.
+- Hero, messages, cards, coach, and assessment actions remain centered and stable.
+- Stage content starts from the same Y-coordinate in every scene.
+- No unused experimental intro screens remain visible.

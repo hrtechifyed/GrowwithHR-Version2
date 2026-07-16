@@ -71,6 +71,37 @@ Next work:
 
 ---
 
+
+---
+
+## Phase 2.5 — Executive Intro Experience v2.0
+
+Status: In progress
+
+Planned implementation:
+
+- Convert the intro hero into a persistent executive briefing header.
+- Show the hero and first message immediately, with no artificial startup delay.
+- Anchor all changing content to the same vertical starting position.
+- Rebuild `13-intro-experience.css` by layout sections rather than patches.
+- Keep skip behavior and assessment handoff intact.
+- Validate mobile, tablet, laptop, and desktop layout behavior.
+
+Success criteria:
+
+- Hero remains visible throughout the intro.
+- Message 1 appears immediately.
+- Messages, cards, coach content, and actions begin at the same Y-coordinate.
+- Mobile receives a dedicated responsive treatment rather than simple desktop shrinking.
+
+---
+
+## Commercial Product Direction — Compliance Advisory Platform
+
+Phase 1 focuses on Executive Assessment, Compliance Advisory, Executive Advisory PDF, Compliance Tracker, Policy Checklist, and Action Plan. Phase 2 expands into policy generation, document uploads, gap analysis, evidence library, and compliance calendar. Phase 3 targets multi-company dashboards, HR analytics, benchmarking, AI Coach, and board reporting.
+
+The highest-leverage product investment is recommendation traceability: every advisory output should explain its triggering assessment answers, relevant organisational context, applicable regulation or recognised HR principle, and suggested next action.
+
 ## Phase 3 — Report Quality and Explainability
 
 Status: Planned
@@ -120,3 +151,10 @@ Potential features:
 - Organizational design support.
 
 Any AI memory or user profile persistence must be designed with explicit user consent and clear retention rules.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
