@@ -36,3 +36,10 @@ Not currently supported:
 - Improve report methodology and benchmarking explanation.
 - Add visual regression checks.
 - Decide whether future persistence is needed and document the privacy model before implementation.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
