@@ -35,6 +35,8 @@ class ExecutiveAssessment {
 
         this.onWelcome = false;
 
+        this.reportStage = "review";
+
 
         /* ==========================================
            STEP DEFINITIONS
@@ -1043,7 +1045,7 @@ showScreen(screen) {
             "";
 
         card.getElementById("questionExplanation").textContent =
-            question.helper;
+            "";
 
         const responseContainer =
             card.getElementById("questionResponse");
@@ -1399,8 +1401,15 @@ showScreen(screen) {
          
            this.reviewContainer.innerHTML = "";
 
-           this.renderContactCapture();
-         
+           this.reportStage = "review";
+
+           if (this.generateButton) {
+
+               this.generateButton.innerHTML =
+                   `Generate Advisory <i class="fa-solid fa-wand-magic-sparkles"></i>`;
+
+           }
+
            this.conversationContainer.innerHTML = "";
 
            this.questionBank.forEach(step => {
@@ -1473,14 +1482,103 @@ showScreen(screen) {
 
     generateReport() {
 
-        if (!this.saveContactCapture()) {
+        if (this.reportStage === "name") {
+            this.showEmailCapture();
             return;
         }
 
-        this.showScreen(this.loadingScreen);
+        if (this.reportStage === "email") {
+            this.showInputPreview();
+            return;
+        }
 
-        this.runLoadingSequence();
+        if (this.reportStage === "preview") {
+            this.downloadReport();
+            return;
+        }
 
+        this.showNameCapture();
+
+    }
+
+    showNameCapture() {
+        this.showScreen(this.reviewScreen);
+        this.reviewContainer.innerHTML = `
+            <div class="exec-review-item exec-contact-step">
+                <h3>Who should this advisory be prepared for?</h3>
+                <p>Enter the recipient name to personalise the advisory preview.</p>
+                <input id="recipientName" class="exec-input" type="text" placeholder="Full name" value="${this.responses.recipientName || ''}" required>
+            </div>`;
+        document.querySelector(".exec-review-card > h2").textContent = "Recipient name";
+        document.querySelector(".exec-review-intro").textContent = "This keeps the report clearly addressed to the right leader or founder.";
+        this.generateButton.innerHTML = `Continue <i class="fa-solid fa-arrow-right"></i>`;
+        this.reportStage = "name";
+    }
+
+    showEmailCapture() {
+        const name = document.getElementById("recipientName");
+        if (!name || !name.value.trim()) {
+            alert("Please enter your name before continuing.");
+            if (name) name.focus();
+            return;
+        }
+        this.responses.recipientName = name.value.trim();
+        this.reviewContainer.innerHTML = `
+            <div class="exec-review-item exec-contact-step">
+                <h3>Where should the advisory reference be sent?</h3>
+                <p>Enter the recipient email address for the report record.</p>
+                <input id="recipientEmail" class="exec-input" type="email" placeholder="Email address" value="${this.responses.recipientEmail || ''}" required>
+            </div>`;
+        document.querySelector(".exec-review-card > h2").textContent = "Recipient email";
+        document.querySelector(".exec-review-intro").textContent = "We use this only to label the downloadable advisory preview in this experience.";
+        this.generateButton.innerHTML = `Preview Advisory <i class="fa-solid fa-eye"></i>`;
+        this.reportStage = "email";
+    }
+
+    showInputPreview() {
+        const email = document.getElementById("recipientEmail");
+        if (!email || !/^\S+@\S+\.\S+$/.test(email.value.trim())) {
+            alert("Please enter a valid email address before continuing.");
+            if (email) email.focus();
+            return;
+        }
+        this.responses.recipientEmail = email.value.trim();
+        this.autoSave();
+        this.showScreen(this.reviewScreen);
+        document.querySelector(".exec-review-card > h2").textContent = "Input preview";
+        document.querySelector(".exec-review-intro").textContent = "Review the captured inputs below. Download your HRTechify-branded illustrative advisory when ready.";
+        this.reviewContainer.innerHTML = "";
+        this.questionBank.forEach(step => {
+            const section = document.createElement("div");
+            section.className = "exec-review-item";
+            section.innerHTML = `<h3>${step.title}</h3>`;
+            step.questions.forEach(question => {
+                const row = document.createElement("p");
+                row.innerHTML = `<strong>${question.label}</strong><br>${this.responses[question.id] || "Not Answered"}`;
+                section.appendChild(row);
+            });
+            this.reviewContainer.appendChild(section);
+        });
+        this.generateButton.innerHTML = `Download Report <i class="fa-solid fa-download"></i>`;
+        this.reportStage = "preview";
+    }
+
+    downloadReport() {
+        const html = this.buildDownloadableReport();
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "HRTechify-GrowWithHR-illustrative-advisory.html";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    buildDownloadableReport() {
+        const rows = Object.entries(this.responses).map(([key, value]) => `<tr><th>${key}</th><td>${value}</td></tr>`).join("");
+        return `<!doctype html><html><head><meta charset="utf-8"><title>HRTechify GrowWithHR Advisory</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eaf4ff}.page{max-width:980px;margin:0 auto;padding:48px}.brand{display:flex;align-items:center;gap:14px;color:#7dd3fc}.card{background:linear-gradient(135deg,rgba(14,165,233,.18),rgba(20,184,166,.12));border:1px solid rgba(125,211,252,.28);border-radius:28px;padding:32px}h1{color:#fff}table{width:100%;border-collapse:collapse;margin-top:24px}th,td{padding:14px;border-bottom:1px solid rgba(255,255,255,.14);text-align:left}th{color:#7dd3fc;text-transform:capitalize}</style></head><body><main class="page"><section class="card"><div class="brand"><strong>HRTechify</strong><span>GrowWithHR</span></div><h1>Illustrative Executive Advisory</h1><p>Prepared for ${this.responses.recipientName || "Recipient"} (${this.responses.recipientEmail || "email not provided"}). This sample uses HRTechify branding, page colour and font colours for preview purposes.</p><table>${rows}</table></section></main></body></html>`;
     }
 
 
@@ -1665,7 +1763,7 @@ openReport() {
 
             this.renderCurrentQuestion();
 
-        }, 1800);
+        }, 3200);
 
         return;
 
@@ -1700,11 +1798,6 @@ showStepIntroduction() {
         if (this.coachSection) {
             this.coachSection.hidden = true;
         }
-
-        this.renderSegmentTransitionCard(
-            this.steps[this.currentStep],
-            introductions[this.currentStep - 1]
-        );
 
         this.renderSegmentTransitionCard(
             this.steps[this.currentStep],
