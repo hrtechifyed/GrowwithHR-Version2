@@ -44,6 +44,7 @@ This document explains the major files and folders in the GrowWithHR public asse
 - `docs/ARCHITECTURE.md` — Architecture documentation.
 - `docs/DESIGN_SYSTEM.md` — Design system notes.
 - `docs/IMPLEMENTATION_SUMMARY.md` — Implementation summary.
+- `docs/INTRO_EXPERIENCE_V2_MASTER_PLAN.md` — Intro Experience v2.0, product roadmap, production-readiness, traceability, and device-layout master plan.
 - `docs/TESTING_CHECKLIST.md` — Manual and functional test checklist.
 - `docs/UX_DECISIONS.md` — UX decisions and rationale.
 - `docs/KNOWN_ISSUES.md` — Known issues list.
@@ -52,3 +53,10 @@ This document explains the major files and folders in the GrowWithHR public asse
 ## Assets
 
 - `assets/hrtechify-logo.png` — Brand logo used in navigation, reports and footer areas.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.

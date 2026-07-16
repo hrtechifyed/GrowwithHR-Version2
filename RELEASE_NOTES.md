@@ -1,22 +1,35 @@
-# GrowWithHR v0.11.0-beta
+# GrowWithHR v0.12.0-beta
 
-Codename: Executive Assessment UX Layer
+Codename: Intro Experience v2.0 & Production Readiness
 
 ---
 
 ## Overview
 
-This release updates the documentation and codebase direction around a new modular executive assessment UX layer. The new layer introduces animated scenes, a wizard-style flow, explicit privacy notices, current-tab state management, and a deterministic personalized report generator.
+This release updates GrowWithHR documentation around the Executive Intro Experience v2.0, production-readiness planning, commercial compliance-advisory roadmap, recommendation traceability, and responsive device-layout QA.
 
-The most important product decision in this release is that the current assessment does **not** store user data anywhere.
+The most important product decision in this release is that the intro should become a persistent executive briefing header with a fixed content anchor, while the broader product roadmap moves GrowWithHR toward a traceable AI Executive Advisory Platform.
 
 ---
 
 ## Highlights
 
-### Animated Executive Assessment Intro
+### Persistent-Hero Executive Intro v2.0
 
-The new assessment starts with short, sequential text beats rather than a static paragraph. The user sees a guided executive introduction before moving into the assessment form.
+The intro direction is now a persistent executive briefing header. The hero appears immediately, Message 1 appears immediately, and messages, cards, coach content, and actions all start from the same fixed content anchor below the header.
+
+
+### Production Readiness Roadmap
+
+The roadmap now identifies compliance knowledge, explainability, security, auditability, multi-tenancy, and production infrastructure as key readiness workstreams. The current readiness estimate remains approximately 65–70% until these workstreams mature.
+
+### Traceability as the Next Major Investment
+
+Every recommendation should eventually explain why it appears, which assessment answers triggered it, which regulation or recognised HR principle it relates to, and what the user should do next.
+
+### Device Layout Test Cases
+
+The testing checklist now includes explicit layout checks for mobile portrait, mobile landscape, tablet portrait, tablet landscape, laptop, and desktop viewports.
 
 ### Wizard-Style Assessment Flow
 
@@ -95,3 +108,10 @@ The next release should focus on integration quality:
 - Add a confirmed test/build toolchain with lockfile.
 - Replace static examples with live routes.
 - Decide whether future storage is required and document consent requirements before implementation.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
