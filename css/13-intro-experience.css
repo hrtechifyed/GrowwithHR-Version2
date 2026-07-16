@@ -653,8 +653,7 @@
 .intro-card span,
 .intro-keywords span,
 .intro-stage-label {
-    font-family: "Brush Script MT", "Segoe Script", "Lucida Handwriting", cursive;
-    font-weight: 400 !important;
+    font-family: inherit;
 }
 
 .intro-card :where(h2) { font-size: clamp(1.55rem, 3vw, 2.35rem); }
