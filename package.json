@@ -16,6 +16,8 @@
   },
   "scripts": {
     "test:ux": "jest apps/web/src/components/UX/__tests__ --passWithNoTests",
-    "test:frontend": "node tests/frontend-production-checks.js"
+    "test:frontend": "node tests/frontend-production-checks.js",
+    "test:journeys": "node tests/assessment-journey-checks.js",
+    "test": "npm run test:frontend && npm run test:journeys && npm run test:ux"
   }
 }

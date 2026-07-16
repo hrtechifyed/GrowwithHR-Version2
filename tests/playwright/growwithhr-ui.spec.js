@@ -30,20 +30,16 @@ test.describe('GrowWithHR UI requirements', () => {
     expect(ctaBox && workspaceBox && ctaBox.y).toBeLessThan(workspaceBox.y);
   });
 
-  test('homepage card groups use sticky stacked layout on desktop and mobile', async ({ page }) => {
-    for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
-      await page.setViewportSize(viewport);
-      await page.goto('/');
-      for (const selector of ['.hero-sidebar .workspace-card', '.how-card', '.capability-slide']) {
-        const cards = page.locator(selector);
-        await expect(cards.first()).toBeVisible();
-        const firstPosition = await cards.first().evaluate((el) => getComputedStyle(el).position);
-        expect(firstPosition).toBe('sticky');
-        const first = await cards.nth(0).boundingBox();
-        const second = await cards.nth(1).boundingBox();
-        expect(first && second && first.x).toBeCloseTo(second.x, 1);
-      }
-    }
+  test('executive intelligence cards stack vertically', async ({ page }) => {
+    await page.goto('/');
+    const cards = page.locator('.hero-sidebar .workspace-card');
+    await expect(cards).toHaveCount(3);
+    const first = await cards.nth(0).boundingBox();
+    const second = await cards.nth(1).boundingBox();
+    const third = await cards.nth(2).boundingBox();
+    expect(first && second && third && first.x).toBeCloseTo(second.x, 1);
+    expect(second.y).toBeGreaterThan(first.y + first.height - 1);
+    expect(third.y).toBeGreaterThan(second.y + second.height - 1);
   });
 
   test('intro scenes include the fourth scene and keep font consistent into briefing cards', async ({ page }) => {

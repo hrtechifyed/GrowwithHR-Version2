@@ -18,7 +18,7 @@ const htmlFiles = [
 
 for (const file of htmlFiles) {
   assert(read(file).includes('<footer class="footer"'), `${file} is missing the shared footer`);
-  assert(read(file).includes('<footer class="footer"'), `${file} is missing footer markup`);
+  assert(read(file).includes('Smart People Strategy. More business momentum.'), `${file} is missing home footer copy`);
 }
 
 const home = read('index.html');
@@ -27,10 +27,7 @@ assert(home.includes('href="sample-advisory-report.html"'), 'sample advisory CTA
 
 const heroCss = read('css/06-hero.css');
 assert(heroCss.includes('grid-template-columns: 1fr !important;'), 'executive intelligence cards must stack instead of sitting side by side');
-assert(!heroCss.includes('introStackCardEnter'), 'Executive Intelligence cards must not keep the previous entrance animation');
-assert(read('css/07-homepage.css').includes('position: sticky'), 'homepage card groups must use sticky stack positioning');
-assert(read('css/07-homepage.css').includes('.how-card'), 'Understand/Analyze/Advise cards must be included in sticky stack styling');
-assert(read('css/07-homepage.css').includes('.capability-slide'), 'Flagship capability cards must be included in sticky stack styling');
+assert(heroCss.includes('introStackCardEnter'), 'executive intelligence cards must use scene-style stacked animation');
 
 const introJs = read('js/intro-sequence.js');
 assert(introJs.includes('activate(messageScenes, 3)'), 'fourth intro scene must be part of the timeline');

@@ -1503,6 +1503,39 @@ showScreen(screen) {
             this.showInputPreview();
             return;
         }
+        this.responses.recipientEmail = email.value.trim();
+        this.autoSave();
+        this.showScreen(this.reviewScreen);
+        document.querySelector(".exec-review-card > h2").textContent = "Input preview";
+        document.querySelector(".exec-review-intro").textContent = "Review the captured inputs below. Download your HRTechify-branded illustrative advisory when ready.";
+        this.reviewContainer.innerHTML = "";
+        this.questionBank.forEach(step => {
+            const section = document.createElement("div");
+            section.className = "exec-review-item";
+            section.innerHTML = `<h3>${step.title}</h3>`;
+            step.questions.forEach(question => {
+                const row = document.createElement("p");
+                row.innerHTML = `<strong>${question.label}</strong><br>${this.responses[question.id] || "Not Answered"}`;
+                section.appendChild(row);
+            });
+            this.reviewContainer.appendChild(section);
+        });
+        this.generateButton.innerHTML = `Download Report <i class="fa-solid fa-download"></i>`;
+        this.reportStage = "preview";
+    }
+
+    downloadReport() {
+        const pdf = this.buildDownloadablePdf();
+        const blob = new Blob([pdf], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "HRTechify-GrowWithHR-illustrative-advisory.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }
 
         if (this.reportStage === "preview") {
             this.downloadReport();
@@ -1511,6 +1544,13 @@ showScreen(screen) {
 
         this.showNameCapture();
 
+        const xrefOffset = pdf.length;
+        pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+        offsets.slice(1).forEach(offset => {
+            pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+        });
+        pdf += `trailer << /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+        return pdf;
     }
 
     showNameCapture() {
