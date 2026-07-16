@@ -984,3 +984,38 @@
     .carousel-track { overflow-x: auto !important; }
     .capability-slide { flex-basis: min(82vw, 320px); width: min(82vw, 320px); max-width: min(82vw, 320px); }
 }
+
+/* Replace problematic carousel behavior with responsive card grid. */
+.capability-carousel {
+    display: block !important;
+    overflow: visible !important;
+}
+
+.carousel-arrow { display: none !important; }
+
+.carousel-track {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    padding: 8px 0 0 !important;
+}
+
+.capability-slide {
+    min-width: 0 !important;
+    width: auto !important;
+    height: 100%;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+@media (max-width: 760px) {
+    .hero-layout,
+    .hero-dashboard-layout,
+    .how-grid,
+    .carousel-track { grid-template-columns: 1fr !important; }
+    .hero h1 { font-size: clamp(2rem, 10vw, 3.1rem); }
+    .workspace-window { max-width: 100%; overflow: hidden; }
+    .capability-slide { padding: 22px 18px; }
+}
