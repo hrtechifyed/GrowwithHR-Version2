@@ -109,3 +109,10 @@ The following are not present in the current build:
 - Confirm the test runner configuration in CI.
 - Expand test coverage for wizard flow, validation, privacy notices, and no-storage behavior.
 - Add visual QA across mobile, tablet, and desktop.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.

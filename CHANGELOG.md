@@ -4,6 +4,23 @@ All notable changes to GrowWithHR are documented here.
 
 ---
 
+## [v0.12.0-beta] - Intro Experience v2.0 and Production Readiness Plan
+
+Release Date: 2026-07-16
+
+### Added
+
+- Documented the persistent-hero Executive Intro v2.0 architecture.
+- Added production-readiness roadmap direction for compliance advisory, traceability, auditability, and responsive QA.
+- Added device-layout test coverage expectations for mobile, tablet, laptop, and desktop.
+
+### Changed
+
+- Updated documentation version references to `v0.12.0-beta`.
+- Reframed GrowWithHR as an AI-powered Executive Advisory Platform moving toward compliance intelligence and HR governance.
+
+---
+
 ## [v0.11.0-beta] - Executive Assessment UX Layer
 
 Release Date: 2026-07-12
@@ -86,3 +103,10 @@ Release Date: Earlier beta
 - Card layout refinements.
 - Navigation structure.
 - Hero responsiveness.
+---
+
+## Intro Experience v2.0 and Production Readiness Alignment
+
+Version: `v0.12.0-beta`
+
+This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.

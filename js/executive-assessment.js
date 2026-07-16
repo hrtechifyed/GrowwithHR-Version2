@@ -1970,11 +1970,27 @@ resetAssessment() {
 
         this.showScreen(this.workspace);
 
+        this.onWelcome = false;
+
         this.updateProgress();
    
         this.updateProgressBar();
 
-        this.showWelcomeMessage();
+        this.renderCurrentQuestion();
+
+        if (this.backButton) {
+
+            this.backButton.hidden = false;
+
+        }
+
+        if (this.nextButton) {
+
+            this.nextButton.innerHTML =
+
+                `Continue <i class="fa-solid fa-arrow-right"></i>`;
+
+        }
 
     }
 
