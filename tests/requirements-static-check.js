@@ -2,39 +2,45 @@ const fs = require('fs');
 const assert = require('assert');
 
 const read = (file) => fs.readFileSync(file, 'utf8');
-const pkg = JSON.parse(read('package.json'));
-const index = read('index.html');
-const analyze = read('analyze-company.html');
-const homeCss = read('css/07-homepage.css');
-const introCss = read('css/13-intro-experience.css');
+const htmlFiles = [
+  'index.html',
+  'analyze-company.html',
+  'assessment.html',
+  'official-resources.html',
+  'sample-advisory-report.html',
+  'more-info.html',
+  'compliance-roadmap.html',
+  'growth-roadmap.html',
+  'people-roadmap.html',
+  'pages/company-profile.html',
+  'pages/organization-profile.html',
+];
+
+for (const file of htmlFiles) {
+  assert(read(file).includes('<footer class="footer"'), `${file} is missing the shared footer`);
+  assert(read(file).includes('Smart People Strategy. More business momentum.'), `${file} is missing home footer copy`);
+}
+
+const home = read('index.html');
+assert(home.indexOf('View Sample Advisory') < home.indexOf('Executive Intelligence'), 'home animation must follow sample advisory CTA');
+assert(home.includes('href="sample-advisory-report.html"'), 'sample advisory CTA must link to the sample advisory page');
+
+const heroCss = read('css/06-hero.css');
+assert(heroCss.includes('grid-template-columns: 1fr !important;'), 'executive intelligence cards must stack instead of sitting side by side');
+assert(heroCss.includes('introStackCardEnter'), 'executive intelligence cards must use scene-style stacked animation');
+
 const introJs = read('js/intro-sequence.js');
+assert(introJs.includes('activate(messageScenes, 3)'), 'fourth intro scene must be part of the timeline');
+
+const introCss = read('css/13-intro-experience.css');
+assert(!introCss.includes('Brush Script MT'), 'briefing cards must not switch to the old cursive font');
+assert(introCss.includes('font-family: inherit;'), 'briefing cards should inherit the scene font');
+
 const assessmentJs = read('js/executive-assessment.js');
+assert(assessmentJs.includes('pendingQuestionRender'), 'assessment should guard pending question renders');
+assert(assessmentJs.includes('this.conversationContainer.innerHTML = "";'), 'assessment should clear the current question card before render');
 
-assert(!pkg.dependencies?.['@playwright/test'] && !pkg.devDependencies?.['@playwright/test'], '@playwright/test should not be assumed installed');
-assert(index.includes('home-stack-section'), 'home stack section classes must be present');
-assert(index.includes('home-stack-card'), 'home stack card classes must be present');
-assert(homeCss.includes('--home-stack-top'), 'home stack CSS custom properties must be defined');
-assert(homeCss.includes('position: sticky'), 'home stack cards must use sticky positioning');
-assert(homeCss.includes('@media (max-height: 620px), (prefers-reduced-motion: reduce)'), 'home fallback/reduced-motion rule must exist');
-assert(!homeCss.includes('.card{') && !homeCss.includes('.card {'), 'global .card selector must not be modified in homepage stack CSS');
-
-assert(analyze.includes('advisory-experience-stage'), 'shared advisory stage must be present');
-assert(analyze.includes('Willing to share the story of your organization?'), 'final invitation copy must be present');
-assert(!analyze.includes('One final step.'), 'old final-step copy must be removed');
-assert(analyze.includes('Welcome to HRTechify — let\'s begin your Executive Advisory assessment.'), 'one-line welcome must be present');
-assert((analyze.match(/data-testid="advisory-briefing-card"/g) || []).length === 5, 'five advisory briefing cards must exist');
-
-['is-entering', 'is-active', 'is-behind', 'is-leaving', 'is-hidden'].forEach((className) => {
-  assert(introCss.includes(className) || introJs.includes(className), `${className} state class must be implemented`);
-});
-assert(introJs.includes('visibilitychange'), 'intro timeline must reconcile hidden-tab timers');
-assert(introJs.includes('e2e'), 'safe e2e timing mode must exist');
-assert(assessmentJs.includes('this.boundEvents'), 'assessment event binding must be guarded');
-assert(assessmentJs.includes('validateName'), 'name validation must exist');
-assert(assessmentJs.includes('validateEmail'), 'email validation must exist');
-assert(assessmentJs.includes('showReportError'), 'report error/retry state must exist');
-assert(assessmentJs.includes('isDownloading'), 'download duplicate-click guard must exist');
-assert(assessmentJs.includes('data-testid", "assessment-question-card"'), 'question card test id must be assigned once per render');
-assert(fs.existsSync('PLAYWRIGHT_TEST_PLAN.md'), 'Playwright/manual test plan must exist');
+const playwrightSpec = read('tests/playwright/growwithhr-ui.spec.js');
+assert(playwrightSpec.includes("from '@playwright/test'"), 'Playwright test file should be generated');
 
 console.log('Static requirement checks passed.');

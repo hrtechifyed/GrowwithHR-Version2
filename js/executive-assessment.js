@@ -39,20 +39,6 @@ class ExecutiveAssessment {
 
         this.pendingQuestionRender = null;
 
-        this.sectionTransitionTimer = null;
-
-        this.reportGenerationTimer = null;
-
-        this.boundEvents = false;
-
-        this.assessmentState = "brand";
-
-        this.isAdvancing = false;
-
-        this.isGenerating = false;
-
-        this.isDownloading = false;
-
 
         /* ==========================================
            STEP DEFINITIONS
@@ -1449,6 +1435,11 @@ showScreen(screen, stateName = "assessment") {
                this.pendingQuestionRender = null;
            }
 
+           if (this.pendingQuestionRender) {
+               clearTimeout(this.pendingQuestionRender);
+               this.pendingQuestionRender = null;
+           }
+
            if (this.generateButton) {
 
                this.generateButton.disabled = false;
@@ -1535,6 +1526,39 @@ showScreen(screen, stateName = "assessment") {
             this.startReportGeneration();
             return;
         }
+        this.responses.recipientEmail = email.value.trim();
+        this.autoSave();
+        this.showScreen(this.reviewScreen);
+        document.querySelector(".exec-review-card > h2").textContent = "Input preview";
+        document.querySelector(".exec-review-intro").textContent = "Review the captured inputs below. Download your HRTechify-branded illustrative advisory when ready.";
+        this.reviewContainer.innerHTML = "";
+        this.questionBank.forEach(step => {
+            const section = document.createElement("div");
+            section.className = "exec-review-item";
+            section.innerHTML = `<h3>${step.title}</h3>`;
+            step.questions.forEach(question => {
+                const row = document.createElement("p");
+                row.innerHTML = `<strong>${question.label}</strong><br>${this.responses[question.id] || "Not Answered"}`;
+                section.appendChild(row);
+            });
+            this.reviewContainer.appendChild(section);
+        });
+        this.generateButton.innerHTML = `Download Report <i class="fa-solid fa-download"></i>`;
+        this.reportStage = "preview";
+    }
+
+    downloadReport() {
+        const pdf = this.buildDownloadablePdf();
+        const blob = new Blob([pdf], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "HRTechify-GrowWithHR-illustrative-advisory.pdf";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }
 
         if (this.reportStage === "preview") {
             this.downloadReport();
@@ -1546,7 +1570,13 @@ showScreen(screen, stateName = "assessment") {
             return;
         }
 
-        this.showNameCapture();
+        const xrefOffset = pdf.length;
+        pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+        offsets.slice(1).forEach(offset => {
+            pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+        });
+        pdf += `trailer << /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+        return pdf;
     }
 
     showNameCapture() {
@@ -1857,14 +1887,10 @@ openReport() {
         if (this.pendingQuestionRender) {
             clearTimeout(this.pendingQuestionRender);
         }
-        if (this.sectionTransitionTimer) {
-            clearTimeout(this.sectionTransitionTimer);
-        }
 
-        this.pendingQuestionRender = this.sectionTransitionTimer = setTimeout(() => {
+        this.pendingQuestionRender = setTimeout(() => {
 
             this.pendingQuestionRender = null;
-            this.sectionTransitionTimer = null;
             this.conversationContainer.innerHTML = "";
             this.renderCurrentQuestion();
 

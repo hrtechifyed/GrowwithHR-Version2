@@ -1017,7 +1017,7 @@ filter:drop-shadow(0 0 20px rgba(255,176,0,.20));
 
 }
 
-/* v0.12.4 home hero sequencing: Sample Advisory CTA first, intelligence workspace second. */
+/* v0.12.4 home hero sequencing and executive-intelligence scene animation */
 .hero-v2 .hero-layout {
     grid-template-columns: 1fr !important;
     gap: clamp(28px, 5vw, 54px);
@@ -1036,7 +1036,7 @@ filter:drop-shadow(0 0 20px rgba(255,176,0,.20));
 }
 
 .hero-v2 .workspace-window {
-    width: min(100%, 820px);
+    width: min(100%, 760px);
 }
 
 .hero-v2 .hero-dashboard-layout {
@@ -1049,12 +1049,29 @@ filter:drop-shadow(0 0 20px rgba(255,176,0,.20));
 
 .hero-v2 .hero-sidebar {
     grid-template-columns: 1fr !important;
+    perspective: 1400px;
 }
 
 .hero-v2 .hero-sidebar .workspace-card {
     min-height: auto;
+    animation: introStackCardEnter .8s cubic-bezier(.2,.8,.2,1) both;
 }
+
+.hero-v2 .hero-sidebar .workspace-card:nth-child(1) { animation-delay: .1s; }
+.hero-v2 .hero-sidebar .workspace-card:nth-child(2) { animation-delay: .28s; }
+.hero-v2 .hero-sidebar .workspace-card:nth-child(3) { animation-delay: .46s; }
 
 .hero-v2 .hero-footer {
     grid-area: footer;
+}
+
+@keyframes introStackCardEnter {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 28px, -80px) scale(.94);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
 }

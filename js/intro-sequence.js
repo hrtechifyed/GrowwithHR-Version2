@@ -124,13 +124,35 @@ document.addEventListener("DOMContentLoaded", () => {
         state.activeItem = nextItem;
     }
 
-    function setActionsVisible(visible) {
-        if (!introActions) return;
-        introActions.classList.toggle("is-visible", visible);
-        introActions.setAttribute("aria-hidden", visible ? "false" : "true");
-        if (visible) introActions.removeAttribute("inert");
-        else introActions.setAttribute("inert", "");
-        if (beginButton) beginButton.disabled = !visible;
+    const timeline = [
+        { section: "hero", duration: TIMING.hero, action: () => {} },
+        { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 0) },
+        { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 1) },
+        { section: "messages", duration: TIMING.message, action: () => activate(messageScenes, 2) },
+        { section: "messages", duration: TIMING.lastMessage, action: () => activate(messageScenes, 3) },
+        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 0) },
+        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 1) },
+        { section: "cards", duration: TIMING.card, action: () => activate(briefingCards, 2) },
+        { section: "transition", duration: TIMING.transition, action: setTransitionMessage },
+        ...coachLines.map((line, index) => ({
+            section: "coach",
+            duration: TIMING.coach,
+            action: () => activate(coachLines, index)
+        }))
+    ];
+
+    function next(delay) {
+        clearTimer();
+
+        if (!state.running || state.skipped || state.complete) return;
+
+        state.timer = setTimeout(runTimeline, Math.max(0, delay));
+    }
+
+    function completeIntro() {
+        state.running = false;
+        state.complete = true;
+        setActionsVisible(true);
     }
 
     function runStep() {
