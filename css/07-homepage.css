@@ -1203,3 +1203,117 @@
         max-width: calc(100vw - 32px) !important;
     }
 }
+
+/* v0.15 reusable scroll-driven 3D sticky card peel system */
+:root {
+    --gwhr-peel-top: clamp(86px, 12vh, 128px);
+    --gwhr-peel-gap: clamp(18px, 3vw, 30px);
+    --gwhr-peel-max-width: 760px;
+}
+
+.home-stack-section,
+.gwhr-peel-stack {
+    --gwhr-peel-count: 3;
+    display: grid !important;
+    grid-template-columns: minmax(0, min(100%, var(--gwhr-peel-max-width))) !important;
+    justify-content: center;
+    align-items: start;
+    gap: var(--gwhr-peel-gap) !important;
+    width: 100%;
+    margin-inline: auto;
+    overflow: visible !important;
+    perspective: 1400px;
+    perspective-origin: 50% 18%;
+    transform-style: preserve-3d;
+    contain: layout;
+}
+
+.home-stack-section .home-stack-card,
+.gwhr-peel-stack .gwhr-peel-card {
+    --gwhr-peel-index: 0;
+    grid-area: auto !important;
+    position: sticky !important;
+    top: calc(var(--gwhr-peel-top) + (var(--gwhr-peel-index) * 10px)) !important;
+    z-index: calc(40 - var(--gwhr-peel-index));
+    width: 100% !important;
+    max-width: var(--gwhr-peel-max-width) !important;
+    min-width: 0 !important;
+    margin-inline: auto;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform-origin: 50% 0%;
+    transform: translate3d(0, calc(var(--gwhr-peel-index) * 8px), calc(var(--gwhr-peel-index) * -34px)) rotateX(calc(var(--gwhr-peel-index) * -1.4deg)) scale(calc(1 - (var(--gwhr-peel-index) * .018))) !important;
+    transition: border-color .28s ease, box-shadow .28s ease, background .28s ease;
+    will-change: transform, opacity;
+    animation: none !important;
+    backface-visibility: hidden;
+}
+
+.home-stack-section .home-stack-card:nth-child(1),
+.gwhr-peel-stack .gwhr-peel-card:nth-child(1) { --gwhr-peel-index: 0; }
+.home-stack-section .home-stack-card:nth-child(2),
+.gwhr-peel-stack .gwhr-peel-card:nth-child(2) { --gwhr-peel-index: 1; }
+.home-stack-section .home-stack-card:nth-child(3),
+.gwhr-peel-stack .gwhr-peel-card:nth-child(3) { --gwhr-peel-index: 2; }
+.home-stack-section .home-stack-card:nth-child(4) { --gwhr-peel-index: 3; }
+.home-stack-section .home-stack-card:nth-child(5) { --gwhr-peel-index: 4; }
+.home-stack-section .home-stack-card:nth-child(6) { --gwhr-peel-index: 5; }
+.home-stack-section .home-stack-card:nth-child(7) { --gwhr-peel-index: 6; }
+.home-stack-section .home-stack-card:nth-child(8) { --gwhr-peel-index: 7; }
+
+.home-stack-section .home-stack-card:hover,
+.gwhr-peel-stack .gwhr-peel-card:hover,
+.home-stack-section .home-stack-card:focus-within,
+.gwhr-peel-stack .gwhr-peel-card:focus-within {
+    transform: translate3d(0, -8px, 30px) rotateX(2deg) rotateY(-1deg) scale(1.012) !important;
+    border-color: rgba(255,176,0,.38);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(255,176,0,.14);
+}
+
+@supports (animation-timeline: view()) {
+    .home-stack-section .home-stack-card,
+    .gwhr-peel-stack .gwhr-peel-card {
+        animation: gwhrStickyPeel linear both !important;
+        animation-timeline: view();
+        animation-range: contain 6% contain 88%;
+    }
+}
+
+@keyframes gwhrStickyPeel {
+    0%, 22% {
+        opacity: 1;
+        transform: translate3d(0, calc(var(--gwhr-peel-index) * 8px), calc(var(--gwhr-peel-index) * -34px)) rotateX(calc(var(--gwhr-peel-index) * -1.4deg)) scale(calc(1 - (var(--gwhr-peel-index) * .018)));
+    }
+    48% {
+        opacity: 1;
+        transform: translate3d(0, -16px, 72px) rotateX(5deg) rotateY(-3deg) scale(1.018);
+    }
+    78%, 100% {
+        opacity: .18;
+        transform: translate3d(0, -58px, 120px) rotateX(16deg) rotateY(-8deg) rotateZ(-2deg) scale(.965);
+    }
+}
+
+@media (max-width: 760px), (max-height: 620px), (prefers-reduced-motion: reduce) {
+    .home-stack-section,
+    .gwhr-peel-stack {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 16px !important;
+        min-height: 0 !important;
+        perspective: none;
+        contain: layout;
+    }
+
+    .home-stack-section .home-stack-card,
+    .gwhr-peel-stack .gwhr-peel-card {
+        position: relative !important;
+        top: auto !important;
+        z-index: auto !important;
+        width: min(100%, calc(100vw - 32px)) !important;
+        max-width: calc(100vw - 32px) !important;
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}
