@@ -16,6 +16,25 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Supports scroll-driven view timeline:", supportsViewTimeline);
     console.log("Reduced motion enabled:", reducedMotion);
 
+    const executiveStack = document.querySelector("[data-testid='home-executive-stack']");
+
+    if (executiveStack) {
+        const executiveLayout = executiveStack.closest(".hero-dashboard-layout");
+        const executiveStackStyle = window.getComputedStyle(executiveStack);
+        const executiveLayoutStyle = executiveLayout
+            ? window.getComputedStyle(executiveLayout)
+            : null;
+
+        console.log("Executive Intelligence centered stack active", {
+            cards: executiveStack.querySelectorAll(".home-stack-card").length,
+            gridTemplateColumns: executiveLayoutStyle
+                ? executiveLayoutStyle.gridTemplateColumns
+                : "layout not found",
+            justifyContent: executiveStackStyle.justifyContent,
+            maxWidth: executiveStackStyle.maxWidth
+        });
+    }
+
     stacks.forEach((stack, stackIndex) => {
         const cards = Array.from(stack.querySelectorAll(cardSelector));
         const stackStyle = window.getComputedStyle(stack);
