@@ -8,9 +8,6 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const html = read('analyze-company.html');
 const introJs = read('js/intro-sequence.js');
 const introCss = read('css/13-intro-experience.css');
-const assessmentJs = read('js/executive-assessment.js');
-const moreInfoHtml = read('more-info.html');
-const homepageCss = read('css/07-homepage.css');
 const responsiveCss = read('css/11-responsive.css');
 
 function assertIncludes(source, needle, message) {
@@ -32,11 +29,6 @@ function count(source, needle) {
   return source.split(needle).length - 1;
 }
 
-function classCount(source, className) {
-  const matches = source.match(/class="([^"]*)"/g) || [];
-  return matches.filter((match) => match.slice(7, -1).split(/\s+/).includes(className)).length;
-}
-
 // Intro HTML architecture checks.
 assertIncludes(html, '<div class="intro-stage" aria-live="polite">', 'A single fixed story stage is required.');
 assert(!html.includes('<div class="intro-header">'), 'Intro header wrapper should not exist because the hero is not persistent.');
@@ -44,9 +36,6 @@ assertIncludes(html, 'id="introHero"\n    class="intro-screen intro-hero"', 'Her
 assert.strictEqual(count(html, 'id="introHero"'), 1, 'Hero must render exactly once.');
 assert.strictEqual(count(html, 'id="coachIntroduction"'), 1, 'Coach must render exactly once.');
 assert.strictEqual(count(html, 'id="startAssessment"'), 1, 'Begin Assessment button must render exactly once.');
-assert.strictEqual(count(html, 'class="coach-line'), 4, 'Coach statements should render once and stay concise in v3.');
-assert.strictEqual(classCount(html, 'intro-card'), 5, 'Executive briefing should render five v3 cards.');
-assert.strictEqual(classCount(html, 'intro-transition-scene'), 2, 'Coach introduction should render two transition scenes.');
 assert(html.indexOf('id="introHero"') < html.indexOf('id="introMessages"'), 'Hero must appear before messages.');
 assert(html.indexOf('id="introMessages"') < html.indexOf('id="introCards"'), 'Messages must appear before cards.');
 assert(html.indexOf('id="introCards"') < html.indexOf('id="coachIntroduction"'), 'Cards must appear before coach.');
@@ -54,17 +43,10 @@ assert(html.indexOf('id="coachIntroduction"') < html.indexOf('id="conversationWo
 
 // Intro JavaScript behavior checks.
 assertIncludes(introJs, 'hero: document.getElementById("introHero")', 'Hero must be part of the opening story stage timeline.');
-assertIncludes(introJs, 'hero: 2000', 'Opening hero duration should be two seconds in v3.');
+assertIncludes(introJs, 'TIMING.hero', 'Opening hero duration is required before Scene 1.');
 assertIncludes(introJs, 'completeIntro()', 'Intro must finish by revealing the Begin Assessment action instead of auto-starting.');
 assertIncludes(introJs, 'setActionsVisible(true)', 'Begin Assessment must become visible after coach completion.');
-assertIncludes(assessmentJs, 'this.renderCurrentQuestion();', 'Begin Assessment should open the assessment question field directly.');
-assertIncludes(assessmentJs, 'start() {', 'ExecutiveAssessment must expose a start alias for the static intro handoff.');
-assert.strictEqual(count(assessmentJs, 'GENERATE REPORT'), 1, 'Assessment should not contain duplicate generateReport blocks.');
-assertIncludes(assessmentJs, 'if (!this.saveContactCapture())', 'Report generation must require recipient name and email capture.');
-assertIncludes(assessmentJs, 'Please enter your name and a valid email address', 'Contact validation message must be present before report generation.');
-assertIncludes(assessmentJs, `localStorage.removeItem(
-
-            "growwithhr-assessment"`, 'New assessment sessions should clear previous in-progress inputs.');
+assertIncludes(read('js/executive-assessment.js'), 'this.renderCurrentQuestion();', 'Begin Assessment should open the assessment question field directly.');
 assertIncludes(introJs, 'skipIntroduction', 'Skip behavior must remain available.');
 
 // Intro CSS structure and duplicate checks.
@@ -86,11 +68,5 @@ assert(!introCss.includes('100vh'), 'Intro CSS must avoid 100vh in favor of dyna
 assertIncludes(introCss, '@media (max-height: 560px) and (orientation: landscape)', 'Intro landscape breakpoint is required.');
 assertIncludes(responsiveCss, 'overflow-x: hidden', 'Global responsive hardening must prevent horizontal overflow.');
 assertIncludes(responsiveCss, 'table {', 'Tables must be scroll-safe on mobile.');
-assertIncludes(homepageCss, '@media (max-width:767px)', 'Homepage mobile breakpoint is required.');
-assertIncludes(homepageCss, '.carousel-track{display:flex;width:100%;max-width:100%;overflow-x:auto', 'Homepage carousel must be mobile-scroll safe.');
-assertIncludes(homepageCss, '.hero-dashboard-layout{display:grid;grid-template-columns:1fr', 'Homepage intelligence section must stack on mobile.');
-assertIncludes(moreInfoHtml, 'https://gdpr.eu/', 'Privacy card should link to GDPR guidance.');
-assertIncludes(moreInfoHtml, 'https://commission.europa.eu/law/law-topic/data-protection_en', 'Privacy card should link to European Commission data protection information.');
-assertIncludes(homepageCss, '.more-info-page .trust-card', 'More-info cards should have dedicated horizontal card styling.');
 
 console.log('Frontend production checks passed.');

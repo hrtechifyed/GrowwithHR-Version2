@@ -1,6 +1,6 @@
 # GrowWithHR Product Roadmap
 
-Version: `v0.12.2-beta`
+Version: `v0.12.0-beta`
 Last Updated: 2026-07-16
 
 ---
@@ -20,7 +20,6 @@ Today, GrowWithHR is a static HTML/CSS/JavaScript executive assessment and advis
 - Objective
   - Prepare the frontend for executive demonstrations and commercial MVP conversations without changing the product's current business logic or no-storage posture.
 - Features
-  - Executive Advisory Experience v3 storytelling sequence.
   - Single fixed Story Stage intro sequence.
   - Hero appears once, fades after the opening moment, and is replaced by Scene 1 in the same location.
   - Premium executive story cards using existing HRTechify branding.
@@ -82,16 +81,6 @@ Today, GrowWithHR is a static HTML/CSS/JavaScript executive assessment and advis
 - Privacy and no hidden persistence by default.
 - Maintainable frontend architecture.
 - Progressive production hardening without over-engineering.
-
-
-# Key Product Principle — Trust, Explainability and Traceability
-
-Do not prioritise a larger AI model before trust and traceability. Every recommendation should answer:
-
-1. Why am I seeing this recommendation?
-2. Which assessment responses triggered it?
-3. Which regulation, policy or recognised HR principle supports it?
-4. What action should I take next?
 
 # Production Readiness Recommendations
 
