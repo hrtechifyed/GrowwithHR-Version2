@@ -37,6 +37,8 @@ class ExecutiveAssessment {
 
         this.reportStage = "review";
 
+        this.pendingQuestionRender = null;
+
 
         /* ==========================================
            STEP DEFINITIONS
@@ -1056,6 +1058,11 @@ showScreen(screen) {
 
         );
 
+        if (this.pendingQuestionRender) {
+            clearTimeout(this.pendingQuestionRender);
+            this.pendingQuestionRender = null;
+        }
+
         this.conversationContainer.innerHTML = "";
 
         this.conversationContainer.appendChild(card);
@@ -1402,6 +1409,11 @@ showScreen(screen) {
            this.reviewContainer.innerHTML = "";
 
            this.reportStage = "review";
+
+           if (this.pendingQuestionRender) {
+               clearTimeout(this.pendingQuestionRender);
+               this.pendingQuestionRender = null;
+           }
 
            if (this.generateButton) {
 
@@ -1759,8 +1771,14 @@ openReport() {
 
         this.showStepIntroduction();
 
-        setTimeout(() => {
+        if (this.pendingQuestionRender) {
+            clearTimeout(this.pendingQuestionRender);
+        }
 
+        this.pendingQuestionRender = setTimeout(() => {
+
+            this.pendingQuestionRender = null;
+            this.conversationContainer.innerHTML = "";
             this.renderCurrentQuestion();
 
         }, 3200);
