@@ -874,3 +874,89 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================
+   v0.12.1 More Info Horizontal Cards
+========================================== */
+.more-info-page .trust-grid{
+    grid-template-columns:1fr;
+}
+
+.more-info-page .trust-card{
+    flex-direction:row;
+    align-items:flex-start;
+    text-align:left;
+    gap:24px;
+}
+
+.more-info-page .trust-icon{
+    flex:0 0 88px;
+    width:88px;
+    height:88px;
+    font-size:38px;
+    margin:0;
+}
+
+.more-info-page .trust-card-body{
+    flex:1;
+    min-width:0;
+}
+
+.more-info-page .trust-card a{
+    color:#ffcf4d;
+    font-weight:700;
+}
+
+@media(max-width:767px){
+    .more-info-page .trust-card{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
+}
+
+/* ==========================================
+   v0.12.2 Home Mobile Compatibility
+   Dedicated breakpoints: desktop, laptop, tablet, mobile
+========================================== */
+@media (min-width:1200px){
+    .hero-dashboard-layout{grid-template-columns:minmax(280px,360px) minmax(0,1fr);}
+    .capability-slide{min-height:340px;}
+}
+
+@media (min-width:992px) and (max-width:1199px){
+    .hero-dashboard-layout{grid-template-columns:1fr;gap:22px;}
+    .hero-sidebar{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .hero-graph{min-height:360px;}
+    .capability-carousel{grid-template-columns:54px minmax(0,1fr) 54px;gap:16px;}
+    .capability-slide{min-height:320px;padding:32px;}
+}
+
+@media (min-width:768px) and (max-width:991px){
+    .hero-dashboard-layout{grid-template-columns:1fr;padding:18px;gap:20px;}
+    .hero-sidebar{grid-template-columns:1fr;gap:16px;}
+    .hero-graph{min-height:330px;}
+    .dna-core-wrapper{min-height:280px;}
+    .capability-carousel{grid-template-columns:1fr;gap:0;margin-top:36px;}
+    .carousel-arrow{display:none;}
+    .carousel-track{display:flex;overflow-x:auto;gap:18px;padding:8px 4px 18px;scroll-snap-type:x mandatory;}
+    .capability-slide{flex:0 0 min(82vw,520px);width:min(82vw,520px);min-height:300px;padding:30px;scroll-snap-align:center;}
+}
+
+@media (max-width:767px){
+    .hero{padding-top:96px;padding-bottom:32px;}
+    .hero-content h1{font-size:clamp(2rem,10vw,3rem);}
+    .hero-description{font-size:1rem;line-height:1.65;}
+    .hero-dashboard-layout{display:grid;grid-template-columns:1fr;padding:14px;gap:16px;overflow:hidden;}
+    .hero-sidebar{display:grid;grid-template-columns:1fr;gap:14px;}
+    .hero-sidebar .workspace-card{padding:16px;border-radius:18px;}
+    .dna-item,.stage-item,.recommendation-item{min-height:48px;padding:10px 12px;}
+    .hero-graph{min-height:300px;overflow:hidden;}
+    .dna-core-wrapper{min-height:260px;overflow:hidden;}
+    #dnaCoreCanvas{max-width:100%;overflow:hidden;}
+    .capability-carousel{display:grid;grid-template-columns:1fr;width:100%;gap:0;margin-top:32px;overflow:hidden;}
+    .carousel-arrow{display:none;}
+    .carousel-track{display:flex;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;gap:16px;padding:8px 2px 18px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+    .capability-slide{flex:0 0 calc(100vw - 40px);width:calc(100vw - 40px);max-width:calc(100vw - 40px);min-height:280px;padding:24px 20px;border-radius:22px;scroll-snap-align:center;}
+    .capability-icon{width:58px;height:58px;font-size:1.45rem;border-radius:18px;}
+}

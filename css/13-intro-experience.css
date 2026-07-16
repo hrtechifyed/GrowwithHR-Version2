@@ -567,4 +567,69 @@
         animation: none;
         transition: none;
     }
+
+.intro-transition-scene {
+    display: none;
+    width: min(100%, 760px);
+    padding: clamp(30px, 5vw, 52px);
+    border: 1px solid rgba(246, 176, 77, .28);
+    border-radius: 30px;
+    background: linear-gradient(135deg, rgba(246,176,77,.12), rgba(255,255,255,.035)), rgba(255,255,255,.045);
+    box-shadow: 0 28px 90px rgba(0,0,0,.28);
+    backdrop-filter: blur(22px);
+    text-align: center;
+}
+
+.intro-transition-scene.active {
+    display: block;
+}
+
+.intro-transition-scene h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    line-height: 1.2;
+}
+
+.intro-scene p,
+.intro-card p {
+    margin: 16px auto 0;
+    font-size: clamp(1rem, 1.7vw, 1.22rem);
+}
+
+.intro-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.intro-keywords span,
+.intro-stage-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(246,176,77,.24);
+    background: rgba(246,176,77,.10);
+    border-radius: 999px;
+    color: rgba(255,255,255,.78);
+    font-size: .85rem;
+    line-height: 1.3;
+}
+
+.intro-keywords span {
+    padding: 8px 14px;
+}
+
+.intro-stage-label {
+    margin-bottom: 16px;
+    padding: 9px 16px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.intro-cta-note {
+    margin: 10px 0 0;
+    color: rgba(255,255,255,.68);
+    font-size: .9rem;
 }

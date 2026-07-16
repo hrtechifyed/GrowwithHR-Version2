@@ -3,7 +3,7 @@
    Executive Assessment
    -----------------------------------------------------------------------------
    File      : css/12-executive-assessment.css
-   Version   : 1.1.0
+   Version   : 1.2.0
 ============================================================================= */
 
 /* ============================================================================
@@ -1405,5 +1405,51 @@
         opacity: 1;
         transform: rotateY(0) translateX(0) scale(1);
         filter: blur(0);
+    }
+}
+
+/* ==========================================================================
+   v0.12.1 Production Demo Fixes
+   Keep assessment question cards in the same visual stage as the intro cards.
+============================================================================ */
+
+.exec-workspace {
+    min-height: calc(100dvh - 180px);
+    justify-content: center;
+}
+
+.exec-conversation-container {
+    min-height: 0;
+    display: grid;
+    place-items: center;
+}
+
+.exec-conversation-card,
+.exec-review-item,
+.exec-coach-intro-card {
+    width: min(100%, 760px);
+    margin: 0 auto;
+    border-color: rgba(246,176,77,.34);
+    background: linear-gradient(135deg, rgba(246,176,77,.12), rgba(255,255,255,.045)), rgba(255,255,255,.05);
+    font-family: "Segoe Print", "Bradley Hand", cursive;
+}
+
+.exec-question-icon {
+    width: 82px;
+    height: 82px;
+    font-size: 1.55rem;
+    background: rgba(246,176,77,.16);
+}
+
+@media (max-width: 767px) {
+    .exec-workspace {
+        min-height: calc(100dvh - 120px);
+        gap: 16px;
+    }
+
+    .exec-conversation-card,
+    .exec-review-item,
+    .exec-coach-intro-card {
+        width: 100%;
     }
 }

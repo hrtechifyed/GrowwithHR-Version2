@@ -6,6 +6,13 @@ The repository currently contains the original static HTML/CSS/JavaScript experi
 
 ---
 
+
+## Executive Advisory Experience v3
+
+The current intro experience uses a one-time brand reveal followed by concise executive story scenes, briefing cards, Coach HRTechify, and an explicit Begin Executive Assessment action. Homepage mobile compatibility has been hardened for the intelligence and carousel sections with dedicated desktop, laptop, tablet, and mobile breakpoints.
+
+---
+
 ## Current Data Policy
 
 The current executive assessment UX is intentionally **client-side and no-storage**.
@@ -88,7 +95,7 @@ apps/web/src/
 
 ## Current Status
 
-Version: `v0.12.0-beta`
+Version: `v0.12.2-beta`
 
 The platform is still a prototype/beta. The new assessment UX layer is modular and typed, but it is not yet wired into a full deployed Next.js application shell in this repository.
 

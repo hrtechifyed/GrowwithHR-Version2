@@ -3,7 +3,7 @@
    Module 12
    Executive Assessment
    JavaScript Engine
-   Version : v1.0.0
+   Version : v1.1.0
 ========================================================== */
 
 class ExecutiveAssessment {
@@ -16,7 +16,7 @@ class ExecutiveAssessment {
 
         this.application = "GrowWithHR";
 
-        this.version = "1.0.0";
+        this.version = "1.1.0";
 
         this.coach = "Coach HRTechify";
 
@@ -1962,7 +1962,13 @@ resetAssessment() {
 
         this.completed = false;
 
-        this.restoreSession();
+        this.responses = {};
+
+        localStorage.removeItem(
+
+            "growwithhr-assessment"
+
+        );
 
         this.currentStep = 0;
 
@@ -2258,7 +2264,13 @@ resetAssessment() {
 
         this.initializeQuestions();
 
-        this.restoreSession();
+        this.responses = {};
+
+        localStorage.removeItem(
+
+            "growwithhr-assessment"
+
+        );
 
         this.bindKeyboardShortcuts();
 
