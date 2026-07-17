@@ -227,7 +227,7 @@
             font-weight: 800;
             letter-spacing: 0.04em;
         ">
-        HRTechify
+        GrowWithHR
     </a>
 
     ${primaryLinks}
