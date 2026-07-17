@@ -213,10 +213,24 @@
                         <span aria-hidden="true"></span>
                     </button>
 
-                    <div
-                        class="site-nav-links"
-                        id="siteNavLinks">
-                        ${primaryLinks}
+                 <div
+    class="site-nav-links"
+    id="siteNavLinks">
+
+    <a
+        class="site-nav-link"
+        href="${escapeHtml(withRoot(prefix, "index.html#home"))}"
+        aria-label="HRTechify home"
+        style="
+            margin-right: auto;
+            color: var(--site-shell-orange-bright);
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        ">
+        HRTechify
+    </a>
+
+    ${primaryLinks}
 
                         <div class="site-nav-more${activeKey === "more" ? " is-active" : ""}">
                             <button
