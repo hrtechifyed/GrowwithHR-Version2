@@ -605,10 +605,12 @@
                                 placeholder="name@company.com"
                                 aria-describedby="leadEmailHelp leadEmailError"
                                 required>
+                                
                             <p id="leadEmailHelp" class="advisory-field-help">
-                                We’ll use this email to deliver your advisory, help you return to it
-                                and follow up about relevant HRTechify services.
-                            </p>
+                                    We’ll use this email to prepare and deliver your advisory
+                                    and help you return to it.
+                                </p>
+                            
                             <p id="leadEmailError" class="advisory-field-error" hidden></p>
                         </div>
 
@@ -629,37 +631,30 @@
                         </div>
 
                         <fieldset class="advisory-consent-group">
-                            <legend>Communication preferences</legend>
-
-                            <label class="advisory-consent-option" for="serviceConsent">
-                                <input
-                                    id="serviceConsent"
-                                    name="serviceConsent"
-                                    type="checkbox"
-                                    aria-describedby="serviceConsentError"
-                                    required>
-                                <span>
-                                    I agree to receive my advisory and related service communications
-                                    at the email address provided.
-                                </span>
-                            </label>
-                            <p id="serviceConsentError" class="advisory-field-error" hidden></p>
-
-                            <label class="advisory-consent-option" for="marketingConsent">
+                            <legend>
+                                Optional updates
+                            </legend>
+                        
+                            <label
+                                class="advisory-consent-option"
+                                for="marketingConsent">
+                        
                                 <input
                                     id="marketingConsent"
                                     name="marketingConsent"
                                     type="checkbox">
+                        
                                 <span>
-                                    Send me occasional HR insights, tools, product updates and
-                                    invitations from HRTechify.
+                                    Send me occasional HR insights, tools, product updates
+                                    and invitations from HRTechify. This is optional.
                                 </span>
                             </label>
                         </fieldset>
-
+                        
                         <p class="advisory-privacy-note">
-                            Your information will not be displayed publicly. You can unsubscribe
-                            from optional marketing communications at any time. Read our
+                            Only your name and email are required to prepare and deliver
+                            your advisory. Optional updates can be declined or unsubscribed
+                            from at any time. Read our
                             <a href="more-info.html#privacy">privacy information</a>.
                         </p>
 
