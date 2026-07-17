@@ -326,6 +326,9 @@
         const companyName = cleanText(lead.companyName || report.companyName, "Organisation");
         const userName = cleanText(lead.name || report.recipientName, "there");
         const userEmail = cleanEmail(lead.email || report.recipientEmail);
+       const deliveryRequested =
+          lead.deliveryRequested !== false &&
+          Boolean(userEmail);
         const industry = cleanText(report.industry || lead.industry, "Not provided");
         const priorities = listText(report.priorities || lead.priorities || answers.priorities);
         const expansionPlans = listText(report.expansionPlans || answers.expansionPlans);
@@ -344,7 +347,8 @@
             entity: cleanText(report.entity || answers.entity, "Not provided"),
             employee_count: numberText(report.employees || lead.employees || answers.employees),
             theme: "HRTechify",
-            consent: yesNo(lead.serviceConsent || report.serviceConsent),
+            consent: yesNo(deliveryRequested),
+            delivery_requested: yesNo(deliveryRequested),
             generated_on: generatedOn,
 
             /* Expanded customer and lead variables. */
@@ -374,7 +378,7 @@
             growth_context: cleanText(report.growthContext || answers.growthContext, "Not provided"),
             people_function: cleanText(report.peopleFunction || lead.peopleFunction || answers.peopleFunction, "Not provided"),
             priorities,
-            service_consent: yesNo(lead.serviceConsent || report.serviceConsent),
+            service_consent: "Not separately required",
             marketing_consent: yesNo(lead.marketingConsent || report.marketingConsent),
             captured_on: formatDate(lead.capturedAt),
             source: cleanText(lead.source || report.source, "Executive Advisory Briefing"),
