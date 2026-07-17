@@ -12,88 +12,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   <link rel="icon" href="assets/favicon.ico">
 
 </head>
-<body class="home-page">
-  
-<nav class="navbar">
+<body
+    class="home-page"
+    data-active-nav="platform">
 
-    <div class="nav-container">
-
-        <!-- Brand -->
-
-        <a href="index.html#home" class="brand">
-
-            <img
-                src="assets/hrtechify-logo.png"
-                class="nav-logo"
-                alt="HRTechify Logo">
-
-            <div>
-
-                <div class="brand-name">
-                    HRTechify
-                </div>
-
-                <div class="product-name">
-                    GrowWithHR
-                </div>
-
-            </div>
-
-        </a>
-
-        <!-- Mobile Menu -->
-
-        <button
-            class="hamburger"
-            id="hamburger"
-            aria-label="Open Navigation" aria-expanded="false">
-
-            ☰
-
-        </button>
-
-        <!-- Navigation -->
-
-        <div class="nav-links" id="navLinks">
-
-            <a href="#platform">Platform</a>
-
-            <a href="analyze-company.html">Analyze My Company</a>
-
-            <a href="official-resources.html">Official Sources</a>
-
-            <a href="sample-advisory-report.html">Sample Advisory</a>
-
-            <div class="nav-dropdown">
-
-                <button
-                    class="dropdown-toggle"
-                    type="button"
-                    onclick="window.location.href='more-info.html'">
-
-                    More
-
-                    <i class="fa-solid fa-chevron-down"></i>
-
-                </button>
-
-                <div class="dropdown-menu">
-
-                    <a href="more-info.html#about">About</a>
-
-                    <a href="more-info.html#privacy">Privacy</a>
-
-                    <a href="more-info.html#contact">Contact</a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</nav>
   
   <header id="home" class="hero hero-v2">
 
@@ -613,8 +535,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name" id="productVersion">GrowWithHR Public 0.14.1-beta</div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
 
-
-  
+<script src="js/site-shell.js"></script>
 <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
 
 <script type="importmap">
@@ -624,15 +545,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   }
 }
 </script>
-
 <script type="module" src="app.js"></script>  
-
-
-
-<script>
-document.addEventListener("DOMContentLoaded",()=>{const hamburger=document.getElementById("hamburger");const navLinks=document.getElementById("navLinks");if(!hamburger||!navLinks)return;hamburger.addEventListener("click",()=>{const open=navLinks.classList.toggle("active");hamburger.setAttribute("aria-expanded",String(open));});document.querySelectorAll("#navLinks a").forEach(link=>link.addEventListener("click",()=>{navLinks.classList.remove("active");hamburger.setAttribute("aria-expanded","false");}));});
-</script>
-
 <script src="js/build-marker.js"></script>
+
 </body>
 </html>
