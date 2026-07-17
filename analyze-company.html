@@ -15,48 +15,68 @@
     <link rel="stylesheet" href="css/03-typography.css">
     <link rel="stylesheet" href="css/04-layout.css">
     <link rel="stylesheet" href="css/05-navbar.css">
+
+    <!-- Advisory page only. This file will be created in a later step. -->
     <link rel="stylesheet" href="css/17-advisory-briefing.css">
 
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" href="assets/favicon.ico">
 </head>
 
 <body class="analyze-company-page">
     <a class="advisory-skip-link" href="#mainContent">Skip to advisory briefing</a>
 
-    <!-- ==========================================================
-         SIMPLIFIED ADVISORY HEADER
-    ========================================================== -->
-    <header class="advisory-header">
-        <div class="advisory-header__inner">
-            <a href="index.html" class="advisory-brand" aria-label="GrowWithHR home">
+    <!-- Homepage navigation reused on the advisory experience. -->
+    <nav class="navbar" aria-label="Primary navigation">
+        <div class="nav-container">
+            <a href="index.html#home" class="brand" aria-label="GrowWithHR home">
                 <img
                     src="assets/hrtechify-logo.png"
-                    class="advisory-brand__logo"
-                    alt="HRTechify">
-                <span class="advisory-brand__copy">
-                    <strong>HRTechify</strong>
-                    <span>GrowWithHR</span>
-                </span>
+                    class="nav-logo"
+                    alt="HRTechify Logo">
+
+                <div>
+                    <div class="brand-name">HRTechify</div>
+                    <div class="product-name">GrowWithHR</div>
+                </div>
             </a>
 
-            <div class="advisory-header__actions">
-                <span id="saveStatus" class="advisory-save-status" aria-live="polite">
-                    Progress saves automatically
-                </span>
+            <button
+                class="hamburger"
+                id="hamburger"
+                type="button"
+                aria-label="Open Navigation"
+                aria-controls="navLinks"
+                aria-expanded="false">
+                ☰
+            </button>
 
-                <button
-                    id="saveExitButton"
-                    class="advisory-text-button"
-                    type="button"
-                    hidden>
-                    <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
-                    Save and exit
-                </button>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html#platform">Platform</a>
+                <a href="analyze-company.html" aria-current="page">Analyze My Company</a>
+                <a href="official-resources.html">Official Sources</a>
+                <a href="sample-advisory-report.html">Sample Advisory</a>
+
+                <div class="nav-dropdown">
+                    <button
+                        class="dropdown-toggle"
+                        type="button"
+                        onclick="window.location.href='more-info.html'">
+                        More
+                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="dropdown-menu">
+                        <a href="more-info.html#about">About</a>
+                        <a href="more-info.html#privacy">Privacy</a>
+                        <a href="more-info.html#contact">Contact</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <main id="mainContent" class="advisory-main">
         <section
@@ -105,14 +125,13 @@
                     </div>
 
                     <h1 id="entryTitle">
-                        Tell us how your organisation works.
-                        <span>We’ll turn it into a clearer people plan.</span>
+                        Tell us about your company.
+                        <span>We’ll tell you what matters next.</span>
                     </h1>
 
                     <p class="advisory-entry__description">
-                        Move through four short chapters covering your business, your people,
-                        how work happens and what comes next. Estimates are welcome—there are
-                        no scores or right answers.
+                        Four short chapters. About five minutes. Estimates are enough—we use
+                        context, not scores, to shape your advisory.
                     </p>
 
                     <ul class="advisory-entry__facts" aria-label="Briefing details">
@@ -134,10 +153,15 @@
                         </li>
                     </ul>
 
-                    <p class="advisory-entry__reassurance">
-                        Best completed by a founder, business leader or HR/People lead.
-                        You do not need exact figures to begin.
-                    </p>
+                    <aside class="advisory-entry__reassurance" aria-label="Who this briefing is designed for">
+                        <span class="advisory-entry__reassurance-icon" aria-hidden="true">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </span>
+                        <span>
+                            <strong>Built for decision-makers</strong>
+                            <small>For founders, business leaders and HR/People leads. Approximate figures are completely fine.</small>
+                        </span>
+                    </aside>
 
                     <div class="advisory-entry__actions">
                         <button
@@ -163,11 +187,11 @@
                     </p>
                 </div>
 
-                <aside class="advisory-entry__visual" aria-hidden="true">
-                    <div class="advisory-story-preview">
+                <aside class="advisory-entry__visual" aria-label="The four chapters in your organisation story">
+                    <div class="advisory-story-preview" role="list">
                         <span class="advisory-story-preview__label">Your organisation story</span>
 
-                        <div class="advisory-story-preview__chapter is-active">
+                        <div class="advisory-story-preview__chapter is-active" role="listitem">
                             <span>01</span>
                             <div>
                                 <strong>Your business</strong>
@@ -175,7 +199,7 @@
                             </div>
                         </div>
 
-                        <div class="advisory-story-preview__chapter">
+                        <div class="advisory-story-preview__chapter" role="listitem">
                             <span>02</span>
                             <div>
                                 <strong>Your people</strong>
@@ -183,7 +207,7 @@
                             </div>
                         </div>
 
-                        <div class="advisory-story-preview__chapter">
+                        <div class="advisory-story-preview__chapter" role="listitem">
                             <span>03</span>
                             <div>
                                 <strong>How work happens</strong>
@@ -191,7 +215,7 @@
                             </div>
                         </div>
 
-                        <div class="advisory-story-preview__chapter">
+                        <div class="advisory-story-preview__chapter" role="listitem">
                             <span>04</span>
                             <div>
                                 <strong>Your next chapter</strong>
@@ -254,13 +278,30 @@
 
                 <div class="advisory-workspace__content">
                     <header class="advisory-progress-header">
-                        <div class="advisory-progress-header__copy">
-                            <span id="stepIndicator" class="advisory-step-indicator">
-                                Chapter 1 of 4 · Your business
-                            </span>
-                            <span id="mobileTimeRemaining" class="advisory-time-remaining">
-                                About 5 minutes remaining
-                            </span>
+                        <div class="advisory-progress-header__topline">
+                            <div class="advisory-progress-header__copy">
+                                <span id="stepIndicator" class="advisory-step-indicator">
+                                    Chapter 1 of 4 · Your business
+                                </span>
+                                <span id="mobileTimeRemaining" class="advisory-time-remaining">
+                                    About 5 minutes remaining
+                                </span>
+                            </div>
+
+                            <div class="advisory-progress-header__utility">
+                                <span id="saveStatus" class="advisory-save-status" aria-live="polite">
+                                    Progress saves automatically
+                                </span>
+
+                                <button
+                                    id="saveExitButton"
+                                    class="advisory-text-button advisory-save-exit-button"
+                                    type="button"
+                                    hidden>
+                                    <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
+                                    Save and exit
+                                </button>
+                            </div>
                         </div>
 
                         <div
@@ -709,13 +750,54 @@
         </section>
     </noscript>
 
-    <footer class="advisory-footer">
-        <p>© 2026 HRTechify. All rights reserved.</p>
-        <a href="more-info.html#privacy">Privacy</a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img
+                        src="assets/hrtechify-logo.png"
+                        alt="HRTechify Logo"
+                        class="footer-logo">
+                    <div>
+                        <div class="brand-name">HRTechify</div>
+                        <div class="product-name" id="productVersion">GrowWithHR Public 0.12.1-beta</div>
+                    </div>
+                </div>
+                <p>© 2026 HRTechify. All Rights Reserved.</p>
+                <p>Smart People Strategy. More business momentum.</p>
+            </div>
+        </div>
     </footer>
+
+    <!-- Email and document dependencies used by the advisory delivery flow. -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/advisory-pdf.js"></script>
+    <script src="js/email-service.js"></script>
 
     <!-- The old timed intro script is intentionally no longer loaded. -->
     <script src="js/executive-assessment.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const hamburger = document.getElementById("hamburger");
+        const navLinks = document.getElementById("navLinks");
+
+        if (!hamburger || !navLinks) return;
+
+        hamburger.addEventListener("click", () => {
+            const open = navLinks.classList.toggle("active");
+            hamburger.setAttribute("aria-expanded", String(open));
+        });
+
+        document.querySelectorAll("#navLinks a").forEach((link) => {
+            link.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+                hamburger.setAttribute("aria-expanded", "false");
+            });
+        });
+    });
+    </script>
     <script src="js/build-marker.js"></script>
 </body>
 </html>
