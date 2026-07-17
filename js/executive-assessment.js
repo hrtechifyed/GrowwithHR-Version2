@@ -291,7 +291,6 @@
                 name: "",
                 email: "",
                 role: "",
-                serviceConsent: false,
                 marketingConsent: false
             };
             this.ui = {
@@ -543,7 +542,7 @@
                 contact: byId("contactScreen"),
                 loading: byId("loadingScreen"),
                 success: byId("successScreen"),
-
+                firstVisitActions: byId("firstVisitActions"),
                 resumePanel: byId("resumePanel"),
                 resumeMessage: byId("resumeMessage"),
                 resumeButton: byId("resumeAssessmentButton"),
@@ -579,11 +578,9 @@
                 leadName: byId("leadName"),
                 leadEmail: byId("leadEmail"),
                 leadRole: byId("leadRole"),
-                serviceConsent: byId("serviceConsent"),
                 marketingConsent: byId("marketingConsent"),
                 leadNameError: byId("leadNameError"),
                 leadEmailError: byId("leadEmailError"),
-                serviceConsentError: byId("serviceConsentError"),
                 contactBackButton: byId("contactBackButton"),
                 generateButton: byId("generateReportButton"),
 
@@ -702,36 +699,63 @@
         }
 
         initialiseView() {
-            this.populateLeadForm();
+    this.populateLeadForm();
 
-            if (this.completed && this.hasReportData()) {
-                this.configureResumePanel(true);
-            } else if (this.started) {
-                this.configureResumePanel(false);
-            }
+    if (this.completed && this.hasReportData()) {
+        this.configureResumePanel(true);
+    } else if (this.started) {
+        this.configureResumePanel(false);
+    } else {
+        this.configureFirstVisit();
+    }
 
-            this.showOnly("landing");
-        }
+    this.showOnly("landing");
+}
 
-        configureResumePanel(isCompleted) {
-            const { resumePanel, resumeMessage, resumeButton } = this.elements;
+configureFirstVisit() {
+    if (this.elements.firstVisitActions) {
+        this.elements.firstVisitActions.hidden = false;
+    }
 
-            if (!resumePanel || !resumeMessage || !resumeButton) {
-                return;
-            }
+    if (this.elements.resumePanel) {
+        this.elements.resumePanel.hidden = true;
+    }
+}
 
-            resumePanel.hidden = false;
+configureResumePanel(isCompleted) {
+    const {
+        firstVisitActions,
+        resumePanel,
+        resumeMessage,
+        resumeButton
+    } = this.elements;
 
-            if (isCompleted) {
-                resumeMessage.textContent = "Your completed advisory is available on this device.";
-                resumeButton.textContent = "Open my saved advisory";
-            } else {
-                const chapter = MOMENTS[this.currentMoment]?.chapter ?? 0;
-                resumeMessage.textContent = `Continue with ${CHAPTERS[chapter].toLowerCase()}, or begin again.`;
-                resumeButton.textContent = "Continue my advisory";
-            }
-        }
+    if (firstVisitActions) {
+        firstVisitActions.hidden = true;
+    }
 
+    if (!resumePanel || !resumeMessage || !resumeButton) {
+        return;
+    }
+
+    resumePanel.hidden = false;
+
+    if (isCompleted) {
+        resumeMessage.textContent =
+            "Your completed advisory is available on this device.";
+
+        resumeButton.innerHTML =
+            'Open my saved advisory ' +
+            '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+    } else {
+        resumeMessage.textContent = "Your progress is saved.";
+
+        resumeButton.innerHTML =
+            'Continue my advisory ' +
+            '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+    }
+}
+       
         startNewBriefing() {
             this.started = true;
             this.completed = false;
@@ -746,7 +770,6 @@
                 name: "",
                 email: "",
                 role: "",
-                serviceConsent: false,
                 marketingConsent: false
             };
             this.ui = {
@@ -800,11 +823,11 @@
         }
 
         goBack() {
-            if (this.currentMoment <= 0) {
-                this.showOnly("landing");
-                this.elements.resumePanel.hidden = false;
-                return;
-            }
+             if (this.currentMoment <= 0) {
+             this.configureResumePanel(false);
+             this.showOnly("landing");
+             return;
+         }
 
             this.captureAllStoryInputs();
             this.saveNow();
@@ -1872,13 +1895,19 @@
                 `The organisation expects to ${hiring} and is likely to ${expansionText}. Its immediate advisory priorities are ${priorityText}.`;
         }
 
-        captureLeadData() {
-            this.lead.name = this.elements.leadName?.value.trim() || "";
-            this.lead.email = this.elements.leadEmail?.value.trim() || "";
-            this.lead.role = this.elements.leadRole?.value || "";
-            this.lead.serviceConsent = Boolean(this.elements.serviceConsent?.checked);
-            this.lead.marketingConsent = Boolean(this.elements.marketingConsent?.checked);
-        }
+         captureLeadData() {
+             this.lead.name =
+                 this.elements.leadName?.value.trim() || "";
+         
+             this.lead.email =
+                 this.elements.leadEmail?.value.trim() || "";
+         
+             this.lead.role =
+                 this.elements.leadRole?.value || "";
+         
+             this.lead.marketingConsent =
+                 Boolean(this.elements.marketingConsent?.checked);
+         }   
 
         populateLeadForm() {
             if (this.elements.leadName) {
@@ -1890,54 +1919,69 @@
             if (this.elements.leadRole) {
                 this.elements.leadRole.value = this.lead.role || "";
             }
-            if (this.elements.serviceConsent) {
-                this.elements.serviceConsent.checked = Boolean(this.lead.serviceConsent);
-            }
+           
             if (this.elements.marketingConsent) {
                 this.elements.marketingConsent.checked = Boolean(this.lead.marketingConsent);
             }
         }
 
-        validateLead() {
-            this.captureLeadData();
-            this.clearLeadErrors();
-            let valid = true;
+ validateLead() {
+    this.captureLeadData();
+    this.clearLeadErrors();
 
-            if (!this.lead.name) {
-                this.showLeadError(this.elements.leadName, this.elements.leadNameError, "Enter your name to continue.");
-                valid = false;
-            }
+    let valid = true;
 
-            if (!this.lead.email) {
-                this.showLeadError(this.elements.leadEmail, this.elements.leadEmailError, "Enter your work email to continue.");
-                valid = false;
-            } else if (!this.isValidEmail(this.lead.email)) {
-                this.showLeadError(
-                    this.elements.leadEmail,
-                    this.elements.leadEmailError,
-                    "Enter a valid email address, such as name@company.com."
-                );
-                valid = false;
-            }
+    if (!this.lead.name) {
+        this.showLeadError(
+            this.elements.leadName,
+            this.elements.leadNameError,
+            "Enter your name to continue."
+        );
 
-            if (!this.lead.serviceConsent) {
-                this.showLeadError(
-                    this.elements.serviceConsent,
-                    this.elements.serviceConsentError,
-                    "Please confirm that we may send your advisory and related service communications."
-                );
-                valid = false;
-            }
+        valid = false;
+    }
 
-            if (!valid) {
-                const firstInvalid = this.elements.leadForm?.querySelector("[aria-invalid='true']");
-                firstInvalid?.focus();
-                firstInvalid?.scrollIntoView({ behavior: this.prefersReducedMotion() ? "auto" : "smooth", block: "center" });
-                this.announce("Review the highlighted contact details before generating your advisory.", true);
-            }
+    if (!this.lead.email) {
+        this.showLeadError(
+            this.elements.leadEmail,
+            this.elements.leadEmailError,
+            "Enter your work email to continue."
+        );
 
-            return valid;
-        }
+        valid = false;
+    } else if (!this.isValidEmail(this.lead.email)) {
+        this.showLeadError(
+            this.elements.leadEmail,
+            this.elements.leadEmailError,
+            "Enter a valid email address, such as name@company.com."
+        );
+
+        valid = false;
+    }
+
+    if (!valid) {
+        const firstInvalid =
+            this.elements.leadForm?.querySelector(
+                "[aria-invalid='true']"
+            );
+
+        firstInvalid?.focus();
+
+        firstInvalid?.scrollIntoView({
+            behavior: this.prefersReducedMotion()
+                ? "auto"
+                : "smooth",
+            block: "center"
+        });
+
+        this.announce(
+            "Enter your name and a valid email address before generating your advisory.",
+            true
+        );
+    }
+
+    return valid;
+}
 
         showLeadError(input, errorElement, message) {
             input?.setAttribute("aria-invalid", "true");
@@ -1949,19 +1993,28 @@
             }
         }
 
-        clearLeadErrors() {
-            [this.elements.leadName, this.elements.leadEmail, this.elements.serviceConsent].forEach((input) => {
-                input?.removeAttribute("aria-invalid");
-                input?.closest(".advisory-field, .advisory-consent-group")?.classList.remove("has-error");
-            });
+ clearLeadErrors() {
+    [
+        this.elements.leadName,
+        this.elements.leadEmail
+    ].forEach((input) => {
+        input?.removeAttribute("aria-invalid");
 
-            [this.elements.leadNameError, this.elements.leadEmailError, this.elements.serviceConsentError].forEach((error) => {
-                if (error) {
-                    error.textContent = "";
-                    error.hidden = true;
-                }
-            });
+        input
+            ?.closest(".advisory-field")
+            ?.classList.remove("has-error");
+    });
+
+    [
+        this.elements.leadNameError,
+        this.elements.leadEmailError
+    ].forEach((error) => {
+        if (error) {
+            error.textContent = "";
+            error.hidden = true;
         }
+    });
+}
 
         async submitLeadAndGenerate() {
             if (this.isSubmitting || !this.validateLead()) {
@@ -2328,7 +2381,7 @@
                 recipientName: this.lead.name,
                 recipientEmail: this.lead.email,
                 recipientRole: ROLE_LABELS[this.lead.role] || this.lead.role || "",
-                serviceConsent: this.lead.serviceConsent,
+                deliveryRequested: true,
                 marketingConsent: this.lead.marketingConsent,
                 generatedAt: new Date().toISOString(),
                 source: "Executive Advisory Briefing v2"
@@ -2348,7 +2401,7 @@
                 name: this.lead.name,
                 email: this.lead.email,
                 role: ROLE_LABELS[this.lead.role] || this.lead.role || "",
-                serviceConsent: this.lead.serviceConsent,
+                deliveryRequested: true,
                 marketingConsent: this.lead.marketingConsent,
                 companyName: this.answers.companyName || "",
                 industry: this.effectiveIndustryName(),
@@ -2488,7 +2541,6 @@
                 name: "",
                 email: "",
                 role: "",
-                serviceConsent: false,
                 marketingConsent: false,
                 ...(saved.lead || {})
             };
