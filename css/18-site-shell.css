@@ -1,350 +1,777 @@
 /* ==========================================================
    GrowWithHR shared site shell
-   Version: 1.0.0
+   Version: 2.0.0
 
-   Purpose:
-   - Use the homepage footer as the canonical website footer.
-   - Provide a consistent active state for the shared navbar.
-   - Prevent legacy page-specific footer styles from taking over.
-   - Keep the website footer out of printed/PDF output, where the
-     document generator supplies its own HRTechify page footer.
+   Shared visual contract for every public page:
+   [ LARGE HRTECHIFY LOGO ] [ GLASS NAVIGATION CAPSULE ]
 
-   Load this stylesheet after the existing page styles.
+   Shared footer copy:
+   © 2026 HRTechify. All Rights Reserved. Smart People Strategy.
+   More business momentum.
+
+   Load after page-specific styles.
 ========================================================== */
 
 :root {
-    --site-shell-content-width: 1280px;
-    --site-footer-background: #08101f;
+    --site-shell-max-width: 1440px;
+    --site-shell-page-gutter: clamp(18px, 3vw, 42px);
+    --site-shell-header-top: clamp(12px, 1.6vw, 22px);
+    --site-shell-header-height: 112px;
+
+    --site-shell-logo-size: clamp(70px, 5.8vw, 88px);
+    --site-shell-logo-mobile-size: 54px;
+
+    --site-shell-glass: rgba(7, 10, 17, 0.72);
+    --site-shell-glass-strong: rgba(10, 12, 19, 0.94);
+    --site-shell-glass-orange: rgba(255, 156, 28, 0.10);
+    --site-shell-border: rgba(255, 184, 77, 0.20);
+    --site-shell-border-soft: rgba(255, 255, 255, 0.09);
+    --site-shell-shadow: 0 20px 58px rgba(0, 0, 0, 0.34);
+    --site-shell-inset: inset 0 1px 0 rgba(255, 255, 255, 0.055);
+
+    --site-shell-orange: #ffad16;
+    --site-shell-orange-bright: #ffc247;
+    --site-shell-orange-soft: rgba(255, 173, 22, 0.13);
+    --site-shell-text: #f8fafc;
+    --site-shell-muted: #aab4c7;
+    --site-shell-focus: rgba(255, 173, 22, 0.58);
+
+    --site-footer-background: rgba(5, 7, 12, 0.96);
     --site-footer-border: rgba(255, 255, 255, 0.08);
-    --site-footer-text: rgba(255, 255, 255, 0.72);
-    --site-footer-muted: rgba(255, 255, 255, 0.58);
-    --site-footer-accent: #ffc107;
-    --site-footer-focus: rgba(255, 193, 7, 0.38);
 }
 
-/* ==========================================================
-   SHARED NAVIGATION STATE
-========================================================== */
-
-.navbar .nav-links a[aria-current="page"] {
-    color: var(--site-footer-accent);
+html {
+    scroll-padding-top: calc(var(--site-shell-header-height, 112px) + 22px);
 }
 
-.navbar .nav-links a[aria-current="page"]::after {
-    transform: scaleX(1);
-    opacity: 1;
-}
-
-.navbar .nav-links a:focus-visible,
-.navbar .dropdown-toggle:focus-visible,
-.navbar .hamburger:focus-visible {
-    outline: 3px solid var(--site-footer-focus);
-    outline-offset: 4px;
-}
-
-/* ==========================================================
-   CANONICAL HOMEPAGE FOOTER
-
-   Supported markup:
-
-   <footer class="footer">
-       <div class="container">
-           <div class="footer-content">
-               <div class="footer-brand">...</div>
-               <p>...</p>
-               <p>...</p>
-           </div>
-       </div>
-   </footer>
-========================================================== */
-
-body > footer.footer,
-body > footer.site-footer {
-    position: relative;
-    isolation: isolate;
-    width: 100%;
-    margin: clamp(72px, 8vw, 120px) 0 0;
-    padding: clamp(54px, 6vw, 90px) 0 clamp(38px, 4vw, 50px);
+html.site-nav-open,
+body.site-nav-open {
     overflow: hidden;
-    border-top: 1px solid var(--site-footer-border);
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(255, 193, 7, 0.055),
-            transparent 34%
-        ),
-        var(--site-footer-background);
-    color: var(--site-footer-text);
-    text-align: center;
 }
 
-body > footer.footer::before,
-body > footer.site-footer::before {
+/* ==========================================================
+   HEADER SHELL
+========================================================== */
+
+.site-header-shell {
+    position: fixed;
+    z-index: 5000;
+    top: var(--site-shell-header-top);
+    left: 0;
+    width: 100%;
+    padding-inline: var(--site-shell-page-gutter);
+    pointer-events: none;
+}
+
+.site-header-shell__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(14px, 2vw, 28px);
+    width: min(100%, var(--site-shell-max-width));
+    margin-inline: auto;
+}
+
+/* ==========================================================
+   EXTERNAL BRAND LOGO
+========================================================== */
+
+.site-brand-logo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--site-shell-logo-size);
+    height: var(--site-shell-logo-size);
+    flex: 0 0 auto;
+    border-radius: 50%;
+    text-decoration: none;
+    pointer-events: auto;
+    isolation: isolate;
+    transition:
+        transform 220ms ease,
+        filter 220ms ease;
+}
+
+.site-brand-logo::before {
     content: "";
     position: absolute;
     z-index: -1;
+    inset: 10%;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle,
+        rgba(255, 173, 22, 0.20),
+        rgba(255, 173, 22, 0.04) 54%,
+        transparent 72%
+    );
+    filter: blur(10px);
+    opacity: 0.82;
+    transition: opacity 220ms ease;
+}
+
+.site-brand-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.28));
+}
+
+.site-brand-logo:hover {
+    transform: translateY(-2px) scale(1.035);
+    filter: saturate(1.08);
+}
+
+.site-brand-logo:hover::before {
+    opacity: 1;
+}
+
+.site-brand-logo:focus-visible {
+    outline: 3px solid var(--site-shell-focus);
+    outline-offset: 5px;
+}
+
+/* ==========================================================
+   GLASS NAVIGATION CAPSULE
+========================================================== */
+
+.site-nav-glass {
+    position: relative;
+    min-width: 0;
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 9px 14px;
+    border: 1px solid var(--site-shell-border);
+    border-radius: 999px;
+    background:
+        linear-gradient(
+            110deg,
+            rgba(255, 173, 22, 0.075),
+            rgba(8, 11, 19, 0.76) 28%,
+            rgba(6, 9, 16, 0.82) 72%,
+            rgba(255, 125, 15, 0.055)
+        );
+    box-shadow:
+        var(--site-shell-shadow),
+        var(--site-shell-inset),
+        0 0 0 1px rgba(0, 0, 0, 0.16);
+    backdrop-filter: blur(22px) saturate(125%);
+    -webkit-backdrop-filter: blur(22px) saturate(125%);
+    pointer-events: auto;
+}
+
+.site-nav-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 196, 98, 0.08),
+            transparent 26%,
+            transparent 74%,
+            rgba(255, 143, 23, 0.05)
+        );
+    opacity: 0.8;
+}
+
+.site-nav-links {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(4px, 0.7vw, 12px);
+    width: 100%;
+    min-width: 0;
+}
+
+.site-nav-link,
+.site-nav-more__toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 clamp(12px, 1.35vw, 20px);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--site-shell-muted);
+    font-family: inherit;
+    font-size: clamp(0.78rem, 0.8vw, 0.92rem);
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: 0.005em;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        color 180ms ease,
+        background-color 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.site-nav-link::after,
+.site-nav-more__toggle::after {
+    content: "";
+    position: absolute;
+    right: 18px;
+    bottom: 6px;
+    left: 18px;
+    height: 2px;
+    border-radius: 99px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--site-shell-orange),
+        transparent
+    );
+    opacity: 0;
+    transform: scaleX(0.4);
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+}
+
+.site-nav-link:hover,
+.site-nav-more__toggle:hover {
+    color: var(--site-shell-text);
+    background: rgba(255, 255, 255, 0.045);
+    transform: translateY(-1px);
+}
+
+.site-nav-link:hover::after,
+.site-nav-more__toggle:hover::after {
+    opacity: 0.72;
+    transform: scaleX(1);
+}
+
+.site-nav-link.is-active,
+.site-nav-link[aria-current="page"],
+.site-nav-more.is-active > .site-nav-more__toggle {
+    color: #171007;
+    border-color: rgba(255, 199, 94, 0.48);
+    background:
+        linear-gradient(
+            135deg,
+            var(--site-shell-orange-bright),
+            var(--site-shell-orange)
+        );
+    box-shadow:
+        0 10px 22px rgba(255, 153, 21, 0.19),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+
+.site-nav-link.is-active::after,
+.site-nav-link[aria-current="page"]::after,
+.site-nav-more.is-active > .site-nav-more__toggle::after {
+    display: none;
+}
+
+.site-nav-link:focus-visible,
+.site-nav-more__toggle:focus-visible,
+.site-nav-toggle:focus-visible,
+.site-nav-more__menu a:focus-visible {
+    outline: 3px solid var(--site-shell-focus);
+    outline-offset: 3px;
+}
+
+/* ==========================================================
+   MORE DROPDOWN
+========================================================== */
+
+.site-nav-more {
+    position: relative;
+}
+
+.site-nav-more__toggle {
+    gap: 8px;
+}
+
+.site-nav-more__chevron {
+    display: inline-grid;
+    place-items: center;
+    margin-top: -2px;
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 180ms ease;
+}
+
+.site-nav-more.is-open .site-nav-more__chevron {
+    transform: rotate(180deg);
+}
+
+.site-nav-more__menu {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 14px);
+    right: 0;
+    display: grid;
+    min-width: 210px;
+    padding: 9px;
+    border: 1px solid var(--site-shell-border);
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 167, 33, 0.09),
+            rgba(8, 11, 19, 0.97) 42%
+        );
+    box-shadow:
+        0 24px 52px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.98);
+    transform-origin: top right;
+    pointer-events: none;
+    transition:
+        opacity 160ms ease,
+        visibility 160ms ease,
+        transform 160ms ease;
+}
+
+.site-nav-more__menu::before {
+    content: "";
+    position: absolute;
+    right: 18px;
+    bottom: 100%;
+    width: 60px;
+    height: 16px;
+}
+
+.site-nav-more.is-open .site-nav-more__menu,
+.site-nav-more:hover .site-nav-more__menu,
+.site-nav-more:focus-within .site-nav-more__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.site-nav-more__menu a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: var(--site-shell-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        color 160ms ease,
+        background-color 160ms ease,
+        transform 160ms ease;
+}
+
+.site-nav-more__menu a:hover {
+    color: var(--site-shell-text);
+    background: rgba(255, 173, 22, 0.10);
+    transform: translateX(2px);
+}
+
+/* ==========================================================
+   MOBILE TOGGLE
+========================================================== */
+
+.site-nav-toggle {
+    position: relative;
+    z-index: 5;
+    display: none;
+    width: 48px;
+    height: 48px;
+    margin-left: auto;
+    padding: 0;
+    border: 1px solid rgba(255, 187, 73, 0.20);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--site-shell-text);
+    cursor: pointer;
+}
+
+.site-nav-toggle span {
+    position: absolute;
+    left: 50%;
+    width: 19px;
+    height: 2px;
+    border-radius: 10px;
+    background: currentColor;
+    transform: translateX(-50%);
+    transition:
+        top 180ms ease,
+        transform 180ms ease,
+        opacity 180ms ease;
+}
+
+.site-nav-toggle span:nth-child(1) {
+    top: 16px;
+}
+
+.site-nav-toggle span:nth-child(2) {
+    top: 23px;
+}
+
+.site-nav-toggle span:nth-child(3) {
+    top: 30px;
+}
+
+.site-nav-glass.is-open .site-nav-toggle span:nth-child(1) {
+    top: 23px;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.site-nav-glass.is-open .site-nav-toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+.site-nav-glass.is-open .site-nav-toggle span:nth-child(3) {
+    top: 23px;
+    transform: translateX(-50%) rotate(-45deg);
+}
+
+/* ==========================================================
+   SHARED TEXT-ONLY FOOTER
+========================================================== */
+
+.site-footer,
+body > footer.site-footer {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    margin: clamp(64px, 7vw, 104px) 0 0;
+    padding: 22px var(--site-shell-page-gutter);
+    border-top: 1px solid var(--site-footer-border);
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 148, 16, 0.025),
+            transparent 30%,
+            transparent 70%,
+            rgba(255, 148, 16, 0.025)
+        ),
+        var(--site-footer-background);
+    color: rgba(255, 255, 255, 0.67);
+    text-align: center;
+}
+
+.site-footer::before {
+    content: "";
+    position: absolute;
     top: -1px;
     left: 50%;
-    width: min(420px, 52vw);
+    width: min(480px, 48vw);
     height: 1px;
     transform: translateX(-50%);
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 193, 7, 0.72),
+        rgba(255, 173, 22, 0.62),
         transparent
     );
 }
 
-body > footer.footer > .container,
-body > footer.site-footer > .container {
-    width: min(calc(100% - 48px), var(--site-shell-content-width));
-    max-width: var(--site-shell-content-width);
+.site-footer__inner {
+    width: min(100%, var(--site-shell-max-width));
     margin-inline: auto;
-    padding-inline: 0;
 }
 
-body > footer.footer .footer-content,
-body > footer.site-footer .footer-content {
-    display: grid;
-    justify-items: center;
-    width: min(100%, 900px);
-    max-width: 900px;
-    margin-inline: auto;
-    gap: 10px;
-    text-align: center;
-}
-
-body > footer.footer .footer-brand,
-body > footer.site-footer .footer-brand {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    max-width: 100%;
-    margin: 0 0 22px;
-    text-align: left;
-}
-
-body > footer.footer .footer-logo,
-body > footer.site-footer .footer-logo {
-    flex: 0 0 auto;
-    display: block;
-    width: 42px !important;
-    height: 42px;
-    max-width: 42px;
-    max-height: 42px;
-    object-fit: contain;
-}
-
-body > footer.footer .brand-name,
-body > footer.site-footer .brand-name {
+.site-footer p {
     margin: 0;
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.01em;
+    color: inherit;
+    font-size: clamp(0.72rem, 0.86vw, 0.84rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0.005em;
+    white-space: nowrap;
 }
 
-body > footer.footer .product-name,
-body > footer.site-footer .product-name {
-    margin-top: 3px;
-    color: var(--site-footer-accent);
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: 0.025em;
+/* Remove legacy footer visual content until site-shell.js replaces it. */
+body.has-site-shell > footer.footer,
+body.has-site-shell > footer.advisory-footer,
+body.has-site-shell > footer.report-footer {
+    display: none !important;
 }
 
-body > footer.footer p,
-body > footer.site-footer p {
-    max-width: 720px;
-    margin: 0;
-    color: var(--site-footer-muted);
-    font-size: clamp(0.76rem, 1vw, 0.84rem);
-    font-weight: 400;
-    line-height: 1.7;
-    text-wrap: balance;
-}
-
-body > footer.footer p + p,
-body > footer.site-footer p + p {
-    margin-top: 1px;
-}
-
-body > footer.footer a,
-body > footer.site-footer a {
-    color: var(--site-footer-text);
-    text-decoration: none;
-    text-underline-offset: 4px;
-    transition:
-        color 180ms ease,
-        text-decoration-color 180ms ease;
-}
-
-body > footer.footer a:hover,
-body > footer.site-footer a:hover {
-    color: var(--site-footer-accent);
-    text-decoration: underline;
-    text-decoration-color: rgba(255, 193, 7, 0.72);
-}
-
-body > footer.footer a:focus-visible,
-body > footer.site-footer a:focus-visible {
-    outline: 3px solid var(--site-footer-focus);
-    outline-offset: 4px;
-    border-radius: 4px;
-}
-
-/* Optional utility row for pages that include footer links. */
-body > footer.footer .footer-links,
-body > footer.site-footer .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 10px 22px;
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-}
-
-body > footer.footer .footer-links a,
-body > footer.site-footer .footer-links a {
-    font-size: 0.8rem;
-}
-
-/* Remove legacy multi-column footer structures where older report styles
-   are still loaded. The canonical footer does not use these elements. */
-body > footer.footer .footer-columns,
-body > footer.footer .footer-divider,
-body > footer.site-footer .footer-columns,
-body > footer.site-footer .footer-divider {
-    display: none;
-}
-
-/* The advisory experience naturally ends at its footer; avoid introducing
-   an additional oversized gap beneath the final screen. */
-body.analyze-company-page > footer.footer,
-body.analyze-company-page > footer.site-footer {
+body.analyze-company-page > .site-footer {
     margin-top: 0;
 }
 
-/* Report pages can retain breathing room in screen mode while still using
-   the same footer component and visual treatment. */
-body.report-page > footer.footer,
-body.report-page > footer.site-footer,
-body.executive-report-page > footer.footer,
-body.executive-report-page > footer.site-footer {
-    margin-top: clamp(64px, 7vw, 104px);
-}
-
 /* ==========================================================
-   RESPONSIVE FOOTER
+   RESPONSIVE: COMPACT DESKTOP / LAPTOP
 ========================================================== */
 
-@media (max-width: 767px) {
-    body > footer.footer,
-    body > footer.site-footer {
-        margin-top: 64px;
-        padding: 46px 0 36px;
+@media (max-width: 1180px) {
+    :root {
+        --site-shell-logo-size: 72px;
     }
 
-    body.analyze-company-page > footer.footer,
-    body.analyze-company-page > footer.site-footer {
-        margin-top: 0;
+    .site-header-shell__inner {
+        gap: 16px;
     }
 
-    body > footer.footer > .container,
-    body > footer.site-footer > .container {
-        width: min(calc(100% - 28px), var(--site-shell-content-width));
+    .site-nav-glass {
+        min-height: 64px;
+        padding-inline: 10px;
     }
 
-    body > footer.footer .footer-content,
-    body > footer.site-footer .footer-content {
-        gap: 8px;
-    }
-
-    body > footer.footer .footer-brand,
-    body > footer.site-footer .footer-brand {
-        margin-bottom: 18px;
-    }
-
-    body > footer.footer p,
-    body > footer.site-footer p {
-        max-width: 34rem;
-        font-size: 0.76rem;
-        line-height: 1.65;
-    }
-
-    body > footer.footer .footer-links,
-    body > footer.site-footer .footer-links {
-        flex-direction: column;
-        gap: 8px;
-        margin-top: 14px;
-    }
-}
-
-@media (max-width: 389px) {
-    body > footer.footer,
-    body > footer.site-footer {
-        padding: 40px 0 32px;
-    }
-
-    body > footer.footer > .container,
-    body > footer.site-footer > .container {
-        width: min(calc(100% - 20px), var(--site-shell-content-width));
-    }
-
-    body > footer.footer .footer-logo,
-    body > footer.site-footer .footer-logo {
-        width: 38px !important;
-        height: 38px;
-    }
-
-    body > footer.footer .brand-name,
-    body > footer.site-footer .brand-name {
-        font-size: 0.94rem;
-    }
-
-    body > footer.footer .product-name,
-    body > footer.site-footer .product-name {
-        font-size: 0.7rem;
+    .site-nav-link,
+    .site-nav-more__toggle {
+        padding-inline: 12px;
+        font-size: 0.78rem;
     }
 }
 
 /* ==========================================================
-   ACCESSIBILITY AND PRINT
+   RESPONSIVE: MOBILE / TABLET NAVIGATION
+========================================================== */
+
+@media (max-width: 900px) {
+    :root {
+        --site-shell-header-top: 10px;
+        --site-shell-logo-size: 62px;
+    }
+
+    .site-header-shell {
+        padding-inline: clamp(10px, 3vw, 22px);
+    }
+
+    .site-header-shell__inner {
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .site-nav-glass {
+        min-height: 58px;
+        padding: 5px;
+    }
+
+    .site-nav-toggle {
+        display: inline-block;
+    }
+
+    .site-nav-links {
+        position: fixed;
+        z-index: -1;
+        top: calc(
+            var(--site-shell-header-top) +
+            var(--site-shell-header-height, 80px) -
+            2px
+        );
+        right: clamp(10px, 3vw, 22px);
+        left: clamp(10px, 3vw, 22px);
+        display: grid;
+        align-content: start;
+        gap: 6px;
+        max-height: calc(100dvh - var(--site-shell-header-height, 80px) - 24px);
+        padding: 14px;
+        overflow-y: auto;
+        border: 1px solid var(--site-shell-border);
+        border-radius: 24px;
+        background:
+            radial-gradient(
+                circle at 85% 0%,
+                rgba(255, 156, 25, 0.13),
+                transparent 36%
+            ),
+            rgba(6, 9, 16, 0.975);
+        box-shadow:
+            0 28px 70px rgba(0, 0, 0, 0.52),
+            inset 0 1px 0 rgba(255, 255, 255, 0.055);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px) scale(0.985);
+        transform-origin: top right;
+        pointer-events: none;
+        transition:
+            opacity 180ms ease,
+            visibility 180ms ease,
+            transform 180ms ease;
+    }
+
+    .site-nav-glass.is-open .site-nav-links {
+        z-index: 20;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    .site-nav-link,
+    .site-nav-more__toggle {
+        justify-content: flex-start;
+        width: 100%;
+        min-height: 50px;
+        padding: 0 16px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+    }
+
+    .site-nav-link::after,
+    .site-nav-more__toggle::after {
+        display: none;
+    }
+
+    .site-nav-more {
+        display: grid;
+    }
+
+    .site-nav-more__toggle {
+        justify-content: space-between;
+    }
+
+    .site-nav-more__menu {
+        position: static;
+        display: none;
+        min-width: 0;
+        margin: 4px 0 0;
+        padding: 6px 0 2px 16px;
+        border: 0;
+        border-left: 1px solid rgba(255, 173, 22, 0.22);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+    }
+
+    .site-nav-more.is-open .site-nav-more__menu {
+        display: grid;
+    }
+
+    .site-nav-more__menu a {
+        min-height: 44px;
+        padding: 8px 14px;
+    }
+
+    .site-footer {
+        margin-top: 56px;
+        padding: 18px 12px;
+    }
+
+    .site-footer p {
+        font-size: clamp(0.55rem, 1.72vw, 0.72rem);
+        letter-spacing: -0.01em;
+    }
+}
+
+@media (max-width: 520px) {
+    :root {
+        --site-shell-logo-size: var(--site-shell-logo-mobile-size);
+    }
+
+    .site-brand-logo {
+        align-self: start;
+    }
+
+    .site-nav-glass {
+        min-height: 54px;
+    }
+
+    .site-nav-toggle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .site-nav-toggle span:nth-child(1) {
+        top: 14px;
+    }
+
+    .site-nav-toggle span:nth-child(2) {
+        top: 21px;
+    }
+
+    .site-nav-toggle span:nth-child(3) {
+        top: 28px;
+    }
+
+    .site-nav-glass.is-open .site-nav-toggle span:nth-child(1),
+    .site-nav-glass.is-open .site-nav-toggle span:nth-child(3) {
+        top: 21px;
+    }
+
+    .site-nav-links {
+        top: calc(
+            var(--site-shell-header-top) +
+            var(--site-shell-header-height, 70px) -
+            1px
+        );
+    }
+
+    .site-footer p {
+        font-size: clamp(0.49rem, 1.95vw, 0.64rem);
+        transform: scaleX(0.96);
+        transform-origin: center;
+    }
+}
+
+/* ==========================================================
+   ACCESSIBILITY / USER PREFERENCES
 ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-    body > footer.footer a,
-    body > footer.site-footer a {
-        transition: none;
+    .site-brand-logo,
+    .site-brand-logo::before,
+    .site-nav-link,
+    .site-nav-link::after,
+    .site-nav-more__toggle,
+    .site-nav-more__toggle::after,
+    .site-nav-more__chevron,
+    .site-nav-more__menu,
+    .site-nav-more__menu a,
+    .site-nav-toggle span,
+    .site-nav-links {
+        scroll-behavior: auto;
+        transition: none !important;
+        animation: none !important;
     }
 }
 
 @media (prefers-contrast: more) {
-    body > footer.footer,
-    body > footer.site-footer {
-        border-top-color: rgba(255, 255, 255, 0.28);
+    .site-nav-glass,
+    .site-nav-more__menu,
+    .site-nav-links {
+        border-color: rgba(255, 194, 84, 0.72);
+        background-color: #070a11;
     }
 
-    body > footer.footer p,
-    body > footer.site-footer p,
-    body > footer.footer a,
-    body > footer.site-footer a {
-        color: rgba(255, 255, 255, 0.9);
+    .site-nav-link,
+    .site-nav-more__toggle,
+    .site-nav-more__menu a,
+    .site-footer {
+        color: #ffffff;
     }
 }
 
+/* ==========================================================
+   PRINT / PROFESSIONAL REPORT OUTPUT
+========================================================== */
+
 @media print {
-    /* The generated advisory PDF adds its own page-level HRTechify footer.
-       Hiding the website footer prevents duplicated footer content. */
-    body > footer.footer,
-    body > footer.site-footer,
-    .navbar {
+    .site-header-shell,
+    .site-footer,
+    [data-site-shell-header],
+    [data-site-shell-footer] {
         display: none !important;
+    }
+
+    html,
+    body {
+        scroll-padding-top: 0 !important;
     }
 }
