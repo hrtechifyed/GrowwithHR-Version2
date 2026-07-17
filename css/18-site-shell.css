@@ -1,0 +1,350 @@
+/* ==========================================================
+   GrowWithHR shared site shell
+   Version: 1.0.0
+
+   Purpose:
+   - Use the homepage footer as the canonical website footer.
+   - Provide a consistent active state for the shared navbar.
+   - Prevent legacy page-specific footer styles from taking over.
+   - Keep the website footer out of printed/PDF output, where the
+     document generator supplies its own HRTechify page footer.
+
+   Load this stylesheet after the existing page styles.
+========================================================== */
+
+:root {
+    --site-shell-content-width: 1280px;
+    --site-footer-background: #08101f;
+    --site-footer-border: rgba(255, 255, 255, 0.08);
+    --site-footer-text: rgba(255, 255, 255, 0.72);
+    --site-footer-muted: rgba(255, 255, 255, 0.58);
+    --site-footer-accent: #ffc107;
+    --site-footer-focus: rgba(255, 193, 7, 0.38);
+}
+
+/* ==========================================================
+   SHARED NAVIGATION STATE
+========================================================== */
+
+.navbar .nav-links a[aria-current="page"] {
+    color: var(--site-footer-accent);
+}
+
+.navbar .nav-links a[aria-current="page"]::after {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
+.navbar .nav-links a:focus-visible,
+.navbar .dropdown-toggle:focus-visible,
+.navbar .hamburger:focus-visible {
+    outline: 3px solid var(--site-footer-focus);
+    outline-offset: 4px;
+}
+
+/* ==========================================================
+   CANONICAL HOMEPAGE FOOTER
+
+   Supported markup:
+
+   <footer class="footer">
+       <div class="container">
+           <div class="footer-content">
+               <div class="footer-brand">...</div>
+               <p>...</p>
+               <p>...</p>
+           </div>
+       </div>
+   </footer>
+========================================================== */
+
+body > footer.footer,
+body > footer.site-footer {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    margin: clamp(72px, 8vw, 120px) 0 0;
+    padding: clamp(54px, 6vw, 90px) 0 clamp(38px, 4vw, 50px);
+    overflow: hidden;
+    border-top: 1px solid var(--site-footer-border);
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255, 193, 7, 0.055),
+            transparent 34%
+        ),
+        var(--site-footer-background);
+    color: var(--site-footer-text);
+    text-align: center;
+}
+
+body > footer.footer::before,
+body > footer.site-footer::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -1px;
+    left: 50%;
+    width: min(420px, 52vw);
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 193, 7, 0.72),
+        transparent
+    );
+}
+
+body > footer.footer > .container,
+body > footer.site-footer > .container {
+    width: min(calc(100% - 48px), var(--site-shell-content-width));
+    max-width: var(--site-shell-content-width);
+    margin-inline: auto;
+    padding-inline: 0;
+}
+
+body > footer.footer .footer-content,
+body > footer.site-footer .footer-content {
+    display: grid;
+    justify-items: center;
+    width: min(100%, 900px);
+    max-width: 900px;
+    margin-inline: auto;
+    gap: 10px;
+    text-align: center;
+}
+
+body > footer.footer .footer-brand,
+body > footer.site-footer .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 100%;
+    margin: 0 0 22px;
+    text-align: left;
+}
+
+body > footer.footer .footer-logo,
+body > footer.site-footer .footer-logo {
+    flex: 0 0 auto;
+    display: block;
+    width: 42px !important;
+    height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    object-fit: contain;
+}
+
+body > footer.footer .brand-name,
+body > footer.site-footer .brand-name {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+}
+
+body > footer.footer .product-name,
+body > footer.site-footer .product-name {
+    margin-top: 3px;
+    color: var(--site-footer-accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.025em;
+}
+
+body > footer.footer p,
+body > footer.site-footer p {
+    max-width: 720px;
+    margin: 0;
+    color: var(--site-footer-muted);
+    font-size: clamp(0.76rem, 1vw, 0.84rem);
+    font-weight: 400;
+    line-height: 1.7;
+    text-wrap: balance;
+}
+
+body > footer.footer p + p,
+body > footer.site-footer p + p {
+    margin-top: 1px;
+}
+
+body > footer.footer a,
+body > footer.site-footer a {
+    color: var(--site-footer-text);
+    text-decoration: none;
+    text-underline-offset: 4px;
+    transition:
+        color 180ms ease,
+        text-decoration-color 180ms ease;
+}
+
+body > footer.footer a:hover,
+body > footer.site-footer a:hover {
+    color: var(--site-footer-accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 193, 7, 0.72);
+}
+
+body > footer.footer a:focus-visible,
+body > footer.site-footer a:focus-visible {
+    outline: 3px solid var(--site-footer-focus);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* Optional utility row for pages that include footer links. */
+body > footer.footer .footer-links,
+body > footer.site-footer .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 22px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+body > footer.footer .footer-links a,
+body > footer.site-footer .footer-links a {
+    font-size: 0.8rem;
+}
+
+/* Remove legacy multi-column footer structures where older report styles
+   are still loaded. The canonical footer does not use these elements. */
+body > footer.footer .footer-columns,
+body > footer.footer .footer-divider,
+body > footer.site-footer .footer-columns,
+body > footer.site-footer .footer-divider {
+    display: none;
+}
+
+/* The advisory experience naturally ends at its footer; avoid introducing
+   an additional oversized gap beneath the final screen. */
+body.analyze-company-page > footer.footer,
+body.analyze-company-page > footer.site-footer {
+    margin-top: 0;
+}
+
+/* Report pages can retain breathing room in screen mode while still using
+   the same footer component and visual treatment. */
+body.report-page > footer.footer,
+body.report-page > footer.site-footer,
+body.executive-report-page > footer.footer,
+body.executive-report-page > footer.site-footer {
+    margin-top: clamp(64px, 7vw, 104px);
+}
+
+/* ==========================================================
+   RESPONSIVE FOOTER
+========================================================== */
+
+@media (max-width: 767px) {
+    body > footer.footer,
+    body > footer.site-footer {
+        margin-top: 64px;
+        padding: 46px 0 36px;
+    }
+
+    body.analyze-company-page > footer.footer,
+    body.analyze-company-page > footer.site-footer {
+        margin-top: 0;
+    }
+
+    body > footer.footer > .container,
+    body > footer.site-footer > .container {
+        width: min(calc(100% - 28px), var(--site-shell-content-width));
+    }
+
+    body > footer.footer .footer-content,
+    body > footer.site-footer .footer-content {
+        gap: 8px;
+    }
+
+    body > footer.footer .footer-brand,
+    body > footer.site-footer .footer-brand {
+        margin-bottom: 18px;
+    }
+
+    body > footer.footer p,
+    body > footer.site-footer p {
+        max-width: 34rem;
+        font-size: 0.76rem;
+        line-height: 1.65;
+    }
+
+    body > footer.footer .footer-links,
+    body > footer.site-footer .footer-links {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 14px;
+    }
+}
+
+@media (max-width: 389px) {
+    body > footer.footer,
+    body > footer.site-footer {
+        padding: 40px 0 32px;
+    }
+
+    body > footer.footer > .container,
+    body > footer.site-footer > .container {
+        width: min(calc(100% - 20px), var(--site-shell-content-width));
+    }
+
+    body > footer.footer .footer-logo,
+    body > footer.site-footer .footer-logo {
+        width: 38px !important;
+        height: 38px;
+    }
+
+    body > footer.footer .brand-name,
+    body > footer.site-footer .brand-name {
+        font-size: 0.94rem;
+    }
+
+    body > footer.footer .product-name,
+    body > footer.site-footer .product-name {
+        font-size: 0.7rem;
+    }
+}
+
+/* ==========================================================
+   ACCESSIBILITY AND PRINT
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    body > footer.footer a,
+    body > footer.site-footer a {
+        transition: none;
+    }
+}
+
+@media (prefers-contrast: more) {
+    body > footer.footer,
+    body > footer.site-footer {
+        border-top-color: rgba(255, 255, 255, 0.28);
+    }
+
+    body > footer.footer p,
+    body > footer.site-footer p,
+    body > footer.footer a,
+    body > footer.site-footer a {
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
+
+@media print {
+    /* The generated advisory PDF adds its own page-level HRTechify footer.
+       Hiding the website footer prevents duplicated footer content. */
+    body > footer.footer,
+    body > footer.site-footer,
+    .navbar {
+        display: none !important;
+    }
+}
