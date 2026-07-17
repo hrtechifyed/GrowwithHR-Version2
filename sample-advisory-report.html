@@ -72,9 +72,28 @@ HERO
 
 </div> 
 
-            <div class="sample-download-actions">
-                <button class="primary-btn" type="button" onclick="window.print()">Download Sample Advisory PDF</button>
-            </div>
+  <div class="sample-download-actions">
+
+    <button
+        id="downloadSampleAdvisoryPdf"
+        class="primary-btn"
+        type="button">
+
+        <i
+            class="fa-solid fa-file-pdf"
+            aria-hidden="true"></i>
+
+        Download Sample Advisory PDF
+    </button>
+
+    <p
+        id="samplePdfStatus"
+        class="sample-pdf-status"
+        role="status"
+        aria-live="polite"
+        hidden>
+    </p>
+</div>
 
             <div class="trust-strip">
 
@@ -1297,6 +1316,12 @@ FOOTER
 
     
 
+<!-- PDF generation dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/sample-advisory-pdf.js"></script>
+
+<!-- Shared page shell -->
 <script src="js/site-shell.js"></script>
 <script src="js/build-marker.js"></script>
 </body>
