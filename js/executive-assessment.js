@@ -877,7 +877,7 @@
                                 max="100"
                                 step="1"
                                 inputmode="numeric"
-                                value="${this.escapeAttribute(this.answers.remoteExact || "")}
+                                value="${this.escapeAttribute(this.answers.remoteExact || "")}"
                                 aria-describedby="remoteExactError">
                             <span aria-hidden="true">%</span>
                         </div>
