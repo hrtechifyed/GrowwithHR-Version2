@@ -1,2511 +1,2218 @@
 /* ==========================================================
-   HRTECHIFY DESIGN SYSTEM
-   Module 12
-   Executive Assessment
-   JavaScript Engine
-   Version : v1.1.0
+   GrowWithHR
+   Executive Advisory Briefing
+   Story-led assessment engine
+   Version: 2.0.0
 ========================================================== */
 
-class ExecutiveAssessment {
-
-    constructor() {
-
-        /* ==========================================
-           APPLICATION
-        ========================================== */
-
-        this.application = "GrowWithHR";
-
-        this.version = "1.1.0";
-
-        this.coach = "Coach HRTechify";
-
-
-        /* ==========================================
-           STEP STATE
-        ========================================== */
-
-        this.currentStep = 0;
-
-        this.currentQuestion = 0;
-
-        this.started = false;
-
-        this.completed = false;
-
-        this.onWelcome = false;
-
-        this.reportStage = "review";
-
-        this.pendingQuestionRender = null;
-
-
-        /* ==========================================
-           STEP DEFINITIONS
-        ========================================== */
-
-        this.steps = [
-
-            "Company",
-
-            "Workforce",
-
-            "Operations",
-
-            "Growth"
-
-        ];
-
-
-        /* ==========================================
-           USER RESPONSES
-        ========================================== */
-
-        this.responses = {};
-
-
-        /* ==========================================
-           DOM CACHE
-        ========================================== */
-
-        this.cacheElements();
-
-
-        /* ==========================================
-           EVENTS
-        ========================================== */
-
-        this.bindEvents();
-
-    }
-
-
-
-    /* ==========================================================
-       CACHE DOM
-    ========================================================== */
-
-    cacheElements() {
-
-        this.shell =
-            document.getElementById("assessmentShell");
-
-        this.landingScreen =
-            document.getElementById("landingScreen");
-
-        this.workspace =
-            document.getElementById("conversationWorkspace");
-
-        this.reviewScreen =
-            document.getElementById("reviewScreen");
-
-        this.loadingScreen =
-            document.getElementById("loadingScreen");
-
-        this.successScreen =
-            document.getElementById("successScreen");
-
-
-        this.startButton =
-            document.getElementById("startAssessment");
-
-        this.backButton =
-            document.getElementById("backButton");
-
-        this.nextButton =
-            document.getElementById("nextButton");
-
-        this.reviewBackButton =
-            document.getElementById("reviewBackButton");
-
-        this.generateButton =
-            document.getElementById("generateReportButton");
-
-        this.viewReportButton =
-            document.getElementById("viewReportButton");
-
-
-        this.progressBar =
-            document.getElementById("progressBar");
-
-        this.stepIndicator =
-            document.getElementById("stepIndicator");
-
-        this.stepTitle =
-            document.getElementById("stepTitle");
-
-        this.stepDescription =
-            document.getElementById("stepDescription");
-
-        this.coachMessage =
-            document.getElementById("coachMessage");
-
-        this.coachSection =
-            document.querySelector(".exec-coach");
-
-        this.footerMessage =
-            document.getElementById("footerMessage");
-
-        this.conversationContainer =
-            document.getElementById("conversationContainer");
-
-        this.reviewContainer =
-            document.getElementById("reviewContainer");
-
-        this.loadingMessage =
-            document.getElementById("loadingMessage");
-
-    }
-
-
-
-    /* ==========================================================
-       ANIMATE TEXT CHANGE
-       Retriggers a fade-in whenever a message updates, so new
-       lines feel like they're arriving in conversation rather
-       than snapping into place.
-    ========================================================== */
-
-    animateTextChange(element, text) {
-
-        if (!element) {
-
-            return;
-
-        }
-
-        element.textContent = text;
-
-        element.classList.remove("exec-fade-in");
-
-        void element.offsetWidth;
-
-        element.classList.add("exec-fade-in");
-
-    }
-
-
-
-    /* ==========================================================
-       SET COACH MESSAGE
-       Updates the coach's line and decides whether the avatar
-       and "Coach HRTechify" label should be shown. They only
-       reappear when the coach is opening a new topic (welcome,
-       or the first question of a step) — not on every single
-       question, which read as robotic and repetitive.
-    ========================================================== */
-
-    setCoachMessage(text, isNewTopic) {
-
-        this.animateTextChange(this.coachMessage, text);
-
-        if (!this.coachSection) {
-
-            return;
-
-        }
-
-        this.coachSection.classList.toggle(
-
-            "exec-coach--compact",
-
-            !isNewTopic
-
-        );
-
-    }
-
-
-
-    /* ==========================================================
-       EVENT LISTENERS
-    ========================================================== */
-
-    bindEvents() {
-
-        if (this.boundEvents) {
-            return;
-        }
-
-        this.boundEvents = true;
-
-        /* intro-sequence.js owns the Begin Executive Assessment click so the first
-           question is not rendered twice by duplicate start handlers. */
-
-        if (this.nextButton) {
-
-            this.nextButton.addEventListener(
-
-                "click",
-
-                () => this.next()
-
-            );
-
-        }
-
-        if (this.backButton) {
-
-            this.backButton.addEventListener(
-
-                "click",
-
-                () => this.previous()
-
-            );
-
-        }
-
-        if (this.reviewBackButton) {
-
-            this.reviewBackButton.addEventListener(
-
-                "click",
-
-                () => this.backToAssessment()
-
-            );
-
-        }
-
-        if (this.generateButton) {
-
-            this.generateButton.addEventListener(
-
-                "click",
-
-                () => this.generateReport()
-
-            );
-
-        }
-
-        if (this.viewReportButton) {
-
-            this.viewReportButton.addEventListener(
-
-                "click",
-
-                () => this.openReport()
-
-            );
-
-        }
-
-               const homeButtons = document.querySelectorAll(
-
-            "[data-action='back-home']"
-
-        );
-
-        homeButtons.forEach(button => {
-
-            button.addEventListener(
-
-                "click",
-
-                () => this.showLanding()
-
-            );
-
-        });
-
-               const officialSourcesButton =
-
-            document.getElementById("officialSources");
-
-        if (officialSourcesButton) {
-
-            officialSourcesButton.addEventListener(
-
-                "click",
-
-                () => {
-
-                    window.open(
-
-                        "official-resources.html",
-
-                        "_blank"
-
-                    );
-
-                }
-
-            );
-
-        }
-
-    }
-
-
-
-    /* ==========================================================
-       INITIAL VIEW
-    ========================================================== */
-
-showLanding() {
-
-    this.hideAll();
-
-       this.started = false;
-
-    this.completed = false;
-
-    this.currentStep = 0;
-
-    this.currentQuestion = 0;
-
-    this.onWelcome = false;
-
-    this.landingScreen.hidden = false;
-
-    if (this.questionBank) {
-
-        this.updateProgress();
-
-        this.updateProgressBar();
-
-    }
-
-    this.animateTextChange(
-
-        this.footerMessage,
-
-        ""
-
-    );
-
-    if (this.conversationContainer) {
-
-        this.conversationContainer.innerHTML = "";
-
-    }
-
-       if (this.backButton) {
-
-        this.backButton.hidden = true;
-
-    }
-
-    if (this.nextButton) {
-
-        this.nextButton.innerHTML =
-
-            `Begin <i class="fa-solid fa-arrow-right"></i>`;
-
-    }
-
-    this.setCoachMessage(
-
-        "",
-
-        true
-
-    );
-
-    if (this.progressBar) {
-
-        this.progressBar.style.width = "0%";
-
-    }
-
-    if (this.stepIndicator) {
-
-        this.stepIndicator.textContent = "Welcome";
-
-    }
-
-    if (this.stepTitle) {
-
-        this.stepTitle.textContent =
-
-            "Let's begin by understanding your organisation.";
-
-    }
-
-    if (this.stepDescription) {
-
-        this.stepDescription.textContent = "";
-
-    }
-
-       if (this.reviewContainer) {
-
-        this.reviewContainer.innerHTML = "";
-
-    }
-
-    if (this.loadingMessage) {
-
-        this.loadingMessage.textContent = "";
-
-    }
-
-    if (this.responses) {
-
-        this.responses = {};
-
-    }
-}
-
-    /* ==========================================================
-       HIDE ALL SCREENS
-    ========================================================== */
-
-    hideAll() {
-
-        this.landingScreen.hidden = true;
-
-        this.workspace.hidden = true;
-
-        this.reviewScreen.hidden = true;
-
-        this.loadingScreen.hidden = true;
-
-        this.successScreen.hidden = true;
-
-    }
-
-showScreen(screen, stateName = "assessment") {
-
-    [this.landingScreen, this.workspace, this.reviewScreen, this.loadingScreen, this.successScreen].forEach(panel => {
-        if (!panel) return;
-        const active = panel === screen;
-        panel.hidden = !active;
-        panel.setAttribute("aria-hidden", active ? "false" : "true");
-        if (active) panel.removeAttribute("inert");
-        else panel.setAttribute("inert", "");
-    });
-
-    this.assessmentState = stateName;
-    if (this.shell) {
-        this.shell.dataset.state = stateName;
-    }
-
-    if (!this.shell?.classList.contains("advisory-experience-stage")) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-}
-   
-    /* ==========================================================
-       STEP DATA
-    ========================================================== */
-
-    initializeQuestions() {
-
-        this.questionBank = [
-
-            /* ==========================================
-               STEP 1
-               COMPANY
-            ========================================== */
-
-            {
-
-                step: 0,
-
-                title: "Company",
-
-                description:
-                    "Let's begin by understanding your organisation.",
-
-                coach:
-                    "Every organisation has its own identity. We'll begin with a few foundational questions that help us understand the environment in which your people and business operate.",
-
-                questions: [
-
-                    {
-                        id: "companyName",
-
-                        type: "text",
-
-                        icon: "fa-building",
-
-                        label: "What is your organisation called?",
-
-                        helper:
-                            "Use the commonly recognised name of your organisation.",
-
-                        placeholder:
-                            "Company Name"
-
-                    },
-
-                    {
-
-                        id: "entity",
-
-                        type: "select",
-
-                        icon: "fa-scale-balanced",
-
-                        label: "How is your organisation legally structured?",
-
-                        helper:
-                            "Select the option that most closely reflects your organisation today.",
-
-                        options: [
-
-                            "Private Limited",
-
-                            "Public Limited",
-
-                            "LLP",
-
-                            "One Person Company",
-
-                            "DPIIT Recognized Startup",
-
-                            "Partnership",
-
-                            "Proprietorship",
-
-                            "Trust",
-
-                            "Society",
-
-                            "Government",
-
-                            "PSU",
-
-                            "Other"
-
-                        ]
-
-                    },
-
-                    {
-
-                        id: "industry",
-
-                        type: "select",
-
-                        icon: "fa-industry",
-
-                        label: "Which industry best represents your organisation?",
-
-                        helper:
-                            "Examples include Manufacturing, IT Services, Healthcare or Retail.",
-
-                        options: [
-                            "Information Technology / SaaS",
-                            "Consulting & Professional Services",
-                            "Manufacturing",
-                            "Retail",
-                            "Healthcare",
-                            "Education",
-                            "Financial Services",
-                            "Logistics",
-                            "Hospitality",
-                            "Construction",
-                            "Other"
-                        ]
-
-                    },
-
-                    {
-
-                        id: "nature",
-
-                        type: "text",
-
-                        icon: "fa-briefcase",
-
-                        label: "How would you describe your primary business?",
-
-                        helper:
-                            "Briefly describe what you sell or deliver. Example: We provide cloud payroll software to mid-sized Indian companies. Use letters, numbers, commas, full stops and hyphens only.",
-
-                        placeholder:
-                            "Example: We manufacture automotive components for OEM clients"
-
-                    },
-
-                    {
-
-                        id: "founded",
-
-                        type: "select",
-
-                        icon: "fa-calendar",
-
-                        label: "In which year was your organisation established?",
-
-                        helper:
-                            "An approximate year is perfectly acceptable if you're unsure.(but this is one year you won't like to forget \ud83d\ude1c)",
-
-                        options: Array.from(
-                            { length: new Date().getFullYear() - 1899 },
-                            (_, index) => String(new Date().getFullYear() - index)
-                        )
-
-                    }
-
-                ]
-
-            },
-
-
-
-            /* ==========================================
-               STEP 2
-               WORKFORCE
-            ========================================== */
-
-            {
-
-                step: 1,
-
-                title: "Workforce",
-
-                description:
-                    "Let's understand the people who contribute to your organisation.",
-
-                coach:
-                    "People are central to every organisation. These questions help us appreciate the scale and composition of your workforce rather than evaluate individuals.",
-
-                questions: [
-
-                    {
-
-                        id: "employees",
-
-                        type: "number",
-
-                        icon: "fa-users",
-
-                        label: "Approximately how many employees work with your organisation?",
-
-                        helper:
-                            "Enter a positive whole number only. Example: 75."
-
-                    },
-
-                    {
-
-                        id: "contractWorkers",
-
-                        type: "number",
-
-                        icon: "fa-user-tie",
-
-                        label: "Approximately how many contract workers support your operations?",
-
-                        helper:
-                            "Include outsourced manpower if applicable."
-
-                    },
-
-                    {
-
-                        id: "interns",
-
-                        type: "number",
-
-                        icon: "fa-user-graduate",
-
-                        label: "How many interns are currently engaged?",
-
-                        helper:
-                            "Don't worry if you don't know the exact numbers. Reasonable approximations are also acceptable."
-
-                    },
-
-                    {
-
-                        id: "apprentices",
-
-                        type: "number",
-
-                        icon: "fa-user-gear",
-
-                        label: "Would you know how many apprentices work with your organisation?",
-
-                        helper:
-                            "In case you are not aware just leave it blank."
-
-                    },
-
-                    {
-
-                        id: "remoteWorkforce",
-
-                        type: "number",
-
-                        icon: "fa-laptop-house",
-
-                        label: "Approximately what percentage of your workforce works remotely?",
-
-                        helper:
-                            "Enter any value between 0 and 100 which you think would be the right number."
-
-                    }
-
-                ]
-
-            }
-
-        ];
-
-        /* ==========================================================
-           STEP DATA (CONTINUED)
-        ========================================================== */
-
-        this.questionBank.push(
-
-            /* ==========================================
-               STEP 3
-               OPERATIONS
-            ========================================== */
-
-            {
-
-                step: 2,
-
-                title: "Operations",
-
-                description:
-                    "Let's understand how your organisation operates.",
-
-                coach:
-                    "Every organisation functions differently. These questions help us appreciate the environment in which your teams collaborate and deliver value.",
-
-                questions: [
-
-                    {
-
-                        id: "primaryState",
-
-                        type: "select",
-
-                        icon: "fa-location-dot",
-
-                        label: "Which is your primary operating state?",
-
-                        helper:
-                            "If you operate in multiple locations, enter the state where your headquarters or principal office is located.",
-
-                        options: [
-                            "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-                            "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
-                            "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-                            "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
-                            "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
-                            "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands",
-                            "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi (NCT)",
-                            "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
-                        ]
-
-                    },
-
-                    {
-
-                        id: "workModel",
-
-                        type: "select",
-
-                        icon: "fa-building-user",
-
-                        label: "Which work model best describes your organisation?",
-
-                        helper:
-                            "Select the option that most closely reflects current practice.",
-
-                        options: [
-
-                            "Office Based",
-
-                            "Hybrid",
-
-                            "Remote",
-
-                            "Field Workforce",
-
-                            "Manufacturing / Plant",
-
-                            "Mixed"
-
-                        ]
-
-                    },
-
-                    {
-
-                        id: "locations",
-
-                        type: "number",
-
-                        icon: "fa-map-location-dot",
-
-                        label: "Approximately how many operating locations do you have?",
-
-                        helper:
-                            "Include offices, plants, branches and other permanent locations."
-
-                    },
-
-                    {
-
-                        id: "countries",
-
-                        type: "number",
-
-                        icon: "fa-earth-asia",
-
-                        label: "In how many countries does your organisation currently operate?",
-
-                        helper:
-                            "Enter 1 if your organisation operates only within one country."
-
-                    }
-
-                ]
-
-            },
-
-
-
-            /* ==========================================
-               STEP 4
-               GROWTH
-            ========================================== */
-
-            {
-
-                step: 3,
-
-                title: "Growth",
-
-                description:
-                    "Finally, let's understand where your organisation is heading.",
-
-                coach:
-                    "Understanding future direction helps us place today's decisions into tomorrow's context. There are no right or wrong answers\u2014only your current plans and expectations.",
-
-                questions: [
-
-                    {
-
-                        id: "hiringPlans",
-
-                        type: "select",
-
-                        icon: "fa-user-plus",
-
-                        label: "What best describes your hiring plans over the next 12 months?",
-
-                        helper:
-                            "Choose the option that best reflects your current expectations.",
-
-                        options: [
-
-                            "Significant Growth",
-
-                            "Moderate Growth",
-
-                            "Selective Hiring",
-
-                            "Maintain Current Size",
-
-                            "Unsure; Market drives hiring needs"
-
-                        ]
-
-                    },
-
-                    {
-
-                        id: "fundingStage",
-
-                        type: "select",
-
-                        icon: "fa-chart-line",
-
-                        label: "Which funding stage best describes your organisation?",
-
-                        helper:
-                            "Choose the closest available option.",
-
-                        options: [
-
-                            "Bootstrapped",
-
-                            "Seed",
-
-                            "Series A",
-
-                            "Series B",
-
-                            "Series C+",
-
-                            "Public",
-
-                            "Not Applicable"
-
-                        ]
-
-                    },
-
-                    {
-
-                        id: "expansionPlans",
-
-                        type: "textarea",
-
-                        icon: "fa-arrow-trend-up",
-
-                        label: "Are there any expansion plans you would like us to understand?",
-
-                        helper:
-                            "A few sentences are sufficient."
-
-                    },
-
-                    {
-
-                        id: "peopleFunction",
-
-                        type: "select",
-
-                        icon: "fa-users-gear",
-
-                        label: "How is your People / HR function currently structured?",
-
-                        helper:
-                            "Select the option closest to your organisation today.",
-
-                        options: [
-
-                            "Dedicated HR Team",
-
-                            "Single HR/People Professional",
-
-                            "Founder Led",
-
-                            "Shared Admin Function",
-
-                            "External Consultant",
-
-                            "No Formal HR/People Function"
-
-                        ]
-
-                    }
-
-                ]
-
-            }
-
-        );
-
-    }
-
-
-    /* ==========================================================
-       RENDER CURRENT QUESTION
-    ========================================================== */
-    renderCurrentQuestion() {
-
-        const step = this.questionBank[this.currentStep];
-
-        const question = step.questions[this.currentQuestion];
-
-        this.stepIndicator.textContent =
-            `Step ${this.currentStep + 1} of ${this.steps.length}`;
-
-        this.stepTitle.textContent =
-            step.title;
-
-        this.stepDescription.textContent =
-            step.description;
-
-        if (this.coachSection) {
-            this.coachSection.hidden = true;
-        }
-
-        this.updateFooterMessage();
-
-        const template =
-            document.getElementById("conversationTemplate");
-
-        const card =
-            template.content.cloneNode(true);
-
-        card.querySelector(".exec-conversation-card").setAttribute("data-testid", "assessment-question-card");
-
-        card.getElementById("questionCategory").textContent =
-            step.title || "";
-
-        card.getElementById("questionTitle").textContent =
-            question.label;
-
-        card.getElementById("questionIcon").className =
-            `fa-solid ${question.icon}`;
-
-        card.getElementById("coachContext").textContent =
-            question.helper || "Share the closest accurate response available today.";
-
-        card.getElementById("questionText").textContent =
-            "";
-
-        card.getElementById("questionExplanation").textContent =
-            "";
-
-        const responseContainer =
-            card.getElementById("questionResponse");
-
-        responseContainer.appendChild(
-
-            this.createInput(question)
-
-        );
-
-        if (this.pendingQuestionRender) {
-            clearTimeout(this.pendingQuestionRender);
-            this.pendingQuestionRender = null;
-        }
-
-        this.conversationContainer.innerHTML = "";
-
-        this.conversationContainer.appendChild(card);
-
-    }
-
-
-
-    /* ==========================================================
-       CREATE INPUT
-    ========================================================== */
-
-    createInput(question) {
-
-        let element;
-
-        switch(question.type){
-
-            case "text":
-
-                element =
-                    document
-                    .getElementById("textInputTemplate")
-                    .content
-                    .firstElementChild
-                    .cloneNode(true);
-
-                element.placeholder =
-                    question.placeholder || "";
-
-                element.pattern = "[A-Za-z0-9 .,/&()\\-]+";
-
-                break;
-
-            case "number":
-
-                element =
-                    document
-                    .getElementById("numberInputTemplate")
-                    .content
-                    .firstElementChild
-                    .cloneNode(true);
-
-                element.placeholder =
-                    question.placeholder || "";
-
-                element.min = "0";
-                element.step = "1";
-                element.inputMode = "numeric";
-                element.pattern = "[0-9]*";
-                element.addEventListener("input", () => {
-                    element.value = element.value.replace(/[^0-9]/g, "");
-                });
-
-                break;
-
-            case "textarea":
-
-                element =
-                    document
-                    .getElementById("textareaTemplate")
-                    .content
-                    .firstElementChild
-                    .cloneNode(true);
-
-                break;
-
-            case "select":
-
-                element =
-                    document
-                    .getElementById("selectTemplate")
-                    .content
-                    .firstElementChild
-                    .cloneNode(true);
-
-                const placeholder =
-                    document.createElement("option");
-
-                placeholder.textContent =
-                    "Please Select";
-
-                placeholder.value = "";
-
-                element.appendChild(placeholder);
-
-                question.options.forEach(option=>{
-
-                    const item =
-                        document.createElement("option");
-
-                    item.value = option;
-
-                    item.textContent = option;
-
-                    element.appendChild(item);
-
-                });
-
-                break;
-
-        }
-
-        element.id = question.id;
-
-        if(this.responses[question.id] !== undefined){
-
-            element.value =
-                this.responses[question.id];
-
-        }
-
-        return element;
-
-    }
-
-    /* ==========================================================
-       NEXT
-    ========================================================== */
-    next() {
-
-   if (this.isAdvancing) {
-
-    return;
-
-   }
-
-   if (this.onWelcome) {
-
-    this.onWelcome = false;
-
-    this.backButton.hidden = false;
-
-    this.nextButton.innerHTML =
-        `Continue <i class="fa-solid fa-arrow-right"></i>`;
-
-    if (this.conversationContainer) {
-        this.conversationContainer.classList.add("is-replacing");
-    }
-
-    window.setTimeout(() => {
-
-        if (this.conversationContainer) {
-            this.conversationContainer.classList.remove("is-replacing");
-        }
-
-        this.refreshUI();
-
-        this.renderCurrentQuestion();
-
-    }, 300);
-
-    return;
-
-}
-
-        if (!this.saveCurrentAnswer()) {
-
-            return;
-
-        }
-
-        this.isAdvancing = true;
-
-        if (this.nextButton) {
-            this.nextButton.disabled = true;
-        }
-
-        const step =
-            this.questionBank[this.currentStep];
-
-        const question =
-            step.questions[this.currentQuestion];
-
-        const acknowledgement =
-            this.getCoachAcknowledgement(
-
-                this.responses[question.id]
-
-            );
-
-        this.setCoachMessage(
-
-            acknowledgement,
-
-            false
-
-        );
-
-        this.autoSave();
-
-      setTimeout(() => {
-
-    this.goToNextQuestion();
-    this.isAdvancing = false;
-    if (this.nextButton) this.nextButton.disabled = false;
-
-}, 900);
-
-    }
-
-
-
-    /* ==========================================================
-       PREVIOUS
-    ========================================================== */
-
-    previous() {
-
-        if (this.onWelcome) {
-
-            return;
-
-        }
-
-        if (this.currentQuestion > 0) {
-
-            this.currentQuestion--;
-
-            this.renderCurrentQuestion();
-
-            return;
-
-        }
-
-        if (this.currentStep > 0) {
-
-            this.currentStep--;
-
-            const previousStep =
-                this.questionBank[this.currentStep];
-
-            this.currentQuestion =
-                previousStep.questions.length - 1;
-
-            this.updateProgress();
-
-            this.renderCurrentQuestion();
-
-            return;
-
-        }
-
-        this.showWelcomeMessage();
-
-    }
-
-
-
-    /* ==========================================================
-       SAVE ANSWER
-    ========================================================== */
-
-    saveCurrentAnswer() {
-
-        const step =
-            this.questionBank[this.currentStep];
-
-        const question =
-            step.questions[this.currentQuestion];
-
-        const field =
-            document.getElementById(question.id);
-
-        if (!field) {
-
-            return false;
-
-        }
-
-        const value =
-            field.value.trim();
-
-        if (question.type === "number") {
-            const numericValue = Number(value);
-            if (!/^\d+$/.test(value) || numericValue < 0) {
-                field.focus();
-                alert("Please enter a positive whole number only.");
-                return false;
-            }
-            if (question.id === "founded" && numericValue > new Date().getFullYear()) {
-                field.focus();
-                alert("Please enter a valid year that is not in the future.");
-                return false;
-            }
-            if (question.id === "remoteWorkforce" && numericValue > 100) {
-                field.focus();
-                alert("Please enter a remote workforce percentage between 0 and 100.");
-                return false;
-            }
-        }
-
-        if (["nature", "companyName"].includes(question.id) && /[^A-Za-z0-9 .,/&()\-]/.test(value)) {
-            field.focus();
-            alert("Please use letters, numbers and basic punctuation only.");
-            return false;
-        }
-
-        if (value === "") {
-
-            field.focus();
-
-            alert(
-                "Please answer this question before continuing."
-            );
-
-            return false;
-
-        }
-
-        this.responses[question.id] = value;
-
-        return true;
-
-    }
-
-
-
-    /* ==========================================================
-       UPDATE PROGRESS
-    ========================================================== */
-
-    updateProgress() {
-
-        const percentage =
-            ((this.currentStep + 1) / this.steps.length) * 100;
-
-        this.progressBar.style.width =
-            `${percentage}%`;
-
-        this.stepIndicator.textContent =
-            `Step ${this.currentStep + 1} of ${this.steps.length}`;
-
-        this.stepTitle.textContent =
-            this.questionBank[this.currentStep].title;
-
-        this.stepDescription.textContent =
-            this.questionBank[this.currentStep].description;
-
-    }
-
-
-
-    /* ==========================================================
-       BACK TO ASSESSMENT
-    ========================================================== */
-
-    backToAssessment() {
-
-        this.hideAll();
-
-        this.workspace.hidden = false;
-
-        this.renderCurrentQuestion();
-
-    }
-
-    /* ==========================================================
-       REVIEW SCREEN
-    ========================================================== */
-
-    showReview() {
-
-           this.showScreen(this.reviewScreen, "assessment-complete");
-         
-           this.reviewContainer.innerHTML = "";
-
-           this.reportStage = "review";
-           this.setReviewHeader("Assessment Complete", "Your answers are saved. Generate your Executive Advisory when you're ready.");
-
-           if (this.pendingQuestionRender) {
-               clearTimeout(this.pendingQuestionRender);
-               this.pendingQuestionRender = null;
-           }
-
-           if (this.pendingQuestionRender) {
-               clearTimeout(this.pendingQuestionRender);
-               this.pendingQuestionRender = null;
-           }
-
-           if (this.generateButton) {
-
-               this.generateButton.disabled = false;
-               this.generateButton.innerHTML =
-                   `Generate Advisory <i class="fa-solid fa-wand-magic-sparkles"></i>`;
-
-           }
-
-           this.conversationContainer.innerHTML = "";
-
-           this.questionBank.forEach(step => {
-
-            const section = document.createElement("div");
-
-            section.className = "exec-review-item";
-
-            const heading = document.createElement("h3");
-
-            heading.textContent = step.title;
-
-            section.appendChild(heading);
-
-            step.questions.forEach(question => {
-
-                const row = document.createElement("p");
-
-                const value =
-                    this.responses[question.id] || "Not Answered";
-
-                row.innerHTML =
-                    `<strong>${question.label}</strong><br>${value}`;
-
-                section.appendChild(row);
-
-            });
-
-            this.reviewContainer.appendChild(section);
-
-        });
-
-         this.backButton.hidden = true;
-
-         this.nextButton.hidden = true;
-
-    }
-
-
-
-    validateName(value) {
-        const name = String(value || "").trim();
-        if (!name) return { valid: false, value: name, message: "Please enter your name." };
-        if (name.length > 80) return { valid: false, value: name, message: "Please use 80 characters or fewer." };
-        return { valid: true, value: name, message: "" };
-    }
-
-    validateEmail(value) {
-        const email = String(value || "").trim();
-        if (!email) return { valid: false, value: email, message: "Please enter your email address." };
-        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/u.test(email) && !email.includes("..") && !email.startsWith(".") && !email.endsWith(".");
-        return { valid, value: email, message: valid ? "" : "Please enter a valid email address." };
-    }
-
-    setReviewHeader(title, intro) {
-        const heading = document.querySelector(".exec-review-card > h2");
-        const introText = document.querySelector(".exec-review-intro");
-        if (heading) heading.textContent = title;
-        if (introText) introText.textContent = intro;
-    }
-
-    setValidationMessage(message = "") {
-        const validation = document.getElementById("contactValidation");
-        if (validation) validation.textContent = message;
-    }
-
-    generateReport() {
-        if (this.isGenerating && ["generating", "report-ready"].includes(this.reportStage)) return;
-
-        if (this.reportStage === "name") {
-            this.showEmailCapture();
-            return;
-        }
-
-        if (this.reportStage === "email") {
-            this.startReportGeneration();
-            return;
-        }
-
-        if (this.reportStage === "preview") {
-            this.downloadReport();
-            return;
-        }
-
-        if (this.reportStage === "error") {
-            this.startReportGeneration();
-            return;
-        }
-
-        this.showNameCapture();
-    }
-
-    showNameCapture() {
-        this.showScreen(this.reviewScreen, "name");
-        this.reportStage = "name";
-        this.setReviewHeader("What is your name?", "This name appears on your Executive Advisory preview.");
-        this.reviewContainer.innerHTML = `
-            <div class="exec-review-item exec-contact-step" data-testid="advisory-name-screen">
-                <label for="recipientName">What is your name?</label>
-                <input id="recipientName" class="exec-input" type="text" maxlength="80" autocomplete="name" value="${this.responses.recipientName || ''}" required>
-                <div id="contactValidation" class="exec-validation-message" role="alert" aria-live="polite"></div>
-            </div>`;
-        this.generateButton.disabled = false;
-        this.generateButton.innerHTML = `Continue <i class="fa-solid fa-arrow-right"></i>`;
-        const input = document.getElementById("recipientName");
-        if (input) input.focus({ preventScroll: true });
-    }
-
-    showEmailCapture() {
-        const name = document.getElementById("recipientName");
-        const result = this.validateName(name ? name.value : this.responses.recipientName);
-        if (!result.valid) {
-            this.setValidationMessage(result.message);
-            if (name) name.focus({ preventScroll: true });
-            return;
-        }
-        this.responses.recipientName = result.value;
-        this.autoSave();
-        this.showScreen(this.reviewScreen, "email");
-        this.reportStage = "email";
-        this.setReviewHeader("What is your email address?", "We use this only to label this downloadable advisory preview in your browser session.");
-        this.reviewContainer.innerHTML = `
-            <div class="exec-review-item exec-contact-step" data-testid="advisory-email-screen">
-                <label for="recipientEmail">What is your email address?</label>
-                <input id="recipientEmail" class="exec-input" type="email" autocomplete="email" value="${this.responses.recipientEmail || ''}" required>
-                <div id="contactValidation" class="exec-validation-message" role="alert" aria-live="polite"></div>
-            </div>`;
-        this.generateButton.disabled = false;
-        this.generateButton.innerHTML = `Generate Advisory <i class="fa-solid fa-wand-magic-sparkles"></i>`;
-        const input = document.getElementById("recipientEmail");
-        if (input) input.focus({ preventScroll: true });
-    }
-
-    startReportGeneration() {
-        const email = document.getElementById("recipientEmail");
-        const result = this.validateEmail(email ? email.value : this.responses.recipientEmail);
-        if (!result.valid) {
-            this.setValidationMessage(result.message);
-            if (email) email.focus({ preventScroll: true });
-            return;
-        }
-        this.responses.recipientEmail = result.value;
-        this.autoSave();
-        this.isGenerating = true;
-        this.reportStage = "generating";
-        this.generateButton.disabled = true;
-        this.showScreen(this.reviewScreen, "generating");
-        this.setReviewHeader("Preparing your Executive Advisory...", "");
-        this.reviewContainer.innerHTML = `<div class="exec-review-item" data-testid="advisory-generating"><p id="advisoryGenerationStatus" class="exec-loading-message">Preparing your Executive Advisory...</p></div>`;
-        const messages = ["Preparing your Executive Advisory...", "Analysing responses...", "Building recommendations...", "Preparing your report...", "Almost ready..."];
-        let index = 0;
-        clearInterval(this.reportGenerationTimer);
-        this.reportGenerationTimer = setInterval(() => {
-            index += 1;
-            const status = document.getElementById("advisoryGenerationStatus");
-            if (status && messages[index]) status.textContent = messages[index];
-            if (index >= messages.length - 1) {
-                clearInterval(this.reportGenerationTimer);
-                this.reportGenerationTimer = null;
-                this.isGenerating = false;
-                this.showInputPreview();
-            }
-        }, new URLSearchParams(window.location.search).get("e2e") === "1" ? 120 : 700);
-    }
-
-    showReportError(message = "We could not prepare the report. Please try again.", detail = "report-generation-failed") {
-        console.error("GrowWithHR report generation error", { detail });
-        this.isGenerating = false;
-        clearInterval(this.reportGenerationTimer);
-        this.reportStage = "error";
-        this.showScreen(this.reviewScreen, "report-error");
-        this.setReviewHeader("Report generation needs another try", "Your answers, name and email are still saved in this session.");
-        this.reviewContainer.innerHTML = `<div class="exec-review-item" data-testid="advisory-report-error"><p>${message}</p></div>`;
-        this.generateButton.disabled = false;
-        this.generateButton.innerHTML = `Retry <i class="fa-solid fa-rotate-right"></i>`;
-    }
-
-    showInputPreview() {
-        this.showScreen(this.reviewScreen, "report-ready");
-        this.reportStage = "preview";
-        this.setReviewHeader("Executive Advisory Ready", "Input preview is ready to download.");
-        const organisation = this.responses.companyName || "Not provided";
-        const date = new Date().toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-        this.reviewContainer.innerHTML = `
-            <div class="exec-review-item advisory-report-summary" data-testid="advisory-report-preview">
-                <p><strong>Prepared for:</strong><br>${this.responses.recipientName || "Recipient"}</p>
-                <p><strong>Email:</strong><br>${this.responses.recipientEmail || "Not provided"}</p>
-                <p><strong>Organisation:</strong><br>${organisation}</p>
-                <p><strong>Assessment date:</strong><br>${date}</p>
-            </div>`;
-        this.generateButton.disabled = false;
-        this.generateButton.innerHTML = `Download Executive Advisory <i class="fa-solid fa-download"></i>`;
-    }
-
-    downloadReport() {
-        if (this.isDownloading) return;
-        this.isDownloading = true;
-        try {
-            const html = this.buildDownloadableReport();
-            const blob = new Blob([html], { type: "application/pdf" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "HRTechify-GrowWithHR-illustrative-advisory.pdf";
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error("GrowWithHR download failed", { message: error && error.message });
-            this.showReportError("The preview is still available, but the download could not be created. Please try again.", "download-failed");
-        } finally {
-            setTimeout(() => { this.isDownloading = false; }, 600);
-        }
-    }
-
-    buildDownloadableReport() {
-        const rows = Object.entries(this.responses).map(([key, value]) => `<tr><th>${key}</th><td>${value}</td></tr>`).join("");
-        return `<!doctype html><html><head><meta charset="utf-8"><title>HRTechify GrowWithHR Advisory</title><style>body{margin:0;font-family:Inter,Arial,sans-serif;background:#07111f;color:#eaf4ff}.page{max-width:980px;margin:0 auto;padding:48px}.brand{text-align:center;color:#7dd3fc}.card{background:linear-gradient(135deg,rgba(14,165,233,.18),rgba(20,184,166,.12));border:1px solid rgba(125,211,252,.28);border-radius:28px;padding:32px}h1{text-align:center;color:#fff}table{width:100%;border-collapse:collapse;margin-top:24px}th,td{padding:14px;border-bottom:1px solid rgba(255,255,255,.14);text-align:left}th{color:#7dd3fc;text-transform:capitalize}</style></head><body><main class="page"><section class="card"><div class="brand"><strong>HRTechify</strong><br><span>GrowWithHR</span></div><h1>Executive Advisory</h1><p>Brand palette: deep navy page, cyan highlights, white report text.</p><p>Prepared for ${this.responses.recipientName || "Recipient"}. This browser-generated advisory preview uses the information captured in the assessment.</p><table>${rows}</table></section></main></body></html>`;
-    }
-
-    /* ==========================================================
-       LOADING SEQUENCE
-    ========================================================== */
-
-    runLoadingSequence() {
-
-        const messages = [
-
-            "Understanding your organisation...",
-
-            "Reviewing organisational context...",
-
-            "Identifying people priorities...",
-
-            "Connecting organisational insights...",
-
-            "Preparing Executive Advisory..."
-
-        ];
-
-        let index = 0;
-
-                this.animateTextChange(
-
-            this.loadingMessage,
-
-            messages[index]
-
-        );
-
-        const timer = setInterval(() => {
-
-            index++;
-
-            if (index >= messages.length) {
-
-                clearInterval(timer);
-
-                this.showSuccess();
-
-                return;
-
-            }
-
-                        this.animateTextChange(
-
-                this.loadingMessage,
-
-                messages[index]
-
-            );
-
-        }, 1400);
-
-    }
-
-
-
-    /* ==========================================================
-       SUCCESS
-    ========================================================== */
-
-showSuccess() {
-
-    this.completeAssessment();
-
-    this.showScreen(this.successScreen);
-
-}
-
-
-
-    /* ==========================================================
-       OPEN REPORT
-    ========================================================== */
-
-openReport() {
-
-    localStorage.setItem(
-        "growwithhr-report",
-        JSON.stringify(this.responses)
-    );
-
-    window.location.href =
-        "executive-advisory-report.html";
-
-}
-   
-    /* ==========================================================
-       COACH ACKNOWLEDGEMENT
-    ========================================================== */
-
-    getCoachAcknowledgement(value) {
-
-        if (!value || value.trim() === "") {
-
-            return "";
-
-        }
-
-        const responses = [
-
-            "Thank you. That gives us a little more context about your organisation.",
-
-            "That's helpful. Every organisation has its own journey and context.",
-
-            "Appreciated. We'll keep this in mind as we continue our conversation.",
-
-            "Thank you for sharing that. Let's continue building our understanding together.",
-
-            "That's useful context. We'll now move to the next part of our conversation."
-
-        ];
-
-        return responses[
-            Math.floor(Math.random() * responses.length)
-        ];
-
-    }
-
-
-
-    /* ==========================================================
-       UPDATE COACH MESSAGE
-    ========================================================== */
-
-    updateCoachMessage(message = "") {
-
-        if (!this.coachMessage) {
-
-            return;
-
-        }
-
-        this.setCoachMessage(
-
-            message ||
-
-            this.questionBank[this.currentStep].coach,
-
-            !message
-
-        );
-
-    }
-
-
-
-    /* ==========================================================
-       MOVE TO NEXT QUESTION
-    ========================================================== */
-
-    goToNextQuestion() {
-
-    const step = this.questionBank[this.currentStep];
-
-    if (this.currentQuestion < step.questions.length - 1) {
-
-        this.currentQuestion++;
-
-        this.renderCurrentQuestion();
-
-        return;
-
-    }
-
-    if (this.currentStep < this.questionBank.length - 1) {
-
-        this.currentStep++;
-
-        this.currentQuestion = 0;
-
-        this.updateProgress();
-
-        this.showStepIntroduction();
-
-        if (this.pendingQuestionRender) {
-            clearTimeout(this.pendingQuestionRender);
-        }
-
-        this.pendingQuestionRender = setTimeout(() => {
-
-            this.pendingQuestionRender = null;
-            this.conversationContainer.innerHTML = "";
-            this.renderCurrentQuestion();
-
-        }, 3200);
-
-        return;
-
-    }
-
-    this.showReview();
-}
-
-    /* ==========================================================
-       STEP TRANSITION MESSAGE
-    ========================================================== */
-showStepIntroduction() {
-
-    const previousSection = this.steps[this.currentStep - 1];
-    const nextSection = this.steps[this.currentStep];
-    const introductions = [
-
-        `${previousSection} complete. Preparing ${nextSection}...`,
-
-        `${previousSection} complete. Preparing ${nextSection}...`,
-
-        `${previousSection} complete. Preparing ${nextSection}...`
-
+(() => {
+    "use strict";
+
+    const STORAGE_KEY = "growwithhr-advisory-briefing-v2";
+    const REPORT_KEY = "growwithhr-report";
+    const LEAD_KEY = "growwithhr-lead";
+    const DEFAULT_REPORT_URL = "executive-advisory-report.html";
+
+    const INDUSTRIES = [
+        "Information Technology / SaaS",
+        "Consulting & Professional Services",
+        "Manufacturing",
+        "Retail",
+        "Healthcare",
+        "Education",
+        "Financial Services",
+        "Logistics",
+        "Hospitality",
+        "Construction",
+        "Other"
     ];
 
-    if (
+    const STATES = [
+        "Andhra Pradesh",
+        "Arunachal Pradesh",
+        "Assam",
+        "Bihar",
+        "Chhattisgarh",
+        "Goa",
+        "Gujarat",
+        "Haryana",
+        "Himachal Pradesh",
+        "Jharkhand",
+        "Karnataka",
+        "Kerala",
+        "Madhya Pradesh",
+        "Maharashtra",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Odisha",
+        "Punjab",
+        "Rajasthan",
+        "Sikkim",
+        "Tamil Nadu",
+        "Telangana",
+        "Tripura",
+        "Uttar Pradesh",
+        "Uttarakhand",
+        "West Bengal",
+        "Andaman and Nicobar Islands",
+        "Chandigarh",
+        "Dadra and Nagar Haveli and Daman and Diu",
+        "Delhi (NCT)",
+        "Jammu and Kashmir",
+        "Ladakh",
+        "Lakshadweep",
+        "Puducherry"
+    ];
 
-        this.currentStep > 0 &&
+    const ENTITY_OPTIONS = [
+        ["Private Limited", "Private Limited"],
+        ["Public Limited", "Public Limited"],
+        ["LLP", "LLP"],
+        ["One Person Company", "One Person Company"],
+        ["DPIIT Recognized Startup", "Recognised startup"],
+        ["Partnership", "Partnership"],
+        ["Proprietorship", "Proprietorship"],
+        ["Trust / Society", "Trust or society"],
+        ["Government / PSU", "Government or PSU"],
+        ["Other", "Other"],
+        ["Not Sure", "Not sure"]
+    ];
 
-        this.currentStep <= introductions.length
+    const FUNDING_OPTIONS = [
+        ["Bootstrapped", "Self-funded or bootstrapped"],
+        ["Seed", "Seed"],
+        ["Series A", "Series A"],
+        ["Series B", "Series B"],
+        ["Series C+", "Series C or later"],
+        ["Public", "Publicly listed"],
+        ["Not Applicable", "Not applicable"],
+        ["Not Sure", "Not sure"]
+    ];
 
-    ) {
+    const WORK_MODEL_OPTIONS = [
+        ["Office Based", "Mainly on-site", "Most people work from a shared workplace."],
+        ["Hybrid", "Hybrid", "People divide their time between on-site and remote work."],
+        ["Remote", "Mainly remote", "Most people work away from a permanent workplace."],
+        ["Field Workforce", "Field-based", "A large part of the team works at customer or field locations."],
+        ["Manufacturing / Plant", "Plant or manufacturing", "Work is primarily delivered from plants or production sites."],
+        ["Mixed", "Mixed", "The organisation uses several different working models."]
+    ];
 
-        if (this.coachSection) {
-            this.coachSection.hidden = true;
+    const REMOTE_OPTIONS = [
+        ["0", "None"],
+        ["1-24", "Less than 25%"],
+        ["25-50", "25–50%"],
+        ["51-75", "51–75%"],
+        ["76-99", "More than 75%"],
+        ["100", "Fully remote"],
+        ["not-sure", "Not sure"],
+        ["exact", "Enter an exact percentage"]
+    ];
+
+    const HIRING_OPTIONS = [
+        ["Significant Growth", "Grow significantly", "A meaningful increase in team size is expected."],
+        ["Moderate Growth", "Grow steadily", "The team will grow at a measured pace."],
+        ["Selective Hiring", "Hire selectively", "Hiring will focus on a small number of priority roles."],
+        ["Maintain Current Size", "Stay about the same size", "The organisation expects limited net headcount growth."],
+        ["Unsure; Market drives hiring needs", "Unsure or market-led", "Hiring will depend on market and business conditions."]
+    ];
+
+    const EXPANSION_OPTIONS = [
+        ["new-locations", "Open new locations"],
+        ["new-markets", "Enter new markets or countries"],
+        ["new-products", "Introduce new products or services"],
+        ["scale-operations", "Scale current operations"],
+        ["restructure", "Restructure or improve efficiency"],
+        ["no-major-expansion", "No major expansion planned"],
+        ["still-deciding", "Still deciding"]
+    ];
+
+    const PEOPLE_FUNCTION_OPTIONS = [
+        ["Dedicated HR Team", "Dedicated HR or People team", "A team owns the organisation's People or HR work."],
+        ["Single HR/People Professional", "One HR or People professional", "One dedicated person leads the function."],
+        ["Founder Led", "Founder-led", "Founders or senior leaders make most people decisions."],
+        ["Shared Admin Function", "Shared with administration or operations", "People work is combined with another business function."],
+        ["External Consultant", "Supported by an external consultant", "External specialists provide ongoing HR support."],
+        ["No Formal HR/People Function", "No formal HR or People function", "There is no defined owner or structure today."]
+    ];
+
+    const PRIORITY_OPTIONS = [
+        ["hiring-onboarding", "Hiring and onboarding"],
+        ["policies-compliance", "Policies and compliance"],
+        ["performance-rewards", "Performance and rewards"],
+        ["manager-capability", "Manager capability"],
+        ["culture-engagement", "Culture and engagement"],
+        ["hr-operations-technology", "HR operations and technology"],
+        ["workforce-planning", "Workforce planning"],
+        ["organisation-design", "Organisation design"]
+    ];
+
+    const ROLE_LABELS = {
+        "founder-business-leader": "Founder or business leader",
+        "hr-people-leader": "HR or People leader",
+        "operations-leader": "Operations leader",
+        "finance-leader": "Finance leader",
+        "consultant-advisor": "Consultant or advisor",
+        "other": "Other"
+    };
+
+    const MOMENTS = [
+        {
+            chapter: 0,
+            eyebrow: "Your business",
+            title: "Let’s start with the business you’re building.",
+            description: "These basics help us keep every recommendation grounded in your organisation’s reality.",
+            render: (app) => app.renderBusinessBasics(),
+            validate: (app) => app.validateBusinessBasics()
+        },
+        {
+            chapter: 0,
+            eyebrow: "Your business",
+            title: "Give us a little context around its stage.",
+            description: "Approximate answers are enough. Choose “Not sure” whenever you do not have the information.",
+            render: (app) => app.renderBusinessStage(),
+            validate: (app) => app.validateBusinessStage()
+        },
+        {
+            chapter: 1,
+            eyebrow: "Your people",
+            title: "Who helps the organisation deliver?",
+            description: "Start with the core team. Add other workforce groups only when they apply.",
+            render: (app) => app.renderWorkforce(),
+            validate: (app) => app.validateWorkforce()
+        },
+        {
+            chapter: 1,
+            eyebrow: "Your people",
+            title: "How does the team usually work?",
+            description: "Choose what best reflects everyday working arrangements rather than formal policy.",
+            render: (app) => app.renderWorkingModel(),
+            validate: (app) => app.validateWorkingModel()
+        },
+        {
+            chapter: 2,
+            eyebrow: "How work happens",
+            title: "How distributed are your operations?",
+            description: "This helps us understand the complexity of communication, policy and people operations across the organisation.",
+            render: (app) => app.renderOperatingFootprint(),
+            validate: (app) => app.validateOperatingFootprint()
+        },
+        {
+            chapter: 3,
+            eyebrow: "Your next chapter",
+            title: "What is likely to change next?",
+            description: "Your future direction helps us prioritise the people foundations you may need next—not only what you need today.",
+            render: (app) => app.renderGrowthDirection(),
+            validate: (app) => app.validateGrowthDirection()
+        },
+        {
+            chapter: 3,
+            eyebrow: "Your next chapter",
+            title: "How are people decisions supported today?",
+            description: "This final step helps us make the advisory practical for your current level of People and HR support.",
+            render: (app) => app.renderPeopleReadiness(),
+            validate: (app) => app.validatePeopleReadiness()
+        }
+    ];
+
+    const CHAPTERS = [
+        "Your business",
+        "Your people",
+        "How work happens",
+        "Your next chapter"
+    ];
+
+    class ExecutiveAdvisoryBriefing {
+        constructor() {
+            this.config = this.readConfig();
+            this.reportUrl = this.resolveReportUrl();
+            this.currentMoment = 0;
+            this.started = false;
+            this.completed = false;
+            this.answers = {
+                locations: "1",
+                countries: "1",
+                expansionPlans: [],
+                priorities: []
+            };
+            this.lead = {
+                name: "",
+                email: "",
+                role: "",
+                serviceConsent: false,
+                marketingConsent: false
+            };
+            this.ui = {
+                showSupplementalWorkforce: false
+            };
+            this.generationTimers = [];
+            this.saveTimer = null;
+            this.lastFocusedElement = null;
+
+            this.cacheElements();
+            this.bindEvents();
+            this.restoreState();
+            this.initialiseView();
         }
 
-        this.renderSegmentTransitionCard(
-            this.steps[this.currentStep],
-            introductions[this.currentStep - 1]
-        );
-
-        this.animateTextChange(
-
-            this.footerMessage,
-
-            `${previousSection} complete. Preparing ${nextSection}...`
-
-        );
-
-    }
-
-}
-
-
-renderSegmentTransitionCard(title, message) {
-
-    if (!this.conversationContainer) {
-
-        return;
-
-    }
-
-    this.conversationContainer.innerHTML = `
-        <article class="exec-segment-card exec-fade-in">
-            <span>Next Section</span>
-            <h2>${title}</h2>
-            <p>${message}</p>
-            <div class="exec-segment-progress">Preparing your next set of questions...</div>
-        </article>
-    `;
-
-}
-
-    /* ==========================================================
-       AUTO SAVE
-    ========================================================== */
-
-    autoSave() {
-
-        try {
-
-            localStorage.setItem(
-
-                "growwithhr-assessment",
-
-                JSON.stringify(this.responses)
-
-            );
-
-        }
-
-        catch (error) {
-
-            console.warn(
-
-                "Unable to save assessment progress.",
-
-                error
-
-            );
-
-        }
-
-    }
-
-
-
-    /* ==========================================================
-       RESTORE SAVED SESSION
-    ========================================================== */
-
-    restoreSession() {
-
-        try {
-
-            const savedData = localStorage.getItem(
-
-                "growwithhr-assessment"
-
-            );
-
-            if (!savedData) {
-
-                return;
-
-            }
-            this.responses = JSON.parse(savedData);
-
-            if (
-
-                typeof this.responses !== "object" ||
-
-                this.responses === null
-
-            ) {
-
-                this.responses = {};
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.warn(
-
-                "Unable to restore saved assessment.",
-
-                error
-
-            );
-
-        }
-
-    }
-
-
-
-    /* ==========================================================
-       RESET ASSESSMENT
-    ========================================================== */
-
-resetAssessment() {
-
-    this.currentStep = 0;
-
-    this.currentQuestion = 0;
-
-    this.started = false;
-
-    this.completed = false;
-
-    this.onWelcome = false;
-
-    this.responses = {};
-
-    localStorage.removeItem(
-
-        "growwithhr-assessment"
-
-    );
-
-    this.showLanding();
-
-}
-
-
-    /* ==========================================================
-       UPDATE FOOTER MESSAGE
-    ========================================================== */
-
-    updateFooterMessage() {
-
-        const step = this.questionBank[this.currentStep];
-
-        const totalQuestions = step.questions.length;
-
-        this.animateTextChange(
-
-            this.footerMessage,
-
-            `Question ${this.currentQuestion + 1} of ${totalQuestions}`
-
-        );
-
-    }
-
-
-
-    /* ==========================================================
-       UPDATE PROGRESS BAR
-    ========================================================== */
-
-    updateProgressBar() {
-
-        const totalQuestions =
-
-            this.questionBank.reduce(
-
-                (count, section) =>
-
-                    count + section.questions.length,
-
-                0
-
-            );
-
-        let completedQuestions = 0;
-
-        for (
-
-            let i = 0;
-
-            i < this.currentStep;
-
-            i++
-
-        ) {
-
-            completedQuestions +=
-
-                this.questionBank[i].questions.length;
-
-        }
-
-        completedQuestions +=
-
-            this.currentQuestion;
-
-        const percentage =
-
-            (completedQuestions / totalQuestions) * 100;
-
-        this.progressBar.style.width =
-
-            `${percentage}%`;
-
-    }
-
-
-
-    /* ==========================================================
-       REFRESH UI
-    ========================================================== */
-
-   refreshUI() {
-
-    if (!this.started) {
-
-        return;
-
-    }
-
-    this.updateProgress();
-
-    this.updateProgressBar();
-
-    this.updateFooterMessage();
-
-}
-
-
-    /* ==========================================================
-       START ASSESSMENT
-    ========================================================== */
-
-    startAssessment() {
-
-        window.GWHR_LOG?.("[GrowWithHR:ASSESSMENT]", { initialized: true, state: "assessment" });
-
-        this.started = true;
-
-        this.completed = false;
-
-        this.responses = {};
-
-        localStorage.removeItem(
-
-            "growwithhr-assessment"
-
-        );
-
-        this.currentStep = 0;
-
-        this.currentQuestion = 0;
-
-        this.showScreen(this.workspace, "assessment");
-        if (this.landingScreen) {
-            this.landingScreen.hidden = true;
-            this.landingScreen.setAttribute("aria-hidden", "true");
-            this.landingScreen.setAttribute("inert", "");
-        }
-
-        this.onWelcome = false;
-
-        this.updateProgress();
-   
-        this.updateProgressBar();
-
-        this.renderCurrentQuestion();
-
-        if (this.backButton) {
-
-            this.backButton.hidden = false;
-
-        }
-
-        if (this.nextButton) {
-
-            this.nextButton.innerHTML =
-
-                `Continue <i class="fa-solid fa-arrow-right"></i>`;
-
-        }
-
-    }
-
-
-
-    /* ==========================================================
-       WELCOME MESSAGE
-    ========================================================== */
-
-    showWelcomeMessage() {
-
-        this.onWelcome = true;
-
-        this.stepIndicator.textContent =
-            "Welcome";
-
-        this.stepTitle.textContent =
-            "Let's begin by understanding your organisation.";
-
-        this.stepDescription.textContent =
-            "";
-
-        this.animateTextChange(
-
-            this.footerMessage,
-
-            "Welcome"
-
-        );
-
-        this.progressBar.style.width =
-            "0%";
-
-        if (this.coachSection) {
-            this.coachSection.hidden = true;
-        }
-
-        this.conversationContainer.innerHTML = `
-            <article class="exec-coach-intro-card exec-page-turn-in">
-                <span>Company</span>
-                <h2>Coach HRTechify</h2>
-                <p>Every organisation has its own identity. We'll begin with a few foundational questions that help us understand the environment in which your people and business operate.</p>
-                <div class="exec-buffer"><i></i></div>
-            </article>
-        `;
-
-        this.backButton.hidden =
-            true;
-
-        this.nextButton.innerHTML =
-
-            `Begin <i class="fa-solid fa-arrow-right"></i>`;
-
-    }
-
-    /* ==========================================================
-       KEYBOARD NAVIGATION
-    ========================================================== */
-
-    bindKeyboardShortcuts() {
-
-        document.addEventListener("keydown", (event) => {
-
-            if (this.loadingScreen.hidden === false) {
-
-                return;
-
+        readConfig() {
+            const element = document.getElementById("assessmentConfig");
+
+            if (!element) {
+                return {};
             }
 
-            switch (event.key) {
+            try {
+                return JSON.parse(element.textContent || "{}");
+            } catch (error) {
+                console.warn("GrowWithHR: assessment configuration could not be read.", error);
+                return {};
+            }
+        }
 
-                case "Enter":
+        resolveReportUrl() {
+            const configured = String(this.config.report || "").trim();
 
-                    if (
-
-                        document.activeElement.tagName !== "TEXTAREA"
-
-                    ) {
-
-                        event.preventDefault();
-
-                        this.next();
-
-                    }
-
-                    break;
-
-                case "ArrowRight":
-
-                    event.preventDefault();
-
-                    this.next();
-
-                    break;
-
-                case "ArrowLeft":
-
-                    event.preventDefault();
-
-                    this.previous();
-
-                    break;
-
-                case "Escape":
-
-                    this.showExitDialog();
-
-                    break;
-
+            // The sample report remains available from the entry screen. The completed
+            // briefing must open the dynamic executive report.
+            if (!configured || configured === "sample-advisory-report.html") {
+                return DEFAULT_REPORT_URL;
             }
 
-        });
-
-    }
-
-
-
-    /* ==========================================================
-       EXIT DIALOG
-    ========================================================== */
-
-    showExitDialog() {
-
-        const modal = document.getElementById("exitModal");
-
-        if (!modal) {
-
-            return;
-
+            return configured;
         }
 
-        modal.hidden = false;
+        cacheElements() {
+            const byId = (id) => document.getElementById(id);
 
-    }
+            this.elements = {
+                shell: byId("assessmentShell"),
+                landing: byId("landingScreen"),
+                workspace: byId("conversationWorkspace"),
+                review: byId("reviewScreen"),
+                contact: byId("contactScreen"),
+                loading: byId("loadingScreen"),
+                success: byId("successScreen"),
 
+                resumePanel: byId("resumePanel"),
+                resumeMessage: byId("resumeMessage"),
+                resumeButton: byId("resumeAssessmentButton"),
+                startAgainButton: byId("startAgainButton"),
+                startButton: byId("startAssessment"),
 
+                saveStatus: byId("saveStatus"),
+                saveExitButton: byId("saveExitButton"),
 
-    hideExitDialog() {
+                storyForm: byId("storyForm"),
+                storyContainer: byId("storyContainer"),
+                storyEyebrow: byId("storyEyebrow"),
+                stepTitle: byId("stepTitle"),
+                stepDescription: byId("stepDescription"),
+                stepIndicator: byId("stepIndicator"),
+                desktopTime: byId("desktopTimeRemaining"),
+                mobileTime: byId("mobileTimeRemaining"),
+                progressTrack: byId("progressTrack"),
+                progressBar: byId("progressBar"),
+                footerMessage: byId("footerMessage"),
+                backButton: byId("backButton"),
+                nextButton: byId("nextButton"),
+                chapterRail: byId("chapterRail"),
 
-        const modal = document.getElementById("exitModal");
+                businessSummary: byId("businessSummary"),
+                peopleSummary: byId("peopleSummary"),
+                operationsSummary: byId("operationsSummary"),
+                growthSummary: byId("growthSummary"),
+                reviewBackButton: byId("reviewBackButton"),
+                continueToContactButton: byId("continueToContactButton"),
 
-        if (!modal) {
+                leadForm: byId("leadCaptureForm"),
+                leadName: byId("leadName"),
+                leadEmail: byId("leadEmail"),
+                leadRole: byId("leadRole"),
+                serviceConsent: byId("serviceConsent"),
+                marketingConsent: byId("marketingConsent"),
+                leadNameError: byId("leadNameError"),
+                leadEmailError: byId("leadEmailError"),
+                serviceConsentError: byId("serviceConsentError"),
+                contactBackButton: byId("contactBackButton"),
+                generateButton: byId("generateReportButton"),
 
-            return;
+                generationSteps: byId("generationSteps"),
+                loadingMessage: byId("loadingMessage"),
+                generationError: byId("generationError"),
+                retryGenerationButton: byId("retryGenerationButton"),
+                returnToReviewButton: byId("returnToReviewButton"),
 
+                preparedForName: byId("preparedForName"),
+                preparedForCompany: byId("preparedForCompany"),
+                preparedDate: byId("preparedDate"),
+                viewReportButton: byId("viewReportButton"),
+                downloadReportButton: byId("downloadReportButton"),
+                emailAgainButton: byId("emailAgainButton"),
+                editAnswersButton: byId("editAnswersButton"),
+
+                exitModal: byId("exitModal"),
+                cancelExitButton: byId("cancelExitButton"),
+                confirmExitButton: byId("confirmExitButton"),
+
+                liveRegion: byId("liveRegion"),
+                assertiveRegion: byId("assertiveRegion")
+            };
         }
 
-        modal.hidden = true;
+        bindEvents() {
+            const { elements } = this;
 
-    }
+            elements.startButton?.addEventListener("click", () => this.startNewBriefing());
+            elements.resumeButton?.addEventListener("click", () => this.resumeBriefing());
+            elements.startAgainButton?.addEventListener("click", () => this.requestRestart());
 
-
-
-    /* ==========================================================
-       BIND EXIT EVENTS
-    ========================================================== */
-
-    bindExitEvents() {
-
-        const leaveButton =
-            document.getElementById("confirmExitButton");
-
-        const stayButton =
-            document.getElementById("cancelExitButton");
-
-        if (leaveButton) {
-
-            leaveButton.addEventListener("click", () => {
-
-                this.resetAssessment();
-
+            elements.storyForm?.addEventListener("submit", (event) => {
+                event.preventDefault();
+                this.continueFromMoment();
             });
 
-        }
+            elements.backButton?.addEventListener("click", () => this.goBack());
 
-        if (stayButton) {
-
-            stayButton.addEventListener("click", () => {
-
-                this.hideExitDialog();
-
+            elements.storyContainer?.addEventListener("input", (event) => {
+                this.captureStoryInput(event.target);
             });
 
-        }
+            elements.storyContainer?.addEventListener("change", (event) => {
+                this.captureStoryInput(event.target);
+                this.handleDynamicControl(event.target);
+            });
 
-    }
+            elements.storyContainer?.addEventListener("click", (event) => {
+                const toggle = event.target.closest("[data-toggle-supplemental-workforce]");
 
+                if (toggle) {
+                    this.ui.showSupplementalWorkforce = !this.ui.showSupplementalWorkforce;
+                    this.queueSave();
+                    this.renderCurrentMoment({ preserveFocus: true });
+                }
+            });
 
+            document.querySelectorAll("[data-edit-screen]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const moment = Number(button.dataset.editScreen);
+                    this.showMoment(Number.isInteger(moment) ? moment : 0);
+                });
+            });
 
-    /* ==========================================================
-       BEFORE UNLOAD WARNING
-    ========================================================== */
+            elements.reviewBackButton?.addEventListener("click", () => this.showMoment(MOMENTS.length - 1));
+            elements.continueToContactButton?.addEventListener("click", () => this.showContact());
+            elements.contactBackButton?.addEventListener("click", () => this.showReview());
 
-    bindBeforeUnload() {
+            elements.leadForm?.addEventListener("input", () => {
+                this.captureLeadData();
+                this.queueSave();
+            });
 
-        window.addEventListener("beforeunload", (event) => {
+            elements.leadForm?.addEventListener("change", () => {
+                this.captureLeadData();
+                this.queueSave();
+            });
 
-            if (
+            elements.leadForm?.addEventListener("submit", (event) => {
+                event.preventDefault();
+                this.submitLeadAndGenerate();
+            });
 
-                this.started &&
+            elements.retryGenerationButton?.addEventListener("click", () => this.submitLeadAndGenerate());
+            elements.returnToReviewButton?.addEventListener("click", () => this.showReview());
 
-                !this.completed
+            elements.viewReportButton?.addEventListener("click", () => {
+                window.location.href = this.reportUrl;
+            });
 
-            ) {
+            elements.downloadReportButton?.addEventListener("click", () => this.downloadReport());
+            elements.emailAgainButton?.addEventListener("click", () => this.requestAnotherEmail());
+            elements.editAnswersButton?.addEventListener("click", () => this.showReview());
+
+            elements.saveExitButton?.addEventListener("click", () => this.openExitModal());
+            elements.cancelExitButton?.addEventListener("click", () => this.closeExitModal());
+            elements.confirmExitButton?.addEventListener("click", () => {
+                this.saveNow();
+                window.location.href = "index.html";
+            });
+
+            document.querySelectorAll("[data-close-exit-modal]").forEach((element) => {
+                element.addEventListener("click", () => this.closeExitModal());
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key !== "Escape" || elements.exitModal?.hidden) {
+                    return;
+                }
 
                 event.preventDefault();
+                this.closeExitModal();
+            });
+        }
 
-                event.returnValue = "";
+        initialiseView() {
+            this.populateLeadForm();
 
+            if (this.completed && this.hasReportData()) {
+                this.configureResumePanel(true);
+            } else if (this.started) {
+                this.configureResumePanel(false);
             }
 
-        });
+            this.showOnly("landing");
+        }
 
+        configureResumePanel(isCompleted) {
+            const { resumePanel, resumeMessage, resumeButton } = this.elements;
+
+            if (!resumePanel || !resumeMessage || !resumeButton) {
+                return;
+            }
+
+            resumePanel.hidden = false;
+
+            if (isCompleted) {
+                resumeMessage.textContent = "Your completed advisory is available on this device.";
+                resumeButton.textContent = "Open my saved advisory";
+            } else {
+                const chapter = MOMENTS[this.currentMoment]?.chapter ?? 0;
+                resumeMessage.textContent = `Continue with ${CHAPTERS[chapter].toLowerCase()}, or begin again.`;
+                resumeButton.textContent = "Continue my advisory";
+            }
+        }
+
+        startNewBriefing() {
+            this.started = true;
+            this.completed = false;
+            this.currentMoment = 0;
+            this.answers = {
+                locations: "1",
+                countries: "1",
+                expansionPlans: [],
+                priorities: []
+            };
+            this.lead = {
+                name: "",
+                email: "",
+                role: "",
+                serviceConsent: false,
+                marketingConsent: false
+            };
+            this.ui = {
+                showSupplementalWorkforce: false
+            };
+            this.populateLeadForm();
+            this.saveNow();
+            this.showMoment(0);
+            this.announce("Executive Advisory Briefing started.");
+        }
+
+        resumeBriefing() {
+            if (this.completed && this.hasReportData()) {
+                this.showSuccess();
+                return;
+            }
+
+            this.started = true;
+            this.showMoment(this.clampMoment(this.currentMoment));
+            this.announce(`Continuing at story ${this.currentMoment + 1} of ${MOMENTS.length}.`);
+        }
+
+        requestRestart() {
+            const shouldRestart = window.confirm(
+                "Start the advisory again? Your saved answers on this device will be cleared."
+            );
+
+            if (shouldRestart) {
+                this.clearSavedState();
+                this.startNewBriefing();
+            }
+        }
+
+        continueFromMoment() {
+            this.captureAllStoryInputs();
+            const isValid = MOMENTS[this.currentMoment].validate(this);
+
+            if (!isValid) {
+                return;
+            }
+
+            this.clearMomentErrors();
+            this.saveNow();
+
+            if (this.currentMoment >= MOMENTS.length - 1) {
+                this.showReview();
+                return;
+            }
+
+            this.showMoment(this.currentMoment + 1);
+        }
+
+        goBack() {
+            if (this.currentMoment <= 0) {
+                this.showOnly("landing");
+                this.elements.resumePanel.hidden = false;
+                return;
+            }
+
+            this.captureAllStoryInputs();
+            this.saveNow();
+            this.showMoment(this.currentMoment - 1);
+        }
+
+        showMoment(momentIndex) {
+            this.started = true;
+            this.currentMoment = this.clampMoment(momentIndex);
+            this.showOnly("workspace");
+            this.renderCurrentMoment();
+            this.saveNow();
+            this.focusScreen(this.elements.stepTitle);
+        }
+
+        renderCurrentMoment(options = {}) {
+            const moment = MOMENTS[this.currentMoment];
+
+            if (!moment || !this.elements.storyContainer) {
+                return;
+            }
+
+            const focusedId = options.preserveFocus ? document.activeElement?.id : null;
+
+            this.elements.storyEyebrow.textContent = moment.eyebrow;
+            this.elements.stepTitle.textContent = moment.title;
+            this.elements.stepDescription.textContent = moment.description;
+            this.elements.storyContainer.innerHTML = moment.render(this);
+
+            this.updateProgress();
+            this.updateChapterRail();
+            this.updateNavigation();
+            this.updateDynamicVisibility();
+
+            if (focusedId) {
+                document.getElementById(focusedId)?.focus({ preventScroll: true });
+            }
+        }
+
+        updateProgress() {
+            const moment = MOMENTS[this.currentMoment];
+            const progress = ((this.currentMoment + 1) / MOMENTS.length) * 100;
+            const remainingMinutes = Math.max(1, Math.ceil((MOMENTS.length - this.currentMoment) * 0.7));
+            const timeText = this.currentMoment >= MOMENTS.length - 1
+                ? "About 1 minute remaining"
+                : `About ${remainingMinutes} minutes remaining`;
+
+            this.elements.stepIndicator.textContent =
+                `Chapter ${moment.chapter + 1} of ${CHAPTERS.length} · ${CHAPTERS[moment.chapter]}`;
+            this.elements.desktopTime.textContent = timeText;
+            this.elements.mobileTime.textContent = timeText;
+            this.elements.footerMessage.textContent = `Story ${this.currentMoment + 1} of ${MOMENTS.length}`;
+            this.elements.progressBar.style.width = `${progress}%`;
+            this.elements.progressTrack.setAttribute("aria-valuenow", String(this.currentMoment + 1));
+            this.elements.progressTrack.setAttribute(
+                "aria-valuetext",
+                `Story ${this.currentMoment + 1} of ${MOMENTS.length}. ${timeText}.`
+            );
+        }
+
+        updateChapterRail() {
+            const currentChapter = MOMENTS[this.currentMoment].chapter;
+
+            this.elements.chapterRail?.querySelectorAll("[data-chapter]").forEach((item) => {
+                const chapter = Number(item.dataset.chapter);
+                const marker = item.querySelector(".advisory-chapter__marker");
+
+                item.classList.toggle("is-current", chapter === currentChapter);
+                item.classList.toggle("is-complete", chapter < currentChapter);
+
+                if (chapter === currentChapter) {
+                    item.setAttribute("aria-current", "step");
+                } else {
+                    item.removeAttribute("aria-current");
+                }
+
+                if (marker) {
+                    marker.textContent = chapter < currentChapter ? "✓" : String(chapter + 1);
+                }
+            });
+        }
+
+        updateNavigation() {
+            const finalMoment = this.currentMoment === MOMENTS.length - 1;
+
+            this.elements.backButton.hidden = false;
+            this.elements.nextButton.innerHTML = finalMoment
+                ? 'Review my organisation story <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>'
+                : 'Continue <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+        }
+
+        showReview() {
+            this.captureAllStoryInputs();
+            this.saveNow();
+            this.buildReviewSummaries();
+            this.showOnly("review");
+            this.focusScreen(this.elements.review);
+            this.announce("Your organisation story is ready to review.");
+        }
+
+        showContact() {
+            this.populateLeadForm();
+            this.clearLeadErrors();
+            this.showOnly("contact");
+            this.focusScreen(this.elements.contact);
+            this.announce("Final step. Enter your name and work email to generate the advisory.");
+        }
+
+        showSuccess() {
+            this.completed = true;
+            this.started = true;
+            this.populateSuccessDetails();
+            this.showOnly("success");
+            this.saveNow();
+            this.focusScreen(this.elements.success);
+            this.announce("Your advisory is ready.");
+        }
+
+        showOnly(screenName) {
+            const screens = {
+                landing: this.elements.landing,
+                workspace: this.elements.workspace,
+                review: this.elements.review,
+                contact: this.elements.contact,
+                loading: this.elements.loading,
+                success: this.elements.success
+            };
+
+            Object.entries(screens).forEach(([name, element]) => {
+                if (element) {
+                    element.hidden = name !== screenName;
+                }
+            });
+
+            if (this.elements.shell) {
+                this.elements.shell.dataset.screen = screenName;
+            }
+
+            this.elements.saveExitButton.hidden =
+                screenName === "landing" || screenName === "success";
+        }
+
+        renderBusinessBasics() {
+            return `
+                <div class="advisory-field-group">
+                    ${this.textField({
+                        id: "companyName",
+                        label: "What should we call your organisation?",
+                        helper: "Use the name your team and customers recognise.",
+                        placeholder: "Example: Acme Technologies",
+                        autocomplete: "organization",
+                        required: true
+                    })}
+
+                    ${this.datalistField({
+                        id: "industry",
+                        label: "Which industry comes closest?",
+                        helper: "Choose the nearest match. Enter Other when none fits exactly.",
+                        placeholder: "Start typing an industry",
+                        options: INDUSTRIES,
+                        required: true
+                    })}
+
+                    ${this.textareaField({
+                        id: "nature",
+                        label: "In one sentence, what does your organisation do?",
+                        helper: "Focus on what you provide and who you provide it to.",
+                        placeholder: "Example: We provide payroll software to growing Indian businesses.",
+                        maxlength: 220,
+                        required: true
+                    })}
+                </div>
+            `;
+        }
+
+        renderBusinessStage() {
+            const notSure = Boolean(this.answers.foundedNotSure);
+
+            return `
+                <div class="advisory-field-group">
+                    <div class="advisory-field" data-field-wrapper="founded">
+                        <label for="founded">
+                            When did the organisation begin operating?
+                            <span aria-hidden="true">*</span>
+                        </label>
+                        <input
+                            id="founded"
+                            name="founded"
+                            type="text"
+                            inputmode="numeric"
+                            maxlength="4"
+                            pattern="[0-9]{4}"
+                            placeholder="YYYY"
+                            value="${this.escapeAttribute(this.answers.founded || "")}"
+                            aria-describedby="foundedHelp foundedError"
+                            ${notSure ? "disabled" : ""}>
+                        <p id="foundedHelp" class="advisory-field-help">
+                            An approximate year is enough.
+                        </p>
+                        <label class="advisory-inline-check" for="foundedNotSure">
+                            <input
+                                id="foundedNotSure"
+                                name="foundedNotSure"
+                                type="checkbox"
+                                ${notSure ? "checked" : ""}>
+                            <span>I’m not sure</span>
+                        </label>
+                        <p id="foundedError" class="advisory-field-error" hidden></p>
+                    </div>
+
+                    ${this.selectField({
+                        id: "entity",
+                        label: "How is the organisation legally structured?",
+                        helper: "Choose the closest option. Not sure is a valid answer.",
+                        options: ENTITY_OPTIONS,
+                        placeholder: "Select a legal structure",
+                        required: true
+                    })}
+
+                    ${this.selectField({
+                        id: "fundingStage",
+                        label: "Which funding position is closest today?",
+                        helper: "Choose the closest position when it is relevant to your organisation.",
+                        options: FUNDING_OPTIONS,
+                        placeholder: "Select a funding position",
+                        optional: true
+                    })}
+                </div>
+            `;
+        }
+
+        renderWorkforce() {
+            const expanded = this.ui.showSupplementalWorkforce;
+
+            return `
+                <div class="advisory-field-group">
+                    ${this.numberField({
+                        id: "employees",
+                        label: "Roughly how many employees are on the team today?",
+                        helper: "A rounded number is perfectly fine.",
+                        placeholder: "Example: 75",
+                        required: true,
+                        min: 0
+                    })}
+
+                    <div class="advisory-disclosure">
+                        <button
+                            class="advisory-disclosure__button"
+                            type="button"
+                            data-toggle-supplemental-workforce
+                            aria-expanded="${expanded}">
+                            <span>
+                                <strong>Add contractors, interns or apprentices</strong>
+                                <small>Optional</small>
+                            </span>
+                            <i class="fa-solid fa-chevron-${expanded ? "up" : "down"}" aria-hidden="true"></i>
+                        </button>
+
+                        <div class="advisory-disclosure__content" ${expanded ? "" : "hidden"}>
+                            <div class="advisory-compact-field-grid">
+                                ${this.numberField({
+                                    id: "contractWorkers",
+                                    label: "Contract and outsourced workers",
+                                    optional: true,
+                                    min: 0
+                                })}
+
+                                ${this.numberField({
+                                    id: "interns",
+                                    label: "Interns",
+                                    optional: true,
+                                    min: 0
+                                })}
+
+                                ${this.numberField({
+                                    id: "apprentices",
+                                    label: "Apprentices",
+                                    optional: true,
+                                    min: 0
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        renderWorkingModel() {
+            return `
+                <div class="advisory-field-group">
+                    ${this.choiceCards({
+                        id: "workModel",
+                        legend: "Which working model is closest?",
+                        options: WORK_MODEL_OPTIONS,
+                        columns: 2,
+                        required: true
+                    })}
+
+                    ${this.choicePills({
+                        id: "remoteBand",
+                        legend: "About how much of the workforce works remotely?",
+                        options: REMOTE_OPTIONS,
+                        required: true
+                    })}
+
+                    <div
+                        id="remoteExactField"
+                        class="advisory-field advisory-field--nested"
+                        data-field-wrapper="remoteExact"
+                        ${this.answers.remoteBand === "exact" ? "" : "hidden"}>
+                        <label for="remoteExact">Exact remote workforce percentage</label>
+                        <div class="advisory-suffix-input">
+                            <input
+                                id="remoteExact"
+                                name="remoteExact"
+                                type="number"
+                                min="0"
+                                max="100"
+                                step="1"
+                                inputmode="numeric"
+                                value="${this.escapeAttribute(this.answers.remoteExact || "")}
+                                aria-describedby="remoteExactError">
+                            <span aria-hidden="true">%</span>
+                        </div>
+                        <p id="remoteExactError" class="advisory-field-error" hidden></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        renderOperatingFootprint() {
+            return `
+                <div class="advisory-field-group">
+                    ${this.datalistField({
+                        id: "primaryState",
+                        label: "Where is your primary operating base?",
+                        helper: "Select the headquarters or principal operating location.",
+                        placeholder: "Start typing a state or union territory",
+                        options: STATES,
+                        required: true
+                    })}
+
+                    <div class="advisory-compact-field-grid advisory-compact-field-grid--two">
+                        ${this.numberField({
+                            id: "locations",
+                            label: "How many permanent operating locations do you have?",
+                            helper: "Include offices, plants, branches and other permanent sites.",
+                            required: true,
+                            min: 1
+                        })}
+
+                        ${this.numberField({
+                            id: "countries",
+                            label: "In how many countries do you currently operate?",
+                            helper: "Enter one when all operations are within a single country.",
+                            required: true,
+                            min: 1
+                        })}
+                    </div>
+                </div>
+            `;
+        }
+
+        renderGrowthDirection() {
+            return `
+                <div class="advisory-field-group">
+                    ${this.choiceCards({
+                        id: "hiringPlans",
+                        legend: "What best describes your hiring plans for the next 12 months?",
+                        options: HIRING_OPTIONS,
+                        columns: 1,
+                        required: true
+                    })}
+
+                    ${this.checkboxCards({
+                        id: "expansionPlans",
+                        legend: "What changes are most likely over the next 12–18 months?",
+                        helper: "Select everything that applies.",
+                        options: EXPANSION_OPTIONS,
+                        required: true
+                    })}
+
+                    ${this.textareaField({
+                        id: "growthContext",
+                        label: "Is there anything else about your plans that would help us understand the context?",
+                        helper: "Optional · A sentence or two is enough.",
+                        placeholder: "Add any useful context",
+                        maxlength: 240,
+                        optional: true,
+                        showCounter: true
+                    })}
+                </div>
+            `;
+        }
+
+        renderPeopleReadiness() {
+            return `
+                <div class="advisory-field-group">
+                    ${this.choiceCards({
+                        id: "peopleFunction",
+                        legend: "Which description is closest to your current People or HR function?",
+                        options: PEOPLE_FUNCTION_OPTIONS,
+                        columns: 2,
+                        required: true
+                    })}
+
+                    ${this.checkboxCards({
+                        id: "priorities",
+                        legend: "Where would guidance be most useful right now?",
+                        helper: "Choose up to three priorities.",
+                        options: PRIORITY_OPTIONS,
+                        required: true,
+                        maximum: 3
+                    })}
+                </div>
+            `;
+        }
+
+        textField({ id, label, helper = "", placeholder = "", autocomplete = "off", required = false, optional = false }) {
+            return `
+                <div class="advisory-field" data-field-wrapper="${id}">
+                    <label for="${id}">
+                        ${label}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                        ${optional ? '<span class="advisory-optional-label">Optional</span>' : ""}
+                    </label>
+                    <input
+                        id="${id}"
+                        name="${id}"
+                        type="text"
+                        autocomplete="${autocomplete}"
+                        placeholder="${this.escapeAttribute(placeholder)}"
+                        value="${this.escapeAttribute(this.answers[id] || "")}"
+                        aria-describedby="${helper ? `${id}Help ` : ""}${id}Error"
+                        ${required ? "required" : ""}>
+                    ${helper ? `<p id="${id}Help" class="advisory-field-help">${helper}</p>` : ""}
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </div>
+            `;
+        }
+
+        textareaField({ id, label, helper = "", placeholder = "", maxlength = 240, required = false, optional = false, showCounter = false }) {
+            const value = String(this.answers[id] || "");
+
+            return `
+                <div class="advisory-field" data-field-wrapper="${id}">
+                    <label for="${id}">
+                        ${label}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                        ${optional ? '<span class="advisory-optional-label">Optional</span>' : ""}
+                    </label>
+                    <textarea
+                        id="${id}"
+                        name="${id}"
+                        rows="4"
+                        maxlength="${maxlength}"
+                        placeholder="${this.escapeAttribute(placeholder)}"
+                        aria-describedby="${helper ? `${id}Help ` : ""}${id}Error"
+                        ${required ? "required" : ""}>${this.escapeHtml(value)}</textarea>
+                    <div class="advisory-field-meta">
+                        ${helper ? `<p id="${id}Help" class="advisory-field-help">${helper}</p>` : "<span></span>"}
+                        ${showCounter ? `<span id="${id}Counter" class="advisory-character-count">${value.length}/${maxlength}</span>` : ""}
+                    </div>
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </div>
+            `;
+        }
+
+        numberField({ id, label, helper = "", placeholder = "", required = false, optional = false, min = 0, max = "" }) {
+            return `
+                <div class="advisory-field" data-field-wrapper="${id}">
+                    <label for="${id}">
+                        ${label}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                        ${optional ? '<span class="advisory-optional-label">Optional</span>' : ""}
+                    </label>
+                    <input
+                        id="${id}"
+                        name="${id}"
+                        type="number"
+                        inputmode="numeric"
+                        step="1"
+                        min="${min}"
+                        ${max !== "" ? `max="${max}"` : ""}
+                        placeholder="${this.escapeAttribute(placeholder)}"
+                        value="${this.escapeAttribute(this.answers[id] ?? "")}"
+                        aria-describedby="${helper ? `${id}Help ` : ""}${id}Error"
+                        ${required ? "required" : ""}>
+                    ${helper ? `<p id="${id}Help" class="advisory-field-help">${helper}</p>` : ""}
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </div>
+            `;
+        }
+
+        datalistField({ id, label, helper = "", placeholder = "", options = [], required = false }) {
+            return `
+                <div class="advisory-field" data-field-wrapper="${id}">
+                    <label for="${id}">
+                        ${label}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                    </label>
+                    <input
+                        id="${id}"
+                        name="${id}"
+                        type="search"
+                        list="${id}Options"
+                        autocomplete="off"
+                        placeholder="${this.escapeAttribute(placeholder)}"
+                        value="${this.escapeAttribute(this.answers[id] || "")}"
+                        aria-describedby="${helper ? `${id}Help ` : ""}${id}Error"
+                        ${required ? "required" : ""}>
+                    <datalist id="${id}Options">
+                        ${options.map((option) => `<option value="${this.escapeAttribute(option)}"></option>`).join("")}
+                    </datalist>
+                    ${helper ? `<p id="${id}Help" class="advisory-field-help">${helper}</p>` : ""}
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </div>
+            `;
+        }
+
+        selectField({ id, label, helper = "", options = [], placeholder = "Please select", required = false, optional = false }) {
+            return `
+                <div class="advisory-field" data-field-wrapper="${id}">
+                    <label for="${id}">
+                        ${label}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                        ${optional ? '<span class="advisory-optional-label">Optional</span>' : ""}
+                    </label>
+                    <select
+                        id="${id}"
+                        name="${id}"
+                        aria-describedby="${helper ? `${id}Help ` : ""}${id}Error"
+                        ${required ? "required" : ""}>
+                        <option value="">${placeholder}</option>
+                        ${options.map(([value, optionLabel]) => `
+                            <option
+                                value="${this.escapeAttribute(value)}"
+                                ${this.answers[id] === value ? "selected" : ""}>
+                                ${optionLabel}
+                            </option>
+                        `).join("")}
+                    </select>
+                    ${helper ? `<p id="${id}Help" class="advisory-field-help">${helper}</p>` : ""}
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </div>
+            `;
+        }
+
+        choiceCards({ id, legend, options, columns = 2, required = false }) {
+            return `
+                <fieldset
+                    class="advisory-choice-fieldset advisory-choice-fieldset--columns-${columns}"
+                    data-field-wrapper="${id}">
+                    <legend>
+                        ${legend}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                    </legend>
+                    <div class="advisory-choice-grid">
+                        ${options.map(([value, label, description]) => `
+                            <label class="advisory-choice-card">
+                                <input
+                                    type="radio"
+                                    name="${id}"
+                                    value="${this.escapeAttribute(value)}"
+                                    ${this.answers[id] === value ? "checked" : ""}>
+                                <span class="advisory-choice-card__surface">
+                                    <strong>${label}</strong>
+                                    ${description ? `<small>${description}</small>` : ""}
+                                </span>
+                            </label>
+                        `).join("")}
+                    </div>
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </fieldset>
+            `;
+        }
+
+        choicePills({ id, legend, options, required = false }) {
+            return `
+                <fieldset class="advisory-choice-fieldset" data-field-wrapper="${id}">
+                    <legend>
+                        ${legend}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                    </legend>
+                    <div class="advisory-choice-pills">
+                        ${options.map(([value, label]) => `
+                            <label class="advisory-choice-pill">
+                                <input
+                                    type="radio"
+                                    name="${id}"
+                                    value="${this.escapeAttribute(value)}"
+                                    ${this.answers[id] === value ? "checked" : ""}>
+                                <span>${label}</span>
+                            </label>
+                        `).join("")}
+                    </div>
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </fieldset>
+            `;
+        }
+
+        checkboxCards({ id, legend, helper = "", options, required = false, maximum = null }) {
+            const selected = Array.isArray(this.answers[id]) ? this.answers[id] : [];
+
+            return `
+                <fieldset class="advisory-choice-fieldset" data-field-wrapper="${id}" data-maximum="${maximum || ""}">
+                    <legend>
+                        ${legend}
+                        ${required ? '<span aria-hidden="true">*</span>' : ""}
+                    </legend>
+                    ${helper ? `<p class="advisory-field-help">${helper}</p>` : ""}
+                    <div class="advisory-checkbox-grid">
+                        ${options.map(([value, label]) => `
+                            <label class="advisory-checkbox-card">
+                                <input
+                                    type="checkbox"
+                                    name="${id}"
+                                    value="${this.escapeAttribute(value)}"
+                                    ${selected.includes(value) ? "checked" : ""}>
+                                <span>
+                                    <i class="fa-solid fa-check" aria-hidden="true"></i>
+                                    ${label}
+                                </span>
+                            </label>
+                        `).join("")}
+                    </div>
+                    <p id="${id}Error" class="advisory-field-error" hidden></p>
+                </fieldset>
+            `;
+        }
+
+        captureStoryInput(target) {
+            if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement)) {
+                return;
+            }
+
+            const { name, type } = target;
+
+            if (!name) {
+                return;
+            }
+
+            if (type === "checkbox") {
+                if (name === "foundedNotSure") {
+                    this.answers.foundedNotSure = target.checked;
+
+                    if (target.checked) {
+                        this.answers.founded = "";
+                    }
+                } else {
+                    const checked = Array.from(
+                        this.elements.storyContainer.querySelectorAll(`input[name="${this.cssEscape(name)}"]:checked`)
+                    ).map((input) => input.value);
+
+                    const maximum = Number(target.closest("[data-maximum]")?.dataset.maximum || 0);
+
+                    if (maximum && checked.length > maximum) {
+                        target.checked = false;
+                        this.setFieldError(name, `Choose no more than ${maximum} priorities.`);
+                        this.announce(`Choose no more than ${maximum} priorities.`, true);
+                        return;
+                    }
+
+                    this.answers[name] = checked;
+                    this.clearFieldError(name);
+                }
+            } else if (type === "radio") {
+                if (!target.checked) {
+                    return;
+                }
+
+                this.answers[name] = target.value;
+                this.clearFieldError(name);
+            } else {
+                this.answers[name] = target.value;
+
+                if (target.id === "growthContext") {
+                    const counter = document.getElementById("growthContextCounter");
+                    if (counter) {
+                        counter.textContent = `${target.value.length}/${target.maxLength}`;
+                    }
+                }
+            }
+
+            this.updateDynamicVisibility();
+            this.queueSave();
+        }
+
+        captureAllStoryInputs() {
+            this.elements.storyContainer?.querySelectorAll("input, select, textarea").forEach((input) => {
+                this.captureStoryInput(input);
+            });
+        }
+
+        handleDynamicControl(target) {
+            if (target.name === "foundedNotSure" || target.name === "remoteBand") {
+                this.updateDynamicVisibility();
+            }
+        }
+
+        updateDynamicVisibility() {
+            const founded = document.getElementById("founded");
+            const foundedNotSure = document.getElementById("foundedNotSure");
+
+            if (founded && foundedNotSure) {
+                founded.disabled = foundedNotSure.checked;
+            }
+
+            const remoteExactField = document.getElementById("remoteExactField");
+
+            if (remoteExactField) {
+                remoteExactField.hidden = this.answers.remoteBand !== "exact";
+            }
+        }
+
+        validateBusinessBasics() {
+            let valid = true;
+
+            valid = this.requireText("companyName", "Enter your organisation’s name.") && valid;
+            valid = this.requireText("industry", "Choose or enter the closest industry.") && valid;
+            valid = this.requireText("nature", "Describe what your organisation does in one sentence.") && valid;
+
+            return this.finishMomentValidation(valid);
+        }
+
+        validateBusinessStage() {
+            let valid = true;
+            const year = String(this.answers.founded || "").trim();
+            const currentYear = new Date().getFullYear();
+
+            if (!this.answers.foundedNotSure) {
+                const numericYear = Number(year);
+                const yearValid = /^\d{4}$/.test(year) && numericYear >= 1800 && numericYear <= currentYear;
+
+                if (!yearValid) {
+                    this.setFieldError("founded", `Enter a four-digit year between 1800 and ${currentYear}, or choose “I’m not sure”.`);
+                    valid = false;
+                } else {
+                    this.clearFieldError("founded");
+                }
+            } else {
+                this.clearFieldError("founded");
+            }
+
+            valid = this.requireText("entity", "Select the closest legal structure.") && valid;
+
+            return this.finishMomentValidation(valid);
+        }
+
+        validateWorkforce() {
+            const valid = this.requireWholeNumber(
+                "employees",
+                "Enter an approximate employee count. Zero is valid when there are currently no employees.",
+                0
+            );
+
+            ["contractWorkers", "interns", "apprentices"].forEach((id) => {
+                const value = String(this.answers[id] ?? "").trim();
+
+                if (value && !this.isWholeNumber(value, 0)) {
+                    this.setFieldError(id, "Enter a whole number of zero or more, or leave this optional field blank.");
+                } else {
+                    this.clearFieldError(id);
+                }
+            });
+
+            const optionalValid = ["contractWorkers", "interns", "apprentices"].every((id) => {
+                const value = String(this.answers[id] ?? "").trim();
+                return !value || this.isWholeNumber(value, 0);
+            });
+
+            return this.finishMomentValidation(valid && optionalValid);
+        }
+
+        validateWorkingModel() {
+            let valid = true;
+
+            valid = this.requireText("workModel", "Choose the working model that is closest today.") && valid;
+            valid = this.requireText("remoteBand", "Choose the closest remote-work range.") && valid;
+
+            if (this.answers.remoteBand === "exact") {
+                const exact = String(this.answers.remoteExact ?? "").trim();
+                const numeric = Number(exact);
+
+                if (exact === "" || !Number.isFinite(numeric) || numeric < 0 || numeric > 100) {
+                    this.setFieldError("remoteExact", "Enter a percentage between 0 and 100.");
+                    valid = false;
+                } else {
+                    this.clearFieldError("remoteExact");
+                }
+            } else {
+                this.clearFieldError("remoteExact");
+            }
+
+            return this.finishMomentValidation(valid);
+        }
+
+        validateOperatingFootprint() {
+            let valid = true;
+
+            valid = this.requireText("primaryState", "Enter the organisation’s primary operating location.") && valid;
+            valid = this.requireWholeNumber("locations", "Enter at least one permanent operating location.", 1) && valid;
+            valid = this.requireWholeNumber("countries", "Enter at least one country.", 1) && valid;
+
+            return this.finishMomentValidation(valid);
+        }
+
+        validateGrowthDirection() {
+            let valid = true;
+
+            valid = this.requireText("hiringPlans", "Choose the hiring outlook that is closest today.") && valid;
+
+            if (!Array.isArray(this.answers.expansionPlans) || this.answers.expansionPlans.length === 0) {
+                this.setFieldError("expansionPlans", "Select at least one likely change.");
+                valid = false;
+            } else {
+                this.clearFieldError("expansionPlans");
+            }
+
+            return this.finishMomentValidation(valid);
+        }
+
+        validatePeopleReadiness() {
+            let valid = true;
+
+            valid = this.requireText("peopleFunction", "Choose the description closest to your current People or HR support.") && valid;
+
+            const priorities = Array.isArray(this.answers.priorities) ? this.answers.priorities : [];
+
+            if (priorities.length === 0) {
+                this.setFieldError("priorities", "Choose at least one area where guidance would help.");
+                valid = false;
+            } else if (priorities.length > 3) {
+                this.setFieldError("priorities", "Choose no more than three priorities.");
+                valid = false;
+            } else {
+                this.clearFieldError("priorities");
+            }
+
+            return this.finishMomentValidation(valid);
+        }
+
+        requireText(id, message) {
+            const value = String(this.answers[id] ?? "").trim();
+
+            if (!value) {
+                this.setFieldError(id, message);
+                return false;
+            }
+
+            this.answers[id] = value;
+            this.clearFieldError(id);
+            return true;
+        }
+
+        requireWholeNumber(id, message, minimum) {
+            const value = String(this.answers[id] ?? "").trim();
+
+            if (!this.isWholeNumber(value, minimum)) {
+                this.setFieldError(id, message);
+                return false;
+            }
+
+            this.clearFieldError(id);
+            return true;
+        }
+
+        isWholeNumber(value, minimum = 0) {
+            if (!/^\d+$/.test(String(value))) {
+                return false;
+            }
+
+            const numeric = Number(value);
+            return Number.isSafeInteger(numeric) && numeric >= minimum;
+        }
+
+        finishMomentValidation(valid) {
+            if (valid) {
+                return true;
+            }
+
+            const firstInvalid = this.elements.storyContainer?.querySelector(
+                ".has-error input:not([type='hidden']), .has-error select, .has-error textarea, .has-error [tabindex='0']"
+            ) || this.elements.storyContainer?.querySelector(".has-error input");
+
+            firstInvalid?.focus({ preventScroll: false });
+            firstInvalid?.scrollIntoView({ behavior: this.prefersReducedMotion() ? "auto" : "smooth", block: "center" });
+            this.announce("Review the highlighted information before continuing.", true);
+            return false;
+        }
+
+        setFieldError(id, message) {
+            const wrapper = this.elements.storyContainer?.querySelector(`[data-field-wrapper="${this.cssEscape(id)}"]`);
+            const error = document.getElementById(`${id}Error`);
+            const input = wrapper?.querySelector("input, select, textarea");
+
+            wrapper?.classList.add("has-error");
+
+            if (input) {
+                input.setAttribute("aria-invalid", "true");
+            }
+
+            if (error) {
+                error.textContent = message;
+                error.hidden = false;
+            }
+        }
+
+        clearFieldError(id) {
+            const wrapper = this.elements.storyContainer?.querySelector(`[data-field-wrapper="${this.cssEscape(id)}"]`);
+            const error = document.getElementById(`${id}Error`);
+
+            wrapper?.classList.remove("has-error");
+            wrapper?.querySelectorAll("[aria-invalid='true']").forEach((element) => {
+                element.removeAttribute("aria-invalid");
+            });
+
+            if (error) {
+                error.textContent = "";
+                error.hidden = true;
+            }
+        }
+
+        clearMomentErrors() {
+            this.elements.storyContainer?.querySelectorAll(".has-error").forEach((element) => {
+                element.classList.remove("has-error");
+            });
+            this.elements.storyContainer?.querySelectorAll("[aria-invalid='true']").forEach((element) => {
+                element.removeAttribute("aria-invalid");
+            });
+            this.elements.storyContainer?.querySelectorAll(".advisory-field-error").forEach((element) => {
+                element.textContent = "";
+                element.hidden = true;
+            });
+        }
+
+        buildReviewSummaries() {
+            const company = this.answerText("companyName", "Your organisation");
+            const industry = this.answerText("industry", "the selected industry");
+            const founded = this.answers.foundedNotSure
+                ? "with its founding year not specified"
+                : this.answers.founded
+                    ? `established in ${this.answers.founded}`
+                    : "with its founding year not specified";
+            const entity = this.answerText("entity", "its selected legal structure");
+            const nature = this.answerText("nature", "Its primary business has not been described yet");
+
+            this.elements.businessSummary.textContent =
+                `${company} is a ${industry} organisation ${founded}. It operates as ${this.withArticle(entity)}. ${this.ensureSentence(nature)}`;
+
+            const employees = this.numberText(this.answers.employees, "an unspecified number of");
+            const workforceParts = [];
+
+            if (this.hasNumber(this.answers.contractWorkers)) {
+                workforceParts.push(`${this.answers.contractWorkers} supporting contractors`);
+            }
+            if (this.hasNumber(this.answers.interns)) {
+                workforceParts.push(`${this.answers.interns} interns`);
+            }
+            if (this.hasNumber(this.answers.apprentices)) {
+                workforceParts.push(`${this.answers.apprentices} apprentices`);
+            }
+
+            const workforceDetail = workforceParts.length
+                ? `, alongside ${this.humanList(workforceParts)}`
+                : "";
+            const workModel = this.answerText("workModel", "the selected working model").toLowerCase();
+            const remoteDescription = this.remoteDescription();
+
+            this.elements.peopleSummary.textContent =
+                `The organisation has approximately ${employees} employees${workforceDetail}. The team works through ${workModel}, with ${remoteDescription}.`;
+
+            const state = this.answerText("primaryState", "an unspecified primary location");
+            const locations = this.answerText("locations", "an unspecified number of");
+            const countries = this.answerText("countries", "an unspecified number of");
+
+            this.elements.operationsSummary.textContent =
+                `Operations are primarily based in ${state}, across ${locations} permanent ${this.pluralise("location", locations)} in ${countries} ${this.pluralise("country", countries)}.`;
+
+            const hiring = this.hiringDescription();
+            const expansion = this.labelsFor(this.answers.expansionPlans, EXPANSION_OPTIONS);
+            const priorities = this.labelsFor(this.answers.priorities, PRIORITY_OPTIONS);
+            const expansionText = expansion.length ? this.humanList(expansion).toLowerCase() : "keep its plans flexible";
+            const priorityText = priorities.length ? this.humanList(priorities).toLowerCase() : "people planning";
+
+            this.elements.growthSummary.textContent =
+                `The organisation expects to ${hiring} and is likely to ${expansionText}. Its immediate advisory priorities are ${priorityText}.`;
+        }
+
+        captureLeadData() {
+            this.lead.name = this.elements.leadName?.value.trim() || "";
+            this.lead.email = this.elements.leadEmail?.value.trim() || "";
+            this.lead.role = this.elements.leadRole?.value || "";
+            this.lead.serviceConsent = Boolean(this.elements.serviceConsent?.checked);
+            this.lead.marketingConsent = Boolean(this.elements.marketingConsent?.checked);
+        }
+
+        populateLeadForm() {
+            if (this.elements.leadName) {
+                this.elements.leadName.value = this.lead.name || "";
+            }
+            if (this.elements.leadEmail) {
+                this.elements.leadEmail.value = this.lead.email || "";
+            }
+            if (this.elements.leadRole) {
+                this.elements.leadRole.value = this.lead.role || "";
+            }
+            if (this.elements.serviceConsent) {
+                this.elements.serviceConsent.checked = Boolean(this.lead.serviceConsent);
+            }
+            if (this.elements.marketingConsent) {
+                this.elements.marketingConsent.checked = Boolean(this.lead.marketingConsent);
+            }
+        }
+
+        validateLead() {
+            this.captureLeadData();
+            this.clearLeadErrors();
+            let valid = true;
+
+            if (!this.lead.name) {
+                this.showLeadError(this.elements.leadName, this.elements.leadNameError, "Enter your name to continue.");
+                valid = false;
+            }
+
+            if (!this.lead.email) {
+                this.showLeadError(this.elements.leadEmail, this.elements.leadEmailError, "Enter your work email to continue.");
+                valid = false;
+            } else if (!this.isValidEmail(this.lead.email)) {
+                this.showLeadError(
+                    this.elements.leadEmail,
+                    this.elements.leadEmailError,
+                    "Enter a valid email address, such as name@company.com."
+                );
+                valid = false;
+            }
+
+            if (!this.lead.serviceConsent) {
+                this.showLeadError(
+                    this.elements.serviceConsent,
+                    this.elements.serviceConsentError,
+                    "Please confirm that we may send your advisory and related service communications."
+                );
+                valid = false;
+            }
+
+            if (!valid) {
+                const firstInvalid = this.elements.leadForm?.querySelector("[aria-invalid='true']");
+                firstInvalid?.focus();
+                firstInvalid?.scrollIntoView({ behavior: this.prefersReducedMotion() ? "auto" : "smooth", block: "center" });
+                this.announce("Review the highlighted contact details before generating your advisory.", true);
+            }
+
+            return valid;
+        }
+
+        showLeadError(input, errorElement, message) {
+            input?.setAttribute("aria-invalid", "true");
+            input?.closest(".advisory-field, .advisory-consent-group")?.classList.add("has-error");
+
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.hidden = false;
+            }
+        }
+
+        clearLeadErrors() {
+            [this.elements.leadName, this.elements.leadEmail, this.elements.serviceConsent].forEach((input) => {
+                input?.removeAttribute("aria-invalid");
+                input?.closest(".advisory-field, .advisory-consent-group")?.classList.remove("has-error");
+            });
+
+            [this.elements.leadNameError, this.elements.leadEmailError, this.elements.serviceConsentError].forEach((error) => {
+                if (error) {
+                    error.textContent = "";
+                    error.hidden = true;
+                }
+            });
+        }
+
+        async submitLeadAndGenerate() {
+            if (!this.validateLead()) {
+                return;
+            }
+
+            this.saveNow();
+            this.writeLeadRecord();
+            this.writeReportData();
+
+            try {
+                await this.submitLeadToEndpoint("capture");
+                this.generateAdvisory();
+            } catch (error) {
+                console.error("GrowWithHR: lead submission failed.", error);
+                this.showGenerationError(
+                    "We couldn’t securely save your advisory details. Your answers remain saved on this device."
+                );
+            }
+        }
+
+        generateAdvisory() {
+            this.clearGenerationTimers();
+            this.showOnly("loading");
+            this.elements.generationError.hidden = true;
+            this.elements.generationSteps.hidden = false;
+            this.elements.loadingMessage.hidden = false;
+            this.resetGenerationSteps();
+            this.focusScreen(this.elements.loading);
+
+            const messages = [
+                "Organising your context…",
+                "Identifying people priorities…",
+                "Preparing recommended next steps…"
+            ];
+            const delay = this.prefersReducedMotion() ? 80 : 360;
+
+            messages.forEach((message, index) => {
+                const timer = window.setTimeout(() => {
+                    this.setGenerationStep(index, message);
+                }, delay * index);
+
+                this.generationTimers.push(timer);
+            });
+
+            const completionTimer = window.setTimeout(() => {
+                this.writeReportData();
+                this.showSuccess();
+            }, delay * messages.length + (this.prefersReducedMotion() ? 80 : 220));
+
+            this.generationTimers.push(completionTimer);
+        }
+
+        resetGenerationSteps() {
+            this.elements.generationSteps?.querySelectorAll("[data-generation-step]").forEach((item, index) => {
+                item.classList.toggle("is-active", index === 0);
+                item.classList.remove("is-complete");
+                const icon = item.querySelector("i");
+                if (icon) {
+                    icon.className = index === 0
+                        ? "fa-solid fa-circle-notch"
+                        : "fa-regular fa-circle";
+                }
+            });
+        }
+
+        setGenerationStep(activeIndex, message) {
+            this.elements.generationSteps?.querySelectorAll("[data-generation-step]").forEach((item, index) => {
+                const icon = item.querySelector("i");
+                item.classList.toggle("is-active", index === activeIndex);
+                item.classList.toggle("is-complete", index < activeIndex);
+
+                if (!icon) {
+                    return;
+                }
+
+                if (index < activeIndex) {
+                    icon.className = "fa-solid fa-circle-check";
+                } else if (index === activeIndex) {
+                    icon.className = "fa-solid fa-circle-notch";
+                } else {
+                    icon.className = "fa-regular fa-circle";
+                }
+            });
+
+            this.elements.loadingMessage.textContent = message;
+        }
+
+        showGenerationError(message) {
+            this.clearGenerationTimers();
+            this.showOnly("loading");
+            this.elements.generationSteps.hidden = true;
+            this.elements.loadingMessage.hidden = true;
+            this.elements.generationError.hidden = false;
+
+            const paragraph = this.elements.generationError.querySelector("p");
+            if (paragraph && message) {
+                paragraph.textContent = message;
+            }
+
+            this.focusScreen(this.elements.loading);
+            this.announce("We could not prepare the advisory yet. Your answers are saved.", true);
+        }
+
+        populateSuccessDetails() {
+            const date = new Intl.DateTimeFormat("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }).format(new Date());
+
+            this.elements.preparedForName.textContent = this.lead.name || "you";
+            this.elements.preparedForCompany.textContent = this.answers.companyName || "Your organisation";
+            this.elements.preparedDate.textContent = date;
+            this.elements.preparedDate.dateTime = new Date().toISOString().slice(0, 10);
+        }
+
+        downloadReport() {
+            this.writeReportData();
+            const reportWindow = window.open(this.reportUrl, "_blank");
+
+            if (!reportWindow) {
+                this.announce("Allow pop-ups to open the printable advisory.", true);
+                return;
+            }
+
+            try {
+                reportWindow.opener = null;
+            } catch (error) {
+                // Some browsers protect the opener property. Printing can continue.
+            }
+
+            const requestPrint = () => {
+                try {
+                    reportWindow.focus();
+                    reportWindow.print();
+                } catch (error) {
+                    console.warn("GrowWithHR: automatic print could not start.", error);
+                }
+            };
+
+            reportWindow.addEventListener("load", () => window.setTimeout(requestPrint, 500), { once: true });
+        }
+
+        async requestAnotherEmail() {
+            const button = this.elements.emailAgainButton;
+
+            if (!button) {
+                return;
+            }
+
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = "Requesting another copy…";
+
+            try {
+                await this.submitLeadToEndpoint("resend");
+                button.textContent = "Copy requested";
+                this.announce(`Another advisory copy has been requested for ${this.lead.email}.`);
+            } catch (error) {
+                button.textContent = "Couldn’t request copy";
+                this.announce("We could not request another email copy just yet.", true);
+            } finally {
+                window.setTimeout(() => {
+                    button.disabled = false;
+                    button.textContent = originalText;
+                }, 1800);
+            }
+        }
+
+        writeReportData() {
+            const reportData = {
+                companyName: this.answers.companyName || "",
+                industry: this.answers.industry || "",
+                nature: this.answers.nature || "",
+                founded: this.answers.foundedNotSure ? "Not Sure" : (this.answers.founded || ""),
+                entity: this.answers.entity || "",
+                fundingStage: this.answers.fundingStage || "",
+                employees: this.normaliseNumber(this.answers.employees),
+                contractWorkers: this.normaliseNumber(this.answers.contractWorkers),
+                interns: this.normaliseNumber(this.answers.interns),
+                apprentices: this.normaliseNumber(this.answers.apprentices),
+                workModel: this.answers.workModel || "",
+                remoteWorkforce: this.remoteReportValue(),
+                primaryState: this.answers.primaryState || "",
+                state: this.answers.primaryState || "",
+                locations: this.normaliseNumber(this.answers.locations, 1),
+                countries: this.normaliseNumber(this.answers.countries, 1),
+                hiringPlans: this.answers.hiringPlans || "",
+                expansionPlans: this.labelsFor(this.answers.expansionPlans, EXPANSION_OPTIONS).join(", "),
+                expansionPlanCodes: Array.isArray(this.answers.expansionPlans) ? this.answers.expansionPlans : [],
+                growthContext: this.answers.growthContext || "",
+                peopleFunction: this.answers.peopleFunction || "",
+                priorities: this.labelsFor(this.answers.priorities, PRIORITY_OPTIONS),
+                priorityCodes: Array.isArray(this.answers.priorities) ? this.answers.priorities : [],
+                recipientName: this.lead.name,
+                recipientEmail: this.lead.email,
+                recipientRole: ROLE_LABELS[this.lead.role] || this.lead.role || "",
+                serviceConsent: this.lead.serviceConsent,
+                marketingConsent: this.lead.marketingConsent,
+                generatedAt: new Date().toISOString(),
+                source: "Executive Advisory Briefing v2"
+            };
+
+            try {
+                localStorage.setItem(REPORT_KEY, JSON.stringify(reportData));
+            } catch (error) {
+                console.warn("GrowWithHR: report data could not be saved.", error);
+            }
+
+            return reportData;
+        }
+
+        writeLeadRecord() {
+            const leadRecord = {
+                name: this.lead.name,
+                email: this.lead.email,
+                role: ROLE_LABELS[this.lead.role] || this.lead.role || "",
+                serviceConsent: this.lead.serviceConsent,
+                marketingConsent: this.lead.marketingConsent,
+                companyName: this.answers.companyName || "",
+                industry: this.answers.industry || "",
+                employees: this.normaliseNumber(this.answers.employees),
+                peopleFunction: this.answers.peopleFunction || "",
+                priorities: this.labelsFor(this.answers.priorities, PRIORITY_OPTIONS),
+                capturedAt: new Date().toISOString(),
+                source: "Executive Advisory Briefing"
+            };
+
+            try {
+                localStorage.setItem(LEAD_KEY, JSON.stringify(leadRecord));
+            } catch (error) {
+                console.warn("GrowWithHR: lead record could not be saved locally.", error);
+            }
+
+            window.dispatchEvent(new CustomEvent("growwithhr:lead-captured", {
+                detail: leadRecord
+            }));
+
+            return leadRecord;
+        }
+
+        async submitLeadToEndpoint(action) {
+            const endpoint = document.body.dataset.leadEndpoint || window.GROWWITHHR_LEAD_ENDPOINT;
+            const payload = {
+                action,
+                lead: this.writeLeadRecord(),
+                advisory: this.writeReportData()
+            };
+
+            // The repository currently has no lead API. The event and local record
+            // above keep the page functional and provide an integration point.
+            if (!endpoint) {
+                return { ok: true, mode: "local-integration-hook" };
+            }
+
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload),
+                credentials: "same-origin"
+            });
+
+            if (!response.ok) {
+                throw new Error(`Lead endpoint returned ${response.status}.`);
+            }
+
+            return response;
+        }
+
+        saveNow() {
+            const state = {
+                version: "2.0.0",
+                started: this.started,
+                completed: this.completed,
+                currentMoment: this.currentMoment,
+                answers: this.answers,
+                lead: this.lead,
+                ui: this.ui,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                this.updateSaveStatus("Progress saved");
+            } catch (error) {
+                console.warn("GrowWithHR: progress could not be saved.", error);
+                this.updateSaveStatus("Progress could not be saved");
+            }
+        }
+
+        queueSave() {
+            this.updateSaveStatus("Saving…");
+            window.clearTimeout(this.saveTimer);
+            this.saveTimer = window.setTimeout(() => this.saveNow(), 300);
+        }
+
+        restoreState() {
+            let saved;
+
+            try {
+                saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+            } catch (error) {
+                console.warn("GrowWithHR: saved progress could not be read.", error);
+                return;
+            }
+
+            if (!saved || typeof saved !== "object") {
+                return;
+            }
+
+            this.started = Boolean(saved.started);
+            this.completed = Boolean(saved.completed);
+            this.currentMoment = this.clampMoment(Number(saved.currentMoment) || 0);
+            this.answers = {
+                locations: "1",
+                countries: "1",
+                expansionPlans: [],
+                priorities: [],
+                ...(saved.answers || {})
+            };
+            this.lead = {
+                name: "",
+                email: "",
+                role: "",
+                serviceConsent: false,
+                marketingConsent: false,
+                ...(saved.lead || {})
+            };
+            this.ui = {
+                showSupplementalWorkforce: false,
+                ...(saved.ui || {})
+            };
+        }
+
+        clearSavedState() {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(REPORT_KEY);
+                localStorage.removeItem(LEAD_KEY);
+            } catch (error) {
+                console.warn("GrowWithHR: saved data could not be cleared.", error);
+            }
+        }
+
+        updateSaveStatus(message) {
+            if (!this.elements.saveStatus) {
+                return;
+            }
+
+            this.elements.saveStatus.textContent = message;
+
+            if (message === "Progress saved") {
+                window.setTimeout(() => {
+                    if (this.elements.saveStatus?.textContent === "Progress saved") {
+                        this.elements.saveStatus.textContent = "Progress saves automatically";
+                    }
+                }, 1600);
+            }
+        }
+
+        openExitModal() {
+            if (!this.elements.exitModal) {
+                return;
+            }
+
+            this.lastFocusedElement = document.activeElement;
+            this.saveNow();
+            this.elements.exitModal.hidden = false;
+            document.body.classList.add("has-advisory-modal");
+            this.elements.cancelExitButton?.focus();
+        }
+
+        closeExitModal() {
+            if (!this.elements.exitModal) {
+                return;
+            }
+
+            this.elements.exitModal.hidden = true;
+            document.body.classList.remove("has-advisory-modal");
+            this.lastFocusedElement?.focus?.();
+        }
+
+        hasReportData() {
+            try {
+                return Boolean(localStorage.getItem(REPORT_KEY));
+            } catch (error) {
+                return false;
+            }
+        }
+
+        clearGenerationTimers() {
+            this.generationTimers.forEach((timer) => window.clearTimeout(timer));
+            this.generationTimers = [];
+        }
+
+        populateSuccessFromReport() {
+            this.populateSuccessDetails();
+        }
+
+        answerText(key, fallback) {
+            const value = String(this.answers[key] ?? "").trim();
+            return value || fallback;
+        }
+
+        remoteDescription() {
+            const labels = Object.fromEntries(REMOTE_OPTIONS);
+
+            if (this.answers.remoteBand === "exact") {
+                return `${this.answers.remoteExact || 0}% of the workforce working remotely`;
+            }
+
+            const label = labels[this.answers.remoteBand] || "the remote-work proportion not specified";
+            return label === "None"
+                ? "no regular remote workforce"
+                : `${label.toLowerCase()} working remotely`;
+        }
+
+        remoteReportValue() {
+            if (this.answers.remoteBand === "exact") {
+                return this.normaliseNumber(this.answers.remoteExact);
+            }
+
+            const values = {
+                "0": 0,
+                "1-24": 12,
+                "25-50": 38,
+                "51-75": 63,
+                "76-99": 88,
+                "100": 100,
+                "not-sure": "Not Sure"
+            };
+
+            return values[this.answers.remoteBand] ?? "";
+        }
+
+        hiringDescription() {
+            const labels = Object.fromEntries(HIRING_OPTIONS.map(([value, label]) => [value, label]));
+            const label = labels[this.answers.hiringPlans] || "keep hiring flexible";
+
+            return label
+                .replace(/^Grow /, "grow ")
+                .replace(/^Hire /, "hire ")
+                .replace(/^Stay /, "stay ")
+                .replace(/^Unsure /, "remain unsure ");
+        }
+
+        labelsFor(values, options) {
+            const labels = Object.fromEntries(options.map(([value, label]) => [value, label]));
+            return (Array.isArray(values) ? values : [])
+                .map((value) => labels[value])
+                .filter(Boolean);
+        }
+
+        humanList(items) {
+            if (items.length <= 1) {
+                return items[0] || "";
+            }
+
+            if (items.length === 2) {
+                return `${items[0]} and ${items[1]}`;
+            }
+
+            return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+        }
+
+        numberText(value, fallback) {
+            return this.hasNumber(value) ? String(value) : fallback;
+        }
+
+        hasNumber(value) {
+            return value !== "" && value !== null && value !== undefined && Number.isFinite(Number(value));
+        }
+
+        normaliseNumber(value, fallback = 0) {
+            const numeric = Number.parseInt(value, 10);
+            return Number.isFinite(numeric) && numeric >= 0 ? numeric : fallback;
+        }
+
+        pluralise(word, value) {
+            return Number(value) === 1 ? word : `${word}s`;
+        }
+
+        withArticle(value) {
+            const cleaned = String(value || "").trim();
+            if (!cleaned) {
+                return "the selected structure";
+            }
+            if (/^(a|an|the)\s/i.test(cleaned)) {
+                return cleaned;
+            }
+            return `${/^[aeiou]/i.test(cleaned) ? "an" : "a"} ${cleaned}`;
+        }
+
+        ensureSentence(value) {
+            const cleaned = String(value || "").trim();
+            if (!cleaned) {
+                return "";
+            }
+            return /[.!?]$/.test(cleaned) ? cleaned : `${cleaned}.`;
+        }
+
+        isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+        }
+
+        clampMoment(moment) {
+            return Math.min(Math.max(Number(moment) || 0, 0), MOMENTS.length - 1);
+        }
+
+        focusScreen(target) {
+            window.requestAnimationFrame(() => {
+                if (target?.matches("[tabindex]")) {
+                    target.focus({ preventScroll: true });
+                } else {
+                    target?.setAttribute("tabindex", "-1");
+                    target?.focus({ preventScroll: true });
+                }
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: this.prefersReducedMotion() ? "auto" : "smooth"
+                });
+            });
+        }
+
+        announce(message, assertive = false) {
+            const region = assertive ? this.elements.assertiveRegion : this.elements.liveRegion;
+
+            if (!region) {
+                return;
+            }
+
+            region.textContent = "";
+            window.requestAnimationFrame(() => {
+                region.textContent = message;
+            });
+        }
+
+        prefersReducedMotion() {
+            return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || false;
+        }
+
+        cssEscape(value) {
+            if (window.CSS && typeof window.CSS.escape === "function") {
+                return window.CSS.escape(String(value));
+            }
+
+            return String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
+        }
+
+        escapeAttribute(value) {
+            return this.escapeHtml(String(value)).replace(/`/g, "&#96;");
+        }
+
+        escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     }
 
-
-
-    /* ==========================================================
-       SESSION COMPLETE
-    ========================================================== */
-
-    completeAssessment() {
-
-        this.completed = true;
-
-        this.autoSave();
-
-    }
-
-
-
-    /* ==========================================================
-       CLEANUP / DESTROY
-    ========================================================== */
-
-    destroy() {
-
-        this.responses = {};
-
-        this.currentStep = 0;
-
-        this.currentQuestion = 0;
-
-        this.started = false;
-
-        this.completed = false;
-
-        this.onWelcome = false;
-
-        localStorage.removeItem(
-
-            "growwithhr-assessment"
-
-        );
-
-    }
-
-
-
-    /* ==========================================================
-       APPLICATION STARTUP
-    ========================================================== */
-
-    init() {
-
-        this.initializeQuestions();
-
-        this.responses = {};
-
-        localStorage.removeItem(
-
-            "growwithhr-assessment"
-
-        );
-
-        this.bindKeyboardShortcuts();
-
-        this.bindExitEvents();
-
-        this.bindBeforeUnload();
-
-        this.hideAll();
-
-        this.showLanding();
-
-
-    }
-}
-/* ==========================================================
-   SAFE EVENT BINDING
-========================================================== */
-
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    () => {
+    document.addEventListener("DOMContentLoaded", () => {
+        if (!document.body.classList.contains("analyze-company-page")) {
+            return;
+        }
 
         if (window.executiveAssessment) {
             return;
         }
 
-        window.executiveAssessment =
-
-            new ExecutiveAssessment();
-
-        window.executiveAssessment.init();
-
-    }
-
-);
+        window.ExecutiveAdvisoryBriefing = ExecutiveAdvisoryBriefing;
+        window.executiveAssessment = new ExecutiveAdvisoryBriefing();
+    });
+})();
