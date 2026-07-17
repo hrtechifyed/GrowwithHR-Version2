@@ -519,3 +519,42 @@ body.home-page .hero-v2 .hero-graph {
   justify-content: center !important;
   align-items: center !important;
 }
+
+
+/* ==========================================================
+   HOMEPAGE HERO CLICK-LAYER FIX
+   Keeps decorative hero layers behind interactive content.
+========================================================== */
+
+body.home-page .hero-v2 {
+    isolation: isolate;
+}
+
+/* Decorative layers must never capture clicks. */
+body.home-page .hero-v2::before,
+body.home-page .hero-v2 .hero-bg-grid,
+body.home-page .hero-v2 .hero-glow {
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Keep all real hero content above decorative layers. */
+body.home-page .hero-v2 .hero-layout {
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure hero actions remain interactive. */
+body.home-page .hero-v2 .hero-content,
+body.home-page .hero-v2 .hero-actions {
+    position: relative;
+    z-index: 2;
+}
+
+body.home-page .hero-v2 .hero-actions a,
+body.home-page .hero-v2 .hero-actions button {
+    position: relative;
+    z-index: 3;
+    pointer-events: auto;
+    cursor: pointer;
+}
