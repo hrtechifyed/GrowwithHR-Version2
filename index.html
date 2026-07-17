@@ -12,7 +12,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   <link rel="icon" href="assets/favicon.ico">
 
 </head>
-<body>
+<body class="home-page">
   
 <nav class="navbar">
 
@@ -154,9 +154,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                 <div class="hero-dashboard-layout">
 
-                    <section class="hero-sidebar home-stack-section rolling-card-group" aria-label="Executive intelligence controls" data-testid="home-executive-stack">
+                    <section class="hero-sidebar" aria-label="Executive intelligence controls" data-testid="home-executive-stack">
 
-                        <div class="workspace-card company-dna-card home-stack-card rolling-card" data-testid="home-stack-card-company">
+                        <div class="workspace-card company-dna-card" data-testid="home-stack-card-company">
 
                             <div class="card-header">
                                 <h3>Company DNA</h3>
@@ -310,9 +310,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
         </div>
 
-        <div class="how-grid home-stack-section rolling-card-group" data-testid="home-process-stack">
+        <div class="how-grid" data-testid="home-process-stack">
 
-            <article class="how-card home-stack-card rolling-card">
+            <article class="how-card">
 
                 <div class="how-number">
 
@@ -412,9 +412,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     </button>
 
-    <div class="carousel-track home-stack-section rolling-card-group" data-testid="home-capabilities-stack">
+    <div class="carousel-track" data-testid="home-capabilities-stack">
 
-        <article class="capability-slide home-stack-card rolling-card active">
+        <article class="capability-slide active">
 
             <div class="capability-icon">
 
@@ -633,7 +633,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <script>
 document.addEventListener("DOMContentLoaded",()=>{const hamburger=document.getElementById("hamburger");const navLinks=document.getElementById("navLinks");if(!hamburger||!navLinks)return;hamburger.addEventListener("click",()=>{const open=navLinks.classList.toggle("active");hamburger.setAttribute("aria-expanded",String(open));});document.querySelectorAll("#navLinks a").forEach(link=>link.addEventListener("click",()=>{navLinks.classList.remove("active");hamburger.setAttribute("aria-expanded","false");}));});
 </script>
-<script src="js/sticky-card-debug.js"></script>
+
 <script src="js/build-marker.js"></script>
 </body>
 </html>
