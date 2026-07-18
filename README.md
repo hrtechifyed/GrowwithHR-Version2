@@ -1,4 +1,4 @@
-# GrowWithHR v0.12.1-beta
+# GrowWithHR v0.14.1-beta
 
 **GrowWithHR** is an executive HR intelligence and advisory prototype by HRTechify. It helps founders, business leaders, and HR professionals explore company context, statutory compliance, growth readiness, and people-governance priorities through explainable recommendations.
 
