@@ -1,27 +1,97 @@
-# GrowWithHR v0.14.1-beta
+# GrowWithHR v0.15.0-beta
 
-**GrowWithHR** is an executive HR intelligence and advisory prototype by HRTechify. It helps founders, business leaders, and HR professionals explore company context, statutory compliance, growth readiness, and people-governance priorities through explainable recommendations.
+**GrowWithHR** is an executive HR intelligence and advisory prototype developed under the HRTechify brand.
 
-The repository currently contains the original static HTML/CSS/JavaScript experience plus a new React/Next.js-ready assessment UX layer under `apps/web/src`.
+It helps founders, business leaders and HR professionals explore company context, statutory compliance, people-governance priorities and growth readiness through structured assessments and explainable recommendations.
+
+The repository contains:
+
+- The deployed static HTML, CSS and JavaScript experience.
+- A Node.js and Express backend for secure advisory email delivery.
+- PDF advisory report generation.
+- Gmail API integration using Google OAuth 2.0.
+- An experimental React/Next.js-ready assessment UX layer under `apps/web/src`.
 
 ---
 
+## Executive Advisory Experience
 
-## Executive Advisory Experience v3
+The current GrowWithHR experience guides users through an executive-style company assessment covering business context, workforce structure, operating footprint and growth plans.
 
-The current intro experience uses a one-time brand reveal followed by concise executive story scenes, briefing cards, Coach HRTechify, and an explicit Begin Executive Assessment action. Homepage mobile compatibility has been hardened for the intelligence and carousel sections with dedicated desktop, laptop, tablet, and mobile breakpoints.
+The experience includes:
+
+- A branded executive advisory introduction.
+- A guided multi-stage assessment.
+- Company and workforce context questions.
+- Compliance and growth-readiness analysis.
+- A review step before report generation.
+- A personalised advisory PDF.
+- Secure report delivery by email.
+- Internal lead notification for completed assessments.
+- Responsive layouts for desktop, laptop, tablet and mobile devices.
+
+The experience uses deterministic, rules-based recommendations rather than presenting generated output as legal or professional advice.
 
 ---
 
-## Current Data Policy
+## Advisory Email Delivery
 
-The current executive assessment UX is intentionally **client-side and no-storage**.
+GrowWithHR now includes backend email delivery through the Gmail API.
 
-- Assessment answers live only in the open browser tab while the user is completing the flow.
-- No answers are saved to `localStorage`, `sessionStorage`, cookies, a database, a server, Google Drive, CRM, email tool, or an HRTechify admin dashboard.
-- If the user refreshes, closes the tab, navigates away, or switches devices, the assessment must be started fresh.
-- Contact-capture fields are held only in the open tab in this implementation.
-- Any future Google Drive, email, CRM, dashboard, or backend integration must be added deliberately with explicit consent and updated documentation.
+When a user completes the assessment:
+
+1. The advisory report is generated as a PDF in the browser.
+2. The report and required recipient information are sent to the GrowWithHR backend over HTTPS.
+3. The backend validates the request and PDF attachment.
+4. The customer receives a branded HTML email with the PDF attached.
+5. A plain-text email version is included for compatibility.
+6. An internal assessment notification may also be sent to the configured HRTechify email address.
+
+The email template includes:
+
+- A personalised greeting.
+- The recipient’s company name.
+- A summary of what the report contains.
+- A PDF attachment notice.
+- A reply-to contact option.
+- HRTechify branding.
+- A compact centred HRTechify logo bar.
+- The tagline:
+
+  **People • Technology • Growth**
+
+Email delivery uses Google OAuth 2.0 and the Gmail API over HTTPS. SMTP and Gmail App Password delivery are no longer used.
+
+---
+
+## Current Data and Privacy Approach
+
+The current implementation does not use a dedicated assessment database.
+
+Assessment information is primarily handled in the browser while the user completes the experience. The assessment interface may retain limited progress in the same browser to support resume behaviour.
+
+When the user requests delivery of the advisory report, the information required to prepare and send the email is transmitted to the GrowWithHR backend.
+
+The backend:
+
+- Processes the request for email delivery.
+- Validates the recipient address and PDF.
+- Does not intentionally save assessment answers to a GrowWithHR database.
+- Sends the report through the Gmail API.
+- May write non-sensitive delivery status information to application logs.
+
+The sent email and PDF attachment are retained in Gmail according to the configuration and retention settings of the connected Gmail account.
+
+GrowWithHR currently does not provide:
+
+- User accounts.
+- Cloud-based saved assessments.
+- Cross-device resume links.
+- A persistent report database.
+- A customer portal.
+- Automated deletion controls for sent Gmail messages.
+
+Any future database, CRM, analytics, Google Drive or customer-account integration must be introduced deliberately with updated privacy notices and appropriate user consent.
 
 ---
 
@@ -29,104 +99,132 @@ The current executive assessment UX is intentionally **client-side and no-storag
 
 - Company DNA assessment concept.
 - Executive Intelligence Core.
-- HR compliance and growth-readiness framing.
-- Official source mapping in the existing static experience.
-- Animated executive assessment intro in the new UX layer.
-- Wizard-style assessment flow in the new UX layer.
-- Contact-capture step that does not persist data.
-- Rules-based personalized advisory report generator.
-- Privacy and data-handling notices near sensitive questions.
-- Responsive, executive-style UI using the advisory dashboard font stack: `Inter`, `Segoe UI`, `sans-serif`.
+- Compliance and growth-readiness framing.
+- Official source mapping.
+- Guided executive assessment flow.
+- Browser-based progress and review experience.
+- Contact and report-delivery form.
+- Rules-based personalised advisory generator.
+- PDF report generation.
+- Gmail API email delivery.
+- Customer report attachment.
+- Internal lead notifications.
+- Plain-text and HTML email versions.
+- Email request rate limiting.
+- Backend health-check endpoint.
+- Responsive HRTechify-branded interface.
+- Shared header and footer across public pages.
+- Accessibility and reduced-motion considerations.
 
 ---
 
 ## Assessment Framework
 
-The assessment is organized around company context that can affect people, compliance, and growth-readiness decisions:
+The assessment is organised around company context that may affect people, compliance and growth-readiness decisions.
 
-1. Company profile.
-2. Workforce and headcount context.
-3. Entity, state, and industry context.
-4. Hiring, funding, expansion, and work-model signals.
+### 1. Company profile
 
-The new report generator uses these inputs to produce deterministic, rules-based outputs such as risk level, maturity score, archetype, benchmarks, and priority actions.
+- Organisation name.
+- Industry.
+- Business stage.
+- Entity and operating context.
+
+### 2. Workforce context
+
+- Current employee population.
+- Workforce structure.
+- Working model.
+- People-management readiness.
+
+### 3. Operating footprint
+
+- State or regional presence.
+- Office, remote or hybrid arrangements.
+- Expansion context.
+- Potential compliance complexity.
+
+### 4. Growth plans
+
+- Hiring plans.
+- Funding or expansion signals.
+- Leadership priorities.
+- People and compliance readiness.
+
+The advisory engine uses these inputs to produce structured outputs such as:
+
+- Priority areas.
+- Compliance observations.
+- Maturity indicators.
+- Leadership considerations.
+- Recommended next steps.
 
 ---
 
 ## Current Technology Stack
 
-Existing static experience:
+### Frontend
 
 - HTML5.
 - CSS3.
 - JavaScript.
 - Static JSON data.
+- Responsive component styling.
+- Browser-side PDF generation.
 
-New assessment UX layer:
+### Backend
+
+- Node.js.
+- Express.
+- Gmail API.
+- Google OAuth 2.0.
+- `googleapis`.
+- `express-rate-limit`.
+- Environment-variable configuration.
+
+### Deployment
+
+- GitHub repository.
+- Render web service.
+- HTTPS API communication.
+- Render environment variables for private OAuth credentials.
+
+### Experimental UX layer
 
 - React/Next.js-ready TypeScript components.
-- Zustand state store for current-tab state.
+- Zustand state management.
 - Component-scoped responsive CSS.
-- Jest/Testing Library test examples.
+- Jest and Testing Library examples.
 
 ---
 
-## New UX File Structure
+## Important Application Files
 
 ```text
-apps/web/src/
-├── components/UX/
-│   ├── Animations/AnimatedText.tsx
-│   ├── Animations/SceneTransition.tsx
-│   ├── Assessment/WizardForm.tsx
-│   ├── Forms/LeadCaptureForm.tsx
-│   ├── Privacy/DataHandling.tsx
-│   ├── Privacy/PrivacyPolicy.tsx
-│   ├── Reports/PersonalizedReportGenerator.tsx
-│   ├── __tests__/
-│   └── examples/ExecutiveAssessmentIntegration.tsx
-├── hooks/
-├── services/
-├── stores/
-└── types/
-```
-
----
-
-## Current Status
-
-Version: `v0.12.2-beta`
-
-The platform is still a prototype/beta. The new assessment UX layer is modular and typed, but it is not yet wired into a full deployed Next.js application shell in this repository.
-
----
-
-## Important Non-Goals for This Build
-
-This build does **not** include:
-
-- User accounts.
-- Saved reports.
-- Save-and-resume links.
-- Backend report storage.
-- HRTechify admin dashboard.
-- CRM export.
-- Google Drive upload.
-- Email delivery.
-- Authentication or authorization.
-- Production monitoring/logging infrastructure.
-
----
-
-## License
-
-Copyright © HRTechify.
-
-All Rights Reserved.
----
-
-## Intro Experience v2.0 and Production Readiness Alignment
-
-Version: `v0.12.1-beta`
-
-This document is aligned with the GrowWithHR Intro Experience v2.0 and production-readiness plan. The current product direction is an AI-powered Executive Advisory Platform with a premium, persistent-hero introduction, deterministic compliance advisory foundations, stronger recommendation traceability, and responsive validation across mobile, tablet, laptop, and desktop breakpoints.
+/
+├── server.js
+├── package.json
+├── analyze-company.html
+├── assessment.html
+├── advisory-dashboard.html
+├── sample-advisory-report.html
+├── official-resources.html
+├── more-info.html
+│
+├── js/
+│   ├── executive-assessment.js
+│   ├── gmail-service.js
+│   ├── pdf.js
+│   ├── site-shell.js
+│   └── config/
+│       └── app-config.js
+│
+├── css/
+│   ├── 17-advisory-briefing.css
+│   └── 18-site-shell.css
+│
+├── assets/
+│   └── hrtechify-logo.png
+│
+└── apps/
+    └── web/
+        └── src/
