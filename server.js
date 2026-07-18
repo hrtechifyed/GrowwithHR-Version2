@@ -546,6 +546,19 @@ app.post(
     emailLimiter,
     async (request, response) => {
         try {
+            console.log(
+    "Received /api/send-advisory request",
+    {
+        action: request.body?.action,
+        recipient:
+            request.body?.lead?.email ||
+            request.body?.report?.recipientEmail,
+        hasPdf: Boolean(
+            request.body?.pdf?.base64 ||
+            request.body?.pdf?.dataUri
+        )
+    }
+);
             const missing =
                 getMissingEnvironmentVariables();
 
@@ -611,33 +624,42 @@ app.post(
                     report
                 });
 
+                console.log(
+                    "Attempting Gmail delivery to:",
+                    recipient
+                );
+            
             const customerResult =
-                await gmailTransporter.sendMail({
-                    from:
-                        `"GrowWithHR" <${process.env.GMAIL_USER}>`,
+    await gmailTransporter.sendMail({
+        from:
+            `"GrowWithHR" <${process.env.GMAIL_USER}>`,
 
-                    to: recipient,
+        to: recipient,
 
-                    replyTo:
-                        cleanText(
-                            process.env.REPLY_TO_EMAIL,
-                            process.env.GMAIL_USER
-                        ),
+        replyTo:
+            cleanText(
+                process.env.REPLY_TO_EMAIL,
+                process.env.GMAIL_USER
+            ),
 
-                    subject:
-                        customerEmail.subject,
+        subject:
+            customerEmail.subject,
 
-                    text:
-                        customerEmail.text,
+        text:
+            customerEmail.text,
 
-                    html:
-                        customerEmail.html,
+        html:
+            customerEmail.html,
 
-                    attachments: [
-                        attachment
-                    ]
-                });
+        attachments: [
+            attachment
+        ]
+    });
 
+let internalStatus =
+    "not-configured";
+
+            
             let internalStatus =
                 "not-configured";
 
