@@ -149,46 +149,708 @@ function buildRawEmail({ from, to, replyTo, subject, text, html, attachments = [
     return encodeBase64Url(lines.join("\r\n"));
 }
 
-function createCustomerEmail({ lead = {}, report = {} }) {
-    const recipientName = cleanText(lead.name, "there");
+
+function createCustomerEmail({
+    lead = {},
+    report = {}
+}) {
+    const recipientName = cleanText(
+        lead.name,
+        "there"
+    );
+
     const companyName = cleanText(
-        report.companyName || lead.companyName,
+        report.companyName ||
+        lead.companyName,
         "your organisation"
     );
-    const subject = `Your GrowWithHR advisory for ${companyName}`;
 
+    /*
+     * Replace YOUR NAME with your actual name.
+     */
+    const founderName =
+        "ANURAG SINHA";
+
+    /*
+     * The logo must exist publicly at this address.
+     */
+    const logoUrl =
+        "https://growwithhr.onrender.com/assets/hrtechify-logo.png";
+
+    const subject =
+        `Your GrowWithHR Executive Advisory for ${companyName}`;
+
+    /*
+     * Plain-text version used by email clients
+     * that cannot display the HTML version.
+     */
     const text = [
         `Hello ${recipientName},`,
         "",
-        `Your GrowWithHR Executive Advisory for ${companyName} is attached as a PDF.`,
+        "Thank you for completing the GrowWithHR Executive Advisory assessment.",
         "",
-        "This advisory was prepared using the information supplied during the assessment.",
+        `Your personalised advisory report for ${companyName} is attached to this email as a PDF.`,
         "",
-        "Regards,",
-        "GrowWithHR / HRTechify"
+        "Inside your report, you will find:",
+        "",
+        "• A summary of your organisation's current priorities",
+        "• Areas that may require leadership attention",
+        "• Practical recommendations and next steps",
+        "",
+        "We recommend reviewing the report with the relevant members of your leadership team and identifying the actions that are most important for your current stage of growth.",
+        "",
+        "If you have questions or would like support turning the recommendations into a practical action plan, reply directly to this email.",
+        "",
+        "Warm regards,",
+        founderName,
+        "Founder, HRTechify",
+        "",
+        "HRTechify",
+        "People. Technology. Growth.",
+        "",
+        "This advisory is provided for general strategic guidance. It does not replace legal, financial, compliance, or other professional advice."
     ].join("\n");
 
-    const html = `<!doctype html>
-<html lang="en">
-<body style="margin:0;background:#f3f4f6;font-family:Arial,sans-serif;color:#1f2937">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-<tr><td align="center" style="padding:32px 16px">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#fff;border-radius:12px;overflow:hidden">
-<tr><td style="padding:24px 28px;background:#111827;color:#fff"><h1 style="margin:0;font-size:24px">GrowWithHR</h1><p style="margin:8px 0 0;color:#d1d5db">Executive Advisory</p></td></tr>
-<tr><td style="padding:30px 28px;font-size:16px;line-height:1.7">
-<p>Hello ${escapeHtml(recipientName)},</p>
-<p>Your GrowWithHR Executive Advisory for <strong>${escapeHtml(companyName)}</strong> is attached to this email as a PDF.</p>
-<p>This advisory was prepared using the information supplied during the assessment.</p>
-<p style="margin-top:28px">Regards,<br><strong>GrowWithHR / HRTechify</strong></p>
-</td></tr>
-</table>
-</td></tr>
-</table>
-</body>
-</html>`;
+    /*
+     * Branded HTML version.
+     *
+     * HRTechify palette:
+     * Dark navy: #05070B
+     * Navy:      #0A1020
+     * Orange:    #FF7A00
+     * Gold:      #FFB000
+     * Red:       #FF4D00
+     *
+     * Fonts:
+     * Fraunces-style heading stack
+     * Inter-style body stack
+     */
+    const html = `
+        <!DOCTYPE html>
 
-    return { subject, text, html };
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1"
+            >
+
+            <title>
+                ${escapeHtml(subject)}
+            </title>
+        </head>
+
+        <body
+            style="
+                margin: 0;
+                padding: 0;
+                background-color: #05070B;
+                color: #0F172A;
+                font-family:
+                    Inter,
+                    'Segoe UI',
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+            "
+        >
+            <!-- Page background -->
+            <table
+                role="presentation"
+                width="100%"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+                style="
+                    width: 100%;
+                    background-color: #05070B;
+                    border-collapse: collapse;
+                "
+            >
+                <tr>
+                    <td
+                        align="center"
+                        style="
+                            padding: 36px 16px;
+                        "
+                    >
+                        <!-- Main email container -->
+                        <table
+                            role="presentation"
+                            width="100%"
+                            cellspacing="0"
+                            cellpadding="0"
+                            border="0"
+                            style="
+                                width: 100%;
+                                max-width: 680px;
+                                background-color: #FFFFFF;
+                                border-collapse: separate;
+                                border-spacing: 0;
+                                border-radius: 18px;
+                                overflow: hidden;
+                                box-shadow:
+                                    0 24px 70px
+                                    rgba(0, 0, 0, 0.38);
+                            "
+                        >
+                            <!-- Brand-colour strip -->
+                            <tr>
+                                <td
+                                    style="
+                                        height: 7px;
+                                        padding: 0;
+                                        background-color: #FF7A00;
+                                        background-image:
+                                            linear-gradient(
+                                                90deg,
+                                                #FFB000 0%,
+                                                #FF7A00 55%,
+                                                #FF4D00 100%
+                                            );
+                                        font-size: 1px;
+                                        line-height: 1px;
+                                    "
+                                >
+                                    &nbsp;
+                                </td>
+                            </tr>
+
+                            <!-- Header -->
+                            <tr>
+                                <td
+                                    style="
+                                        padding: 34px 38px 32px;
+                                        background-color: #0A1020;
+                                    "
+                                >
+                                    <table
+                                        role="presentation"
+                                        width="100%"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        border="0"
+                                    >
+                                        <tr>
+                                            <td>
+                                                <p
+                                                    style="
+                                                        margin:
+                                                            0 0 10px;
+                                                        color: #FFB000;
+                                                        font-size: 13px;
+                                                        line-height: 1.4;
+                                                        font-weight: 800;
+                                                        letter-spacing:
+                                                            0.16em;
+                                                        text-transform:
+                                                            uppercase;
+                                                    "
+                                                >
+                                                    HRTechify
+                                                </p>
+
+                                                <h1
+                                                    style="
+                                                        margin: 0;
+                                                        color: #FFFFFF;
+                                                        font-family:
+                                                            Fraunces,
+                                                            Georgia,
+                                                            'Times New Roman',
+                                                            serif;
+                                                        font-size: 30px;
+                                                        line-height: 1.25;
+                                                        font-weight: 600;
+                                                        letter-spacing:
+                                                            -0.02em;
+                                                    "
+                                                >
+                                                    Your GrowWithHR
+                                                    Executive Advisory
+                                                </h1>
+
+                                                <p
+                                                    style="
+                                                        margin:
+                                                            12px 0 0;
+                                                        color: #CBD5E1;
+                                                        font-size: 15px;
+                                                        line-height: 1.6;
+                                                    "
+                                                >
+                                                    Practical people,
+                                                    compliance and growth
+                                                    guidance for
+                                                    ${escapeHtml(companyName)}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- Main content -->
+                            <tr>
+                                <td
+                                    style="
+                                        padding: 38px;
+                                        background-color: #FFFFFF;
+                                    "
+                                >
+                                    <p
+                                        style="
+                                            margin: 0 0 20px;
+                                            color: #0F172A;
+                                            font-size: 16px;
+                                            line-height: 1.75;
+                                        "
+                                    >
+                                        Hello
+                                        ${escapeHtml(recipientName)},
+                                    </p>
+
+                                    <p
+                                        style="
+                                            margin: 0 0 20px;
+                                            color: #334155;
+                                            font-size: 16px;
+                                            line-height: 1.75;
+                                        "
+                                    >
+                                        Thank you for completing the
+                                        <strong
+                                            style="
+                                                color: #0F172A;
+                                            "
+                                        >
+                                            GrowWithHR Executive
+                                            Advisory
+                                        </strong>
+                                        assessment.
+                                    </p>
+
+                                    <p
+                                        style="
+                                            margin: 0 0 24px;
+                                            color: #334155;
+                                            font-size: 16px;
+                                            line-height: 1.75;
+                                        "
+                                    >
+                                        Your personalised advisory report
+                                        for
+                                        <strong
+                                            style="
+                                                color: #0F172A;
+                                            "
+                                        >
+                                            ${escapeHtml(companyName)}
+                                        </strong>
+                                        is attached to this email as a PDF.Please note, this report is just for the compliance pillar even though you might have 
+                                        selected other options during assessment. We are working on improving GrowWithHR and therefore inviting PeopleTech enthusiasts to collaborate or sponsor or partner on this journey.
+                                    </p>
+
+                                    <!-- PDF attachment notice -->
+                                    <table
+                                        role="presentation"
+                                        width="100%"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        border="0"
+                                        style="
+                                            width: 100%;
+                                            margin: 0 0 28px;
+                                            background-color: #FFF7ED;
+                                            border: 1px solid #FED7AA;
+                                            border-left:
+                                                5px solid #FF7A00;
+                                            border-radius: 12px;
+                                        "
+                                    >
+                                        <tr>
+                                            <td
+                                                style="
+                                                    padding: 20px 22px;
+                                                "
+                                            >
+                                                <p
+                                                    style="
+                                                        margin:
+                                                            0 0 5px;
+                                                        color: #9A3412;
+                                                        font-size: 13px;
+                                                        line-height: 1.4;
+                                                        font-weight: 800;
+                                                        letter-spacing:
+                                                            0.08em;
+                                                        text-transform:
+                                                            uppercase;
+                                                    "
+                                                >
+                                                    PDF attached
+                                                </p>
+
+                                                <p
+                                                    style="
+                                                        margin: 0;
+                                                        color: #431407;
+                                                        font-size: 15px;
+                                                        line-height: 1.6;
+                                                        font-weight: 600;
+                                                    "
+                                                >
+                                                    GrowWithHR Executive
+                                                    Advisory —
+                                                    ${escapeHtml(companyName)}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <h2
+                                        style="
+                                            margin: 0 0 14px;
+                                            color: #0A1020;
+                                            font-family:
+                                                Fraunces,
+                                                Georgia,
+                                                'Times New Roman',
+                                                serif;
+                                            font-size: 23px;
+                                            line-height: 1.35;
+                                            font-weight: 600;
+                                        "
+                                    >
+                                        What you will find inside
+                                    </h2>
+
+                                    <!-- Benefits list -->
+                                    <table
+                                        role="presentation"
+                                        width="100%"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        border="0"
+                                        style="
+                                            width: 100%;
+                                            margin: 0 0 28px;
+                                        "
+                                    >
+                                        <tr>
+                                            <td
+                                                width="30"
+                                                valign="top"
+                                                style="
+                                                    padding:
+                                                        8px 0;
+                                                    color: #FF7A00;
+                                                    font-size: 20px;
+                                                    font-weight: 800;
+                                                "
+                                            >
+                                                •
+                                            </td>
+
+                                            <td
+                                                style="
+                                                    padding:
+                                                        8px 0;
+                                                    color: #334155;
+                                                    font-size: 16px;
+                                                    line-height: 1.65;
+                                                "
+                                            >
+                                                A summary of your
+                                                organisation's current
+                                                priorities
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td
+                                                width="30"
+                                                valign="top"
+                                                style="
+                                                    padding:
+                                                        8px 0;
+                                                    color: #FF7A00;
+                                                    font-size: 20px;
+                                                    font-weight: 800;
+                                                "
+                                            >
+                                                •
+                                            </td>
+
+                                            <td
+                                                style="
+                                                    padding:
+                                                        8px 0;
+                                                    color: #334155;
+                                                    font-size: 16px;
+                                                    line-height: 1.65;
+                                                "
+                                            >
+                                                Areas that may require
+                                                leadership attention
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td
+                                                width="30"
+                                                valign="top"
+                                                style="
+                                                    padding:
+                                                        8px 0;
+                                                    color: #FF7A00;
+                                                    font-size: 20px;
+                                                    font-weight: 800;
+                                                "
+                                            >
+                                                •
+                                            </td>
+
+                                            <td
+                                                style="
+                                                    padding:
+                                                        8px 0;
+                                                    color: #334155;
+                                                    font-size: 16px;
+                                                    line-height: 1.65;
+                                                "
+                                            >
+                                                Practical recommendations
+                                                and suggested next steps
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <p
+                                        style="
+                                            margin: 0 0 20px;
+                                            color: #334155;
+                                            font-size: 16px;
+                                            line-height: 1.75;
+                                        "
+                                    >
+                                        We recommend reviewing the report
+                                        with the members of your
+                                        leadership team and identifying the
+                                        actions that are most important for
+                                        your current stage of growth.
+                                    </p>
+
+                                    <!-- Reply prompt -->
+                                    <table
+                                        role="presentation"
+                                        width="100%"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        border="0"
+                                        style="
+                                            width: 100%;
+                                            margin: 28px 0;
+                                            background-color: #0A1020;
+                                            border-radius: 12px;
+                                        "
+                                    >
+                                        <tr>
+                                            <td
+                                                style="
+                                                    padding: 22px 24px;
+                                                "
+                                            >
+                                                <p
+                                                    style="
+                                                        margin:
+                                                            0 0 6px;
+                                                        color: #FFB000;
+                                                        font-size: 13px;
+                                                        line-height: 1.4;
+                                                        font-weight: 800;
+                                                        letter-spacing:
+                                                            0.08em;
+                                                        text-transform:
+                                                            uppercase;
+                                                    "
+                                                >
+                                                    Need support?
+                                                </p>
+
+                                                <p
+                                                    style="
+                                                        margin: 0;
+                                                        color: #F8FAFC;
+                                                        font-size: 15px;
+                                                        line-height: 1.7;
+                                                    "
+                                                >
+                                                    Reply directly to this
+                                                    email if you would like
+                                                    help turning the
+                                                    recommendations into a
+                                                    practical action plan.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <!-- Founder signature -->
+                                    <p
+                                        style="
+                                            margin: 30px 0 0;
+                                            color: #334155;
+                                            font-size: 16px;
+                                            line-height: 1.75;
+                                        "
+                                    >
+                                        Warm regards,
+                                    </p>
+
+                                    <p
+                                        style="
+                                            margin: 8px 0 0;
+                                            color: #0F172A;
+                                            font-size: 17px;
+                                            line-height: 1.6;
+                                            font-weight: 800;
+                                        "
+                                    >
+                                        ${escapeHtml(founderName)} <br>
+                                        https://www.linkedin.com/in/anuragsinha1009/
+                                    </p>
+
+                                    <p
+                                        style="
+                                            margin: 1px 0 20px;
+                                            color: #FF7A00;
+                                            font-size: 14px;
+                                            line-height: 1.6;
+                                            font-weight: 700;
+                                        "
+                                    >
+                                        Founder, HRTechify
+                                    </p>
+
+                                    <!-- Logo after signature -->
+                                    <table
+                                        role="presentation"
+                                        width="100%"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        border="0"
+                                        style="
+                                            width: 100%;
+                                            margin-top: 18px;
+                                            background-color: #05070B;
+                                            border-radius: 14px;
+                                        "
+                                    >
+                                        <tr>
+                                            <td
+                                                align="center"
+                                                style="
+                                                    padding: 24px;
+                                                "
+                                            >
+                                                <img
+                                                    src="${logoUrl}"
+                                                    alt="HRTechify logo"
+                                                    width="150"
+                                                    style="
+                                                        display: block;
+                                                        width: 150px;
+                                                        max-width: 100%;
+                                                        height: auto;
+                                                        margin: 0 auto;
+                                                        border: 0;
+                                                        outline: none;
+                                                        text-decoration:
+                                                            none;
+                                                    "
+                                                >
+
+                                                <p
+                                                    style="
+                                                        margin:
+                                                            12px 0 0;
+                                                        color: #FFB000;
+                                                        font-size: 12px;
+                                                        line-height: 1.5;
+                                                        font-weight: 700;
+                                                        letter-spacing:
+                                                            0.12em;
+                                                        text-transform:
+                                                            uppercase;
+                                                    "
+                                                >
+                                                    People • Technology •
+                                                    Growth
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <!-- Footer disclaimer -->
+                            <tr>
+                                <td
+                                    style="
+                                        padding: 22px 38px;
+                                        background-color: #0A1020;
+                                        border-top:
+                                            1px solid #1E293B;
+                                    "
+                                >
+                                    <p
+                                        style="
+                                            margin: 0;
+                                            color: #94A3B8;
+                                            font-size: 12px;
+                                            line-height: 1.65;
+                                            text-align: center;
+                                        "
+                                    >
+                                        This advisory is provided for
+                                        general strategic guidance and
+                                        does not replace legal, financial,
+                                        compliance or other professional
+                                        advice.
+                                    </p>
+
+                                    <p
+                                        style="
+                                            margin: 10px 0 0;
+                                            color: #64748B;
+                                            font-size: 11px;
+                                            line-height: 1.5;
+                                            text-align: center;
+                                        "
+                                    >
+                                        HRTechify · GrowWithHR Executive
+                                        Advisory
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </body>
+        </html>
+    `;
+
+    return {
+        subject,
+        text,
+        html
+    };
 }
+
 
 function createInternalEmail({ lead = {}, report = {}, answers = {} }) {
     const companyName = cleanText(
