@@ -520,8 +520,19 @@ app.get(
 
         response.json({
             ok: true,
+
+            version:
+                "gmail-render-v2",
+
             gmailConfigured:
-                missing.length === 0
+                missing.length === 0,
+
+            missingVariables:
+                missing,
+
+            deployedCommit:
+                process.env.RENDER_GIT_COMMIT ||
+                "unknown"
         });
     }
 );
