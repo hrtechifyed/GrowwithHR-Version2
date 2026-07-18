@@ -755,65 +755,70 @@ function createCustomerEmail({
                                                     padding: 7px 12px;
                                                 "
                                             >
-                                                <table
-                                                    role="presentation"
-                                                    width="100%"
-                                                    cellspacing="0"
-                                                    cellpadding="0"
-                                                    border="0"
-                                                    style="
-                                                        width: 100%;
-                                                        border-collapse: collapse;
-                                                    "
-                                                >
-                                                    <tr>
-                                                        <td
-                                                            width="104"
-                                                            valign="middle"
-                                                            style="
-                                                                width: 104px;
-                                                                vertical-align: middle;
-                                                            "
-                                                        >
-                                                            <img
-                                                                src="${logoUrl}"
-                                                                alt="HRTechify"
-                                                                width="88"
-                                                                style="
-                                                                    display: block;
-                                                                    width: 88px;
-                                                                    max-width: 88px;
-                                                                    height: auto;
-                                                                    margin: 0;
-                                                                    border: 0;
-                                                                    outline: none;
-                                                                    text-decoration: none;
-                                                                "
-                                                            >
-                                                        </td>
+                                               <!-- Thin centred HRTechify brand bar -->
+<table
+    role="presentation"
+    width="100%"
+    cellspacing="0"
+    cellpadding="0"
+    border="0"
+    style="
+        width: 100%;
+        margin-top: 24px;
+        background-color: #0A1020;
+        border-top: 2px solid #FF7A00;
+        border-radius: 8px;
+        border-collapse: separate;
+        border-spacing: 0;
+    "
+>
+    <tr>
+        <td
+            align="center"
+            style="
+                padding: 8px 12px;
+                text-align: center;
+            "
+        >
+            <img
+                src="${logoUrl}"
+                alt="HRTechify"
+                width="88"
+                style="
+                    display: block;
+                    width: 88px;
+                    max-width: 88px;
+                    height: auto;
+                    margin: 0 auto;
+                    border: 0;
+                    outline: none;
+                    text-decoration: none;
+                "
+            >
 
-                                                        <td
-                                                            align="right"
-                                                            valign="middle"
-                                                            style="
-                                                                padding-left: 12px;
-                                                                color: #FFB000;
-                                                                font-size: 10px;
-                                                                line-height: 1.3;
-                                                                font-weight: 700;
-                                                                letter-spacing: 0.08em;
-                                                                text-transform: uppercase;
-                                                                vertical-align: middle;
-                                                                white-space: nowrap;
-                                                            "
-                                                        >
-                                                            People • Technology • Growth
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
+            <p
+                style="
+                    margin: 5px 0 0;
+                    color: #FFB000;
+                    font-family:
+                        Inter,
+                        'Segoe UI',
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+                    font-size: 10px;
+                    line-height: 1.3;
+                    font-weight: 700;
+                    letter-spacing: 0.08em;
+                    text-align: center;
+                    text-transform: uppercase;
+                "
+            >
+                People • Technology • Growth
+            </p>
+        </td>
+    </tr>
+</table>
                                 </td>
                             </tr>
 
