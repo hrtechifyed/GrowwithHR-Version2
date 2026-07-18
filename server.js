@@ -491,7 +491,11 @@ const gmailTransporter = nodemailer.createTransport({
         pass: cleanAppPassword(
             process.env.GMAIL_APP_PASSWORD
         )
-    }
+    },
+
+    connectionTimeout: 15000,
+    greetingTimeout: 10000,
+    socketTimeout: 20000
 });
 
 app.use(
