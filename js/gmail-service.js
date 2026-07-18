@@ -16,3 +16,25 @@ const response = await window.fetch("/api/send-advisory", {
         }
     })
 });
+
+await transporter.sendMail({
+    from: `GrowWithHR <${process.env.GMAIL_USER}>`,
+    to: recipient,
+    replyTo: process.env.REPLY_TO_EMAIL || process.env.GMAIL_USER,
+    subject: customerContent.subject,
+    text: customerContent.text,
+    html: customerContent.html,
+    attachments: [
+        {
+            filename: attachment.filename,
+            content: attachment.content,
+            contentType: "application/pdf"
+        }
+    ]
+});
+
+app.post("/api/send-advisory", emailLimiter, async (request, response) => {
+    // Validate recipient
+    // Validate PDF
+    // Send through Gmail
+});
