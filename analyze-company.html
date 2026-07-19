@@ -856,15 +856,80 @@
         </section>
     </noscript>
 
-    <!-- Email and document dependencies used by the advisory delivery flow. -->
-    <script src="js/site-shell.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="js/pdf.js"></script>
-    <!-- Gmail delivery client -->
-    <script src="js/gmail-service.js"></script>
-    <!-- Assessment application -->
-    <script src="js/executive-assessment.js"></script>
-    <script src="js/build-marker.js"></script>
+   <!-- ==========================================================
+     EXECUTIVE ADVISORY APPLICATION DEPENDENCIES
+
+     Loading order is important:
+     1. Shared site functionality
+     2. PDF and email services
+     3. Assessment modules
+     4. Compatibility facade
+     5. Build marker
+========================================================== -->
+
+<!-- Shared site navigation and shell behavior -->
+<script src="js/site-shell.js"></script>
+
+<!-- PDF generation dependency -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+</script>
+
+<!-- Existing PDF integration -->
+<script src="js/pdf.js"></script>
+
+<!-- Existing Gmail delivery integration -->
+<script src="js/gmail-service.js"></script>
+
+<!-- ==========================================================
+     EXECUTIVE ASSESSMENT MODULES
+========================================================== -->
+
+<!-- Static assessment definitions and option catalogues -->
+<script src="js/executive-assessment/assessment-definition.js"></script>
+
+<!-- Shared pure utility functions -->
+<script src="js/executive-assessment/assessment-utils.js"></script>
+
+<!-- Browser storage and saved-progress handling -->
+<script src="js/executive-assessment/assessment-storage.js"></script>
+
+<!-- Industry catalogue loading, caching and resolution -->
+<script src="js/executive-assessment/industry-catalog.js"></script>
+
+<!-- Assessment and lead validation -->
+<script src="js/executive-assessment/assessment-validation.js"></script>
+
+<!-- Reusable assessment-field HTML builders -->
+<script src="js/executive-assessment/assessment-fields.js"></script>
+
+<!-- Assessment moment screen renderers -->
+<script src="js/executive-assessment/assessment-screens.js"></script>
+
+<!-- Review-screen summary builder -->
+<script src="js/executive-assessment/assessment-review.js"></script>
+
+<!-- Report and lead-record mapping -->
+<script src="js/executive-assessment/report-mapper.js"></script>
+
+<!-- PDF and email-delivery orchestration -->
+<script src="js/executive-assessment/advisory-delivery.js"></script>
+
+<!-- Mutable assessment-state model -->
+<script src="js/executive-assessment/assessment-state.js"></script>
+
+<!--
+    Compatibility facade.
+
+    This remains the main assessment entry point until the modular
+    cutover is complete. It must load after every extracted module.
+-->
+<script src="js/executive-assessment.js"></script>
+
+<!-- Visible application build marker -->
+<script src="js/build-marker.js"></script>
     
 </body>
 </html>
