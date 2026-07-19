@@ -91,21 +91,23 @@
 
             this.cacheElements();
 
-            const savedState =
-                Storage.readAssessment();
+ const savedState =
+    Storage.readAssessment();
 
-            const initialState =
-                savedState ||
-                Definitions
-                    .createInitialAssessmentState();
+const initialState =
+    savedState
+        ? {
+            ...savedState
+        }
+        : State.createDefaultState();
 
-            initialState.delivery =
-                Storage.readDelivery();
+initialState.delivery =
+    Storage.readDelivery();
 
-            this.stateModel =
-                State.create(
-                    initialState
-                );
+this.stateModel =
+    State.create(
+        initialState
+    );
 
             State.bindCompatibilityFacade(
                 this,
@@ -192,22 +194,27 @@
             }
         }
 
-        resolveReportUrl() {
-            const configured =
-                String(
-                    this.config.report ||
-                    ""
-                ).trim();
+resolveReportUrl() {
+    const configured =
+        String(
+            this.config.report ||
+            ""
+        ).trim();
 
-            return (
-                !configured ||
-                configured ===
-                    "sample-advisory-report.html"
-            )
-                ? Definitions
-                    .DEFAULT_REPORT_URL
-                : configured;
-        }
+    if (
+        configured &&
+        configured !==
+            "sample-advisory-report.html"
+    ) {
+        return configured;
+    }
+
+    return (
+        Definitions.REPORT_URL ||
+        Definitions.DEFAULT_REPORT_URL ||
+        "executive-advisory-report.html"
+    );
+}
 
         createModuleContext() {
             return {
