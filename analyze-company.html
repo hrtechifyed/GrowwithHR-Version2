@@ -862,9 +862,10 @@
      Loading order is important:
      1. Shared site functionality
      2. PDF and email services
-     3. Assessment modules
-     4. Compatibility facade
-     5. Build marker
+     3. Extracted assessment modules
+     4. Original assessment controller
+     5. Temporary compatibility facade
+     6. Build marker
 ========================================================== -->
 
 <!-- Shared site navigation and shell behavior -->
@@ -921,15 +922,24 @@
 <script src="js/executive-assessment/assessment-state.js"></script>
 
 <!--
-    Compatibility facade.
+    Existing production controller.
 
-    This remains the main assessment entry point until the modular
-    cutover is complete. It must load after every extracted module.
+    This creates window.executiveAssessment and continues to provide the
+    original implementation as a rollback-safe fallback.
 -->
 <script src="js/executive-assessment.js"></script>
 
+<!--
+    Temporary migration bridge.
+
+    This must load after executive-assessment.js because it connects the
+    already-created controller instance to the extracted modules.
+-->
+<script src="js/executive-assessment/compatibility-facade.js"></script>
+
 <!-- Visible application build marker -->
-<script src="js/build-marker.js"></script>
+<script src="js/build-marker.js">
     
+</script>
 </body>
 </html>
