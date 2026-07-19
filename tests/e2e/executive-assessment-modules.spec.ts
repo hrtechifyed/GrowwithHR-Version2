@@ -69,6 +69,26 @@ async function clearBrowserState(
     });
 }
 
+async function waitForAssessment(
+    page: Page
+): Promise<void> {
+    await page.waitForFunction(() => {
+        const browserWindow =
+            window as Window & {
+                executiveAssessment?: {
+                    __modularFacadeInstalled?:
+                        boolean;
+                };
+            };
+
+        return Boolean(
+            browserWindow
+                .executiveAssessment
+                ?.__modularFacadeInstalled
+        );
+    });
+}
+
 async function seedSavedAssessment(
     page: Page
 ): Promise<void> {
@@ -166,7 +186,7 @@ async function seedSavedAssessment(
 }
 
 test.describe(
-    "Executive assessment modular bridge",
+    "Executive assessment modular controller",
     () => {
         test.beforeEach(
             async ({ page }) => {
@@ -191,6 +211,10 @@ test.describe(
 
                 await page.goto(
                     "/analyze-company.html"
+                );
+
+                await waitForAssessment(
+                    page
                 );
 
                 await expect(
@@ -259,7 +283,7 @@ test.describe(
         );
 
         test(
-            "installs the compatibility facade on the existing controller",
+            "initializes the modular controller and its services",
             async ({ page }) => {
                 await clearBrowserState(
                     page
@@ -269,24 +293,8 @@ test.describe(
                     "/analyze-company.html"
                 );
 
-                await page.waitForFunction(
-                    () => {
-                        const application =
-                            (
-                                window as Window & {
-                                    executiveAssessment?: {
-                                        __modularFacadeInstalled?:
-                                            boolean;
-                                    };
-                                }
-                            )
-                                .executiveAssessment;
-
-                        return Boolean(
-                            application
-                                ?.__modularFacadeInstalled
-                        );
-                    }
+                await waitForAssessment(
+                    page
                 );
 
                 const status =
@@ -294,12 +302,18 @@ test.describe(
                         () => {
                             const browserWindow =
                                 window as Window & {
+                                    ExecutiveAdvisoryBriefing?:
+                                        unknown;
+
                                     executiveAssessment?: {
                                         __modularFacadeInstalled?:
                                             boolean;
 
                                         __modularFacadeVersion?:
                                             string;
+
+                                        stateModel?:
+                                            unknown;
 
                                         assessmentState?:
                                             unknown;
@@ -309,11 +323,18 @@ test.describe(
 
                                         deliveryService?:
                                             unknown;
-                                    };
 
-                                    GrowWithHRCompatibilityFacade?: {
-                                        version:
-                                            string;
+                                        renderBusinessBasics?:
+                                            () => string;
+
+                                        validateBusinessBasics?:
+                                            () => boolean;
+
+                                        writeReportData?:
+                                            () => object;
+
+                                        saveNow?:
+                                            () => object | null;
                                     };
                                 };
 
@@ -322,28 +343,31 @@ test.describe(
                                     .executiveAssessment;
 
                             return {
+                                hasControllerClass:
+                                    Boolean(
+                                        browserWindow
+                                            .ExecutiveAdvisoryBriefing
+                                    ),
+
                                 hasApplication:
                                     Boolean(
                                         application
                                     ),
 
-                                facadeInstalled:
+                                modularControllerReady:
                                     Boolean(
                                         application
                                             ?.__modularFacadeInstalled
                                     ),
 
-                                facadeVersion:
+                                modularVersion:
                                     application
                                         ?.__modularFacadeVersion,
 
-                                publicFacadeVersion:
-                                    browserWindow
-                                        .GrowWithHRCompatibilityFacade
-                                        ?.version,
-
                                 hasStateModel:
                                     Boolean(
+                                        application
+                                            ?.stateModel ||
                                         application
                                             ?.assessmentState
                                     ),
@@ -358,26 +382,47 @@ test.describe(
                                     Boolean(
                                         application
                                             ?.deliveryService
-                                    )
+                                    ),
+
+                                hasScreenRenderer:
+                                    typeof application
+                                        ?.renderBusinessBasics ===
+                                    "function",
+
+                                hasValidation:
+                                    typeof application
+                                        ?.validateBusinessBasics ===
+                                    "function",
+
+                                hasReportMapper:
+                                    typeof application
+                                        ?.writeReportData ===
+                                    "function",
+
+                                hasStorageFacade:
+                                    typeof application
+                                        ?.saveNow ===
+                                    "function"
                             };
                         }
                     );
+
+                expect(
+                    status
+                        .hasControllerClass
+                ).toBe(true);
 
                 expect(
                     status.hasApplication
                 ).toBe(true);
 
                 expect(
-                    status.facadeInstalled
+                    status
+                        .modularControllerReady
                 ).toBe(true);
 
                 expect(
-                    status.facadeVersion
-                ).toBe("1.0.0");
-
-                expect(
-                    status
-                        .publicFacadeVersion
+                    status.modularVersion
                 ).toBe("1.0.0");
 
                 expect(
@@ -393,6 +438,23 @@ test.describe(
                     status
                         .hasDeliveryService
                 ).toBe(true);
+
+                expect(
+                    status
+                        .hasScreenRenderer
+                ).toBe(true);
+
+                expect(
+                    status.hasValidation
+                ).toBe(true);
+
+                expect(
+                    status.hasReportMapper
+                ).toBe(true);
+
+                expect(
+                    status.hasStorageFacade
+                ).toBe(true);
             }
         );
 
@@ -407,21 +469,8 @@ test.describe(
                     "/analyze-company.html"
                 );
 
-                await page.waitForFunction(
-                    () => {
-                        return Boolean(
-                            (
-                                window as Window & {
-                                    executiveAssessment?: {
-                                        __modularFacadeInstalled?:
-                                            boolean;
-                                    };
-                                }
-                            )
-                                .executiveAssessment
-                                ?.__modularFacadeInstalled
-                        );
-                    }
+                await waitForAssessment(
+                    page
                 );
 
                 await expect(
@@ -475,7 +524,7 @@ test.describe(
         );
 
         test(
-            "renders the first screen through the extracted renderer",
+            "renders the first screen through AssessmentScreens",
             async ({ page }) => {
                 await clearBrowserState(
                     page
@@ -485,43 +534,27 @@ test.describe(
                     "/analyze-company.html"
                 );
 
-                await page.waitForFunction(
-                    () => {
-                        return Boolean(
-                            (
-                                window as Window & {
-                                    executiveAssessment?: {
-                                        __modularFacadeInstalled?:
-                                            boolean;
-                                    };
-                                }
-                            )
-                                .executiveAssessment
-                                ?.__modularFacadeInstalled
-                        );
-                    }
+                await waitForAssessment(
+                    page
                 );
 
                 const renderResult =
                     await page.evaluate(
                         () => {
-                            const application =
-                                (
-                                    window as Window & {
-                                        executiveAssessment?: {
-                                            renderBusinessBasics:
-                                                () => string;
-                                        };
-                                    }
-                                )
-                                    .executiveAssessment;
+                            const browserWindow =
+                                window as Window & {
+                                    executiveAssessment?: {
+                                        renderBusinessBasics:
+                                            () => string;
+                                    };
+                                };
 
-                            if (!application) {
-                                return "";
-                            }
-
-                            return application
-                                .renderBusinessBasics();
+                            return (
+                                browserWindow
+                                    .executiveAssessment
+                                    ?.renderBusinessBasics() ||
+                                ""
+                            );
                         }
                     );
 
@@ -562,21 +595,8 @@ test.describe(
                     "/analyze-company.html"
                 );
 
-                await page.waitForFunction(
-                    () => {
-                        return Boolean(
-                            (
-                                window as Window & {
-                                    executiveAssessment?: {
-                                        __modularFacadeInstalled?:
-                                            boolean;
-                                    };
-                                }
-                            )
-                                .executiveAssessment
-                                ?.__modularFacadeInstalled
-                        );
-                    }
+                await waitForAssessment(
+                    page
                 );
 
                 await expect(
@@ -609,7 +629,7 @@ test.describe(
                                                     string;
                                             };
 
-                                            assessmentState?: {
+                                            stateModel?: {
                                                 createPersistenceSnapshot:
                                                     () => {
                                                         currentMoment:
@@ -632,7 +652,7 @@ test.describe(
 
                             const snapshot =
                                 application
-                                    .assessmentState
+                                    .stateModel
                                     ?.createPersistenceSnapshot();
 
                             return {
@@ -692,7 +712,7 @@ test.describe(
         );
 
         test(
-            "delegates validation to the extracted validation module",
+            "delegates validation to AssessmentValidation",
             async ({ page }) => {
                 await clearBrowserState(
                     page
@@ -702,21 +722,8 @@ test.describe(
                     "/analyze-company.html"
                 );
 
-                await page.waitForFunction(
-                    () => {
-                        return Boolean(
-                            (
-                                window as Window & {
-                                    executiveAssessment?: {
-                                        __modularFacadeInstalled?:
-                                            boolean;
-                                    };
-                                }
-                            )
-                                .executiveAssessment
-                                ?.__modularFacadeInstalled
-                        );
-                    }
+                await waitForAssessment(
+                    page
                 );
 
                 await page
@@ -771,7 +778,7 @@ test.describe(
         );
 
         test(
-            "writes progress through the extracted storage module",
+            "writes progress through AssessmentStorage",
             async ({ page }) => {
                 await clearBrowserState(
                     page
@@ -781,21 +788,8 @@ test.describe(
                     "/analyze-company.html"
                 );
 
-                await page.waitForFunction(
-                    () => {
-                        return Boolean(
-                            (
-                                window as Window & {
-                                    executiveAssessment?: {
-                                        __modularFacadeInstalled?:
-                                            boolean;
-                                    };
-                                }
-                            )
-                                .executiveAssessment
-                                ?.__modularFacadeInstalled
-                        );
-                    }
+                await waitForAssessment(
+                    page
                 );
 
                 await page
@@ -870,6 +864,113 @@ test.describe(
 
                 expect(
                     saved.schemaVersion
+                ).toBe(1);
+            }
+        );
+
+        test(
+            "keeps report mapping free from delivery side effects",
+            async ({ page }) => {
+                await clearBrowserState(
+                    page
+                );
+
+                await page.goto(
+                    "/analyze-company.html"
+                );
+
+                await waitForAssessment(
+                    page
+                );
+
+                const report =
+                    await page.evaluate(
+                        () => {
+                            const browserWindow =
+                                window as Window & {
+                                    GrowWithHRModules?: {
+                                        ReportMapper?: {
+                                            buildReportData:
+                                                (
+                                                    context:
+                                                    object
+                                                ) =>
+                                                    Record<
+                                                        string,
+                                                        unknown
+                                                    >;
+                                        };
+                                    };
+                                };
+
+                            return browserWindow
+                                .GrowWithHRModules
+                                ?.ReportMapper
+                                ?.buildReportData({
+                                    answers: {
+                                        companyName:
+                                            "Mapper Test Company",
+
+                                        industry:
+                                            "Information Technology / SaaS",
+
+                                        industryId:
+                                            "information_technology",
+
+                                        industryCategory:
+                                            "Technology & Digital",
+
+                                        industryRuleProfile:
+                                            "Information Technology / SaaS",
+
+                                        locations:
+                                            "1",
+
+                                        countries:
+                                            "1",
+
+                                        expansionPlans:
+                                            [],
+
+                                        priorities:
+                                            []
+                                    },
+
+                                    lead: {
+                                        name:
+                                            "Test User",
+
+                                        email:
+                                            "test@example.com",
+
+                                        role:
+                                            "founder-business-leader",
+
+                                        marketingConsent:
+                                            false
+                                    }
+                                });
+                        }
+                    );
+
+                expect(
+                    report.companyName
+                ).toBe(
+                    "Mapper Test Company"
+                );
+
+                expect(
+                    report.recipientEmail
+                ).toBe(
+                    "test@example.com"
+                );
+
+                expect(
+                    report.locations
+                ).toBe(1);
+
+                expect(
+                    report.countries
                 ).toBe(1);
             }
         );
