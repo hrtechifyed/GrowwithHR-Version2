@@ -27,7 +27,7 @@ All notable changes to GrowWithHR are documented here.
 
 ---
 
-## [v0.15.1-beta] - Gmail Advisory Delivery and HRTechify Brand Alignment
+## [v0.15.0-beta] - Gmail Advisory Delivery and HRTechify Brand Alignment
 
 **Release Date:** 2026-07-19
 
