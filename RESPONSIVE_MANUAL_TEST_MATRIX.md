@@ -1,6 +1,6 @@
 # GrowWithHR Responsive Manual Test Matrix
 
-Version: 0.12.1-beta  
+Version: 0.15.0-beta  
 Build marker: `responsive-repair-20260716-0000`
 
 ## Environment limitation
