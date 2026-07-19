@@ -1,1 +1,51 @@
+name: Compliance Data Validation
 
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - "data/schema/**"
+      - "data/knowledge-base/laws/**"
+      - "scripts/validate-compliance-data.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/compliance-data-validation.yml"
+
+  pull_request:
+    paths:
+      - "data/schema/**"
+      - "data/knowledge-base/laws/**"
+      - "scripts/validate-compliance-data.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/compliance-data-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compliance-data-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate compliance data
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate compliance data
+        run: npm run validate:compliance
