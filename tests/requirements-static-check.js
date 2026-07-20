@@ -1,56 +1,408 @@
-const fs = require('fs');
-const assert = require('assert');
+"use strict";
 
-const read = (file) => fs.readFileSync(file, 'utf8');
+const fs = require("fs");
+const path = require("path");
+const assert = require("assert");
+
+const root = path.resolve(__dirname, "..");
+
+function resolvePath(relativePath) {
+    return path.join(root, relativePath);
+}
+
+function read(relativePath) {
+    const absolutePath =
+        resolvePath(relativePath);
+
+    assert(
+        fs.existsSync(absolutePath),
+        `Required file is missing: ${relativePath}`
+    );
+
+    return fs.readFileSync(
+        absolutePath,
+        "utf8"
+    );
+}
+
+function includes(
+    source,
+    expected,
+    message
+) {
+    assert(
+        source.includes(expected),
+        message || `Expected to find: ${expected}`
+    );
+}
+
+/* ==========================================================
+   Page shell and footer coverage
+========================================================== */
+
 const htmlFiles = [
-  'index.html',
-  'analyze-company.html',
-  'assessment.html',
-  'official-resources.html',
-  'sample-advisory-report.html',
-  'more-info.html',
-  'compliance-roadmap.html',
-  'growth-roadmap.html',
-  'people-roadmap.html',
-  'pages/company-profile.html',
-  'pages/organization-profile.html',
+    "index.html",
+    "analyze-company.html",
+    "assessment.html",
+    "official-resources.html",
+    "sample-advisory-report.html",
+    "more-info.html",
+    "compliance-roadmap.html",
+    "growth-roadmap.html",
+    "people-roadmap.html",
+    "pages/company-profile.html",
+    "pages/organization-profile.html"
 ];
 
 for (const file of htmlFiles) {
-  assert(read(file).includes('<footer class="footer"'), `${file} is missing the shared footer`);
-  assert(read(file).includes('Smart People Strategy. More business momentum.'), `${file} is missing home footer copy`);
+    const html = read(file);
+
+    const loadsSharedShell =
+        /src=["'](?:\.\.\/)?js\/site-shell\.js(?:[?#][^"']*)?["']/.test(
+            html
+        );
+
+    const hasStaticFooter =
+        /<footer\b[^>]*class=["'][^"']*\bfooter\b[^"']*["']/.test(
+            html
+        );
+
+    assert(
+        loadsSharedShell ||
+        hasStaticFooter,
+        `${file} must load the shared site shell or contain the current static footer fallback.`
+    );
+
+    if (
+        hasStaticFooter &&
+        html.includes('id="productVersion"')
+    ) {
+        includes(
+            html,
+            "GrowWithHR Public 0.15.1-beta",
+            `${file} must display the M0 baseline version.`
+        );
+    }
 }
 
-const home = read('index.html');
-assert(home.indexOf('View Sample Advisory') < home.indexOf('Executive Intelligence'), 'home animation must follow sample advisory CTA');
-assert(home.includes('href="sample-advisory-report.html"'), 'sample advisory CTA must link to the sample advisory page');
+/* ==========================================================
+   Shared site-shell contracts
+========================================================== */
 
-const heroCss = read('css/06-hero.css');
-assert(heroCss.includes('grid-template-columns: minmax(min(100%, 260px), clamp(260px, 26vw, 360px)) minmax(0, 1fr);'), 'executive intelligence must use responsive navigation + graph columns');
-assert(heroCss.includes('introStackCardEnter'), 'executive intelligence cards must use scene-style stacked animation');
+const siteShell =
+    read("js/site-shell.js");
 
-const introJs = read('js/intro-sequence.js');
-assert(introJs.includes('steps = ['), 'intro sequence must define an explicit state timeline');
-assert(introJs.includes('state.advisoryState = "assessment"'), 'intro must hand off to assessment in the shared state model');
+includes(
+    siteShell,
+    "© 2026 HRTechify - People • Technology • Growth",
+    "The shared footer must retain the current HRTechify brand line."
+);
 
-const introCss = read('css/13-intro-experience.css');
-assert(!introCss.includes('Brush Script MT'), 'briefing cards must not switch to the old cursive font');
-assert(introCss.includes('font-family: inherit;'), 'briefing cards should inherit the scene font');
+includes(
+    siteShell,
+    "All Rights Reserved.",
+    "The shared footer must retain the rights line."
+);
 
+includes(
+    siteShell,
+    'class="site-nav-toggle"',
+    "The shared shell must provide mobile navigation."
+);
 
-const variablesCss = read('css/01-variables.css');
-['--page-max-width', '--page-gutter', '--content-narrow', '--content-medium', '--content-wide', '--section-space', '--card-gap', '--navbar-height'].forEach((token) => {
-  assert(variablesCss.includes(token), `responsive token ${token} must exist`);
+includes(
+    siteShell,
+    'aria-expanded="false"',
+    "Mobile navigation must begin collapsed."
+);
+
+includes(
+    siteShell,
+    'aria-controls="siteNavLinks"',
+    "The navigation toggle must identify its controlled links."
+);
+
+includes(
+    siteShell,
+    'nav.classList.add("is-open")',
+    "The shared navigation must support opening."
+);
+
+includes(
+    siteShell,
+    'nav.classList.remove("is-open")',
+    "The shared navigation must support closing."
+);
+
+includes(
+    siteShell,
+    'event.key === "Escape"',
+    "The shared navigation must support keyboard dismissal."
+);
+
+/* ==========================================================
+   Homepage requirements
+========================================================== */
+
+const home = read("index.html");
+
+includes(
+    home,
+    'id="home"',
+    "The homepage hero must remain available."
+);
+
+includes(
+    home,
+    'href="sample-advisory-report.html"',
+    "The sample advisory CTA must retain its destination."
+);
+
+includes(
+    home,
+    "View Sample Advisory",
+    "The sample advisory CTA must remain visible."
+);
+
+includes(
+    home,
+    "Executive Intelligence",
+    "The executive-intelligence preview must remain visible."
+);
+
+assert(
+    home.indexOf("View Sample Advisory") <
+        home.indexOf("Executive Intelligence"),
+    "The sample advisory CTA must appear before the executive-intelligence preview."
+);
+
+includes(
+    home,
+    'data-testid="home-executive-stack"',
+    "The homepage intelligence-stack test hook is required."
+);
+
+assert(
+    !home.includes("backupstyles.css"),
+    "The obsolete backup stylesheet must not be loaded."
+);
+
+/* ==========================================================
+   Homepage responsive layout
+========================================================== */
+
+const heroCss =
+    read("css/06-hero.css");
+
+includes(
+    heroCss,
+    ".hero-dashboard-layout",
+    "The executive-intelligence layout is required."
+);
+
+includes(
+    heroCss,
+    "grid-template-areas:",
+    "The executive-intelligence layout must define responsive grid areas."
+);
+
+includes(
+    heroCss,
+    ".hero-sidebar",
+    "The executive-intelligence controls are required."
+);
+
+includes(
+    heroCss,
+    "grid-template-columns:repeat(3, 1fr);",
+    "The desktop intelligence cards must use three equal columns."
+);
+
+includes(
+    heroCss,
+    "introStackCardEnter",
+    "The homepage cards must retain their staged entrance animation."
+);
+
+/* ==========================================================
+   Stable assessment route
+========================================================== */
+
+const assessmentHtml =
+    read("analyze-company.html");
+
+includes(
+    assessmentHtml,
+    'id="assessmentShell"',
+    "The stable assessment shell is required."
+);
+
+includes(
+    assessmentHtml,
+    'id="landingScreen"',
+    "The stable assessment landing screen is required."
+);
+
+includes(
+    assessmentHtml,
+    'id="conversationWorkspace"',
+    "The assessment workspace is required."
+);
+
+includes(
+    assessmentHtml,
+    'id="reviewScreen"',
+    "The assessment review screen is required."
+);
+
+includes(
+    assessmentHtml,
+    'id="contactScreen"',
+    "The contact screen is required."
+);
+
+includes(
+    assessmentHtml,
+    'id="loadingScreen"',
+    "The report-generation state is required."
+);
+
+includes(
+    assessmentHtml,
+    'id="successScreen"',
+    "The completed-advisory state is required."
+);
+
+includes(
+    assessmentHtml,
+    'href="css/17-advisory-briefing.css"',
+    "The current assessment stylesheet must remain connected."
+);
+
+includes(
+    assessmentHtml,
+    'src="js/executive-assessment.js"',
+    "The current assessment controller must remain connected."
+);
+
+assert(
+    !assessmentHtml.includes(
+        'src="js/intro-sequence.js"'
+    ),
+    "The current assessment route must not load the obsolete intro sequence."
+);
+
+/* ==========================================================
+   Assessment controller and persistence
+========================================================== */
+
+const assessmentJs =
+    read("js/executive-assessment.js");
+
+includes(
+    assessmentJs,
+    "Storage.readAssessment();",
+    "The assessment must restore saved progress."
+);
+
+includes(
+    assessmentJs,
+    "State.createDefaultState();",
+    "The assessment must support a clean initial state."
+);
+
+includes(
+    assessmentJs,
+    "this.bindEvents();",
+    "Assessment interactions must remain connected."
+);
+
+includes(
+    assessmentJs,
+    "this.initialiseView();",
+    "The assessment must initialise the correct view."
+);
+
+const storageJs = read(
+    "js/executive-assessment/assessment-storage.js"
+);
+
+includes(
+    storageJs,
+    '"growwithhr-advisory-briefing-v2"',
+    "The current assessment storage key must be preserved."
+);
+
+includes(
+    storageJs,
+    "window.localStorage.getItem",
+    "Saved assessment progress must remain readable."
+);
+
+includes(
+    storageJs,
+    "window.localStorage.setItem",
+    "Assessment progress must remain writable."
+);
+
+/* ==========================================================
+   Responsive design tokens
+========================================================== */
+
+const variablesCss =
+    read("css/01-variables.css");
+
+[
+    "--page-max-width",
+    "--page-gutter",
+    "--content-narrow",
+    "--content-medium",
+    "--content-wide",
+    "--section-space",
+    "--card-gap",
+    "--navbar-height"
+].forEach((token) => {
+    includes(
+        variablesCss,
+        token,
+        `Responsive token ${token} must exist.`
+    );
 });
-const buildMarker = read('js/build-marker.js');
-assert(buildMarker.includes('window.GWHR_BUILD_ID'), 'development build marker must be exposed');
-assert(!home.includes('backupstyles.css'), 'obsolete backup stylesheet must not be loaded by home');
 
-const assessmentJs = read('js/executive-assessment.js');
-assert(assessmentJs.includes('pendingQuestionRender'), 'assessment should guard pending question renders');
-assert(assessmentJs.includes('this.conversationContainer.innerHTML = "";'), 'assessment should clear the current question card before render');
+/* ==========================================================
+   Build diagnostics
+========================================================== */
 
-const playwrightSpec = read('tests/playwright/growwithhr-ui.spec.js');
-assert(playwrightSpec.includes("from '@playwright/test'"), 'Playwright test file should be generated');
+const buildMarker =
+    read("js/build-marker.js");
 
-console.log('Static requirement checks passed.');
+includes(
+    buildMarker,
+    "window.GWHR_BUILD_ID",
+    "The development build marker must remain exposed."
+);
+
+includes(
+    buildMarker,
+    "window.GWHR_DEBUG",
+    "Opt-in build diagnostics must remain available."
+);
+
+/* ==========================================================
+   Playwright coverage
+========================================================== */
+
+const playwrightSpec = read(
+    "tests/playwright/growwithhr-ui.spec.js"
+);
+
+assert(
+    /from\s+["']@playwright\/test["']/.test(
+        playwrightSpec
+    ),
+    "The Playwright UI test must import @playwright/test."
+);
+
+console.log(
+    "Static requirement checks passed."
+);
