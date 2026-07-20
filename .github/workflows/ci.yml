@@ -1,0 +1,53 @@
+name: GrowWithHR CI
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+      - "fix/**"
+      - "release/**"
+      - "hotfix/**"
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-checks:
+    name: Quality checks
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Check version consistency
+        run: npm run version:check
+
+      - name: Validate compliance data
+        run: npm run validate:compliance
+
+      - name: Run frontend production checks
+        run: npm run test:frontend
+
+      - name: Run assessment journey checks
+        run: npm run test:journeys
+
+      - name: Run UX tests
+        run: npm run test:ux
