@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "recordVersion": "1.0.0",
+  "recordVersion": "2.0.0",
   "id": "CENTRAL-CLRA",
   "name": "Contract Labour (Regulation and Abolition) Act, 1970",
   "shortName": "CLRA Act",
-  "officialCitation": "Contract Labour (Regulation and Abolition) Act, 1970",
-  "overview": "Regulates the employment of contract labour in certain establishments and provides for registration, licensing and welfare of contract workers.",
+  "officialCitation": "The Contract Labour (Regulation and Abolition) Act, 1970, repealed and saved under section 143 of the Occupational Safety, Health and Working Conditions Code, 2020.",
+  "overview": "Historical central labour-law record governing registration of principal employers, contractor licensing and contract-worker welfare before the Occupational Safety, Health and Working Conditions Code, 2020 became operative on 21 November 2025. The Contract Labour (Regulation and Abolition) Act, 1970 was repealed under section 143 of the OSHWC Code, subject to savings. Current contract-labour obligations must be evaluated under Chapter XI, Part I of the OSHWC Code and the applicable Central, State or Union Territory rules and notifications. This record is retained for historical periods, saved licences and registrations, pending proceedings and audit traceability.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -16,14 +16,16 @@
     "name": "Ministry of Labour & Employment",
     "sourceId": "MOL"
   },
-  "status": "active",
+  "status": "superseded",
   "temporal": {
     "effectiveFrom": null,
-    "effectiveTo": null,
-    "lastVerified": "2026-07-05",
-    "nextReviewDue": "2026-10-03",
+    "effectiveTo": "2025-11-20",
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
     "supersedes": [],
-    "supersededBy": []
+    "supersededBy": [
+      "CENTRAL-OSHWC"
+    ]
   },
   "definitions": [
     {
@@ -84,17 +86,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-OSHWC"
+        ]
       }
     },
     {
@@ -138,17 +142,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-OSHWC"
+        ]
       }
     },
     {
@@ -192,17 +198,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-OSHWC"
+        ]
       }
     },
     {
@@ -246,17 +254,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-OSHWC"
+        ]
       }
     },
     {
@@ -300,17 +310,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-OSHWC"
+        ]
       }
     }
   ],
@@ -324,31 +336,31 @@
   "sources": [
     {
       "sourceId": "MOL",
-      "name": "Ministry of Labour & Employment",
+      "name": "Ministry of Labour & Employment Labour Codes Portal",
       "sourceType": "official_portal",
-      "url": "https://labour.gov.in",
-      "authority": "Ministry of Labour & Employment",
+      "url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa",
+      "authority": "Ministry of Labour & Employment, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "INDIACODE",
       "name": "India Code",
       "sourceType": "official_portal",
       "url": "https://www.indiacode.nic.in",
-      "authority": "India Code",
+      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     }
   ],
   "governance": {
     "owner": "GrowWithHR Compliance Data Team",
-    "reviewCadenceDays": 90,
+    "reviewCadenceDays": 30,
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Migrated the existing Contract Labour Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+    "changeSummary": "Updated the Contract Labour Act record as a superseded historical record, preserved its legacy definitions, rules and exception, and linked current contract-labour compliance to the OSHWC Code from 21 November 2025."
   }
 }
