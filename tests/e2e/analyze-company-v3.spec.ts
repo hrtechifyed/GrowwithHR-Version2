@@ -49,8 +49,7 @@ async function openPrivateBeta(
                 (
                     window as
                         ComplianceDnaWindow
-                )
-                    .GrowWithHRComplianceDna
+                ).GrowWithHRComplianceDna
             );
         }
     );
@@ -117,28 +116,27 @@ test.describe(
                     "Meet the organisation behind the obligations"
                 );
 
-                await expect(
+                const progressBar =
                     page.locator(
                         '[role="progressbar"]'
-                    )
+                    );
+
+                await expect(
+                    progressBar
                 ).toHaveAttribute(
                     "aria-valuemin",
                     "1"
                 );
 
                 await expect(
-                    page.locator(
-                        '[role="progressbar"]'
-                    )
+                    progressBar
                 ).toHaveAttribute(
                     "aria-valuemax",
                     "5"
                 );
 
                 await expect(
-                    page.locator(
-                        '[role="progressbar"]'
-                    )
+                    progressBar
                 ).toHaveAttribute(
                     "aria-valuenow",
                     "1"
@@ -158,8 +156,7 @@ test.describe(
                             return (
                                 window as
                                     ComplianceDnaWindow
-                            )
-                                .GrowWithHRComplianceDna;
+                            ).GrowWithHRComplianceDna;
                         }
                     );
 
@@ -309,11 +306,27 @@ test.describe(
                     "Open the stable assessment"
                 );
 
+                const stableAssessmentLink =
+                    page.getByRole(
+                        "link",
+                        {
+                            name:
+                                "Use the stable assessment",
+                            exact:
+                                true
+                        }
+                    );
+
                 await expect(
-                    page.locator(
-                        `a[href="${STABLE_ROUTE}"]`
-                    )
+                    stableAssessmentLink
                 ).toBeVisible();
+
+                await expect(
+                    stableAssessmentLink
+                ).toHaveAttribute(
+                    "href",
+                    STABLE_ROUTE
+                );
             }
         );
 
@@ -335,10 +348,7 @@ test.describe(
                     });
 
                 await page.addInitScript(
-                    ({
-                        key,
-                        value
-                    }) => {
+                    ({ key, value }) => {
                         localStorage.setItem(
                             key,
                             value
