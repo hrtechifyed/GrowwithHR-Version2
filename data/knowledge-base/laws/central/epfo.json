@@ -1,14 +1,30 @@
 {
-  "lawId": "CENTRAL-EPFO",
-  "lawName": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "CENTRAL-EPFO",
+  "name": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
   "shortName": "EPF Act",
-  "authority": "Employees' Provident Fund Organisation",
-  "sourceId": "EPFO",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "officialCitation": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
   "overview": "Provides provident fund, pension and insurance benefits to eligible employees and prescribes employer obligations relating to registration, contributions and statutory compliance.",
-
+  "jurisdiction": {
+    "country": "IN",
+    "level": "central",
+    "code": "IN",
+    "stateCode": null
+  },
+  "authority": {
+    "name": "Employees' Provident Fund Organisation",
+    "sourceId": "EPFO"
+  },
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "definitions": [
     {
       "id": "EPFO-DEF-001",
@@ -26,156 +42,313 @@
       "definition": "The person or organisation responsible for compliance under the Act."
     }
   ],
-
   "rules": [
-
     {
       "id": "EPFO-001",
       "title": "Review EPF Applicability",
-      "priority": "Mandatory",
+      "description": "Determine whether the establishment is required to obtain EPF registration based on applicable legal criteria.",
       "category": "Provident Fund",
-
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 20
+          "min": 20,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Determine whether the establishment is required to obtain EPF registration based on applicable legal criteria.",
-
-      "sourceId": "EPFO",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952"
+          "sourceId": "EPFO",
+          "citation": {
+            "reference": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "EPFO-002",
       "title": "Employer Registration",
-      "priority": "Mandatory",
+      "description": "Where applicable, complete employer registration with EPFO.",
       "category": "Registration",
-
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 20
+          "min": 20,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Where applicable, complete employer registration with EPFO.",
-
-      "sourceId": "EPFO",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "EPFO Employer Registration"
+          "sourceId": "EPFO",
+          "citation": {
+            "reference": "EPFO Employer Registration",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "EPFO-003",
       "title": "Employee Enrollment",
-      "priority": "Mandatory",
+      "description": "Enroll eligible employees under the EPF scheme.",
       "category": "Provident Fund",
-
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 20
+          "min": 20,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Enroll eligible employees under the EPF scheme.",
-
-      "sourceId": "EPFO",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "EPFO Membership"
+          "sourceId": "EPFO",
+          "citation": {
+            "reference": "EPFO Membership",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "EPFO-004",
       "title": "Monthly Contributions",
-      "priority": "Mandatory",
+      "description": "Deposit employer and employee provident fund contributions within the prescribed timelines.",
       "category": "Payroll",
-
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 20
+          "min": 20,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Deposit employer and employee provident fund contributions within the prescribed timelines.",
-
-      "sourceId": "EPFO",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "EPFO Contribution Requirements"
+          "sourceId": "EPFO",
+          "citation": {
+            "reference": "EPFO Contribution Requirements",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "EPFO-005",
       "title": "Maintain EPF Records",
-      "priority": "Mandatory",
+      "description": "Maintain prescribed employee records and contribution records.",
       "category": "Documentation",
-
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 20
+          "min": 20,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Maintain prescribed employee records and contribution records.",
-
-      "sourceId": "EPFO",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "EPFO Record Maintenance"
+          "sourceId": "EPFO",
+          "citation": {
+            "reference": "EPFO Record Maintenance",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
   "exceptions": [
-
     {
       "id": "EPFO-EX-001",
       "title": "Voluntary Coverage",
       "description": "Certain establishments may seek voluntary coverage subject to applicable provisions."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "EPFO"
+      "sourceId": "EPFO",
+      "name": "Employees' Provident Fund Organisation",
+      "sourceType": "official_portal",
+      "url": "https://www.epfindia.gov.in",
+      "authority": "Employees' Provident Fund Organisation",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Employees' Provident Funds and Miscellaneous Provisions Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
