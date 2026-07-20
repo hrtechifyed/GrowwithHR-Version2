@@ -5,7 +5,7 @@
   "name": "Contract Labour (Regulation and Abolition) Act, 1970",
   "shortName": "CLRA Act",
   "officialCitation": "The Contract Labour (Regulation and Abolition) Act, 1970, repealed and saved under section 143 of the Occupational Safety, Health and Working Conditions Code, 2020.",
-  "overview": "Historical central labour-law record governing registration of principal employers, contractor licensing and contract-worker welfare before the Occupational Safety, Health and Working Conditions Code, 2020 became operative on 21 November 2025. The Contract Labour (Regulation and Abolition) Act, 1970 was repealed under section 143 of the OSHWC Code, subject to savings. Current contract-labour obligations must be evaluated under Chapter XI, Part I of the OSHWC Code and the applicable Central, State or Union Territory rules and notifications. This record is retained for historical periods, saved licences and registrations, pending proceedings and audit traceability.",
+  "overview": "Historical record governing principal-employer registration, contractor licensing and contract-worker welfare before the OSHWC Code became operative on 21 November 2025. Current obligations must be assessed under the OSHWC Code and applicable rules. This record remains for historical periods, saved instruments, proceedings and audit traceability.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -87,7 +87,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -143,7 +143,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -199,7 +199,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -255,7 +255,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -311,7 +311,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -331,28 +331,33 @@
       "id": "CLRA-EX-001",
       "title": "Applicability Threshold",
       "description": "Coverage depends on statutory applicability and notified conditions."
+    },
+    {
+      "id": "CLRA-EX-002",
+      "title": "Repeal and Savings",
+      "description": "Legacy rules, notifications, schemes, licences, exemptions, rights, proceedings and actions continue only to the extent preserved by the applicable repeal-and-savings provision and until lawfully replaced or superseded."
     }
   ],
   "sources": [
     {
       "sourceId": "MOL",
-      "name": "Ministry of Labour & Employment Labour Codes Portal",
+      "name": "Ministry of Labour & Employment",
       "sourceType": "official_portal",
-      "url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa",
-      "authority": "Ministry of Labour & Employment, Government of India",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
       "publishedAt": null,
       "accessedAt": "2026-07-20",
-      "verificationStatus": "verified"
+      "verificationStatus": "partially_verified"
     },
     {
       "sourceId": "INDIACODE",
       "name": "India Code",
       "sourceType": "official_portal",
       "url": "https://www.indiacode.nic.in",
-      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
+      "authority": "India Code",
       "publishedAt": null,
       "accessedAt": "2026-07-20",
-      "verificationStatus": "verified"
+      "verificationStatus": "partially_verified"
     }
   ],
   "governance": {
@@ -361,6 +366,18 @@
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Updated the Contract Labour Act record as a superseded historical record, preserved its legacy definitions, rules and exception, and linked current contract-labour compliance to the OSHWC Code from 21 November 2025."
-  }
+    "changeSummary": "Updated this legacy record as superseded from 21 November 2025, preserved its existing identifiers and obligations for historical use, and linked current compliance to CENTRAL-OSHWC."
+  },
+  "recommendations": [
+    {
+      "id": "CLRA-REC-001",
+      "title": "Retain Historical Records",
+      "description": "Preserve records created under the repealed enactment for saved liabilities, proceedings and audit traceability."
+    },
+    {
+      "id": "CLRA-REC-002",
+      "title": "Use the Successor Code for Current Compliance",
+      "description": "Assess current obligations under CENTRAL-OSHWC and the applicable rules, schemes, notifications and regulator directions."
+    }
+  ]
 }
