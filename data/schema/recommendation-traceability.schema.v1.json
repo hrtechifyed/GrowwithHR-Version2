@@ -1,0 +1,639 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:growwithhr:schema:recommendation-traceability:1.0.0",
+  "title": "GrowWithHR Recommendation Traceability Bundle",
+  "description": "Version 1.0.0 governed contract for confirmed facts, derived facts, deterministic rule evaluations, evidence status, structured sources and explainable recommendations.",
+  "$comment": "Cross-reference validation must additionally enforce unique record identifiers, resolve triggering and source identifiers, allow missing fact identifiers to remain absent, and require every recommendation applicabilityStatus to match its referenced rule evaluation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "generatedAt",
+    "facts",
+    "ruleEvaluations",
+    "recommendations",
+    "sources",
+    "limitations",
+    "metadata"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "1.0.0"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "facts": {
+      "$ref": "#/$defs/factCollection"
+    },
+    "ruleEvaluations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ruleEvaluation"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/recommendation"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceReference"
+      }
+    },
+    "limitations": {
+      "$ref": "#/$defs/uniqueTextArray"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "factId": {
+      "type": "string",
+      "pattern": "^fact\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^rule\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "recommendationId": {
+      "type": "string",
+      "pattern": "^recommendation\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "sourceId": {
+      "type": "string",
+      "pattern": "^source\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "applicabilityStatus": {
+      "type": "string",
+      "enum": [
+        "applicable",
+        "likely-applicable",
+        "not-currently-applicable",
+        "more-information-needed",
+        "specialist-review"
+      ]
+    },
+    "evidenceStatus": {
+      "type": "string",
+      "enum": [
+        "not-requested",
+        "not-provided",
+        "provided",
+        "not-verified",
+        "verified"
+      ]
+    },
+    "sourceType": {
+      "type": "string",
+      "enum": [
+        "legislation",
+        "regulation",
+        "government-guidance",
+        "official-portal",
+        "regulator-guidance",
+        "authoritative-professional-guidance"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "jsonValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "uniqueTextArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "factIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/factId"
+      }
+    },
+    "sourceIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/sourceId"
+      }
+    },
+    "factCollection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "confirmed",
+        "derived"
+      ],
+      "properties": {
+        "confirmed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/confirmedFact"
+          }
+        },
+        "derived": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/derivedFact"
+          }
+        }
+      }
+    },
+    "confirmedFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "label",
+        "value",
+        "answerKey",
+        "recordedAt",
+        "metadata"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/factId"
+        },
+        "kind": {
+          "const": "confirmed"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "value": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "answerKey": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "recordedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        }
+      }
+    },
+    "derivedFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "label",
+        "value",
+        "derivedFrom",
+        "derivationRuleId",
+        "metadata"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/factId"
+        },
+        "kind": {
+          "const": "derived"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "value": {
+          "$ref": "#/$defs/jsonValue"
+        },
+        "derivedFrom": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/factIdArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "derivationRuleId": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        }
+      }
+    },
+    "sourceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "publisher",
+        "url",
+        "jurisdiction",
+        "sourceType",
+        "reviewedAt",
+        "notes",
+        "official"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/sourceId"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "publisher": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "jurisdiction": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "sourceType": {
+          "$ref": "#/$defs/sourceType"
+        },
+        "reviewedAt": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "string",
+              "format": "date-time"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string"
+        },
+        "official": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ruleEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ruleId",
+        "ruleVersion",
+        "status",
+        "reason",
+        "requiredFactIds",
+        "triggeringFactIds",
+        "missingFactIds",
+        "sourceIds",
+        "evaluatedAt",
+        "metadata"
+      ],
+      "properties": {
+        "ruleId": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "ruleVersion": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "#/$defs/applicabilityStatus"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "requiredFactIds": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/factIdArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "triggeringFactIds": {
+          "$ref": "#/$defs/factIdArray"
+        },
+        "missingFactIds": {
+          "$ref": "#/$defs/factIdArray"
+        },
+        "sourceIds": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sourceIdArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "evaluatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "more-information-needed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "missingFactIds": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not-currently-applicable"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "missingFactIds": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "applicable",
+                  "likely-applicable",
+                  "not-currently-applicable"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "triggeringFactIds": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "notes",
+        "verificationProcessId",
+        "verifiedAt"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/evidenceStatus"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "verificationProcessId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "verifiedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "verificationProcessId": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "verifiedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "verificationProcessId": {
+                "type": "null"
+              },
+              "verifiedAt": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "ruleId",
+        "applicabilityStatus",
+        "evidence",
+        "title",
+        "reason",
+        "action",
+        "timeline",
+        "triggeringFactIds",
+        "missingFactIds",
+        "sourceIds",
+        "limitations",
+        "metadata"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/recommendationId"
+        },
+        "ruleId": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "applicabilityStatus": {
+          "$ref": "#/$defs/applicabilityStatus"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "action": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "timeline": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "triggeringFactIds": {
+          "$ref": "#/$defs/factIdArray"
+        },
+        "missingFactIds": {
+          "$ref": "#/$defs/factIdArray"
+        },
+        "sourceIds": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/sourceIdArray"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "limitations": {
+          "$ref": "#/$defs/uniqueTextArray"
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applicabilityStatus": {
+                "const": "more-information-needed"
+              }
+            },
+            "required": [
+              "applicabilityStatus"
+            ]
+          },
+          "then": {
+            "properties": {
+              "missingFactIds": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicabilityStatus": {
+                "const": "not-currently-applicable"
+              }
+            },
+            "required": [
+              "applicabilityStatus"
+            ]
+          },
+          "then": {
+            "properties": {
+              "missingFactIds": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicabilityStatus": {
+                "enum": [
+                  "applicable",
+                  "likely-applicable",
+                  "not-currently-applicable"
+                ]
+              }
+            },
+            "required": [
+              "applicabilityStatus"
+            ]
+          },
+          "then": {
+            "properties": {
+              "triggeringFactIds": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
