@@ -24,14 +24,16 @@
     "zustand": "^5.0.2"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "validate:compliance": "node scripts/validate-compliance-data.mjs",
-    "test:ux": "jest apps/web/src/components/UX/__tests__ --passWithNoTests",
-    "test:frontend": "node tests/frontend-production-checks.js",
-    "test:journeys": "node tests/assessment-journey-checks.js",
-    "test": "npm run test:frontend && npm run test:journeys && npm run test:ux",
-    "test:e2e": "playwright test",
-    "test:advisory": "playwright test tests/e2e/analyze-company-current.spec.ts"
-  }
+  "start": "node server.js",
+  "dev": "node --watch server.js",
+  "validate:compliance": "node scripts/validate-compliance-data.mjs",
+  "test:ux": "jest apps/web/src/components/UX/__tests__ --passWithNoTests",
+  "test:frontend": "node tests/frontend-production-checks.js",
+  "test:journeys": "node tests/assessment-journey-checks.js",
+  "test": "npm run test:frontend && npm run test:journeys && npm run test:ux",
+  "test:e2e": "playwright test",
+  "test:advisory": "playwright test tests/e2e/analyze-company-current.spec.ts",
+  "version:sync": "node scripts/sync-version.mjs",
+  "version:check": "node scripts/sync-version.mjs --check"
+}
 }
