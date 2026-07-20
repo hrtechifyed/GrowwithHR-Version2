@@ -2,7 +2,7 @@
 
 Current integration version: `0.15.1-beta`  
 Next target release: `0.16.0-beta`  
-Last updated: 2026-07-20
+Last updated: 2026-07-21
 
 ---
 
@@ -174,7 +174,7 @@ The M1 release manifest is `docs/releases/v0.16.0-m1-five-act-foundation.md`.
 
 ## M2 — Explainable recommendation foundation
 
-**Status:** Next
+**Status:** Implementation complete; release validation pending
 
 ### Objective
 
@@ -189,11 +189,96 @@ Create a deterministic recommendation-traceability layer that explains:
 - what action is recommended;
 - which authoritative sources support further review.
 
-M2 must improve explainability without changing the existing stable report contract until a separate migration is approved.
+M2 improves explainability without changing the existing stable report contract.
+
+The milestone must not be marked complete and validated until its complete regression, browser and CI gates have passing evidence.
+
+### Delivered implementation
+
+M2 has delivered:
+
+- a governed recommendation-traceability schema;
+- stable fact, rule, recommendation and source identifiers;
+- explicit applicability-status definitions;
+- explicit evidence-status definitions;
+- confirmed-fact records;
+- derived-fact records with source-fact references;
+- structured source-reference records;
+- deterministic rule-evaluation records;
+- explainable recommendation records;
+- a pure recommendation evaluator;
+- a governed seven-rule private-beta catalog;
+- a compatibility adapter for protected v2 assessment answers;
+- private-beta traceability diagnostics;
+- visible rule and recommendation explanations;
+- triggering-fact and missing-information displays;
+- applicability and evidence labels;
+- official-source links;
+- responsive and accessible diagnostics styling;
+- contract checks;
+- evaluator checks;
+- compatibility-adapter checks;
+- Playwright browser coverage;
+- maintained CI browser-test coverage;
+- release documentation;
+- rollback and validation gates.
+
+### M2 implementation files
+
+The primary M2 implementation files are:
+
+- `data/schema/recommendation-traceability.schema.v1.json`
+- `js/assessment-v3/traceability-contract.js`
+- `js/assessment-v3/fact-mapper.js`
+- `data/assessment/recommendation-rules.v1.json`
+- `js/assessment-v3/recommendation-evaluator.js`
+- `js/assessment-v3/traceability-adapter.js`
+- `js/assessment-v3/traceability-diagnostics.js`
+- `analyze-company-v3.html`
+- `css/19-compliance-dna.css`
+
+The primary M2 automated checks are:
+
+- `tests/m2-traceability-contract-checks.mjs`
+- `tests/m2-recommendation-evaluator-checks.mjs`
+- `tests/m2-traceability-adapter-checks.mjs`
+- `tests/e2e/analyze-company-v3-traceability.spec.ts`
+
+The maintained browser workflow is:
+
+- `.github/workflows/executive-assessment-tests.yml`
+
+The M2 release record is:
+
+- `docs/releases/v0.16.0-m2-explainable-recommendation-foundation.md`
+
+### Stable-route guarantee
+
+M2 does not replace `/analyze-company.html`.
+
+The private-beta diagnostics remain isolated at `/analyze-company-v3.html`.
+
+Public routing must continue to resolve to the stable assessment while:
+
+`complianceDnaV3: false`
+
+M2 does not:
+
+- change the protected assessment schema;
+- rename a protected persistence key;
+- introduce a traceability storage key;
+- write traceability into protected assessment state;
+- add M2 fields to the stable report;
+- remove a protected report field;
+- change protected PDF fields;
+- change protected email fields;
+- change protected delivery fields;
+- change lead or consent interpretation;
+- publicly enable the private-beta route.
 
 ### Required conceptual separation
 
-M2 must keep these records distinct.
+M2 keeps the following records distinct.
 
 #### 1. Confirmed facts
 
@@ -210,7 +295,9 @@ Examples include:
 - hiring plans;
 - selected priorities.
 
-A confirmed fact records what the user supplied. It does not prove legal compliance.
+A confirmed fact records what the user supplied.
+
+It does not prove legal compliance.
 
 #### 2. Derived facts
 
@@ -218,34 +305,38 @@ Values calculated deterministically from confirmed answers.
 
 Examples include:
 
+- total reported workforce;
 - workforce-size band;
 - multi-location indicator;
+- multi-country indicator;
 - distributed-workforce indicator;
 - rapid-growth indicator;
-- formal-HR-function indicator.
+- expansion-activity indicator;
+- formal-People-function indicator.
 
-Every derived fact must record which confirmed facts were used.
+Every derived fact records which confirmed facts were used.
 
 #### 3. Rule evaluations
 
 Results produced by applying a deterministic rule to confirmed and derived facts.
 
-A rule evaluation must include:
+A rule evaluation includes:
 
 - a stable rule identifier;
 - the rule version;
 - the evaluated status;
+- required facts;
 - triggering facts;
 - missing facts;
 - a human-readable reason;
 - source references;
-- an evaluation timestamp when appropriate.
+- an evaluation timestamp.
 
 #### 4. Recommendations
 
 Advisory actions selected from rule evaluations.
 
-A recommendation must include:
+A recommendation includes:
 
 - a stable recommendation identifier;
 - the originating rule identifier;
@@ -256,6 +347,7 @@ A recommendation must include:
 - a suggested timeline;
 - triggering facts;
 - missing information;
+- evidence status;
 - source references;
 - limitations or review notices.
 
@@ -263,19 +355,26 @@ A recommendation must include:
 
 Evidence status describes supporting material, not rule applicability.
 
-It must remain separate from applicability status.
+It remains separate from applicability status.
+
+The current assessment does not collect or verify documentary evidence.
 
 #### 6. Source references
 
-Structured references to official or authoritative materials relevant to a rule.
+Structured references identify official or authoritative materials relevant to a rule.
 
-A source reference must not imply that the source has verified the organisation’s compliance.
+A source reference does not imply that the source has:
+
+- verified the assessed organisation;
+- determined that a rule applies;
+- certified compliance;
+- confirmed completion of an obligation.
 
 ---
 
 ## M2 applicability statuses
 
-The deterministic model should support:
+The deterministic model supports:
 
 - `applicable`
 - `likely-applicable`
@@ -300,6 +399,8 @@ They do not mean:
 
 The supplied facts satisfy the deterministic conditions defined by the rule.
 
+This remains an advisory result rather than verified legal applicability.
+
 #### `likely-applicable`
 
 The available facts strongly indicate applicability, but one or more details still require confirmation.
@@ -308,11 +409,13 @@ The available facts strongly indicate applicability, but one or more details sti
 
 The supplied facts do not meet the rule’s current deterministic conditions.
 
-This status must not be used when required facts are missing.
+This status must not be used merely because required facts are missing.
 
 #### `more-information-needed`
 
 The rule cannot be evaluated because one or more required facts are absent, unclear or unsupported.
+
+The missing fact identifiers must be recorded.
 
 #### `specialist-review`
 
@@ -322,7 +425,7 @@ The rule requires professional interpretation, jurisdiction-specific confirmatio
 
 ## M2 evidence statuses
 
-The evidence model should support:
+The evidence model supports:
 
 - `not-requested`
 - `not-provided`
@@ -332,7 +435,7 @@ The evidence model should support:
 
 ### Evidence rules
 
-- M2 must default to `not-requested` where evidence collection does not exist.
+- M2 defaults to `not-requested` where evidence collection does not exist.
 - A user statement is not evidence verification.
 - A filename or uploaded document is not automatically verified evidence.
 - `provided` means material was supplied.
@@ -340,11 +443,15 @@ The evidence model should support:
 - `verified` must not be assigned without an explicit verification process.
 - Applicability status must never be inferred from evidence status alone.
 
+The initial M2 recommendation catalog defaults to:
+
+`not-requested`
+
 ---
 
 ## M2 identifier requirements
 
-Identifiers must be:
+Identifiers are:
 
 - stable;
 - lowercase;
@@ -352,29 +459,34 @@ Identifiers must be:
 - version-controlled;
 - independent from user-facing labels.
 
-Recommended patterns are:
+Required patterns include:
 
 - rule identifier: `rule.<domain>.<topic>.<condition>`
 - recommendation identifier: `recommendation.<domain>.<action>`
 - fact identifier: `fact.<category>.<name>`
 - source identifier: `source.<authority>.<document>`
 
-Examples:
+Examples include:
 
-- `rule.workforce.employee-count.minimum-threshold`
+- `rule.governance.primary-state.review`
 - `rule.workplace.multi-location.review`
-- `recommendation.governance.employment-documentation-review`
+- `recommendation.governance.review-employment-documentation`
 - `fact.workforce.employee-count`
 - `fact.footprint.primary-state`
 - `source.india-code.official-legislation`
 
-Identifiers must not contain customer names, email addresses or assessment values.
+Identifiers must not contain:
+
+- customer names;
+- email addresses;
+- assessment values;
+- personal employee information.
 
 ---
 
 ## M2 source-reference requirements
 
-Each structured source reference should support:
+Each structured source reference supports:
 
 - `id`
 - `title`
@@ -382,7 +494,7 @@ Each structured source reference should support:
 - `url`
 - `jurisdiction`
 - `sourceType`
-- `retrievedAt` or review date where appropriate
+- a review date where appropriate
 - `notes`
 - `official`
 
@@ -399,13 +511,18 @@ The `official` field must be explicit.
 
 A source URL must not be treated as proof that the source applies to every organisation.
 
-Rules must explain why the source is relevant to the evaluated facts.
+Rules must explain why a source is relevant to the evaluated facts.
+
+The initial governed catalog includes official references to:
+
+- the Ministry of Labour and Employment portal;
+- India Code.
 
 ---
 
 ## M2 implementation sequence
 
-M2 should be implemented in this order:
+The M2 implementation sequence has been completed:
 
 1. Define the recommendation-traceability contract.
 2. Define deterministic rule identifiers.
@@ -417,13 +534,17 @@ M2 should be implemented in this order:
 8. Define recommendation-result records.
 9. Build a pure traceability evaluator with no DOM access.
 10. Keep the evaluator free from browser-storage access.
-11. Add representative deterministic rule fixtures.
+11. Add representative deterministic rules.
 12. Add contract and unit checks.
 13. Connect traceability to the compatibility adapter.
 14. Preserve all protected report fields.
 15. Expose private-beta diagnostics for review.
 16. Add browser checks for visible recommendation explanations.
 17. Document limitations, rollback and release gates.
+
+Completion of the implementation sequence does not by itself complete the milestone.
+
+The validation gates below still require passing evidence.
 
 ---
 
@@ -447,13 +568,22 @@ M2 is complete only when:
 - no protected report field is removed;
 - no protected persistence key is renamed;
 - no new browser-storage key is introduced without approval;
-- static checks pass;
-- contract checks pass;
-- unit checks pass;
-- the complete regression suite passes;
+- `npm run version:check` passes;
+- `npm run validate:compliance` passes;
+- `npm run test:m2` passes;
+- the complete `npm test` regression suite passes;
 - stable browser checks pass;
-- private-beta browser checks pass;
-- CI reports success.
+- Five-Act private-beta browser checks pass;
+- M2 traceability browser checks pass;
+- the maintained CI workflows report success.
+
+### Current acceptance status
+
+The implementation and maintained test coverage are present.
+
+M2 remains in release validation until passing evidence is available for every required gate on the final integration commit.
+
+The roadmap must not change the M2 status to “Complete and validated” before that evidence exists.
 
 ---
 
@@ -463,20 +593,19 @@ M2 is complete only when:
 
 ### Objective
 
-Present M2 traceability in an executive-friendly private-beta experience.
+Evolve the validated M2 traceability foundation into a polished executive-facing private-beta advisory presentation.
 
 Potential deliverables include:
 
-- visible “Why this appears” explanations;
-- triggering-fact summaries;
-- applicability labels;
-- uncertainty notices;
-- specialist-review notices;
-- source links;
-- suggested action timelines;
-- recommendation groupings;
-- improved report layouts;
-- accessible explanation panels.
+- executive recommendation summaries;
+- priority and timeline groupings;
+- concise “Why this appears” summaries;
+- expandable fact and source details;
+- uncertainty and specialist-review notices;
+- recommendation comparison views;
+- improved private-beta report layouts;
+- accessible explanation panels;
+- approved traceability integration into future report contracts.
 
 M3 must consume M2 traceability records.
 
@@ -487,6 +616,8 @@ It must not reconstruct recommendation logic in:
 - page controllers;
 - report templates;
 - PDF templates.
+
+Any integration into stable reports requires a separately approved migration.
 
 ---
 
@@ -565,6 +696,8 @@ The target processing sequence is:
 
 The rules engine decides applicability.
 
+The presentation layer renders governed evaluator output.
+
 A future retrieval or AI explanation layer may:
 
 - retrieve approved source material;
@@ -591,16 +724,20 @@ The maintained test layers are:
 2. Compliance-data validation.
 3. Baseline contract checks.
 4. M1 private-beta contract checks.
-5. Static requirements checks.
-6. Frontend production checks.
-7. Assessment journey checks.
-8. Report scenario checks.
-9. Golden scenario checks.
-10. UX component checks.
-11. Playwright stable-assessment checks.
-12. Playwright private-beta checks.
+5. M2 traceability-contract checks.
+6. M2 recommendation-evaluator checks.
+7. M2 compatibility-adapter checks.
+8. Static requirements checks.
+9. Frontend production checks.
+10. Assessment journey checks.
+11. Report scenario checks.
+12. Golden scenario checks.
+13. UX component checks.
+14. Playwright stable-assessment checks.
+15. Playwright Five-Act private-beta checks.
+16. Playwright M2 traceability checks.
 
-M2 should add:
+M2 coverage includes:
 
 - traceability-contract checks;
 - identifier-format checks;
@@ -609,8 +746,13 @@ M2 should add:
 - source-reference checks;
 - deterministic evaluator tests;
 - missing-information tests;
-- report-compatibility tests;
-- private-beta explanation tests.
+- protected-state compatibility tests;
+- storage-isolation tests;
+- private-beta explanation tests;
+- catalog-failure tests;
+- refresh-behavior tests;
+- mobile responsive tests;
+- keyboard-operability tests.
 
 New milestones must extend existing test layers rather than replacing protected baseline coverage.
 
@@ -618,7 +760,7 @@ New milestones must extend existing test layers rather than replacing protected 
 
 # Release strategy
 
-The repository remains at `0.15.1-beta` during integration.
+The repository remains at `0.15.1-beta` during integration and validation.
 
 The target `0.16.0-beta` version must be applied as one coordinated release cut across every version-bearing file governed by the version-sync contract.
 
@@ -633,17 +775,23 @@ A release cut requires:
 - rollback instructions;
 - coordinated version synchronization.
 
+M2 completion does not itself authorise the version cut.
+
 The private-beta route must remain excluded from public promotion until an explicit release decision changes the feature flag.
 
 ---
 
-# Immediate next implementation tasks
+# Immediate next validation tasks
 
-1. Add the M2 traceability contract.
-2. Add deterministic applicability-status definitions.
-3. Add evidence-status definitions.
-4. Add confirmed-fact and derived-fact record definitions.
-5. Add rule-evaluation and recommendation-result definitions.
-6. Add structured source-reference requirements.
-7. Add static M2 contract checks.
-8. Preserve stable report output while private-beta traceability evolves.
+1. Run `npm run version:check`.
+2. Run `npm run validate:compliance`.
+3. Run `npm run test:m2`.
+4. Run the complete `npm test` regression suite.
+5. Run stable assessment browser checks.
+6. Run Five-Act private-beta browser checks.
+7. Run `tests/e2e/analyze-company-v3-traceability.spec.ts`.
+8. Confirm maintained CI workflows report success.
+9. Record any corrective work revealed by validation.
+10. Mark M2 complete and validated only after every acceptance gate passes.
+11. Review whether to begin M3 planning.
+12. Approve or reject a coordinated `0.16.0-beta` version cut separately.
