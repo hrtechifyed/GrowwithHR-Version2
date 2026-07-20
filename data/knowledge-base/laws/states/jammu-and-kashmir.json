@@ -1,270 +1,405 @@
 {
-  "stateId": "JK",
-  "stateName": "Jammu and Kashmir",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-JK",
+  "name": "Jammu and Kashmir Labour Laws",
+  "shortName": "Jammu and Kashmir",
+  "overview": "State-specific labour law requirements applicable to establishments operating in Jammu and Kashmir.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "union_territory",
+    "code": "IN-JK",
+    "stateCode": "JK"
+  },
   "authority": {
-    "department": "Labour Department, Government of Jammu and Kashmir",
+    "name": "Labour Department, Government of Jammu and Kashmir",
     "sourceId": "JK-LABOUR"
   },
-
-  "overview": "State-specific labour law requirements applicable to establishments operating in Jammu and Kashmir.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "JK-001",
-
       "title": "Review Jammu and Kashmir Shops and Establishments Registration",
-
-      "priority": "Mandatory",
-
-      "category": "Shops & Establishments",
-
       "description": "Determine whether registration under the applicable Shops and Establishments legislation is required.",
-
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JK-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jammu and Kashmir Shops and Establishments legislation"
+          "sourceId": "JK-LABOUR",
+          "citation": {
+            "reference": "Applicable Jammu and Kashmir Shops and Establishments legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JK-002",
-
       "title": "Maintain Statutory Registers and Employment Records",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Maintain statutory registers, employee records and prescribed notices under Jammu and Kashmir labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JK-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jammu and Kashmir Labour Rules"
+          "sourceId": "JK-LABOUR",
+          "citation": {
+            "reference": "Applicable Jammu and Kashmir Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JK-003",
-
       "title": "Display Statutory Notices",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Display statutory notices and abstracts required under applicable labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JK-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jammu and Kashmir Labour Rules"
+          "sourceId": "JK-LABOUR",
+          "citation": {
+            "reference": "Applicable Jammu and Kashmir Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JK-004",
-
       "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
-
-      "priority": "Mandatory",
-
-      "category": "Working Conditions",
-
       "description": "Ensure compliance with Jammu and Kashmir provisions governing working hours, overtime, leave and weekly holidays.",
-
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JK-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jammu and Kashmir Shops and Establishments Rules"
+          "sourceId": "JK-LABOUR",
+          "citation": {
+            "reference": "Applicable Jammu and Kashmir Shops and Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JK-005",
-
       "title": "Review Minimum Wage Notifications",
-
-      "priority": "Mandatory",
-
-      "category": "Minimum Wages",
-
       "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Jammu and Kashmir.",
-
+      "category": "Minimum Wages",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JK-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Jammu and Kashmir Minimum Wage Notifications"
+          "sourceId": "JK-LABOUR",
+          "citation": {
+            "reference": "Jammu and Kashmir Minimum Wage Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JK-006",
-
       "title": "Review Labour Welfare Notifications",
-
-      "priority": "Mandatory",
-
-      "category": "Labour Welfare",
-
       "description": "Review state labour welfare requirements, notifications and employer obligations applicable in Jammu and Kashmir.",
-
+      "category": "Labour Welfare",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JK-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jammu and Kashmir Labour Welfare legislation"
+          "sourceId": "JK-LABOUR",
+          "citation": {
+            "reference": "Applicable Jammu and Kashmir Labour Welfare legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "JKR-001",
-
       "title": "Annual Labour Compliance Audit",
-
       "description": "Conduct an annual review of registrations, statutory records, wage compliance and inspection readiness."
     },
-
     {
       "id": "JKR-002",
-
       "title": "Digital Compliance Calendar",
-
       "description": "Maintain a digital calendar for statutory filings, licence renewals, inspections and labour law due dates."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "JK-LABOUR"
+      "sourceId": "JK-LABOUR",
+      "name": "Labour Department, Government of Jammu and Kashmir",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Labour Department, Government of Jammu and Kashmir",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Jammu and Kashmir labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
