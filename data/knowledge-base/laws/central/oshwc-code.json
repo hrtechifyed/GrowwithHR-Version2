@@ -1,356 +1,409 @@
 {
-  "lawId": "CENTRAL-OSHWC",
-  "lawName": "Occupational Safety, Health and Working Conditions Code, 2020",
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "CENTRAL-OSHWC",
+  "name": "Occupational Safety, Health and Working Conditions Code, 2020",
   "shortName": "OSHWC Code",
-  "authority": "Ministry of Labour & Employment",
-  "sourceId": "MOL",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "officialCitation": "Occupational Safety, Health and Working Conditions Code, 2020",
   "overview": "Consolidates laws relating to occupational safety, health and working conditions of employees across covered establishments.",
-
+  "jurisdiction": {
+    "country": "IN",
+    "level": "central",
+    "code": "IN",
+    "stateCode": null
+  },
+  "authority": {
+    "name": "Ministry of Labour & Employment",
+    "department": "Government of India",
+    "sourceId": "MOL"
+  },
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "definitions": [
-
     {
       "id": "OSH-DEF-001",
       "term": "Employer",
       "definition": "Employer responsible for providing a safe and healthy workplace."
     },
-
     {
       "id": "OSH-DEF-002",
       "term": "Employee",
       "definition": "Employee covered under the Occupational Safety, Health and Working Conditions Code."
     },
-
     {
       "id": "OSH-DEF-003",
       "term": "Workplace",
       "definition": "Premises where employees perform work covered by the Code."
     }
-
   ],
-
   "rules": [
-
     {
-
       "id": "OSH-001",
-
       "title": "Review Applicability of the OSHWC Code",
-
-      "priority": "Mandatory",
-
-      "category": "Occupational Safety",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
       "description": "Determine whether the establishment falls within the scope of the Occupational Safety, Health and Working Conditions Code.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "category": "Occupational Safety",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-
-          "reference": "Occupational Safety, Health and Working Conditions Code, 2020"
-
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Occupational Safety, Health and Working Conditions Code, 2020",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "OSH-002",
-
       "title": "Provide a Safe Working Environment",
-
-      "priority": "Mandatory",
-
-      "category": "Occupational Safety",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
       "description": "Provide a workplace that complies with statutory occupational safety and health requirements.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "OSHWC Code"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "OSH-003",
-
-      "title": "Conduct Safety Training",
-
-      "priority": "Mandatory",
-
-      "category": "Training",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
-      "description": "Provide appropriate safety instruction, training and awareness to employees.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "OSHWC Code"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "OSH-004",
-
-      "title": "Maintain Health and Safety Records",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
-      "description": "Maintain statutory health, safety and inspection records wherever required.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "OSHWC Rules"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "OSH-005",
-
-      "title": "Provide Welfare Facilities",
-
-      "priority": "Mandatory",
-
       "category": "Occupational Safety",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
-      "description": "Provide statutory welfare facilities applicable to the establishment and workforce.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "OSHWC Code"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "OSH-006",
-
-      "title": "Report Serious Workplace Incidents",
-
       "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "applicability": {
-
         "employeeCount": {
-
-          "min": 1
-
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
-
           "*"
-
         ],
-
         "industries": [
-
           "*"
-
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Report occupational accidents and dangerous occurrences wherever required under applicable law.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "evidence": [
         {
-
-          "reference": "OSHWC Code"
-
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "OSHWC Code",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
-    }
-
-  ],
-
-  "exceptions": [
-
-    {
-
-      "id": "OSH-EX-001",
-
-      "title": "Sector Specific Requirements",
-
-      "description": "Certain industries and establishments may have additional statutory obligations, notifications or rules applicable under the Code."
-
-    }
-
-  ],
-
-  "references": [
-
-    {
-
-      "sourceId": "MOL"
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
-      "sourceId": "INDIACODE"
-
+      "id": "OSH-003",
+      "title": "Conduct Safety Training",
+      "description": "Provide appropriate safety instruction, training and awareness to employees.",
+      "category": "Training",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "OSHWC Code",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "OSH-004",
+      "title": "Maintain Health and Safety Records",
+      "description": "Maintain statutory health, safety and inspection records wherever required.",
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "OSHWC Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "OSH-005",
+      "title": "Provide Welfare Facilities",
+      "description": "Provide statutory welfare facilities applicable to the establishment and workforce.",
+      "category": "Occupational Safety",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "OSHWC Code",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "OSH-006",
+      "title": "Report Serious Workplace Incidents",
+      "description": "Report occupational accidents and dangerous occurrences wherever required under applicable law.",
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "OSHWC Code",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
-  ]
-
+  ],
+  "exceptions": [
+    {
+      "id": "OSH-EX-001",
+      "title": "Sector Specific Requirements",
+      "description": "Certain industries and establishments may have additional statutory obligations, notifications or rules applicable under the Code."
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    },
+    {
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    }
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Occupational Safety, Health and Working Conditions Code record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
