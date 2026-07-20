@@ -2,45 +2,39 @@
  * GrowWithHR Compliance DNA
  * M1 Truthful Analysis Sequence
  *
- * Every visible stage must execute a real callback.
- * A stage is marked complete only after its callback succeeds.
+ * Runs real processing callbacks in a defined order.
  *
- * Reduced-motion mode removes presentation delays but does
- * not skip validation, adaptation or report preparation.
+ * Important:
+ * - A stage is displayed only when its callback starts.
+ * - A stage completes only after its callback succeeds.
+ * - Missing callbacks cause an error instead of showing fake progress.
+ * - Reduced-motion mode removes presentation delays.
  */
 
-export const ANALYSIS_STAGE_DEFINITIONS =
+export const DEFAULT_ANALYSIS_STAGES =
     Object.freeze([
         Object.freeze({
-            id: "validate",
+            id: "organise-context",
             label:
-                "Checking the captured facts",
-            description:
-                "Confirm that the organisation story contains usable assessment data."
+                "Organising your organisation context",
+            completionLabel:
+                "Organisation context prepared"
         }),
 
         Object.freeze({
-            id: "adapt",
+            id: "prepare-legacy-state",
             label:
-                "Preparing the compatible assessment state",
-            description:
-                "Translate the Five-Act state into the existing GrowWithHR assessment contract."
+                "Preparing your compatible assessment state",
+            completionLabel:
+                "Compatible assessment state prepared"
         }),
 
         Object.freeze({
-            id: "report",
+            id: "build-advisory-records",
             label:
-                "Building the existing advisory record",
-            description:
-                "Use the current report mapper without changing recommendation decisions."
-        }),
-
-        Object.freeze({
-            id: "handoff",
-            label:
-                "Confirming the advisory handoff",
-            description:
-                "Confirm that the report, PDF and delivery paths can receive the prepared record."
+                "Preparing your advisory records",
+            completionLabel:
+                "Advisory records prepared"
         })
     ]);
 
@@ -54,23 +48,31 @@ function asObject(value) {
         : {};
 }
 
-function now() {
-    if (
-        typeof performance !==
-            "undefined" &&
-        typeof performance.now ===
-            "function"
-    ) {
-        return performance.now();
-    }
+function cleanText(value) {
+    return String(
+        value ?? ""
+    ).trim();
+}
 
-    return Date.now();
+function positiveNumber(
+    value,
+    fallback
+) {
+    const number =
+        Number(value);
+
+    return (
+        Number.isFinite(number) &&
+        number >= 0
+    )
+        ? number
+        : fallback;
 }
 
 function createAbortError() {
     const error =
         new Error(
-            "GrowWithHR analysis sequence was cancelled."
+            "GrowWithHR analysis was cancelled."
         );
 
     error.name =
@@ -85,47 +87,65 @@ function throwIfAborted(signal) {
     }
 }
 
-function wait(
-    milliseconds,
-    signal
+function prefersReducedMotion(
+    runtime = globalThis
 ) {
-    const duration =
-        Math.max(
-            0,
-            Number(milliseconds) || 0
+    try {
+        return Boolean(
+            runtime
+                ?.matchMedia?.(
+                    "(prefers-reduced-motion: reduce)"
+                )
+                ?.matches
+        );
+    } catch (error) {
+        return false;
+    }
+}
+
+function wait(
+    duration,
+    options = {}
+) {
+    const milliseconds =
+        positiveNumber(
+            duration,
+            0
         );
 
-    if (duration === 0) {
-        throwIfAborted(signal);
+    const signal =
+        options.signal;
+
+    const runtime =
+        options.runtime ||
+        globalThis;
+
+    if (milliseconds === 0) {
+        throwIfAborted(
+            signal
+        );
 
         return Promise.resolve();
     }
 
     return new Promise(
         (resolve, reject) => {
-            throwIfAborted(signal);
+            throwIfAborted(
+                signal
+            );
 
-            const timer =
-                window.setTimeout(
-                    finish,
-                    duration
+            const timeoutId =
+                runtime.setTimeout(
+                    () => {
+                        cleanup();
+                        resolve();
+                    },
+                    milliseconds
                 );
 
-            function cleanup() {
-                signal?.removeEventListener(
-                    "abort",
-                    cancel
-                );
-            }
-
-            function finish() {
-                cleanup();
-                resolve();
-            }
-
-            function cancel() {
-                window.clearTimeout(
-                    timer
+            function handleAbort() {
+                runtime.clearTimeout(
+                    timeoutId
                 );
 
                 cleanup();
@@ -135,9 +155,16 @@ function wait(
                 );
             }
 
+            function cleanup() {
+                signal?.removeEventListener(
+                    "abort",
+                    handleAbort
+                );
+            }
+
             signal?.addEventListener(
                 "abort",
-                cancel,
+                handleAbort,
                 {
                     once: true
                 }
@@ -146,107 +173,151 @@ function wait(
     );
 }
 
-function detectReducedMotion(
-    runtime = globalThis
+function normalizeStage(
+    stage,
+    index
 ) {
-    try {
-        return Boolean(
-            runtime
-                ?.matchMedia?.(
-                    "(prefers-reduced-motion: reduce)"
-                )
-                .matches
+    const source =
+        asObject(stage);
+
+    const id =
+        cleanText(
+            source.id
         );
-    } catch (error) {
-        return false;
+
+    if (!id) {
+        throw new Error(
+            `GrowWithHR analysis stage ${index + 1} requires an id.`
+        );
     }
+
+    const label =
+        cleanText(
+            source.label
+        );
+
+    if (!label) {
+        throw new Error(
+            `GrowWithHR analysis stage "${id}" requires a label.`
+        );
+    }
+
+    return Object.freeze({
+        id,
+
+        label,
+
+        completionLabel:
+            cleanText(
+                source
+                    .completionLabel
+            ) ||
+            `${label} complete`
+    });
 }
 
-function requireHandler(
-    handlers,
-    stage
-) {
-    const handler =
-        handlers[
-            stage.id
-        ];
+function normalizeStages(value) {
+    const suppliedStages =
+        Array.isArray(value)
+            ? value
+            : DEFAULT_ANALYSIS_STAGES;
 
     if (
-        typeof handler !==
-        "function"
+        suppliedStages.length === 0
     ) {
         throw new Error(
-            `GrowWithHR analysis stage "${stage.id}" requires a real callback.`
+            "GrowWithHR analysis requires at least one stage."
         );
     }
 
-    return handler;
-}
+    const normalized =
+        suppliedStages.map(
+            normalizeStage
+        );
 
-function normalizeHandlerResult(
-    value
-) {
-    const result =
-        asObject(value);
+    const identifiers =
+        new Set();
 
-    const hasStructuredResult =
-        Object.prototype
-            .hasOwnProperty.call(
-                result,
-                "output"
-            ) ||
-        Object.prototype
-            .hasOwnProperty.call(
-                result,
-                "contextPatch"
+    for (
+        const stage
+        of normalized
+    ) {
+        if (
+            identifiers.has(
+                stage.id
+            )
+        ) {
+            throw new Error(
+                `GrowWithHR analysis stage id "${stage.id}" is duplicated.`
             );
+        }
 
-    if (!hasStructuredResult) {
-        return {
-            output:
-                value,
-
-            contextPatch:
-                {}
-        };
+        identifiers.add(
+            stage.id
+        );
     }
 
-    return {
-        output:
-            result.output,
-
-        contextPatch:
-            asObject(
-                result.contextPatch
-            )
-    };
+    return Object.freeze(
+        normalized
+    );
 }
 
-function notify(
-    callback,
+function normalizeCallbacks(
+    stages,
+    callbacks
+) {
+    const source =
+        asObject(callbacks);
+
+    const normalized = {};
+
+    for (
+        const stage
+        of stages
+    ) {
+        const callback =
+            source[stage.id];
+
+        if (
+            typeof callback !==
+            "function"
+        ) {
+            throw new Error(
+                `GrowWithHR analysis callback "${stage.id}" is required.`
+            );
+        }
+
+        normalized[stage.id] =
+            callback;
+    }
+
+    return Object.freeze(
+        normalized
+    );
+}
+
+async function callHandler(
+    handler,
     payload
 ) {
     if (
-        typeof callback !==
+        typeof handler !==
         "function"
     ) {
         return;
     }
 
-    try {
-        callback(payload);
-    } catch (error) {
-        console.error(
-            "GrowWithHR analysis notification failed.",
-            error
-        );
-    }
+    await handler(
+        payload
+    );
 }
 
 function createStageSnapshot(
     stage,
+    index,
+    total,
     status,
-    extra = {}
+    result
 ) {
     return Object.freeze({
         id:
@@ -255,795 +326,302 @@ function createStageSnapshot(
         label:
             stage.label,
 
-        description:
-            stage.description,
+        completionLabel:
+            stage.completionLabel,
+
+        index,
+
+        position:
+            index + 1,
+
+        total,
 
         status,
 
-        ...extra
+        result
     });
 }
 
 /**
- * Creates a truthful processing sequence.
+ * Runs the configured processing stages.
  *
- * Required handlers:
+ * Required callbacks must be supplied using the stage IDs:
  *
  * {
- *   validate(payload) {},
- *   adapt(payload) {},
- *   report(payload) {},
- *   handoff(payload) {}
+ *   "organise-context": async (context) => {},
+ *   "prepare-legacy-state": async (context) => {},
+ *   "build-advisory-records": async (context) => {}
  * }
  *
- * A handler may return any value:
- *
- * return report;
- *
- * Or it may return:
- *
- * return {
- *   output: report,
- *   contextPatch: {
- *     report
- *   }
- * };
+ * @param {Object} options
+ * @returns {Promise<Object>}
  */
-export function createAnalysisSequence(
+export async function runAnalysisSequence(
     options = {}
 ) {
-    const stages =
-        Array.isArray(
-            options.stages
-        ) &&
-        options.stages.length
-            ? options.stages.map(
-                (stage) => {
-                    return Object.freeze({
-                        ...stage
-                    });
-                }
-            )
-            : ANALYSIS_STAGE_DEFINITIONS;
-
-    const handlers =
-        asObject(
-            options.handlers
-        );
-
     const runtime =
         options.runtime ||
         globalThis;
 
+    const signal =
+        options.signal;
+
+    const stages =
+        normalizeStages(
+            options.stages
+        );
+
+    const callbacks =
+        normalizeCallbacks(
+            stages,
+            options.callbacks
+        );
+
     const reducedMotion =
-        typeof options.reducedMotion ===
-        "boolean"
-            ? options.reducedMotion
-            : detectReducedMotion(
+        typeof options
+            .reducedMotion ===
+            "boolean"
+            ? options
+                .reducedMotion
+            : prefersReducedMotion(
                 runtime
             );
 
-    const minimumVisibleMs =
+    const presentationDelay =
         reducedMotion
             ? 0
-            : Math.max(
-                0,
-                Number(
-                    options.minimumVisibleMs
-                ) || 180
+            : positiveNumber(
+                options
+                    .presentationDelay,
+                300
             );
 
-    let running =
-        false;
+    const context = {
+        ...asObject(
+            options.context
+        )
+    };
 
-    let lastResult =
-        null;
+    const results = {};
 
-    async function run(
-        initialContext = {},
-        runOptions = {}
-    ) {
-        const runtime =
-        options.runtime ||
-        globalThis;
+    const startedAt =
+        new Date()
+            .toISOString();
 
-    const reducedMotion =
-        typeof options.reducedMotion ===
-        "boolean"
-            ? options.reducedMotion
-            : detectReducedMotion(
-                runtime
+    throwIfAborted(
+        signal
+    );
+
+    await callHandler(
+        options.onSequenceStart,
+        Object.freeze({
+            stages,
+            total:
+                stages.length,
+            reducedMotion,
+            startedAt,
+            context
+        })
+    );
+
+    try {
+        for (
+            let index = 0;
+            index < stages.length;
+            index += 1
+        ) {
+            throwIfAborted(
+                signal
             );
 
-    const minimumVisibleMs =
-        reducedMotion
-            ? 0
-            : Math.max(
-                0,
-                Number(
-                    options.minimumVisibleMs
-                ) || 180
+            const stage =
+                stages[index];
+
+            const activeSnapshot =
+                createStageSnapshot(
+                    stage,
+                    index,
+                    stages.length,
+                    "active",
+                    undefined
+                );
+
+            await callHandler(
+                options.onStageStart,
+                activeSnapshot
             );
 
-    let running =
-        false;
-
-    let lastResult =
-        null;
-
-    async function run(
-        initialContext = {},
-        runOptions = {}
-    ) {
-        if (running) {
-            throw new Error(
-                "GrowWithHR analysis sequence is already running."
+            await wait(
+                presentationDelay,
+                {
+                    runtime,
+                    signal
+                }
             );
-        if (running) {
-            throw new Error(
-                "GrowWithHR analysis sequence is already running."
+
+            throwIfAborted(
+                signal
+            );
+
+            const result =
+                await callbacks[
+                    stage.id
+                ](
+                    Object.freeze({
+                        stage,
+                        index,
+                        position:
+                            index + 1,
+                        total:
+                            stages.length,
+                        context,
+                        previousResults:
+                            Object.freeze({
+                                ...results
+                            }),
+                        signal,
+                        reducedMotion
+                    })
+                );
+
+            results[stage.id] =
+                result;
+
+            context[
+                stage.id
+            ] = result;
+
+            const completeSnapshot =
+                createStageSnapshot(
+                    stage,
+                    index,
+                    stages.length,
+                    "complete",
+                    result
+                );
+
+            await callHandler(
+                options.onStageComplete,
+                completeSnapshot
+            );
+
+            await wait(
+                presentationDelay,
+                {
+                    runtime,
+                    signal
+                }
             );
         }
 
-        running =
-            true;
-
-        lastResult =
-            null;
-
-        const signal =
-            runOptions.signal ||
-            }
-
-        running =
-            true;
-
-        lastResult =
-            null;
-
-        const signal =
-            runOptions.signal ||
-            options.signal;
-
-        const options.signal;
-
-        const callbacks = {
-            onStart:
- callbacks = {
-            onStart:
-                runOptions.onStart ||
-                options.onStart,
-
-            onStageStart:
-                runOptions.onStageStart ||
-                options.onStageStart,
-
-            onStageComplete:
-                runOptions.on                runOptions.onStart ||
-                options.onStart,
-
-            onStageStart:
-                runOptions.onStageStart ||
-                options.onStageStart,
-
-            onStageComplete:
-                runOptions.onStageComplete ||
-                options.onStageComplete,
-
-            onStageError:
-                runOptionsStageComplete ||
-                options.onStageComplete,
-
-            onStageError:
-                runOptions.onStageError ||
-                options.onStageError,
-
-            onComplete:
-                runOptions.onComplete ||
-                options.onComplete.onStageError ||
-                options.onStageError,
-
-            onComplete:
-                runOptions.onComplete ||
-                options.onComplete,
-
-            onError:
-                runOptions.onError ||
-                options.onError
-        };
-
-,
-
-            onError:
-                runOptions.onError ||
-                options.onError
-        };
-
-        let context = {
-            ...asObject(
-                initial        let context = {
-            ...asObject(
-                initialContext
-            )
-        };
-
-        const results = {};
-
-        const startedAt =
-            newContext
-            )
-        };
-
-        const results = {};
-
-        const startedAt =
+        const completedAt =
             new Date()
                 .toISOString();
 
-        notify(
-            callbacks.onStart,
+        const output =
             Object.freeze({
-                totalStages:
-                    stages.length,
+                status:
+                    "complete",
+
+                startedAt,
+
+                completedAt,
 
                 reducedMotion,
 
-                startedAt
-            })
+                stages,
+
+                results:
+                    Object.freeze({
+                        ...results
+                    }),
+
+                context:
+                    Object.freeze({
+                        ...context
+                    })
+            });
+
+        await callHandler(
+            options.onSequenceComplete,
+            output
         );
 
-        try {
-            for (
-                let index = 0;
-                index < stages.length;
-                index += 1
-            ) {
-                throwIfAborted(
-                    signal
-                );
-
-                Date()
-                .toISOString();
-
-        notify(
-            callbacks.onStart,
+        return output;
+    } catch (error) {
+        const failure =
             Object.freeze({
-                totalStages:
-                    stages.length,
+                status:
+                    error?.name ===
+                    "AbortError"
+                        ? "cancelled"
+                        : "failed",
 
-                reducedMotion,
+                startedAt,
 
-                startedAt
-            })
-        );
-
-        try {
-            for (
-                let index = 0;
-                index < stages.length;
-                index += 1
-            ) {
-                throwIfAborted(
-                    signal
-                );
-
-                const stage =
-                    stages[index];
-
-                const handler =
-                    requireHandler(
-                        handlers,
-                        stage
-                    );
-
-                const stageStartedAt =
-                    new const stage =
-                    stages[index];
-
-                const handler =
-                    requireHandler(
-                        handlers,
-                        stage
-                    );
-
-                const stageStartedAt =
+                failedAt:
                     new Date()
-                        .toISOString();
+                        .toISOString(),
 
-                const timerStartedAt =
-                    now();
+                reducedMotion,
 
-                const Date()
-                        .toISOString();
+                error,
 
-                const timerStartedAt =
-                    now();
+                completedResults:
+                    Object.freeze({
+                        ...results
+                    }),
 
-                const runningSnapshot =
-                    createStageSnapshot(
-                        stage,
-                        "running",
-                        {
- runningSnapshot =
-                    createStageSnapshot(
-                        stage,
-                        "running",
-                        {
-                            index,
-                            number                            index,
-                            number:
-                                index + 1,
+                context:
+                    Object.freeze({
+                        ...context
+                    })
+            });
 
-                            totalStages:
-                                stages.length,
+        await callHandler(
+            options.onError,
+            failure
+        );
 
-                            startedAt:
-                                stageStartedAt
-                        }
-                    );
-
-                notify(
-                    callbacks
-                        .onStageStart,
-                    running:
-                                index + 1,
-
-                            totalStages:
-                                stages.length,
-
-                            startedAt:
-                                stageStartedAt
-                        }
-                    );
-
-                notify(
-                    callbacks
-                        .onStageStart,
-                    runningSnapshot
-                );
-
-                try {
-                   Snapshot
-                );
-
-                try {
-                    const rawResult =
-                        await handler({
-                            stage:
-                                runningSnapshot,
-
-                            context: {
-                                ...context
-                            },
-
-                            results const rawResult =
-                        await handler({
-                            stage:
-                                runningSnapshot,
-
-                            context: {
-                                ...context
-                            },
-
-                            results: {
-                                ...results
-                            },
-
-                            signal,
-
-                            reducedMotion
-                        });
-
-                    throwIfAborted(
-                        signal
-                    );
-
-                    const result =
-                        normalizeHandlerResult(
-                            rawResult
-                        );
-
-                    context = {
-                        ...context,
-                        ...result.contextPatch
-                    };
-
-: {
-                                ...results
-                            },
-
-                            signal,
-
-                            reducedMotion
-                        });
-
-                    throwIfAborted(
-                        signal
-                    );
-
-                    const result =
-                        normalizeHandlerResult(
-                            rawResult
-                        );
-
-                    context = {
-                        ...context,
-                        ...result.contextPatch
-                    };
-
-                    results[
-                        stage.id
-                    ] =
-                        result.output;
-
-                    const elapsed =
-                        now() -
-                        timerStartedAt;
-
-                    const remainingDelay =
-                        minimumVisibleMs -
-                        elapsed;
-
-                    if (
-                        remainingDelay > 0
-                    ) {
-                        await wait(
-                                               results[
-                        stage.id
-                    ] =
-                        result.output;
-
-                    const elapsed =
-                        now() -
-                        timerStartedAt;
-
-                    const remainingDelay =
-                        minimumVisibleMs -
-                        elapsed;
-
-                    if (
-                        remainingDelay > 0
-                    ) {
-                        await wait(
-                            remainingDelay,
-                            signal
-                        );
-                    }
-
-                    const completedSnapshot =
-                        createStageSnapshot(
-                            stage,
-                            "complete",
-                            {
-                                index,
-                                number:
-                                    index + 1,
-
-                                totalStages:
-                                    stages.length,
-
-                                startedAt:
-                                    stageStartedAt,
-
-                                completedAt:
-                                    new Date()
-                                        .toISOString(),
-
-                                output:
-                                    result.output
-                            }
-                        );
-
-                    notify(
-                        callbacks
-                            .onStageComplete,
-                        remainingDelay,
-                            signal
-                        );
-                    }
-
-                    const completedSnapshot =
-                        createStageSnapshot(
-                            stage,
-                            "complete",
-                            {
-                                index,
-                                number:
-                                    index + 1,
-
-                                totalStages:
-                                    stages.length,
-
-                                startedAt:
-                                    stageStartedAt,
-
-                                completedAt:
-                                    new Date()
-                                        .toISOString(),
-
-                                output:
-                                    result.output
-                            }
-                        );
-
-                    notify(
-                        callbacks
-                            .onStageComplete,
-                        completedSnapshot
-                    );
-                } catch (error) {
-                    const failedSnapshot =
-                        createStageSnapshot(
-                            stage,
-                            "error",
-                            completedSnapshot
-                    );
-                } catch (error) {
-                    const failedSnapshot =
-                        createStageSnapshot(
-                            stage,
-                            "error",
-                            {
-                                index,
-                                number:
-                                    index + 1,
-
-                                totalStages:
-                                    stages.length,
-
-                                startedAt {
-                                index,
-                                number:
-                                    index + 1,
-
-                                totalStages:
-                                    stages.length,
-
-                                startedAt:
-                                    stageStartedAt,
-
-                                failedAt:
-                                    new Date()
-                                        .toISOString(),
-
-:
-                                    stageStartedAt,
-
-                                failedAt:
-                                    new Date()
-                                        .toISOString(),
-
-                                error
-                            }
-                        );
-
-                    notify(
-                        callbacks
-                            .on                                error
-                            }
-                        );
-
-                    notify(
-                        callbacks
-                            .onStageError,
-                        failedSnapshot
-                    );
-
-                    throw error;
-                }
-            }
-
-            lastResult =
-                Object.freezeStageError,
-                        failedSnapshot
-                    );
-
-                    throw error;
-                }
-            }
-
-            lastResult =
-                Object.freeze({
-                    status:
-                        "complete",
-
-                    startedAt,
-
-                    completedAt:
-                        new Date()
-                            .toISOString({
-                    status:
-                        "complete",
-
-                    startedAt,
-
-                    completedAt:
-                        new Date()
-                            .toISOString(),
-
-                    reducedMotion,
-
-                    context:
-(),
-
-                    reducedMotion,
-
-                    context:
-                        Object.freeze({
-                            ...context
-                        }),
-
-                    results:
-                        Object.freeze({
-                                                   Object.freeze({
-                            ...context
-                        }),
-
-                    results:
-                        Object.freeze({
-                            ...results
-                        })
-                });
-
-            notify(
-                callbacks.onComplete,
-                lastResult
-            );
-
- ...results
-                        })
-                });
-
-            notify(
-                callbacks.onComplete,
-                lastResult
-            );
-
-            return lastResult;
-        } catch (error) {
-            const failedResult =
-                Object.freeze({
-                    status:
-            return lastResult;
-        } catch (error) {
-            const failedResult =
-                Object.freeze({
-                    status:
-                        error?.name ===
-                        "AbortError"
-                            ? "cancelled"
-                            : "error",
-
-                    started                        error?.name ===
-                        "AbortError"
-                            ? "cancelled"
-                            : "error",
-
-                    startedAt,
-
-                    failedAt:
-                        new Date()
-                            .toISOString(),
-
-At,
-
-                    failedAt:
-                        new Date()
-                            .toISOString(),
-
-                    reducedMotion,
-
-                    context:
-                        Object.freeze({
-                            ...context
-                        }),
-
-                    reducedMotion,
-
-                    context:
-                        Object.freeze({
-                            ...context
-                        }),
-
-                    results:
-                        Object.freeze({
-                            ...results
-                        }),
-
-                    results:
-                        Object.freeze({
-                            ...results
-                        }),
-
-                    error
-                });
-
-            lastResult =
-                failedResult;
-
-            notify(
-                callbacks.onError,
-                failed                    error
-                });
-
-            lastResult =
-                failedResult;
-
-            notify(
-                callbacks.onError,
-                failedResult
-            );
-
-            throw error;
-        } finally {
-            running =
-               Result
-            );
-
-            throw error;
-        } finally {
-            running =
-                false;
-        }
+        throw error;
     }
-
-    function getStatus() {
-        return Object.freeze false;
-        }
-    }
-
-    function getStatus() {
-        return Object.freeze({
-            running,
-
-            reducedMotion,
-
-            minimumVisibleMs,
-
-            stageCount:
-               ({
-            running,
-
-            reducedMotion,
-
-            minimumVisibleMs,
-
-            stageCount:
-                stages.length,
-
-            lastResult
-        });
-    }
-
-    return Object.freeze({
-        stages,
-        run,
-        get stages.length,
-
-            lastResult
-        });
-    }
-
-    return Object.freeze({
-        stages,
-        run,
-        getStatus
-    });
 }
 
-export function prefersReducedMotion(
-    runtime = globalThis
+/**
+ * Creates a sequence runner with shared defaults.
+ *
+ * @param {Object} defaults
+ * @returns {Function}
+ */
+export function createAnalysisSequence(
+    defaults = {}
 ) {
-    return detectReducedMotionStatus
-    });
-}
+    return function execute(
+        overrides = {}
+    ) {
+        return runAnalysisSequence({
+            ...defaults,
+            ...overrides,
 
-export function prefersReducedMotion(
-    runtime = globalThis
-) {
-    return detectReducedMotion(
-        runtime
-    );
+            callbacks: {
+                ...asObject(
+                    defaults.callbacks
+                ),
+                ...asObject(
+                    overrides.callbacks
+                )
+            },
+
+            context: {
+                ...asObject(
+                    defaults.context
+                ),
+                ...asObject(
+                    overrides.context
+                )
+            }
+        });
+    };
 }
 
 export default createAnalysisSequence;
