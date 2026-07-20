@@ -1,225 +1,459 @@
 {
-  "stateId": "OD",
-  "stateName": "Odisha",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-OD",
+  "name": "Odisha Labour Laws",
+  "shortName": "Odisha",
+  "overview": "State-specific labour law requirements applicable to establishments operating in Odisha.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "state",
+    "code": "IN-OD",
+    "stateCode": "OD"
+  },
   "authority": {
-    "department": "Labour & ESI Department, Government of Odisha",
+    "name": "Labour & ESI Department, Government of Odisha",
     "sourceId": "OD-LABOUR"
   },
-
-  "overview": "State-specific labour law requirements applicable to establishments operating in Odisha.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "OD-001",
       "title": "Review Odisha Shops and Commercial Establishments Registration",
-      "priority": "Mandatory",
-      "category": "Shops & Establishments",
       "description": "Determine whether registration under the Odisha Shops and Commercial Establishments legislation is required.",
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Odisha Shops and Commercial Establishments Act"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Odisha Shops and Commercial Establishments Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "OD-002",
       "title": "Maintain Statutory Registers and Employment Records",
-      "priority": "Mandatory",
-      "category": "Documentation",
       "description": "Maintain statutory registers, employee records and prescribed notices under Odisha labour legislation.",
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Odisha Labour Rules"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Applicable Odisha Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "OD-003",
       "title": "Display Statutory Notices",
-      "priority": "Mandatory",
-      "category": "Documentation",
       "description": "Display statutory notices and employee information required under applicable Odisha labour legislation.",
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Odisha Labour Rules"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Applicable Odisha Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "OD-004",
       "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
-      "priority": "Mandatory",
-      "category": "Working Conditions",
       "description": "Ensure compliance with Odisha provisions governing working hours, overtime, leave and weekly holidays.",
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Odisha Shops and Commercial Establishments Rules"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Odisha Shops and Commercial Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "OD-005",
       "title": "Review Professional Tax Applicability",
-      "priority": "Information",
-      "category": "Professional Tax",
       "description": "Verify whether Professional Tax obligations apply under laws currently in force in Odisha.",
+      "category": "Professional Tax",
+      "priority": "Advisory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Odisha Tax Legislation"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Applicable Odisha Tax Legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "OD-006",
       "title": "Review Minimum Wage Notifications",
-      "priority": "Mandatory",
-      "category": "Minimum Wages",
       "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Odisha.",
+      "category": "Minimum Wages",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Government of Odisha Minimum Wage Notifications"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Government of Odisha Minimum Wage Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "OD-007",
       "title": "Monitor Odisha Labour Notifications",
-      "priority": "Mandatory",
-      "category": "State Notifications",
       "description": "Review labour department notifications, amendments, circulars and compliance updates issued by the Government of Odisha.",
+      "category": "State Notifications",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-OD"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "OD-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Government of Odisha Labour Notifications"
+          "sourceId": "OD-LABOUR",
+          "citation": {
+            "reference": "Government of Odisha Labour Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "ODR-001",
       "title": "Annual Labour Compliance Audit",
       "description": "Conduct an annual audit covering statutory registrations, labour records, payroll compliance and inspection readiness."
     },
-
     {
       "id": "ODR-002",
       "title": "Digital Compliance Calendar",
       "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour compliance due dates."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "OD-LABOUR"
+      "sourceId": "OD-LABOUR",
+      "name": "Labour & ESI Department, Government of Odisha",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Labour & ESI Department, Government of Odisha",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Odisha labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
