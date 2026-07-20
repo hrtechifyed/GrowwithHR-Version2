@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Compliance DNA Private Beta | GrowWithHR
+    </title>
+
+    <meta
+        name="description"
+        content="Explore the GrowWithHR Compliance DNA Five-Act private-beta assessment experience.">
+
+    <meta
+        name="robots"
+        content="noindex, nofollow">
+
+    <!-- Existing GrowWithHR design system -->
+    <link
+        rel="stylesheet"
+        href="css/01-variables.css">
+
+    <link
+        rel="stylesheet"
+        href="css/02-base.css">
+
+    <link
+        rel="stylesheet"
+        href="css/03-typography.css">
+
+    <link
+        rel="stylesheet"
+        href="css/04-layout.css">
+
+    <link
+        rel="stylesheet"
+        href="css/05-navbar.css">
+
+    <!-- Existing shared header and footer -->
+    <link
+        rel="stylesheet"
+        href="css/18-site-shell.css">
+
+    <!-- Isolated Compliance DNA presentation layer -->
+    <link
+        rel="stylesheet"
+        href="css/19-compliance-dna.css">
+
+    <link
+        rel="icon"
+        href="assets/favicon.ico">
+</head>
+
+<body
+    class="compliance-dna-page"
+    data-active-nav="analyze">
+
+    <a
+        class="dna-skip-link"
+        href="#mainContent">
+        Skip to Compliance DNA
+    </a>
+
+    <main
+        id="mainContent"
+        class="dna-main"
+        style="padding-top: calc(var(--site-shell-header-height, 112px) + 52px);">
+
+        <section
+            id="dnaShell"
+            class="dna-shell"
+            aria-labelledby="dnaPageTitle">
+
+            <header class="dna-header">
+
+                <div class="dna-header__copy">
+
+                    <p class="dna-kicker">
+                        Compliance DNA
+                    </p>
+
+                    <h1
+                        id="dnaPageTitle"
+                        class="dna-title">
+                        Understand the compliance story behind your organisation.
+                    </h1>
+
+                    <p class="dna-intro">
+                        Build a clear picture of your organisation,
+                        workforce and operating footprint through five
+                        guided acts. Your existing GrowWithHR advisory
+                        logic remains unchanged during this private beta.
+                    </p>
+
+                </div>
+
+                <span class="dna-private-badge">
+                    Private beta
+                </span>
+
+            </header>
+
+            <section
+                id="dnaProgress"
+                class="dna-progress"
+                aria-label="Assessment progress">
+
+                <div class="dna-progress__summary">
+
+                    <span>
+                        <strong id="dnaCurrentAct">
+                            Act 1 of 5
+                        </strong>
+                    </span>
+
+                    <span id="dnaProgressLabel">
+                        Discover
+                    </span>
+
+                </div>
+
+                <div
+                    class="dna-progress__track"
+                    role="progressbar"
+                    aria-valuemin="1"
+                    aria-valuemax="5"
+                    aria-valuenow="1"
+                    aria-label="Five-Act assessment progress">
+
+                    <div
+                        id="dnaProgressValue"
+                        class="dna-progress__value">
+                    </div>
+
+                </div>
+
+            </section>
+
+            <nav
+                aria-label="Compliance DNA story acts">
+
+                <ol
+                    id="dnaActList"
+                    class="dna-act-list">
+
+                    <li
+                        class="dna-act is-active"
+                        data-act="1">
+
+                        <button
+                            class="dna-act__button"
+                            type="button"
+                            data-act-button="1"
+                            aria-current="step">
+
+                            <span class="dna-act__number">
+                                1
+                            </span>
+
+                            <span class="dna-act__copy">
+
+                                <span class="dna-act__label">
+                                    Discover
+                                </span>
+
+                                <span class="dna-act__status">
+                                    Organisation
+                                </span>
+
+                            </span>
+
+                        </button>
+
+                    </li>
+
+                    <li
+                        class="dna-act"
+                        data-act="2">
+
+                        <button
+                            class="dna-act__button"
+                            type="button"
+                            data-act-button="2"
+                            aria-label="Act 2, People">
+
+                            <span class="dna-act__number">
+                                2
+                            </span>
+
+                            <span class="dna-act__copy">
+
+                                <span class="dna-act__label">
+                                    People
+                                </span>
+
+                                <span class="dna-act__status">
+                                    Workforce
+                                </span>
+
+                            </span>
+
+                        </button>
+
+                    </li>
+
+                    <li
+                        class="dna-act"
+                        data-act="3">
+
+                        <button
+                            class="dna-act__button"
+                            type="button"
+                            data-act-button="3"
+                            aria-label="Act 3, Footprint">
+
+                            <span class="dna-act__number">
+                                3
+                            </span>
+
+                            <span class="dna-act__copy">
+
+                                <span class="dna-act__label">
+                                    Footprint
+                                </span>
+
+                                <span class="dna-act__status">
+                                    Operations
+                                </span>
+
+                            </span>
+
+                        </button>
+
+                    </li>
+
+                    <li
+                        class="dna-act"
+                        data-act="4">
+
+                        <button
+                            class="dna-act__button"
+                            type="button"
+                            data-act-button="4"
+                            aria-label="Act 4, Understand">
+
+                            <span class="dna-act__number">
+                                4
+                            </span>
+
+                            <span class="dna-act__copy">
+
+                                <span class="dna-act__label">
+                                    Understand
+                                </span>
+
+                                <span class="dna-act__status">
+                                    Analysis
+                                </span>
+
+                            </span>
+
+                        </button>
+
+                    </li>
+
+                    <li
+                        class="dna-act"
+                        data-act="5">
+
+                        <button
+                            class="dna-act__button"
+                            type="button"
+                            data-act-button="5"
+                            aria-label="Act 5, Act">
+
+                            <span class="dna-act__number">
+                                5
+                            </span>
+
+                            <span class="dna-act__copy">
+
+                                <span class="dna-act__label">
+                                    Act
+                                </span>
+
+                                <span class="dna-act__status">
+                                    Advisory
+                                </span>
+
+                            </span>
+
+                        </button>
+
+                    </li>
+
+                </ol>
+
+            </nav>
+
+            <article
+                id="dnaPanel"
+                class="dna-panel"
+                aria-live="polite">
+
+                <div
+                    id="dnaStage"
+                    class="dna-panel__content">
+
+                    <span
+                        id="dnaStageEyebrow"
+                        class="dna-panel__eyebrow">
+                        Act 1 · Discover
+                    </span>
+
+                    <h2
+                        id="dnaStageTitle"
+                        class="dna-panel__title">
+                        Begin with the organisation behind the obligations.
+                    </h2>
+
+                    <p
+                        id="dnaStageDescription"
+                        class="dna-panel__description">
+                        The private-beta journey organises the existing
+                        GrowWithHR assessment into five clear story acts.
+                        It does not change your recommendation decisions,
+                        saved-progress contract, report, PDF or email
+                        delivery path.
+                    </p>
+
+                    <div
+                        id="dnaStoryGrid"
+                        class="dna-story-grid">
+
+                        <article class="dna-story-card">
+
+                            <span class="dna-story-card__number">
+                                Story signal 01
+                            </span>
+
+                            <h3>
+                                Organisation
+                            </h3>
+
+                            <p>
+                                Capture the business identity, stage and
+                                operating context used by the existing
+                                advisory.
+                            </p>
+
+                        </article>
+
+                        <article class="dna-story-card">
+
+                            <span class="dna-story-card__number">
+                                Story signal 02
+                            </span>
+
+                            <h3>
+                                Workforce
+                            </h3>
+
+                            <p>
+                                Describe the people and working model
+                                without changing the meaning of existing
+                                answers.
+                            </p>
+
+                        </article>
+
+                        <article class="dna-story-card">
+
+                            <span class="dna-story-card__number">
+                                Story signal 03
+                            </span>
+
+                            <h3>
+                                Footprint
+                            </h3>
+
+                            <p>
+                                Connect locations, growth plans and
+                                operating changes to the existing
+                                assessment model.
+                            </p>
+
+                        </article>
+
+                        <article class="dna-story-card">
+
+                            <span class="dna-story-card__number">
+                                Story signal 04
+                            </span>
+
+                            <h3>
+                                Advisory handoff
+                            </h3>
+
+                            <p>
+                                Continue to the current report, PDF and
+                                email delivery contracts after review.
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                    <p class="dna-private-note">
+
+                        <span
+                            class="dna-private-note__icon"
+                            aria-hidden="true">
+                            ●
+                        </span>
+
+                        <span>
+                            This route is a private-beta presentation
+                            layer. The stable assessment remains available
+                            at
+                            <a href="analyze-company.html">
+                                analyze-company.html
+                            </a>.
+                        </span>
+
+                    </p>
+
+                    <div class="dna-actions">
+
+                        <button
+                            id="dnaStartButton"
+                            class="dna-primary-button"
+                            type="button">
+                            Start the Five-Act journey
+                        </button>
+
+                        <a
+                            class="dna-secondary-button"
+                            href="analyze-company.html">
+                            Use the stable assessment
+                        </a>
+
+                    </div>
+
+                    <p class="dna-version">
+
+                        <strong id="productVersion">
+                            GrowWithHR Public 0.15.1-beta
+                        </strong>
+
+                        <br>
+
+                        M1 Five-Act Story Foundation · Private beta
+
+                    </p>
+
+                </div>
+
+            </article>
+
+            <div
+                id="dnaLiveRegion"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                hidden>
+            </div>
+
+        </section>
+
+    </main>
+
+    <noscript>
+
+        <section class="dna-main">
+
+            <article class="dna-panel">
+
+                <div class="dna-panel__content">
+
+                    <h2 class="dna-panel__title">
+                        JavaScript is required
+                    </h2>
+
+                    <p class="dna-panel__description">
+                        Enable JavaScript to use the Compliance DNA
+                        private-beta journey.
+                    </p>
+
+                    <div class="dna-actions">
+
+                        <a
+                            class="dna-primary-button"
+                            href="analyze-company.html">
+                            Open the stable assessment
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </noscript>
+
+    <!-- Existing shared navigation and footer -->
+    <script
+        src="js/site-shell.js"
+        defer>
+    </script>
+
+    <!-- Compliance DNA controller; created in the next steps -->
+    <script
+        type="module"
+        src="js/assessment-v3/bootstrap.js">
+    </script>
+
+    <!-- Existing build diagnostics -->
+    <script
+        src="js/build-marker.js">
+    </script>
+
+</body>
+</html>
