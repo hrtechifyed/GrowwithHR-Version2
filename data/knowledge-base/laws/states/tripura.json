@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0",
-  "recordVersion": "1.0.0",
+  "recordVersion": "2.0.0",
   "id": "STATE-TR",
   "name": "Tripura Labour Laws",
   "shortName": "Tripura",
-  "overview": "State-specific labour law requirements applicable to establishments operating in Tripura.",
+  "overview": "State-specific labour law requirements applicable to establishments operating in Tripura. Independent state labour laws continue unless specifically repealed or replaced. Following commencement of the four central Labour Codes on 21 November 2025, each obligation must be mapped to the appropriate government and the corresponding Central, State or Union Territory rules and notifications. This record does not treat local Shops and Establishments, professional-tax, labour-welfare, holiday or leave requirements as automatically superseded.",
   "jurisdiction": {
     "country": "IN",
     "level": "state",
@@ -19,8 +19,8 @@
   "temporal": {
     "effectiveFrom": null,
     "effectiveTo": null,
-    "lastVerified": "2026-07-05",
-    "nextReviewDue": "2026-10-03",
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
     "supersedes": [],
     "supersededBy": []
   },
@@ -66,15 +66,15 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -82,7 +82,7 @@
     {
       "id": "TR-002",
       "title": "Maintain Statutory Registers and Employment Records",
-      "description": "Maintain statutory registers, employee records and prescribed notices under Tripura labour legislation.",
+      "description": "Maintain statutory registers, employee records and prescribed notices under Tripura labour legislation. Maintain any additional electronic or physical records, wage slips, notices, returns and audit trails required under an applicable Labour Code, saved instrument or rule issued by the appropriate government.",
       "category": "Documentation",
       "priority": "Mandatory",
       "applicability": {
@@ -120,15 +120,15 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -136,7 +136,7 @@
     {
       "id": "TR-003",
       "title": "Display Statutory Notices",
-      "description": "Display statutory notices and employee information required under Tripura labour legislation.",
+      "description": "Display statutory notices and employee information required under Tripura labour legislation. Maintain any additional electronic or physical records, wage slips, notices, returns and audit trails required under an applicable Labour Code, saved instrument or rule issued by the appropriate government.",
       "category": "Documentation",
       "priority": "Mandatory",
       "applicability": {
@@ -174,15 +174,15 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -190,7 +190,7 @@
     {
       "id": "TR-004",
       "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
-      "description": "Ensure compliance with Tripura provisions governing working hours, overtime, leave and weekly holidays.",
+      "description": "Ensure compliance with Tripura provisions governing working hours, overtime, leave and weekly holidays. Where the Occupational Safety, Health and Working Conditions Code, 2020 applies to the establishment or worker category, assess its working-hours, rest, overtime, annual-leave, safety and welfare requirements separately from independent State or Union Territory law.",
       "category": "Working Conditions",
       "priority": "Mandatory",
       "applicability": {
@@ -228,15 +228,28 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Occupational Safety, Health and Working Conditions Code, 2020",
+            "section": "Working-hours, annual-leave, safety and welfare provisions",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -244,7 +257,7 @@
     {
       "id": "TR-005",
       "title": "Review Minimum Wage Notifications",
-      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Tripura.",
+      "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Tripura. For obligations arising on or after 21 November 2025, apply the Code on Wages, 2019 and the rules and wage notifications of the appropriate government; use an earlier minimum-wage notification only to the extent preserved by section 69 and not subsequently replaced or repealed. Classify each new instrument by its enabling law, effective date, draft or final status, appropriate government and whether it replaces a saved instrument under one of the four Labour Codes.",
       "category": "Minimum Wages",
       "priority": "Mandatory",
       "applicability": {
@@ -282,15 +295,28 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Wages, 2019",
+            "section": "Minimum-wage provisions and section 69",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -298,7 +324,7 @@
     {
       "id": "TR-006",
       "title": "Monitor Tripura Labour Notifications",
-      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Tripura.",
+      "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Tripura. Classify each new instrument by its enabling law, effective date, draft or final status, appropriate government and whether it replaces a saved instrument under one of the four Labour Codes.",
       "category": "State Notifications",
       "priority": "Mandatory",
       "applicability": {
@@ -336,15 +362,340 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "TR-LC-001",
+      "title": "Determine the Appropriate Government for Each Labour Code Obligation",
+      "description": "For each establishment, legal entity, industry and worker category, determine whether the Central Government or the relevant State or Union Territory Government is the appropriate government. Apply the corresponding rules, notifications, wage rates, schemes, registrations, licences, forms, portals and enforcement authorities instead of assuming that the Central Rules apply universally.",
+      "category": "Labour Codes Transition",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "appropriateGovernmentDetermined",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Implementation of the four Labour Codes from 21 November 2025",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Appropriate-government and State rule-making provisions under the four Labour Codes",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "TR-LC-002",
+      "title": "Apply the Code on Wages and Current Wage Notifications",
+      "description": "For wage periods on or after 21 November 2025, assess minimum wages, timely payment, authorised deductions, overtime, gender-based wage equality, statutory bonus and wage records under the Code on Wages, 2019. Apply the rules and notifications issued by the appropriate government, and retain a legacy notification only to the extent saved by section 69 and not later replaced or repealed.",
+      "category": "Wages",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "applicableWageRulesAndNotificationIdentified",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Wages, 2019",
+            "section": "Chapters II to IV and section 69",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Labour Code implementation and applicable wage-rule notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "TR-LC-003",
+      "title": "Assess Industrial Relations, Social Security and OSHWC Code Requirements",
+      "description": "Assess threshold-based and event-based duties under the Industrial Relations Code, 2020, the Code on Social Security, 2020 and the Occupational Safety, Health and Working Conditions Code, 2020. The assessment must cover industrial-relations forums and workforce actions, provident fund and insurance schemes, gratuity, maternity benefit, employee compensation, building-worker welfare, occupational safety, registration, appointment letters, working conditions, contract labour and inter-State migrant workers where applicable.",
+      "category": "Labour Codes Applicability",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "labourCodeApplicabilityAssessmentCompleted",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Industrial Relations Code, 2020",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Social Security, 2020",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Occupational Safety, Health and Working Conditions Code, 2020",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "TR-LC-004",
+      "title": "Preserve Independent Local Laws and Saved Legacy Instruments",
+      "description": "Continue to comply with independent State or Union Territory Shops and Establishments, professional-tax, labour-welfare, holiday, leave and other local laws unless they are lawfully repealed or replaced. Preserve earlier rules, notifications, registrations, licences, exemptions, claims, liabilities, proceedings and actions under repealed central enactments only to the extent saved by the corresponding Labour Code and not inconsistent with it.",
+      "category": "Legal Transition",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Wages, 2019",
+            "section": "Section 69",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Industrial Relations Code, 2020",
+            "section": "Repeal and savings provisions",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Social Security, 2020",
+            "section": "Section 164",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Occupational Safety, Health and Working Conditions Code, 2020",
+            "section": "Section 143",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -360,6 +711,21 @@
       "id": "TRR-002",
       "title": "Digital Compliance Calendar",
       "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour compliance due dates."
+    },
+    {
+      "id": "TR-LC-REC-001",
+      "title": "Maintain an Appropriate Government Matrix",
+      "description": "Map each establishment, industry, worker category and compliance topic to the Central Government or the competent State or Union Territory Government, with the applicable rules, notifications, portals and authorities."
+    },
+    {
+      "id": "TR-LC-REC-002",
+      "title": "Maintain a Labour Code Instrument Register",
+      "description": "Track each Labour Code rule, draft, final notification, wage revision, scheme, form, exemption, authority appointment and replacement of a saved legacy instrument."
+    },
+    {
+      "id": "TR-LC-REC-003",
+      "title": "Review Official Notifications Monthly",
+      "description": "Review official Ministry and Tripura Government publications monthly for Labour Code rules, amendments, wage notifications, schemes, thresholds, forms and enforcement appointments."
     }
   ],
   "sources": [
@@ -370,36 +736,53 @@
       "url": null,
       "authority": "Labour Department, Government of Tripura",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
+      "accessedAt": "2026-07-20",
       "verificationStatus": "partially_verified"
     },
     {
       "sourceId": "MOL",
-      "name": "Ministry of Labour & Employment",
+      "name": "Ministry of Labour & Employment Labour Codes Portal",
       "sourceType": "official_portal",
-      "url": "https://labour.gov.in",
-      "authority": "Ministry of Labour & Employment",
+      "url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa",
+      "authority": "Ministry of Labour & Employment, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "INDIACODE",
       "name": "India Code",
       "sourceType": "official_portal",
       "url": "https://www.indiacode.nic.in",
-      "authority": "India Code",
+      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     }
   ],
   "governance": {
     "owner": "GrowWithHR Compliance Data Team",
-    "reviewCadenceDays": 90,
+    "reviewCadenceDays": 30,
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Migrated the existing Tripura labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
-  }
+    "changeSummary": "Updated the Tripura record for implementation of the four Labour Codes without superseding independent state laws. Preserved the existing local rules and identifiers, added appropriate-government, Code on Wages, Industrial Relations, Social Security, OSHWC and repeal-and-savings controls, and added monthly monitoring of official implementation instruments."
+  },
+  "exceptions": [
+    {
+      "id": "TR-LC-EX-001",
+      "title": "Independent State Laws Continue",
+      "description": "The four Labour Codes do not by themselves repeal independent Tripura Shops and Establishments, professional-tax, labour-welfare, holiday, leave or other local laws outside the central enactments expressly repealed by the Codes."
+    },
+    {
+      "id": "TR-LC-EX-002",
+      "title": "Central Rules Are Jurisdiction Dependent",
+      "description": "Central Labour Code Rules apply where the Central Government is the appropriate government. Where the State or Union Territory Government is the appropriate government, use its valid final rules, notifications, schemes, forms and appointed authorities. Draft rules must not be treated as final law."
+    },
+    {
+      "id": "TR-LC-EX-003",
+      "title": "Saved Legacy Instruments Require Ongoing Review",
+      "description": "A rule, notification, registration, licence, exemption, claim, proceeding or action under a repealed central enactment continues only to the extent preserved by the relevant Labour Code and until it is lawfully replaced, repealed or superseded."
+    }
+  ]
 }
