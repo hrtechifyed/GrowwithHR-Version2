@@ -1,176 +1,405 @@
 {
-  "stateId": "SK",
-  "stateName": "Sikkim",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-SK",
+  "name": "Sikkim Labour Laws",
+  "shortName": "Sikkim",
+  "overview": "State-specific labour law requirements applicable to establishments operating in Sikkim.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "state",
+    "code": "IN-SK",
+    "stateCode": "SK"
+  },
   "authority": {
-    "department": "Labour Department, Government of Sikkim",
+    "name": "Labour Department, Government of Sikkim",
     "sourceId": "SK-LABOUR"
   },
-
-  "overview": "State-specific labour law requirements applicable to establishments operating in Sikkim.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "SK-001",
       "title": "Review Sikkim Shops and Commercial Establishments Registration",
-      "priority": "Mandatory",
-      "category": "Shops & Establishments",
       "description": "Determine whether registration under the Sikkim Shops and Commercial Establishments legislation is applicable.",
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-SK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "SK-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Sikkim Shops and Commercial Establishments legislation"
+          "sourceId": "SK-LABOUR",
+          "citation": {
+            "reference": "Applicable Sikkim Shops and Commercial Establishments legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "SK-002",
       "title": "Maintain Statutory Registers and Employment Records",
-      "priority": "Mandatory",
-      "category": "Documentation",
       "description": "Maintain statutory registers, employee records and prescribed notices under Sikkim labour legislation.",
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-SK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "SK-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Sikkim Labour Rules"
+          "sourceId": "SK-LABOUR",
+          "citation": {
+            "reference": "Applicable Sikkim Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "SK-003",
       "title": "Display Statutory Notices",
-      "priority": "Mandatory",
-      "category": "Documentation",
       "description": "Display statutory notices and employee information required under Sikkim labour legislation.",
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-SK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "SK-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Sikkim Labour Rules"
+          "sourceId": "SK-LABOUR",
+          "citation": {
+            "reference": "Applicable Sikkim Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "SK-004",
       "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
-      "priority": "Mandatory",
-      "category": "Working Conditions",
       "description": "Ensure compliance with Sikkim provisions governing working hours, overtime, leave and weekly holidays.",
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-SK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "SK-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Sikkim Shops and Commercial Establishments Rules"
+          "sourceId": "SK-LABOUR",
+          "citation": {
+            "reference": "Applicable Sikkim Shops and Commercial Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "SK-005",
       "title": "Review Minimum Wage Notifications",
-      "priority": "Mandatory",
-      "category": "Minimum Wages",
       "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Sikkim.",
+      "category": "Minimum Wages",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-SK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "SK-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Government of Sikkim Minimum Wage Notifications"
+          "sourceId": "SK-LABOUR",
+          "citation": {
+            "reference": "Government of Sikkim Minimum Wage Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "SK-006",
       "title": "Monitor Sikkim Labour Notifications",
-      "priority": "Mandatory",
-      "category": "State Notifications",
       "description": "Review labour department notifications, amendments and compliance circulars issued by the Government of Sikkim.",
+      "category": "State Notifications",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-SK"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "SK-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Government of Sikkim Labour Notifications"
+          "sourceId": "SK-LABOUR",
+          "citation": {
+            "reference": "Government of Sikkim Labour Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "SKR-001",
       "title": "Annual Labour Compliance Audit",
       "description": "Conduct an annual audit covering statutory registrations, labour records, payroll compliance and inspection readiness."
     },
-
     {
       "id": "SKR-002",
       "title": "Digital Compliance Calendar",
       "description": "Maintain a digital calendar for statutory filings, licence renewals, inspections and labour compliance due dates."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "SK-LABOUR"
+      "sourceId": "SK-LABOUR",
+      "name": "Labour Department, Government of Sikkim",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Labour Department, Government of Sikkim",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Sikkim labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
