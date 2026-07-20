@@ -1,16 +1,11 @@
 "use strict";
 
 /**
- * GrowWithHR
- * Compliance DNA M1 Contract Checks
+ * GrowWithHR Compliance DNA
+ * M1 Contract Checks
  *
- * Verifies that:
- * - the stable v2 route remains protected;
- * - the private-beta v3 route is isolated;
- * - all M1 foundation files exist;
- * - the feature flag remains disabled by default;
- * - narrative data contains exactly five ordered acts;
- * - compatibility and truthful-analysis contracts remain present.
+ * Protects the stable v2 experience and verifies the
+ * isolated Five-Act private-beta foundation.
  */
 
 const fs = require("fs");
@@ -20,30 +15,24 @@ const assert = require("assert");
 const root =
     path.resolve(__dirname, "..");
 
-function resolvePath(relativePath) {
+function absolutePath(relativePath) {
     return path.join(
         root,
         relativePath
     );
 }
 
-function exists(relativePath) {
-    return fs.existsSync(
-        resolvePath(relativePath)
-    );
-}
-
 function read(relativePath) {
-    const absolutePath =
-        resolvePath(relativePath);
+    const filePath =
+        absolutePath(relativePath);
 
     assert(
-        fs.existsSync(absolutePath),
-        `Required M1 file is missing: ${relativePath}`
+        fs.existsSync(filePath),
+        `Required file is missing: ${relativePath}`
     );
 
     return fs.readFileSync(
-        absolutePath,
+        filePath,
         "utf8"
     );
 }
@@ -56,7 +45,7 @@ function readJson(relativePath) {
         return JSON.parse(source);
     } catch (error) {
         throw new Error(
-            `${relativePath} must contain valid JSON: ${error.message}`
+            `${relativePath} contains invalid JSON: ${error.message}`
         );
     }
 }
@@ -85,11 +74,34 @@ function excludes(
     );
 }
 
+function matches(
+    source,
+    pattern,
+    message
+) {
+    assert(
+        pattern.test(source),
+        message ||
+            `Expected source to match: ${pattern}`
+    );
+}
+
+function countMatches(
+    source,
+    pattern
+) {
+    return (
+        source.match(pattern) ||
+        []
+    ).length;
+}
+
 /* ==========================================================
-   Required M1 files
+   Required files
 ========================================================== */
 
 const requiredFiles = [
+    "analyze-company.html",
     "analyze-company-v3.html",
     "css/19-compliance-dna.css",
     "data/assessment/narrative-copy.json",
@@ -100,12 +112,45 @@ const requiredFiles = [
     "js/assessment-v3/analysis-sequence.js"
 ];
 
-for (const file of requiredFiles) {
+for (
+    const relativePath
+    of requiredFiles
+) {
     assert(
-        exists(file),
-        `Required M1 file is missing: ${file}`
+        fs.existsSync(
+            absolutePath(relativePath)
+        ),
+        `Required M1 file is missing: ${relativePath}`
     );
 }
+
+/* ==========================================================
+   Version alignment
+========================================================== */
+
+const packageJson =
+    readJson("package.json");
+
+const appConfig =
+    read(
+        "js/config/app-config.js"
+    );
+
+const appVersionMatch =
+    appConfig.match(
+        /\bversion:\s*"([^"]+)"/
+    );
+
+assert(
+    appVersionMatch,
+    "Application configuration must define a version."
+);
+
+assert.strictEqual(
+    appVersionMatch[1],
+    packageJson.version,
+    "Application configuration must match package.json version."
+);
 
 /* ==========================================================
    Stable v2 route protection
@@ -123,25 +168,25 @@ includes(
 includes(
     stableAssessment,
     'src="js/executive-assessment.js"',
-    "The stable route must retain its current assessment controller."
+    "The stable route must retain its current controller."
 );
 
 includes(
     stableAssessment,
     'href="css/17-advisory-briefing.css"',
-    "The stable route must retain its current assessment stylesheet."
+    "The stable route must retain its current stylesheet."
 );
 
 excludes(
     stableAssessment,
     "assessment-v3/bootstrap.js",
-    "The stable v2 route must not load the v3 bootstrap."
+    "The stable route must not load the v3 bootstrap."
 );
 
 excludes(
     stableAssessment,
     "19-compliance-dna.css",
-    "The stable v2 route must not load the v3 stylesheet."
+    "The stable route must not load the v3 stylesheet."
 );
 
 /* ==========================================================
@@ -149,36 +194,38 @@ excludes(
 ========================================================== */
 
 const v3Assessment =
-    read("analyze-company-v3.html");
+    read(
+        "analyze-company-v3.html"
+    );
 
 includes(
     v3Assessment,
     'class="compliance-dna-page"',
-    "The v3 route must use the isolated Compliance DNA page class."
+    "The v3 route must use its isolated body class."
 );
 
 includes(
     v3Assessment,
     'content="noindex, nofollow"',
-    "The private-beta route must remain excluded from search indexing."
+    "The private-beta route must remain noindex."
 );
 
 includes(
     v3Assessment,
     'href="css/19-compliance-dna.css"',
-    "The v3 route must load the Compliance DNA stylesheet."
+    "The v3 route must load its isolated stylesheet."
 );
 
 includes(
     v3Assessment,
     'src="js/assessment-v3/bootstrap.js"',
-    "The v3 route must load the Compliance DNA bootstrap."
+    "The v3 route must load its module bootstrap."
 );
 
 includes(
     v3Assessment,
     'href="analyze-company.html"',
-    "The v3 route must provide a stable-assessment fallback."
+    "The v3 route must retain a stable-assessment fallback."
 );
 
 includes(
@@ -196,49 +243,44 @@ includes(
 includes(
     v3Assessment,
     'id="dnaStartButton"',
-    "The v3 route must contain its primary journey action."
+    "The v3 route must contain its primary action."
 );
 
-const actButtonMatches =
-    v3Assessment.match(
-        /data-act-button="/g
-    ) || [];
-
 assert.strictEqual(
-    actButtonMatches.length,
+    countMatches(
+        v3Assessment,
+        /data-act-button="/g
+    ),
     5,
-    "The v3 route must expose exactly five act buttons."
+    "The v3 route must contain exactly five act buttons."
 );
 
 /* ==========================================================
-   Feature flag and route configuration
+   Feature configuration
 ========================================================== */
-
-const appConfig =
-    read("js/config/app-config.js");
 
 includes(
     appConfig,
     'assessmentV2: "analyze-company.html"',
-    "Application configuration must retain the stable v2 route."
+    "Configuration must retain the stable v2 route."
 );
 
 includes(
     appConfig,
     'assessmentV3: "analyze-company-v3.html"',
-    "Application configuration must define the private-beta v3 route."
+    "Configuration must define the private-beta route."
 );
 
 includes(
     appConfig,
     "complianceDnaV3: false",
-    "Compliance DNA v3 must remain disabled by default during M1."
+    "Compliance DNA v3 must remain disabled by default."
 );
 
 includes(
     appConfig,
-    '"complianceDnaV3"',
-    "The assessment-route resolver must use the Compliance DNA feature flag."
+    "resolveAssessmentRoute",
+    "Configuration must provide an assessment-route resolver."
 );
 
 /* ==========================================================
@@ -275,24 +317,22 @@ const expectedActIds = [
     "act"
 ];
 
-const actualActIds =
+assert.deepStrictEqual(
     narrative.acts.map(
         (act) => act.id
-    );
-
-assert.deepStrictEqual(
-    actualActIds,
+    ),
     expectedActIds,
-    "Narrative acts must retain the approved Five-Act order."
+    "Narrative acts must retain the approved order."
 );
 
-const uniqueActIds =
-    new Set(actualActIds);
-
 assert.strictEqual(
-    uniqueActIds.size,
+    new Set(
+        narrative.acts.map(
+            (act) => act.id
+        )
+    ).size,
     5,
-    "Every narrative act must have a unique id."
+    "Narrative act identifiers must be unique."
 );
 
 narrative.acts.forEach(
@@ -300,31 +340,30 @@ narrative.acts.forEach(
         assert.strictEqual(
             act.number,
             index + 1,
-            `Narrative act ${index + 1} must use the correct number.`
+            `Narrative act ${index + 1} has an incorrect number.`
         );
 
-        assert(
-            typeof act.label === "string" &&
-                act.label.trim(),
-            `Narrative act ${index + 1} requires a label.`
-        );
-
-        assert(
-            typeof act.title === "string" &&
-                act.title.trim(),
-            `Narrative act ${index + 1} requires a title.`
-        );
-
-        assert(
-            typeof act.description === "string" &&
-                act.description.trim(),
-            `Narrative act ${index + 1} requires a description.`
-        );
+        for (
+            const property
+            of [
+                "id",
+                "label",
+                "title",
+                "description"
+            ]
+        ) {
+            assert(
+                typeof act[property] ===
+                    "string" &&
+                    act[property].trim(),
+                `Narrative act ${index + 1} requires ${property}.`
+            );
+        }
     }
 );
 
 /* ==========================================================
-   Story engine
+   Five-Act story engine
 ========================================================== */
 
 const storyEngine =
@@ -341,13 +380,13 @@ includes(
 includes(
     storyEngine,
     "export function createStoryEngine",
-    "The story engine must export its engine factory."
+    "The story engine must export its factory."
 );
 
 includes(
     storyEngine,
     "function setAct",
-    "The story engine must support direct act navigation."
+    "The story engine must support direct navigation."
 );
 
 includes(
@@ -362,11 +401,14 @@ includes(
     "The story engine must support backward navigation."
 );
 
-for (const actId of expectedActIds) {
+for (
+    const actId
+    of expectedActIds
+) {
     includes(
         storyEngine,
         `id: "${actId}"`,
-        `The story engine must retain the "${actId}" act.`
+        `The story engine must include "${actId}".`
     );
 }
 
@@ -382,31 +424,31 @@ const bootstrap =
 includes(
     bootstrap,
     'import createStoryEngine from "./story-engine.js"',
-    "The bootstrap must use the Five-Act story engine."
+    "The bootstrap must import the story engine."
 );
 
 includes(
     bootstrap,
     '"data/assessment/narrative-copy.json"',
-    "The bootstrap must load the narrative configuration."
+    "The bootstrap must use the narrative configuration."
 );
 
 includes(
     bootstrap,
     "await loadNarrative()",
-    "The narrative configuration must be loaded before rendering."
+    "Narrative loading must complete before initialization."
 );
 
 includes(
     bootstrap,
-    'const STABLE_ASSESSMENT_ROUTE =',
-    "The bootstrap must retain a stable fallback route."
+    "mergeNarrativeWithState",
+    "Configured narrative must be merged into rendered state."
 );
 
 includes(
     bootstrap,
     '"analyze-company.html"',
-    "The bootstrap fallback must point to the stable assessment."
+    "The bootstrap must retain the stable fallback."
 );
 
 includes(
@@ -416,7 +458,7 @@ includes(
 );
 
 /* ==========================================================
-   Legacy compatibility adapter
+   Legacy compatibility
 ========================================================== */
 
 const legacyAdapter =
@@ -424,29 +466,24 @@ const legacyAdapter =
         "js/assessment-v3/legacy-adapter.js"
     );
 
-includes(
-    legacyAdapter,
-    '"growwithhr-advisory-briefing-v2"',
-    "The adapter must preserve the protected v2 progress key."
-);
+const protectedKeys = [
+    "growwithhr-advisory-briefing-v2",
+    "growwithhr-report",
+    "growwithhr-lead",
+    "growwithhr-advisory-delivery-v1",
+    "growwithhr-industry-catalog-v1"
+];
 
-includes(
-    legacyAdapter,
-    '"growwithhr-report"',
-    "The adapter must preserve the existing report key."
-);
-
-includes(
-    legacyAdapter,
-    '"growwithhr-lead"',
-    "The adapter must preserve the existing lead key."
-);
-
-includes(
-    legacyAdapter,
-    '"growwithhr-advisory-delivery-v1"',
-    "The adapter must preserve the existing delivery key."
-);
+for (
+    const protectedKey
+    of protectedKeys
+) {
+    includes(
+        legacyAdapter,
+        `"${protectedKey}"`,
+        `The adapter must preserve ${protectedKey}.`
+    );
+}
 
 includes(
     legacyAdapter,
@@ -463,7 +500,7 @@ includes(
 includes(
     legacyAdapter,
     ".ReportMapper",
-    "The adapter must delegate report mapping to the existing mapper."
+    "The adapter must delegate to the existing report mapper."
 );
 
 /* ==========================================================
@@ -478,19 +515,19 @@ const analysisSequence =
 includes(
     analysisSequence,
     "DEFAULT_ANALYSIS_STAGES",
-    "The analysis module must define real processing stages."
+    "The analysis sequence must define its stages."
 );
 
 includes(
     analysisSequence,
-    "typeof callback",
-    "Every displayed analysis stage must require a callback."
+    "normalizeCallbacks",
+    "The analysis sequence must validate real callbacks."
 );
 
 includes(
     analysisSequence,
     "await callbacks[",
-    "A stage must wait for its real callback to complete."
+    "Each stage must await its real callback."
 );
 
 includes(
@@ -502,17 +539,17 @@ includes(
 includes(
     analysisSequence,
     "prefers-reduced-motion: reduce",
-    "The analysis sequence must respect reduced-motion preferences."
+    "The sequence must respect reduced-motion preferences."
 );
 
-includes(
+matches(
     analysisSequence,
-    'status:\n                    "failed"',
-    "The analysis sequence must expose a failed state."
+    /\?\s*"cancelled"\s*:\s*"failed"/,
+    "The sequence must distinguish cancelled and failed states."
 );
 
 /* ==========================================================
-   Isolated v3 styling
+   Isolated styling
 ========================================================== */
 
 const complianceDnaCss =
@@ -523,7 +560,7 @@ const complianceDnaCss =
 includes(
     complianceDnaCss,
     "body.compliance-dna-page",
-    "Compliance DNA styling must remain scoped to its page."
+    "Compliance DNA styling must remain page-scoped."
 );
 
 includes(
@@ -535,7 +572,7 @@ includes(
 includes(
     complianceDnaCss,
     ".dna-progress__value",
-    "The Five-Act progress indicator must have dedicated styling."
+    "The progress indicator must have dedicated styling."
 );
 
 includes(
