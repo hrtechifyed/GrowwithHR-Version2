@@ -1,304 +1,412 @@
+`data/knowledge-base/laws/central/code-on-wages.json`
+
+```json
 {
-  "lawId": "CENTRAL-CODE-ON-WAGES",
-  "lawName": "Code on Wages, 2019",
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "CENTRAL-CODE-ON-WAGES",
+  "name": "Code on Wages, 2019",
   "shortName": "Code on Wages",
-  "authority": "Ministry of Labour & Employment",
-  "sourceId": "MOL",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "officialCitation": "Code on Wages, 2019",
   "overview": "Consolidates provisions relating to wages, payment of wages, minimum wages, bonus and equal remuneration under a common legislative framework.",
-
+  "jurisdiction": {
+    "country": "IN",
+    "level": "central",
+    "code": "IN",
+    "stateCode": null
+  },
+  "authority": {
+    "name": "Ministry of Labour & Employment",
+    "sourceId": "MOL"
+  },
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "definitions": [
-
     {
       "id": "COW-DEF-001",
       "term": "Employer",
       "definition": "Employer as defined under the Code."
     },
-
     {
       "id": "COW-DEF-002",
       "term": "Employee",
       "definition": "Employee as defined under the Code."
     },
-
     {
       "id": "COW-DEF-003",
       "term": "Wages",
       "definition": "Wages as defined under the Code on Wages, 2019."
     }
-
   ],
-
   "rules": [
-
     {
-
       "id": "COW-001",
-
       "title": "Review Applicability",
-
-      "priority": "Mandatory",
-
-      "category": "Minimum Wages",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": [
-          "*"
-        ],
-
-        "industries": [
-          "*"
-        ]
-
-      },
-
       "description": "Determine the applicability of the Code on Wages and relevant notified rules.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-          "reference": "Code on Wages, 2019"
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "COW-002",
-
-      "title": "Pay Statutory Minimum Wages",
-
-      "priority": "Mandatory",
-
       "category": "Minimum Wages",
-
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Code on Wages, 2019",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "COW-002",
+      "title": "Pay Statutory Minimum Wages",
       "description": "Ensure employees receive wages not lower than the applicable statutory minimum wages.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "category": "Minimum Wages",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-          "reference": "Code on Wages"
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Code on Wages",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "COW-003",
-
       "title": "Timely Payment of Wages",
-
-      "priority": "Mandatory",
-
-      "category": "Payroll",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": [
-          "*"
-        ],
-
-        "industries": [
-          "*"
-        ]
-
-      },
-
       "description": "Ensure wages are paid within the timelines prescribed under applicable law.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "category": "Payroll",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-          "reference": "Code on Wages"
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Code on Wages",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "COW-004",
-
       "title": "Maintain Wage Registers",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": [
-          "*"
-        ],
-
-        "industries": [
-          "*"
-        ]
-
-      },
-
       "description": "Maintain wage records, registers and statutory documentation as prescribed.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-          "reference": "Code on Wages Rules"
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Code on Wages Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "COW-005",
-
       "title": "Issue Wage Slips",
-
-      "priority": "Mandatory",
-
-      "category": "Payroll",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": [
-          "*"
-        ],
-
-        "industries": [
-          "*"
-        ]
-
-      },
-
       "description": "Issue wage slips and maintain payroll transparency in accordance with applicable rules.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-          "reference": "Code on Wages Rules"
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "COW-006",
-
-      "title": "Comply with Equal Remuneration Requirements",
-
-      "priority": "Mandatory",
-
       "category": "Payroll",
-
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Ensure compliance with equal remuneration provisions incorporated within the Code.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "evidence": [
         {
-          "reference": "Code on Wages"
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Code on Wages Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
-    }
-
-  ],
-
-  "exceptions": [
-
-    {
-
-      "id": "COW-EX-001",
-
-      "title": "State Rules",
-
-      "description": "Implementation and wage notifications depend upon rules notified by the appropriate Central or State Government."
-
-    }
-
-  ],
-
-  "references": [
-
-    {
-      "sourceId": "MOL"
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-      "sourceId": "INDIACODE"
+      "id": "COW-006",
+      "title": "Comply with Equal Remuneration Requirements",
+      "description": "Ensure compliance with equal remuneration provisions incorporated within the Code.",
+      "category": "Payroll",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Code on Wages",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
-  ]
-
+  ],
+  "exceptions": [
+    {
+      "id": "COW-EX-001",
+      "title": "State Rules",
+      "description": "Implementation and wage notifications depend upon rules notified by the appropriate Central or State Government."
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    },
+    {
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    }
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Code on Wages record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
+```
