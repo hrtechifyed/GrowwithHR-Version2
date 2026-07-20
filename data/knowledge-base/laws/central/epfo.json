@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "recordVersion": "1.0.0",
+  "recordVersion": "2.0.0",
   "id": "CENTRAL-EPFO",
   "name": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
   "shortName": "EPF Act",
-  "officialCitation": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
-  "overview": "Provides provident fund, pension and insurance benefits to eligible employees and prescribes employer obligations relating to registration, contributions and statutory compliance.",
+  "officialCitation": "The Employees' Provident Funds and Miscellaneous Provisions Act, 1952 (Act No. 19 of 1952), repealed and saved under section 164 of the Code on Social Security, 2020.",
+  "overview": "Historical central labour-law record governing provident fund, pension and deposit-linked insurance coverage before the Code on Social Security, 2020 became operative on 21 November 2025. The Employees' Provident Funds and Miscellaneous Provisions Act, 1952 was repealed by section 164 of the Code, subject to savings. Current provident fund obligations must be assessed under Chapter III of the Code on Social Security, 2020, together with applicable schemes, rules, regulations, notifications and EPFO directions. The Employees' Provident Funds Scheme, 1952, Employees' Pension Scheme, 1995 and Employees' Deposit Linked Insurance Scheme, 1976 continue during the statutory savings period to the extent that they are not inconsistent with the Code. This record is retained for historical periods, saved instruments, exemptions, proceedings and audit traceability.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -16,14 +16,16 @@
     "name": "Employees' Provident Fund Organisation",
     "sourceId": "EPFO"
   },
-  "status": "active",
+  "status": "superseded",
   "temporal": {
     "effectiveFrom": null,
-    "effectiveTo": null,
-    "lastVerified": "2026-07-05",
-    "nextReviewDue": "2026-10-03",
+    "effectiveTo": "2025-11-20",
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
     "supersedes": [],
-    "supersededBy": []
+    "supersededBy": [
+      "CENTRAL-SOCIAL-SECURITY"
+    ]
   },
   "definitions": [
     {
@@ -78,23 +80,25 @@
           "sourceId": "EPFO",
           "citation": {
             "reference": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
-            "section": "",
+            "section": "Section 1",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -138,17 +142,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -192,17 +198,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -246,17 +254,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -300,17 +310,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     }
   ],
@@ -319,6 +331,23 @@
       "id": "EPFO-EX-001",
       "title": "Voluntary Coverage",
       "description": "Certain establishments may seek voluntary coverage subject to applicable provisions."
+    },
+    {
+      "id": "EPFO-EX-002",
+      "title": "Saved Schemes and Exemptions",
+      "description": "The Employees' Provident Funds Scheme, 1952, Employees' Pension Scheme, 1995, Employees' Deposit Linked Insurance Scheme, 1976 and existing exemptions continue only to the extent and for the periods preserved by section 164 of the Code on Social Security, 2020."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "EPFO-REC-001",
+      "title": "Retain Historical EPF Records",
+      "description": "Preserve registration, UAN, wage, contribution, exemption, assessment and proceeding records created under the repealed Act for saved liabilities and audit traceability."
+    },
+    {
+      "id": "EPFO-REC-002",
+      "title": "Use the Social Security Code Record for Current Compliance",
+      "description": "Assess current provident fund obligations under CENTRAL-SOCIAL-SECURITY while continuing to follow saved EPFO schemes, regulations, notifications and operational directions during the statutory transition."
     }
   ],
   "sources": [
@@ -329,26 +358,26 @@
       "url": "https://www.epfindia.gov.in",
       "authority": "Employees' Provident Fund Organisation",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "INDIACODE",
-      "name": "India Code",
+      "name": "Code on Social Security, 2020 and Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
       "sourceType": "official_portal",
-      "url": "https://www.indiacode.nic.in",
-      "authority": "India Code",
+      "url": "https://www.indiacode.nic.in/handle/123456789/16823",
+      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     }
   ],
   "governance": {
     "owner": "GrowWithHR Compliance Data Team",
-    "reviewCadenceDays": 90,
+    "reviewCadenceDays": 30,
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Migrated the existing Employees' Provident Funds and Miscellaneous Provisions Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+    "changeSummary": "Updated the Employees' Provident Funds and Miscellaneous Provisions Act record as a superseded historical record, preserved the existing definitions, rule IDs and voluntary-coverage exception, documented the statutory savings for EPF, pension and deposit-linked insurance schemes, and linked current provident fund compliance to the Code on Social Security, 2020 from 21 November 2025."
   }
 }
