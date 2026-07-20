@@ -1,308 +1,354 @@
 {
-  "lawId": "CENTRAL-APPRENTICES",
-  "lawName": "Apprentices Act, 1961",
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "CENTRAL-APPRENTICES",
+  "name": "Apprentices Act, 1961",
   "shortName": "Apprentices Act",
-  "authority": "Ministry of Skill Development and Entrepreneurship",
-  "sourceId": "MOL",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "officialCitation": "Apprentices Act, 1961",
   "overview": "Regulates apprenticeship training in designated trades and prescribes obligations for employers engaging apprentices.",
-
+  "jurisdiction": {
+    "country": "IN",
+    "level": "central",
+    "code": "IN",
+    "stateCode": null
+  },
+  "authority": {
+    "name": "Ministry of Skill Development and Entrepreneurship",
+    "sourceId": "MOL"
+  },
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "definitions": [
-
     {
       "id": "APP-DEF-001",
       "term": "Apprentice",
       "definition": "A person undergoing apprenticeship training under a contract of apprenticeship."
     },
-
     {
       "id": "APP-DEF-002",
       "term": "Employer",
       "definition": "Any person employing apprentices under the Act."
     },
-
     {
       "id": "APP-DEF-003",
       "term": "Apprenticeship Training",
       "definition": "Training provided in accordance with the Apprentices Act."
     }
-
   ],
-
   "rules": [
-
     {
-
       "id": "APP-001",
-
       "title": "Review Applicability of Apprentices Act",
-
-      "priority": "Mandatory",
-
-      "category": "Training",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
       "description": "Assess whether the establishment is required or eligible to engage apprentices under the Act.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "Apprentices Act, 1961"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "APP-002",
-
-      "title": "Execute Apprenticeship Contract",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
-      "description": "Execute apprenticeship contracts wherever apprentices are engaged.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "Apprentices Act"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "APP-003",
-
-      "title": "Provide Prescribed Training",
-
-      "priority": "Mandatory",
-
       "category": "Training",
-
-      "applicability": {
-
-        "employeeCount": {
-
-          "min": 1
-
-        },
-
-        "entityTypes": [
-
-          "*"
-
-        ],
-
-        "industries": [
-
-          "*"
-
-        ]
-
-      },
-
-      "description": "Provide apprenticeship training in accordance with the approved training programme.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
-        {
-
-          "reference": "Apprentices Act"
-
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "APP-004",
-
-      "title": "Pay Prescribed Stipend",
-
       "priority": "Mandatory",
-
-      "category": "Payroll",
-
       "applicability": {
-
         "employeeCount": {
-
-          "min": 1
-
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
-
           "*"
-
         ],
-
         "industries": [
-
           "*"
-
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Pay stipend to apprentices in accordance with applicable provisions.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "evidence": [
         {
-
-          "reference": "Apprentices Act"
-
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Apprentices Act, 1961",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
-      "id": "APP-005",
-
-      "title": "Maintain Apprentice Records",
-
-      "priority": "Mandatory",
-
+      "id": "APP-002",
+      "title": "Execute Apprenticeship Contract",
+      "description": "Execute apprenticeship contracts wherever apprentices are engaged.",
       "category": "Documentation",
-
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-
-          "min": 1
-
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
-
           "*"
-
         ],
-
         "industries": [
-
           "*"
-
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Maintain records relating to apprenticeship contracts, attendance and training.",
-
-      "sourceId": "MOL",
-
-      "citations": [
-
+      "evidence": [
         {
-
-          "reference": "Apprentices Rules"
-
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Apprentices Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
-    }
-
-  ],
-
-  "exceptions": [
-
-    {
-
-      "id": "APP-EX-001",
-
-      "title": "Trade and Establishment Specific Requirements",
-
-      "description": "Apprenticeship obligations vary depending on the establishment, designated trade and applicable notifications."
-
-    }
-
-  ],
-
-  "references": [
-
-    {
-
-      "sourceId": "MOL"
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
-      "sourceId": "INDIACODE"
-
+      "id": "APP-003",
+      "title": "Provide Prescribed Training",
+      "description": "Provide apprenticeship training in accordance with the approved training programme.",
+      "category": "Training",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Apprentices Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "APP-004",
+      "title": "Pay Prescribed Stipend",
+      "description": "Pay stipend to apprentices in accordance with applicable provisions.",
+      "category": "Payroll",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Apprentices Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "APP-005",
+      "title": "Maintain Apprentice Records",
+      "description": "Maintain records relating to apprenticeship contracts, attendance and training.",
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Apprentices Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
-  ]
-
+  ],
+  "exceptions": [
+    {
+      "id": "APP-EX-001",
+      "title": "Trade and Establishment Specific Requirements",
+      "description": "Apprenticeship obligations vary depending on the establishment, designated trade and applicable notifications."
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    },
+    {
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    }
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Apprentices Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
