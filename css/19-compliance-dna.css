@@ -1,6 +1,7 @@
 /* ==========================================================
    GrowWithHR Compliance DNA
    M1 Five-Act Story Foundation
+   M2 Deterministic Traceability Diagnostics
    Private beta presentation layer
 
    This stylesheet is isolated from the stable v2 assessment.
@@ -396,6 +397,12 @@ body.compliance-dna-page * {
     line-height: 1.6;
 }
 
+.dna-private-note code {
+    overflow-wrap: anywhere;
+    color: var(--brand-blue-light);
+    font-size: 0.82rem;
+}
+
 .dna-private-note__icon {
     flex: 0 0 auto;
     color: var(--brand-blue-light);
@@ -428,7 +435,8 @@ body.compliance-dna-page * {
         transform var(--transition-fast),
         border-color var(--transition-fast),
         background var(--transition-fast),
-        box-shadow var(--transition-fast);
+        box-shadow var(--transition-fast),
+        opacity var(--transition-fast);
 }
 
 .dna-primary-button {
@@ -460,9 +468,18 @@ body.compliance-dna-page * {
     background: rgba(255, 255, 255, 0.075);
 }
 
+.dna-primary-button:disabled,
+.dna-secondary-button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    transform: none;
+}
+
 .dna-primary-button:focus-visible,
 .dna-secondary-button:focus-visible,
-.dna-act__button:focus-visible {
+.dna-act__button:focus-visible,
+.dna-traceability__source-link:focus-visible,
+.dna-traceability summary:focus-visible {
     outline: 3px solid rgba(255, 176, 0, 0.55);
     outline-offset: 3px;
 }
@@ -476,6 +493,629 @@ body.compliance-dna-page * {
 
 .dna-version strong {
     color: var(--text-secondary);
+}
+
+/* ==========================================================
+   M2 Traceability Diagnostics
+========================================================== */
+
+.dna-traceability {
+    position: relative;
+    margin-top: clamp(36px, 6vw, 72px);
+    padding: clamp(24px, 5vw, 52px);
+    overflow: hidden;
+    border: 1px solid rgba(79, 139, 255, 0.24);
+    border-radius: var(--radius-xl);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(37, 99, 235, 0.09),
+            rgba(255, 255, 255, 0.025)
+        ),
+        rgba(7, 12, 24, 0.90);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(20px);
+}
+
+.dna-traceability::before {
+    position: absolute;
+    z-index: 0;
+    top: -180px;
+    left: -160px;
+    width: 390px;
+    height: 390px;
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle,
+            rgba(37, 99, 235, 0.16),
+            transparent 69%
+        );
+}
+
+.dna-traceability > * {
+    position: relative;
+    z-index: 1;
+}
+
+.dna-traceability__header {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+    align-items: start;
+    gap: var(--space-4);
+}
+
+.dna-traceability__heading {
+    max-width: 760px;
+}
+
+.dna-traceability__eyebrow,
+.dna-traceability__group-eyebrow {
+    margin: 0 0 10px;
+    color: var(--brand-blue-light);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.dna-traceability__title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+.dna-traceability__description {
+    max-width: 720px;
+    margin: 16px 0 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.dna-traceability__refresh {
+    min-width: 190px;
+    white-space: nowrap;
+}
+
+.dna-traceability__status {
+    margin: var(--space-3) 0 0;
+    padding: 13px 16px;
+    border: 1px solid rgba(79, 139, 255, 0.20);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    background: rgba(37, 99, 235, 0.07);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.dna-traceability[data-traceability-state="ready"]
+    .dna-traceability__status {
+    border-color: rgba(34, 197, 94, 0.25);
+    color: #BBF7D0;
+    background: rgba(34, 197, 94, 0.08);
+}
+
+.dna-traceability[data-traceability-state="error"]
+    .dna-traceability__status {
+    border-color: rgba(239, 68, 68, 0.30);
+    color: #FECACA;
+    background: rgba(239, 68, 68, 0.09);
+}
+
+.dna-traceability__metrics {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: var(--space-3) 0 0;
+}
+
+.dna-traceability__metric {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.dna-traceability__metric dt {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.dna-traceability__metric dd {
+    margin: 9px 0 0;
+    color: var(--text-primary);
+    font-size: clamp(1.55rem, 3vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.dna-traceability__notice {
+    margin-top: var(--space-3);
+    padding: clamp(20px, 4vw, 30px);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    border-radius: var(--radius-lg);
+    color: var(--text-secondary);
+    background: rgba(245, 158, 11, 0.07);
+}
+
+.dna-traceability__notice--error {
+    border-color: rgba(239, 68, 68, 0.30);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.dna-traceability__notice h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    line-height: 1.35;
+}
+
+.dna-traceability__notice p {
+    max-width: 720px;
+    margin: 10px 0 0;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+.dna-traceability__notice
+    .dna-primary-button,
+.dna-traceability__notice
+    .dna-secondary-button {
+    margin-top: 20px;
+}
+
+.dna-traceability__content {
+    display: grid;
+    gap: clamp(32px, 5vw, 52px);
+    margin-top: clamp(32px, 5vw, 52px);
+    transition:
+        opacity var(--transition-normal),
+        filter var(--transition-normal);
+}
+
+.dna-traceability[data-traceability-state="loading"]
+    .dna-traceability__content {
+    opacity: 0.55;
+    filter: saturate(0.7);
+    pointer-events: none;
+}
+
+.dna-traceability[data-traceability-state="empty"]
+    .dna-traceability__content,
+.dna-traceability[data-traceability-state="error"]
+    .dna-traceability__content {
+    display: none;
+}
+
+.dna-traceability__group {
+    min-width: 0;
+}
+
+.dna-traceability__group-header {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(260px, 420px);
+    align-items: end;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.dna-traceability__group-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+}
+
+.dna-traceability__group-description {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+.dna-traceability__rule-list,
+.dna-traceability__recommendation-list {
+    display: grid;
+    gap: var(--space-2);
+}
+
+.dna-traceability__loading,
+.dna-traceability__no-recommendations {
+    margin: 0;
+    padding: var(--space-3);
+    border: 1px dashed rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.025);
+    line-height: 1.6;
+}
+
+.dna-traceability__rule-card,
+.dna-traceability__recommendation-card {
+    position: relative;
+    min-width: 0;
+    padding: clamp(20px, 3.5vw, 30px);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.018)
+        );
+    box-shadow: var(--shadow-sm);
+}
+
+.dna-traceability__rule-card::before,
+.dna-traceability__recommendation-card::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    content: "";
+    background: var(--brand-blue-light);
+}
+
+.dna-traceability__rule-card[
+    data-applicability-status="applicable"
+]::before,
+.dna-traceability__recommendation-card[
+    data-applicability-status="applicable"
+]::before {
+    background: var(--success);
+}
+
+.dna-traceability__rule-card[
+    data-applicability-status="likely-applicable"
+]::before,
+.dna-traceability__recommendation-card[
+    data-applicability-status="likely-applicable"
+]::before {
+    background: var(--brand-blue-light);
+}
+
+.dna-traceability__rule-card[
+    data-applicability-status="specialist-review"
+]::before,
+.dna-traceability__recommendation-card[
+    data-applicability-status="specialist-review"
+]::before {
+    background: #A855F7;
+}
+
+.dna-traceability__rule-card[
+    data-applicability-status="more-information-needed"
+]::before,
+.dna-traceability__recommendation-card[
+    data-applicability-status="more-information-needed"
+]::before {
+    background: var(--warning);
+}
+
+.dna-traceability__rule-card[
+    data-applicability-status="not-currently-applicable"
+]::before,
+.dna-traceability__recommendation-card[
+    data-applicability-status="not-currently-applicable"
+]::before {
+    background: var(--text-muted);
+}
+
+.dna-traceability__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.dna-traceability__card-heading {
+    min-width: 0;
+}
+
+.dna-traceability__card-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.35;
+}
+
+.dna-traceability__badges {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.dna-traceability__status-badge,
+.dna-traceability__evidence-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: var(--radius-pill);
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.045);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.035em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.dna-traceability__status-badge[
+    data-applicability-status="applicable"
+] {
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #BBF7D0;
+    background: rgba(34, 197, 94, 0.10);
+}
+
+.dna-traceability__status-badge[
+    data-applicability-status="likely-applicable"
+] {
+    border-color: rgba(79, 139, 255, 0.38);
+    color: #BFDBFE;
+    background: rgba(37, 99, 235, 0.12);
+}
+
+.dna-traceability__status-badge[
+    data-applicability-status="specialist-review"
+] {
+    border-color: rgba(168, 85, 247, 0.38);
+    color: #E9D5FF;
+    background: rgba(168, 85, 247, 0.11);
+}
+
+.dna-traceability__status-badge[
+    data-applicability-status="more-information-needed"
+] {
+    border-color: rgba(245, 158, 11, 0.38);
+    color: #FDE68A;
+    background: rgba(245, 158, 11, 0.10);
+}
+
+.dna-traceability__status-badge[
+    data-applicability-status="not-currently-applicable"
+] {
+    border-color: rgba(148, 163, 184, 0.28);
+    color: var(--text-secondary);
+    background: rgba(148, 163, 184, 0.08);
+}
+
+.dna-traceability__evidence-badge[
+    data-evidence-status="verified"
+] {
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #BBF7D0;
+    background: rgba(34, 197, 94, 0.10);
+}
+
+.dna-traceability__evidence-badge[
+    data-evidence-status="provided"
+] {
+    border-color: rgba(79, 139, 255, 0.35);
+    color: #BFDBFE;
+    background: rgba(37, 99, 235, 0.10);
+}
+
+.dna-traceability__evidence-badge[
+    data-evidence-status="not-verified"
+],
+.dna-traceability__evidence-badge[
+    data-evidence-status="not-provided"
+] {
+    border-color: rgba(245, 158, 11, 0.32);
+    color: #FDE68A;
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.dna-traceability__reason {
+    max-width: 880px;
+    margin: 18px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.dna-traceability__identifier {
+    display: inline-block;
+    max-width: 100%;
+    margin-top: 8px;
+    overflow-wrap: anywhere;
+    color: var(--brand-blue-light);
+    background: transparent;
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+.dna-traceability__detail-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: var(--space-3);
+}
+
+.dna-traceability__detail {
+    min-width: 0;
+    padding: 15px 16px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.dna-traceability__detail--wide {
+    grid-column: 1 / -1;
+}
+
+.dna-traceability__detail-label {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.055em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.dna-traceability__detail-value {
+    margin: 7px 0 0;
+    overflow-wrap: anywhere;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.dna-traceability__record-section {
+    margin-top: var(--space-3);
+}
+
+.dna-traceability__section-title {
+    margin: 0 0 12px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.055em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.dna-traceability__fact-list,
+.dna-traceability__source-list,
+.dna-traceability__limitations {
+    display: grid;
+    gap: 9px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.dna-traceability__fact,
+.dna-traceability__source {
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.dna-traceability__fact--empty {
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.55;
+}
+
+.dna-traceability__fact-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.dna-traceability__fact-label {
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.dna-traceability__fact-kind {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.dna-traceability__fact-value {
+    display: block;
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+    line-height: 1.55;
+}
+
+.dna-traceability__source {
+    display: grid;
+    gap: 6px;
+}
+
+.dna-traceability__source-link {
+    width: fit-content;
+    max-width: 100%;
+    color: var(--brand-blue-light);
+    font-size: 0.94rem;
+    font-weight: 800;
+    line-height: 1.45;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.dna-traceability__source-link:hover {
+    color: var(--text-primary);
+}
+
+.dna-traceability__source-meta,
+.dna-traceability__source-note {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+.dna-traceability__source-note {
+    color: var(--text-secondary);
+}
+
+.dna-traceability__limitation-details {
+    margin-top: var(--space-3);
+    padding: 14px 16px;
+    border: 1px solid rgba(245, 158, 11, 0.20);
+    border-radius: var(--radius-sm);
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.dna-traceability__limitation-details summary {
+    color: #FDE68A;
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1.45;
+    cursor: pointer;
+}
+
+.dna-traceability__limitations {
+    margin-top: 12px;
+    padding-left: 20px;
+    list-style: disc;
+}
+
+.dna-traceability__limitations li {
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    line-height: 1.6;
 }
 
 [hidden] {
@@ -498,6 +1138,20 @@ body.compliance-dna-page * {
         padding-bottom: 8px;
         scrollbar-width: thin;
     }
+
+    .dna-traceability__header,
+    .dna-traceability__group-header {
+        grid-template-columns: 1fr;
+    }
+
+    .dna-traceability__refresh {
+        justify-self: start;
+    }
+
+    .dna-traceability__metrics {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 720px) {
@@ -509,7 +1163,8 @@ body.compliance-dna-page * {
         font-size: clamp(2.15rem, 12vw, 3.65rem);
     }
 
-    .dna-panel {
+    .dna-panel,
+    .dna-traceability {
         padding: 24px 20px;
         border-radius: var(--radius-lg);
     }
@@ -527,13 +1182,50 @@ body.compliance-dna-page * {
     .dna-secondary-button {
         width: 100%;
     }
+
+    .dna-traceability__refresh {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .dna-traceability__card-header,
+    .dna-traceability__fact-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .dna-traceability__badges {
+        justify-content: flex-start;
+    }
+
+    .dna-traceability__detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dna-traceability__detail--wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .dna-traceability__metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .dna-traceability__status-badge,
+    .dna-traceability__evidence-badge {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .dna-skip-link,
     .dna-progress__value,
     .dna-primary-button,
-    .dna-secondary-button {
+    .dna-secondary-button,
+    .dna-traceability__content {
         scroll-behavior: auto;
         transition: none;
     }
