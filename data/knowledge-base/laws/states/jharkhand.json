@@ -1,270 +1,405 @@
 {
-  "stateId": "JH",
-  "stateName": "Jharkhand",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-JH",
+  "name": "Jharkhand Labour Laws",
+  "shortName": "Jharkhand",
+  "overview": "State-specific labour law requirements applicable to establishments operating in Jharkhand.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "state",
+    "code": "IN-JH",
+    "stateCode": "JH"
+  },
   "authority": {
-    "department": "Department of Labour, Employment, Training & Skill Development, Government of Jharkhand",
+    "name": "Department of Labour, Employment, Training & Skill Development, Government of Jharkhand",
     "sourceId": "JH-LABOUR"
   },
-
-  "overview": "State-specific labour law requirements applicable to establishments operating in Jharkhand.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "JH-001",
-
       "title": "Review Jharkhand Shops and Establishments Registration",
-
-      "priority": "Mandatory",
-
-      "category": "Shops & Establishments",
-
       "description": "Determine whether registration under the applicable Jharkhand Shops and Establishments legislation is required.",
-
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jharkhand Shops and Establishments legislation"
+          "sourceId": "JH-LABOUR",
+          "citation": {
+            "reference": "Applicable Jharkhand Shops and Establishments legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JH-002",
-
       "title": "Maintain Statutory Registers and Employment Records",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Maintain statutory registers, employee records and prescribed notices under Jharkhand labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jharkhand Labour Rules"
+          "sourceId": "JH-LABOUR",
+          "citation": {
+            "reference": "Applicable Jharkhand Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JH-003",
-
       "title": "Display Statutory Notices",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Display statutory notices, abstracts and employee information required under applicable labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jharkhand Labour Rules"
+          "sourceId": "JH-LABOUR",
+          "citation": {
+            "reference": "Applicable Jharkhand Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JH-004",
-
       "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
-
-      "priority": "Mandatory",
-
-      "category": "Working Conditions",
-
       "description": "Ensure compliance with Jharkhand provisions governing working hours, overtime, leave and weekly holidays.",
-
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jharkhand Shops and Establishments Rules"
+          "sourceId": "JH-LABOUR",
+          "citation": {
+            "reference": "Applicable Jharkhand Shops and Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JH-005",
-
       "title": "Review Minimum Wage Notifications",
-
-      "priority": "Mandatory",
-
-      "category": "Minimum Wages",
-
       "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Jharkhand.",
-
+      "category": "Minimum Wages",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Jharkhand Minimum Wage Notifications"
+          "sourceId": "JH-LABOUR",
+          "citation": {
+            "reference": "Jharkhand Minimum Wage Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "JH-006",
-
       "title": "Review Labour Welfare Requirements",
-
-      "priority": "Mandatory",
-
-      "category": "Labour Welfare",
-
       "description": "Review state labour welfare requirements, notifications and employer obligations applicable in Jharkhand.",
-
+      "category": "Labour Welfare",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-JH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "JH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Jharkhand Labour Welfare legislation"
+          "sourceId": "JH-LABOUR",
+          "citation": {
+            "reference": "Applicable Jharkhand Labour Welfare legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "JHR-001",
-
       "title": "Annual Labour Compliance Audit",
-
       "description": "Conduct an annual review of registrations, statutory records, wage compliance and inspection readiness."
     },
-
     {
       "id": "JHR-002",
-
       "title": "Digital Compliance Calendar",
-
       "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour law due dates."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "JH-LABOUR"
+      "sourceId": "JH-LABOUR",
+      "name": "Department of Labour, Employment, Training & Skill Development, Government of Jharkhand",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Department of Labour, Employment, Training & Skill Development, Government of Jharkhand",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Jharkhand labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
