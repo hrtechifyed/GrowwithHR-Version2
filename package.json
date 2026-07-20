@@ -32,7 +32,7 @@
     "test:journeys": "node tests/assessment-journey-checks.js",
     "test:baseline": "node tests/baseline-contract-checks.js",
     "test:m1": "node tests/m1-v3-contract-checks.js",
-    "test:m2": "node tests/m2-traceability-contract-checks.mjs",
+    "test:m2": "node tests/m2-traceability-contract-checks.mjs && node tests/m2-recommendation-evaluator-checks.mjs",
     "test:static": "node tests/requirements-static-check.js",
     "test:report-scenarios": "node tests/report-dynamic-scenarios.js",
     "test:golden": "node tests/golden-scenario-checks.js",
