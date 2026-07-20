@@ -63,6 +63,7 @@ function count(source, expected) {
 
 /* ==========================================================
    Stable assessment route
+   ========================================================== */
 
 assertIncludes(
     html,
@@ -108,6 +109,7 @@ assertIncludes(
 
 /* ==========================================================
    Guided assessment journey
+========================================================== */
 
 assertIncludes(
     html,
@@ -148,6 +150,7 @@ assertBefore(
 
 /* ==========================================================
    Review, contact and report generation
+========================================================== */
 
 assertIncludes(
     html,
@@ -233,6 +236,7 @@ assertBefore(
 
 /* ==========================================================
    Assessment configuration
+========================================================== */
 
 assertIncludes(
     html,
@@ -254,7 +258,7 @@ assertIncludes(
 
 /* ==========================================================
    Script contracts and loading order
-
+========================================================== */
 assertIncludes(
     html,
     'src="js/pdf.js"',
@@ -295,7 +299,7 @@ assertBefore(
 
 /* ==========================================================
    Controller and saved-progress contracts
-
+========================================================== */
 assertIncludes(
     assessmentJs,
     "Storage.readAssessment();",
@@ -340,7 +344,7 @@ assertIncludes(
 
 /* ==========================================================
    Accessibility and responsive safeguards
-
+========================================================== */
 assertIncludes(
     advisoryCss,
     "body.analyze-company-page",
@@ -378,7 +382,7 @@ assert(
 
 /* ==========================================================
    Obsolete intro route must not be required
-
+========================================================== */
 assert(
     !html.includes('src="js/intro-sequence.js"'),
     "The current stable route must not depend on the obsolete intro sequence."
