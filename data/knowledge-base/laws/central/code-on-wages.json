@@ -4,8 +4,8 @@
   "id": "CENTRAL-CODE-ON-WAGES",
   "name": "Code on Wages, 2019",
   "shortName": "Code on Wages",
-  "officialCitation": "The Code on Wages, 2019 (Act No. 29 of 2019), effective from 21 November 2025.",
-  "overview": "The Code on Wages, 2019 consolidates the central legal framework for minimum wages, payment of wages, statutory bonus and gender-based wage equality. It became operative on 21 November 2025. The Code on Wages (Central) Rules, 2026 apply where the Central Government is the appropriate government; establishments governed by a State or Union Territory must apply the corresponding local rules, wage notifications and authorities. Notifications and actions under the repealed wage enactments continue only to the extent preserved by section 69 and not inconsistent with the Code.",
+  "officialCitation": "The Code on Wages, 2019 (Act No. 29 of 2019), operative from 21 November 2025.",
+  "overview": "The Code on Wages, 2019 is the current central framework for minimum wages, payment of wages, statutory bonus and gender-based wage equality. It became operative on 21 November 2025. The Code on Wages (Central) Rules, 2026 apply where the Central Government is the appropriate government; State and Union Territory rules and notifications apply where another government has jurisdiction. Instruments under the repealed wage enactments continue only to the extent preserved by section 69 and until lawfully replaced or repealed.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -13,8 +13,7 @@
     "stateCode": null
   },
   "authority": {
-    "name": "Ministry of Labour & Employment, Government of India",
-    "department": "Wage Division",
+    "name": "Ministry of Labour & Employment",
     "sourceId": "MOL"
   },
   "status": "active",
@@ -32,29 +31,24 @@
     {
       "id": "COW-DEF-001",
       "term": "Employer",
-      "definition": "Employer as defined under the Code on Wages, 2019."
+      "definition": "Employer as defined under the Code."
     },
     {
       "id": "COW-DEF-002",
       "term": "Employee",
-      "definition": "Employee as defined under the Code on Wages, 2019, subject to the provision being applied."
+      "definition": "Employee as defined under the Code."
     },
     {
       "id": "COW-DEF-003",
       "term": "Wages",
-      "definition": "Remuneration determined under the statutory definition of wages, including the applicable inclusions, exclusions and adjustment mechanism."
-    },
-    {
-      "id": "COW-DEF-004",
-      "term": "Appropriate Government",
-      "definition": "The Central Government or the relevant State Government determined under the Code for the establishment or employment concerned."
+      "definition": "Wages as defined under the Code on Wages, 2019."
     }
   ],
   "rules": [
     {
       "id": "COW-001",
-      "title": "Determine Coverage and the Appropriate Government",
-      "description": "Determine the applicability of the Code to each establishment and employee category, identify the appropriate government and apply the corresponding Central, State or Union Territory rules, notifications, authorities, forms and portals.",
+      "title": "Determine Code Coverage and the Appropriate Government",
+      "description": "Determine coverage for each establishment and employee category, identify the appropriate government and apply the corresponding rules, wage notifications, authorities, forms and portals.",
       "category": "Applicability and Governance",
       "priority": "Mandatory",
       "applicability": {
@@ -121,7 +115,7 @@
     {
       "id": "COW-002",
       "title": "Pay Applicable Minimum Wages",
-      "description": "Pay each employee at least the applicable minimum rate of wages for the relevant employment, skill category, location and wage period, and apply any variable dearness allowance or revision notified by the appropriate government.",
+      "description": "Pay every covered employee at least the applicable minimum rate for the employment, skill category, location and wage period, including any variable dearness allowance or revision notified by the appropriate government.",
       "category": "Minimum Wages",
       "priority": "Mandatory",
       "applicability": {
@@ -166,73 +160,6 @@
           "sourceId": "COW-RULES-2026",
           "citation": {
             "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Minimum-wage provisions",
-            "rule": "",
-            "page": "",
-            "excerpt": ""
-          },
-          "publishedAt": null,
-          "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
-        }
-      ],
-      "temporal": {
-        "effectiveFrom": "2025-11-21",
-        "effectiveTo": null,
-        "lastVerified": "2026-07-20",
-        "nextReviewDue": "2026-08-19",
-        "supersedes": [],
-        "supersededBy": []
-      }
-    },
-    {
-      "id": "COW-003",
-      "title": "Observe Floor Wage and Wage Revision Requirements",
-      "description": "Ensure that minimum wage rates fixed by the appropriate government are not below the applicable floor wage and update payroll promptly when wage rates or cost-of-living components are revised.",
-      "category": "Minimum Wages",
-      "priority": "Mandatory",
-      "applicability": {
-        "employeeCount": {
-          "min": 1,
-          "max": null
-        },
-        "entityTypes": [
-          "*"
-        ],
-        "industries": [
-          "*"
-        ],
-        "jurisdictions": [
-          "IN"
-        ],
-        "workerTypes": [
-          "*"
-        ],
-        "womenEmployees": "any",
-        "contractWorkers": "any",
-        "factory": "any",
-        "warehouse": "any",
-        "conditions": [],
-        "exclusions": []
-      },
-      "evidence": [
-        {
-          "sourceId": "INDIACODE",
-          "citation": {
-            "reference": "Code on Wages, 2019",
-            "section": "Sections 8 and 9",
-            "rule": "",
-            "page": "",
-            "excerpt": ""
-          },
-          "publishedAt": null,
-          "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
-        },
-        {
-          "sourceId": "MOL",
-          "citation": {
-            "reference": "Notifications issued under the Code on Wages, 2019",
             "section": "",
             "rule": "",
             "page": "",
@@ -253,7 +180,7 @@
       }
     },
     {
-      "id": "COW-004",
+      "id": "COW-003",
       "title": "Pay Wages Within the Prescribed Time",
       "description": "Fix a permitted wage period and pay wages within the statutory timeline applicable to daily, weekly, fortnightly or monthly employees and when employment ends.",
       "category": "Payroll",
@@ -300,7 +227,7 @@
           "sourceId": "COW-RULES-2026",
           "citation": {
             "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Payment-of-wages provisions",
+            "section": "",
             "rule": "",
             "page": "",
             "excerpt": ""
@@ -320,10 +247,10 @@
       }
     },
     {
-      "id": "COW-005",
-      "title": "Control Wage Deductions",
-      "description": "Make only deductions authorised by the Code, observe applicable limits and procedural safeguards, and retain records supporting every deduction, fine, absence deduction, damage recovery, loan recovery or other adjustment.",
-      "category": "Payroll",
+      "id": "COW-004",
+      "title": "Maintain Wage and Deduction Registers",
+      "description": "Maintain prescribed records of employees, attendance, wages, overtime, deductions, fines, bonus and payments in the permitted physical or electronic form.",
+      "category": "Documentation",
       "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
@@ -354,7 +281,7 @@
           "sourceId": "INDIACODE",
           "citation": {
             "reference": "Code on Wages, 2019",
-            "section": "Chapter III",
+            "section": "Section 50",
             "rule": "",
             "page": "",
             "excerpt": ""
@@ -367,7 +294,74 @@
           "sourceId": "COW-RULES-2026",
           "citation": {
             "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Deduction provisions",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "COW-005",
+      "title": "Issue Wage Slips",
+      "description": "Issue wage slips containing the prescribed particulars within the applicable timeline and retain evidence of delivery.",
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Wages, 2019",
+            "section": "Section 50",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "COW-RULES-2026",
+          "citation": {
+            "reference": "Code on Wages (Central) Rules, 2026",
+            "section": "",
             "rule": "",
             "page": "",
             "excerpt": ""
@@ -389,7 +383,7 @@
     {
       "id": "COW-006",
       "title": "Prevent Gender-Based Wage Discrimination",
-      "description": "Do not discriminate on the ground of gender in wages or recruitment for the same work or work of a similar nature, except where employment restrictions are authorised by law.",
+      "description": "Do not discriminate on the ground of gender in wages or recruitment for the same work or work of a similar nature, except where a restriction is authorised by law.",
       "category": "Equal Remuneration",
       "priority": "Mandatory",
       "applicability": {
@@ -429,6 +423,19 @@
           "publishedAt": null,
           "accessedAt": "2026-07-20",
           "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "COW-RULES-2026",
+          "citation": {
+            "reference": "Code on Wages (Central) Rules, 2026",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
@@ -443,7 +450,7 @@
     {
       "id": "COW-007",
       "title": "Calculate and Pay Statutory Bonus",
-      "description": "Where the statutory bonus chapter applies, identify eligible employees, calculate allocable surplus and bonus under the Code, apply the prescribed minimum and maximum framework, and pay within the applicable timeline.",
+      "description": "Where the bonus chapter applies, identify eligible employees, calculate bonus under the statutory framework, maintain calculation records and pay within the applicable timeline.",
       "category": "Bonus",
       "priority": "Mandatory",
       "applicability": {
@@ -494,8 +501,8 @@
           "sourceId": "COW-RULES-2026",
           "citation": {
             "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Bonus provisions",
-            "rule": "",
+            "section": "",
+            "rule": "Bonus provisions",
             "page": "",
             "excerpt": ""
           },
@@ -516,7 +523,7 @@
     {
       "id": "COW-008",
       "title": "Pay Overtime at the Applicable Rate",
-      "description": "Where an employee works beyond the prescribed normal working day or hours, calculate and pay overtime at the rate required by the Code, applicable rules and the relevant employment notification.",
+      "description": "Where an employee works beyond the prescribed normal working day or hours, calculate and pay overtime at the rate required by the Code, applicable rules and employment notification.",
       "category": "Overtime",
       "priority": "Mandatory",
       "applicability": {
@@ -567,8 +574,8 @@
           "sourceId": "COW-RULES-2026",
           "citation": {
             "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Working-day and overtime provisions",
-            "rule": "",
+            "section": "",
+            "rule": "Working-day and overtime provisions",
             "page": "",
             "excerpt": ""
           },
@@ -588,142 +595,8 @@
     },
     {
       "id": "COW-009",
-      "title": "Issue Wage Slips and Maintain Wage Records",
-      "description": "Issue wage slips and maintain the prescribed employee, attendance, wage, overtime, deduction, fine, bonus and payment records and returns in the permitted physical or electronic form.",
-      "category": "Documentation",
-      "priority": "Mandatory",
-      "applicability": {
-        "employeeCount": {
-          "min": 1,
-          "max": null
-        },
-        "entityTypes": [
-          "*"
-        ],
-        "industries": [
-          "*"
-        ],
-        "jurisdictions": [
-          "IN"
-        ],
-        "workerTypes": [
-          "*"
-        ],
-        "womenEmployees": "any",
-        "contractWorkers": "any",
-        "factory": "any",
-        "warehouse": "any",
-        "conditions": [],
-        "exclusions": []
-      },
-      "evidence": [
-        {
-          "sourceId": "INDIACODE",
-          "citation": {
-            "reference": "Code on Wages, 2019",
-            "section": "Section 50",
-            "rule": "",
-            "page": "",
-            "excerpt": ""
-          },
-          "publishedAt": null,
-          "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
-        },
-        {
-          "sourceId": "COW-RULES-2026",
-          "citation": {
-            "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Registers, wage slips and returns",
-            "rule": "",
-            "page": "",
-            "excerpt": ""
-          },
-          "publishedAt": null,
-          "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
-        }
-      ],
-      "temporal": {
-        "effectiveFrom": "2025-11-21",
-        "effectiveTo": null,
-        "lastVerified": "2026-07-20",
-        "nextReviewDue": "2026-08-19",
-        "supersedes": [],
-        "supersededBy": []
-      }
-    },
-    {
-      "id": "COW-010",
-      "title": "Respond to Claims, Inspection and Recovery Proceedings",
-      "description": "Cooperate with Inspector-cum-Facilitators, preserve evidence supporting wage calculations and payments, respond to claims and orders within prescribed periods, and pay amounts directed by the competent authority or appellate authority.",
-      "category": "Enforcement",
-      "priority": "Mandatory",
-      "applicability": {
-        "employeeCount": {
-          "min": 1,
-          "max": null
-        },
-        "entityTypes": [
-          "*"
-        ],
-        "industries": [
-          "*"
-        ],
-        "jurisdictions": [
-          "IN"
-        ],
-        "workerTypes": [
-          "*"
-        ],
-        "womenEmployees": "any",
-        "contractWorkers": "any",
-        "factory": "any",
-        "warehouse": "any",
-        "conditions": [],
-        "exclusions": []
-      },
-      "evidence": [
-        {
-          "sourceId": "INDIACODE",
-          "citation": {
-            "reference": "Code on Wages, 2019",
-            "section": "Chapters VI to VIII",
-            "rule": "",
-            "page": "",
-            "excerpt": ""
-          },
-          "publishedAt": null,
-          "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
-        },
-        {
-          "sourceId": "COW-RULES-2026",
-          "citation": {
-            "reference": "Code on Wages (Central) Rules, 2026",
-            "section": "Claims, appeal and inspection provisions",
-            "rule": "",
-            "page": "",
-            "excerpt": ""
-          },
-          "publishedAt": null,
-          "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
-        }
-      ],
-      "temporal": {
-        "effectiveFrom": "2025-11-21",
-        "effectiveTo": null,
-        "lastVerified": "2026-07-20",
-        "nextReviewDue": "2026-08-19",
-        "supersedes": [],
-        "supersededBy": []
-      }
-    },
-    {
-      "id": "COW-011",
       "title": "Apply Repeal and Savings Requirements",
-      "description": "Treat the Payment of Wages Act, 1936, Minimum Wages Act, 1948, Payment of Bonus Act, 1965 and Equal Remuneration Act, 1976 as repealed, while preserving prior notifications, orders, wage rates, liabilities, claims and proceedings to the extent saved by section 69.",
+      "description": "Treat the Payment of Wages Act, 1936, Minimum Wages Act, 1948, Payment of Bonus Act, 1965 and Equal Remuneration Act, 1976 as repealed, while preserving prior notifications, orders, wage rates, liabilities, claims and proceedings only to the extent saved by section 69.",
       "category": "Legal Transition",
       "priority": "Mandatory",
       "applicability": {
@@ -779,29 +652,12 @@
     {
       "id": "COW-EX-001",
       "title": "Appropriate Government Rules and Notifications",
-      "description": "Minimum wage rates, forms, authorities and procedural requirements depend on whether the Central Government or a State or Union Territory is the appropriate government."
+      "description": "Minimum wage rates, forms, authorities and procedures depend on whether the Central Government or a State or Union Territory is the appropriate government."
     },
     {
       "id": "COW-EX-002",
       "title": "Saved Legacy Instruments",
-      "description": "Notifications, orders, wage rates and other actions under the repealed wage enactments continue only to the extent preserved by section 69 and until replaced or repealed under the Code."
-    }
-  ],
-  "recommendations": [
-    {
-      "id": "COW-REC-001",
-      "title": "Maintain a Wage Component Mapping",
-      "description": "Map every payroll component against the statutory wage definition and retain the calculation supporting any required adjustment."
-    },
-    {
-      "id": "COW-REC-002",
-      "title": "Track Wage Notifications by Location",
-      "description": "Maintain a location and employment-category register of current minimum wage, variable dearness allowance and floor-wage notifications."
-    },
-    {
-      "id": "COW-REC-003",
-      "title": "Review Payroll Controls Monthly",
-      "description": "Reconcile wage periods, payment dates, overtime, deductions, bonus eligibility, wage slips and statutory registers each month."
+      "description": "Notifications, orders, wage rates and actions under repealed wage enactments continue only to the extent preserved by section 69 and until lawfully replaced or repealed."
     }
   ],
   "sources": [
@@ -842,6 +698,23 @@
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Updated the Code on Wages record for commencement on 21 November 2025, the Code on Wages (Central) Rules, 2026, appropriate-government implementation, statutory bonus, wage equality, records, claims and repeal-and-savings transition."
-  }
+    "changeSummary": "Updated the Code on Wages record for commencement on 21 November 2025, the 2026 Central Rules, statutory bonus, overtime, appropriate-government implementation and repeal-and-savings transition."
+  },
+  "recommendations": [
+    {
+      "id": "COW-REC-001",
+      "title": "Maintain a Wage Component Mapping",
+      "description": "Map each payroll component against the statutory wage definition and retain the supporting calculation."
+    },
+    {
+      "id": "COW-REC-002",
+      "title": "Track Wage Notifications by Location",
+      "description": "Maintain a register of current minimum-wage and variable-dearness-allowance notifications by location, employment and skill category."
+    },
+    {
+      "id": "COW-REC-003",
+      "title": "Review Payroll Controls Monthly",
+      "description": "Reconcile wage periods, payment dates, overtime, deductions, bonus eligibility, wage slips and statutory registers each month."
+    }
+  ]
 }
