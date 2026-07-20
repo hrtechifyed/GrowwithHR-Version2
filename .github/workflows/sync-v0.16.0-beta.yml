@@ -1,0 +1,127 @@
+name: Synchronize v0.16.0-beta
+
+on:
+  push:
+    branches:
+      - "release/v0.16.0-beta"
+    paths:
+      - ".github/workflows/sync-v0.16.0-beta.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: synchronize-v0.16.0-beta
+  cancel-in-progress: false
+
+jobs:
+  synchronize-and-validate:
+    name: Synchronize and validate v0.16.0-beta
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: release/v0.16.0-beta
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install project dependencies
+        run: npm install --package-lock=false --no-audit --no-fund
+
+      - name: Verify canonical version
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(node -p "require('./package.json').version")" = "0.16.0-beta"
+
+      - name: Synchronize governed version metadata
+        run: npm run version:sync
+
+      - name: Align maintained release assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node <<'NODE'
+          const fs = require("node:fs");
+
+          const replacements = [
+              {
+                  path: "tests/requirements-static-check.js",
+                  from: "GrowWithHR Public 0.15.1-beta",
+                  to: "GrowWithHR Public 0.16.0-beta"
+              },
+              {
+                  path: "tests/requirements-static-check.js",
+                  from: "must display the M0 baseline version.",
+                  to: "must display the current release version."
+              }
+          ];
+
+          for (const replacement of replacements) {
+              const source = fs.readFileSync(replacement.path, "utf8");
+
+              if (!source.includes(replacement.from)) {
+                  throw new Error(
+                      `Expected text was not found in ${replacement.path}: ${replacement.from}`
+                  );
+              }
+
+              fs.writeFileSync(
+                  replacement.path,
+                  source.replace(replacement.from, replacement.to),
+                  "utf8"
+              );
+          }
+          NODE
+
+      - name: Validate release contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run version:check
+          npm run validate:compliance
+          npm test
+          git diff --check
+
+      - name: Install Playwright test package
+        run: npm install --no-save --package-lock=false --no-audit --no-fund @playwright/test
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate stable and private-beta browser routes
+        run: >
+          npx playwright test
+          tests/e2e/executive-assessment-modules.spec.ts
+          tests/e2e/analyze-company-current.spec.ts
+          tests/e2e/analyze-company-v3.spec.ts
+          tests/e2e/analyze-company-v3-traceability.spec.ts
+          --project=chromium
+
+      - name: Commit synchronized release cut
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm ".github/workflows/sync-v0.16.0-beta.yml"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add --all
+
+          if git diff --cached --quiet; then
+            echo "No synchronized changes were produced."
+            exit 1
+          fi
+
+          git commit -m "release: synchronize v0.16.0-beta metadata"
+          git push origin HEAD:release/v0.16.0-beta
