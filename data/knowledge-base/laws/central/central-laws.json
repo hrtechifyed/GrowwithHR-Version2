@@ -1,21 +1,735 @@
 {
-  "version": "1.0",
-  "lastVerified": "2026-07-05",
-  "country": "India",
-  "status": "Active",
-  "rules": [],
-  "references": [
+  "schemaVersion": "1.0",
+  "recordVersion": "2.0.0",
+  "id": "CENTRAL-LABOUR-FRAMEWORK",
+  "name": "Central Labour and Employment Law Framework",
+  "shortName": "Central Labour Framework",
+  "officialCitation": "Four Labour Codes effective from 21 November 2025, together with continuing standalone central employment legislation.",
+  "overview": "Umbrella record for the principal central labour and employment laws applicable across India. The four Labour Codes form the primary framework from 21 November 2025, while specified standalone enactments continue to operate outside those Codes. Detailed applicability remains subject to the relevant Code or Act, employee and worker thresholds, industry, establishment type, the appropriate government, and applicable Central or State rules and notifications.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "central",
+    "code": "IN",
+    "stateCode": null
+  },
+  "authority": {
+    "name": "Ministry of Labour & Employment, Government of India",
+    "department": "Government of India",
+    "sourceId": "MOL"
+  },
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
+    "supersedes": [],
+    "supersededBy": []
+  },
+  "rules": [
     {
-      "sourceId": "MOL"
+      "id": "CENTRAL-001",
+      "title": "Apply the Code on Wages, 2019",
+      "description": "Apply the Code on Wages, 2019 and the applicable rules and notifications governing minimum wages, timely payment of wages, bonus, equal remuneration and related wage records. Provision-specific coverage, wage ceilings and calculation rules must be assessed for each worker category and establishment.",
+      "category": "Wages",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Implementation of Code on Wages, 2019; Code on Wages (Central) Rules, 2026",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Code on Wages, 2019 (Act 29 of 2019)",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
     {
-      "sourceId": "EPFO"
+      "id": "CENTRAL-002",
+      "title": "Apply the Industrial Relations Code, 2020",
+      "description": "Apply the Industrial Relations Code, 2020, the Industrial Relations (Central) Rules, 2026, the Industrial Relations Code (Amendment) Act, 2026 and applicable notifications governing trade unions, grievance redressal, standing orders, industrial disputes, strikes and lock-outs, lay-off, retrenchment, closure and worker reskilling. Provision-specific thresholds must be assessed before determining an obligation.",
+      "category": "Industrial Relations",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Implementation of Industrial Relations Code, 2020; Industrial Relations (Central) Rules, 2026; Industrial Relations Code (Amendment) Act, 2026",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Industrial Relations Code, 2020 (Act 35 of 2020)",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
     {
-      "sourceId": "ESIC"
+      "id": "CENTRAL-003",
+      "title": "Apply the Code on Social Security, 2020",
+      "description": "Apply the Code on Social Security, 2020 and applicable rules, schemes and notifications governing provident fund, employee state insurance, gratuity, maternity benefit, employee compensation, building and construction worker cess and welfare, employment information, and social security for unorganised, gig and platform workers. Scheme-specific coverage thresholds and contribution rules must be assessed separately.",
+      "category": "Social Security",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Implementation of Social Security Code, 2020; Social Security (Central) Rules, 2026",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Code on Social Security, 2020 (Act 36 of 2020)",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "EPFO",
+          "citation": {
+            "reference": "Employees' Provident Fund Organisation compliance guidance and schemes",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "ESIC",
+          "citation": {
+            "reference": "Employees' State Insurance Corporation compliance guidance and benefits",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
     {
-      "sourceId": "INDIACODE"
+      "id": "CENTRAL-004",
+      "title": "Apply the Occupational Safety, Health and Working Conditions Code, 2020",
+      "description": "Apply the Occupational Safety, Health and Working Conditions Code, 2020 and applicable rules, standards and notifications governing establishment registration, appointment letters, employer duties, occupational safety and health, welfare facilities, working hours and leave, contract labour, inter-State migrant workers and sector-specific working conditions. Thresholds and hazardous-occupation rules must be assessed for each establishment.",
+      "category": "Occupational Safety and Working Conditions",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Implementation of Occupational Safety, Health and Working Conditions Code, 2020; Occupational Safety, Health and Working Conditions (Central) Rules, 2026",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Occupational Safety, Health and Working Conditions Code, 2020 (Act 37 of 2020)",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "CENTRAL-005",
+      "title": "Prevent Sexual Harassment at the Workplace",
+      "description": "Comply with the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, including prevention measures, policy and awareness requirements, complaint handling, confidentiality, reporting, and constitution of an Internal Committee where the statutory employee threshold is met.",
+      "category": "Workplace Conduct",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 and Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "CENTRAL-006",
+      "title": "Prevent Prohibited Child and Adolescent Labour",
+      "description": "Comply with the Child and Adolescent Labour (Prohibition and Regulation) Act, 1986 and applicable rules by preventing prohibited employment of children and prohibited hazardous work by adolescents, verifying age where required, and maintaining any prescribed notices and records.",
+      "category": "Child Labour",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Child and Adolescent Labour (Prohibition and Regulation) Act, 1986 and applicable rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Child and Adolescent Labour (Prohibition and Regulation) Act, 1986",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "CENTRAL-007",
+      "title": "Assess and Comply with Apprentices Act Obligations",
+      "description": "Where the Apprentices Act, 1961 applies, comply with apprentice engagement, contract registration, training, stipend, working conditions, records and reporting requirements under the Act, rules and applicable apprenticeship schemes.",
+      "category": "Apprenticeship",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "apprentices"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "apprenticesActApplicability",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Apprentices Act, 1961 and applicable rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "CENTRAL-008",
+      "title": "Prohibit Bonded Labour",
+      "description": "Comply with the Bonded Labour System (Abolition) Act, 1976 by ensuring that no worker is engaged through bonded labour, bonded debt, coercive labour arrangements or related prohibited practices.",
+      "category": "Forced Labour",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "The Bonded Labour System (Abolition) Act, 1976",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "The Bonded Labour System (Abolition) Act, 1976",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "CENTRAL-009",
+      "title": "Determine the Appropriate Government and Applicable Rules",
+      "description": "For every establishment and workforce category, determine whether the Central Government or a State or Union Territory is the appropriate government, then apply the corresponding rules, notifications, wage rates, forms, registrations, licences and enforcement requirements. Central rules must not be treated as replacing applicable State or Union Territory rules where another appropriate government has jurisdiction.",
+      "category": "Applicability and Governance",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Labour Codes, Central Rules, implementation notifications and employer compliance guidance",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Commencement, appropriate government and rule-making provisions under the four Labour Codes",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-  ]
+  ],
+  "recommendations": [
+    {
+      "id": "CENTRAL-REC-001",
+      "title": "Create Missing Labour Code Records",
+      "description": "Add dedicated Industrial Relations Code and Social Security Code records using the compliance-law schema, including the 2026 Central Rules and current implementation notifications."
+    },
+    {
+      "id": "CENTRAL-REC-002",
+      "title": "Transition Subsumed Legacy Records",
+      "description": "Retain the former central Act records for historical traceability, but change their status and temporal links to show that their subject matter has been subsumed into the applicable Labour Code from 21 November 2025."
+    },
+    {
+      "id": "CENTRAL-REC-003",
+      "title": "Preserve Standalone Central Acts",
+      "description": "Keep separate active records for POSH, child and adolescent labour, apprentices and bonded labour because they are outside the four-Code consolidation."
+    },
+    {
+      "id": "CENTRAL-REC-004",
+      "title": "Review Central and State Rules Monthly",
+      "description": "Review Ministry, EPFO, ESIC, India Code and State or Union Territory notifications monthly while the post-implementation rules and enforcement framework continues to develop."
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment, Government of India",
+      "publishedAt": null,
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
+      "publishedAt": null,
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "EPFO",
+      "name": "Employees' Provident Fund Organisation",
+      "sourceType": "official_portal",
+      "url": "https://www.epfindia.gov.in",
+      "authority": "Employees' Provident Fund Organisation",
+      "publishedAt": null,
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "ESIC",
+      "name": "Employees' State Insurance Corporation",
+      "sourceType": "official_portal",
+      "url": "https://www.esic.gov.in",
+      "authority": "Employees' State Insurance Corporation",
+      "publishedAt": null,
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "MWCD",
+      "name": "Ministry of Women and Child Development",
+      "sourceType": "official_portal",
+      "url": "https://wcd.gov.in",
+      "authority": "Ministry of Women and Child Development, Government of India",
+      "publishedAt": null,
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    }
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 30,
+    "approvalStatus": "in_review",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Expanded the empty central-law index into an active umbrella framework reflecting the four Labour Codes effective from 21 November 2025, the 2026 Central Rules, continuing standalone central employment laws, and the required transition of subsumed legacy records."
+  }
 }
