@@ -1,899 +1,601 @@
-import * as THREE from "three";
-
 /* ==========================================================
-   HRTECHIFY DESIGN SYSTEM
+   GrowWithHR
    Intelligence Core
-   Version : v2.0.0
+
+   Self-contained Canvas 2D renderer for the homepage Company
+   DNA graph. This module has no third-party or CDN dependency.
 ========================================================== */
 
-const container = document.getElementById("dnaCoreCanvas");
-window.GWHR_LOG?.("[GrowWithHR:LAYOUT]", { component: "intelligence-core", initialized: Boolean(container) });
-
-if(container){
-
-if (getComputedStyle(container).position === "static") {
-    container.style.position = "relative";
-}
-container.style.overflow = "visible";
-
-/* ==========================================================
-   SCENE
-========================================================== */
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-
-    45,
-
-    container.clientWidth /
-
-    container.clientHeight,
-
-    0.1,
-
-    1000
-
-);
-
-camera.position.z = 11;
-
-/* ==========================================================
-   RENDERER
-========================================================== */
-
-const renderer = new THREE.WebGLRenderer({
-
-    alpha:true,
-
-    antialias:true
-
-});
-
-renderer.setPixelRatio(
-
-    Math.min(window.devicePixelRatio || 1, 2)
-
-);
-
-renderer.setSize(
-
-    container.clientWidth,
-
-    container.clientHeight
-
-);
-
-container.appendChild(
-
-    renderer.domElement
-
-);
-
-/* ==========================================================
-   GROUP
-========================================================== */
-
-const group = new THREE.Group();
-
-scene.add(group);
-
-/* ==========================================================
-   COMPANY DNA MODEL
-========================================================== */
-
-const nodesData = [
-
-    { id:"growth", label:"Growth" },
-
-    { id:"leadership", label:"Leadership" },
-
-    { id:"organization", label:"Organization" },
-
-    { id:"workforce", label:"Workforce" },
-
-    { id:"learning", label:"Learning" },
-
-    { id:"compliance", label:"Compliance" },
-
-    { id:"customer", label:"Customer Success" },
-
-    { id:"rewards", label:"Rewards" },
-
-    { id:"performance", label:"Performance" },
-
-    { id:"culture", label:"Culture" }
-
-];
-   
-   
-/* ==========================================================
-   NODE GROUPS
-========================================================== */
-
-let activePillar="company";
-let activeStage = "startup";
-let activeRecommendation = "company";   
-const DEFAULT_PILLAR = "company";
-   
-const pillarGroups={
-
- company:[0,1,2],
-
-    people:[3,4],
-
-    operations:[5,7],
-
-    growth:[6,8,9]
-
-};
-
-/* ==========================================================
-   LABEL CONTAINER
-========================================================== */
-
-let labelContainer = document.getElementById("dnaLabels");
-
-if (labelContainer) {
-    labelContainer.remove();
-}
-
-labelContainer = document.createElement("div");
-labelContainer.id = "dnaLabels";
-labelContainer.style.position = "absolute";
-labelContainer.style.inset = "0";
-labelContainer.style.pointerEvents = "none";
-labelContainer.style.zIndex = "2";
-
-container.appendChild(labelContainer);
-
-   
-/* ==========================================================
-   GEOMETRY
-========================================================== */
-
-const NODE_RADIUS = 3.05;
-
-const sphereGeometry =
-
-new THREE.SphereGeometry(
-
-0.14,
-
-32,
-
-32
-
-);
-
-const nodes=[];
-
-const labels=[];
-
-/* ==========================================================
-   CREATE NODES
-========================================================== */
-
-nodesData.forEach((item,index)=>{
-
-const angle =
-
-(-Math.PI / 2) +
-
-(index * Math.PI * 2) /
-
-nodesData.length;
-
-const x =
-
-Math.cos(angle) *
-
-NODE_RADIUS;
-
-const y =
-
-Math.sin(angle) *
-
-NODE_RADIUS;
-
-const material=
-
-new THREE.MeshPhysicalMaterial({
-
-color:0xffb347,
-
-emissive:0xff8800,
-
-emissiveIntensity:1,
-
-roughness:.08,
-
-metalness:.25,
-
-transmission:.55,
-
-thickness:.7,
-
-clearcoat:1,
-
-clearcoatRoughness:0,
-
-transparent:true,
-
-opacity:.96
-
-});
-
-const sphere=
-
-new THREE.Mesh(
-
-sphereGeometry,
-
-material
-
-);
-
-sphere.position.set(
-
-x,
-
-y,
-
-0
-
-);
-
-group.add(sphere);
-
-nodes.push(sphere);
-
-/* ==========================================================
-   HTML LABEL
-========================================================== */
-
-const label=
-
-document.createElement("div");
-
-label.className="dna-label";
-
-label.innerText=item.label;
-
-label.style.position="absolute";
-
-label.style.pointerEvents="none";
-
-label.style.transform=
-
-"translate(-50%,-50%)";
-
-labelContainer.appendChild(label);
-
-labels.push(label);
-
-});
-
-/* ==========================================================
-   LIGHTS
-========================================================== */
-
-const ambient=
-
-new THREE.AmbientLight(
-
-0xffffff,
-
-0.75
-
-);
-
-scene.add(ambient);
-
-const orangeLight=
-
-new THREE.PointLight(
-
-0xffb347,
-
-4,
-
-50
-
-);
-
-orangeLight.position.set(
-
-0,
-
-0,
-
-6
-
-);
-
-scene.add(
-
-orangeLight
-
-);
-
-const blueLight=
-
-new THREE.PointLight(
-
-0x2563eb,
-
-2,
-
-50
-
-);
-
-blueLight.position.set(
-
--4,
-
-2,
-
-5
-
-);
-
-scene.add(
-
-blueLight
-
-);
-
-/* ==========================================================
-   CONNECTION DATA
-========================================================== */
-
-const links=[];
-
-for(
-
-let i=0;
-
-i<nodes.length;
-
-i++
-
-){
-
-for(
-
-let j=i+1;
-
-j<nodes.length;
-
-j++
-
-){
-
-links.push([i,j]);
-
-}
-
-}
-    /* ==========================================================
-   CONNECTION LINES
-========================================================== */
-
-const lineMaterial = new THREE.LineBasicMaterial({
-
-    color:0x63b3ff,
-
-    transparent:true,
-
-    opacity:.38
-
-});
-
-const lines=[];
-
-links.forEach(link=>{
-
-    const geometry=new THREE.BufferGeometry()
-
-    .setFromPoints([
-
-        nodes[link[0]].position,
-
-        nodes[link[1]].position
-
+(() => {
+    "use strict";
+
+    const container = document.getElementById("dnaCoreCanvas");
+
+    window.GWHR_LOG?.("[GrowWithHR:LAYOUT]", {
+        component: "intelligence-core",
+        initialized: Boolean(container),
+        renderer: "canvas-2d"
+    });
+
+    if (!container) {
+        return;
+    }
+
+    window.GrowWithHRIntelligenceCore?.destroy?.();
+
+    const NODES = Object.freeze([
+        { id: "growth", label: "Growth" },
+        { id: "leadership", label: "Leadership" },
+        { id: "organization", label: "Organization" },
+        { id: "workforce", label: "Workforce" },
+        { id: "learning", label: "Learning" },
+        { id: "compliance", label: "Compliance" },
+        { id: "customer", label: "Customer Success" },
+        { id: "rewards", label: "Rewards" },
+        { id: "performance", label: "Performance" },
+        { id: "culture", label: "Culture" }
     ]);
 
-    const line=new THREE.Line(
-
-        geometry,
-
-        lineMaterial.clone()
-
-    );
-
-    group.add(line);
-
-    lines.push(line);
-
-});
-
-/* ==========================================================
-   INTELLIGENCE FLOW
-========================================================== */
-
-const flowGeometry=
-
-new THREE.SphereGeometry(
-
-0.045,
-
-16,
-
-16
-
-);
-
-const flowParticles=[];
-
-links.forEach((link,index)=>{
-
-const particle=
-
-new THREE.Mesh(
-
-flowGeometry,
-
-new THREE.MeshBasicMaterial({
-
-color:0xffffff,
-
-transparent:true,
-
-opacity:.92
-
-})
-
-);
-
-particle.userData={
-
-start:link[0],
-
-end:link[1],
-
-offset:Math.random(),
-
-speed:
-
-0.15+
-
-Math.random()*0.18
-
-};
-
-group.add(particle);
-
-flowParticles.push(particle);
-
-});
-
-/* ==========================================================
-   COMPANY DNA EVENTS
-========================================================== */
-
-document.addEventListener(
-
-"dnaChange",
-
-event=>{
-
-activePillar=
-
-event.detail.pillar;
-
-}
-
-);
-
-document.addEventListener(
-
-    "growthStageChange",
-
-    event=>{
-
-        activeStage = event.detail.stage;
-
-    }
-
-);   
-
-document.addEventListener(
-
-    "recommendationChange",
-
-    event=>{
-
-        activeRecommendation = event.detail.recommendation;
-
-    }
-
-);
-   
-/* ==========================================================
-   NODE HIGHLIGHT
-========================================================== */
-
-function updateNodeHighlight(){
-
-
-const activeNodes =
-pillarGroups[activePillar] ??
-pillarGroups[DEFAULT_PILLAR];
-   
-
-nodes.forEach((node,index)=>{
-
-const material=node.material;
-
-const target=
-
-activeNodes.includes(index)
-
-?2.2
-
-:0.7;
-
-material.emissiveIntensity=
-
-THREE.MathUtils.lerp(
-
-material.emissiveIntensity,
-
-target,
-
-0.08
-
-);
-
-});
-
-}
-
-/* ==========================================================
-   LINE HIGHLIGHT
-========================================================== */
-
-function updateLines(){
-
-const activeNodes =
-pillarGroups[activePillar] ??
-pillarGroups[DEFAULT_PILLAR];
-
-lines.forEach((line,index)=>{
-
-const a=links[index][0];
-
-const b=links[index][1];
-
-const active=
-
-activeNodes.includes(a)||
-
-activeNodes.includes(b);
-
-line.material.opacity=
-
-THREE.MathUtils.lerp(
-
-line.material.opacity,
-
-active?.95:.18,
-
-.08
-
-);
-
-line.material.color.set(
-
-active
-
-?0xffb347
-
-:0x63b3ff
-
-);
-
-});
-
-}
-
-/* ==========================================================
-   FLOW PARTICLES
-========================================================== */
-
-function updateParticles(time){
-
-const activeNodes =
-pillarGroups[activePillar] ??
-pillarGroups[DEFAULT_PILLAR];
-
-flowParticles.forEach(particle=>{
-
-const start=
-
-nodes[particle.userData.start];
-
-const end=
-
-nodes[particle.userData.end];
-
-const t=(
-
-time*
-
-particle.userData.speed+
-
-particle.userData.offset
-
-)%1;
-
-particle.position.lerpVectors(
-
-start.position,
-
-end.position,
-
-t
-
-);
-
-const active=
-
-activeNodes.includes(
-
-particle.userData.start
-
-)||
-
-activeNodes.includes(
-
-particle.userData.end
-
-);
-
-particle.material.color.set(
-
-active
-
-?0xffd27a
-
-:0xffffff
-
-);
-
-particle.material.opacity=
-
-active?.95:.45;
-
-});
-
-}
-
-/* ==========================================================
-   LABEL POSITIONING
-========================================================== */
-
-function updateLabels(){
-
-    nodes.forEach((node,index)=>{
-
-        const world = node.getWorldPosition(
-
-            new THREE.Vector3()
-
-        );
-
-        const direction = world.clone().normalize();
-
-        // push labels further out from the ring so they clear the lines/nodes
-        world.add(
-            direction.multiplyScalar(0.55)
-        );
-
-        world.project(camera);
-
-        const left = (world.x + 1) * 0.5 * container.clientWidth;
-        const top  = (-world.y + 1) * 0.5 * container.clientHeight;
-
-        labels[index].style.left = left + "px";
-        labels[index].style.top  = top + "px";
-
-        // anchor text away from the circle based on which side it's on,
-        // instead of always centering on the point
-        const dx = direction.x;
-        const dy = direction.y;
-
-        let translateX = "-50%";
-        let translateY = "-50%";
-
-        if (dx > 0.35) translateX = "0%";        // right side -> anchor left edge
-        else if (dx < -0.35) translateX = "-100%"; // left side -> anchor right edge
-
-        if (dy > 0.35) translateY = "-100%";      // top -> anchor bottom edge
-        else if (dy < -0.35) translateY = "0%";   // bottom -> anchor top edge
-
-        labels[index].style.transform =
-            `translate(${translateX}, ${translateY})`;
-
+    const PILLARS = Object.freeze({
+        company: Object.freeze([0, 1, 2]),
+        people: Object.freeze([3, 4]),
+        operations: Object.freeze([5, 7]),
+        growth: Object.freeze([6, 8, 9])
     });
 
-}
-   
-/* ==========================================================
-   GRAPH PULSE
-========================================================== */
-
-function updateNodes(time){
-
-    nodes.forEach((node,index)=>{
-
-        const pulse =
-
-            1 +
-
-            Math.sin(
-
-                time*2 +
-
-                index
-
-            ) * 0.05;
-
-        node.scale.set(
-
-            pulse,
-
-            pulse,
-
-            pulse
-
-        );
-
+    const STAGES = Object.freeze({
+        startup: { orbit: 0.92, speed: 0.82 },
+        growth: { orbit: 0.98, speed: 1 },
+        scaling: { orbit: 1.03, speed: 1.16 },
+        enterprise: { orbit: 1.08, speed: 1.28 }
     });
 
-}
+    const RECOMMENDATIONS = Object.freeze({
+        company: { active: "#ffb347", secondary: "#63b3ff" },
+        stage: { active: "#ffd27a", secondary: "#7dd3fc" },
+        laws: { active: "#ff9f43", secondary: "#60a5fa" },
+        updates: { active: "#fbbf24", secondary: "#93c5fd" }
+    });
 
-/* ==========================================================
-   LIGHT ANIMATION
-========================================================== */
+    const state = {
+        pillar: "company",
+        stage: "startup",
+        recommendation: "company",
+        width: 0,
+        height: 0,
+        pixelRatio: 1,
+        elapsed: 0,
+        lastTimestamp: 0,
+        running: false,
+        visible: true,
+        destroyed: false,
+        animationFrame: 0,
+        resizeFrame: 0
+    };
 
-function updateLights(time){
-
-    orangeLight.intensity =
-
-        3.8 +
-
-        Math.sin(
-
-            time*2
-
-        ) * 0.35;
-
-    blueLight.intensity =
-
-        2 +
-
-        Math.cos(
-
-            time*1.6
-
-        ) * 0.25;
-
-}
-
-/* ==========================================================
-   GRAPH CENTERING
-========================================================== */
-
-const bounds = new THREE.Box3()
-
-.setFromObject(group);
-
-const center = bounds.getCenter(
-
-    new THREE.Vector3()
-
-);
-
-group.position.sub(center);
-group.position.y += 0.25;
-
-/* ==========================================================
-   ANIMATION LOOP
-========================================================== */
-
-const clock = new THREE.Clock();
-
-function animate(){
-
-    requestAnimationFrame(
-
-        animate
-
+    const motionQuery = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
     );
+    let reducedMotion = motionQuery.matches;
 
-    const time =
+    if (getComputedStyle(container).position === "static") {
+        container.style.position = "relative";
+    }
 
-        clock.getElapsedTime();
+    container.style.overflow = "visible";
+    container.dataset.renderer = "canvas-2d";
+    container.dataset.ready = "false";
+    container.removeAttribute("data-error");
 
-    updateNodes(
+    container
+        .querySelectorAll("canvas[data-growwithhr-intelligence-core]")
+        .forEach((element) => element.remove());
+    container.querySelector("#dnaLabels")?.remove();
 
-        time
+    const canvas = document.createElement("canvas");
+    canvas.dataset.growwithhrIntelligenceCore = "true";
+    canvas.className = "dna-core-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    Object.assign(canvas.style, {
+        position: "absolute",
+        inset: "0",
+        display: "block",
+        width: "100%",
+        height: "100%",
+        maxWidth: "100%",
+        pointerEvents: "none"
+    });
 
-    );
+    const context = canvas.getContext("2d", {
+        alpha: true,
+        desynchronized: true
+    });
 
-    updateNodeHighlight();
+    if (!context) {
+        container.dataset.error = "canvas-context-unavailable";
+        return;
+    }
 
-    updateLines();
+    const labelLayer = document.createElement("div");
+    labelLayer.id = "dnaLabels";
+    labelLayer.setAttribute("aria-hidden", "true");
+    Object.assign(labelLayer.style, {
+        position: "absolute",
+        inset: "0",
+        zIndex: "2",
+        overflow: "visible",
+        pointerEvents: "none"
+    });
 
-    updateParticles(
+    const labels = NODES.map((node) => {
+        const label = document.createElement("div");
+        label.className = "dna-label";
+        label.dataset.node = node.id;
+        label.textContent = node.label;
+        Object.assign(label.style, {
+            position: "absolute",
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+            willChange: "left, top, transform"
+        });
+        labelLayer.appendChild(label);
+        return label;
+    });
 
-        time
+    container.append(canvas, labelLayer);
 
-    );
+    const positions = NODES.map(() => ({ x: 0, y: 0 }));
+    const links = [];
 
-    updateLights(
+    for (let start = 0; start < NODES.length; start += 1) {
+        for (let end = start + 1; end < NODES.length; end += 1) {
+            links.push({
+                start,
+                end,
+                offset: (((start + 1) * 17 + (end + 1) * 29) % 100) / 100,
+                speed: 0.07 + (((start + 1) * 11 + (end + 1) * 7) % 12) / 100
+            });
+        }
+    }
 
-        time
+    function clamp(value, minimum, maximum) {
+        return Math.min(maximum, Math.max(minimum, value));
+    }
 
-    );
+    function rgba(hex, alpha) {
+        const cleaned = String(hex).replace("#", "").trim();
+        const expanded = cleaned.length === 3
+            ? cleaned.split("").map((character) => character + character).join("")
+            : cleaned;
+        const value = Number.parseInt(expanded, 16);
 
-    updateLabels();
+        if (!Number.isFinite(value)) {
+            return `rgba(255, 179, 71, ${alpha})`;
+        }
 
-    renderer.render(
+        return `rgba(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}, ${alpha})`;
+    }
 
-        scene,
+    function activeIndexes() {
+        return PILLARS[state.pillar] || PILLARS.company;
+    }
 
-        camera
+    function stageProfile() {
+        return STAGES[state.stage] || STAGES.startup;
+    }
 
-    );
+    function colours() {
+        return RECOMMENDATIONS[state.recommendation] || RECOMMENDATIONS.company;
+    }
 
-}
+    function eventValue(event, legacyKey) {
+        const detail = event?.detail || {};
+        return detail.value || detail[legacyKey] || "";
+    }
 
-animate();
+    function setState(key, value, allowedValues) {
+        if (!allowedValues.includes(value)) {
+            return;
+        }
 
-/* ==========================================================
-   RESIZE
-========================================================== */
+        state[key] = value;
+        draw(state.elapsed);
+    }
 
-let resizeTimer = null;
-function resizeGraph(){
-    const rect = container.getBoundingClientRect();
-    const width = Math.max(260, Math.floor(rect.width || container.clientWidth));
-    const height = Math.max(260, Math.floor(rect.height || container.clientHeight || width * 0.75));
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(width, height, false);
-    updateLabels();
-}
-function scheduleResize(){
-    window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(resizeGraph, 120);
-}
+    function handlePillar(event) {
+        setState("pillar", eventValue(event, "pillar"), Object.keys(PILLARS));
+    }
 
-if ("ResizeObserver" in window) {
-    new ResizeObserver(scheduleResize).observe(container);
-}
-window.addEventListener("resize", scheduleResize);
-window.addEventListener("orientationchange", scheduleResize);
+    function handleStage(event) {
+        setState("stage", eventValue(event, "stage"), Object.keys(STAGES));
+    }
 
-/* ==========================================================
-   INITIAL LABEL POSITION
-========================================================== */
+    function handleRecommendation(event) {
+        setState(
+            "recommendation",
+            eventValue(event, "recommendation"),
+            Object.keys(RECOMMENDATIONS)
+        );
+    }
 
-updateLabels();
+    function calculatePositions(elapsed) {
+        const minimum = Math.min(state.width, state.height);
+        const stage = stageProfile();
+        const radius = clamp(minimum * 0.285 * stage.orbit, 72, minimum * 0.34);
+        const centerX = state.width / 2;
+        const centerY = state.height / 2 + minimum * 0.015;
+        const rotation = reducedMotion ? 0 : elapsed * 0.035 * stage.speed;
 
-}
+        positions.forEach((position, index) => {
+            const angle = -Math.PI / 2 + rotation + index * Math.PI * 2 / NODES.length;
+            position.x = centerX + Math.cos(angle) * radius;
+            position.y = centerY + Math.sin(angle) * radius;
+        });
+
+        return { minimum, radius, centerX, centerY };
+    }
+
+    function drawBackground(metrics, elapsed) {
+        const palette = colours();
+        const pulse = reducedMotion ? 0.8 : 0.76 + Math.sin(elapsed * 1.2) * 0.08;
+        const glow = context.createRadialGradient(
+            metrics.centerX,
+            metrics.centerY,
+            0,
+            metrics.centerX,
+            metrics.centerY,
+            metrics.minimum * 0.48
+        );
+
+        glow.addColorStop(0, rgba(palette.active, 0.15 * pulse));
+        glow.addColorStop(0.48, rgba(palette.secondary, 0.06));
+        glow.addColorStop(1, "rgba(0, 0, 0, 0)");
+        context.fillStyle = glow;
+        context.fillRect(0, 0, state.width, state.height);
+
+        context.save();
+        context.translate(metrics.centerX, metrics.centerY);
+        context.strokeStyle = rgba(palette.secondary, 0.11);
+        context.lineWidth = 1;
+
+        for (let ring = 1; ring <= 3; ring += 1) {
+            context.beginPath();
+            context.arc(
+                0,
+                0,
+                metrics.radius * (0.36 + ring * 0.2),
+                0,
+                Math.PI * 2
+            );
+            context.stroke();
+        }
+
+        context.restore();
+    }
+
+    function drawConnections() {
+        const active = activeIndexes();
+        const palette = colours();
+
+        links.forEach((link) => {
+            const start = positions[link.start];
+            const end = positions[link.end];
+            const highlighted = active.includes(link.start) || active.includes(link.end);
+
+            context.beginPath();
+            context.moveTo(start.x, start.y);
+            context.lineTo(end.x, end.y);
+            context.strokeStyle = rgba(
+                highlighted ? palette.active : palette.secondary,
+                highlighted ? 0.54 : 0.15
+            );
+            context.lineWidth = highlighted ? 1.35 : 0.8;
+            context.stroke();
+        });
+    }
+
+    function drawParticles(elapsed) {
+        if (reducedMotion) {
+            return;
+        }
+
+        const active = activeIndexes();
+        const palette = colours();
+        const speedScale = stageProfile().speed;
+
+        links.forEach((link) => {
+            const start = positions[link.start];
+            const end = positions[link.end];
+            const progress = (elapsed * link.speed * speedScale + link.offset) % 1;
+            const highlighted = active.includes(link.start) || active.includes(link.end);
+            const x = start.x + (end.x - start.x) * progress;
+            const y = start.y + (end.y - start.y) * progress;
+
+            context.beginPath();
+            context.arc(x, y, highlighted ? 2.1 : 1.25, 0, Math.PI * 2);
+            context.fillStyle = rgba(
+                highlighted ? palette.active : "#ffffff",
+                highlighted ? 0.95 : 0.42
+            );
+            context.fill();
+        });
+    }
+
+    function drawCenter(metrics, elapsed) {
+        const palette = colours();
+        const pulse = reducedMotion ? 1 : 1 + Math.sin(elapsed * 1.8) * 0.045;
+        const radius = metrics.minimum * 0.084 * pulse;
+        const gradient = context.createRadialGradient(
+            metrics.centerX - radius * 0.22,
+            metrics.centerY - radius * 0.26,
+            radius * 0.08,
+            metrics.centerX,
+            metrics.centerY,
+            radius
+        );
+
+        gradient.addColorStop(0, "rgba(255, 255, 255, 0.98)");
+        gradient.addColorStop(0.2, rgba(palette.active, 0.98));
+        gradient.addColorStop(1, rgba(palette.secondary, 0.78));
+
+        context.save();
+        context.shadowColor = rgba(palette.active, 0.72);
+        context.shadowBlur = radius * 0.85;
+        context.beginPath();
+        context.arc(metrics.centerX, metrics.centerY, radius, 0, Math.PI * 2);
+        context.fillStyle = gradient;
+        context.fill();
+        context.restore();
+
+        context.beginPath();
+        context.arc(metrics.centerX, metrics.centerY, radius * 1.48, 0, Math.PI * 2);
+        context.strokeStyle = rgba(palette.active, 0.24);
+        context.lineWidth = 1.2;
+        context.stroke();
+    }
+
+    function drawNodes(metrics, elapsed) {
+        const active = activeIndexes();
+        const palette = colours();
+        const baseRadius = clamp(metrics.minimum * 0.018, 5.5, 10);
+
+        positions.forEach((position, index) => {
+            const highlighted = active.includes(index);
+            const pulse = reducedMotion ? 1 : 1 + Math.sin(elapsed * 2 + index) * 0.06;
+            const radius = baseRadius * pulse * (highlighted ? 1.2 : 0.94);
+            const gradient = context.createRadialGradient(
+                position.x - radius * 0.3,
+                position.y - radius * 0.3,
+                radius * 0.12,
+                position.x,
+                position.y,
+                radius
+            );
+
+            gradient.addColorStop(0, "rgba(255, 255, 255, 0.98)");
+            gradient.addColorStop(
+                0.34,
+                rgba(highlighted ? palette.active : palette.secondary, 0.98)
+            );
+            gradient.addColorStop(
+                1,
+                rgba(highlighted ? palette.active : palette.secondary, 0.48)
+            );
+
+            context.save();
+            context.shadowColor = rgba(
+                highlighted ? palette.active : palette.secondary,
+                highlighted ? 0.9 : 0.42
+            );
+            context.shadowBlur = highlighted ? radius * 2.4 : radius * 1.5;
+            context.beginPath();
+            context.arc(position.x, position.y, radius, 0, Math.PI * 2);
+            context.fillStyle = gradient;
+            context.fill();
+            context.restore();
+        });
+    }
+
+    function updateLabels(metrics) {
+        const active = activeIndexes();
+        const offset = clamp(metrics.minimum * 0.047, 18, 34);
+
+        positions.forEach((position, index) => {
+            const dx = position.x - metrics.centerX;
+            const dy = position.y - metrics.centerY;
+            const magnitude = Math.hypot(dx, dy) || 1;
+            const normalX = dx / magnitude;
+            const normalY = dy / magnitude;
+            const label = labels[index];
+            let translateX = "-50%";
+            let translateY = "-50%";
+
+            if (normalX > 0.35) translateX = "0%";
+            if (normalX < -0.35) translateX = "-100%";
+            if (normalY > 0.35) translateY = "0%";
+            if (normalY < -0.35) translateY = "-100%";
+
+            label.style.left = `${position.x + normalX * offset}px`;
+            label.style.top = `${position.y + normalY * offset}px`;
+            label.style.transform = `translate(${translateX}, ${translateY})`;
+            label.dataset.active = active.includes(index) ? "true" : "false";
+        });
+    }
+
+    function draw(elapsed = 0) {
+        if (state.destroyed || state.width <= 0 || state.height <= 0) {
+            return;
+        }
+
+        context.setTransform(state.pixelRatio, 0, 0, state.pixelRatio, 0, 0);
+        context.clearRect(0, 0, state.width, state.height);
+
+        const metrics = calculatePositions(elapsed);
+        drawBackground(metrics, elapsed);
+        drawConnections();
+        drawParticles(elapsed);
+        drawCenter(metrics, elapsed);
+        drawNodes(metrics, elapsed);
+        updateLabels(metrics);
+    }
+
+    function measure() {
+        if (state.destroyed) {
+            return;
+        }
+
+        const rect = container.getBoundingClientRect();
+        const width = Math.max(1, Math.round(rect.width || container.clientWidth || 520));
+        const height = Math.max(
+            1,
+            Math.round(rect.height || container.clientHeight || Math.max(260, width * 0.75))
+        );
+        const pixelRatio = clamp(window.devicePixelRatio || 1, 1, 2);
+
+        state.width = width;
+        state.height = height;
+        state.pixelRatio = pixelRatio;
+        canvas.width = Math.round(width * pixelRatio);
+        canvas.height = Math.round(height * pixelRatio);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        draw(state.elapsed);
+    }
+
+    function scheduleMeasure() {
+        window.cancelAnimationFrame(state.resizeFrame);
+        state.resizeFrame = window.requestAnimationFrame(measure);
+    }
+
+    function animate(timestamp) {
+        if (!state.running || state.destroyed) {
+            return;
+        }
+
+        if (!state.lastTimestamp) {
+            state.lastTimestamp = timestamp;
+        }
+
+        const delta = Math.min(0.05, Math.max(0, (timestamp - state.lastTimestamp) / 1000));
+        state.lastTimestamp = timestamp;
+
+        if (state.visible && !document.hidden) {
+            state.elapsed += delta;
+            draw(state.elapsed);
+        }
+
+        state.animationFrame = window.requestAnimationFrame(animate);
+    }
+
+    function start() {
+        if (state.destroyed || state.running || reducedMotion) {
+            draw(state.elapsed);
+            return;
+        }
+
+        state.running = true;
+        state.lastTimestamp = 0;
+        state.animationFrame = window.requestAnimationFrame(animate);
+    }
+
+    function stop() {
+        state.running = false;
+        state.lastTimestamp = 0;
+        window.cancelAnimationFrame(state.animationFrame);
+        state.animationFrame = 0;
+    }
+
+    function handleMotionChange(event) {
+        reducedMotion = event.matches;
+
+        if (reducedMotion) {
+            stop();
+            draw(state.elapsed);
+        } else {
+            start();
+        }
+    }
+
+    const resizeObserver = "ResizeObserver" in window
+        ? new ResizeObserver(scheduleMeasure)
+        : null;
+    const intersectionObserver = "IntersectionObserver" in window
+        ? new IntersectionObserver((entries) => {
+            state.visible = Boolean(entries[0]?.isIntersecting);
+            if (state.visible) draw(state.elapsed);
+        }, { rootMargin: "120px" })
+        : null;
+
+    function destroy() {
+        if (state.destroyed) {
+            return;
+        }
+
+        state.destroyed = true;
+        stop();
+        window.cancelAnimationFrame(state.resizeFrame);
+        resizeObserver?.disconnect();
+        intersectionObserver?.disconnect();
+        window.removeEventListener("resize", scheduleMeasure);
+        window.removeEventListener("orientationchange", scheduleMeasure);
+        document.removeEventListener("dnaChange", handlePillar);
+        document.removeEventListener("growthStageChange", handleStage);
+        document.removeEventListener("recommendationChange", handleRecommendation);
+
+        if (typeof motionQuery.removeEventListener === "function") {
+            motionQuery.removeEventListener("change", handleMotionChange);
+        } else {
+            motionQuery.removeListener(handleMotionChange);
+        }
+
+        canvas.remove();
+        labelLayer.remove();
+        container.dataset.ready = "false";
+    }
+
+    document.addEventListener("dnaChange", handlePillar);
+    document.addEventListener("growthStageChange", handleStage);
+    document.addEventListener("recommendationChange", handleRecommendation);
+    window.addEventListener("resize", scheduleMeasure, { passive: true });
+    window.addEventListener("orientationchange", scheduleMeasure, { passive: true });
+
+    if (typeof motionQuery.addEventListener === "function") {
+        motionQuery.addEventListener("change", handleMotionChange);
+    } else {
+        motionQuery.addListener(handleMotionChange);
+    }
+
+    resizeObserver?.observe(container);
+    intersectionObserver?.observe(container);
+    measure();
+    start();
+
+    container.dataset.ready = "true";
+
+    const controller = Object.freeze({
+        renderer: "canvas-2d",
+        ready: true,
+        render: () => draw(state.elapsed),
+        resize: scheduleMeasure,
+        destroy,
+        getState: () => ({
+            activePillar: state.pillar,
+            activeStage: state.stage,
+            activeRecommendation: state.recommendation,
+            width: state.width,
+            height: state.height,
+            reducedMotion,
+            running: state.running
+        })
+    });
+
+    window.GrowWithHRIntelligenceCore = controller;
+
+    document.dispatchEvent(new CustomEvent("growwithhr:intelligence-core-ready", {
+        detail: {
+            renderer: controller.renderer,
+            width: state.width,
+            height: state.height
+        }
+    }));
+})();
