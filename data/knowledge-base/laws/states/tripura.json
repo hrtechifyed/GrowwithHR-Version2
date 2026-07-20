@@ -1,176 +1,405 @@
 {
-  "stateId": "TR",
-  "stateName": "Tripura",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-TR",
+  "name": "Tripura Labour Laws",
+  "shortName": "Tripura",
+  "overview": "State-specific labour law requirements applicable to establishments operating in Tripura.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "state",
+    "code": "IN-TR",
+    "stateCode": "TR"
+  },
   "authority": {
-    "department": "Labour Department, Government of Tripura",
+    "name": "Labour Department, Government of Tripura",
     "sourceId": "TR-LABOUR"
   },
-
-  "overview": "State-specific labour law requirements applicable to establishments operating in Tripura.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "TR-001",
       "title": "Review Tripura Shops and Establishments Registration",
-      "priority": "Mandatory",
-      "category": "Shops & Establishments",
       "description": "Determine whether registration under the applicable Tripura Shops and Establishments legislation is required.",
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "TR-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Tripura Shops and Establishments legislation"
+          "sourceId": "TR-LABOUR",
+          "citation": {
+            "reference": "Applicable Tripura Shops and Establishments legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "TR-002",
       "title": "Maintain Statutory Registers and Employment Records",
-      "priority": "Mandatory",
-      "category": "Documentation",
       "description": "Maintain statutory registers, employee records and prescribed notices under Tripura labour legislation.",
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "TR-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Tripura Labour Rules"
+          "sourceId": "TR-LABOUR",
+          "citation": {
+            "reference": "Applicable Tripura Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "TR-003",
       "title": "Display Statutory Notices",
-      "priority": "Mandatory",
-      "category": "Documentation",
       "description": "Display statutory notices and employee information required under Tripura labour legislation.",
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "TR-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Tripura Labour Rules"
+          "sourceId": "TR-LABOUR",
+          "citation": {
+            "reference": "Applicable Tripura Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "TR-004",
       "title": "Review Working Hours, Overtime, Leave and Weekly Holidays",
-      "priority": "Mandatory",
-      "category": "Working Conditions",
       "description": "Ensure compliance with Tripura provisions governing working hours, overtime, leave and weekly holidays.",
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "TR-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Tripura Shops and Establishments Rules"
+          "sourceId": "TR-LABOUR",
+          "citation": {
+            "reference": "Applicable Tripura Shops and Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "TR-005",
       "title": "Review Minimum Wage Notifications",
-      "priority": "Mandatory",
-      "category": "Minimum Wages",
       "description": "Ensure employee wages comply with the latest minimum wage notifications applicable in Tripura.",
+      "category": "Minimum Wages",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "TR-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Government of Tripura Minimum Wage Notifications"
+          "sourceId": "TR-LABOUR",
+          "citation": {
+            "reference": "Government of Tripura Minimum Wage Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "TR-006",
       "title": "Monitor Tripura Labour Notifications",
-      "priority": "Mandatory",
-      "category": "State Notifications",
       "description": "Review labour department notifications, amendments, exemptions and compliance circulars issued by the Government of Tripura.",
+      "category": "State Notifications",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-        "entityTypes": ["*"],
-        "industries": ["*"]
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-TR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-      "sourceId": "TR-LABOUR",
-      "citations": [
+      "evidence": [
         {
-          "reference": "Government of Tripura Labour Notifications"
+          "sourceId": "TR-LABOUR",
+          "citation": {
+            "reference": "Government of Tripura Labour Notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "TRR-001",
       "title": "Annual Labour Compliance Audit",
       "description": "Conduct an annual audit covering statutory registrations, labour records, payroll compliance and inspection readiness."
     },
-
     {
       "id": "TRR-002",
       "title": "Digital Compliance Calendar",
       "description": "Maintain a digital calendar for statutory filings, inspections, licence renewals and labour compliance due dates."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "TR-LABOUR"
+      "sourceId": "TR-LABOUR",
+      "name": "Labour Department, Government of Tripura",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Labour Department, Government of Tripura",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Tripura labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
