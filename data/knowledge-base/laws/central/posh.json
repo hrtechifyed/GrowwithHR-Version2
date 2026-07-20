@@ -1,284 +1,408 @@
 {
-  "lawId": "CENTRAL-POSH",
-  "lawName": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "CENTRAL-POSH",
+  "name": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
   "shortName": "POSH Act",
-  "authority": "Ministry of Women and Child Development",
-  "sourceId": "MWCD",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "officialCitation": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
   "overview": "Provides protection against sexual harassment of women at the workplace and establishes mechanisms for prevention, prohibition and redressal.",
-
+  "jurisdiction": {
+    "country": "IN",
+    "level": "central",
+    "code": "IN",
+    "stateCode": null
+  },
+  "authority": {
+    "name": "Ministry of Women and Child Development",
+    "sourceId": "MWCD"
+  },
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "definitions": [
-
     {
       "id": "POSH-DEF-001",
       "term": "Aggrieved Woman",
       "definition": "A woman alleging sexual harassment at a workplace under the Act."
     },
-
     {
       "id": "POSH-DEF-002",
       "term": "Employer",
       "definition": "Person responsible for management, supervision and control of the workplace."
     },
-
     {
       "id": "POSH-DEF-003",
       "term": "Workplace",
       "definition": "Workplace as defined under the POSH Act."
     }
-
   ],
-
   "rules": [
-
     {
-
       "id": "POSH-001",
-
       "title": "Adopt a POSH Policy",
-
-      "priority": "Mandatory",
-
-      "category": "POSH",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": ["*"],
-
-        "industries": ["*"]
-
-      },
-
       "description": "Adopt and communicate a policy prohibiting sexual harassment at the workplace.",
-
-      "sourceId": "MWCD",
-
-      "citations": [
-
-        {
-          "reference": "POSH Act, 2013"
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "POSH-002",
-
-      "title": "Constitute Internal Committee Where Applicable",
-
-      "priority": "Mandatory",
-
       "category": "POSH",
-
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 10
+          "min": 1,
+          "max": null
         },
-
-        "entityTypes": ["*"],
-
-        "industries": ["*"]
-
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
+      "evidence": [
+        {
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "POSH Act, 2013",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "POSH-002",
+      "title": "Constitute Internal Committee Where Applicable",
       "description": "Constitute an Internal Committee where the statutory threshold is met.",
-
-      "sourceId": "MWCD",
-
-      "citations": [
-
+      "category": "POSH",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 10,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-          "reference": "POSH Act"
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "POSH Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "POSH-003",
-
       "title": "Conduct POSH Awareness Programmes",
-
-      "priority": "Mandatory",
-
-      "category": "Training",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": ["*"],
-
-        "industries": ["*"]
-
-      },
-
       "description": "Conduct periodic awareness and sensitisation programmes for employees.",
-
-      "sourceId": "MWCD",
-
-      "citations": [
-
+      "category": "Training",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-          "reference": "POSH Act"
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "POSH Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "POSH-004",
-
       "title": "Display Statutory Notices",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": ["*"],
-
-        "industries": ["*"]
-
-      },
-
       "description": "Display notices relating to prohibition of sexual harassment and complaint mechanisms.",
-
-      "sourceId": "MWCD",
-
-      "citations": [
-
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
         {
-          "reference": "POSH Act"
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "POSH Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
       "id": "POSH-005",
-
       "title": "Maintain Complaint Records",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
-      "applicability": {
-
-        "employeeCount": {
-          "min": 1
-        },
-
-        "entityTypes": ["*"],
-
-        "industries": ["*"]
-
-      },
-
       "description": "Maintain records relating to complaints, inquiries and actions taken in accordance with statutory requirements.",
-
-      "sourceId": "MWCD",
-
-      "citations": [
-
-        {
-          "reference": "POSH Act"
-        }
-
-      ]
-
-    },
-
-    {
-
-      "id": "POSH-006",
-
-      "title": "Submit Annual Reporting Where Applicable",
-
-      "priority": "Mandatory",
-
       "category": "Documentation",
-
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 10
+          "min": 1,
+          "max": null
         },
-
-        "entityTypes": ["*"],
-
-        "industries": ["*"]
-
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "description": "Complete annual reporting obligations relating to the Internal Committee wherever applicable.",
-
-      "sourceId": "MWCD",
-
-      "citations": [
-
+      "evidence": [
         {
-          "reference": "POSH Act"
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "POSH Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-
-      ]
-
-    }
-
-  ],
-
-  "exceptions": [
-
-    {
-
-      "id": "POSH-EX-001",
-
-      "title": "Internal Committee Threshold",
-
-      "description": "Constitution of an Internal Committee depends upon the statutory threshold prescribed under the Act."
-
-    }
-
-  ],
-
-  "references": [
-
-    {
-
-      "sourceId": "MWCD"
-
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
-
-      "sourceId": "INDIACODE"
-
+      "id": "POSH-006",
+      "title": "Submit Annual Reporting Where Applicable",
+      "description": "Complete annual reporting obligations relating to the Internal Committee wherever applicable.",
+      "category": "Documentation",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 10,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "MWCD",
+          "citation": {
+            "reference": "POSH Act",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
-  ]
-
+  ],
+  "exceptions": [
+    {
+      "id": "POSH-EX-001",
+      "title": "Internal Committee Threshold",
+      "description": "Constitution of an Internal Committee depends upon the statutory threshold prescribed under the Act."
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "MWCD",
+      "name": "Ministry of Women and Child Development",
+      "sourceType": "official_portal",
+      "url": "https://wcd.gov.in",
+      "authority": "Ministry of Women and Child Development",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    },
+    {
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
+    }
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing POSH Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
