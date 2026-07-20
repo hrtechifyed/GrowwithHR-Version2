@@ -2,8 +2,10 @@
  * GrowWithHR Compliance DNA
  * M1 Five-Act Bootstrap
  *
- * Connects the private-beta HTML presentation layer
- * to the Five-Act story engine.
+ * Connects:
+ * - the private-beta HTML shell;
+ * - the Five-Act story engine;
+ * - the configurable narrative-copy JSON.
  *
  * This file does not calculate compliance results
  * or modify the stable v2 assessment.
@@ -13,6 +15,9 @@ import createStoryEngine from "./story-engine.js";
 
 const STABLE_ASSESSMENT_ROUTE =
     "analyze-company.html";
+
+const NARRATIVE_COPY_URL =
+    "data/assessment/narrative-copy.json";
 
 const REQUIRED_ELEMENT_IDS =
     Object.freeze([
@@ -26,6 +31,22 @@ const REQUIRED_ELEMENT_IDS =
         "dnaActList",
         "dnaLiveRegion"
     ]);
+
+function asObject(value) {
+    return (
+        value &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+    )
+        ? value
+        : {};
+}
+
+function cleanText(value) {
+    return String(
+        value ?? ""
+    ).trim();
+}
 
 function requireElement(id) {
     const element =
@@ -88,6 +109,214 @@ function collectElements() {
     return elements;
 }
 
+function normalizeNarrativeAct(
+    value,
+    index
+) {
+    const source =
+        asObject(value);
+
+    const number =
+        Number.parseInt(
+            String(source.number),
+            10
+        );
+
+    const id =
+        cleanText(source.id);
+
+    const label =
+        cleanText(source.label);
+
+    const title =
+        cleanText(source.title);
+
+    const description =
+        cleanText(
+            source.description
+        );
+
+    if (
+        number !== index + 1 ||
+        !id ||
+        !label ||
+        !title ||
+        !description
+    ) {
+        throw new Error(
+            `Narrative act ${index + 1} is invalid.`
+        );
+    }
+
+    return Object.freeze({
+        number,
+        id,
+        label,
+        title,
+        description
+    });
+}
+
+function normalizeNarrative(
+    value
+) {
+    const source =
+        asObject(value);
+
+    if (
+        Number(source.schemaVersion) !==
+        1
+    ) {
+        throw new Error(
+            "Unsupported Compliance DNA narrative schema."
+        );
+    }
+
+    if (
+        !Array.isArray(source.acts) ||
+        source.acts.length !== 5
+    ) {
+        throw new Error(
+            "Compliance DNA narrative requires exactly five acts."
+        );
+    }
+
+    return Object.freeze({
+        schemaVersion:
+            1,
+
+        experience:
+            cleanText(
+                source.experience
+            ),
+
+        acts:
+            Object.freeze(
+                source.acts.map(
+                    normalizeNarrativeAct
+                )
+            ),
+
+        screens:
+            Object.freeze({
+                ...asObject(
+                    source.screens
+                )
+            }),
+
+        review:
+            Object.freeze({
+                ...asObject(
+                    source.review
+                )
+            }),
+
+        analysis:
+            Object.freeze({
+                ...asObject(
+                    source.analysis
+                )
+            }),
+
+        contact:
+            Object.freeze({
+                ...asObject(
+                    source.contact
+                )
+            }),
+
+        success:
+            Object.freeze({
+                ...asObject(
+                    source.success
+                )
+            })
+    });
+}
+
+async function loadNarrative() {
+    try {
+        const response =
+            await fetch(
+                NARRATIVE_COPY_URL,
+                {
+                    cache:
+                        "no-store",
+
+                    headers: {
+                        Accept:
+                            "application/json"
+                    }
+                }
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                `Narrative request failed with status ${response.status}.`
+            );
+        }
+
+        return normalizeNarrative(
+            await response.json()
+        );
+    } catch (error) {
+        console.warn(
+            "GrowWithHR: configurable narrative could not be loaded. The built-in Five-Act copy will be used.",
+            error
+        );
+
+        return null;
+    }
+}
+
+function mergeNarrativeWithState(
+    state,
+    narrative
+) {
+    if (!narrative) {
+        return state;
+    }
+
+    const acts =
+        state.acts.map(
+            (engineAct, index) => {
+                const configuredAct =
+                    narrative.acts[index];
+
+                return Object.freeze({
+                    ...engineAct,
+
+                    id:
+                        configuredAct.id,
+
+                    label:
+                        configuredAct.label,
+
+                    eyebrow:
+                        `Act ${configuredAct.number} · ${configuredAct.label}`,
+
+                    title:
+                        configuredAct.title,
+
+                    description:
+                        configuredAct.description
+                });
+            }
+        );
+
+    return Object.freeze({
+        ...state,
+
+        acts:
+            Object.freeze(acts),
+
+        currentAct:
+            acts[
+                state.currentActNumber - 1
+            ]
+    });
+}
+
 function getPrimaryButtonLabel(
     state
 ) {
@@ -115,7 +344,9 @@ function announce(
 
     window.requestAnimationFrame(
         () => {
-            elements.dnaLiveRegion.textContent =
+            elements
+                .dnaLiveRegion
+                .textContent =
                 message;
         }
     );
@@ -135,22 +366,16 @@ function updateActNavigation(
                 10
             );
 
-        const isActive =
-            itemActNumber ===
-            state.currentActNumber;
-
-        const isComplete =
-            itemActNumber <
-            state.currentActNumber;
-
         item.classList.toggle(
             "is-active",
-            isActive
+            itemActNumber ===
+                state.currentActNumber
         );
 
         item.classList.toggle(
             "is-complete",
-            isComplete
+            itemActNumber <
+                state.currentActNumber
         );
     }
 
@@ -163,6 +388,11 @@ function updateActNavigation(
                 button.dataset.actButton,
                 10
             );
+
+        const act =
+            state.acts[
+                buttonActNumber - 1
+            ];
 
         const isActive =
             buttonActNumber ===
@@ -179,15 +409,30 @@ function updateActNavigation(
             );
         }
 
-        const act =
-            state.acts[
-                buttonActNumber - 1
-            ];
-
         button.setAttribute(
             "aria-label",
             `Act ${act.number} of ${state.totalActs}, ${act.label}: ${act.status}`
         );
+
+        const labelElement =
+            button.querySelector(
+                ".dna-act__label"
+            );
+
+        const statusElement =
+            button.querySelector(
+                ".dna-act__status"
+            );
+
+        if (labelElement) {
+            labelElement.textContent =
+                act.label;
+        }
+
+        if (statusElement) {
+            statusElement.textContent =
+                act.status;
+        }
     }
 }
 
@@ -269,6 +514,20 @@ function render(
     }
 }
 
+function focusStageTitle(
+    elements
+) {
+    elements.dnaStageTitle.setAttribute(
+        "tabindex",
+        "-1"
+    );
+
+    elements.dnaStageTitle.focus({
+        preventScroll:
+            false
+    });
+}
+
 function bindActButtons(
     elements,
     engine
@@ -280,27 +539,18 @@ function bindActButtons(
         button.addEventListener(
             "click",
             () => {
-                const actNumber =
-                    Number.parseInt(
-                        button.dataset.actButton,
-                        10
-                    );
-
                 engine.setAct(
-                    actNumber
+                    Number.parseInt(
+                        button
+                            .dataset
+                            .actButton,
+                        10
+                    )
                 );
 
-                const title =
-                    elements.dnaStageTitle;
-
-                title.setAttribute(
-                    "tabindex",
-                    "-1"
+                focusStageTitle(
+                    elements
                 );
-
-                title.focus({
-                    preventScroll: false
-                });
             }
         );
     }
@@ -326,35 +576,37 @@ function bindPrimaryButton(
 
             engine.next();
 
-            const title =
-                elements.dnaStageTitle;
-
-            title.setAttribute(
-                "tabindex",
-                "-1"
+            focusStageTitle(
+                elements
             );
-
-            title.focus({
-                preventScroll: false
-            });
         }
     );
 }
 
-function initializeComplianceDna() {
+async function initializeComplianceDna() {
     const elements =
         collectElements();
 
+    const narrative =
+        await loadNarrative();
+
     const engine =
         createStoryEngine({
-            initialAct: 1
+            initialAct:
+                1
         });
 
     let isInitialRender =
         true;
 
     engine.subscribe(
-        (state) => {
+        (engineState) => {
+            const state =
+                mergeNarrativeWithState(
+                    engineState,
+                    narrative
+                );
+
             render(
                 elements,
                 state,
@@ -390,8 +642,20 @@ function initializeComplianceDna() {
             fallbackRoute:
                 STABLE_ASSESSMENT_ROUTE,
 
-            getState:
-                engine.getState,
+            narrativeUrl:
+                NARRATIVE_COPY_URL,
+
+            narrativeLoaded:
+                Boolean(narrative),
+
+            narrative,
+
+            getState() {
+                return mergeNarrativeWithState(
+                    engine.getState(),
+                    narrative
+                );
+            },
 
             setAct:
                 engine.setAct,
@@ -420,27 +684,30 @@ function handleInitializationError(
             "dnaStartButton"
         );
 
-    if (startButton) {
-        startButton.textContent =
-            "Open the stable assessment";
-
-        startButton.addEventListener(
-            "click",
-            () => {
-                window.location.assign(
-                    STABLE_ASSESSMENT_ROUTE
-                );
-            },
-            {
-                once: true
-            }
-        );
+    if (!startButton) {
+        return;
     }
+
+    startButton.textContent =
+        "Open the stable assessment";
+
+    startButton.addEventListener(
+        "click",
+        () => {
+            window.location.assign(
+                STABLE_ASSESSMENT_ROUTE
+            );
+        },
+        {
+            once:
+                true
+        }
+    );
 }
 
-function start() {
+async function start() {
     try {
-        initializeComplianceDna();
+        await initializeComplianceDna();
     } catch (error) {
         handleInitializationError(
             error
@@ -454,11 +721,14 @@ if (
 ) {
     document.addEventListener(
         "DOMContentLoaded",
-        start,
+        () => {
+            void start();
+        },
         {
-            once: true
+            once:
+                true
         }
     );
 } else {
-    start();
+    void start();
 }
