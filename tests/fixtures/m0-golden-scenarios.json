@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "release": "0.15.1-beta",
+  "milestone": "M0 Baseline Freeze",
+  "description": "Deterministic baseline scenarios protecting current GrowWithHR report thresholds and recommendation behaviour.",
+  "scenarios": [
+    {
+      "id": "developing-below-statutory-thresholds",
+      "name": "Developing organisation below statutory thresholds",
+      "input": {
+        "companyName": "Golden Micro Systems",
+        "industry": "Information Technology / SaaS",
+        "primaryState": "Karnataka",
+        "entity": "Private Limited",
+        "employees": 9,
+        "contractWorkers": 0,
+        "interns": 0,
+        "apprentices": 0,
+        "peopleFunction": "No Formal HR/People Function",
+        "fundingStage": "Bootstrapped",
+        "hiringPlans": "Selective Hiring",
+        "workModel": "Hybrid",
+        "locations": "1"
+      },
+      "expected": {
+        "organisationStage": "Developing Organisation",
+        "executiveFocusContains": "Establish a clear people operating model",
+        "requiredCompliance": [
+          "Employment records",
+          "State-specific labour obligations"
+        ],
+        "forbiddenCompliance": [
+          "ESI and gratuity applicability",
+          "Provident Fund review",
+          "Contract workforce governance",
+          "Apprenticeship governance"
+        ]
+      }
+    },
+    {
+      "id": "developing-ten-employee-threshold",
+      "name": "Developing organisation at ten-employee threshold",
+      "input": {
+        "companyName": "Golden Health Services",
+        "industry": "Healthcare",
+        "primaryState": "Maharashtra",
+        "entity": "LLP",
+        "employees": 10,
+        "contractWorkers": 0,
+        "interns": 0,
+        "apprentices": 0,
+        "peopleFunction": "Founder Led",
+        "fundingStage": "Seed",
+        "hiringPlans": "Moderate Growth",
+        "workModel": "Office Based",
+        "locations": "1"
+      },
+      "expected": {
+        "organisationStage": "Developing Organisation",
+        "executiveFocusContains": "Move founder-led people decisions",
+        "requiredCompliance": [
+          "Employment records",
+          "State-specific labour obligations",
+          "ESI and gratuity applicability"
+        ],
+        "forbiddenCompliance": [
+          "Provident Fund review",
+          "Contract workforce governance",
+          "Apprenticeship governance"
+        ]
+      }
+    },
+    {
+      "id": "growth-twenty-employee-threshold",
+      "name": "Growth organisation at twenty-employee threshold",
+      "input": {
+        "companyName": "Golden Manufacturing Works",
+        "industry": "Manufacturing",
+        "primaryState": "Tamil Nadu",
+        "entity": "Private Limited",
+        "employees": 20,
+        "contractWorkers": 0,
+        "interns": 0,
+        "apprentices": 0,
+        "peopleFunction": "Single HR/People Professional",
+        "fundingStage": "Series A",
+        "hiringPlans": "Significant Growth",
+        "workModel": "Manufacturing / Plant",
+        "locations": "2"
+      },
+      "expected": {
+        "organisationStage": "Growth Organisation",
+        "executiveFocusContains": "Use the existing people capability",
+        "requiredCompliance": [
+          "Employment records",
+          "State-specific labour obligations",
+          "ESI and gratuity applicability",
+          "Provident Fund review"
+        ],
+        "forbiddenCompliance": [
+          "Contract workforce governance",
+          "Apprenticeship governance"
+        ]
+      }
+    },
+    {
+      "id": "growth-with-contract-workforce",
+      "name": "Growth organisation with contract workforce",
+      "input": {
+        "companyName": "Golden Professional Advisory",
+        "industry": "Consulting & Professional Services",
+        "primaryState": "Delhi (NCT)",
+        "entity": "LLP",
+        "employees": 50,
+        "contractWorkers": 12,
+        "interns": 4,
+        "apprentices": 0,
+        "peopleFunction": "External Consultant",
+        "fundingStage": "Series A",
+        "hiringPlans": "Selective Hiring",
+        "workModel": "Hybrid",
+        "locations": "3"
+      },
+      "expected": {
+        "organisationStage": "Growth Organisation",
+        "executiveFocusContains": "Use the existing people capability",
+        "requiredCompliance": [
+          "Employment records",
+          "State-specific labour obligations",
+          "ESI and gratuity applicability",
+          "Provident Fund review",
+          "Contract workforce governance"
+        ],
+        "forbiddenCompliance": [
+          "Apprenticeship governance"
+        ]
+      }
+    },
+    {
+      "id": "scaling-hundred-employee-threshold",
+      "name": "Scaling organisation at one-hundred-employee threshold",
+      "input": {
+        "companyName": "Golden Semiconductor Labs",
+        "industry": "Semiconductor",
+        "primaryState": "Telangana",
+        "entity": "Private Limited",
+        "employees": 100,
+        "contractWorkers": 8,
+        "interns": 6,
+        "apprentices": 3,
+        "peopleFunction": "Dedicated HR Team",
+        "fundingStage": "Series B",
+        "hiringPlans": "Significant Growth",
+        "workModel": "Mixed",
+        "locations": "4"
+      },
+      "expected": {
+        "organisationStage": "Scaling Organisation",
+        "executiveFocusContains": "Use the existing people capability",
+        "requiredCompliance": [
+          "Employment records",
+          "State-specific labour obligations",
+          "ESI and gratuity applicability",
+          "Provident Fund review",
+          "Contract workforce governance",
+          "Apprenticeship governance"
+        ],
+        "forbiddenCompliance": []
+      }
+    },
+    {
+      "id": "enterprise-five-hundred-employee-threshold",
+      "name": "Enterprise organisation at five-hundred-employee threshold",
+      "input": {
+        "companyName": "Golden Financial Enterprise",
+        "industry": "Financial Services",
+        "primaryState": "Gujarat",
+        "entity": "Public Limited",
+        "employees": 500,
+        "contractWorkers": 25,
+        "interns": 10,
+        "apprentices": 5,
+        "peopleFunction": "Dedicated HR Team",
+        "fundingStage": "Public",
+        "hiringPlans": "Maintain Current Size",
+        "workModel": "Mixed",
+        "locations": "8"
+      },
+      "expected": {
+        "organisationStage": "Enterprise Organisation",
+        "executiveFocusContains": "Use the existing people capability",
+        "requiredCompliance": [
+          "Employment records",
+          "State-specific labour obligations",
+          "ESI and gratuity applicability",
+          "Provident Fund review",
+          "Contract workforce governance",
+          "Apprenticeship governance"
+        ],
+        "forbiddenCompliance": []
+      }
+    }
+  ]
+}
