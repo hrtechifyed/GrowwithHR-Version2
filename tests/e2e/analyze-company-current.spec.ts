@@ -51,19 +51,23 @@ async function seedSavedBriefing(
 test.describe(
     "Analyze My Company",
     () => {
-        test.beforeEach(async ({ page }) => {
-            await page.setViewportSize({
-                width: 1440,
-                height: 900
-            });
-        });
+        test.beforeEach(
+            async ({ page }) => {
+                await page.setViewportSize({
+                    width: 1440,
+                    height: 900
+                });
+            }
+        );
 
         test(
             "shows the first-visit landing state",
             async ({ page }) => {
-                await page.addInitScript(() => {
-                    localStorage.clear();
-                });
+                await page.addInitScript(
+                    () => {
+                        localStorage.clear();
+                    }
+                );
 
                 await page.goto(
                     "/analyze-company.html"
@@ -82,20 +86,29 @@ test.describe(
                 ).toBeVisible();
 
                 await expect(
-                    page.locator("#resumePanel")
+                    page.locator(
+                        "#resumePanel"
+                    )
                 ).toBeHidden();
 
                 await expect(
-                    page.getByRole("button", {
-                        name: "Start my advisory"
-                    })
+                    page.getByRole(
+                        "button",
+                        {
+                            name:
+                                "Start my advisory"
+                        }
+                    )
                 ).toBeVisible();
 
                 await expect(
-                    page.getByRole("link", {
-                        name:
-                            "View a sample advisory"
-                    })
+                    page.getByRole(
+                        "link",
+                        {
+                            name:
+                                "View a sample advisory"
+                        }
+                    )
                 ).toBeVisible();
             }
         );
@@ -103,7 +116,9 @@ test.describe(
         test(
             "shows only the returning-user state when progress exists",
             async ({ page }) => {
-                await seedSavedBriefing(page);
+                await seedSavedBriefing(
+                    page
+                );
 
                 await page.goto(
                     "/analyze-company.html"
@@ -116,20 +131,27 @@ test.describe(
                 ).toBeHidden();
 
                 await expect(
-                    page.locator("#resumePanel")
-                ).toBeVisible();
-
-                await expect(
-                    page.getByText(
-                        "Your progress is saved."
+                    page.locator(
+                        "#resumePanel"
                     )
                 ).toBeVisible();
 
                 await expect(
-                    page.getByRole("button", {
-                        name:
-                            /Continue my advisory/
-                    })
+                    page.locator(
+                        "#resumeMessage"
+                    )
+                ).toHaveText(
+                    "Your progress is saved."
+                );
+
+                await expect(
+                    page.getByRole(
+                        "button",
+                        {
+                            name:
+                                /Continue my advisory/
+                        }
+                    )
                 ).toBeVisible();
             }
         );
@@ -137,9 +159,11 @@ test.describe(
         test(
             "uses equal-width desktop panels",
             async ({ page }) => {
-                await page.addInitScript(() => {
-                    localStorage.clear();
-                });
+                await page.addInitScript(
+                    () => {
+                        localStorage.clear();
+                    }
+                );
 
                 await page.goto(
                     "/analyze-company.html"
@@ -159,13 +183,18 @@ test.describe(
                         )
                         .boundingBox();
 
-                expect(briefing).not.toBeNull();
-                expect(story).not.toBeNull();
+                expect(
+                    briefing
+                ).not.toBeNull();
+
+                expect(
+                    story
+                ).not.toBeNull();
 
                 expect(
                     Math.abs(
                         briefing!.width -
-                        story!.width
+                            story!.width
                     )
                 ).toBeLessThanOrEqual(2);
             }
@@ -174,35 +203,65 @@ test.describe(
         test(
             "requires only name and email at contact capture",
             async ({ page }) => {
-                await seedSavedBriefing(page, 6);
+                await seedSavedBriefing(
+                    page,
+                    6
+                );
 
                 await page.goto(
                     "/analyze-company.html"
                 );
 
                 await page
-                    .getByRole("button", {
-                        name:
-                            /Continue my advisory/
-                    })
+                    .getByRole(
+                        "button",
+                        {
+                            name:
+                                /Continue my advisory/
+                        }
+                    )
                     .click();
 
-                await page
-                    .locator(
+                const founderLed =
+                    page.locator(
                         'input[name="peopleFunction"]' +
-                        '[value="Founder Led"]'
-                    )
-                    .check();
+                            '[value="Founder Led"]'
+                    );
+
+                await expect(
+                    founderLed
+                ).toBeVisible();
+
+                await founderLed.check({
+                    force: true
+                });
+
+                await expect(
+                    founderLed
+                ).toBeChecked();
+
+                const hiringPriority =
+                    page.locator(
+                        'input[name="priorities"]' +
+                            '[value="hiring-onboarding"]'
+                    );
+
+                await expect(
+                    hiringPriority
+                ).toBeVisible();
+
+                await hiringPriority.check({
+                    force: true
+                });
+
+                await expect(
+                    hiringPriority
+                ).toBeChecked();
 
                 await page
                     .locator(
-                        'input[name="priorities"]' +
-                        '[value="hiring-onboarding"]'
+                        "#nextButton"
                     )
-                    .check();
-
-                await page
-                    .locator("#nextButton")
                     .click();
 
                 await page
@@ -212,7 +271,9 @@ test.describe(
                     .click();
 
                 await expect(
-                    page.locator("#serviceConsent")
+                    page.locator(
+                        "#serviceConsent"
+                    )
                 ).toHaveCount(0);
 
                 const marketing =
@@ -220,17 +281,20 @@ test.describe(
                         "#marketingConsent"
                     );
 
-                await expect(marketing)
-                    .toBeVisible();
+                await expect(
+                    marketing
+                ).toBeVisible();
 
-                await expect(marketing)
-                    .not.toBeChecked();
+                await expect(
+                    marketing
+                ).not.toBeChecked();
 
-                await expect(marketing)
-                    .not.toHaveAttribute(
-                        "required",
-                        ""
-                    );
+                await expect(
+                    marketing
+                ).not.toHaveAttribute(
+                    "required",
+                    ""
+                );
 
                 await page
                     .locator(
@@ -255,34 +319,45 @@ test.describe(
                 );
 
                 await page
-                    .locator("#leadName")
-                    .fill("Test User");
+                    .locator(
+                        "#leadName"
+                    )
+                    .fill(
+                        "Test User"
+                    );
 
                 await page
-                    .locator("#leadEmail")
+                    .locator(
+                        "#leadEmail"
+                    )
                     .fill(
                         "test.user@example.com"
                     );
 
-                await page.evaluate(() => {
-                    window.GrowWithHRPDF = {
-                        buildAdvisoryPdf:
-                            async () => null
-                    };
+                await page.evaluate(
+                    () => {
+                        window.GrowWithHRPDF = {
+                            buildAdvisoryPdf:
+                                async () =>
+                                    null
+                        };
 
-                    window.GrowWithHREmail = {
-                        sendAdvisory:
-                            async () => ({
-                                ok: true,
-                                customerStatus:
-                                    "sent",
-                                customerSent: true,
-                                internalStatus:
-                                    "sent",
-                                internalSent: true
-                            })
-                    };
-                });
+                        window.GrowWithHREmail = {
+                            sendAdvisory:
+                                async () => ({
+                                    ok: true,
+                                    customerStatus:
+                                        "sent",
+                                    customerSent:
+                                        true,
+                                    internalStatus:
+                                        "sent",
+                                    internalSent:
+                                        true
+                                })
+                        };
+                    }
+                );
 
                 await page
                     .locator(
@@ -291,7 +366,9 @@ test.describe(
                     .click();
 
                 await expect(
-                    page.locator("#successScreen")
+                    page.locator(
+                        "#successScreen"
+                    )
                 ).toBeVisible();
             }
         );
@@ -315,7 +392,9 @@ test.describe(
                 ).toHaveCount(1);
 
                 await expect(
-                    page.locator("nav.navbar")
+                    page.locator(
+                        "nav.navbar"
+                    )
                 ).toHaveCount(0);
 
                 await expect(
@@ -325,27 +404,39 @@ test.describe(
                 ).toHaveCount(4);
 
                 await expect(
-                    page.getByRole("link", {
-                        name:
-                            "Analyze My Company",
-                        exact: true
-                    })
+                    page.getByRole(
+                        "link",
+                        {
+                            name:
+                                "Analyze My Company",
+                            exact:
+                                true
+                        }
+                    )
                 ).toHaveCount(1);
 
                 await expect(
-                    page.getByRole("link", {
-                        name:
-                            "Official Sources",
-                        exact: true
-                    })
+                    page.getByRole(
+                        "link",
+                        {
+                            name:
+                                "Official Sources",
+                            exact:
+                                true
+                        }
+                    )
                 ).toHaveCount(1);
 
                 await expect(
-                    page.getByRole("link", {
-                        name:
-                            "Sample Advisory",
-                        exact: true
-                    })
+                    page.getByRole(
+                        "link",
+                        {
+                            name:
+                                "Sample Advisory",
+                            exact:
+                                true
+                        }
+                    )
                 ).toHaveCount(1);
             }
         );
