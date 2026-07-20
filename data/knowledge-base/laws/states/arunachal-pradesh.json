@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0",
-  "recordVersion": "1.0.0",
+  "recordVersion": "2.0.0",
   "id": "STATE-AR",
   "name": "Arunachal Pradesh Labour Laws",
   "shortName": "Arunachal Pradesh",
-  "overview": "State-specific labour law requirements applicable to establishments operating in Arunachal Pradesh.",
+  "overview": "State-specific labour-law requirements applicable to establishments operating in Arunachal Pradesh. Independent State labour laws continue unless specifically repealed or replaced. Following commencement of the four Labour Codes on 21 November 2025, establishments must determine whether the Central Government or the Government of Arunachal Pradesh is the appropriate government for each obligation. Arunachal Pradesh has notified State rules under all four Labour Codes: the Industrial Relation (Arunachal Pradesh) Rules, 2021, the Code on Social Security (Arunachal Pradesh) Rules, 2021, the Code on Wages (Arunachal Pradesh) Rules, 2022, and the Arunachal Pradesh Occupational Safety, Health and Working Conditions Rules, 2022. Each set of rules commenced from the effective date of its corresponding Code.",
   "jurisdiction": {
     "country": "IN",
     "level": "state",
@@ -19,8 +19,8 @@
   "temporal": {
     "effectiveFrom": null,
     "effectiveTo": null,
-    "lastVerified": "2026-07-05",
-    "nextReviewDue": "2026-10-03",
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
     "supersedes": [],
     "supersededBy": []
   },
@@ -66,15 +66,15 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -120,15 +120,15 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -174,15 +174,15 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
@@ -228,18 +228,418 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
+          "accessedAt": "2026-07-20",
           "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
         "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
         "supersededBy": []
       }
+    },
+    {
+      "id": "AR-005",
+      "title": "Apply the Code on Wages and Arunachal Pradesh Rules",
+      "description": "Where the Government of Arunachal Pradesh is the appropriate government, apply the Code on Wages, 2019 together with the Code on Wages (Arunachal Pradesh) Rules, 2022. Identify the applicable minimum wage, geographical area, employment and skill category, wage period and dearness allowance; observe working-day, weekly-rest, overtime, wage-payment, deduction and bonus requirements; and maintain the prescribed notices, wage slips, registers and returns.",
+      "category": "Wages",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-AR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "arunachalPradeshIsAppropriateGovernmentForWages",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "AR-COW-RULES-2022",
+          "citation": {
+            "reference": "Code on Wages (Arunachal Pradesh) Rules, 2022",
+            "section": "",
+            "rule": "Notification No. LAB (W)WC/47/2019",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": "2022-02-24",
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Wages, 2019",
+            "section": "Chapters II to IV and sections 50, 67 and 69",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "AR-006",
+      "title": "Apply the Industrial Relations Code and Arunachal Pradesh Rules",
+      "description": "Where the Government of Arunachal Pradesh is the appropriate government, apply the Industrial Relations Code, 2020 together with the Industrial Relation (Arunachal Pradesh) Rules, 2021. Assess trade-union, negotiating-union or negotiating-council, works-committee, grievance-redressal, standing-orders, service-condition, industrial-dispute, strike, lock-out, lay-off, retrenchment, closure and worker re-skilling requirements using the applicable statutory thresholds.",
+      "category": "Industrial Relations",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-AR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "arunachalPradeshIsAppropriateGovernmentForIndustrialRelations",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "AR-IR-RULES-2021",
+          "citation": {
+            "reference": "Industrial Relation (Arunachal Pradesh) Rules, 2021",
+            "section": "",
+            "rule": "Notification No. LAB (W) 11/2021",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": "2021-12-23",
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Industrial Relations Code, 2020",
+            "section": "Applicable chapters and section 99",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "AR-007",
+      "title": "Apply the Code on Social Security and Arunachal Pradesh Rules",
+      "description": "Where the Government of Arunachal Pradesh is the appropriate government, apply the Code on Social Security, 2020 together with the Code on Social Security (Arunachal Pradesh) Rules, 2021. Assess State-administered gratuity, maternity benefit, employees compensation, building and other construction worker welfare and cess, unorganised-worker registration, career-centre reporting and related social-security obligations. Apply provident-fund and employees-state-insurance requirements through EPFO and ESIC where those chapters and saved schemes apply.",
+      "category": "Social Security",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-AR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "arunachalPradeshIsAppropriateGovernmentForSocialSecurityObligation",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "AR-SS-RULES-2021",
+          "citation": {
+            "reference": "Code on Social Security (Arunachal Pradesh) Rules, 2021",
+            "section": "",
+            "rule": "Notification No. LAB(W)17/2021",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": "2021-12-23",
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Code on Social Security, 2020",
+            "section": "Applicable chapters and sections 154, 156, 158 and 164",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "AR-008",
+      "title": "Apply the OSHWC Code and Arunachal Pradesh Rules",
+      "description": "Where the Government of Arunachal Pradesh is the appropriate government, apply the Occupational Safety, Health and Working Conditions Code, 2020 together with the Arunachal Pradesh Occupational Safety, Health and Working Conditions Rules, 2022. Assess establishment registration, appointment letters, safety and health duties, medical examinations, welfare facilities, working hours and leave, employment of women, contract labour, inter-State migrant workers and sector-specific requirements using the applicable thresholds and saved instruments.",
+      "category": "Occupational Safety and Working Conditions",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-AR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "arunachalPradeshIsAppropriateGovernmentForOSHWC",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "AR-OSH-RULES-2022",
+          "citation": {
+            "reference": "Arunachal Pradesh Occupational Safety, Health and Working Conditions Rules, 2022",
+            "section": "",
+            "rule": "Notification No. LAB (W) 03/2020",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": "2022-05-02",
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Occupational Safety, Health and Working Conditions Code, 2020",
+            "section": "Applicable chapters and sections 133, 135 and 143",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    },
+    {
+      "id": "AR-009",
+      "title": "Determine the Appropriate Government and Preserve Saved Actions",
+      "description": "For every establishment and compliance topic, document whether the Central Government or the Government of Arunachal Pradesh is the appropriate government. Apply the corresponding rules, notifications, wage rates, schemes, registrations, licences, forms, portals and enforcement authorities. Preserve prior registrations, licences, exemptions, proceedings, claims, liabilities, wage notifications and actions under repealed enactments only to the extent saved by the relevant Labour Code and not inconsistent with it.",
+      "category": "Labour Codes Transition",
+      "priority": "Mandatory",
+      "applicability": {
+        "employeeCount": {
+          "min": 1,
+          "max": null
+        },
+        "entityTypes": [
+          "*"
+        ],
+        "industries": [
+          "*"
+        ],
+        "jurisdictions": [
+          "IN-AR"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [
+          {
+            "field": "appropriateGovernmentDetermined",
+            "operator": "equals",
+            "value": true
+          }
+        ],
+        "exclusions": []
+      },
+      "evidence": [
+        {
+          "sourceId": "AR-LABOUR",
+          "citation": {
+            "reference": "Arunachal Pradesh Labour Code Rules and notifications",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "MOL",
+          "citation": {
+            "reference": "Implementation of the four Labour Codes from 21 November 2025",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": "2025-11-21",
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        },
+        {
+          "sourceId": "INDIACODE",
+          "citation": {
+            "reference": "Appropriate-government, rule-making and repeal-and-savings provisions under the four Labour Codes",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
+        }
+      ],
+      "temporal": {
+        "effectiveFrom": "2025-11-21",
+        "effectiveTo": null,
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
+        "supersedes": [],
+        "supersededBy": []
+      }
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "AR-EX-001",
+      "title": "Independent Arunachal Pradesh Laws Continue",
+      "description": "The four Labour Codes do not automatically repeal State legislation outside the central enactments expressly repealed by the Codes. Applicable State registration, holiday, leave, welfare and other independent requirements continue unless lawfully repealed or replaced."
+    },
+    {
+      "id": "AR-EX-002",
+      "title": "State Rules Apply Only Within State Jurisdiction",
+      "description": "The Arunachal Pradesh Labour Code Rules apply to establishments and matters for which the Government of Arunachal Pradesh is the appropriate government. Central Rules apply where the Central Government is the appropriate government."
+    },
+    {
+      "id": "AR-EX-003",
+      "title": "Rules Commenced with the Corresponding Codes",
+      "description": "The Arunachal Pradesh rules notified in 2021 and 2022 state that they come into force from the effective date of their corresponding Labour Code."
+    },
+    {
+      "id": "AR-EX-004",
+      "title": "Saved Legacy Instruments",
+      "description": "Rules, notifications, licences, registrations, exemptions, proceedings and actions under repealed enactments continue only to the extent preserved by the applicable Labour Code and until lawfully replaced, repealed or superseded."
     }
   ],
   "recommendations": [
@@ -252,6 +652,21 @@
       "id": "ARR-002",
       "title": "Digitise Labour Compliance Records",
       "description": "Maintain electronic labour compliance records wherever legally permissible."
+    },
+    {
+      "id": "ARR-003",
+      "title": "Maintain an Appropriate Government Matrix",
+      "description": "Map each legal entity, establishment, industry and workforce category to the Central Government or Government of Arunachal Pradesh for each Labour Code obligation."
+    },
+    {
+      "id": "ARR-004",
+      "title": "Maintain a Labour Code Notification Register",
+      "description": "Track each State Labour Code rule, wage notification, amendment, form, authority appointment, portal requirement and effective date."
+    },
+    {
+      "id": "ARR-005",
+      "title": "Review Arunachal Pradesh Notifications Monthly",
+      "description": "Review official State and Ministry publications monthly for wage revisions, Labour Code amendments, schemes, exemptions, authority appointments and filing procedures."
     }
   ],
   "sources": [
@@ -262,8 +677,8 @@
       "url": null,
       "authority": "Department of Labour, Employment & Skill Development, Government of Arunachal Pradesh",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "MOL",
@@ -272,8 +687,8 @@
       "url": "https://labour.gov.in",
       "authority": "Ministry of Labour & Employment",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "INDIACODE",
@@ -282,16 +697,56 @@
       "url": "https://www.indiacode.nic.in",
       "authority": "India Code",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "AR-COW-RULES-2022",
+      "name": "Code on Wages (Arunachal Pradesh) Rules, 2022",
+      "sourceType": "rules",
+      "url": null,
+      "authority": "Government of Arunachal Pradesh",
+      "publishedAt": "2022-02-24",
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "AR-IR-RULES-2021",
+      "name": "Industrial Relation (Arunachal Pradesh) Rules, 2021",
+      "sourceType": "rules",
+      "url": null,
+      "authority": "Government of Arunachal Pradesh",
+      "publishedAt": "2021-12-23",
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "AR-SS-RULES-2021",
+      "name": "Code on Social Security (Arunachal Pradesh) Rules, 2021",
+      "sourceType": "rules",
+      "url": null,
+      "authority": "Government of Arunachal Pradesh",
+      "publishedAt": "2021-12-23",
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
+    },
+    {
+      "sourceId": "AR-OSH-RULES-2022",
+      "name": "Arunachal Pradesh Occupational Safety, Health and Working Conditions Rules, 2022",
+      "sourceType": "rules",
+      "url": null,
+      "authority": "Government of Arunachal Pradesh",
+      "publishedAt": "2022-05-02",
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     }
   ],
   "governance": {
     "owner": "GrowWithHR Compliance Data Team",
-    "reviewCadenceDays": 90,
+    "reviewCadenceDays": 30,
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Migrated the existing Arunachal Pradesh labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+    "changeSummary": "Updated the Arunachal Pradesh record for implementation of the four Labour Codes without superseding independent State laws. Added the notified State rules under all four Codes, appropriate-government and repeal-and-savings controls, and retained the existing Shops and Establishments, documentation, notice, working-hours, leave and holiday requirements."
   }
 }
