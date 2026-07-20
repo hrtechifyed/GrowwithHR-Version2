@@ -1,72 +1,397 @@
-const fs = require('fs');
-const path = require('path');
-const assert = require('assert');
+const fs = require("fs");
+const path = require("path");
+const assert = require("assert");
 
-const root = path.resolve(__dirname, '..');
-const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
+const root = path.resolve(__dirname, "..");
 
-const html = read('analyze-company.html');
-const introJs = read('js/intro-sequence.js');
-const introCss = read('css/13-intro-experience.css');
-const responsiveCss = read('css/11-responsive.css');
+const read = (file) =>
+    fs.readFileSync(
+        path.join(root, file),
+        "utf8"
+    );
 
-function assertIncludes(source, needle, message) {
-  assert(source.includes(needle), message || `Expected to find ${needle}`);
+const html = read("analyze-company.html");
+const assessmentJs = read(
+    "js/executive-assessment.js"
+);
+const storageJs = read(
+    "js/executive-assessment/assessment-storage.js"
+);
+const advisoryCss = read(
+    "css/17-advisory-briefing.css"
+);
+
+function assertIncludes(
+    source,
+    expected,
+    message
+) {
+    assert(
+        source.includes(expected),
+        message || `Expected to find: ${expected}`
+    );
 }
 
-function stripAtRules(css) {
-  return css.replace(/@media[^{]+\{[\s\S]*?\n\}/g, '').replace(/@keyframes[^{]+\{[\s\S]*?\n\}/g, '');
+function assertBefore(
+    source,
+    first,
+    second,
+    message
+) {
+    const firstPosition = source.indexOf(first);
+    const secondPosition = source.indexOf(second);
+
+    assert(
+        firstPosition !== -1,
+        `Expected to find: ${first}`
+    );
+
+    assert(
+        secondPosition !== -1,
+        `Expected to find: ${second}`
+    );
+
+    assert(
+        firstPosition < secondPosition,
+        message || `${first} must appear before ${second}`
+    );
 }
 
-function topLevelSelectors(css) {
-  return Array.from(stripAtRules(css).matchAll(/(^|\n)([^@{}\n][^{}]*)\{/g))
-    .map((match) => match[2].trim().replace(/\s+/g, ' '))
-    .filter(Boolean)
-    .filter((selector) => !['from', 'to'].includes(selector));
+function count(source, expected) {
+    return source.split(expected).length - 1;
 }
 
-function count(source, needle) {
-  return source.split(needle).length - 1;
-}
+/* ==========================================================
+   Stable assessment route
+========================================================== */
 
-// Intro HTML architecture checks.
-assertIncludes(html, '<div class="intro-stage" aria-live="polite" data-testid="advisory-intro-stage">', 'A single fixed story stage is required.');
-assert(!html.includes('<div class="intro-header">'), 'Intro header wrapper should not exist because the hero is not persistent.');
-assertIncludes(html, 'id="introHero"\n    class="intro-screen intro-hero"', 'Hero must be a single intro-screen inside the story stage.');
-assert.strictEqual(count(html, 'id="introHero"'), 1, 'Hero must render exactly once.');
-assert.strictEqual(count(html, 'id="coachIntroduction"'), 1, 'Coach must render exactly once.');
-assert.strictEqual(count(html, 'id="startAssessment"'), 1, 'Begin Assessment button must render exactly once.');
-assert(html.indexOf('id="introHero"') < html.indexOf('id="introMessages"'), 'Hero must appear before messages.');
-assert(html.indexOf('id="introMessages"') < html.indexOf('id="coachIntroduction"'), 'Single story must appear before coach.');
-assert(!html.includes('data-testid="advisory-briefing-card"'), 'Intro briefing story cards should not render in the shortened journey.');
-assert(html.indexOf('id="coachIntroduction"') < html.indexOf('id="conversationWorkspace"'), 'Coach must stay in the intro before the assessment workspace.');
+assertIncludes(
+    html,
+    'class="analyze-company-page"',
+    "The assessment page must retain its scoped body class."
+);
 
-// Intro JavaScript behavior checks.
-assertIncludes(introJs, 'hero: document.getElementById("introHero")', 'Hero must be part of the opening story stage timeline.');
-assertIncludes(introJs, 'TIMING.hero', 'Opening hero duration is required before Scene 1.');
-assertIncludes(introJs, 'advisoryState === "welcome"', 'Intro must finish on the Coach welcome before the Begin Assessment action.');
-assertIncludes(introJs, 'setActionsVisible(true)', 'Begin Assessment must become visible after coach completion.');
-assertIncludes(read('js/executive-assessment.js'), 'this.renderCurrentQuestion();', 'Begin Assessment should open the assessment question field directly.');
-assertIncludes(introJs, 'showInvitationImmediately', 'Skip behavior must remain available.');
+assertIncludes(
+    html,
+    'id="assessmentShell"',
+    "The stable assessment shell is required."
+);
 
-// Intro CSS structure and duplicate checks.
-['1. Fixed Intro Layout', '2. Story Stage & Executive Cards', '3. Coach & Begin Assessment', '4. Engine & Animations', '5. Responsive', '6. Utilities & Polish'].forEach((section) => {
-  assertIncludes(introCss, section, `Missing intro CSS section: ${section}`);
-});
+assertIncludes(
+    html,
+    'data-testid="advisory-experience-stage"',
+    "The advisory experience test hook is required."
+);
 
-const selectors = topLevelSelectors(introCss);
-const duplicates = selectors.filter((selector, index) => selectors.indexOf(selector) !== index);
-assert.deepStrictEqual([...new Set(duplicates)], [], `Duplicate top-level intro CSS selectors found: ${[...new Set(duplicates)].join(', ')}`);
+assertIncludes(
+    html,
+    'id="landingScreen"',
+    "The assessment entry screen is required."
+);
 
-// Responsive coverage checks for demo devices.
-assertIncludes(introCss, 'height: calc(100dvh - 90px)', 'Intro must use dynamic viewport height on desktop.');
-assertIncludes(introCss, '@media (min-width: 1200px)', 'Intro desktop breakpoint is required.');
-assertIncludes(introCss, '@media (min-width: 992px) and (max-width: 1199px)', 'Intro laptop breakpoint is required.');
-assertIncludes(introCss, '@media (min-width: 768px) and (max-width: 991px)', 'Intro tablet breakpoint is required.');
-assertIncludes(introCss, '@media (max-width: 767px)', 'Intro mobile breakpoint is required.');
-assert(!introCss.includes('100vh'), 'Intro CSS must avoid 100vh in favor of dynamic viewport units.');
-assertIncludes(introCss, '@media (max-height: 560px) and (orientation: landscape)', 'Intro landscape breakpoint is required.');
-assertIncludes(responsiveCss, 'overflow-x: hidden', 'Global responsive hardening must prevent horizontal overflow.');
-assertIncludes(responsiveCss, 'table {', 'Tables must be scroll-safe on mobile.');
+assert.strictEqual(
+    count(html, 'id="startAssessment"'),
+    1,
+    "The start assessment button must render exactly once."
+);
 
-console.log('Frontend production checks passed.');
+assertIncludes(
+    html,
+    'id="resumeAssessmentButton"',
+    "Resume assessment support is required."
+);
+
+assertIncludes(
+    html,
+    'id="startAgainButton"',
+    "Start-again support is required."
+);
+
+/* ==========================================================
+   Guided assessment journey
+========================================================== */
+
+assertIncludes(
+    html,
+    'id="conversationWorkspace"',
+    "The guided assessment workspace is required."
+);
+
+assertIncludes(
+    html,
+    'id="storyForm"',
+    "The assessment story form is required."
+);
+
+assertIncludes(
+    html,
+    'id="storyContainer"',
+    "The dynamic story container is required."
+);
+
+assertIncludes(
+    html,
+    'id="chapterRail"',
+    "The four-chapter progress rail is required."
+);
+
+assertIncludes(
+    html,
+    'id="progressTrack"',
+    "The accessible progress indicator is required."
+);
+
+assertBefore(
+    html,
+    'id="landingScreen"',
+    'id="conversationWorkspace"',
+    "The entry screen must appear before the assessment workspace."
+);
+
+/* ==========================================================
+   Review, contact and report generation
+========================================================== */
+
+assertIncludes(
+    html,
+    'id="reviewScreen"',
+    "The organisation-story review screen is required."
+);
+
+assertIncludes(
+    html,
+    'id="reviewContainer"',
+    "The review summary container is required."
+);
+
+assertIncludes(
+    html,
+    'id="contactScreen"',
+    "The advisory contact screen is required."
+);
+
+assertIncludes(
+    html,
+    'id="leadCaptureForm"',
+    "The lead-capture form is required."
+);
+
+assertIncludes(
+    html,
+    'id="loadingScreen"',
+    "The report-generation state is required."
+);
+
+assertIncludes(
+    html,
+    'id="generationSteps"',
+    "The report-generation progress list is required."
+);
+
+assertIncludes(
+    html,
+    'id="successScreen"',
+    "The report completion screen is required."
+);
+
+assertIncludes(
+    html,
+    'id="downloadReportButton"',
+    "PDF download must remain available."
+);
+
+assertIncludes(
+    html,
+    'id="emailAgainButton"',
+    "Email redelivery must remain available."
+);
+
+assertBefore(
+    html,
+    'id="conversationWorkspace"',
+    'id="reviewScreen"',
+    "The assessment workspace must precede review."
+);
+
+assertBefore(
+    html,
+    'id="reviewScreen"',
+    'id="contactScreen"',
+    "Review must precede contact collection."
+);
+
+assertBefore(
+    html,
+    'id="contactScreen"',
+    'id="loadingScreen"',
+    "Contact collection must precede report generation."
+);
+
+assertBefore(
+    html,
+    'id="loadingScreen"',
+    'id="successScreen"',
+    "Generation must precede the success state."
+);
+
+/* ==========================================================
+   Assessment configuration
+========================================================== */
+
+assertIncludes(
+    html,
+    'id="assessmentConfig"',
+    "The embedded assessment configuration is required."
+);
+
+assertIncludes(
+    html,
+    '"chapters": 4',
+    "The stable assessment must retain four chapters."
+);
+
+assertIncludes(
+    html,
+    '"storyMoments": 7',
+    "The stable assessment must retain seven story moments."
+);
+
+/* ==========================================================
+   Script contracts and loading order
+========================================================== */
+
+assertIncludes(
+    html,
+    'src="js/pdf.js"',
+    "The existing PDF service must remain connected."
+);
+
+assertIncludes(
+    html,
+    'src="js/gmail-service.js"',
+    "The existing Gmail delivery service must remain connected."
+);
+
+assertIncludes(
+    html,
+    'src="js/executive-assessment/assessment-storage.js"',
+    "The assessment storage module must remain connected."
+);
+
+assertIncludes(
+    html,
+    'src="js/executive-assessment.js"',
+    "The modular compatibility controller is required."
+);
+
+assertBefore(
+    html,
+    'src="js/pdf.js"',
+    'src="js/executive-assessment.js"',
+    "PDF support must load before the assessment controller."
+);
+
+assertBefore(
+    html,
+    'src="js/executive-assessment/assessment-definition.js"',
+    'src="js/executive-assessment.js"',
+    "Assessment modules must load before the controller."
+);
+
+/* ==========================================================
+   Controller and saved-progress contracts
+========================================================== */
+
+assertIncludes(
+    assessmentJs,
+    "Storage.readAssessment();",
+    "The controller must restore saved progress."
+);
+
+assertIncludes(
+    assessmentJs,
+    "State.createDefaultState();",
+    "The controller must support a clean initial state."
+);
+
+assertIncludes(
+    assessmentJs,
+    "this.bindEvents();",
+    "Assessment interactions must be connected."
+);
+
+assertIncludes(
+    assessmentJs,
+    "this.initialiseView();",
+    "The initial view must be prepared."
+);
+
+assertIncludes(
+    storageJs,
+    '"growwithhr-advisory-briefing-v2"',
+    "The current browser-storage key must remain compatible."
+);
+
+assertIncludes(
+    storageJs,
+    "window.localStorage.getItem",
+    "Saved progress must be readable."
+);
+
+assertIncludes(
+    storageJs,
+    "window.localStorage.setItem",
+    "Assessment progress must remain saveable."
+);
+
+/* ==========================================================
+   Accessibility and responsive safeguards
+========================================================== */
+
+assertIncludes(
+    advisoryCss,
+    "body.analyze-company-page",
+    "Assessment styling must remain page scoped."
+);
+
+assertIncludes(
+    advisoryCss,
+    "min-height: 100dvh",
+    "Dynamic viewport height support is required."
+);
+
+assertIncludes(
+    advisoryCss,
+    "overflow-x: clip",
+    "The assessment must prevent horizontal overflow."
+);
+
+assertIncludes(
+    advisoryCss,
+    ":focus-visible",
+    "Visible keyboard focus styling is required."
+);
+
+assertIncludes(
+    advisoryCss,
+    "[hidden]",
+    "Hidden assessment states must remain safely concealed."
+);
+
+assert(
+    /@media\s*\(/.test(advisoryCss),
+    "Responsive assessment breakpoints are required."
+);
+
+/* ==========================================================
+   Obsolete intro route must not be required
+========================================================== */
+
+assert(
+    !html.includes('src="js/intro-sequence.js"'),
+    "The current stable route must not depend on the obsolete intro sequence."
+);
+
+console.log(
+    "Frontend production checks passed."
+);
