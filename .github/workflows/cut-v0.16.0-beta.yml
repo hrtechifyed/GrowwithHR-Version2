@@ -1,0 +1,185 @@
+name: Cut v0.16.0-beta
+
+on:
+  push:
+    branches:
+      - "release/v0.16.0-beta"
+    paths:
+      - ".github/workflows/cut-v0.16.0-beta.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cut-v0.16.0-beta
+  cancel-in-progress: false
+
+jobs:
+  cut-and-validate:
+    name: Cut and validate v0.16.0-beta
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      TARGET_VERSION: "0.16.0-beta"
+      EXPECTED_CURRENT_VERSION: "0.15.1-beta"
+
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: release/v0.16.0-beta
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verify release starting point
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          CURRENT_VERSION="$(node -p "require('./package.json').version")"
+
+          if [[ "${CURRENT_VERSION}" != "${EXPECTED_CURRENT_VERSION}" ]]; then
+            echo "Expected ${EXPECTED_CURRENT_VERSION}, found ${CURRENT_VERSION}."
+            exit 1
+          fi
+
+          if [[ "$(git branch --show-current)" != "release/v0.16.0-beta" ]]; then
+            echo "The workflow is not running on the release branch."
+            exit 1
+          fi
+
+      - name: Install project dependencies
+        run: npm install --package-lock=false --no-audit --no-fund
+
+      - name: Update canonical package version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node <<'NODE'
+          const fs = require("node:fs");
+
+          const packagePath = "package.json";
+          const packageJson = JSON.parse(
+              fs.readFileSync(packagePath, "utf8")
+          );
+
+          packageJson.version = process.env.TARGET_VERSION;
+
+          fs.writeFileSync(
+              packagePath,
+              `${JSON.stringify(packageJson, null, 2)}\n`,
+              "utf8"
+          );
+          NODE
+
+      - name: Synchronize governed version metadata
+        run: npm run version:sync
+
+      - name: Validate version, compliance and regression contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run version:check
+          npm run validate:compliance
+          npm test
+          git diff --check
+
+      - name: Install Playwright browser test package
+        run: npm install --no-save --package-lock=false --no-audit --no-fund @playwright/test
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate stable and private-beta browser routes
+        run: >
+          npx playwright test
+          tests/e2e/executive-assessment-modules.spec.ts
+          tests/e2e/analyze-company-current.spec.ts
+          tests/e2e/analyze-company-v3.spec.ts
+          tests/e2e/analyze-company-v3-traceability.spec.ts
+          --project=chromium
+
+      - name: Verify coordinated change set
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t CHANGED_FILES < <(git diff --name-only)
+
+          if [[ "${#CHANGED_FILES[@]}" -eq 0 ]]; then
+            echo "No version-cut changes were produced."
+            exit 1
+          fi
+
+          FOUND_PACKAGE=false
+          FOUND_APP_CONFIG=false
+          FOUND_HTML=false
+
+          for FILE in "${CHANGED_FILES[@]}"; do
+            case "${FILE}" in
+              package.json)
+                FOUND_PACKAGE=true
+                ;;
+              js/config/app-config.js)
+                FOUND_APP_CONFIG=true
+                ;;
+              *.html)
+                FOUND_HTML=true
+                ;;
+              *)
+                echo "Unexpected version-cut change: ${FILE}"
+                exit 1
+                ;;
+            esac
+          done
+
+          [[ "${FOUND_PACKAGE}" == "true" ]] || {
+            echo "package.json was not updated."
+            exit 1
+          }
+
+          [[ "${FOUND_APP_CONFIG}" == "true" ]] || {
+            echo "js/config/app-config.js was not updated."
+            exit 1
+          }
+
+          [[ "${FOUND_HTML}" == "true" ]] || {
+            echo "No visible HTML version labels were updated."
+            exit 1
+          }
+
+          echo "Validated version-cut files:"
+          printf -- '- %s\n' "${CHANGED_FILES[@]}"
+
+      - name: Commit coordinated version cut
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm ".github/workflows/cut-v0.16.0-beta.yml"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add --all
+          git commit -m "release: cut v${TARGET_VERSION}"
+          git push origin HEAD:release/v0.16.0-beta
+
+      - name: Record release-cut summary
+        shell: bash
+        run: |
+          {
+            echo "## v0.16.0-beta version cut"
+            echo
+            echo "- Canonical version synchronized"
+            echo "- Compliance validation passed"
+            echo "- Complete maintained regression suite passed"
+            echo "- Stable and private-beta Playwright coverage passed"
+            echo "- Release commit pushed to \`release/v0.16.0-beta\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
