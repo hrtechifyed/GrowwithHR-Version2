@@ -4,8 +4,8 @@
   "id": "CENTRAL-EPFO",
   "name": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
   "shortName": "EPF Act",
-  "officialCitation": "The Employees' Provident Funds and Miscellaneous Provisions Act, 1952 (Act No. 19 of 1952), repealed and saved under section 164 of the Code on Social Security, 2020.",
-  "overview": "Historical central labour-law record governing provident fund, pension and deposit-linked insurance coverage before the Code on Social Security, 2020 became operative on 21 November 2025. The Employees' Provident Funds and Miscellaneous Provisions Act, 1952 was repealed by section 164 of the Code, subject to savings. Current provident fund obligations must be assessed under Chapter III of the Code on Social Security, 2020, together with applicable schemes, rules, regulations, notifications and EPFO directions. The Employees' Provident Funds Scheme, 1952, Employees' Pension Scheme, 1995 and Employees' Deposit Linked Insurance Scheme, 1976 continue during the statutory savings period to the extent that they are not inconsistent with the Code. This record is retained for historical periods, saved instruments, exemptions, proceedings and audit traceability.",
+  "officialCitation": "The Employees' Provident Funds and Miscellaneous Provisions Act, 1952, repealed and saved under section 164 of the Code on Social Security, 2020.",
+  "overview": "Historical record governing provident fund, pension and deposit-linked insurance before the Code on Social Security became operative on 21 November 2025. Current obligations must be assessed under Chapter III of the Code and applicable saved schemes, regulations, notifications and EPFO directions.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -80,14 +80,14 @@
           "sourceId": "EPFO",
           "citation": {
             "reference": "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
-            "section": "Section 1",
+            "section": "",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -143,7 +143,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -199,7 +199,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -255,7 +255,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -311,7 +311,7 @@
           },
           "publishedAt": null,
           "accessedAt": "2026-07-20",
-          "verificationStatus": "verified"
+          "verificationStatus": "partially_verified"
         }
       ],
       "temporal": {
@@ -334,20 +334,8 @@
     },
     {
       "id": "EPFO-EX-002",
-      "title": "Saved Schemes and Exemptions",
-      "description": "The Employees' Provident Funds Scheme, 1952, Employees' Pension Scheme, 1995, Employees' Deposit Linked Insurance Scheme, 1976 and existing exemptions continue only to the extent and for the periods preserved by section 164 of the Code on Social Security, 2020."
-    }
-  ],
-  "recommendations": [
-    {
-      "id": "EPFO-REC-001",
-      "title": "Retain Historical EPF Records",
-      "description": "Preserve registration, UAN, wage, contribution, exemption, assessment and proceeding records created under the repealed Act for saved liabilities and audit traceability."
-    },
-    {
-      "id": "EPFO-REC-002",
-      "title": "Use the Social Security Code Record for Current Compliance",
-      "description": "Assess current provident fund obligations under CENTRAL-SOCIAL-SECURITY while continuing to follow saved EPFO schemes, regulations, notifications and operational directions during the statutory transition."
+      "title": "Repeal and Savings",
+      "description": "Legacy rules, notifications, schemes, licences, exemptions, rights, proceedings and actions continue only to the extent preserved by the applicable repeal-and-savings provision and until lawfully replaced or superseded."
     }
   ],
   "sources": [
@@ -359,17 +347,17 @@
       "authority": "Employees' Provident Fund Organisation",
       "publishedAt": null,
       "accessedAt": "2026-07-20",
-      "verificationStatus": "verified"
+      "verificationStatus": "partially_verified"
     },
     {
       "sourceId": "INDIACODE",
-      "name": "Code on Social Security, 2020 and Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
+      "name": "India Code",
       "sourceType": "official_portal",
-      "url": "https://www.indiacode.nic.in/handle/123456789/16823",
-      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
       "publishedAt": null,
       "accessedAt": "2026-07-20",
-      "verificationStatus": "verified"
+      "verificationStatus": "partially_verified"
     }
   ],
   "governance": {
@@ -378,6 +366,18 @@
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Updated the Employees' Provident Funds and Miscellaneous Provisions Act record as a superseded historical record, preserved the existing definitions, rule IDs and voluntary-coverage exception, documented the statutory savings for EPF, pension and deposit-linked insurance schemes, and linked current provident fund compliance to the Code on Social Security, 2020 from 21 November 2025."
-  }
+    "changeSummary": "Updated this legacy record as superseded from 21 November 2025, preserved its existing identifiers and obligations for historical use, and linked current compliance to CENTRAL-SOCIAL-SECURITY."
+  },
+  "recommendations": [
+    {
+      "id": "EPFO-REC-001",
+      "title": "Retain Historical Records",
+      "description": "Preserve records created under the repealed enactment for saved liabilities, proceedings and audit traceability."
+    },
+    {
+      "id": "EPFO-REC-002",
+      "title": "Use the Successor Code for Current Compliance",
+      "description": "Assess current obligations under CENTRAL-SOCIAL-SECURITY and the applicable rules, schemes, notifications and regulator directions."
+    }
+  ]
 }
