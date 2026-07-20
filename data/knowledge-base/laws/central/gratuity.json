@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "recordVersion": "1.0.0",
+  "recordVersion": "2.0.0",
   "id": "CENTRAL-GRATUITY",
   "name": "Payment of Gratuity Act, 1972",
   "shortName": "Gratuity Act",
-  "officialCitation": "Payment of Gratuity Act, 1972",
-  "overview": "Provides for payment of gratuity to eligible employees on termination of employment after completion of qualifying service, subject to the provisions of the Act.",
+  "officialCitation": "The Payment of Gratuity Act, 1972 (Act No. 39 of 1972), repealed and saved under section 164 of the Code on Social Security, 2020.",
+  "overview": "Historical central labour-law record governing gratuity before the Code on Social Security, 2020 became operative on 21 November 2025. The Payment of Gratuity Act, 1972 was repealed under section 164 of the Code, subject to repeal-and-savings provisions. Current gratuity obligations must be assessed under Chapter V of the Code on Social Security, 2020 and the applicable Central, State or Union Territory rules and notifications. This record is retained for historical periods, saved notifications and rules, accrued rights, pending claims and proceedings, prior exemptions and audit traceability.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -13,17 +13,20 @@
     "stateCode": null
   },
   "authority": {
-    "name": "Ministry of Labour & Employment",
+    "name": "Ministry of Labour & Employment, Government of India",
+    "department": "Social Security Division",
     "sourceId": "MOL"
   },
-  "status": "active",
+  "status": "superseded",
   "temporal": {
     "effectiveFrom": null,
-    "effectiveTo": null,
-    "lastVerified": "2026-07-05",
-    "nextReviewDue": "2026-10-03",
+    "effectiveTo": "2025-11-20",
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
     "supersedes": [],
-    "supersededBy": []
+    "supersededBy": [
+      "CENTRAL-SOCIAL-SECURITY"
+    ]
   },
   "definitions": [
     {
@@ -75,26 +78,28 @@
       },
       "evidence": [
         {
-          "sourceId": "MOL",
+          "sourceId": "INDIACODE",
           "citation": {
             "reference": "Payment of Gratuity Act, 1972",
-            "section": "",
+            "section": "Sections 1 and 2",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -129,26 +134,28 @@
       },
       "evidence": [
         {
-          "sourceId": "MOL",
+          "sourceId": "INDIACODE",
           "citation": {
-            "reference": "Payment of Gratuity Act",
-            "section": "",
+            "reference": "Payment of Gratuity Act, 1972",
+            "section": "Sections 2A, 6 and 7",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -183,26 +190,28 @@
       },
       "evidence": [
         {
-          "sourceId": "MOL",
+          "sourceId": "INDIACODE",
           "citation": {
-            "reference": "Payment of Gratuity Act",
-            "section": "",
+            "reference": "Payment of Gratuity Act, 1972",
+            "section": "Section 4",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     },
     {
@@ -237,26 +246,28 @@
       },
       "evidence": [
         {
-          "sourceId": "MOL",
+          "sourceId": "INDIACODE",
           "citation": {
-            "reference": "Payment of Gratuity Act",
-            "section": "",
+            "reference": "Payment of Gratuity Act, 1972",
+            "section": "Section 7",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-03",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-SOCIAL-SECURITY"
+        ]
       }
     }
   ],
@@ -265,36 +276,53 @@
       "id": "GRAT-EX-001",
       "title": "Qualifying Service",
       "description": "Eligibility is subject to qualifying service and other statutory provisions."
+    },
+    {
+      "id": "GRAT-EX-002",
+      "title": "Repeal and Savings",
+      "description": "Rules, notifications, exemptions, accrued rights, claims, proceedings and actions under the repealed Act continue only to the extent preserved by section 164 of the Code on Social Security, 2020 and the General Clauses Act, 1897."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "GRAT-REC-001",
+      "title": "Retain Historical Gratuity Records",
+      "description": "Preserve service, nomination, calculation, notice, payment, exemption, insurance, claim and proceeding records created under the repealed Act for saved liabilities and audit traceability."
+    },
+    {
+      "id": "GRAT-REC-002",
+      "title": "Use the Social Security Code Record for Current Compliance",
+      "description": "Assess gratuity arising on or after 21 November 2025 under CENTRAL-SOCIAL-SECURITY and the applicable Central, State or Union Territory rules and notifications."
     }
   ],
   "sources": [
     {
       "sourceId": "MOL",
-      "name": "Ministry of Labour & Employment",
+      "name": "Ministry of Labour & Employment Labour Codes Portal",
       "sourceType": "official_portal",
-      "url": "https://labour.gov.in",
-      "authority": "Ministry of Labour & Employment",
+      "url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa",
+      "authority": "Ministry of Labour & Employment, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "INDIACODE",
       "name": "India Code",
       "sourceType": "official_portal",
-      "url": "https://www.indiacode.nic.in",
-      "authority": "India Code",
+      "url": "https://www.indiacode.nic.in/handle/123456789/16823",
+      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     }
   ],
   "governance": {
     "owner": "GrowWithHR Compliance Data Team",
-    "reviewCadenceDays": 90,
+    "reviewCadenceDays": 30,
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Migrated the existing Payment of Gratuity Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+    "changeSummary": "Updated the Payment of Gratuity Act record as a superseded historical record, preserved the existing definitions and rule identifiers, documented repeal-and-savings treatment, and linked current gratuity compliance to the Code on Social Security, 2020 from 21 November 2025."
   }
 }
