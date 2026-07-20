@@ -43,11 +43,5 @@ jobs:
       - name: Validate compliance data
         run: npm run validate:compliance
 
-      - name: Run frontend production checks
-        run: npm run test:frontend
-
-      - name: Run assessment journey checks
-        run: npm run test:journeys
-
-      - name: Run UX tests
-        run: npm run test:ux
+      - name: Run complete regression suite
+        run: npm test
