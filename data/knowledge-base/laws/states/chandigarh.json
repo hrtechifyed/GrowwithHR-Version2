@@ -1,214 +1,351 @@
 {
-  "stateId": "CH",
-  "stateName": "Chandigarh",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-CH",
+  "name": "Chandigarh Labour Laws",
+  "shortName": "Chandigarh",
+  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Chandigarh.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "union_territory",
+    "code": "IN-CH",
+    "stateCode": "CH"
+  },
   "authority": {
-    "department": "Labour Department, Chandigarh Administration",
+    "name": "Labour Department, Chandigarh Administration",
     "sourceId": "CH-LABOUR"
   },
-
-  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Chandigarh.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "CH-001",
-
       "title": "Review Chandigarh Shops and Commercial Establishments Registration",
-
-      "priority": "Mandatory",
-
-      "category": "Shops & Establishments",
-
       "description": "Determine whether registration under the Punjab Shops and Commercial Establishments Act, as applicable to Chandigarh, is required.",
-
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-CH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "CH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Punjab Shops and Commercial Establishments Act as applicable to Chandigarh"
+          "sourceId": "CH-LABOUR",
+          "citation": {
+            "reference": "Punjab Shops and Commercial Establishments Act as applicable to Chandigarh",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "CH-002",
-
       "title": "Maintain Statutory Registers and Employment Records",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Maintain statutory registers, employee records and prescribed notices required under applicable labour laws.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-CH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "CH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Chandigarh Labour Rules"
+          "sourceId": "CH-LABOUR",
+          "citation": {
+            "reference": "Applicable Chandigarh Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "CH-003",
-
       "title": "Display Statutory Notices",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Display statutory notices and abstracts required under applicable labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-CH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "CH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Chandigarh Labour Rules"
+          "sourceId": "CH-LABOUR",
+          "citation": {
+            "reference": "Applicable Chandigarh Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "CH-004",
-
       "title": "Review Working Hours, Overtime and Weekly Holidays",
-
-      "priority": "Mandatory",
-
-      "category": "Working Conditions",
-
       "description": "Ensure compliance with provisions governing working hours, overtime, rest intervals and weekly holidays.",
-
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-CH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "CH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Chandigarh Shops & Establishments Rules"
+          "sourceId": "CH-LABOUR",
+          "citation": {
+            "reference": "Applicable Chandigarh Shops & Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "CH-005",
-
       "title": "Review Professional Tax Applicability",
-
-      "priority": "Information",
-
-      "category": "Professional Tax",
-
       "description": "Verify whether any professional tax obligations apply based on the governing laws applicable to Chandigarh.",
-
+      "category": "Professional Tax",
+      "priority": "Advisory",
       "applicability": {
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
         "entityTypes": [
           "*"
         ],
         "industries": [
           "*"
-        ]
+        ],
+        "jurisdictions": [
+          "IN-CH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "CH-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Chandigarh Tax Provisions"
+          "sourceId": "CH-LABOUR",
+          "citation": {
+            "reference": "Applicable Chandigarh Tax Provisions",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "CHR-001",
-
       "title": "Annual Labour Compliance Review",
-
       "description": "Conduct an annual review of labour law registrations, statutory records and workplace compliance."
     },
-
     {
       "id": "CHR-002",
-
       "title": "Digital Compliance Register",
-
       "description": "Maintain a digital compliance calendar for inspections, renewals and statutory due dates."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "CH-LABOUR"
+      "sourceId": "CH-LABOUR",
+      "name": "Labour Department, Chandigarh Administration",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Labour Department, Chandigarh Administration",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Chandigarh labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
