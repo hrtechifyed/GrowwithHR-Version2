@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "recordVersion": "1.0.0",
+  "recordVersion": "2.0.0",
   "id": "CENTRAL-BONUS",
   "name": "Payment of Bonus Act, 1965",
   "shortName": "Bonus Act",
-  "officialCitation": "Payment of Bonus Act, 1965",
-  "overview": "Provides for payment of statutory bonus to eligible employees employed in establishments covered under the Act.",
+  "officialCitation": "The Payment of Bonus Act, 1965 (Act No. 21 of 1965), repealed and saved under section 69 of the Code on Wages, 2019.",
+  "overview": "Historical central labour-law record governing statutory bonus for covered establishments and eligible employees before the Code on Wages, 2019 became operative on 21 November 2025. The Payment of Bonus Act, 1965 was repealed by section 69 of the Code on Wages, 2019, subject to its savings provisions. Current bonus obligations must be evaluated under Chapter IV of the Code on Wages, 2019 and the applicable Central or State rules and notifications. This record is retained for historical periods, legacy proceedings, saved actions and audit traceability.",
   "jurisdiction": {
     "country": "IN",
     "level": "central",
@@ -13,18 +13,19 @@
     "stateCode": null
   },
   "authority": {
-    "name": "Ministry of Labour & Employment",
-    "department": "Government of India",
+    "name": "Ministry of Labour & Employment, Government of India",
     "sourceId": "MOL"
   },
-  "status": "active",
+  "status": "superseded",
   "temporal": {
     "effectiveFrom": null,
-    "effectiveTo": null,
-    "lastVerified": "2026-07-05",
-    "nextReviewDue": "2026-10-05",
+    "effectiveTo": "2025-11-20",
+    "lastVerified": "2026-07-20",
+    "nextReviewDue": "2026-08-19",
     "supersedes": [],
-    "supersededBy": []
+    "supersededBy": [
+      "CENTRAL-CODE-ON-WAGES"
+    ]
   },
   "definitions": [
     {
@@ -50,7 +51,6 @@
       "description": "Determine whether the establishment falls within the scope of the Payment of Bonus Act.",
       "category": "Bonus",
       "priority": "Mandatory",
-      "recommendation": "Review establishment coverage before calculating or processing statutory bonus.",
       "applicability": {
         "employeeCount": {
           "min": 20,
@@ -66,7 +66,7 @@
           "IN"
         ],
         "workerTypes": [
-          "employee"
+          "*"
         ],
         "womenEmployees": "any",
         "contractWorkers": "any",
@@ -77,7 +77,7 @@
       },
       "evidence": [
         {
-          "sourceId": "INDIACODE",
+          "sourceId": "MOL",
           "citation": {
             "reference": "Payment of Bonus Act, 1965",
             "section": "",
@@ -86,17 +86,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-05",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-CODE-ON-WAGES"
+        ]
       }
     },
     {
@@ -105,7 +107,6 @@
       "description": "Determine employee eligibility for statutory bonus in accordance with applicable provisions.",
       "category": "Bonus",
       "priority": "Mandatory",
-      "recommendation": "Document the eligibility assessment for every employee included in or excluded from statutory bonus processing.",
       "applicability": {
         "employeeCount": {
           "min": 20,
@@ -121,7 +122,7 @@
           "IN"
         ],
         "workerTypes": [
-          "employee"
+          "*"
         ],
         "womenEmployees": "any",
         "contractWorkers": "any",
@@ -132,26 +133,28 @@
       },
       "evidence": [
         {
-          "sourceId": "INDIACODE",
+          "sourceId": "MOL",
           "citation": {
-            "reference": "Payment of Bonus Act, 1965",
+            "reference": "Payment of Bonus Act",
             "section": "",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-05",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-CODE-ON-WAGES"
+        ]
       }
     },
     {
@@ -160,7 +163,6 @@
       "description": "Calculate bonus payable using the statutory formula and applicable limits.",
       "category": "Payroll",
       "priority": "Mandatory",
-      "recommendation": "Retain the calculation inputs, assumptions, approvals and employee-level computation records.",
       "applicability": {
         "employeeCount": {
           "min": 20,
@@ -176,7 +178,7 @@
           "IN"
         ],
         "workerTypes": [
-          "employee"
+          "*"
         ],
         "womenEmployees": "any",
         "contractWorkers": "any",
@@ -187,26 +189,28 @@
       },
       "evidence": [
         {
-          "sourceId": "INDIACODE",
+          "sourceId": "MOL",
           "citation": {
-            "reference": "Payment of Bonus Act, 1965",
+            "reference": "Payment of Bonus Act",
             "section": "",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-05",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-CODE-ON-WAGES"
+        ]
       }
     },
     {
@@ -215,7 +219,6 @@
       "description": "Ensure statutory bonus is paid within the prescribed timelines.",
       "category": "Payroll",
       "priority": "Mandatory",
-      "recommendation": "Track the applicable payment deadline and retain evidence of employee-level disbursement.",
       "applicability": {
         "employeeCount": {
           "min": 20,
@@ -231,7 +234,7 @@
           "IN"
         ],
         "workerTypes": [
-          "employee"
+          "*"
         ],
         "womenEmployees": "any",
         "contractWorkers": "any",
@@ -242,26 +245,28 @@
       },
       "evidence": [
         {
-          "sourceId": "INDIACODE",
+          "sourceId": "MOL",
           "citation": {
-            "reference": "Payment of Bonus Act, 1965",
+            "reference": "Payment of Bonus Act",
             "section": "",
             "rule": "",
             "page": "",
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-05",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-CODE-ON-WAGES"
+        ]
       }
     },
     {
@@ -270,7 +275,6 @@
       "description": "Maintain statutory records relating to bonus computation and payment.",
       "category": "Documentation",
       "priority": "Mandatory",
-      "recommendation": "Maintain the prescribed registers and supporting payroll records for the required retention period.",
       "applicability": {
         "employeeCount": {
           "min": 20,
@@ -286,7 +290,7 @@
           "IN"
         ],
         "workerTypes": [
-          "employee"
+          "*"
         ],
         "womenEmployees": "any",
         "contractWorkers": "any",
@@ -306,17 +310,19 @@
             "excerpt": ""
           },
           "publishedAt": null,
-          "accessedAt": "2026-07-05",
-          "verificationStatus": "partially_verified"
+          "accessedAt": "2026-07-20",
+          "verificationStatus": "verified"
         }
       ],
       "temporal": {
         "effectiveFrom": null,
-        "effectiveTo": null,
-        "lastVerified": "2026-07-05",
-        "nextReviewDue": "2026-10-05",
+        "effectiveTo": "2025-11-20",
+        "lastVerified": "2026-07-20",
+        "nextReviewDue": "2026-08-19",
         "supersedes": [],
-        "supersededBy": []
+        "supersededBy": [
+          "CENTRAL-CODE-ON-WAGES"
+        ]
       }
     }
   ],
@@ -324,37 +330,37 @@
     {
       "id": "BONUS-EX-001",
       "title": "Eligibility Conditions",
-      "description": "Bonus eligibility depends upon the provisions of the Act, including salary limits, qualifying service and other statutory conditions."
+      "description": "Bonus eligibility depends upon the provisions of the Act including salary limits, qualifying service and other statutory conditions."
     }
   ],
   "sources": [
     {
       "sourceId": "MOL",
-      "name": "Ministry of Labour & Employment",
+      "name": "Ministry of Labour & Employment Labour Codes Portal",
       "sourceType": "official_portal",
-      "url": "https://labour.gov.in",
-      "authority": "Ministry of Labour & Employment",
+      "url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa",
+      "authority": "Ministry of Labour & Employment, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     },
     {
       "sourceId": "INDIACODE",
       "name": "India Code",
       "sourceType": "official_portal",
-      "url": "https://www.indiacode.nic.in",
-      "authority": "Government of India",
+      "url": "https://www.indiacode.nic.in/handle/123456789/15793",
+      "authority": "Legislative Department, Ministry of Law and Justice, Government of India",
       "publishedAt": null,
-      "accessedAt": "2026-07-05",
-      "verificationStatus": "partially_verified"
+      "accessedAt": "2026-07-20",
+      "verificationStatus": "verified"
     }
   ],
   "governance": {
     "owner": "GrowWithHR Compliance Data Team",
-    "reviewCadenceDays": 90,
+    "reviewCadenceDays": 30,
     "approvalStatus": "draft",
     "approvedBy": null,
     "approvedAt": null,
-    "changeSummary": "Migrated the existing Payment of Bonus Act record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+    "changeSummary": "Updated the Payment of Bonus Act record as a superseded historical record, preserved all legacy definitions, rule IDs, descriptions and eligibility exception, and linked current bonus compliance to the Code on Wages, 2019 from 21 November 2025."
   }
 }
