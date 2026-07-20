@@ -1,0 +1,459 @@
+{
+  "catalogVersion": "1.0.0",
+  "title": "GrowWithHR M2 Recommendation Rules",
+  "updatedAt": "2026-07-21",
+  "jurisdiction": "India",
+  "advisoryOnly": true,
+  "privateBetaOnly": true,
+  "stableReportMutation": false,
+  "defaults": {
+    "ruleVersion": "1.0.0",
+    "requiredFactMode": "all",
+    "evidence": {
+      "status": "not-requested",
+      "notes": "Evidence collection is not part of the current assessment.",
+      "verificationProcessId": null,
+      "verifiedAt": null
+    },
+    "limitations": [
+      "This advisory result is not legal certification.",
+      "Assessment answers have not been independently verified.",
+      "Source references support further review and do not prove applicability or compliance.",
+      "Professional review may be required before acting on legal, payroll, tax or employment obligations."
+    ]
+  },
+  "sources": [
+    {
+      "id": "source.labour-ministry.official-portal",
+      "title": "Ministry of Labour and Employment",
+      "publisher": "Government of India",
+      "url": "https://www.labour.gov.in/",
+      "jurisdiction": "India",
+      "sourceType": "official-portal",
+      "reviewedAt": "2026-07-21",
+      "notes": "Official ministry portal supplied for authoritative labour and employment information. The portal does not verify the assessed organisation or determine applicability by itself.",
+      "official": true
+    },
+    {
+      "id": "source.india-code.official-legislation",
+      "title": "India Code",
+      "publisher": "Legislative Department, Ministry of Law and Justice, Government of India",
+      "url": "https://www.indiacode.nic.in/",
+      "jurisdiction": "India",
+      "sourceType": "legislation",
+      "reviewedAt": "2026-07-21",
+      "notes": "Official legislation database supplied for further statutory research. A listed enactment must not be treated as applicable without evaluating the organisation's facts and jurisdiction.",
+      "official": true
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule.governance.primary-state.review",
+      "version": "1.0.0",
+      "domain": "governance",
+      "title": "Primary operating state review",
+      "description": "Determines whether the organisation has supplied the jurisdiction information needed for state-specific review.",
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.footprint.primary-state"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal",
+        "source.india-code.official-legislation"
+      ],
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.footprint.primary-state",
+            "operator": "exists"
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "A primary operating state was supplied, so state-specific employment and workplace requirements can be reviewed.",
+          "recommendation": {
+            "id": "recommendation.governance.review-state-specific-requirements",
+            "title": "Review state-specific requirements",
+            "action": "Use the confirmed primary operating state to identify which state-specific employment, workplace and establishment requirements require professional review.",
+            "timeline": "Before relying on state-specific compliance guidance",
+            "limitations": [
+              "Supplying a state does not establish that a particular state law applies.",
+              "Multi-state operations may require separate review for each location."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "The supplied primary-state fact did not contain a usable value.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "The primary operating state is missing, so state-specific requirements cannot be evaluated.",
+          "recommendation": {
+            "id": "recommendation.governance.confirm-primary-state",
+            "title": "Confirm the primary operating state",
+            "action": "Confirm the headquarters or principal operating state before relying on state-specific guidance.",
+            "timeline": "Before state-specific review",
+            "limitations": [
+              "No state-specific applicability conclusion has been reached."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rule.governance.employment-documentation.review",
+      "version": "1.0.0",
+      "domain": "governance",
+      "title": "Employment documentation review",
+      "description": "Identifies organisations reporting one or more employees for an advisory employment-documentation review.",
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.workforce.employee-count"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal",
+        "source.india-code.official-legislation"
+      ],
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.workforce.employee-count",
+            "operator": "greater-than",
+            "value": 0
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "The organisation reported one or more employees, making an employment-documentation review relevant to its current workforce.",
+          "recommendation": {
+            "id": "recommendation.governance.review-employment-documentation",
+            "title": "Review employment documentation",
+            "action": "Review offer letters, employment terms, onboarding records and related workforce documentation against the organisation's current operating context.",
+            "timeline": "Within 30 days",
+            "limitations": [
+              "The assessment does not inspect or verify employment documents.",
+              "Required documentation may vary by worker category, location and applicable law."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "The organisation reported no current employees, so the employee-documentation review condition is not currently met.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "Employee count is missing, so the workforce documentation rule cannot be evaluated.",
+          "recommendation": {
+            "id": "recommendation.workforce.confirm-employee-count",
+            "title": "Confirm the employee count",
+            "action": "Confirm the approximate number of current employees before evaluating workforce-related recommendations.",
+            "timeline": "Before workforce review",
+            "limitations": [
+              "No workforce-size applicability conclusion has been reached."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rule.workplace.multi-location.review",
+      "version": "1.0.0",
+      "domain": "workplace",
+      "title": "Multi-location operating-practice review",
+      "description": "Identifies organisations operating from more than one permanent location.",
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.footprint.multi-location"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal",
+        "source.india-code.official-legislation"
+      ],
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.footprint.multi-location",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "The reported location count indicates that the organisation operates from multiple permanent locations.",
+          "recommendation": {
+            "id": "recommendation.workplace.review-multi-location-practices",
+            "title": "Review multi-location workplace practices",
+            "action": "Review whether workplace policies, notices, records, ownership and employee communications are consistently managed across permanent locations.",
+            "timeline": "Within 60 days",
+            "limitations": [
+              "This rule identifies operating complexity and does not determine registration or filing requirements.",
+              "Each location may require separate jurisdiction-specific review."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "The reported location count does not currently indicate multiple permanent operating locations.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "The multi-location indicator could not be derived because sufficient location information was not supplied.",
+          "recommendation": {
+            "id": "recommendation.workplace.confirm-location-count",
+            "title": "Confirm the permanent location count",
+            "action": "Confirm the number of offices, plants, branches and other permanent operating sites.",
+            "timeline": "Before multi-location review",
+            "limitations": [
+              "No multi-location conclusion has been reached."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rule.workforce.distributed-workforce.review",
+      "version": "1.0.0",
+      "domain": "workforce",
+      "title": "Distributed workforce review",
+      "description": "Identifies organisations whose working model or remote-work answers indicate a distributed workforce.",
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.workforce.distributed-workforce"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal",
+        "source.india-code.official-legislation"
+      ],
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.workforce.distributed-workforce",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "The supplied working-model information indicates that at least part of the workforce operates across remote, hybrid, field-based or mixed arrangements.",
+          "recommendation": {
+            "id": "recommendation.workforce.review-distributed-work-practices",
+            "title": "Review distributed-work practices",
+            "action": "Review working-arrangement expectations, communication practices, manager responsibilities, record handling and location-specific considerations for distributed workers.",
+            "timeline": "Within 60 days",
+            "limitations": [
+              "This rule does not determine worker location, tax residence or employment-law jurisdiction.",
+              "Individual working arrangements may require specialist review."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "The supplied working-model information does not currently indicate a distributed workforce.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "The distributed-workforce indicator could not be derived from the supplied working-model information.",
+          "recommendation": {
+            "id": "recommendation.workforce.confirm-working-model",
+            "title": "Confirm the working model",
+            "action": "Confirm whether the workforce is primarily office-based, hybrid, remote, field-based, plant-based or mixed.",
+            "timeline": "Before distributed-work review",
+            "limitations": [
+              "No distributed-workforce conclusion has been reached."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rule.growth.rapid-change.workforce-planning",
+      "version": "1.0.0",
+      "domain": "growth",
+      "title": "Rapid-change workforce planning review",
+      "description": "Identifies organisations reporting significant hiring growth or active expansion plans.",
+      "requiredFactMode": "any",
+      "requiredFactIds": [
+        "fact.growth.rapid-growth",
+        "fact.growth.expansion-activity"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal"
+      ],
+      "match": {
+        "mode": "any",
+        "conditions": [
+          {
+            "factId": "fact.growth.rapid-growth",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "factId": "fact.growth.expansion-activity",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "The organisation reported significant hiring growth, active expansion or both, making structured workforce planning relevant.",
+          "recommendation": {
+            "id": "recommendation.growth.create-workforce-plan",
+            "title": "Create a workforce plan",
+            "action": "Document expected roles, hiring sequence, ownership, onboarding capacity, manager capacity and People-function support for the planned change.",
+            "timeline": "Before major hiring or expansion begins",
+            "limitations": [
+              "This recommendation is based on reported plans rather than verified forecasts.",
+              "The assessment does not evaluate financial capacity or labour-market availability."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "The supplied growth information does not currently indicate significant hiring growth or active expansion.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "Neither hiring-direction nor expansion information was available for evaluation.",
+          "recommendation": {
+            "id": "recommendation.growth.confirm-change-plans",
+            "title": "Confirm expected workforce changes",
+            "action": "Confirm expected hiring and expansion activity for the next 12 to 18 months.",
+            "timeline": "Before growth-readiness review",
+            "limitations": [
+              "No growth-readiness conclusion has been reached."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rule.people.ownership.formal-function-review",
+      "version": "1.0.0",
+      "domain": "people",
+      "title": "People-governance ownership review",
+      "description": "Identifies organisations where the supplied People-function model does not indicate a dedicated HR team or dedicated HR professional.",
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.people.formal-people-function"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal"
+      ],
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.people.formal-people-function",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "The supplied People-function model does not indicate a dedicated internal HR team or dedicated HR professional.",
+          "recommendation": {
+            "id": "recommendation.people.assign-governance-owner",
+            "title": "Assign clear People-governance ownership",
+            "action": "Name an accountable owner for employment documentation, workforce records, policy review, employee concerns and professional escalation.",
+            "timeline": "Within 30 days",
+            "limitations": [
+              "A named owner does not replace specialist legal, payroll, tax or HR support.",
+              "The assessment does not evaluate the capability or authority of the current owner."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "The organisation reported a dedicated HR team or dedicated HR professional.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "The current People-function model was not supplied, so governance ownership cannot be evaluated.",
+          "recommendation": {
+            "id": "recommendation.people.confirm-function-model",
+            "title": "Confirm the People-function model",
+            "action": "Confirm who currently owns People and HR decisions, records, policies and employee support.",
+            "timeline": "Before governance-ownership review",
+            "limitations": [
+              "No People-governance ownership conclusion has been reached."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rule.people.priority.policies-compliance",
+      "version": "1.0.0",
+      "domain": "people",
+      "title": "Policies and compliance priority",
+      "description": "Identifies when the user explicitly selected policies and compliance as an advisory priority.",
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.people.priorities"
+      ],
+      "sourceIds": [
+        "source.labour-ministry.official-portal",
+        "source.india-code.official-legislation"
+      ],
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.people.priorities",
+            "operator": "contains",
+            "value": "policies-compliance"
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "applicable",
+          "reason": "Policies and compliance was explicitly selected as an area where guidance would be useful.",
+          "recommendation": {
+            "id": "recommendation.people.review-policy-framework",
+            "title": "Review the policy framework",
+            "action": "Create an inventory of current workforce policies, identify ownership and review dates, and prioritise missing or outdated materials for professional review.",
+            "timeline": "Within 60 days",
+            "limitations": [
+              "Selecting a priority does not establish that a particular policy is legally required.",
+              "The assessment does not inspect existing policies or verify their adequacy."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reason": "Policies and compliance was not selected as a current advisory priority.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reason": "No advisory priorities were supplied, so the selected-priority rule cannot be evaluated.",
+          "recommendation": null
+        }
+      }
+    }
+  ]
+}
