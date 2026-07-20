@@ -1,234 +1,351 @@
 {
-  "stateId": "DNDD",
-  "stateName": "Dadra and Nagar Haveli and Daman and Diu",
-  "lastVerified": "2026-07-05",
-  "status": "Active",
-
+  "schemaVersion": "1.0",
+  "recordVersion": "1.0.0",
+  "id": "STATE-DH",
+  "name": "Dadra and Nagar Haveli and Daman and Diu Labour Laws",
+  "shortName": "Dadra and Nagar Haveli and Daman and Diu",
+  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Dadra and Nagar Haveli and Daman and Diu.",
+  "jurisdiction": {
+    "country": "IN",
+    "level": "union_territory",
+    "code": "IN-DH",
+    "stateCode": "DH"
+  },
   "authority": {
-    "department": "Labour Department, Dadra and Nagar Haveli and Daman and Diu Administration",
+    "name": "Labour Department, Dadra and Nagar Haveli and Daman and Diu Administration",
     "sourceId": "DNDD-LABOUR"
   },
-
-  "overview": "Union Territory-specific labour law requirements applicable to establishments operating in Dadra and Nagar Haveli and Daman and Diu.",
-
+  "status": "active",
+  "temporal": {
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "lastVerified": "2026-07-05",
+    "nextReviewDue": "2026-10-03",
+    "supersedes": [],
+    "supersededBy": []
+  },
   "rules": [
-
     {
       "id": "DNDD-001",
-
       "title": "Review Shops and Establishments Registration",
-
-      "priority": "Mandatory",
-
-      "category": "Shops & Establishments",
-
       "description": "Determine whether registration under the applicable Shops and Establishments legislation is required.",
-
+      "category": "Shops & Establishments",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-DH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "DNDD-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Shops and Establishments legislation"
+          "sourceId": "DNDD-LABOUR",
+          "citation": {
+            "reference": "Applicable Shops and Establishments legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "DNDD-002",
-
       "title": "Maintain Statutory Registers and Employment Records",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Maintain statutory registers, employee records and notices prescribed under applicable labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-DH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "DNDD-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Labour Rules"
+          "sourceId": "DNDD-LABOUR",
+          "citation": {
+            "reference": "Applicable Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "DNDD-003",
-
       "title": "Display Statutory Notices",
-
-      "priority": "Mandatory",
-
-      "category": "Documentation",
-
       "description": "Display statutory notices and abstracts required under applicable labour legislation.",
-
+      "category": "Documentation",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-DH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "DNDD-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Labour Rules"
+          "sourceId": "DNDD-LABOUR",
+          "citation": {
+            "reference": "Applicable Labour Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "DNDD-004",
-
       "title": "Review Working Hours, Leave and Weekly Holidays",
-
-      "priority": "Mandatory",
-
-      "category": "Working Conditions",
-
       "description": "Ensure compliance with provisions governing working hours, overtime, weekly holidays and leave.",
-
+      "category": "Working Conditions",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-DH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "DNDD-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Shops and Establishments Rules"
+          "sourceId": "DNDD-LABOUR",
+          "citation": {
+            "reference": "Applicable Shops and Establishments Rules",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     },
-
     {
       "id": "DNDD-005",
-
       "title": "Review Labour Welfare and Local Notifications",
-
-      "priority": "Mandatory",
-
-      "category": "Labour Welfare",
-
       "description": "Review labour welfare obligations, local notifications and employer responsibilities applicable within the Union Territory.",
-
+      "category": "Labour Welfare",
+      "priority": "Mandatory",
       "applicability": {
-
         "employeeCount": {
-          "min": 1
+          "min": 1,
+          "max": null
         },
-
         "entityTypes": [
           "*"
         ],
-
         "industries": [
           "*"
-        ]
-
+        ],
+        "jurisdictions": [
+          "IN-DH"
+        ],
+        "workerTypes": [
+          "*"
+        ],
+        "womenEmployees": "any",
+        "contractWorkers": "any",
+        "factory": "any",
+        "warehouse": "any",
+        "conditions": [],
+        "exclusions": []
       },
-
-      "sourceId": "DNDD-LABOUR",
-
-      "citations": [
+      "evidence": [
         {
-          "reference": "Applicable Labour Welfare legislation"
+          "sourceId": "DNDD-LABOUR",
+          "citation": {
+            "reference": "Applicable Labour Welfare legislation",
+            "section": "",
+            "rule": "",
+            "page": "",
+            "excerpt": ""
+          },
+          "publishedAt": null,
+          "accessedAt": "2026-07-05",
+          "verificationStatus": "partially_verified"
         }
-      ]
+      ],
+      "temporal": {
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "lastVerified": "2026-07-05",
+        "nextReviewDue": "2026-10-03",
+        "supersedes": [],
+        "supersededBy": []
+      }
     }
-
   ],
-
-  "recommended": [
-
+  "recommendations": [
     {
       "id": "DNDDR-001",
-
       "title": "Annual Labour Compliance Audit",
-
       "description": "Conduct an annual review of registrations, statutory records, inspections and labour law compliance."
     },
-
     {
       "id": "DNDDR-002",
-
       "title": "Digital Compliance Calendar",
-
       "description": "Maintain a digital calendar for labour compliance due dates, inspections and renewals."
     }
-
   ],
-
-  "references": [
-
+  "sources": [
     {
-      "sourceId": "DNDD-LABOUR"
+      "sourceId": "DNDD-LABOUR",
+      "name": "Labour Department, Dadra and Nagar Haveli and Daman and Diu Administration",
+      "sourceType": "official_portal",
+      "url": null,
+      "authority": "Labour Department, Dadra and Nagar Haveli and Daman and Diu Administration",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "MOL"
+      "sourceId": "MOL",
+      "name": "Ministry of Labour & Employment",
+      "sourceType": "official_portal",
+      "url": "https://labour.gov.in",
+      "authority": "Ministry of Labour & Employment",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     },
-
     {
-      "sourceId": "INDIACODE"
+      "sourceId": "INDIACODE",
+      "name": "India Code",
+      "sourceType": "official_portal",
+      "url": "https://www.indiacode.nic.in",
+      "authority": "India Code",
+      "publishedAt": null,
+      "accessedAt": "2026-07-05",
+      "verificationStatus": "partially_verified"
     }
-
-  ]
-
+  ],
+  "governance": {
+    "owner": "GrowWithHR Compliance Data Team",
+    "reviewCadenceDays": 90,
+    "approvalStatus": "draft",
+    "approvedBy": null,
+    "approvedAt": null,
+    "changeSummary": "Migrated the existing Dadra and Nagar Haveli and Daman and Diu labour law record to compliance-law schema version 1.0 without independently expanding its legal coverage."
+  }
 }
