@@ -38,6 +38,7 @@
     "test:report-scenarios": "node tests/report-dynamic-scenarios.js",
     "test:golden": "node tests/golden-scenario-checks.js",
     "test": "npm run test:baseline && npm run test:m1 && npm run test:m2 && npm run test:m3 && npm run test:static && npm run test:frontend && npm run test:journeys && npm run test:report-scenarios && npm run test:golden && npm run test:ux",
+    "test:release": "npm run version:check && npm run validate:compliance && npm test",
     "test:e2e": "playwright test",
     "test:advisory": "playwright test tests/e2e/analyze-company-current.spec.ts",
     "version:sync": "node scripts/sync-version.mjs",
