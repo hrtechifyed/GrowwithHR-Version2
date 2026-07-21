@@ -126,11 +126,12 @@ jobs:
         run: |
           set +e
           gh api --method PATCH "repos/${GITHUB_REPOSITORY}" \
-            -f description='Rules-based executive HR and compliance advisory with explainable recommendations, browser-generated reports and a private-beta Compliance DNA experience.'
+            -f description='Rules-based executive HR and compliance advisory with explainable recommendations, browser-generated reports and a private-beta Compliance DNA experience.' \
+            > repair-diagnostics/metadata-description.log 2>&1
           DESCRIPTION_STATUS=$?
           gh api --method PUT "repos/${GITHUB_REPOSITORY}/topics" \
             -H 'Accept: application/vnd.github+json' \
-            --input - <<'JSON'
+            --input - > repair-diagnostics/metadata-topics.log 2>&1 <<'JSON'
           {"names":["hr-tech","compliance","people-operations","executive-advisory","javascript","playwright","explainable-ai","india"]}
           JSON
           TOPICS_STATUS=$?
@@ -138,15 +139,45 @@ jobs:
           echo "topics_status=${TOPICS_STATUS}" >> "$GITHUB_OUTPUT"
           exit 0
 
-      - name: Commit validated repairs
+      - name: Commit and publish validated repairs
+        id: publish
         shell: bash
         run: |
-          set -euo pipefail
+          set +e
           rm -f .github/workflows/apply-client-readiness.yml
           rm -f .github/workflows/run-client-readiness-on-pr.yml
-          rm -rf playwright-report test-results repair-diagnostics
+          rm -rf playwright-report test-results
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add --all
-          git commit -m "fix: complete client-readiness hygiene and verification"
-          git push origin HEAD:fix/client-readiness-v0.18.0
+          git commit -m "fix: complete client-readiness hygiene and verification" \
+            > repair-diagnostics/commit.log 2>&1
+          COMMIT_STATUS=$?
+          if [[ "$COMMIT_STATUS" -eq 0 ]]; then
+            git rev-parse HEAD > repair-diagnostics/generated-commit.txt
+            git bundle create repair-diagnostics/client-readiness.bundle HEAD main \
+              >> repair-diagnostics/commit.log 2>&1
+            git archive --format=tar.gz -o repair-diagnostics/client-readiness-tree.tar.gz HEAD
+            git push origin HEAD:fix/client-readiness-v0.18.0 \
+              > repair-diagnostics/push.log 2>&1
+            PUSH_STATUS=$?
+          else
+            PUSH_STATUS=99
+          fi
+          cat repair-diagnostics/commit.log
+          cat repair-diagnostics/push.log 2>/dev/null || true
+          echo "status=${PUSH_STATUS}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload validated repair package
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-readiness-validated-repair
+          path: repair-diagnostics/
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Require successful publication
+        if: steps.publish.outputs.status != '0'
+        run: exit 1
