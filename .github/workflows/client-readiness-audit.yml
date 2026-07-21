@@ -1,0 +1,461 @@
+name: Client Readiness Audit
+
+on:
+  push:
+    branches:
+      - audit/client-readiness-v0.18.0
+    paths:
+      - .github/workflows/client-readiness-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      CI: true
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install project dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Prepare audit directory
+        run: mkdir -p audit-output
+
+      - name: Record repository metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}" \
+            --jq '{description, homepage, topics, default_branch, visibility}' \
+            > audit-output/repository-metadata.json
+
+      - name: Run static repository audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from __future__ import annotations
+          import json
+          import os
+          import re
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+
+          root = Path('.').resolve()
+          output = root / 'audit-output'
+          output.mkdir(exist_ok=True)
+
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.links = []
+                  self.ids = set()
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if attrs.get('id'):
+                      self.ids.add(attrs['id'])
+                  for key in ('href', 'src'):
+                      if attrs.get(key):
+                          self.links.append((tag, key, attrs[key]))
+
+          package = json.loads((root / 'package.json').read_text())
+          package_version = package.get('version')
+          app_config = (root / 'js/config/app-config.js').read_text()
+          app_version_match = re.search(r'version:\s*"([^"]+)"', app_config)
+          app_version = app_version_match.group(1) if app_version_match else None
+
+          html_files = sorted(p for p in root.rglob('*.html') if not any(x in p.parts for x in ('.git', 'node_modules', 'playwright-report', 'test-results')))
+          footer_versions = {}
+          assessment_configs = {}
+          broken_links = []
+          missing_anchors = []
+
+          parsed = {}
+          for html in html_files:
+              text = html.read_text(errors='replace')
+              parser = Parser()
+              parser.feed(text)
+              parsed[html] = parser
+              versions = re.findall(r'GrowWithHR\s+(?:Public|Private Beta)\s+([0-9A-Za-z.-]+)', text)
+              if versions:
+                  footer_versions[str(html.relative_to(root))] = sorted(set(versions))
+              config_match = re.search(r'<script[^>]+id=["\']assessmentConfig["\'][^>]*>(.*?)</script>', text, re.S | re.I)
+              if config_match:
+                  try:
+                      assessment_configs[str(html.relative_to(root))] = json.loads(config_match.group(1))
+                  except Exception as exc:
+                      assessment_configs[str(html.relative_to(root))] = {'parseError': str(exc)}
+
+          for html, parser in parsed.items():
+              for tag, attr, raw in parser.links:
+                  raw = raw.strip()
+                  if not raw or raw.startswith(('#', 'mailto:', 'tel:', 'javascript:', 'data:')):
+                      if raw.startswith('#') and len(raw) > 1 and raw[1:] not in parser.ids:
+                          missing_anchors.append({'file': str(html.relative_to(root)), 'link': raw})
+                      continue
+                  split = urlsplit(raw)
+                  if split.scheme or split.netloc or raw.startswith('//'):
+                      continue
+                  path_part = unquote(split.path)
+                  if not path_part:
+                      if split.fragment and split.fragment not in parser.ids:
+                          missing_anchors.append({'file': str(html.relative_to(root)), 'link': raw})
+                      continue
+                  target = (html.parent / path_part).resolve()
+                  try:
+                      target.relative_to(root)
+                  except ValueError:
+                      broken_links.append({'file': str(html.relative_to(root)), 'link': raw, 'reason': 'outside repository'})
+                      continue
+                  if target.is_dir():
+                      target = target / 'index.html'
+                  if not target.exists():
+                      broken_links.append({'file': str(html.relative_to(root)), 'link': raw, 'reason': 'missing target'})
+                      continue
+                  if split.fragment and target.suffix.lower() == '.html':
+                      target_parser = parsed.get(target)
+                      if target_parser and split.fragment not in target_parser.ids:
+                          missing_anchors.append({'file': str(html.relative_to(root)), 'link': raw})
+
+          public_suspicious = []
+          for path in sorted(root.rglob('*')):
+              if not path.is_file() or any(x in path.parts for x in ('.git', 'node_modules', 'playwright-report', 'test-results')):
+                  continue
+              rel = str(path.relative_to(root))
+              name = path.name.lower()
+              if re.search(r'(backup|copy)', name):
+                  public_suspicious.append(rel)
+              elif path.parent == root and re.search(r'(^|[-_.])(v2|v3|test)([-_.]|$)', name):
+                  public_suspicious.append(rel)
+
+          client_facing_html = [str(p.relative_to(root)) for p in html_files if p.parent == root or p.parent.name == 'pages']
+
+          index_text = (root / 'index.html').read_text()
+          status_labels = re.findall(r'<h3>\s*([^<]*(?:Implemented|to be done|in progress)[^<]*)\s*</h3>', index_text, re.I)
+
+          css_text = (root / 'css/13-intro-experience.css').read_text()
+          selector_counts = {
+              selector: len(re.findall(re.escape(selector), css_text))
+              for selector in ('.coach-typing', '.coach-line', '.intro-screen', '.intro-scene', '.intro-card')
+          }
+
+          js_files = sorted(root.rglob('*.js'))
+          instantiations = []
+          for path in js_files:
+              if any(x in path.parts for x in ('.git', 'node_modules')):
+                  continue
+              text = path.read_text(errors='replace')
+              for pattern in (r'new\s+ExecutiveAssessment\s*\(', r'new\s+ExecutiveAdvisoryBriefing\s*\('):
+                  count = len(re.findall(pattern, text))
+                  if count:
+                      instantiations.append({'file': str(path.relative_to(root)), 'pattern': pattern, 'count': count})
+
+          intro_references = []
+          for html in html_files:
+              text = html.read_text(errors='replace')
+              refs = []
+              if 'js/intro-sequence.js' in text:
+                  refs.append('js/intro-sequence.js')
+              if 'css/13-intro-experience.css' in text or '13-intro-experience.css' in text:
+                  refs.append('css/13-intro-experience.css')
+              if refs:
+                  intro_references.append({'file': str(html.relative_to(root)), 'references': refs})
+
+          key_pattern = re.compile(r'growwithhr-[a-z0-9-]+')
+          code_keys = set()
+          doc_keys = set()
+          for path in root.rglob('*'):
+              if not path.is_file() or any(x in path.parts for x in ('.git', 'node_modules')):
+                  continue
+              if path.suffix.lower() not in {'.js', '.html', '.json', '.md', '.ts', '.tsx'}:
+                  continue
+              text = path.read_text(errors='replace')
+              keys = set(key_pattern.findall(text.lower()))
+              if path.suffix.lower() in {'.md'} or path.name == 'more-info.html':
+                  doc_keys.update(keys)
+              else:
+                  code_keys.update(keys)
+
+          report = {
+              'headSha': os.environ.get('GITHUB_SHA'),
+              'packageVersion': package_version,
+              'appConfigVersion': app_version,
+              'footerVersions': footer_versions,
+              'assessmentConfigs': assessment_configs,
+              'brokenInternalLinks': broken_links,
+              'missingInternalAnchors': missing_anchors,
+              'clientFacingHtml': client_facing_html,
+              'suspiciousPublicFilenames': public_suspicious,
+              'homepageStatusLabels': status_labels,
+              'introSelectorOccurrenceCounts': selector_counts,
+              'assessmentInstantiations': instantiations,
+              'introAssetReferences': intro_references,
+              'codeStorageKeys': sorted(code_keys),
+              'documentedStorageKeys': sorted(doc_keys),
+              'reactLayerDeclaredExperimentalInReadme': 'experimental React and TypeScript UX layer' in (root / 'README.md').read_text(),
+              'canonicalDocs': {name: (root / name).exists() for name in ('CHANGELOG.md', 'RELEASE_NOTES.md', 'ROADMAP.md', 'update.md')},
+          }
+          (output / 'static-audit.json').write_text(json.dumps(report, indent=2) + '\n')
+
+          lines = [
+              f"HEAD: {report['headSha']}",
+              f"package.json version: {package_version}",
+              f"app-config version: {app_version}",
+              f"Assessment configs: {json.dumps(assessment_configs, sort_keys=True)}",
+              f"Broken internal links: {len(broken_links)}",
+              f"Missing internal anchors: {len(missing_anchors)}",
+              f"Suspicious public filenames: {public_suspicious}",
+              f"Homepage status labels: {status_labels}",
+              f"Intro selector occurrences: {selector_counts}",
+              f"Assessment instantiation paths: {instantiations}",
+              f"Intro asset references: {intro_references}",
+              f"Code storage keys: {sorted(code_keys)}",
+              f"Documented storage keys: {sorted(doc_keys)}",
+          ]
+          (output / 'static-audit.txt').write_text('\n'.join(lines) + '\n')
+          PY
+
+      - name: Verify JavaScript syntax
+        shell: bash
+        run: |
+          set +e
+          {
+            echo "node --check js/intro-sequence.js"
+            node --check js/intro-sequence.js
+            echo "intro_exit_code=$?"
+            echo "node --check js/executive-assessment.js"
+            node --check js/executive-assessment.js
+            echo "assessment_exit_code=$?"
+          } > audit-output/javascript-syntax.txt 2>&1
+          exit 0
+
+      - name: Run maintained regression suite
+        shell: bash
+        run: |
+          set +e
+          npm test > audit-output/npm-test.log 2>&1
+          echo "exit_code=$?" >> audit-output/npm-test.log
+          exit 0
+
+      - name: Audit backend health and rate limiting locally
+        shell: bash
+        run: |
+          set +e
+          PORT=4174 node server.js > audit-output/server.log 2>&1 &
+          SERVER_PID=$!
+          for i in $(seq 1 40); do
+            curl -fsS http://127.0.0.1:4174/api/health > audit-output/health.json && break
+            sleep 0.25
+          done
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('audit-output/health.json')
+          result = {'available': p.exists(), 'secretFieldNames': [], 'containsTokenLikeValue': False}
+          if p.exists():
+              raw = p.read_text()
+              try:
+                  data = json.loads(raw)
+              except Exception:
+                  data = {'raw': raw}
+              secret_names = {'clientSecret','refreshToken','googleClientSecret','googleRefreshToken','token','secret'}
+              result['secretFieldNames'] = sorted(set(secret_names).intersection(data.keys() if isinstance(data, dict) else []))
+              result['containsTokenLikeValue'] = any(marker in raw for marker in ('ya29.', '1//', 'GOCSPX-', '-----BEGIN'))
+              result['body'] = data
+          Path('audit-output/health-audit.json').write_text(json.dumps(result, indent=2) + '\n')
+          PY
+          : > audit-output/rate-limit-statuses.txt
+          for i in $(seq 1 40); do
+            curl -sS -o /dev/null -w '%{http_code}\n' \
+              -H 'Content-Type: application/json' \
+              -d '{}' \
+              http://127.0.0.1:4174/api/send-advisory \
+              >> audit-output/rate-limit-statuses.txt
+          done
+          sort audit-output/rate-limit-statuses.txt | uniq -c > audit-output/rate-limit-summary.txt
+          kill "$SERVER_PID" 2>/dev/null || true
+          wait "$SERVER_PID" 2>/dev/null || true
+          exit 0
+
+      - name: Audit git history for credential exposure indicators
+        shell: bash
+        run: |
+          set +e
+          {
+            echo "Tracked or historically committed .env-style paths:"
+            git log --all --full-history --name-only --pretty=format: -- \
+              | sed '/^$/d' \
+              | grep -E '(^|/)(\.env($|\.)|credentials?\.|client[-_]?secret|refresh[-_]?token)' \
+              | sort -u || true
+            echo
+            echo "Commits touching high-risk credential identifiers outside docs and templates:"
+            git log --all --oneline \
+              -G 'GOOGLE_CLIENT_SECRET|GOOGLE_REFRESH_TOKEN|ghp_[A-Za-z0-9]+|AIza[A-Za-z0-9_-]+|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY' \
+              -- . ':(exclude)*.md' ':(exclude).env.example' ':(exclude)package-lock.json' || true
+          } > audit-output/history-secret-indicators.txt 2>&1
+          exit 0
+
+      - name: Install Playwright browsers
+        shell: bash
+        run: |
+          npm install --no-save --no-audit --no-fund @playwright/test
+          npx playwright install --with-deps chromium webkit
+
+      - name: Create browser audit specification
+        shell: bash
+        run: |
+          cat > tests/e2e/client-readiness-audit.temp.spec.ts <<'EOF'
+          import { expect, test } from '@playwright/test';
+
+          function collectConsoleProblems(page: import('@playwright/test').Page) {
+            const problems: string[] = [];
+            page.on('console', message => {
+              if (message.type() === 'error' || message.type() === 'warning') {
+                problems.push(`${message.type()}: ${message.text()}`);
+              }
+            });
+            page.on('pageerror', error => problems.push(`pageerror: ${error.message}`));
+            return problems;
+          }
+
+          test('homepage carousel advances and returns without console failures', async ({ page }) => {
+            const problems = collectConsoleProblems(page);
+            await page.goto('/index.html', { waitUntil: 'networkidle' });
+            const track = page.locator('.carousel-track');
+            const slides = page.locator('.capability-slide');
+            await expect(track).toBeVisible();
+            await expect(slides).toHaveCount(8);
+            await page.locator('.carousel-track').hover();
+            const before = await track.evaluate(el => el.scrollLeft);
+            await page.locator('.carousel-arrow.next').click();
+            await page.waitForTimeout(800);
+            const after = await track.evaluate(el => el.scrollLeft);
+            expect(after).toBeGreaterThan(before);
+            await expect(slides.nth(1)).toHaveClass(/active/);
+            await page.locator('.carousel-arrow.prev').click();
+            await page.waitForTimeout(800);
+            await expect(slides.nth(0)).toHaveClass(/active/);
+            expect(problems).toEqual([]);
+          });
+
+          test('stable assessment starts cleanly with one controller and no console failures', async ({ page }) => {
+            const problems = collectConsoleProblems(page);
+            await page.goto('/analyze-company.html', { waitUntil: 'networkidle' });
+            await expect(page.locator('#landingScreen')).toBeVisible();
+            expect(await page.evaluate(() => localStorage.length)).toBe(0);
+            expect(await page.evaluate(() => Boolean((window as any).executiveAssessment))).toBe(true);
+            const stageTop = await page.locator('.advisory-entry__stage').evaluate(el => el.getBoundingClientRect().top);
+            expect(stageTop).toBeLessThan(await page.evaluate(() => innerHeight));
+            await page.locator('#startAssessment').click();
+            await expect(page.locator('#conversationWorkspace')).toBeVisible();
+            expect(problems).toEqual([]);
+          });
+
+          test('legacy assessment intro route is syntactically and visually operable if directly opened', async ({ page }) => {
+            const problems = collectConsoleProblems(page);
+            const response = await page.goto('/assessment.html?e2e=1', { waitUntil: 'networkidle' });
+            expect(response?.status()).toBe(200);
+            await expect(page.locator('.intro-stage')).toBeVisible();
+            await page.waitForTimeout(900);
+            await expect(page.locator('#startAssessment')).toBeVisible();
+            expect(problems).toEqual([]);
+          });
+
+          test('sample advisory report presents visible finished content', async ({ page }) => {
+            const problems = collectConsoleProblems(page);
+            const response = await page.goto('/sample-advisory-report.html', { waitUntil: 'networkidle' });
+            expect(response?.status()).toBe(200);
+            await expect(page.locator('body')).toBeVisible();
+            expect((await page.locator('body').innerText()).trim().length).toBeGreaterThan(1000);
+            expect(problems).toEqual([]);
+          });
+          EOF
+
+          cat > playwright.audit.config.ts <<'EOF'
+          import { defineConfig, devices } from '@playwright/test';
+          export default defineConfig({
+            testDir: './tests/e2e',
+            timeout: 40_000,
+            expect: { timeout: 10_000 },
+            fullyParallel: false,
+            retries: 0,
+            reporter: [['list'], ['html', { outputFolder: 'audit-output/playwright-report', open: 'never' }]],
+            use: { baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
+            webServer: { command: 'python3 -m http.server 4173', url: 'http://127.0.0.1:4173', reuseExistingServer: false },
+            projects: [
+              { name: 'chromium-desktop', use: { ...devices['Desktop Chrome'] } },
+              { name: 'webkit-desktop', use: { ...devices['Desktop Safari'] } },
+              { name: 'mobile-chromium', use: { ...devices['Pixel 7'] } },
+              { name: 'mobile-webkit', use: { ...devices['iPhone 13'] } }
+            ]
+          });
+          EOF
+
+      - name: Run browser audit across Chromium, WebKit and mobile emulation
+        shell: bash
+        run: |
+          set +e
+          npx playwright test tests/e2e/client-readiness-audit.temp.spec.ts \
+            --config=playwright.audit.config.ts \
+            > audit-output/playwright-audit.log 2>&1
+          echo "exit_code=$?" >> audit-output/playwright-audit.log
+          rm -f tests/e2e/client-readiness-audit.temp.spec.ts playwright.audit.config.ts
+          exit 0
+
+      - name: Write audit summary
+        shell: bash
+        run: |
+          set +e
+          {
+            echo '# Client Readiness Audit'
+            echo
+            echo '## Repository metadata'
+            cat audit-output/repository-metadata.json
+            echo
+            echo '## Static audit'
+            cat audit-output/static-audit.txt
+            echo
+            echo '## JavaScript syntax'
+            cat audit-output/javascript-syntax.txt
+            echo
+            echo '## Backend health audit'
+            cat audit-output/health-audit.json
+            echo
+            echo '## Rate-limit response counts'
+            cat audit-output/rate-limit-summary.txt
+            echo
+            echo '## Secret-history indicators'
+            cat audit-output/history-secret-indicators.txt
+            echo
+            echo '## Maintained test exit'
+            tail -n 5 audit-output/npm-test.log
+            echo
+            echo '## Browser audit exit'
+            tail -n 20 audit-output/playwright-audit.log
+          } > audit-output/summary.md
+          exit 0
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-readiness-audit
+          path: audit-output/
+          if-no-files-found: error
+          retention-days: 7
