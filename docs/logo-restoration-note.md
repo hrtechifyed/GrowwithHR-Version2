@@ -1,0 +1,1 @@
+The public navbar uses the established HRTechify artwork from `assets/hrtechify-logo.png`. Presentation CSS removes the dark tile visually inside the dark navigation capsule without redrawing or replacing the logo artwork.
