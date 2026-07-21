@@ -558,3 +558,18 @@ body.home-page .hero-v2 .hero-actions button {
     pointer-events: auto;
     cursor: pointer;
 }
+
+
+/* Client-readiness repair: desktop controls must remain visible and operable. */
+@media (min-width: 768px) {
+  body.home-page .capability-carousel {
+    display: grid !important;
+    grid-template-columns: 56px minmax(0, 1fr) 56px !important;
+  }
+
+  body.home-page .carousel-arrow {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}

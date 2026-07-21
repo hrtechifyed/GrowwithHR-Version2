@@ -6,6 +6,17 @@ All notable changes to GrowWithHR are documented here.
 
 ## [Unreleased]
 
+### Client readiness
+
+- Clarified the production stack and canonical documentation.
+- Restored visible desktop capability-carousel controls.
+- Retired obsolete duplicate routes and unused backup/legacy files.
+- Added a valid favicon and repaired internal file references.
+- Separated product, experience and schema versions in the assessment configuration.
+- Reworded the illustrative report to use safe advisory and source-reference language.
+- Added maintained client-readiness static and browser checks.
+- Recorded the historical credential-rotation and history-purge release blocker.
+
 ### Documentation
 
 - Updated `docs/ARCHITECTURE.md` to reflect the current deployed architecture.

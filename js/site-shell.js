@@ -141,7 +141,6 @@
         const activeByFile = {
             "index.html": "platform",
             "analyze-company.html": "analyze",
-            "assessment.html": "analyze",
             "official-resources.html": "resources",
             "sample-advisory-report.html": "sample",
             "executive-advisory-report.html": "sample",
@@ -149,9 +148,7 @@
             "advisory-dashboard.html": "platform",
             "growth-roadmap.html": "platform",
             "people-roadmap.html": "platform",
-            "compliance-roadmap.html": "platform",
-            "company-profile.html": "platform",
-            "organization-profile.html": "platform"
+            "compliance-roadmap.html": "platform"
         };
 
         return activeByFile[fileName] || "";

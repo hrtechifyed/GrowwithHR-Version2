@@ -1,3 +1,5 @@
+> **Historical audit record:** retained for implementation history; the active public route is `/analyze-company.html`.
+
 # GrowWithHR repository audit for stacked cards and advisory flow
 
 ## Files inspected

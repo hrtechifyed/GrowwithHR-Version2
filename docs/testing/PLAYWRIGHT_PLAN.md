@@ -1,3 +1,5 @@
+> **Testing reference:** use with `docs/TESTING_CHECKLIST.md`.
+
 # GrowWithHR Stacked Cards + Advisory Flow Test Plan
 
 ## Environment status

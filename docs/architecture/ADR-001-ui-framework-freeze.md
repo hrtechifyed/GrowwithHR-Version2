@@ -1,3 +1,5 @@
+> **Decision remains active:** production stays framework-free through the current roadmap unless superseded by a new ADR.
+
 # ADR-001: Freeze the Production UI Framework
 
 ## Status

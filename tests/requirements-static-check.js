@@ -43,15 +43,9 @@ function includes(
 const htmlFiles = [
     "index.html",
     "analyze-company.html",
-    "assessment.html",
     "official-resources.html",
     "sample-advisory-report.html",
     "more-info.html",
-    "compliance-roadmap.html",
-    "growth-roadmap.html",
-    "people-roadmap.html",
-    "pages/company-profile.html",
-    "pages/organization-profile.html"
 ];
 
 for (const file of htmlFiles) {

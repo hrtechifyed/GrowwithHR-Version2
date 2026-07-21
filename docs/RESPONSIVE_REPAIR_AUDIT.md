@@ -1,3 +1,5 @@
+> **Historical audit record:** retained for implementation history; current requirements are in `docs/TESTING_CHECKLIST.md`.
+
 # Responsive Repair Audit
 
 ## Baseline

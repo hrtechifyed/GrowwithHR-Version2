@@ -1,3 +1,5 @@
+> **Current UX decision:** the root HTML/CSS/JavaScript application is production; the React/TypeScript layer is archived.
+
 # UX Decisions
 
 This document records important GrowWithHR product and UX decisions.

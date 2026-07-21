@@ -145,6 +145,14 @@ function collectHtmlFiles(directory) {
 
 collectHtmlFiles(rootDirectory);
 
+/** Keep embedded applicationVersion fields aligned with package.json. */
+for (const relativePath of htmlFiles) {
+    processFile(relativePath, (source) => {
+        if (!source.includes('"applicationVersion"')) return source;
+        return source.replace(/"applicationVersion"\s*:\s*"[^"]+"/g, `"applicationVersion": "${version}"`);
+    });
+}
+
 /**
  * Keep every visible product-version footer aligned.
  */

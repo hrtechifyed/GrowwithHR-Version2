@@ -1,3 +1,5 @@
+> **Testing reference:** use with `docs/TESTING_CHECKLIST.md`.
+
 # GrowWithHR Responsive Manual Test Matrix
 
 Version: 0.15.0-beta  

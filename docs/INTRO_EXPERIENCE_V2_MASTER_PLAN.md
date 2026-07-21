@@ -1,3 +1,5 @@
+> **Historical plan:** the former animated intro route is retired; `/assessment.html` now redirects to the stable assessment.
+
 # GrowWithHR Intro Experience v2.0 & Production Readiness Master Plan
 
 Version: `v0.15.0-beta`

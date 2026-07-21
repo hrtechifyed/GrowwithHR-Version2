@@ -1,3 +1,5 @@
+> **Current design reference:** verify implementation against the production root HTML/CSS/JavaScript stack.
+
 # GrowWithHR Design System
 
 ## Design Philosophy

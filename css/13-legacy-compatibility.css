@@ -1,12 +1,4 @@
-/* ==========================================================
-   GrowWithHR Executive Intro Experience v2.1
-   1. Fixed Intro Layout
-   2. Story Stage & Executive Cards
-   3. Coach & Begin Assessment
-   4. Engine & Animations
-   5. Responsive
-   6. Utilities & Polish
-========================================================== */
+/* GrowWithHR legacy compatibility styles. The former animated intro route is retired; these selectors remain only where current pages still depend on them. */
 
 /* ==========================================================
    1. Fixed Intro Layout
