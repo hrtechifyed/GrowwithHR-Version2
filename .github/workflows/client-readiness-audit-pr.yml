@@ -10,71 +10,150 @@ on:
       - ".github/workflows/client-readiness-audit-pr.yml"
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
-  dispatch-and-collect:
+  focused-audit:
     if: github.head_ref == 'audit/client-readiness-v0.18.0'
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 30
     steps:
-      - name: Dispatch the focused audit workflow
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: >
-          gh workflow run client-readiness-deep-audit.yml
-          --repo "${GITHUB_REPOSITORY}"
-          --ref audit/client-readiness-v0.18.0
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/client-readiness-v0.18.0
+          fetch-depth: 0
 
-      - name: Wait for the focused audit run
-        id: wait
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm install --no-audit --no-fund
+
+      - name: Classify historical environment files without exposing values
         shell: bash
         run: |
-          set -euo pipefail
-          sleep 8
-          RUN_ID=""
-          for attempt in $(seq 1 60); do
-            RUN_ID="$(gh run list \
-              --repo "${GITHUB_REPOSITORY}" \
-              --workflow client-readiness-deep-audit.yml \
-              --branch audit/client-readiness-v0.18.0 \
-              --event workflow_dispatch \
-              --limit 1 \
-              --json databaseId \
-              --jq '.[0].databaseId // empty')"
-            if [[ -n "$RUN_ID" ]]; then
-              break
-            fi
-            sleep 5
-          done
-          if [[ -z "$RUN_ID" ]]; then
-            echo "Focused audit run was not found."
-            exit 1
-          fi
-          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
-          gh run watch "$RUN_ID" \
-            --repo "${GITHUB_REPOSITORY}" \
-            --exit-status
+          mkdir -p deep-audit
+          python3 - <<'PY'
+          from __future__ import annotations
+          import hashlib, json, re, subprocess
+          from pathlib import Path
 
-      - name: Download focused audit evidence
-        if: always() && steps.wait.outputs.run_id != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True, stderr=subprocess.DEVNULL)
+
+          placeholders = {'', 'changeme', 'change-me', 'your-value', 'your_value', 'replace-me', 'replace_me', 'example', 'placeholder'}
+          environment_history = []
+          for commit in git('rev-list', '--all', '--', '.env').splitlines():
+              try:
+                  text = git('show', f'{commit}:.env')
+              except subprocess.CalledProcessError:
+                  continue
+              keys = []
+              possible = []
+              for line in text.splitlines():
+                  line = line.strip()
+                  if not line or line.startswith('#') or '=' not in line:
+                      continue
+                  key, value = line.split('=', 1)
+                  key = key.strip(); value = value.strip().strip('"\'')
+                  normalized = value.lower()
+                  placeholder = normalized in placeholders or normalized.startswith(('your_', 'your-', '<')) or normalized.endswith(('_here', '-here'))
+                  keys.append({'name': key, 'present': bool(value), 'lengthBand': '0' if not value else ('1-8' if len(value) <= 8 else ('9-24' if len(value) <= 24 else '25+')), 'placeholderLike': placeholder, 'fingerprint': hashlib.sha256(value.encode()).hexdigest()[:8] if value else None})
+                  if value and not placeholder:
+                      possible.append(key)
+              environment_history.append({'commit': commit, 'keys': keys, 'potentiallyRealValueKeys': sorted(possible)})
+
+          patterns = {
+              'githubToken': re.compile(r'gh[pousr]_[A-Za-z0-9]{20,}'),
+              'googleApiKey': re.compile(r'AIza[0-9A-Za-z_-]{20,}'),
+              'googleOAuthSecret': re.compile(r'GOCSPX-[0-9A-Za-z_-]{10,}'),
+              'googleRefreshToken': re.compile(r'1//[0-9A-Za-z_-]{20,}'),
+              'privateKey': re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----')
+          }
+          matches = []
+          for commit in git('rev-list', '--all').splitlines():
+              for name in git('diff-tree', '--no-commit-id', '--name-only', '-r', commit).splitlines():
+                  if name.endswith(('.png','.jpg','.jpeg','.gif','.pdf','.zip','.woff','.woff2','.ttf','.ico')):
+                      continue
+                  try:
+                      text = git('show', f'{commit}:{name}')
+                  except (subprocess.CalledProcessError, UnicodeDecodeError):
+                      continue
+                  found = [label for label, pattern in patterns.items() if pattern.search(text)]
+                  if found:
+                      matches.append({'commit': commit, 'path': name, 'patternClasses': found})
+          Path('deep-audit/secret-history-classification.json').write_text(json.dumps({'environmentHistory': environment_history, 'highConfidencePatternMatches': matches}, indent=2) + '\n')
+          PY
+
+      - name: Record repository and documentation inventory
+        shell: bash
         run: |
-          mkdir -p collected-deep-audit
-          gh run download "${{ steps.wait.outputs.run_id }}" \
-            --repo "${GITHUB_REPOSITORY}" \
-            --name client-readiness-deep-audit \
-            --dir collected-deep-audit
+          {
+            echo 'Root files:'
+            find . -maxdepth 1 -type f -printf '%f\n' | sort
+            echo
+            echo 'Markdown files:'
+            find . -type f -name '*.md' -not -path './node_modules/*' -not -path './.git/*' -printf '%P\n' | sort
+            echo
+            echo 'References to assessment.html:'
+            git grep -n 'assessment\.html' -- ':!node_modules' || true
+            echo
+            echo 'References to intro-sequence.js:'
+            git grep -n 'intro-sequence\.js' -- ':!node_modules' || true
+            echo
+            echo 'References to backupstyles.css:'
+            git grep -n 'backupstyles\.css' -- ':!node_modules' || true
+          } > deep-audit/inventory.txt
 
-      - name: Upload collected focused evidence
+      - name: Install Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund @playwright/test
+          npx playwright install --with-deps chromium
+
+      - name: Inspect carousel geometry, console and storage
+        shell: bash
+        run: |
+          cat > tests/e2e/client-readiness-deep.temp.spec.ts <<'EOF'
+          import { test } from '@playwright/test';
+          import fs from 'node:fs';
+          test('record focused browser diagnostics', async ({ page }) => {
+            const results: Record<string, unknown> = {};
+            const problems: string[] = [];
+            page.on('console', message => { if (['warning','error'].includes(message.type())) problems.push(`${message.type()}: ${message.text()}`); });
+            page.on('pageerror', error => problems.push(`pageerror: ${error.message}`));
+            await page.goto('/index.html', { waitUntil: 'networkidle' });
+            results.carousel = await page.evaluate(() => {
+              const describe = (selector: string) => {
+                const element = document.querySelector(selector) as HTMLElement | null;
+                if (!element) return null;
+                const rect = element.getBoundingClientRect(); const style = getComputedStyle(element);
+                return { rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }, display: style.display, visibility: style.visibility, opacity: style.opacity, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, scrollLeft: element.scrollLeft };
+              };
+              const next = document.querySelector('.carousel-arrow.next') as HTMLElement | null;
+              next?.click();
+              return { viewport: { width: innerWidth, height: innerHeight }, carousel: describe('.capability-carousel'), track: describe('.carousel-track'), previous: describe('.carousel-arrow.prev'), next: describe('.carousel-arrow.next') };
+            });
+            await page.waitForTimeout(900);
+            results.carouselAfterClick = await page.evaluate(() => ({ scrollLeft: (document.querySelector('.carousel-track') as HTMLElement | null)?.scrollLeft ?? null, active: Array.from(document.querySelectorAll('.capability-slide')).map((e,i) => e.classList.contains('active') ? i : -1).filter(i => i >= 0) }));
+            await page.goto('/analyze-company.html', { waitUntil: 'networkidle' });
+            results.assessmentStorage = await page.evaluate(() => Object.fromEntries(Array.from({ length: localStorage.length }, (_, index) => { const key = localStorage.key(index) || ''; const value = localStorage.getItem(key) || ''; return [key, { length: value.length, jsonLike: /^[\[{]/.test(value.trim()) }]; })));
+            results.controller = await page.evaluate(() => ({ present: Boolean((window as any).executiveAssessment), type: (window as any).executiveAssessment?.constructor?.name || null }));
+            results.consoleProblems = problems;
+            fs.writeFileSync('deep-audit/browser-diagnostics.json', JSON.stringify(results, null, 2) + '\n');
+          });
+          EOF
+          cat > playwright.deep.config.ts <<'EOF'
+          import { defineConfig } from '@playwright/test';
+          export default defineConfig({ testDir: './tests/e2e', timeout: 40000, reporter: [['list']], use: { baseURL: 'http://127.0.0.1:4173', viewport: { width: 1280, height: 720 } }, webServer: { command: 'python3 -m http.server 4173', url: 'http://127.0.0.1:4173', reuseExistingServer: false } });
+          EOF
+          npx playwright test tests/e2e/client-readiness-deep.temp.spec.ts --config=playwright.deep.config.ts
+          rm -f tests/e2e/client-readiness-deep.temp.spec.ts playwright.deep.config.ts
+
+      - name: Upload focused audit
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: collected-client-readiness-deep-audit
-          path: collected-deep-audit/
-          if-no-files-found: warn
+          path: deep-audit/
+          if-no-files-found: error
           retention-days: 7
