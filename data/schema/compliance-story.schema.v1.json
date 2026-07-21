@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:growwithhr:schema:compliance-story:1.0.0",
+  "title": "GrowWithHR Compliance Story Model",
+  "description": "Version 1.0.0 private-beta presentation contract derived from the governed M2 recommendation-traceability bundle without mutating the stable report contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaId",
+    "modelVersion",
+    "generatedAt",
+    "sourceTraceabilityContractVersion",
+    "sourceCatalogVersion",
+    "privateBetaOnly",
+    "stableReportMutation",
+    "companySnapshot",
+    "complianceDna",
+    "topPriorityIds",
+    "obligations",
+    "obligationGroups",
+    "assumptions",
+    "sources",
+    "limitations",
+    "metadata"
+  ],
+  "properties": {
+    "schemaId": {
+      "const": "urn:growwithhr:schema:compliance-story:1.0.0"
+    },
+    "modelVersion": {
+      "const": "1.0.0"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceTraceabilityContractVersion": {
+      "$ref": "#/$defs/semanticVersion"
+    },
+    "sourceCatalogVersion": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "privateBetaOnly": {
+      "const": true
+    },
+    "stableReportMutation": {
+      "const": false
+    },
+    "companySnapshot": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/factSummary"
+      }
+    },
+    "complianceDna": {
+      "$ref": "#/$defs/complianceDna"
+    },
+    "topPriorityIds": {
+      "type": "array",
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ruleId"
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/obligation"
+      }
+    },
+    "obligationGroups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/obligationGroup"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assumption"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceReference"
+      }
+    },
+    "limitations": {
+      "$ref": "#/$defs/uniqueTextArray"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "source",
+        "advisoryOnly",
+        "protectedStateReadOnly",
+        "stableReportMutation"
+      ],
+      "properties": {
+        "source": {
+          "const": "m2-recommendation-traceability"
+        },
+        "advisoryOnly": {
+          "const": true
+        },
+        "protectedStateReadOnly": {
+          "const": true
+        },
+        "stableReportMutation": {
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "factId": {
+      "type": "string",
+      "pattern": "^fact\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^rule\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "recommendationId": {
+      "type": "string",
+      "pattern": "^recommendation\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "sourceId": {
+      "type": "string",
+      "pattern": "^source\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "applicabilityStatus": {
+      "type": "string",
+      "enum": [
+        "applicable",
+        "likely-applicable",
+        "not-currently-applicable",
+        "more-information-needed",
+        "specialist-review"
+      ]
+    },
+    "evidenceStatus": {
+      "type": "string",
+      "enum": [
+        "not-requested",
+        "not-provided",
+        "provided",
+        "not-verified",
+        "verified"
+      ]
+    },
+    "sourceType": {
+      "type": "string",
+      "enum": [
+        "legislation",
+        "regulation",
+        "government-guidance",
+        "official-portal",
+        "regulator-guidance",
+        "authoritative-professional-guidance"
+      ]
+    },
+    "jsonValue": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "boolean" },
+        { "type": "array" },
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+    "uniqueTextArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "factSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "label", "value"],
+      "properties": {
+        "id": { "$ref": "#/$defs/factId" },
+        "kind": {
+          "type": "string",
+          "enum": ["confirmed", "derived", "missing"]
+        },
+        "label": { "$ref": "#/$defs/nonEmptyString" },
+        "value": { "$ref": "#/$defs/jsonValue" }
+      }
+    },
+    "sourceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "publisher",
+        "url",
+        "jurisdiction",
+        "sourceType",
+        "reviewedAt",
+        "notes",
+        "official"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/sourceId" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "publisher": { "$ref": "#/$defs/nonEmptyString" },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "jurisdiction": { "$ref": "#/$defs/nonEmptyString" },
+        "sourceType": { "$ref": "#/$defs/sourceType" },
+        "reviewedAt": {
+          "oneOf": [
+            { "type": "string", "format": "date" },
+            { "type": "string", "format": "date-time" }
+          ]
+        },
+        "notes": { "type": "string" },
+        "official": { "type": "boolean" }
+      }
+    },
+    "complianceDna": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headline", "advisoryNotice", "counts", "topPriorityCount"],
+      "properties": {
+        "headline": { "$ref": "#/$defs/nonEmptyString" },
+        "advisoryNotice": { "$ref": "#/$defs/nonEmptyString" },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "applicable",
+            "likelyApplicable",
+            "notCurrentlyApplicable",
+            "moreInformationNeeded",
+            "specialistReview",
+            "evidenceNotVerified"
+          ],
+          "properties": {
+            "applicable": { "type": "integer", "minimum": 0 },
+            "likelyApplicable": { "type": "integer", "minimum": 0 },
+            "notCurrentlyApplicable": { "type": "integer", "minimum": 0 },
+            "moreInformationNeeded": { "type": "integer", "minimum": 0 },
+            "specialistReview": { "type": "integer", "minimum": 0 },
+            "evidenceNotVerified": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "topPriorityCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        }
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "ruleId",
+        "recommendationId",
+        "domain",
+        "domainTitle",
+        "title",
+        "status",
+        "statusLabel",
+        "evidenceStatus",
+        "evidenceStatusLabel",
+        "rationale",
+        "nextAction",
+        "timeline",
+        "implications",
+        "triggerFacts",
+        "missingInformation",
+        "sourceIds",
+        "sources",
+        "limitations"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/ruleId" },
+        "ruleId": { "$ref": "#/$defs/ruleId" },
+        "recommendationId": {
+          "oneOf": [
+            { "$ref": "#/$defs/recommendationId" },
+            { "type": "null" }
+          ]
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "domainTitle": { "$ref": "#/$defs/nonEmptyString" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "status": { "$ref": "#/$defs/applicabilityStatus" },
+        "statusLabel": { "$ref": "#/$defs/nonEmptyString" },
+        "evidenceStatus": { "$ref": "#/$defs/evidenceStatus" },
+        "evidenceStatusLabel": { "$ref": "#/$defs/nonEmptyString" },
+        "rationale": { "$ref": "#/$defs/nonEmptyString" },
+        "nextAction": { "$ref": "#/$defs/nonEmptyString" },
+        "timeline": { "$ref": "#/$defs/nonEmptyString" },
+        "implications": { "$ref": "#/$defs/nonEmptyString" },
+        "triggerFacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/factSummary" }
+        },
+        "missingInformation": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/factSummary" }
+        },
+        "sourceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceId" }
+        },
+        "sources": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/sourceReference" }
+        },
+        "limitations": { "$ref": "#/$defs/uniqueTextArray" }
+      }
+    },
+    "obligationGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "obligationIds"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^group\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+        },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "obligationIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/ruleId" }
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factId", "label", "message"],
+      "properties": {
+        "factId": { "$ref": "#/$defs/factId" },
+        "label": { "$ref": "#/$defs/nonEmptyString" },
+        "message": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    }
+  }
+}
