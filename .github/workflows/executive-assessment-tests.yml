@@ -8,11 +8,14 @@ on:
       - "analyze-company-v3.html"
       - "css/17-advisory-briefing.css"
       - "css/19-compliance-dna.css"
+      - "css/20-compliance-story.css"
       - "data/assessment/**"
+      - "data/schema/**"
       - "js/config/app-config.js"
       - "js/executive-assessment.js"
       - "js/executive-assessment/**"
       - "js/assessment-v3/**"
+      - "js/build-marker.js"
       - "js/pdf.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
@@ -26,11 +29,14 @@ on:
       - "analyze-company-v3.html"
       - "css/17-advisory-briefing.css"
       - "css/19-compliance-dna.css"
+      - "css/20-compliance-story.css"
       - "data/assessment/**"
+      - "data/schema/**"
       - "js/config/app-config.js"
       - "js/executive-assessment.js"
       - "js/executive-assessment/**"
       - "js/assessment-v3/**"
+      - "js/build-marker.js"
       - "js/pdf.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
@@ -79,6 +85,7 @@ jobs:
           tests/e2e/analyze-company-current.spec.ts
           tests/e2e/analyze-company-v3.spec.ts
           tests/e2e/analyze-company-v3-traceability.spec.ts
+          tests/e2e/analyze-company-v3-compliance-story.spec.ts
           --project=chromium
 
       - name: Upload Playwright report
