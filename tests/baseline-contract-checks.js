@@ -85,8 +85,8 @@ assert.strictEqual(
 
 assert.strictEqual(
     packageJson.version,
-    "0.16.0-beta",
-    "The current release baseline must use version 0.16.0-beta."
+    "0.18.0",
+    "The current release baseline must use version 0.18.0."
 );
 
 const indexHtml = read("index.html");

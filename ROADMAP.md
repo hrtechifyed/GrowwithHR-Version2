@@ -608,37 +608,36 @@ M2 is complete and validated.
 
 ## M3 — Compliance advisory presentation
 
-**Status:** Planned
+**Status:** Complete and validated
 
-### Objective
+**Release:** `v0.18.0`
 
-Evolve the validated M2 traceability foundation into a polished executive-facing private-beta advisory presentation.
+### Exit result
 
-Potential deliverables include:
+M3 converts the governed M2 recommendation-traceability bundle into one executive-facing private-beta Compliance Story without reconstructing recommendation rules in HTML, CSS, page controllers, report templates or PDF templates.
 
-- executive recommendation summaries;
-- priority and timeline groupings;
-- concise “Why this appears” summaries;
-- expandable fact and source details;
-- uncertainty and specialist-review notices;
-- recommendation comparison views;
-- improved private-beta report layouts;
-- accessible explanation panels;
-- approved traceability integration into future report contracts.
+The completed release includes:
 
-M3 must consume M2 traceability records.
+- a versioned Compliance Story schema and pure model;
+- a company snapshot derived from confirmed and derived facts;
+- separate safe applicability and evidence-status counts;
+- no more than three deterministically ranked priorities;
+- every governed rule outcome grouped by advisory domain;
+- rationale, trigger facts, missing information, next actions, timelines and implications;
+- structured source references, limitations and assumptions;
+- loading, empty and safe error states;
+- responsive, keyboard and reduced-motion presentation safeguards;
+- maintained contract, regression and Playwright coverage.
 
-It must not reconstruct recommendation logic in:
+The stable route remains `/analyze-company.html`.
 
-- HTML;
-- CSS;
-- page controllers;
-- report templates;
-- PDF templates.
+The private-beta route remains `/analyze-company-v3.html` and `complianceDnaV3` remains disabled by default.
 
-Any integration into stable reports requires a separately approved migration.
+M3 does not mutate protected browser state, the stable report, PDF, email or delivery contracts. Stable report/PDF integration remains a separately approved migration.
 
-M3 must not begin without a separately approved planning decision.
+### Acceptance result
+
+The version cut is committed only after version consistency, compliance validation, the complete maintained regression suite and stable/M1/M2/M3 browser coverage pass on the release branch.
 
 ---
 

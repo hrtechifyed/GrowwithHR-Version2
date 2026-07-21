@@ -27,6 +27,35 @@ All notable changes to GrowWithHR are documented here.
 
 ---
 
+## [v0.18.0] - Compliance Story and Safe Health Model
+
+**Release Date:** 2026-07-21
+
+### Added
+
+- Added the versioned M3 Compliance Story model and JSON Schema `1.0.0`.
+- Added a private-beta executive story with a company snapshot, safe-status counts, top three priorities, grouped findings, assumptions, implications and structured sources.
+- Added isolated M3 presentation styles with responsive, keyboard-focus and reduced-motion safeguards.
+- Added M3 contract tests and Playwright coverage for ready, empty, error and mobile states.
+- Added the M3 release manifest and rollback record.
+
+### Safety and compatibility
+
+- Kept `/analyze-company.html` as the stable production route.
+- Kept `/analyze-company-v3.html` private and `complianceDnaV3` disabled by default.
+- Preserved protected browser-storage, report, PDF, email and delivery contracts.
+- Preserved deterministic M2 applicability decisions and separated applicability from evidence status.
+- Added no cloud persistence, account requirement or storage migration.
+
+### Validation
+
+- GrowWithHR CI passed.
+- Compliance Data Validation passed.
+- Executive Assessment Tests passed, including M3 browser coverage.
+- The complete maintained regression suite passed before the version-cut commit.
+
+---
+
 ## [v0.15.0-beta] - Gmail Advisory Delivery and HRTechify Brand Alignment
 
 **Release Date:** 2026-07-19

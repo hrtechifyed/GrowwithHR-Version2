@@ -1,6 +1,6 @@
 {
   "name": "growitwithhr",
-  "version": "0.16.0-beta",
+  "version": "0.18.0",
   "description": "GrowItWithHR Compliance Monitoring Engine",
   "main": "server.js",
   "engines": {
