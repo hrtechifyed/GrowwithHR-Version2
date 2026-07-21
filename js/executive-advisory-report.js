@@ -1,117 +1,64 @@
 /* ==========================================
    executive-advisory-report.js
    Dynamic Executive Advisory Engine
-   Uses the shared report-experience model without changing page layout.
 ========================================== */
 class ExecutiveAdvisoryReport {
     constructor() {
-        if (window.__growwithhrExecutiveReportInitialising) {
-            return window.__growwithhrExecutiveReportInitialising;
-        }
-        window.__growwithhrExecutiveReportInitialising = this;
         this.reportData = JSON.parse(localStorage.getItem("growwithhr-report") || "{}");
-        this.ids = {};
-        this.initialiseWhenReady();
-    }
-
-    async initialiseWhenReady() {
-        if (!window.GrowWithHRReportExperience) {
-            await Promise.race([
-                new Promise((resolve) => window.addEventListener("growwithhr:report-experience-ready", resolve, { once: true })),
-                new Promise((resolve) => setTimeout(resolve, 1200))
-            ]);
-        }
-        this.model = this.buildModel();
+        this.model = this.reportData;
         this.cacheElements();
         this.init();
-        window.executiveAdvisory = this;
-    }
 
-    fallbackRecommendations() {
-        const selected = Array.isArray(this.reportData.priorities)
-            ? this.reportData.priorities
-            : [];
-        const titles = selected.length
-            ? selected.slice(0, 4)
-            : ["Policies and compliance", "Workforce planning", "Manager capability"];
-        const library = {
-            "Hiring and onboarding": [
-                "Growth increases pressure on role clarity, selection quality and consistent onboarding.",
-                "Create a repeatable hiring and onboarding system with approved role profiles, structured interviews and a practical first-90-day plan."
-            ],
-            "Policies and compliance": [
-                "Policies and statutory governance need to keep pace with workforce size, location and operating complexity.",
-                "Establish a controlled policy and compliance calendar covering ownership, due dates, evidence, communication and escalation."
-            ],
-            "Performance and rewards": [
-                "Clear expectations and transparent reward decisions become more important as the organisation grows.",
-                "Introduce a simple performance rhythm connecting business priorities, role outcomes, manager feedback and fair decisions."
-            ],
-            "Manager capability": [
-                "Growth outcomes depend heavily on the quality and consistency of day-to-day management.",
-                "Define essential manager expectations and support them with practical routines, tools and coaching."
-            ],
-            "Culture and engagement": [
-                "Culture becomes less dependent on founder proximity and more dependent on repeated leadership behaviour.",
-                "Translate the desired culture into observable behaviours, leadership routines and employee experiences."
-            ],
-            "HR operations and technology": [
-                "Fragmented people administration can reduce visibility and create avoidable operational risk.",
-                "Standardise employee-data, document, leave, attendance and reporting processes before adding system complexity."
-            ],
-            "Workforce planning": [
-                "Hiring plans need a practical view of capability, cost, timing and organisational capacity.",
-                "Create a rolling workforce plan linking business priorities to critical roles, timing, cost and alternatives."
-            ],
-            "Organisation design": [
-                "Unclear accountabilities and overlapping decision rights can slow execution.",
-                "Clarify structure, accountabilities, spans of control and decision rights for the next stage of growth."
-            ]
-        };
-        return titles.map((title) => ({
-            title,
-            observation: library[title]?.[0] || "Leadership should create clearer ownership and repeatable people practices.",
-            recommendation: library[title]?.[1] || "Assign an accountable owner, define dated actions and review progress using evidence."
-        }));
-    }
-
-    buildModel() {
-        const service = window.GrowWithHRPDF;
-        if (service && typeof service.buildAdvisoryModel === "function") {
-            return service.buildAdvisoryModel({ report: this.reportData });
+        if (typeof window.setTimeout === "function") {
+            window.setTimeout(() => this.refreshEnhancedModel(), 900);
         }
-        const employees = Math.max(1, Number.parseInt(this.reportData.employees, 10) || 1);
-        const base = {
+    }
+
+    refreshEnhancedModel() {
+        const pdf = window.GrowWithHRPDF;
+        const enhancer = window.GrowWithHRReportExperience;
+        if (pdf && typeof pdf.buildAdvisoryModel === "function") {
+            this.model = pdf.buildAdvisoryModel({ report: this.reportData });
+        } else if (enhancer?.enhanceModel) {
+            this.model = enhancer.enhanceModel(this.buildCompatibilityModel());
+        } else {
+            return;
+        }
+        this.populateCompanyProfile();
+        this.generateExecutiveNarrative();
+        this.generateStrengths();
+        this.generateLeadershipPriorities();
+        this.generateRecommendations();
+        this.generateRoadmap();
+        this.generateComplianceReview();
+        this.generateStrategicOpportunities();
+        this.generateLookingAhead();
+    }
+
+    buildCompatibilityModel() {
+        const recommendations = this.baseRecommendations().map(([title, recommendation]) => ({
+            title,
+            observation: this.observationFor(title),
+            recommendation
+        }));
+        return {
             ...this.reportData,
-            employees,
-            employeeLabel: `${employees} ${employees === 1 ? "employee" : "employees"}`,
-            recommendations: this.fallbackRecommendations(),
+            employees: this.number(this.reportData.employees, 1),
+            recommendations,
+            priorities: recommendations.map((item) => item.title),
+            strengths: this.baseStrengths().map(([, body]) => body),
             executiveSummary: [
-                `${this.text(this.reportData.companyName, "The organisation")} operates in ${this.text(this.reportData.industry, "its selected industry")} with ${employees} ${employees === 1 ? "employee" : "employees"}.`,
-                "The immediate objective is to create enough clarity, consistency and evidence for leadership to scale without unnecessary process."
+                `${this.text(this.reportData.companyName, "The organisation")} operates in the ${this.text(this.reportData.industry, "selected")} sector with ${this.employeeLabel()}.`,
+                "The advisory translates the assessment inputs into practical leadership actions across structure, compliance, people operations and growth readiness."
             ],
-            strengths: [
-                "Leadership has completed a structured review of the organisation's current people context.",
-                "The workforce and operating model have been made visible for planning and governance decisions."
-            ],
-            priorities: this.fallbackRecommendations().map((item) => item.title),
             roadmap: {
-                first30: ["Assign owners and confirm the highest-priority actions."],
-                next60: ["Introduce the minimum repeatable practices and retain completion evidence."],
-                next90: ["Review adoption, outcomes and the next set of priorities."]
+                first30: ["Confirm statutory applicability, validate workforce numbers and close critical documentation gaps."],
+                next60: ["Publish core policies, assign compliance owners and standardise onboarding and employee records."],
+                next90: ["Launch manager routines, quarterly people review metrics and a practical workforce planning cadence."]
             },
-            compliance: [
-                "Confirm employment documentation, records and policy acknowledgements are complete and securely retained.",
-                "Maintain a compliance calendar with named owners, due dates and evidence of completion."
-            ],
-            opportunities: [
-                "Use workforce information as a regular leadership input.",
-                "Strengthen manager capability before adding unnecessary process or technology."
-            ]
+            compliance: this.baseCompliance().map(([, body]) => body),
+            opportunities: this.baseOpportunities().map(([, body]) => body)
         };
-        return window.GrowWithHRReportExperience?.enhanceModel
-            ? window.GrowWithHRReportExperience.enhanceModel(base)
-            : base;
     }
 
     cacheElements() {
@@ -137,7 +84,7 @@ class ExecutiveAdvisoryReport {
         this.bindDownload();
     }
 
-    text(value, fallback = "Not provided") {
+    text(value, fallback = "Not Provided") {
         return value && String(value).trim() ? String(value).trim() : fallback;
     }
 
@@ -146,12 +93,20 @@ class ExecutiveAdvisoryReport {
         return Number.isSafeInteger(parsed) && parsed >= minimum ? parsed : minimum;
     }
 
+    employeeCount() {
+        return this.number(this.model.employees ?? this.reportData.employees, 1);
+    }
+
+    employeeLabel() {
+        const count = this.employeeCount();
+        return `${count} ${count === 1 ? "employee" : "employees"}`;
+    }
+
     stage() {
-        const employees = this.number(this.model.employees, 1);
+        const employees = this.employeeCount();
         if (employees >= 500) return "Enterprise Organisation";
         if (employees >= 100) return "Scaling Organisation";
         if (employees >= 20) return "Growth Organisation";
-        if (employees === 1) return "One-person Organisation";
         return "Developing Organisation";
     }
 
@@ -174,31 +129,30 @@ class ExecutiveAdvisoryReport {
 
     reduceStaticRepetition() {
         const about = document.querySelector("section .executive-summary-card .summary-hero-copy");
-        if (about) {
+        if (about && about.querySelector) {
             about.innerHTML = `
                 <p class="eyebrow">ABOUT THIS ADVISORY</p>
                 <h2>Prepared for Executive Leadership</h2>
                 <p>This personalised working document translates the information supplied during the GrowWithHR Executive Assessment into practical leadership actions. It supports discussion and planning and is not legal or regulatory advice.</p>`;
         }
-        const outlook = document.getElementById("futureOutlook");
-        if (outlook) outlook.innerHTML = '<p id="lookingAheadText"></p>';
     }
 
     populateCompanyProfile() {
         const data = this.model;
-        const employees = this.number(data.employees, 1);
         const stage = this.stage();
-        this.set("companyName", this.text(data.companyName));
-        this.set("companyState", this.text(data.primaryState || data.state));
-        this.set("companyIndustry", this.text(data.industry));
-        this.set("companyEntity", this.text(data.entity));
-        this.set("employeeCount", data.employeeLabel || `${employees} ${employees === 1 ? "employee" : "employees"}`);
-        this.set("growthStage", this.text(data.fundingStage, stage));
-        this.set("peopleStructure", this.text(data.peopleFunction));
+        this.set("companyName", this.text(data.companyName || this.reportData.companyName));
+        this.set("companyState", this.text(data.primaryState || data.state || this.reportData.primaryState || this.reportData.state));
+        this.set("companyIndustry", this.text(data.industry || this.reportData.industry));
+        this.set("companyEntity", this.text(data.entity || this.reportData.entity));
+        this.set("employeeCount", data.employeeLabel || this.employeeLabel());
+        this.set("growthStage", this.text(data.fundingStage || this.reportData.fundingStage, stage));
+        this.set("peopleStructure", this.text(data.peopleFunction || this.reportData.peopleFunction));
         this.set("organisationStage", stage);
-        const focus = data.peopleFunction === "No Formal HR/People Function"
-            ? "Establish clear people ownership before growth creates avoidable execution and compliance pressure."
-            : data.peopleFunction === "Founder Led"
+
+        const peopleFunction = data.peopleFunction || this.reportData.peopleFunction;
+        const focus = peopleFunction === "No Formal HR/People Function"
+            ? "Establish a clear people operating model before growth creates avoidable execution and compliance pressure."
+            : peopleFunction === "Founder Led"
                 ? "Move founder-led people decisions into repeatable management routines, policies and ownership."
                 : "Use the existing people capability to strengthen leadership cadence, workforce planning and governance.";
         this.set("executiveFocus", focus);
@@ -207,71 +161,167 @@ class ExecutiveAdvisoryReport {
     generateExecutiveNarrative() {
         const target = document.getElementById("executiveNarrative") || document.querySelector(".executive-narrative p");
         if (!target) return;
-        target.innerHTML = (this.model.executiveSummary || [])
-            .map((text) => `<p>${this.escape(text)}</p>`).join("");
+        if (Array.isArray(this.model.executiveSummary) && this.model.executiveSummary.length) {
+            target.innerHTML = this.model.executiveSummary.map((text) => `<p>${this.escape(text)}</p>`).join("");
+            return;
+        }
+        const data = this.reportData;
+        target.innerHTML = `${this.text(data.companyName, "The organisation")} operates in the <strong>${this.text(data.industry, "selected")}</strong> sector with an approximate workforce of <strong>${this.employeeLabel()}</strong>. The advisory below translates the assessment inputs into practical leadership actions across structure, compliance, people operations and growth readiness.`;
+    }
+
+    baseStrengths() {
+        const data = this.reportData;
+        const strengths = [
+            ["Clear organisational context", "The organisation has articulated its legal structure, operating model and business direction, creating a useful baseline for executive people decisions."],
+            ["Visible workforce profile", "Employee, contract, intern and apprentice inputs give leadership a clearer view of workforce complexity and statutory touchpoints."],
+            ["Growth conversation started", `${this.text(data.hiringPlans, "The stated hiring outlook")} gives the leadership team a practical trigger for planning capacity, policies and governance.`]
+        ];
+        if (data.peopleFunction && data.peopleFunction !== "No Formal HR/People Function") {
+            strengths.push(["People ownership exists", `The current ${data.peopleFunction} model provides a foundation that can be formalised into scalable people practices.`]);
+        }
+        return strengths;
     }
 
     generateStrengths() {
-        this.renderCards("observationsContainer", (this.model.strengths || []).map((body, index) => [`Positive foundation ${index + 1}`, body]), "Organisational Strength");
+        const source = Array.isArray(this.model.strengths)
+            ? this.model.strengths.map((body, index) => [`Positive foundation ${index + 1}`, body])
+            : this.baseStrengths();
+        this.renderCards("observationsContainer", source, "Organisational Strength");
+    }
+
+    basePriorities() {
+        const priorities = [
+            ["Clarify people governance", "Define who owns workforce decisions, policy approvals, documentation quality and statutory follow-through."],
+            ["Standardise employee lifecycle", "Create consistent onboarding, contracts, records, leave, performance and exit practices across teams."],
+            ["Build compliance confidence", "Review registrations, filings, notices and state-specific obligations before scale increases operational pressure."]
+        ];
+        if (this.employeeCount() >= 50) priorities.push(["Strengthen manager capability", "Equip managers with basic routines for feedback, accountability, conduct, documentation and team planning."]);
+        return priorities;
+    }
+
+    observationFor(title) {
+        const map = {
+            "Hiring and onboarding": "Growth will place greater pressure on role clarity, selection quality and onboarding consistency.",
+            "Policies and compliance": "People policies and statutory governance need to keep pace with workforce size, location and operating complexity.",
+            "Performance and rewards": "Clear expectations and transparent reward decisions become more important as the organisation grows.",
+            "Manager capability": "Growth outcomes depend heavily on the quality and consistency of day-to-day management.",
+            "Culture and engagement": "Culture becomes less dependent on founder proximity and more dependent on repeated leadership behaviour.",
+            "HR operations and technology": "Fragmented people administration can reduce visibility and create avoidable operational risk.",
+            "Workforce planning": "Hiring plans need a practical view of capability, cost, timing and organisational capacity.",
+            "Organisation design": "Unclear accountabilities and overlapping decision rights can slow execution."
+        };
+        return map[title] || "This area deserves leadership attention before additional organisational complexity is introduced.";
     }
 
     generateLeadershipPriorities() {
-        this.renderCards("attentionContainer", (this.model.recommendations || []).map((item) => [item.title, item.observation]), "Leadership Priority");
+        const recommendations = Array.isArray(this.model.recommendations) ? this.model.recommendations : [];
+        const priorities = recommendations.length
+            ? recommendations.map((item) => [item.title, item.observation])
+            : this.basePriorities();
+        this.renderCards("attentionContainer", priorities, "Leadership Priority");
+    }
+
+    baseRecommendations() {
+        const data = this.reportData;
+        return [
+            ["Create a board-ready people operating model", "Document people ownership, decision rights, policy governance and escalation routes so HR is managed as a business capability rather than an administrative function."],
+            ["Formalise core employment documentation", "Ensure offer letters, appointment terms, contractor agreements, intern letters and apprentice documentation are complete, consistent and retrievable."],
+            ["Introduce a quarterly people review", `Review hiring plans, attrition signals, compliance status and capability gaps every quarter, especially under a ${this.text(data.hiringPlans, "changing")} hiring outlook.`]
+        ];
     }
 
     implementationMarkup(item) {
         const steps = (item.howTo || []).map((step) => `<li>${this.escape(step)}</li>`).join("");
+        if (!steps && !item.resourceUrl) return "";
         const resource = item.resourceUrl
             ? `<a class="exec-card__resource" href="${this.escape(item.resourceUrl)}" download>${this.escape(item.resourceLabel || "Open template")} →</a>`
             : "";
-        return `<div class="exec-card__implementation">
-            <h4>How to implement</h4>
-            <ol>${steps}</ol>
-            <div class="exec-card__meta-row">
-                ${item.owner ? `<span><strong>Owner:</strong> ${this.escape(item.owner)}</span>` : ""}
-                ${item.timeframe ? `<span><strong>Timing:</strong> ${this.escape(item.timeframe)}</span>` : ""}
-            </div>${resource}</div>`;
+        return `<div class="exec-card__implementation"><h4>How to implement</h4><ol>${steps}</ol><div class="exec-card__meta-row">${item.owner ? `<span><strong>Owner:</strong> ${this.escape(item.owner)}</span>` : ""}${item.timeframe ? `<span><strong>Timing:</strong> ${this.escape(item.timeframe)}</span>` : ""}</div>${resource}</div>`;
     }
 
     generateRecommendations() {
         const target = this.ids.recommendationsContainer;
         if (!target) return;
-        target.innerHTML = (this.model.recommendations || []).map((item) =>
-            this.card(item.title, item.recommendation, "Strategic Recommendation", this.implementationMarkup(item))
-        ).join("");
+        const recommendations = Array.isArray(this.model.recommendations) ? this.model.recommendations : [];
+        if (recommendations.length) {
+            target.innerHTML = recommendations.map((item) => this.card(item.title, item.recommendation, "Strategic Recommendation", this.implementationMarkup(item))).join("");
+            return;
+        }
+        target.innerHTML = this.baseRecommendations().map(([title, body]) => this.card(title, body, "Strategic Recommendation")).join("");
+    }
+
+    baseRoadmap() {
+        return [
+            ["0–30 days", "Confirm statutory applicability, validate workforce numbers and close critical documentation gaps."],
+            ["31–60 days", "Publish core policies, assign compliance owners and standardise onboarding and employee records."],
+            ["61–90 days", "Launch manager routines, quarterly people review metrics and a practical workforce planning cadence."],
+            ["90+ days", "Digitise repeatable HR processes and refresh the advisory as the organisation scales or expands locations."]
+        ];
     }
 
     generateRoadmap() {
-        const roadmap = [
-            ["0–30 days", (this.model.roadmap?.first30 || []).join(" ")],
-            ["31–60 days", (this.model.roadmap?.next60 || []).join(" ")],
-            ["61–90 days", (this.model.roadmap?.next90 || []).join(" ")]
-        ].filter(([, body]) => body);
-        this.renderCards("roadmapContainer", roadmap, "Executive Roadmap");
+        const roadmap = this.model.roadmap;
+        const source = roadmap
+            ? [
+                ["0–30 days", (roadmap.first30 || []).join(" ")],
+                ["31–60 days", (roadmap.next60 || []).join(" ")],
+                ["61–90 days", (roadmap.next90 || []).join(" ")],
+                ["90+ days", "Review outcomes, digitise stable processes and refresh the advisory after material organisational change."]
+            ]
+            : this.baseRoadmap();
+        this.renderCards("roadmapContainer", source, "Executive Roadmap");
+    }
+
+    baseCompliance() {
+        const data = this.reportData;
+        const items = [
+            ["Employment records", "Maintain appointment letters, identity records, attendance, leave and wage documentation for all worker categories."],
+            ["State-specific labour obligations", `Review Shops & Establishments or applicable local registrations for ${this.text(data.primaryState || data.state, "the primary state")}.`]
+        ];
+        if (this.employeeCount() >= 20) items.push(["Provident Fund review", "Validate EPF registration, eligibility, contributions and monthly filing discipline."]);
+        if (this.employeeCount() >= 10) items.push(["ESI and gratuity applicability", "Review ESI eligibility and gratuity readiness based on employee count, wages and tenure profile."]);
+        if (this.number(data.contractWorkers) > 0) items.push(["Contract workforce governance", "Confirm contractor documentation, principal employer responsibilities and compliance evidence."]);
+        if (this.number(data.apprentices) > 0) items.push(["Apprenticeship governance", "Review apprenticeship agreements, records and applicable statutory requirements."]);
+        return items;
     }
 
     generateComplianceReview() {
-        this.renderCards("complianceContainer", (this.model.compliance || []).map((body, index) => [`Review area ${index + 1}`, body]), "Compliance Review");
+        const source = Array.isArray(this.model.compliance)
+            ? this.model.compliance.map((body, index) => [`Review area ${index + 1}`, body])
+            : this.baseCompliance();
+        this.renderCards("complianceContainer", source, "Compliance Review");
+    }
+
+    baseOpportunities() {
+        return [
+            ["Digital HR foundation", "Digitise employee records, onboarding, leave and basic reporting to improve decision speed and audit readiness."],
+            ["Leadership rhythm", "Use monthly people conversations to connect hiring, productivity, retention and compliance to business outcomes."],
+            ["Employer trust", "Clear policies and consistent employee communication can improve confidence across employees, managers and investors."]
+        ];
     }
 
     generateStrategicOpportunities() {
-        this.renderCards("opportunitiesContainer", (this.model.opportunities || []).map((body, index) => [`Opportunity ${index + 1}`, body]), "Strategic Opportunity");
+        const source = Array.isArray(this.model.opportunities)
+            ? this.model.opportunities.map((body, index) => [`Opportunity ${index + 1}`, body])
+            : this.baseOpportunities();
+        this.renderCards("opportunitiesContainer", source, "Strategic Opportunity");
     }
 
     generateLookingAhead() {
         const target = document.getElementById("lookingAheadText") || document.querySelector("#lookingAhead p");
-        if (target) target.textContent = `Revisit this advisory whenever the workforce, locations, funding stage or operating model materially changes. Current workforce: ${this.model.employeeLabel}.`;
+        if (!target) return;
+        target.textContent = `As the organisation grows, people decisions should become more intentional, documented and leadership-owned. Revisit this advisory whenever headcount, locations, funding stage or operating model materially changes. Current workforce: ${this.employeeLabel()}.`;
     }
 
     renderCards(containerId, items, meta) {
         const container = this.ids[containerId];
-        if (container) container.innerHTML = items.map(([title, body]) => this.card(title, body, meta)).join("");
+        if (container) container.innerHTML = items.filter(([, body]) => body).map(([title, body]) => this.card(title, body, meta)).join("");
     }
 
     bindDownload() {
         document.querySelectorAll("[data-action='download-pdf'], #downloadPdf, #downloadReport").forEach((button) => {
-            if (button.dataset.reportDownloadBound === "true") return;
-            button.dataset.reportDownloadBound = "true";
+            if (button.dataset?.reportDownloadBound === "true") return;
+            if (button.dataset) button.dataset.reportDownloadBound = "true";
             button.addEventListener("click", async () => {
                 if (window.GrowWithHRPDF?.downloadAdvisoryPdf) {
                     await window.GrowWithHRPDF.downloadAdvisoryPdf({ report: this.reportData });
