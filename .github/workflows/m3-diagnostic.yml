@@ -1,0 +1,37 @@
+name: M3 Contract Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tests/m3-compliance-story-contract-checks.mjs"
+      - "js/assessment-v3/compliance-story-model.js"
+      - "data/schema/compliance-story.schema.v1.json"
+      - ".github/workflows/m3-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --no-audit --no-fund
+      - name: Capture M3 contract output
+        shell: bash
+        run: |
+          set +e
+          npm run test:m3 > m3-diagnostic.log 2>&1
+          status=$?
+          echo "exit_code=$status" >> m3-diagnostic.log
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m3-diagnostic
+          path: m3-diagnostic.log
+          retention-days: 1
