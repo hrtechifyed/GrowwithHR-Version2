@@ -1,8 +1,8 @@
-/* GrowWithHR build marker and opt-in diagnostics */
+/* GrowWithHR build marker and isolated private-beta module loader */
 (() => {
     "use strict";
 
-    const BUILD_ID = "responsive-repair-20260716-0000";
+    const BUILD_ID = "m3-compliance-story-20260721-0001";
     const params = new URLSearchParams(window.location.search);
     const debug = params.get("debug") === "1";
 
@@ -13,16 +13,34 @@
         console.info(prefix, payload);
     };
 
-    const logBuild = () => window.GWHR_LOG("[GrowWithHR:BUILD]", {
-        buildId: BUILD_ID,
-        page: window.location.pathname,
-        viewport: {
-            width: window.innerWidth,
-            height: window.innerHeight,
-            devicePixelRatio: window.devicePixelRatio
-        },
-        loadedAt: new Date().toISOString()
-    });
+    const loadPrivateBetaModules = () => {
+        if (!document.getElementById("dnaTraceability")) {
+            return;
+        }
+
+        import("./assessment-v3/compliance-story-presentation.js")
+            .catch((error) => {
+                console.error(
+                    "GrowWithHR: M3 private-beta module could not load.",
+                    error
+                );
+            });
+    };
+
+    const logBuild = () => {
+        window.GWHR_LOG("[GrowWithHR:BUILD]", {
+            buildId: BUILD_ID,
+            page: window.location.pathname,
+            viewport: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                devicePixelRatio: window.devicePixelRatio
+            },
+            loadedAt: new Date().toISOString()
+        });
+
+        loadPrivateBetaModules();
+    };
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", logBuild, { once: true });
