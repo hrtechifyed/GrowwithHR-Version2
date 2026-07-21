@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/apply-client-readiness.yml"
       - ".github/workflows/run-client-readiness-on-pr.yml"
+      - ".github/workflows/export-client-readiness-base.yml"
       - "assets/favicon.svg"
 
 permissions:
@@ -74,33 +75,11 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Validate maintained contracts
-        id: contracts
-        shell: bash
         run: |
-          set +e
-          {
-            npm run version:check
-            npm run validate:compliance
-            npm test
-            git diff --check
-          } > repair-diagnostics/validation.log 2>&1
-          STATUS=$?
-          cat repair-diagnostics/validation.log
-          echo "status=${STATUS}" >> "$GITHUB_OUTPUT"
-          exit 0
-
-      - name: Upload repair diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: client-readiness-repair-diagnostics
-          path: repair-diagnostics/
-          if-no-files-found: error
-          retention-days: 2
-
-      - name: Require successful contract validation
-        if: steps.contracts.outputs.status != '0'
-        run: exit 1
+          npm run version:check
+          npm run validate:compliance
+          npm test
+          git diff --check
 
       - name: Install Chromium
         run: |
@@ -119,65 +98,27 @@ jobs:
             --project=chromium
 
       - name: Attempt repository metadata hygiene
-        id: metadata
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set +e
           gh api --method PATCH "repos/${GITHUB_REPOSITORY}" \
-            -f description='Rules-based executive HR and compliance advisory with explainable recommendations, browser-generated reports and a private-beta Compliance DNA experience.' \
-            > repair-diagnostics/metadata-description.log 2>&1
-          DESCRIPTION_STATUS=$?
+            -f description='Rules-based executive HR and compliance advisory with explainable recommendations, browser-generated reports and a private-beta Compliance DNA experience.' || true
           gh api --method PUT "repos/${GITHUB_REPOSITORY}/topics" \
             -H 'Accept: application/vnd.github+json' \
-            --input - > repair-diagnostics/metadata-topics.log 2>&1 <<'JSON'
+            --input - <<'JSON' || true
           {"names":["hr-tech","compliance","people-operations","executive-advisory","javascript","playwright","explainable-ai","india"]}
           JSON
-          TOPICS_STATUS=$?
-          echo "description_status=${DESCRIPTION_STATUS}" >> "$GITHUB_OUTPUT"
-          echo "topics_status=${TOPICS_STATUS}" >> "$GITHUB_OUTPUT"
-          exit 0
 
-      - name: Commit and publish validated repairs
-        id: publish
+      - name: Commit and push validated non-workflow repairs
         shell: bash
         run: |
-          set +e
-          rm -f .github/workflows/apply-client-readiness.yml
-          rm -f .github/workflows/run-client-readiness-on-pr.yml
-          rm -rf playwright-report test-results
+          set -euo pipefail
+          git checkout HEAD -- .github/workflows
+          rm -rf playwright-report test-results repair-diagnostics package-lock.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add --all
-          git commit -m "fix: complete client-readiness hygiene and verification" \
-            > repair-diagnostics/commit.log 2>&1
-          COMMIT_STATUS=$?
-          if [[ "$COMMIT_STATUS" -eq 0 ]]; then
-            git rev-parse HEAD > repair-diagnostics/generated-commit.txt
-            git bundle create repair-diagnostics/client-readiness.bundle HEAD main \
-              >> repair-diagnostics/commit.log 2>&1
-            git archive --format=tar.gz -o repair-diagnostics/client-readiness-tree.tar.gz HEAD
-            git push origin HEAD:fix/client-readiness-v0.18.0 \
-              > repair-diagnostics/push.log 2>&1
-            PUSH_STATUS=$?
-          else
-            PUSH_STATUS=99
-          fi
-          cat repair-diagnostics/commit.log
-          cat repair-diagnostics/push.log 2>/dev/null || true
-          echo "status=${PUSH_STATUS}" >> "$GITHUB_OUTPUT"
-          exit 0
-
-      - name: Upload validated repair package
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: client-readiness-validated-repair
-          path: repair-diagnostics/
-          if-no-files-found: error
-          retention-days: 3
-
-      - name: Require successful publication
-        if: steps.publish.outputs.status != '0'
-        run: exit 1
+          git commit -m "fix: complete client-readiness hygiene and verification"
+          git push origin HEAD:fix/client-readiness-v0.18.0
