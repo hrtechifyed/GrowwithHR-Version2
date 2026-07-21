@@ -1,0 +1,107 @@
+name: Run Client Readiness Repair
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/apply-client-readiness.yml"
+      - ".github/workflows/run-client-readiness-on-pr.yml"
+      - "assets/favicon.svg"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: run-client-readiness-repair
+  cancel-in-progress: false
+
+jobs:
+  apply-and-validate:
+    if: github.head_ref == 'fix/client-readiness-v0.18.0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/client-readiness-v0.18.0
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Extract and run the audited transformation
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('.github/workflows/apply-client-readiness.yml').read_text()
+          start_marker = "          python3 - <<'PY'\n"
+          end_marker = "\n          PY\n\n      - name: Install dependencies"
+          if start_marker not in text or end_marker not in text:
+              raise SystemExit('Could not locate the audited transformation block.')
+          script = text.split(start_marker, 1)[1].split(end_marker, 1)[0]
+          script = '\n'.join(line[10:] if line.startswith('          ') else line for line in script.splitlines())
+          Path('/tmp/apply-client-readiness.py').write_text(script + '\n')
+          PY
+          python3 /tmp/apply-client-readiness.py
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate maintained contracts
+        run: |
+          npm run version:check
+          npm run validate:compliance
+          npm test
+          git diff --check
+
+      - name: Install Chromium
+        run: |
+          npm install --no-save --package-lock=false --no-audit --no-fund @playwright/test
+          npx playwright install --with-deps chromium
+
+      - name: Validate stable, private and homepage browser paths
+        run: |
+          npx playwright test \
+            tests/e2e/executive-assessment-modules.spec.ts \
+            tests/e2e/analyze-company-current.spec.ts \
+            tests/e2e/analyze-company-v3.spec.ts \
+            tests/e2e/analyze-company-v3-traceability.spec.ts \
+            tests/e2e/analyze-company-v3-compliance-story.spec.ts \
+            tests/e2e/homepage-client-readiness.spec.ts \
+            --project=chromium
+
+      - name: Attempt repository metadata hygiene
+        id: metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}" \
+            -f description='Rules-based executive HR and compliance advisory with explainable recommendations, browser-generated reports and a private-beta Compliance DNA experience.'
+          DESCRIPTION_STATUS=$?
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/topics" \
+            -H 'Accept: application/vnd.github+json' \
+            --input - <<'JSON'
+          {"names":["hr-tech","compliance","people-operations","executive-advisory","javascript","playwright","explainable-ai","india"]}
+          JSON
+          TOPICS_STATUS=$?
+          echo "description_status=${DESCRIPTION_STATUS}" >> "$GITHUB_OUTPUT"
+          echo "topics_status=${TOPICS_STATUS}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit validated repairs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/apply-client-readiness.yml
+          rm -f .github/workflows/run-client-readiness-on-pr.yml
+          rm -rf playwright-report test-results
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "fix: complete client-readiness hygiene and verification"
+          git push origin HEAD:fix/client-readiness-v0.18.0
