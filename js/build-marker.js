@@ -2,7 +2,9 @@
 (() => {
     "use strict";
 
-    const BUILD_ID = "presentation-polish-20260721-0001";
+    const BUILD_ID = "presentation-polish-20260721-0002";
+    const scriptUrl = document.currentScript?.src || window.location.href;
+    const rootUrl = new URL("../", scriptUrl);
     const params = new URLSearchParams(window.location.search);
     const debug = params.get("debug") === "1";
 
@@ -11,6 +13,15 @@
     window.GWHR_LOG = (prefix, payload) => {
         if (!debug && prefix !== "[GrowWithHR:BUILD]") return;
         console.info(prefix, payload);
+    };
+
+    const loadPresentationStyles = () => {
+        if (document.querySelector("link[data-growwithhr-presentation-polish]")) return;
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = new URL("css/19-presentation-polish.css", rootUrl).href;
+        link.dataset.growwithhrPresentationPolish = "true";
+        document.head.appendChild(link);
     };
 
     const loadPrivateBetaModules = () => {
@@ -41,6 +52,7 @@
             },
             loadedAt: new Date().toISOString()
         });
+        loadPresentationStyles();
         loadPresentationPolish();
         loadPrivateBetaModules();
     };
