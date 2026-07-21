@@ -11,6 +11,7 @@ GrowWithHR is a rules-based executive HR and compliance advisory for founders, b
 - Private-beta Compliance DNA route: `/analyze-company-v3.html`
 - Private-beta feature flag: `complianceDnaV3: false`
 - Latest published release: `v0.18.0`
+- Next release candidate: report experience and actionable resources for planned `v0.19.0`
 
 The old `/assessment.html` URL redirects to the public assessment so visitors encounter one current journey.
 
@@ -18,12 +19,19 @@ The old `/assessment.html` URL redirects to the public assessment so visitors en
 
 - Guided four-chapter assessment with same-browser save and resume.
 - Deterministic stable advisory/report mapping.
-- Browser-generated PDF download.
+- Browser-generated PDF download with selectable light print-friendly or dark presentation styling.
+- One Person Company workforce count is fixed at one; all other workforce counts are normalised to a minimum of one.
+- Singular/plural workforce wording is generated from the normalised count.
+- Recommendations include implementation steps, suggested ownership, timing and downloadable starter templates.
 - Optional email delivery through the Node/Express Gmail API backend.
 - GitHub Pages delivery is routed to the Render API through an origin-restricted CORS bridge.
 - M1-M3 private-beta Compliance DNA foundations: Five-Act presentation, deterministic traceability and Compliance Story presentation.
 
-The private-beta route does not replace the public assessment and does not mutate protected report, PDF, email or delivery contracts.
+The private-beta route does not replace the public assessment and does not mutate protected report, email or delivery boundaries.
+
+## Report resources
+
+Starter resources are stored in `resources/` and linked from relevant recommendations. They are editable starting points, not legal advice. Verify applicability and adapt them with qualified professionals and current official sources.
 
 ## Data statement for demos
 
@@ -43,10 +51,13 @@ GrowWithHR currently has no customer account system, cloud-save service or dedic
 - `index.html` — public homepage.
 - `analyze-company.html` — stable public assessment.
 - `analyze-company-v3.html` — no-index private-beta review route.
+- `executive-advisory-report.html` — personalised web report.
 - `sample-advisory-report.html` — fictional, illustrative report.
+- `resources/` — downloadable implementation templates.
 - `server.js` — health endpoint and Gmail delivery boundary.
 - `server-entry.js` — CORS-aware production entrypoint used by Render.
 - `js/executive-assessment/` — stable assessment modules.
+- `js/report-experience-v019.js` — report-theme, workforce and recommendation enhancements.
 - `js/assessment-v3/` — isolated M1-M3 private-beta modules.
 - `data/assessment/` and `data/schema/` — governed data and schemas.
 - `tests/` — maintained contract and browser coverage.
@@ -60,6 +71,7 @@ GrowWithHR currently has no customer account system, cloud-save service or dedic
 - `docs/ARCHITECTURE.md` — deployed architecture.
 - `docs/DATA_FLOW.md` — current data flow and privacy boundary.
 - `docs/KNOWN_ISSUES.md` — current limitations and release blockers.
+- `docs/REPORT_EXPERIENCE_V019.md` — report-experience behavior and acceptance criteria.
 - `docs/releases/` — immutable historical release manifests and validation records.
 
 `RELEASE_NOTES.md` and `update.md` are pointers only; they are not competing sources of truth.
@@ -68,6 +80,7 @@ GrowWithHR currently has no customer account system, cloud-save service or dedic
 
 ```bash
 npm install
+npm run test:report-experience
 npm run test:release
 npm run test:release:e2e
 npm start
@@ -79,4 +92,4 @@ Secrets belong only in deployment environment variables. Never commit `.env`, OA
 
 ## Product boundary
 
-GrowWithHR provides advisory information, not legal certification, verified compliance, evidence verification or professional legal, tax, payroll or employment advice.
+GrowWithHR provides advisory information, templates and implementation starting points—not legal certification, verified compliance, evidence verification or professional legal, tax, payroll or employment advice.
