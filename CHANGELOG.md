@@ -16,6 +16,9 @@ All notable changes to GrowWithHR are documented here.
 - Reworded the illustrative report to use safe advisory and source-reference language.
 - Added maintained client-readiness static and browser checks.
 - Recorded the historical credential-rotation and history-purge release blocker.
+- Routed GitHub Pages advisory-email requests to the Render API.
+- Added exact-origin CORS handling, preflight support and disallowed-origin rejection.
+- Added automated server CORS coverage.
 
 ### Documentation
 
@@ -35,6 +38,7 @@ All notable changes to GrowWithHR are documented here.
   workspaces, document storage, evidence storage and RAG conversation history.
 - Clarified that sent advisory emails and PDF attachments may remain in the
   connected Gmail account according to its retention settings.
+- Documented the GitHub Pages-to-Render delivery boundary and optional origin configuration.
 
 ---
 
