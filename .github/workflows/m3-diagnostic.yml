@@ -8,6 +8,12 @@ on:
       - "js/assessment-v3/compliance-story-model.js"
       - "data/schema/compliance-story.schema.v1.json"
       - ".github/workflows/m3-diagnostic.yml"
+  pull_request:
+    paths:
+      - "tests/m3-compliance-story-contract-checks.mjs"
+      - "js/assessment-v3/compliance-story-model.js"
+      - "data/schema/compliance-story.schema.v1.json"
+      - ".github/workflows/m3-diagnostic.yml"
 
 permissions:
   contents: read
