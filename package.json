@@ -24,8 +24,8 @@
     "zustand": "^5.0.2"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
+    "start": "node server-entry.js",
+    "dev": "node --watch server-entry.js",
     "validate:compliance": "node scripts/validate-compliance-data.mjs",
     "test:ux": "jest apps/web/src/components/UX/__tests__ --passWithNoTests",
     "test:frontend": "node tests/frontend-production-checks.js",
