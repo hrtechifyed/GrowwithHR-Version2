@@ -1,0 +1,72 @@
+name: Client Readiness Audit Dispatcher
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/client-readiness-audit.yml"
+      - ".github/workflows/client-readiness-audit-pr.yml"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch-and-collect:
+    if: github.head_ref == 'audit/client-readiness-v0.18.0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Dispatch the audit workflow on the audit branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run client-readiness-audit.yml --ref audit/client-readiness-v0.18.0
+
+      - name: Wait for the audit run
+        id: wait
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 8
+          RUN_ID=""
+          for attempt in $(seq 1 60); do
+            RUN_ID="$(gh run list \
+              --workflow client-readiness-audit.yml \
+              --branch audit/client-readiness-v0.18.0 \
+              --event workflow_dispatch \
+              --limit 1 \
+              --json databaseId \
+              --jq '.[0].databaseId // empty')"
+            if [[ -n "$RUN_ID" ]]; then
+              break
+            fi
+            sleep 5
+          done
+          if [[ -z "$RUN_ID" ]]; then
+            echo "Audit run was not found."
+            exit 1
+          fi
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          gh run watch "$RUN_ID" --exit-status
+
+      - name: Download audit evidence
+        if: always() && steps.wait.outputs.run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p collected-audit
+          gh run download "${{ steps.wait.outputs.run_id }}" \
+            --name client-readiness-audit \
+            --dir collected-audit
+
+      - name: Upload collected audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collected-client-readiness-audit
+          path: collected-audit/
+          if-no-files-found: warn
+          retention-days: 7
