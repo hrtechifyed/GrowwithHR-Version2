@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GrowWithHR">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb000"/>
+      <stop offset="0.56" stop-color="#ff7a00"/>
+      <stop offset="1" stop-color="#ff4d00"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0a1020"/>
+  <path d="M16 17h8l4 18 4-12h7l4 12 4-18h8L47 49h-7l-5-14-5 14h-7z" fill="url(#g)"/>
+</svg>
