@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const BUILD_ID = "presentation-polish-20260721-0005";
+    const BUILD_ID = "report-experience-20260722-0001";
     const scriptUrl = document.currentScript?.src || window.location.href;
     const rootUrl = new URL("../", scriptUrl);
     const params = new URLSearchParams(window.location.search);
@@ -25,14 +25,9 @@
     };
 
     const loadPresentationStyles = () => {
-        appendStylesheet(
-            "css/19-presentation-polish.css",
-            "data-growwithhr-presentation-polish"
-        );
-        appendStylesheet(
-            "css/21-logo-restore.css",
-            "data-growwithhr-original-logo"
-        );
+        appendStylesheet("css/19-presentation-polish.css", "data-growwithhr-presentation-polish");
+        appendStylesheet("css/21-logo-restore.css", "data-growwithhr-original-logo");
+        appendStylesheet("css/23-report-experience.css", "data-growwithhr-report-experience");
     };
 
     const integrateBrandIntoNavigation = () => {
@@ -40,20 +35,9 @@
         const navigation = header?.querySelector(".site-nav-glass");
         const brand = header?.querySelector(".site-brand-logo");
         const image = brand?.querySelector("img");
-
         if (!navigation || !brand) return;
-
-        if (brand.parentElement !== navigation) {
-            navigation.insertBefore(brand, navigation.firstChild);
-        }
-
-        if (image) {
-            image.src = new URL(
-                "assets/hrtechify-logo.png",
-                rootUrl
-            ).href;
-        }
-
+        if (brand.parentElement !== navigation) navigation.insertBefore(brand, navigation.firstChild);
+        if (image) image.src = new URL("assets/hrtechify-logo.png", rootUrl).href;
         header.classList.add("site-header-shell--integrated-brand");
     };
 
@@ -64,7 +48,13 @@
         });
     };
 
-    const loadPresentationPolish = () => {
+    const loadReportExperienceAndPdf = async () => {
+        try {
+            await import("./report-experience-v019.js");
+        } catch (error) {
+            console.error("GrowWithHR: report experience enhancements could not load.", error);
+        }
+
         if (!window.GrowWithHRPDF) return;
         window.GrowWithHRPDFPolishReady = import("./pdf-polish.js")
             .then(() => window.GrowWithHRPDF)
@@ -87,7 +77,7 @@
         });
         loadPresentationStyles();
         integrateBrandIntoNavigation();
-        loadPresentationPolish();
+        loadReportExperienceAndPdf();
         loadPrivateBetaModules();
     };
 
