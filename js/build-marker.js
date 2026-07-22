@@ -2,11 +2,12 @@
 (() => {
     "use strict";
 
-    const BUILD_ID = "assessment-first-scene-20260722-0002";
+    const BUILD_ID = "assessment-first-scene-hotfix-20260722-0003";
     const scriptUrl = document.currentScript?.src || window.location.href;
     const rootUrl = new URL("../", scriptUrl);
     const params = new URLSearchParams(window.location.search);
     const debug = params.get("debug") === "1";
+    const FIRST_SCENE_FIX_MARKER = "__firstSceneTransitionFixInstalled";
 
     window.GWHR_BUILD_ID = BUILD_ID;
     window.GWHR_DEBUG = debug;
@@ -14,6 +15,110 @@
         if (!debug && prefix !== "[GrowWithHR:BUILD]") return;
         console.info(prefix, payload);
     };
+
+    const cleanText = (value) => String(value ?? "").trim();
+
+    const fieldValue = (application, fieldName) => {
+        const field = document.getElementById(fieldName);
+        return cleanText(field?.value ?? application?.answers?.[fieldName]);
+    };
+
+    const hasVisibleError = (fieldName) => {
+        const error = document.getElementById(`${fieldName}Error`);
+        return Boolean(error && !error.hidden && cleanText(error.textContent));
+    };
+
+    const installAssessmentFirstSceneFix = (application = window.executiveAssessment) => {
+        if (
+            !application ||
+            typeof application.continueFromMoment !== "function" ||
+            application[FIRST_SCENE_FIX_MARKER]
+        ) {
+            return false;
+        }
+
+        const originalContinue = application.continueFromMoment;
+
+        application.continueFromMoment = function continueFromMomentWithCustomIndustryFallback() {
+            const startingMoment = Number(this.currentMoment);
+
+            originalContinue.call(this);
+
+            if (
+                startingMoment !== 0 ||
+                Number(this.currentMoment) !== 0 ||
+                !hasVisibleError("industry") ||
+                hasVisibleError("companyName") ||
+                hasVisibleError("nature")
+            ) {
+                return;
+            }
+
+            const companyName = fieldValue(this, "companyName");
+            const rawIndustry = fieldValue(this, "industry");
+            const nature = fieldValue(this, "nature");
+
+            if (!companyName || !rawIndustry || !nature) {
+                return;
+            }
+
+            const industryInput = document.getElementById("industry");
+            const customIndustryInput = document.getElementById("customIndustry");
+            const customIndustryField = document.getElementById("customIndustryField");
+
+            if (industryInput) industryInput.value = "Other";
+            if (customIndustryInput) customIndustryInput.value = rawIndustry;
+            if (customIndustryField) customIndustryField.hidden = false;
+
+            this.answers = this.answers || {};
+            Object.assign(this.answers, {
+                industry: "Other",
+                industryId: "other",
+                industryCategory: "Other",
+                industryRuleProfile: "Other",
+                customIndustry: rawIndustry
+            });
+
+            originalContinue.call(this);
+        };
+
+        Object.defineProperty(application, FIRST_SCENE_FIX_MARKER, {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: true
+        });
+
+        window.GrowWithHRAssessmentFirstSceneFix = Object.freeze({
+            version: "1.1.0",
+            installed: true,
+            delivery: "classic-script"
+        });
+
+        return true;
+    };
+
+    window.addEventListener(
+        "growwithhr:assessment-modules-ready",
+        (event) => {
+            installAssessmentFirstSceneFix(event?.detail?.application);
+        },
+        { once: true }
+    );
+
+    const installAssessmentFixWhenReady = () => {
+        installAssessmentFirstSceneFix();
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            installAssessmentFixWhenReady,
+            { once: true }
+        );
+    } else {
+        installAssessmentFixWhenReady();
+    }
 
     const appendStylesheet = (path, marker) => {
         if (document.querySelector(`link[${marker}]`)) return;
@@ -48,13 +153,6 @@
         });
     };
 
-    const loadAssessmentFirstSceneFix = () => {
-        if (!document.body.classList.contains("analyze-company-page")) return;
-        import("./assessment-first-scene-fix.js").catch((error) => {
-            console.error("GrowWithHR: first-scene assessment fix could not load.", error);
-        });
-    };
-
     const loadReportExperienceAndPdf = async () => {
         try {
             await import("./report-experience-v019.js");
@@ -70,8 +168,6 @@
                 return window.GrowWithHRPDF;
             });
     };
-
-    loadAssessmentFirstSceneFix();
 
     const logBuild = () => {
         window.GWHR_LOG("[GrowWithHR:BUILD]", {
