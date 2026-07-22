@@ -3,9 +3,9 @@
    Executive assessment navigation resilience
 
    Prevents repeated Continue activation from validating a newly rendered
-   scene before the user has interacted with it. The guard wraps the assessment
-   controller method so mouse, touch, keyboard and programmatic submissions all
-   follow the same transition lock.
+   scene before the user has interacted with it. The guard runs at the form
+   submission boundary so mouse, touch, keyboard and programmatic submissions
+   all follow the same transition lock.
 ========================================================== */
 
 (() => {
@@ -38,40 +38,18 @@
         }
     }
 
-    function showRecoverableError(application) {
-        const message =
-            "We couldn’t move to the next scene. Your answers are still here—please try Continue again.";
-        const footer =
-            application?.elements?.footerMessage ||
-            document.getElementById(
-                "footerMessage"
-            );
-        const assertive =
-            application?.elements?.assertiveRegion ||
-            document.getElementById(
-                "assertiveRegion"
-            );
-
-        if (footer) {
-            footer.textContent = message;
-        }
-
-        if (assertive) {
-            assertive.textContent = "";
-
-            window.requestAnimationFrame(() => {
-                assertive.textContent = message;
-            });
-        }
-    }
-
     function install(application) {
+        const form =
+            application?.elements?.storyForm ||
+            document.getElementById(
+                "storyForm"
+            );
+
         if (
             installed ||
             !application ||
             !application.__modularFacadeInstalled ||
-            typeof application.continueFromMoment !==
-                "function"
+            !form
         ) {
             return false;
         }
@@ -91,10 +69,6 @@
             document.getElementById(
                 "backButton"
             );
-        const originalContinue =
-            application
-                .continueFromMoment
-                .bind(application);
 
         let navigationLocked = false;
         let releaseTimer = 0;
@@ -128,23 +102,25 @@
                 );
         };
 
-        application.continueFromMoment =
-            function guardedContinueFromMoment(
-                ...args
-            ) {
+        form.addEventListener(
+            "submit",
+            (event) => {
                 if (navigationLocked) {
-                    return false;
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    return;
                 }
 
                 const beforeMoment =
-                    this.currentMoment;
+                    application.currentMoment;
                 const beforeScreen =
                     shell?.dataset?.screen ||
                     "";
 
                 navigationLocked = true;
                 activeButton =
-                    this?.elements?.nextButton ||
+                    event.submitter ||
+                    application?.elements?.nextButton ||
                     document.getElementById(
                         "nextButton"
                     );
@@ -153,13 +129,9 @@
                     true
                 );
 
-                try {
-                    const result =
-                        originalContinue(
-                            ...args
-                        );
+                window.queueMicrotask(() => {
                     const afterMoment =
-                        this.currentMoment;
+                        application.currentMoment;
                     const afterScreen =
                         shell?.dataset?.screen ||
                         "";
@@ -178,20 +150,10 @@
                     } else {
                         scheduleFallbackRelease();
                     }
-
-                    return result;
-                } catch (error) {
-                    release();
-                    console.error(
-                        "GrowWithHR: assessment scene navigation failed.",
-                        error
-                    );
-                    showRecoverableError(
-                        this
-                    );
-                    return false;
-                }
-            };
+                });
+            },
+            true
+        );
 
         [
             "focusin",
