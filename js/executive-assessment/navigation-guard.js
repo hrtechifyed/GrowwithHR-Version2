@@ -34,33 +34,6 @@
         }
     }
 
-    function showRecoverableError(application) {
-        const message =
-            "We couldn’t move to the next scene. Your answers are still here—please try Continue again.";
-        const footer =
-            application?.elements?.footerMessage ||
-            document.getElementById(
-                "footerMessage"
-            );
-        const assertive =
-            application?.elements?.assertiveRegion ||
-            document.getElementById(
-                "assertiveRegion"
-            );
-
-        if (footer) {
-            footer.textContent = message;
-        }
-
-        if (assertive) {
-            assertive.textContent = "";
-
-            window.requestAnimationFrame(() => {
-                assertive.textContent = message;
-            });
-        }
-    }
-
     function install(application) {
         const form =
             application?.elements?.storyForm ||
@@ -125,26 +98,6 @@
                     );
             },
             true
-        );
-
-        const handleNavigationError = () => {
-            if (!navigationLocked) {
-                return;
-            }
-
-            release();
-            showRecoverableError(
-                application
-            );
-        };
-
-        window.addEventListener(
-            "error",
-            handleNavigationError
-        );
-        window.addEventListener(
-            "unhandledrejection",
-            handleNavigationError
         );
 
         installed = true;
