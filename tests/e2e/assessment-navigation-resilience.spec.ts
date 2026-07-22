@@ -68,10 +68,8 @@ async function submitRapidly(page: Page): Promise<void> {
     await expect(button).toBeVisible();
     await expect(button).toBeEnabled();
     await waitForNavigationUnlock(page);
-    await button.dblclick({
-        delay: 20,
-        noWaitAfter: true
-    });
+    await button.dispatchEvent("click");
+    await button.dispatchEvent("click");
 }
 
 test.describe(
