@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const BUILD_ID = "assessment-navigation-20260722-0005";
+    const BUILD_ID = "assessment-navigation-20260722-0006";
     const scriptUrl = document.currentScript?.src || window.location.href;
     const rootUrl = new URL("../", scriptUrl);
     const params = new URLSearchParams(window.location.search);
@@ -222,16 +222,6 @@
             }
         };
 
-        application.elements?.storyContainer?.addEventListener(
-            "input",
-            releaseNavigation,
-            true
-        );
-        application.elements?.storyContainer?.addEventListener(
-            "change",
-            releaseNavigation,
-            true
-        );
         application.elements?.backButton?.addEventListener(
             "click",
             releaseNavigation,
