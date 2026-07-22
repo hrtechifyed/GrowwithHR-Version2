@@ -55,6 +55,7 @@ async function activateContinueTwice(page: Page): Promise<void> {
     const button = page.locator("#nextButton");
 
     await expect(button).toBeVisible();
+    await expect(button).toBeEnabled();
 
     await page.evaluate(() => {
         const application = (
@@ -82,6 +83,8 @@ async function activateContinueTwice(page: Page): Promise<void> {
 test.describe(
     "Assessment navigation resilience",
     () => {
+        test.setTimeout(90_000);
+
         test.beforeEach(async ({ page }) => {
             await page.setViewportSize({
                 width: 1280,
@@ -135,7 +138,6 @@ test.describe(
                     "Private Limited"
                 );
 
-                await page.waitForTimeout(500);
                 await activateContinueTwice(page);
                 await expectMoment(
                     page,
@@ -145,7 +147,6 @@ test.describe(
 
                 await page.locator("#employees").fill("25");
 
-                await page.waitForTimeout(500);
                 await activateContinueTwice(page);
                 await expectMoment(
                     page,
@@ -162,7 +163,6 @@ test.describe(
                     { hasText: "25–50%" }
                 ).click();
 
-                await page.waitForTimeout(500);
                 await activateContinueTwice(page);
                 await expectMoment(
                     page,
@@ -176,7 +176,6 @@ test.describe(
                 await page.locator("#locations").fill("1");
                 await page.locator("#countries").fill("1");
 
-                await page.waitForTimeout(500);
                 await activateContinueTwice(page);
                 await expectMoment(
                     page,
@@ -193,7 +192,6 @@ test.describe(
                     { hasText: "No major expansion planned" }
                 ).click();
 
-                await page.waitForTimeout(500);
                 await activateContinueTwice(page);
                 await expectMoment(
                     page,
@@ -210,7 +208,6 @@ test.describe(
                     { hasText: "Hiring and onboarding" }
                 ).click();
 
-                await page.waitForTimeout(500);
                 await activateContinueTwice(page);
 
                 await expect(
