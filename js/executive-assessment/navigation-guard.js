@@ -3,9 +3,9 @@
    Executive assessment navigation resilience
 
    Prevents repeated Continue activation from validating a newly rendered
-   scene before the user has interacted with it. The guard runs at the form
-   submission boundary so mouse, touch, keyboard and programmatic submissions
-   all follow the same transition lock.
+   scene before the user has interacted with it. Mouse and touch activation are
+   blocked at the Continue click boundary, while keyboard and programmatic
+   submission are protected at the form boundary.
 ========================================================== */
 
 (() => {
@@ -71,6 +71,7 @@
             );
 
         let navigationLocked = false;
+        let allowSubmitFromCurrentClick = false;
         let releaseTimer = 0;
         let activeButton = null;
 
@@ -80,6 +81,7 @@
             );
             releaseTimer = 0;
             navigationLocked = false;
+            allowSubmitFromCurrentClick = false;
             setButtonBusy(
                 activeButton ||
                 application?.elements?.nextButton ||
@@ -89,6 +91,29 @@
                 false
             );
             activeButton = null;
+        };
+
+        const lock = (button) => {
+            navigationLocked = true;
+            activeButton =
+                button ||
+                application?.elements?.nextButton ||
+                document.getElementById(
+                    "nextButton"
+                );
+            setButtonBusy(
+                activeButton,
+                true
+            );
+
+            window.clearTimeout(
+                releaseTimer
+            );
+            releaseTimer =
+                window.setTimeout(
+                    release,
+                    FALLBACK_UNLOCK_MS
+                );
         };
 
         const releaseFromCurrentScene = (event) => {
@@ -108,9 +133,17 @@
         };
 
         document.addEventListener(
-            "submit",
+            "click",
             (event) => {
-                if (event.target !== form) {
+                const target = event.target;
+                const button =
+                    target instanceof Element
+                        ? target.closest(
+                            "#nextButton"
+                        )
+                        : null;
+
+                if (!button) {
                     return;
                 }
 
@@ -120,26 +153,37 @@
                     return;
                 }
 
-                navigationLocked = true;
-                activeButton =
-                    event.submitter ||
-                    application?.elements?.nextButton ||
-                    document.getElementById(
-                        "nextButton"
-                    );
-                setButtonBusy(
-                    activeButton,
-                    true
-                );
+                allowSubmitFromCurrentClick =
+                    true;
+                lock(button);
+            },
+            true
+        );
 
-                window.clearTimeout(
-                    releaseTimer
+        document.addEventListener(
+            "submit",
+            (event) => {
+                if (event.target !== form) {
+                    return;
+                }
+
+                if (
+                    allowSubmitFromCurrentClick
+                ) {
+                    allowSubmitFromCurrentClick =
+                        false;
+                    return;
+                }
+
+                if (navigationLocked) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    return;
+                }
+
+                lock(
+                    event.submitter
                 );
-                releaseTimer =
-                    window.setTimeout(
-                        release,
-                        FALLBACK_UNLOCK_MS
-                    );
             },
             true
         );
