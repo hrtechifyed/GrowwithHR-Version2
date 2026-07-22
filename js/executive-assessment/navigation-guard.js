@@ -12,7 +12,10 @@
     "use strict";
 
     const FALLBACK_UNLOCK_MS = 1500;
+    const INSTALL_RETRY_MS = 50;
+    const MAX_INSTALL_ATTEMPTS = 100;
     let installed = false;
+    let installAttempts = 0;
 
     function setButtonBusy(button, busy) {
         if (!button) {
@@ -66,6 +69,7 @@
         if (
             installed ||
             !application ||
+            !application.__modularFacadeInstalled ||
             typeof application.continueFromMoment !==
                 "function"
         ) {
@@ -221,9 +225,28 @@
     }
 
     function installCurrentApplication() {
-        return install(
-            window.executiveAssessment
-        );
+        if (
+            install(
+                window.executiveAssessment
+            ) ||
+            installed
+        ) {
+            return true;
+        }
+
+        installAttempts += 1;
+
+        if (
+            installAttempts <
+            MAX_INSTALL_ATTEMPTS
+        ) {
+            window.setTimeout(
+                installCurrentApplication,
+                INSTALL_RETRY_MS
+            );
+        }
+
+        return false;
     }
 
     window.addEventListener(
