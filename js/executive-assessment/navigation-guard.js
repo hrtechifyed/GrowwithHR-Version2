@@ -102,9 +102,13 @@
                 );
         };
 
-        form.addEventListener(
+        document.addEventListener(
             "submit",
             (event) => {
+                if (event.target !== form) {
+                    return;
+                }
+
                 if (navigationLocked) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
