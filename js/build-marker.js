@@ -2,12 +2,13 @@
 (() => {
     "use strict";
 
-    const BUILD_ID = "assessment-delivery-20260722-0004";
+    const BUILD_ID = "assessment-navigation-20260722-0005";
     const scriptUrl = document.currentScript?.src || window.location.href;
     const rootUrl = new URL("../", scriptUrl);
     const params = new URLSearchParams(window.location.search);
     const debug = params.get("debug") === "1";
-    const FIRST_SCENE_FIX_MARKER = "__firstSceneTransitionFixInstalled";
+    const FLOW_FIX_MARKER = "__assessmentFlowFixesInstalled";
+    const NAVIGATION_RELEASE_MS = 450;
 
     window.GWHR_BUILD_ID = BUILD_ID;
     window.GWHR_DEBUG = debug;
@@ -97,70 +98,165 @@
         );
     };
 
-    const installAssessmentFirstSceneFix = (
+    const setNavigationBusy = (application, busy) => {
+        const button =
+            application?.elements?.nextButton ||
+            document.getElementById("nextButton");
+        const shell =
+            application?.elements?.shell ||
+            document.getElementById("assessmentShell");
+
+        if (button) {
+            if (busy) {
+                button.setAttribute("aria-busy", "true");
+                button.dataset.navigationBusy = "true";
+            } else {
+                button.removeAttribute("aria-busy");
+                delete button.dataset.navigationBusy;
+            }
+        }
+
+        if (shell) {
+            shell.dataset.navigationGuard = busy ? "busy" : "ready";
+        }
+    };
+
+    const installAssessmentFlowFixes = (
         application = window.executiveAssessment
     ) => {
         if (
             !application ||
             typeof application.continueFromMoment !== "function" ||
-            application[FIRST_SCENE_FIX_MARKER]
+            application[FLOW_FIX_MARKER]
         ) {
             return false;
         }
 
         const originalContinue = application.continueFromMoment;
+        let navigationLocked = false;
+        let releaseTimer = 0;
 
-        application.continueFromMoment = function continueWithIndustryNormalisation() {
-            if (Number(this.currentMoment) === 0) {
-                this.captureAllStoryInputs?.();
-
-                const rawIndustry = fieldValue(this, "industry");
-                const resolvedIndustry = rawIndustry &&
-                    typeof this.resolveIndustry === "function"
-                    ? this.resolveIndustry(rawIndustry)
-                    : null;
-
-                if (rawIndustry && !resolvedIndustry) {
-                    const industryInput = document.getElementById("industry");
-                    const customIndustryInput = document.getElementById(
-                        "customIndustry"
-                    );
-                    const customIndustryField = document.getElementById(
-                        "customIndustryField"
-                    );
-
-                    if (industryInput) industryInput.value = "Other";
-                    if (customIndustryInput) {
-                        customIndustryInput.value = rawIndustry;
-                    }
-                    if (customIndustryField) {
-                        customIndustryField.hidden = false;
-                    }
-
-                    Object.assign(this.answers || {}, {
-                        industry: "Other",
-                        industryId: "other",
-                        industryCategory: "Other",
-                        industryRuleProfile: "Other",
-                        customIndustry: rawIndustry
-                    });
-                }
-            }
-
-            return originalContinue.call(this);
+        const releaseNavigation = () => {
+            window.clearTimeout(releaseTimer);
+            releaseTimer = 0;
+            navigationLocked = false;
+            setNavigationBusy(application, false);
         };
 
-        Object.defineProperty(application, FIRST_SCENE_FIX_MARKER, {
+        application.continueFromMoment = function continueWithAssessmentGuards() {
+            if (navigationLocked) {
+                window.GWHR_LOG(
+                    "[GrowWithHR:NAVIGATION]",
+                    {
+                        action: "duplicate-submit-blocked",
+                        moment: Number(this.currentMoment)
+                    }
+                );
+                return false;
+            }
+
+            navigationLocked = true;
+            setNavigationBusy(this, true);
+
+            const startingMoment = Number(this.currentMoment);
+            const workspaceWasVisible =
+                this.elements?.workspace?.hidden === false;
+
+            try {
+                if (startingMoment === 0) {
+                    this.captureAllStoryInputs?.();
+
+                    const rawIndustry = fieldValue(this, "industry");
+                    const resolvedIndustry = rawIndustry &&
+                        typeof this.resolveIndustry === "function"
+                        ? this.resolveIndustry(rawIndustry)
+                        : null;
+
+                    if (rawIndustry && !resolvedIndustry) {
+                        const industryInput =
+                            document.getElementById("industry");
+                        const customIndustryInput =
+                            document.getElementById("customIndustry");
+                        const customIndustryField =
+                            document.getElementById("customIndustryField");
+
+                        if (industryInput) industryInput.value = "Other";
+                        if (customIndustryInput) {
+                            customIndustryInput.value = rawIndustry;
+                        }
+                        if (customIndustryField) {
+                            customIndustryField.hidden = false;
+                        }
+
+                        Object.assign(this.answers || {}, {
+                            industry: "Other",
+                            industryId: "other",
+                            industryCategory: "Other",
+                            industryRuleProfile: "Other",
+                            customIndustry: rawIndustry
+                        });
+                    }
+                }
+
+                const result = originalContinue.call(this);
+                const momentAdvanced =
+                    Number(this.currentMoment) !== startingMoment;
+                const leftWorkspace =
+                    workspaceWasVisible &&
+                    this.elements?.workspace?.hidden === true;
+
+                if (!momentAdvanced && !leftWorkspace) {
+                    releaseNavigation();
+                    return result;
+                }
+
+                releaseTimer = window.setTimeout(
+                    releaseNavigation,
+                    NAVIGATION_RELEASE_MS
+                );
+
+                return result;
+            } catch (error) {
+                releaseNavigation();
+                throw error;
+            }
+        };
+
+        application.elements?.storyContainer?.addEventListener(
+            "input",
+            releaseNavigation,
+            true
+        );
+        application.elements?.storyContainer?.addEventListener(
+            "change",
+            releaseNavigation,
+            true
+        );
+        application.elements?.backButton?.addEventListener(
+            "click",
+            releaseNavigation,
+            true
+        );
+
+        Object.defineProperty(application, FLOW_FIX_MARKER, {
             configurable: false,
             enumerable: false,
             writable: false,
             value: true
         });
 
+        setNavigationBusy(application, false);
+
         window.GrowWithHRAssessmentFirstSceneFix = Object.freeze({
-            version: "2.0.0",
+            version: "3.0.0",
             installed: true,
             delivery: "core-normalisation"
+        });
+
+        window.GrowWithHRAssessmentNavigationGuard = Object.freeze({
+            version: "1.0.0",
+            installed: true,
+            duplicateSubmitProtection: true
         });
 
         return true;
@@ -194,7 +290,7 @@
     window.addEventListener(
         "growwithhr:assessment-modules-ready",
         (event) => {
-            installAssessmentFirstSceneFix(event?.detail?.application);
+            installAssessmentFlowFixes(event?.detail?.application);
         },
         { once: true }
     );
@@ -238,7 +334,7 @@
     };
 
     const initialise = () => {
-        installAssessmentFirstSceneFix();
+        installAssessmentFlowFixes();
         loadPresentationStyles();
         integrateBrandIntoNavigation();
         bindDeliveryWarmup();
