@@ -1,7 +1,7 @@
 /* Homepage intelligence graph motion.
-   The Canvas renderer already moves every parameter and node around the
-   circular orbit. Keep the container itself stationary so the graph does not
-   appear to zoom or tilt, and so labels remain horizontally readable. */
+   Keep the graph container stationary, rotate the rendered graph layers on a
+   slow circular path, and counter-rotate each parameter label so the text
+   remains horizontal and readable at every node position. */
 
 .home-page #dnaCoreCanvas {
     transform: none;
@@ -10,8 +10,50 @@
     pointer-events: none;
 }
 
+.home-page #dnaCoreCanvas .dna-core-canvas,
+.home-page #dnaCoreCanvas #dnaLabels {
+    transform-origin: 50% 50%;
+    animation: growwithhr-intelligence-orbit 120s linear infinite;
+    will-change: transform;
+}
+
 .home-page #dnaCoreCanvas .dna-label {
     rotate: 0deg;
+    transform-origin: 50% 50%;
+    animation: growwithhr-intelligence-label-counter-orbit 120s linear infinite;
     writing-mode: horizontal-tb;
     text-orientation: mixed;
+    will-change: left, top, transform, rotate;
+}
+
+@keyframes growwithhr-intelligence-orbit {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes growwithhr-intelligence-label-counter-orbit {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: -360deg;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-page #dnaCoreCanvas .dna-core-canvas,
+    .home-page #dnaCoreCanvas #dnaLabels,
+    .home-page #dnaCoreCanvas .dna-label {
+        animation: none;
+    }
+
+    .home-page #dnaCoreCanvas .dna-label {
+        rotate: 0deg;
+    }
 }
