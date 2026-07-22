@@ -1,59 +1,96 @@
 /* Homepage intelligence graph motion.
-   Keep the graph container stationary, rotate the rendered graph layers on a
-   slow circular path, and counter-rotate each parameter label so the text
-   remains horizontal and readable at every node position. */
+   Keep the parameter text fixed and horizontally readable while the Canvas
+   renderer performs its own extremely slow circular graph rotation. The graph
+   container and rendered canvas keep a constant scale, so no zooming or
+   pulsing transform is introduced by CSS. */
 
-.home-page #dnaCoreCanvas {
-    transform: none;
-    animation: none;
+.home-page #dnaCoreCanvas,
+.home-page #dnaCoreCanvas .dna-core-canvas,
+.home-page #dnaCoreCanvas #dnaLabels {
+    transform: none !important;
+    scale: 1 !important;
+    animation: none !important;
     will-change: auto;
     pointer-events: none;
 }
 
-.home-page #dnaCoreCanvas .dna-core-canvas,
-.home-page #dnaCoreCanvas #dnaLabels {
-    transform-origin: 50% 50%;
-    animation: growwithhr-intelligence-orbit 120s linear infinite;
-    will-change: transform;
-}
-
 .home-page #dnaCoreCanvas .dna-label {
-    rotate: 0deg;
-    transform-origin: 50% 50%;
-    animation: growwithhr-intelligence-label-counter-orbit 120s linear infinite;
+    rotate: 0deg !important;
+    animation: none !important;
     writing-mode: horizontal-tb;
     text-orientation: mixed;
-    will-change: left, top, transform, rotate;
+    will-change: auto;
 }
 
-@keyframes growwithhr-intelligence-orbit {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+/* Freeze the ten parameter labels around the graph. Inline positions produced
+   by the Canvas renderer are intentionally overridden so the words do not
+   orbit, tilt or zoom with the network. */
+.home-page #dnaCoreCanvas .dna-label:nth-child(1) {
+    left: 50% !important;
+    top: 13% !important;
+    transform: translate(-50%, -100%) !important;
 }
 
-@keyframes growwithhr-intelligence-label-counter-orbit {
-    from {
-        rotate: 0deg;
-    }
+.home-page #dnaCoreCanvas .dna-label:nth-child(2) {
+    left: 72% !important;
+    top: 20% !important;
+    transform: translate(0, -100%) !important;
+}
 
-    to {
-        rotate: -360deg;
-    }
+.home-page #dnaCoreCanvas .dna-label:nth-child(3) {
+    left: 86% !important;
+    top: 38% !important;
+    transform: translate(0, -50%) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(4) {
+    left: 86% !important;
+    top: 62% !important;
+    transform: translate(0, -50%) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(5) {
+    left: 72% !important;
+    top: 80% !important;
+    transform: translate(0, 0) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(6) {
+    left: 50% !important;
+    top: 87% !important;
+    transform: translate(-50%, 0) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(7) {
+    left: 28% !important;
+    top: 80% !important;
+    transform: translate(-100%, 0) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(8) {
+    left: 14% !important;
+    top: 62% !important;
+    transform: translate(-100%, -50%) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(9) {
+    left: 14% !important;
+    top: 38% !important;
+    transform: translate(-100%, -50%) !important;
+}
+
+.home-page #dnaCoreCanvas .dna-label:nth-child(10) {
+    left: 28% !important;
+    top: 20% !important;
+    transform: translate(-100%, -100%) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .home-page #dnaCoreCanvas,
     .home-page #dnaCoreCanvas .dna-core-canvas,
     .home-page #dnaCoreCanvas #dnaLabels,
     .home-page #dnaCoreCanvas .dna-label {
-        animation: none;
-    }
-
-    .home-page #dnaCoreCanvas .dna-label {
-        rotate: 0deg;
+        animation: none !important;
+        transform-style: flat;
     }
 }
