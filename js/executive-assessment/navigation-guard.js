@@ -91,6 +91,22 @@
             activeButton = null;
         };
 
+        const releaseFromCurrentScene = (event) => {
+            const target = event.target;
+
+            if (
+                !navigationLocked ||
+                !storyContainer ||
+                !(target instanceof Node) ||
+                !target.isConnected ||
+                !storyContainer.contains(target)
+            ) {
+                return;
+            }
+
+            release();
+        };
+
         const scheduleFallbackRelease = () => {
             window.clearTimeout(
                 releaseTimer
@@ -168,7 +184,7 @@
             storyContainer
                 ?.addEventListener(
                     eventName,
-                    release,
+                    releaseFromCurrentScene,
                     true
                 );
         });
