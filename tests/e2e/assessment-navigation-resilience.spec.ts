@@ -63,24 +63,14 @@ async function waitForNavigationUnlock(
 }
 
 async function submitRapidly(page: Page): Promise<void> {
+    const button = page.locator("#nextButton");
+
+    await expect(button).toBeVisible();
+    await expect(button).toBeEnabled();
     await waitForNavigationUnlock(page);
-
-    await page.evaluate(() => {
-        const form = document.getElementById(
-            "storyForm"
-        ) as HTMLFormElement | null;
-        const submitter = document.getElementById(
-            "nextButton"
-        ) as HTMLButtonElement | null;
-
-        if (!form || !submitter) {
-            throw new Error(
-                "Assessment Continue controls are unavailable."
-            );
-        }
-
-        form.requestSubmit(submitter);
-        form.requestSubmit(submitter);
+    await button.dblclick({
+        delay: 20,
+        noWaitAfter: true
     });
 }
 
