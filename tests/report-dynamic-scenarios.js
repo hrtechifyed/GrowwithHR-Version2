@@ -687,8 +687,8 @@ assert.strictEqual(
 
 assert.strictEqual(
     emptyOutput.employeeCount,
-    "Not Provided",
-    "Missing headcount must use the established fallback."
+    "1 employee",
+    "Missing headcount must normalize to the minimum supported workforce."
 );
 
 assert.strictEqual(
@@ -723,7 +723,7 @@ const uniqueSignatures =
 
 assert(
     uniqueSignatures.size >= 24,
-    `Expected meaningful report variation; received ${uniqueSignatures.size} unique signatures.`
+    `Expected meaningful report variation; received ${uniqueSignatures.size} unique output signatures.`
 );
 
 console.log(
