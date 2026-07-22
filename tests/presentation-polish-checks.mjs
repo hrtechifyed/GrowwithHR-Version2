@@ -19,9 +19,18 @@ assert(polish.includes("@media print"));
 assert(polish.includes("break-inside: avoid-page"));
 
 assert(buildMarker.includes('import("./pdf-polish.js")'));
-assert(pdfPolish.includes('const VERSION = "3.0.0-presentation-polish"'));
+assert(pdfPolish.includes('const VERSION = "3.1.0-clean-report-layout"'));
 assert(pdfPolish.includes("function profileRow"));
 assert(pdfPolish.includes("function ensureSpace"));
+assert(pdfPolish.includes("function drawPageBorder"));
+assert(pdfPolish.includes('doc.text("GrowWithHR"'));
+assert(pdfPolish.includes('"HRTechify - People • Technology • Growth"'));
+assert(pdfPolish.includes('"© 2026 All Rights Reserved"'));
+assert(pdfPolish.includes('`Page ${page} of ${total}`'));
+assert(pdfPolish.includes('`Click here to download template for ${resourceSubject(item, title)}`'));
+assert(pdfPolish.includes('writer.sectionHeading(\n            "Compliance Review",\n            "What You Should Review"'));
+assert(pdfPolish.includes('doc.text(options.coverLabel, centreX'));
+assert(pdfPolish.includes('align: "center"'));
 assert(pdfPolish.includes("GrowWithHRPDFPolishReady"));
 
 new vm.Script(pdfPolish, { filename: "js/pdf-polish.js" });

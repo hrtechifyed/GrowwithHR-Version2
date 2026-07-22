@@ -33,7 +33,7 @@ assert(experience.includes('observerScope: "story-container"'));
 assert(!experience.includes("observer.observe(document.body"));
 assert(experience.includes('document.getElementById("storyContainer")'));
 
-assert(pdf.includes('const VERSION = "3.0.0-presentation-polish"'));
+assert(pdf.includes('const VERSION = "3.1.0-clean-report-layout"'));
 assert(pdf.includes("const THEMES"));
 assert(pdf.includes("light:"));
 assert(pdf.includes("dark:"));
