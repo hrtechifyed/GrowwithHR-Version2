@@ -56,6 +56,10 @@ async function continueOnce(page: Page): Promise<void> {
 
     await expect(button).toBeVisible();
     await expect(button).toBeEnabled();
+    await expect(button).not.toHaveAttribute(
+        "aria-busy",
+        "true"
+    );
     await button.click();
 }
 
