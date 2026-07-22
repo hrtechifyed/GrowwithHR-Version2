@@ -16,10 +16,7 @@ new vm.Script(pdf, { filename: "js/pdf-polish.js" });
 new vm.Script(report, { filename: "js/executive-advisory-report.js" });
 new vm.Script(buildMarker, { filename: "js/build-marker.js" });
 
-assert(
-    buildMarker.indexOf('import("./report-experience-v019.js")') <
-    buildMarker.indexOf('import("./pdf-polish.js")')
-);
+assert(buildMarker.indexOf('import("./report-experience-v019.js")') < buildMarker.indexOf('import("./pdf-polish.js")'));
 assert(buildMarker.includes("css/23-report-experience.css"));
 assert(buildMarker.includes("if (!context.assessment && !context.report) return;"));
 
@@ -39,7 +36,9 @@ assert(pdf.includes("light:"));
 assert(pdf.includes("dark:"));
 assert(pdf.includes('assets/hrtechify-logo.png'));
 assert(!pdf.includes('hrtechify-logo-transparent.svg'));
-assert(pdf.includes("function profileRow"));
+assert(pdf.includes("function recommendationCard"));
+assert(pdf.includes("function summaryTable"));
+assert(pdf.includes("function roadmap"));
 assert(pdf.includes("function ensureSpace"));
 assert(pdf.includes("textWithLink"));
 assert(pdf.includes("HOW TO IMPLEMENT"));
