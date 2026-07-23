@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>M4 Explainable Intelligence | GrowWithHR</title>
+    <link rel="stylesheet" href="css/01-variables.css">
+    <link rel="stylesheet" href="css/02-base.css">
+    <link rel="stylesheet" href="css/03-typography.css">
+    <link rel="stylesheet" href="css/18-site-shell.css">
+    <style>
+        body{background:#f4f7fb;color:#14213d}.m4-shell{max-width:1180px;margin:0 auto;padding:calc(var(--site-shell-header-height,112px) + 42px) 24px 64px}.m4-hero,.m4-panel{background:#fff;border:1px solid #d8e1ec;border-radius:20px;box-shadow:0 18px 50px rgba(15,23,42,.08)}.m4-hero{padding:32px;margin-bottom:24px}.m4-kicker{color:#e8751a;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.m4-title{margin:.35rem 0 .75rem;color:#1d3557}.m4-note{max-width:850px;line-height:1.7}.m4-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.m4-panel{padding:24px}.m4-metric-value{font-size:2.5rem;font-weight:800;color:#1f6f6c}.m4-basis{line-height:1.6;color:#475569}.m4-questions{margin-top:24px}.m4-question{padding:18px 0;border-top:1px solid #e2e8f0}.m4-question:first-child{border-top:0}.m4-badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#fff0e6;color:#9a4a00;font-size:.8rem;font-weight:800}.m4-empty{padding:18px;background:#fff8e7;border-left:4px solid #d89b00}.m4-trace{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem;white-space:pre-wrap;background:#0f172a;color:#e2e8f0;padding:18px;border-radius:14px;overflow:auto}@media(max-width:800px){.m4-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body data-active-nav="analyze">
+    <main class="m4-shell">
+        <section class="m4-hero" aria-labelledby="m4Title">
+            <p class="m4-kicker">M4 · v0.19.0 private release candidate</p>
+            <h1 id="m4Title" class="m4-title">Explainable Intelligence</h1>
+            <p class="m4-note">This private view separates profile completeness, applicability certainty and evidence coverage. It does not produce a blended health score, does not modify saved assessment state and does not provide legal certification.</p>
+        </section>
+        <section class="m4-grid" aria-label="Explainable intelligence metrics">
+            <article class="m4-panel"><h2>Profile completeness</h2><div id="profileCompleteness" class="m4-metric-value">—</div><p id="profileCompletenessBasis" class="m4-basis"></p></article>
+            <article class="m4-panel"><h2>Applicability certainty</h2><div id="applicabilityCertainty" class="m4-metric-value">—</div><p id="applicabilityCertaintyBasis" class="m4-basis"></p></article>
+            <article class="m4-panel"><h2>Evidence coverage</h2><div id="evidenceCoverage" class="m4-metric-value">—</div><p id="evidenceCoverageBasis" class="m4-basis"></p></article>
+        </section>
+        <section class="m4-panel m4-questions" aria-labelledby="questionTitle">
+            <p class="m4-kicker">Information gain</p>
+            <h2 id="questionTitle">Targeted questions that improve a defined result</h2>
+            <div id="questionList"></div>
+        </section>
+        <section class="m4-panel m4-questions" aria-labelledby="traceTitle">
+            <p class="m4-kicker">Reproducible decision trace</p>
+            <h2 id="traceTitle">How these results were derived</h2>
+            <pre id="decisionTrace" class="m4-trace"></pre>
+        </section>
+    </main>
+    <script src="js/site-shell.js" defer></script>
+    <script type="module">
+        import { buildExplainableIntelligence } from "./js/assessment-v3/explainable-intelligence-model.js";
+        const read = (key) => { try { return JSON.parse(localStorage.getItem(key) || "null") || {}; } catch { return {}; } };
+        const saved = read("growwithhr-advisory-briefing-v2");
+        const report = read("growwithhr-report");
+        const traceability = read("growwithhr-compliance-traceability-v1");
+        const model = buildExplainableIntelligence({ answers: saved.answers || saved, report, traceability });
+        for (const key of ["profileCompleteness","applicabilityCertainty","evidenceCoverage"]) {
+            document.getElementById(key).textContent = `${model.metrics[key].value}%`;
+            document.getElementById(`${key}Basis`).textContent = model.metrics[key].basis;
+        }
+        const list = document.getElementById("questionList");
+        if (!model.questions.length) {
+            list.innerHTML = '<p class="m4-empty">No governed information-gain questions remain for the current saved profile.</p>';
+        } else {
+            list.innerHTML = model.questions.map((question, index) => `<article class="m4-question"><span class="m4-badge">${index === 0 ? "Next best question" : `Priority ${index + 1}`}</span><h3>${question.label}</h3><p>${question.rationale}</p><p><strong>Improves:</strong> ${question.dimension} · <strong>Estimated gain:</strong> ${question.estimatedInformationGain} points</p></article>`).join("");
+        }
+        document.getElementById("decisionTrace").textContent = JSON.stringify(model.decisionTrace, null, 2);
+        window.GrowWithHRM4View = Object.freeze({ model });
+    </script>
+</body>
+</html>

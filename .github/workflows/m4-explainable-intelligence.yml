@@ -1,0 +1,37 @@
+name: M4 Explainable Intelligence
+
+on:
+  pull_request:
+    paths:
+      - "js/assessment-v3/explainable-intelligence-model.js"
+      - "js/pdf-law-transparency.js"
+      - "js/build-marker.js"
+      - "schemas/explainable-intelligence.schema.json"
+      - "m4-explainable-intelligence.html"
+      - "tests/m4-explainable-intelligence-contract-checks.mjs"
+      - "tests/m4-law-transparency-combination-checks.mjs"
+      - "docs/releases/v0.19.0-m4-explainable-intelligence.md"
+      - ".github/workflows/m4-explainable-intelligence.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate M4 model syntax
+        run: node --check js/assessment-v3/explainable-intelligence-model.js
+      - name: Validate M4 PDF transparency syntax
+        run: node --check js/pdf-law-transparency.js
+      - name: Run M4 explainable intelligence contracts
+        run: node tests/m4-explainable-intelligence-contract-checks.mjs
+      - name: Run exhaustive law transparency combinations
+        run: node tests/m4-law-transparency-combination-checks.mjs

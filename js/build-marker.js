@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const BUILD_ID = "assessment-navigation-20260723-0008";
+    const BUILD_ID = "assessment-navigation-20260723-0009-m4-transparency";
     const scriptUrl =
         document.currentScript?.src ||
         window.location.href;
@@ -522,6 +522,10 @@
             await loadPdfModule(
                 "./pdf-line-layout-fixes.js",
                 "GrowWithHR: PDF line-layout fixes could not load."
+            );
+            await loadPdfModule(
+                "./pdf-law-transparency.js",
+                "GrowWithHR: M4 law transparency could not load."
             );
 
             return window.GrowWithHRPDF;
