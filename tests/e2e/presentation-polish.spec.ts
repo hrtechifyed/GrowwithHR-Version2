@@ -24,6 +24,17 @@ const REPORT = {
     ]
 };
 
+const ALL_PRIORITY_VALUES = [
+    "hiring-onboarding",
+    "policies-compliance",
+    "performance-rewards",
+    "manager-capability",
+    "culture-engagement",
+    "hr-operations-technology",
+    "workforce-planning",
+    "organisation-design"
+];
+
 test("keeps the original HRTechify logo inside the navigation capsule", async ({ page }) => {
     await page.addInitScript((report) => {
         localStorage.setItem("growwithhr-report", JSON.stringify(report));
@@ -121,13 +132,89 @@ test("balances the five executive snapshot cards and contains long values", asyn
     expect(layout.every((card) => card.valueFits)).toBe(true);
 });
 
-test("loads the executive-pagination PDF renderer on the public sample route", async ({ page }) => {
+test("loads the justified dual-theme PDF renderer on the public sample route", async ({ page }) => {
     await page.goto("/sample-advisory-report.html");
 
     await page.waitForFunction(() => (
-        window.GrowWithHRPDF?.version === "3.2.0-executive-pagination"
+        window.GrowWithHRPDF?.version === "3.3.0-justified-dual-theme"
     ));
 
-    const version = await page.evaluate(() => window.GrowWithHRPDF?.version);
-    expect(version).toBe("3.2.0-executive-pagination");
+    const capabilities = await page.evaluate(() => ({
+        version: window.GrowWithHRPDF?.version,
+        supportsDualTheme: window.GrowWithHRPDF?.supportsDualTheme
+    }));
+
+    expect(capabilities.version).toBe("3.3.0-justified-dual-theme");
+    expect(capabilities.supportsDualTheme).toBe(true);
+});
+
+test("keeps every guidance area when all priorities are selected", async ({ page }) => {
+    await page.goto("/sample-advisory-report.html");
+    await page.waitForFunction(() => (
+        window.GrowWithHRPDF?.version === "3.3.0-justified-dual-theme"
+    ));
+
+    const model = await page.evaluate((priorities) => (
+        window.GrowWithHRPDF.buildAdvisoryModel({
+            report: {
+                ...REPORT,
+                priorities
+            },
+            answers: {
+                priorities
+            }
+        })
+    ), ALL_PRIORITY_VALUES);
+
+    expect(model.priorities).toHaveLength(8);
+    expect(model.recommendations).toHaveLength(8);
+    expect(model.recommendations.map((item: { title: string }) => item.title))
+        .toEqual([
+            "Hiring and onboarding",
+            "Policies and compliance",
+            "Performance and rewards",
+            "Manager capability",
+            "Culture and engagement",
+            "HR operations and technology",
+            "Workforce planning",
+            "Organisation design"
+        ]);
+});
+
+test("applies remote and onsite workforce defaults", async ({ page }) => {
+    await page.goto("/analyze-company.html");
+    await page.waitForFunction(() => Boolean(window.GrowWithHRReportExperience));
+
+    const defaults = await page.evaluate(() => {
+        const fieldset = document.createElement("fieldset");
+        fieldset.dataset.fieldWrapper = "remoteBand";
+        fieldset.innerHTML = `
+            <input type="radio" name="remoteBand" value="0">
+            <input type="radio" name="remoteBand" value="25">
+            <input type="radio" name="remoteBand" value="50">
+            <input type="radio" name="remoteBand" value="75">
+            <input type="radio" name="remoteBand" value="100">`;
+        document.body.appendChild(fieldset);
+
+        window.GrowWithHRReportExperience.applyRemoteBandDefault(
+            "Remote",
+            { force: true }
+        );
+        const remote = (
+            document.querySelector('input[name="remoteBand"]:checked') as HTMLInputElement
+        )?.value;
+
+        window.GrowWithHRReportExperience.applyRemoteBandDefault(
+            "Office Based",
+            { force: true }
+        );
+        const onsite = (
+            document.querySelector('input[name="remoteBand"]:checked') as HTMLInputElement
+        )?.value;
+
+        fieldset.remove();
+        return { remote, onsite };
+    });
+
+    expect(defaults).toEqual({ remote: "100", onsite: "0" });
 });
