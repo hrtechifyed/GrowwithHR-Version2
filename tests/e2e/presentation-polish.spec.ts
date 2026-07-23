@@ -121,13 +121,13 @@ test("balances the five executive snapshot cards and contains long values", asyn
     expect(layout.every((card) => card.valueFits)).toBe(true);
 });
 
-test("loads the priority-source PDF renderer on the public sample route", async ({ page }) => {
+test("loads the executive-pagination PDF renderer on the public sample route", async ({ page }) => {
     await page.goto("/sample-advisory-report.html");
 
     await page.waitForFunction(() => (
-        window.GrowWithHRPDF?.version === "3.1.3-priority-source-separation"
+        window.GrowWithHRPDF?.version === "3.2.0-executive-pagination"
     ));
 
     const version = await page.evaluate(() => window.GrowWithHRPDF?.version);
-    expect(version).toBe("3.1.3-priority-source-separation");
+    expect(version).toBe("3.2.0-executive-pagination");
 });
