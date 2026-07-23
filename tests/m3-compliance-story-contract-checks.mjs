@@ -266,7 +266,11 @@ try {
     assert(presentationSource.includes('"css/20-compliance-story.css"'));
     assert(presentationSource.includes("dnaComplianceStoryPriorityList"));
     assert(presentationSource.includes("dnaComplianceStoryGroupList"));
-    assert(loaderSource.includes('document.getElementById("dnaTraceability")'));
+    assert(
+        /document\s*\.\s*getElementById\s*\(\s*["']dnaTraceability["']\s*\)/
+            .test(loaderSource),
+        "The build loader must detect the Compliance Story traceability region."
+    );
     assert(
         /import\s*\(\s*["']\.\/assessment-v3\/compliance-story-presentation\.js["']\s*\)/
             .test(loaderSource),
