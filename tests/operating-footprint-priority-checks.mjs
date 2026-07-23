@@ -14,6 +14,9 @@ assert(source.includes("Choose every priority that applies, or select All of the
 assert(!source.includes("Choose no more than three priorities."));
 assert(source.includes("India compliance scope"));
 assert(source.includes("restricted to the organisation’s India operations only"));
+assert(source.includes('? "primaryState"'));
+assert(source.includes(".map((value) => cleanText(value)).filter(Boolean)"));
+assert(!source.includes(".map(cleanText)"));
 
 class HTMLInputElement {}
 class HTMLSelectElement {}
@@ -77,6 +80,11 @@ assert.deepEqual(
     Array.from(helpers.normaliseStateList("Maharashtra; Karnataka; Telangana; Kerala")),
     ["Maharashtra", "Karnataka", "Telangana"]
 );
+
+const emptyFootprint = helpers.normaliseOperatingFootprintAnswers({});
+assert.equal(emptyFootprint.operatingStateCount, "1");
+assert.equal(emptyFootprint.primaryState, "");
+assert.deepEqual(Array.from(emptyFootprint.operatingStates), []);
 
 const twoStates = helpers.normaliseOperatingFootprintAnswers({
     operatingStateCount: "2",
