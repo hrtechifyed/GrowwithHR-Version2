@@ -1,347 +1,66 @@
-/* ==========================================================
-   GrowWithHR M4 law transparency layer
-   Adds an auditable appendix to the existing advisory PDF.
-   No legal-confidence percentage is produced.
-   ========================================================== */
-(function installGrowWithHRLawTransparency(window) {
-    "use strict";
-
-    const currentPdf = window.GrowWithHRPDF;
-    if (!currentPdf || typeof currentPdf.buildAdvisoryPdf !== "function") {
-        console.warn("GrowWithHR law transparency: PDF service unavailable.");
-        return;
-    }
-    if (currentPdf.lawTransparency) return;
-
-    const VERSION = "0.19.0-m4-law-transparency";
-    const PAGE = Object.freeze({ width: 210, height: 297, left: 16, right: 16, top: 24, bottom: 272 });
-    const THEMES = Object.freeze({
-        light: Object.freeze({ page: [255,255,255], panel: [244,247,251], text: [10,24,48], muted: [53,72,99], heading: [4,28,67], line: [166,181,202], accent: [245,158,11], green: [23,128,73], amber: [184,102,0], red: [180,35,24] }),
-        dark: Object.freeze({ page: [7,16,31], panel: [15,29,50], text: [234,240,248], muted: [174,188,207], heading: [255,255,255], line: [61,82,111], accent: [245,158,11], green: [91,214,148], amber: [255,190,75], red: [255,120,110] })
-    });
-
-    const LAW_CATALOG = Object.freeze([
-        {
-            id: "posh",
-            title: "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
-            shortTitle: "POSH Act, 2013",
-            match: /posh|sexual harassment|internal committee|\bicc\b|\bic\b/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/2104?locale=en",
-            threshold: "Internal Committee required at every office or administrative unit with 10 or more employees.",
-            thresholdValue: 10,
-            requiredInputs: ["employees", "indiaOperations"],
-            why: "Workforce size and India workplace operations determine the Internal Committee trigger."
-        },
-        {
-            id: "maternity",
-            title: "Maternity Benefit Act, 1961",
-            shortTitle: "Maternity Benefit Act, 1961",
-            match: /maternity benefit|maternity|cr[eè]che|creche/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/9160?locale=en",
-            threshold: "The Act generally applies to covered establishments employing 10 or more persons. The crèche facility requirement is triggered at 50 or more employees, subject to the Act and applicable rules.",
-            thresholdValue: 10,
-            secondaryThresholdValue: 50,
-            requiredInputs: ["employees", "establishmentType", "womenEmployees", "indiaOperations"],
-            why: "Establishment type, workforce size and the presence of women employees affect the applicable maternity and crèche duties."
-        },
-        {
-            id: "epf",
-            title: "Employees' Provident Funds and Miscellaneous Provisions Act, 1952",
-            shortTitle: "EPF & MP Act, 1952",
-            match: /provident fund|\bepf\b|pf registration/i,
-            url: "https://www.indiacode.nic.in/show-data?actid=AC_CEN_6_6_00038_195219_1517807328217&orderno=1",
-            threshold: "Generally applies to covered factories and notified establishments employing 20 or more persons, subject to statutory exceptions and notifications.",
-            thresholdValue: 20,
-            requiredInputs: ["employees", "establishmentType", "indiaOperations"],
-            why: "Employee strength and establishment classification determine the usual EPF coverage trigger."
-        },
-        {
-            id: "esi",
-            title: "Employees' State Insurance Act, 1948",
-            shortTitle: "ESI Act, 1948",
-            match: /employee.? state insurance|\besi\b|esic/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/2090?locale=en",
-            threshold: "Coverage commonly begins at 10 or more persons in notified establishments, but implementation depends on establishment type, location, notifications and wage eligibility.",
-            thresholdValue: 10,
-            requiredInputs: ["employees", "establishmentType", "primaryState", "wageBand", "indiaOperations"],
-            why: "State implementation, establishment type, workforce size and wage eligibility affect ESI coverage."
-        },
-        {
-            id: "gratuity",
-            title: "Payment of Gratuity Act, 1972",
-            shortTitle: "Payment of Gratuity Act, 1972",
-            match: /gratuity/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/12862?locale=en",
-            threshold: "Applies to covered establishments in which 10 or more persons are employed, or were employed on any day in the preceding 12 months.",
-            thresholdValue: 10,
-            requiredInputs: ["employees", "establishmentType", "indiaOperations"],
-            why: "Workforce size and establishment category determine the usual applicability trigger."
-        },
-        {
-            id: "bonus",
-            title: "Payment of Bonus Act, 1965",
-            shortTitle: "Payment of Bonus Act, 1965",
-            match: /payment of bonus|statutory bonus|bonus act/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/1484?locale=en",
-            threshold: "Generally applies to factories and covered establishments employing 20 or more persons, subject to statutory provisions and employee eligibility limits.",
-            thresholdValue: 20,
-            requiredInputs: ["employees", "establishmentType", "wageBand", "indiaOperations"],
-            why: "Workforce size, establishment type and employee eligibility affect statutory bonus duties."
-        },
-        {
-            id: "minimum-wages",
-            title: "Code on Wages, 2019",
-            shortTitle: "Code on Wages, 2019",
-            match: /minimum wage|wage code|code on wages|payment of wages|equal remuneration/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/15793?locale=en",
-            threshold: "No single universal employee-count threshold. Duties depend on the wage provision, employee category and applicable central or state notifications.",
-            thresholdValue: null,
-            requiredInputs: ["employees", "primaryState", "industry", "workerCategories", "indiaOperations"],
-            why: "State, industry and worker category determine the relevant wage rates and obligations."
-        },
-        {
-            id: "shops",
-            title: "Applicable State Shops and Establishments Legislation",
-            shortTitle: "Shops and Establishments Law",
-            match: /shops? and establishments?|shop act|establishment registration/i,
-            url: "",
-            threshold: "Thresholds and duties vary by state or union territory. The report must use the exact state law for each declared operating location.",
-            thresholdValue: null,
-            requiredInputs: ["primaryState", "operatingStates", "establishmentType", "indiaOperations"],
-            why: "Each operating state may impose a different registration, leave, working-hours and record-keeping regime."
-        },
-        {
-            id: "contract-labour",
-            title: "Contract Labour (Regulation and Abolition) Act, 1970",
-            shortTitle: "Contract Labour Act, 1970",
-            match: /contract labour|contractor compliance|principal employer/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/1490?locale=en",
-            threshold: "The central Act generally uses a 20-contract-labour threshold, but state amendments may prescribe a different threshold.",
-            thresholdValue: 20,
-            countField: "contractors",
-            requiredInputs: ["contractors", "primaryState", "establishmentType", "indiaOperations"],
-            why: "Contract-labour count, state and establishment type determine registration and licensing duties."
-        },
-        {
-            id: "standing-orders",
-            title: "Industrial Employment (Standing Orders) Act, 1946",
-            shortTitle: "Industrial Employment (Standing Orders) Act, 1946",
-            match: /standing orders/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/19411?locale=en",
-            threshold: "The central threshold is generally 100 workmen, but several states have amended the threshold and the Industrial Relations Code transition must be checked.",
-            thresholdValue: 100,
-            countField: "workers",
-            requiredInputs: ["workers", "primaryState", "establishmentType", "industry", "indiaOperations"],
-            why: "Worker count, state amendments and establishment classification affect standing-orders coverage."
-        },
-        {
-            id: "factories",
-            title: "Factories Act, 1948",
-            shortTitle: "Factories Act, 1948",
-            match: /factories act|factory licence|manufacturing process|factory compliance/i,
-            url: "https://www.indiacode.nic.in/handle/123456789/1530?locale=en",
-            threshold: "Generally 10 or more workers where power is used, or 20 or more workers where power is not used, subject to the statutory definition and state rules.",
-            thresholdValue: 10,
-            secondaryThresholdValue: 20,
-            countField: "workers",
-            requiredInputs: ["workers", "usesPower", "manufacturingOperations", "primaryState", "indiaOperations"],
-            why: "Manufacturing activity, power usage, worker count and state rules determine factory coverage."
-        }
-    ]);
-
-    const FIELD_ALIASES = Object.freeze({
-        employees: ["employees", "employeeCount", "headcount", "totalEmployees", "workforceSize"],
-        workers: ["workers", "workerCount", "workmen", "totalWorkers", "employees"],
-        contractors: ["contractors", "contractorCount", "contractLabour", "contractWorkers"],
-        indiaOperations: ["indiaOperations", "country", "countries", "operatingCountries"],
-        establishmentType: ["establishmentType", "entityType", "legalEntity", "organisationType"],
-        primaryState: ["primaryState", "state", "registeredState"],
-        operatingStates: ["operatingStates", "states", "locations"],
-        womenEmployees: ["womenEmployees", "femaleEmployees", "hasWomenEmployees"],
-        wageBand: ["wageBand", "salaryBand", "eligibleWages"],
-        industry: ["industry", "industryCategory"],
-        workerCategories: ["workerCategories", "employeeCategories", "workforceCategories"],
-        usesPower: ["usesPower", "manufacturingUsesPower"],
-        manufacturingOperations: ["manufacturingOperations", "isFactory", "manufacturing"]
-    });
-
-    function cleanText(value, fallback = "") {
-        const text = String(value ?? "").replace(/\s+/g, " ").trim();
-        return text || fallback;
-    }
-
-    function flattenSources(payload = {}, model = {}) {
-        return Object.assign({}, payload, payload.lead || {}, payload.answers || {}, payload.report || {}, model || {});
-    }
-
-    function readField(source, field) {
-        const aliases = FIELD_ALIASES[field] || [field];
-        for (const alias of aliases) {
-            const value = source?.[alias];
-            if (value !== undefined && value !== null && cleanText(value) !== "") return value;
-        }
-        return undefined;
-    }
-
-    function isConfirmed(value) {
-        if (value === undefined || value === null) return false;
-        if (Array.isArray(value)) return value.length > 0;
-        const text = cleanText(value).toLowerCase();
-        return Boolean(text && !["unknown", "not specified", "n/a", "na", "prefer not to say"].includes(text));
-    }
-
-    function numberValue(value) {
-        if (typeof value === "number" && Number.isFinite(value)) return value;
-        const match = cleanText(value).replace(/,/g, "").match(/\d+(?:\.\d+)?/);
-        return match ? Number(match[0]) : null;
-    }
-
-    function recommendationText(model = {}) {
-        return (model.recommendations || []).map((item) => [item.title, item.observation, item.recommendation, item.law, item.legalBasis].map(cleanText).join(" ")).join("\n");
-    }
-
-    function thresholdState(law, source) {
-        const field = law.countField || "employees";
-        const count = numberValue(readField(source, field));
-        if (!Number.isFinite(law.thresholdValue) || count === null) {
-            return { state: "needs-information", label: "Needs information", count, explanation: count === null ? `${field} count was not confirmed.` : "This law does not use one universal headcount trigger." };
-        }
-        if (law.id === "factories") {
-            const usesPower = cleanText(readField(source, "usesPower")).toLowerCase();
-            const threshold = /^(no|false|without)$/i.test(usesPower) ? law.secondaryThresholdValue : law.thresholdValue;
-            if (!usesPower) return { state: "needs-information", label: "Needs information", count, explanation: "Power usage was not confirmed, so the 10-worker or 20-worker trigger cannot yet be selected." };
-            return compareCount(count, threshold, field);
-        }
-        if (law.id === "maternity" && /cr[eè]che|creche/i.test(recommendationText({ recommendations: source.__recommendations || [] }))) {
-            return compareCount(count, law.secondaryThresholdValue, field);
-        }
-        return compareCount(count, law.thresholdValue, field);
-    }
-
-    function compareCount(count, threshold, field) {
-        if (count >= threshold) return { state: "crossed", label: "Threshold crossed", count, threshold, explanation: `${count} reported ${field}; statutory trigger shown at ${threshold}.` };
-        const gap = threshold - count;
-        if (gap <= Math.max(2, Math.ceil(threshold * 0.1))) return { state: "near", label: "Approaching threshold", count, threshold, explanation: `${count} reported ${field}; ${gap} below the displayed trigger of ${threshold}.` };
-        return { state: "below", label: "Below threshold", count, threshold, explanation: `${count} reported ${field}; below the displayed trigger of ${threshold}.` };
-    }
-
-    function buildLawTransparency(payload = {}, model = {}) {
-        const source = flattenSources(payload, model);
-        source.__recommendations = model.recommendations || [];
-        const text = recommendationText(model);
-        return LAW_CATALOG.filter((law) => law.match.test(text)).map((law) => {
-            const confirmed = law.requiredInputs.filter((field) => isConfirmed(readField(source, field)));
-            const missing = law.requiredInputs.filter((field) => !confirmed.includes(field));
-            return Object.freeze({
-                id: law.id,
-                title: law.title,
-                shortTitle: law.shortTitle,
-                officialUrl: law.url,
-                threshold: law.threshold,
-                thresholdResult: thresholdState(law, source),
-                confirmedInputs: confirmed,
-                missingInputs: missing,
-                inputCoverage: Object.freeze({ confirmed: confirmed.length, required: law.requiredInputs.length }),
-                whyIncluded: law.why,
-                confidenceMeaning: `${confirmed.length} of ${law.requiredInputs.length} required assessment inputs confirmed. This is input coverage, not legal certainty.`
-            });
-        });
-    }
-
-    function paintPage(doc, theme) {
-        doc.setFillColor(...theme.page); doc.rect(0,0,PAGE.width,PAGE.height,"F");
-        doc.setDrawColor(...theme.line); doc.setLineWidth(0.35); doc.rect(5.5,5.5,PAGE.width-11,PAGE.height-11,"S");
-    }
-
-    function drawClosingPage(doc, theme) {
-        doc.addPage(); paintPage(doc, theme);
-        doc.setFont("helvetica","bold"); doc.setFontSize(22); doc.setTextColor(...theme.heading);
-        doc.text("End of Report", PAGE.width / 2, 166, { align: "center" });
-        doc.setDrawColor(...theme.accent); doc.setLineWidth(0.7); doc.line(67,153,90,153); doc.line(120,153,143,153);
-    }
-
-    function appendTransparency(doc, laws, themeName) {
-        if (!doc || !laws.length) return;
-        const theme = THEMES[themeName] || THEMES.light;
-        const hadClosingPage = doc.getNumberOfPages() > 0;
-        if (hadClosingPage && typeof doc.deletePage === "function") doc.deletePage(doc.getNumberOfPages());
-
-        let y = PAGE.top;
-        const usable = PAGE.width - PAGE.left - PAGE.right;
-        const lineHeight = 4.4;
-        const newPage = () => { doc.addPage(); paintPage(doc, theme); y = PAGE.top; };
-        const ensure = (height) => { if (y + height > PAGE.bottom) newPage(); };
-        const lines = (text, width = usable) => doc.splitTextToSize(cleanText(text), width);
-
-        newPage();
-        doc.setFont("helvetica","bold"); doc.setFontSize(8); doc.setTextColor(...theme.accent);
-        doc.text("M4 TRANSPARENCY ADDITION", PAGE.left, y); y += 8;
-        doc.setFontSize(18); doc.setTextColor(...theme.heading); doc.text("Law thresholds and information basis", PAGE.left, y); y += 10;
-        doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(...theme.text);
-        const intro = lines("This appendix is added to the existing advisory report. It does not replace any existing section. Bars show how many required assessment inputs were confirmed; they do not claim a percentage of legal certainty. Click a law title to open only that law or the exact official source identified for it.");
-        doc.text(intro, PAGE.left, y, { lineHeightFactor: 1.35, maxWidth: usable }); y += intro.length * lineHeight + 8;
-
-        laws.forEach((law) => {
-            const titleLines = lines(law.shortTitle, usable - 12);
-            const missingText = law.missingInputs.length ? `Missing: ${law.missingInputs.join(", ")}.` : "No required assessment inputs are missing.";
-            const thresholdLines = lines(`Threshold: ${law.threshold}`, usable - 12);
-            const whyLines = lines(`Why included: ${law.whyIncluded}`, usable - 12);
-            const resultLines = lines(`Your position: ${law.thresholdResult.label}. ${law.thresholdResult.explanation}`, usable - 12);
-            const missingLines = lines(missingText, usable - 12);
-            const cardHeight = 18 + (titleLines.length + thresholdLines.length + whyLines.length + resultLines.length + missingLines.length) * lineHeight + 16;
-            ensure(cardHeight);
-
-            const top = y - 3;
-            doc.setFillColor(...theme.panel); doc.setDrawColor(...theme.line); doc.roundedRect(PAGE.left, top, usable, cardHeight, 2, 2, "FD");
-            doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(...theme.heading);
-            if (law.officialUrl) {
-                titleLines.forEach((line) => { doc.textWithLink(line, PAGE.left + 6, y + 4, { url: law.officialUrl }); y += 5; });
-            } else {
-                doc.text(titleLines, PAGE.left + 6, y + 4, { lineHeightFactor: 1.2 }); y += titleLines.length * 5;
-            }
-            y += 3;
-
-            const coverage = law.inputCoverage;
-            doc.setFont("helvetica","bold"); doc.setFontSize(7.5); doc.setTextColor(...theme.muted);
-            doc.text(`REQUIRED INPUTS CONFIRMED: ${coverage.confirmed} OF ${coverage.required}`, PAGE.left + 6, y); y += 4;
-            const barX = PAGE.left + 6, barW = usable - 12, segments = Math.max(coverage.required, 1), segmentW = barW / segments;
-            for (let i = 0; i < segments; i += 1) {
-                doc.setFillColor(...(i < coverage.confirmed ? theme.green : theme.line));
-                doc.roundedRect(barX + i * segmentW, y, Math.max(1, segmentW - 1), 3.5, 0.7, 0.7, "F");
-            }
-            y += 8;
-
-            doc.setFont("helvetica","normal"); doc.setFontSize(8.4); doc.setTextColor(...theme.text);
-            [thresholdLines, resultLines, whyLines, missingLines].forEach((group) => { doc.text(group, PAGE.left + 6, y, { lineHeightFactor: 1.3, maxWidth: usable - 12 }); y += group.length * lineHeight + 2; });
-            y = top + cardHeight + 7;
-        });
-
-        drawClosingPage(doc, theme);
-    }
-
-    function serialise(result) {
-        const doc = result?.document;
-        if (!doc?.output) return result;
-        const dataUri = doc.output("datauristring");
-        const buffer = doc.output("arraybuffer");
-        return { ...result, dataUri, base64: dataUri.includes(",") ? dataUri.split(",")[1] : dataUri, sizeBytes: buffer.byteLength, pageCount: doc.getNumberOfPages(), lawTransparencyVersion: VERSION };
-    }
-
-    const originalBuild = currentPdf.buildAdvisoryPdf.bind(currentPdf);
-    async function buildAdvisoryPdf(payload = {}) {
-        const result = await originalBuild(payload);
-        const model = typeof currentPdf.buildAdvisoryModel === "function" ? currentPdf.buildAdvisoryModel(payload) : (result?.model || {});
-        const laws = buildLawTransparency(payload, model);
-        if (Array.isArray(result?.pdfs)) {
-            const pdfs = result.pdfs.map((variant) => { appendTransparency(variant.document, laws, variant.theme); return serialise(variant); });
-            return { ...result, ...pdfs[0], theme: "both", pdfs, documents: pdfs.map((item) => item.document), filenames: pdfs.map((item) => item.filename), lawTransparencyVersion: VERSION, lawTransparency: laws };
-        }
-        appendTransparency(result?.document, laws, result?.theme);
-        return { ...serialise(result), lawTransparencyVersion: VERSION, lawTransparency: laws };
-    }
-
-    const enhanced = Object.freeze({ ...currentPdf, lawTransparency: true, lawTransparencyVersion: VERSION, lawCatalog: LAW_CATALOG, buildLawTransparency, buildAdvisoryPdf });
-    window.GrowWithHRPDF = enhanced;
-    window.GrowWithHRPDFPolishReady = Promise.resolve(enhanced);
-    window.GrowWithHRLawTransparency = Object.freeze({ version: VERSION, lawCatalog: LAW_CATALOG, buildLawTransparency, compareCount, isConfirmed, numberValue });
-})(window);
+(function installM4(window,document){"use strict";
+const base=window.GrowWithHRPDF;if(!base||typeof base.buildAdvisoryPdf!=="function"){console.warn("GrowWithHR law transparency: PDF service unavailable.");return;}if(base.lawTransparency)return;
+const VERSION="0.19.0-m4-law-transparency",INTEGRATION="0.19.0-m4-report-integration",ALL="all-of-the-above",DELIVERY_PATH="/api/send-advisory-v2";
+const THEMES={light:{page:[255,255,255],panel:[244,247,251],alt:[232,239,248],text:[10,24,48],muted:[53,72,99],head:[4,28,67],line:[166,181,202],accent:[245,158,11],green:[23,128,73],amber:[184,102,0],red:[180,35,24],navy:[4,28,67],white:[255,255,255]},dark:{page:[7,16,31],panel:[15,29,50],alt:[24,43,70],text:[234,240,248],muted:[174,188,207],head:[255,255,255],line:[61,82,111],accent:[245,158,11],green:[91,214,148],amber:[255,190,75],red:[255,120,110],navy:[12,38,72],white:[255,255,255]}};
+const C=(id,title,shortTitle,match,url,threshold,thresholdValue,requiredInputs,why,action,defaultPriority,countField,secondaryThresholdValue)=>Object.freeze({id,title,shortTitle,match,url,threshold,thresholdValue,requiredInputs,why,action,defaultPriority,countField,secondaryThresholdValue});
+const LAW_CATALOG=Object.freeze([
+C("posh","Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013","POSH Act, 2013",/posh|sexual harassment|internal committee|\bicc\b|\bic\b/i,"https://www.indiacode.nic.in/handle/123456789/2104?locale=en","Internal Committee required at every office or administrative unit with 10 or more employees.",10,["employees","indiaOperations"],"Workforce size and India workplace operations determine the Internal Committee trigger.","Constitute and maintain a compliant Internal Committee, policy, training and redressal process.","HIGH"),
+C("maternity","Maternity Benefit Act, 1961","Maternity Benefit Act, 1961",/maternity benefit|maternity|cr[eè]che|creche/i,"https://www.indiacode.nic.in/handle/123456789/9160?locale=en","The Act generally applies to covered establishments employing 10 or more persons. The crèche facility requirement is triggered at 50 or more employees, subject to the Act and applicable rules.",10,["employees","establishmentType","womenEmployees","indiaOperations"],"Establishment type, workforce size and the presence of women employees affect maternity and crèche duties.","Review maternity benefits, notices, records and any crèche obligations against the applicable rules.","MEDIUM",null,50),
+C("epf","Employees' Provident Funds and Miscellaneous Provisions Act, 1952","EPF & MP Act, 1952",/provident fund|\bepf\b|pf registration/i,"https://www.indiacode.nic.in/show-data?actid=AC_CEN_6_6_00038_195219_1517807328217&orderno=1","Generally applies to covered factories and notified establishments employing 20 or more persons, subject to statutory exceptions and notifications.",20,["employees","establishmentType","indiaOperations"],"Employee strength and establishment classification determine the usual EPF coverage trigger.","Confirm coverage, registration, eligible employees, contributions and supporting payroll records.","HIGH"),
+C("esi","Employees' State Insurance Act, 1948","ESI Act, 1948",/employee.? state insurance|\besi\b|esic/i,"https://www.indiacode.nic.in/handle/123456789/2090?locale=en","Coverage commonly begins at 10 or more persons in notified establishments, but implementation depends on establishment type, location, notifications and wage eligibility.",10,["employees","establishmentType","primaryState","wageBand","indiaOperations"],"State implementation, establishment type, workforce size and wage eligibility affect ESI coverage.","Review ESIC coverage, wage eligibility, registration and contribution records.","HIGH"),
+C("gratuity","Payment of Gratuity Act, 1972","Payment of Gratuity Act, 1972",/gratuity/i,"https://www.indiacode.nic.in/handle/123456789/12862?locale=en","Applies to covered establishments in which 10 or more persons are employed, or were employed on any day in the preceding 12 months.",10,["employees","establishmentType","indiaOperations"],"Workforce size and establishment category determine the usual applicability trigger.","Maintain gratuity eligibility, nomination, funding and settlement controls.","MEDIUM"),
+C("bonus","Payment of Bonus Act, 1965","Payment of Bonus Act, 1965",/payment of bonus|statutory bonus|bonus act/i,"https://www.indiacode.nic.in/handle/123456789/1484?locale=en","Generally applies to factories and covered establishments employing 20 or more persons, subject to statutory provisions and employee eligibility limits.",20,["employees","establishmentType","wageBand","indiaOperations"],"Workforce size, establishment type and employee eligibility affect statutory bonus duties.","Review employee eligibility, allocable surplus calculations, payment timing and registers.","MEDIUM"),
+C("minimum-wages","Code on Wages, 2019","Code on Wages, 2019",/minimum wage|wage code|code on wages|payment of wages|equal remuneration/i,"https://www.indiacode.nic.in/handle/123456789/15793?locale=en","No single universal employee-count threshold. Duties depend on the wage provision, employee category and applicable central or state notifications.",null,["employees","primaryState","industry","workerCategories","indiaOperations"],"State, industry and worker category determine the relevant wage rates and obligations.","Validate wage rates, pay timing, deductions, equal remuneration and wage records against current notifications.","HIGH"),
+C("shops","Applicable State Shops and Establishments Legislation","Shops and Establishments Law",/shops? and establishments?|shop act|establishment registration/i,"","Thresholds and duties vary by state or union territory. The report must use the exact state law for each declared operating location.",null,["primaryState","operatingStates","establishmentType","indiaOperations"],"Each operating state may impose a different registration, leave, working-hours and record-keeping regime.","Confirm registration and ongoing duties under the exact law for every operating state.","HIGH"),
+C("contract-labour","Contract Labour (Regulation and Abolition) Act, 1970","Contract Labour Act, 1970",/contract labour|contractor compliance|principal employer/i,"https://www.indiacode.nic.in/handle/123456789/1490?locale=en","The central Act generally uses a 20-contract-labour threshold, but state amendments may prescribe a different threshold.",20,["contractors","primaryState","establishmentType","indiaOperations"],"Contract-labour count, state and establishment type determine registration and licensing duties.","Confirm principal-employer registration, contractor licensing, wage evidence and statutory oversight.","HIGH","contractors"),
+C("standing-orders","Industrial Employment (Standing Orders) Act, 1946","Industrial Employment (Standing Orders) Act, 1946",/standing orders/i,"https://www.indiacode.nic.in/handle/123456789/19411?locale=en","The central threshold is generally 100 workmen, but several states have amended the threshold and the Industrial Relations Code transition must be checked.",100,["workers","primaryState","establishmentType","industry","indiaOperations"],"Worker count, state amendments and establishment classification affect standing-orders coverage.","Review whether certified or model standing orders apply and maintain the required employment rules.","MEDIUM","workers"),
+C("factories","Factories Act, 1948","Factories Act, 1948",/factories act|factory licence|manufacturing process|factory compliance/i,"https://www.indiacode.nic.in/handle/123456789/1530?locale=en","Generally 10 or more workers where power is used, or 20 or more workers where power is not used, subject to the statutory definition and state rules.",10,["workers","usesPower","manufacturingOperations","primaryState","indiaOperations"],"Manufacturing activity, power usage, worker count and state rules determine factory coverage.","Confirm factory status, licensing, health and safety controls, welfare facilities and statutory registers.","HIGH","workers",20)
+]);
+const ALIASES={employees:["employees","employeeCount","headcount","totalEmployees","workforceSize"],workers:["workers","workerCount","workmen","totalWorkers","employees"],contractors:["contractors","contractWorkers","contractorCount","contractLabour"],indiaOperations:["indiaOperations","country","countries","operatingCountries"],establishmentType:["establishmentType","entity","entityType","legalEntity","organisationType"],primaryState:["primaryState","state","registeredState"],operatingStates:["operatingStates","states"],womenEmployees:["womenEmployees","femaleEmployees","hasWomenEmployees"],wageBand:["wageBand","salaryBand","eligibleWages"],industry:["industry","industryCategory"],workerCategories:["workerCategories","employeeCategories","workforceCategories"],usesPower:["usesPower","manufacturingUsesPower"],manufacturingOperations:["manufacturingOperations","isFactory","manufacturing"]};
+const LABELS={employees:"employee strength",workers:"worker strength",contractors:"contractor workforce",indiaOperations:"India operations",establishmentType:"legal establishment type",primaryState:"primary operating state",operatingStates:"operating states",womenEmployees:"women employees",wageBand:"wage eligibility information",industry:"industry",workerCategories:"worker categories",usesPower:"manufacturing power usage",manufacturingOperations:"manufacturing activities"};
+const clean=(v,f="")=>String(v??"").replace(/\s+/g," ").trim()||f;
+const arr=v=>Array.isArray(v)?v.map(x=>clean(x)).filter(Boolean):(clean(v)?clean(v).split(/[,;|]/).map(x=>x.trim()).filter(Boolean):[]);
+const unique=v=>[...new Set(v.map(x=>clean(x)).filter(Boolean))];
+const source=(p={},m={})=>Object.assign({},p,p.lead||{},p.answers||{},p.report||{},m||{});
+function read(s,f){for(const a of ALIASES[f]||[f]){const v=s?.[a];if(v!==undefined&&v!==null&&clean(v)!=="")return v;}return undefined;}
+function isConfirmed(v){if(v===undefined||v===null)return false;if(Array.isArray(v))return v.length>0;const t=clean(v).toLowerCase();return !!t&&!['unknown','not specified','n/a','na','prefer not to say','not sure'].includes(t);}
+function numberValue(v){if(typeof v==='number'&&Number.isFinite(v))return v;const m=clean(v).replace(/,/g,'').match(/\d+(?:\.\d+)?/);return m?Number(m[0]):null;}
+function recText(m={}){return(m.recommendations||[]).map(i=>[i.title,i.observation,i.recommendation,i.law,i.legalBasis].map(clean).join(' ')).join('\n');}
+function compareCount(count,threshold,field){if(count>=threshold)return{state:'crossed',label:'Threshold crossed',count,threshold,explanation:`${count} reported ${field}; statutory trigger shown at ${threshold}.`};const gap=threshold-count;if(gap<=Math.max(2,Math.ceil(threshold*.1)))return{state:'near',label:'Approaching threshold',count,threshold,explanation:`${count} reported ${field}; ${gap} below the displayed trigger of ${threshold}.`};return{state:'below',label:'Below threshold',count,threshold,explanation:`${count} reported ${field}; below the displayed trigger of ${threshold}.`};}
+function thresholdState(law,s){const field=law.countField||'employees',count=numberValue(read(s,field));if(!Number.isFinite(law.thresholdValue)||count===null)return{state:'needs-information',label:'Needs information',count,explanation:count===null?`${field} count was not confirmed.`:'This law does not use one universal headcount trigger.'};if(law.id==='factories'){const power=clean(read(s,'usesPower')).toLowerCase();if(!power)return{state:'needs-information',label:'Needs information',count,explanation:'Power usage was not confirmed, so the 10-worker or 20-worker trigger cannot yet be selected.'};return compareCount(count,/^(no|false|without)$/i.test(power)?law.secondaryThresholdValue:law.thresholdValue,field);}if(law.id==='maternity'&&/cr[eè]che|creche/i.test(recText({recommendations:s.__recommendations||[]})))return compareCount(count,law.secondaryThresholdValue,field);return compareCount(count,law.thresholdValue,field);}
+function row(law,s){const confirmed=law.requiredInputs.filter(f=>isConfirmed(read(s,f))),missing=law.requiredInputs.filter(f=>!confirmed.includes(f)),r=thresholdState(law,s),india=isConfirmed(read(s,'indiaOperations'))||Number(s.countries)>=1;let status='Needs information';if(india&&r.state==='crossed')status='Applicable';else if(india&&r.state==='near')status='Review required';else if(india&&r.state==='below')status='Not currently triggered';else if(india&&law.thresholdValue===null&&missing.length<=1)status='Review required';const priority=status==='Applicable'?law.defaultPriority:status==='Review required'?'MEDIUM':status==='Needs information'?'REVIEW':'LOW';return Object.freeze({id:law.id,title:law.title,shortTitle:law.shortTitle,officialUrl:law.url,threshold:law.threshold,thresholdResult:r,confirmedInputs:confirmed,missingInputs:missing,inputCoverage:Object.freeze({confirmed:confirmed.length,required:law.requiredInputs.length}),whyIncluded:law.why,requiredAction:law.action,status,priority,confidenceMeaning:`${confirmed.length} of ${law.requiredInputs.length} required assessment inputs confirmed. This is input coverage, not legal certainty.`});}
+function buildLawTransparency(p={},m={}){const s=source(p,m);s.__recommendations=m.recommendations||[];const t=recText(m);return LAW_CATALOG.filter(l=>l.match.test(t)).map(l=>row(l,s));}
+function buildReportLawTransparency(p={},m={}){const s=source(p,m);s.__recommendations=m.recommendations||[];return LAW_CATALOG.map(l=>row(l,s));}
+const colour=(d,m,c)=>d[m](...c),theme=n=>THEMES[/dark/i.test(clean(n))?'dark':'light'];
+function paintPage(d,t){colour(d,'setFillColor',t.page);d.rect(0,0,210,297,'F');colour(d,'setDrawColor',t.line);d.setLineWidth(.35);d.rect(5.5,5.5,199,286,'S');}
+function drawClosingPage(d,t){d.addPage();paintPage(d,t);d.setFont('helvetica','bold');d.setFontSize(22);colour(d,'setTextColor',t.head);d.text('End of Report',105,166,{align:'center'});colour(d,'setDrawColor',t.accent);d.line(67,153,90,153);d.line(120,153,143,153);}
+function writer(d,t){let y=24;const line=(s,f=1.32)=>s*.3528*f,split=(v,w=178)=>d.splitTextToSize(clean(v),w),page=()=>{d.addPage();paintPage(d,t);y=24;},remain=()=>270-y,ensure=h=>{if(h>remain())page();},text=(v,x=16,size=8.5,style='normal',c=t.text,w=178,after=3)=>{const ls=split(v,w),h=ls.length*line(size);ensure(h+after);d.setFont('helvetica',style);d.setFontSize(size);colour(d,'setTextColor',c);d.text(ls,x,y,{lineHeightFactor:1.32,maxWidth:w});y+=h+after;},heading=(o,h,i='')=>{page();d.setFont('helvetica','bold');d.setFontSize(8);colour(d,'setTextColor',t.accent);d.text(o,16,y);y+=8;d.setFontSize(19);colour(d,'setTextColor',t.head);d.text(split(h),16,y,{lineHeightFactor:1.15});y+=split(h).length*line(19,1.15)+6;if(i)text(i,16,8.7,'normal',t.muted,178,7);},sub=h=>text(h,16,11,'bold',t.head,178,4),bullet=(v,c=t.accent)=>{const ls=split(v,166),h=ls.length*line(8.3)+3;ensure(h);colour(d,'setFillColor',c);d.circle(19,y-1,0.8,'F');d.setFont('helvetica','normal');d.setFontSize(8.3);colour(d,'setTextColor',t.text);d.text(ls,25,y,{lineHeightFactor:1.32,maxWidth:166});y+=h;},panel=(h,fill=t.panel)=>{ensure(h+5);const top=y-4;colour(d,'setFillColor',fill);colour(d,'setDrawColor',t.line);d.roundedRect(16,top,178,h,2,2,'FD');return top;};return{line,split,page,remain,ensure,text,heading,sub,bullet,panel,get:()=>y,set:v=>y=v};}
+const statusColour=(l,t)=>l.status==='Applicable'?t.green:l.status==='Review required'?t.amber:l.status==='Needs information'?t.red:t.muted;
+function segments(d,x,y,w,a,b,t){const n=Math.max(1,b),gap=1,sw=(w-gap*(n-1))/n;for(let i=0;i<n;i++){colour(d,'setFillColor',i<a?t.green:t.line);d.roundedRect(x+i*(sw+gap),y,sw,3.2,.6,.6,'F');}}
+function position(l,s){const law=LAW_CATALOG.find(x=>x.id===l.id),field=law.countField||'employees',n=numberValue(read(s,field)),parts=[];if(n!==null)parts.push(`${n} ${field}`);const e=clean(read(s,'establishmentType')),st=clean(read(s,'primaryState'));if(e)parts.push(e);if(st)parts.push(st);return parts.join(' · ')||'Organisation position not fully confirmed';}
+function appendTransparency(d,laws,model,payload,themeName){if(!d||!laws.length)return;const t=theme(themeName),s=source(payload,model);if(d.getNumberOfPages()>0&&typeof d.deletePage==='function')d.deletePage(d.getNumberOfPages());const w=writer(d,t);
+w.heading('M4 EXPLAINABLE INTELLIGENCE','Executive compliance summary','This section explains statutory thresholds, the organisation position, why each law is included, the evidence used and missing information. It is not legal certification.');
+const app=laws.filter(l=>l.status==='Applicable'),rev=laws.filter(l=>l.status==='Review required'),miss=laws.filter(l=>l.status==='Needs information'),metrics=[['APPLICABLE',app.length,t.green],['REVIEW REQUIRED',rev.length,t.amber],['NEEDS INFORMATION',miss.length,t.red]],top=w.get(),gap=5,mw=56;metrics.forEach((m,i)=>{const x=16+i*(mw+gap);colour(d,'setFillColor',t.panel);colour(d,'setDrawColor',t.line);d.roundedRect(x,top-4,mw,26,2,2,'FD');colour(d,'setFillColor',m[2]);d.circle(x+7,top+5,1.8,'F');d.setFont('helvetica','bold');d.setFontSize(7);colour(d,'setTextColor',t.muted);d.text(m[0],x+12,top+7);d.setFontSize(16);colour(d,'setTextColor',t.head);d.text(String(m[1]),x+7,top+18);});w.set(top+33);w.sub('Next recommended action');const next=app.find(l=>l.priority==='HIGH')||rev[0]||miss[0];w.text(next?`${next.requiredAction} (${next.shortTitle})`:'Complete missing organisation information before confirming applicability.',16,9,'bold');w.sub('Assessment confidence · Why you can trust this report');const checks=[['Organisation profile completed',isConfirmed(s.companyName)],['Employee strength confirmed',isConfirmed(read(s,'employees'))],['Operating states confirmed',isConfirmed(read(s,'primaryState'))],['Industry confirmed',isConfirmed(read(s,'industry'))],['Contractor workforce confirmed',isConfirmed(read(s,'contractors'))],['Manufacturing activities confirmed',isConfirmed(read(s,'manufacturingOperations'))]];checks.forEach(x=>w.bullet(`${x[1]?'Confirmed':'Missing'}: ${x[0]}`,x[1]?t.green:t.amber));w.text('Evidence bars show confirmed assessment inputs only; they do not represent legal certainty.',16,8,'italic',t.muted);
+w.heading('PRIORITY ACTIONS','Actions requiring leadership attention','Actions are ordered by threshold position and evidence completeness. Confirm legal interpretation before implementation.');laws.filter(l=>l.status!=='Not currently triggered').slice(0,5).forEach(l=>{const h=34+w.split(l.requiredAction,164).length*w.line(8);const p=w.panel(h);colour(d,'setFillColor',statusColour(l,t));d.roundedRect(16,p,4,h,2,2,'F');d.setFont('helvetica','bold');d.setFontSize(7);colour(d,'setTextColor',statusColour(l,t));d.text(l.priority,25,p+9);d.setFontSize(10);colour(d,'setTextColor',t.head);d.text(l.shortTitle,25,p+17,{maxWidth:160});d.setFont('helvetica','normal');d.setFontSize(8);colour(d,'setTextColor',t.text);d.text(w.split(l.requiredAction,164),25,p+25,{lineHeightFactor:1.3,maxWidth:164});w.set(p+h+7);w.text(`Reason: ${position(l,s)} · ${l.thresholdResult.label}`,16,7.8,'normal',t.muted);});
+w.heading('LAWS APPLICABLE','Law-by-law explainability','Each professional card shows the legal trigger, organisation position, resulting status, why it applies, required action, evidence completeness, missing inputs and the official law link.');laws.forEach(l=>{const paragraphs=[`Threshold: ${l.threshold}`,`Why this applies or requires review: ${l.whyIncluded}`,`Required action: ${l.requiredAction}`,l.missingInputs.length?`Missing information: ${l.missingInputs.map(f=>LABELS[f]||f).join(', ')}.`:'Missing information: none for the governed inputs.'];const lines=paragraphs.map(x=>w.split(x,164)),h=55+lines.reduce((a,x)=>a+x.length*w.line(7.8),0),p=w.panel(h);colour(d,'setFillColor',statusColour(l,t));d.roundedRect(16,p,4,h,2,2,'F');d.setFont('helvetica','bold');d.setFontSize(10.5);colour(d,'setTextColor',t.head);if(l.officialUrl)d.textWithLink(l.shortTitle,25,p+10,{url:l.officialUrl});else d.text(l.shortTitle,25,p+10);d.setFontSize(7);colour(d,'setTextColor',statusColour(l,t));d.text(`${l.status.toUpperCase()} · ${l.priority}`,187,p+10,{align:'right'});d.setFont('helvetica','normal');d.setFontSize(8);colour(d,'setTextColor',t.text);d.text(`Your organisation: ${position(l,s)}`,25,p+20,{maxWidth:164});d.setFont('helvetica','bold');d.text(`Threshold status: ${l.thresholdResult.label}`,25,p+27);segments(d,25,p+32,162,l.inputCoverage.confirmed,l.inputCoverage.required,t);d.setFont('helvetica','normal');d.setFontSize(7.1);colour(d,'setTextColor',t.muted);d.text(`REQUIRED INPUTS CONFIRMED: ${l.inputCoverage.confirmed} OF ${l.inputCoverage.required} · This is input coverage, not legal certainty`,25,p+41,{maxWidth:162});let yy=p+49;d.setFontSize(7.8);colour(d,'setTextColor',t.text);lines.forEach(ls=>{d.text(ls,25,yy,{lineHeightFactor:1.3,maxWidth:164});yy+=ls.length*w.line(7.8)+2;});d.setFont('helvetica','bold');colour(d,'setTextColor',t.accent);if(l.officialUrl)d.textWithLink(`Open official ${l.shortTitle}`,25,p+h-7,{url:l.officialUrl});else{d.setFont('helvetica','italic');colour(d,'setTextColor',t.amber);d.text('Exact state legislation link requires the confirmed operating state.',25,p+h-7);}w.set(p+h+8);});
+w.heading('UPCOMING COMPLIANCE TRIGGERS','Prepare before the next threshold','Upcoming changes are based on reported workforce counts and general statutory triggers. State amendments and notifications may change the result.');const triggers=[];laws.forEach(l=>{const r=l.thresholdResult;if(['near','below'].includes(r.state)&&Number.isFinite(r.count)&&Number.isFinite(r.threshold))triggers.push({title:l.shortTitle,current:r.count,threshold:r.threshold,gap:r.threshold-r.count,action:l.requiredAction});});const emp=numberValue(read(s,'employees'));if(emp!==null&&emp<50)triggers.push({title:'Maternity Benefit Act crèche requirement',current:emp,threshold:50,gap:50-emp,action:'Review statutory crèche obligations before the workforce reaches 50 employees.'});triggers.sort((a,b)=>a.gap-b.gap).slice(0,8).forEach(x=>{const p=w.panel(33,t.alt);d.setFont('helvetica','bold');d.setFontSize(9.5);colour(d,'setTextColor',t.head);d.text(x.title,23,p+10,{maxWidth:164});d.setFontSize(7.8);colour(d,'setTextColor',t.accent);d.text(`Current ${x.current} · At ${x.threshold}: review trigger · ${x.gap} to go`,23,p+19);d.setFont('helvetica','normal');colour(d,'setTextColor',t.text);d.text(w.split(x.action,164),23,p+27,{lineHeightFactor:1.25,maxWidth:164});w.set(p+40);});w.sub('Missing information');const missing=unique(laws.flatMap(l=>l.missingInputs)).map(f=>LABELS[f]||f);(missing.length?missing:['All governed inputs represented in this report were confirmed.']).forEach(x=>w.bullet(x,missing.length?t.amber:t.green));w.sub('Evidence used');[['Assessment responses',true],['Organisation profile',true],['Uploaded documents',!!(s.uploadedDocuments||s.evidenceDocuments)],['Government registrations',!!s.governmentRegistrations],['Previous assessments',!!(s.previousAssessments||s.generatedAt)]].forEach(x=>w.bullet(`${x[0]}: ${x[1]?'Used':'Not connected'}`,x[1]?t.green:t.muted));w.sub('Recommendations roadmap');[['Immediate',model.roadmap?.first30],['Next 30–60 days',model.roadmap?.next60],['Next quarter',model.roadmap?.next90]].forEach(x=>{w.text(x[0],16,9,'bold',t.head);(unique(arr(x[1])).slice(0,4).length?unique(arr(x[1])).slice(0,4):['Assign an accountable owner and agree evidence of completion.']).forEach(v=>w.bullet(v));});
+w.heading('APPENDIX','Governed law index','Laws are listed alphabetically. Open Act links point to the official legislation identified for that law.');laws.slice().sort((a,b)=>a.shortTitle.localeCompare(b.shortTitle)).forEach(l=>{const p=w.panel(22,(laws.indexOf(l)%2)?t.panel:t.alt);d.setFont('helvetica','bold');d.setFontSize(8);colour(d,'setTextColor',t.head);d.text(w.split(l.shortTitle,90),22,p+8,{lineHeightFactor:1.2,maxWidth:90});d.setFont('helvetica','normal');d.setFontSize(7.3);colour(d,'setTextColor',statusColour(l,t));d.text(l.status,116,p+8,{maxWidth:35});colour(d,'setTextColor',t.text);d.text(l.thresholdResult.label,151,p+8,{maxWidth:34});if(l.officialUrl){d.setFont('helvetica','bold');colour(d,'setTextColor',t.accent);d.textWithLink('Open Act',187,p+8,{url:l.officialUrl,align:'right'});}w.set(p+29);});drawClosingPage(d,t);}
+function serialise(r){const d=r?.document;if(!d?.output)return r;const u=d.output('datauristring'),b=d.output('arraybuffer');return{...r,dataUri:u,base64:u.includes(',')?u.split(',')[1]:u,sizeBytes:b.byteLength,pageCount:d.getNumberOfPages(),lawTransparencyVersion:VERSION,m4ReportIntegrationVersion:INTEGRATION};}
+async function withoutNestedRoadmapLabel(build){const J=window.jspdf?.jsPDF||window.jsPDF,targets=[...new Set([J?.API,J?.prototype].filter(Boolean))],restore=[];targets.forEach(t=>{if(typeof t.roundedRect!=='function')return;const o=t.roundedRect;t.roundedRect=function(x,y,width,height,...rest){if(Math.abs(Number(width)-40)<.05&&Math.abs(Number(height)-11)<.05)return this;return o.call(this,x,y,width,height,...rest);};restore.push(()=>t.roundedRect=o);});try{return await build();}finally{restore.reverse().forEach(f=>f());}}
+const originalBuild=base.buildAdvisoryPdf.bind(base);async function buildAdvisoryPdf(payload={}){const result=await withoutNestedRoadmapLabel(()=>originalBuild(payload)),model=typeof base.buildAdvisoryModel==='function'?base.buildAdvisoryModel(payload):(result?.model||{}),laws=buildReportLawTransparency(payload,model);if(Array.isArray(result?.pdfs)){const pdfs=result.pdfs.map(v=>{appendTransparency(v.document,laws,model,payload,v.theme);return serialise(v);});return{...result,...pdfs[0],theme:'both',pdfs,documents:pdfs.map(x=>x.document),filenames:pdfs.map(x=>x.filename),lawTransparency:laws,lawTransparencyVersion:VERSION,m4ReportIntegrationVersion:INTEGRATION};}appendTransparency(result?.document,laws,model,payload,result?.theme);return{...serialise(result),lawTransparency:laws,lawTransparencyVersion:VERSION,m4ReportIntegrationVersion:INTEGRATION};}
+function endpoint(){const e=clean(document?.body?.dataset?.emailEndpoint||window.GROWWITHHR_EMAIL_ENDPOINT);if(e){try{const u=new URL(e,window.location.href);u.pathname=u.pathname.replace(/\/api\/send-advisory\/?$/,DELIVERY_PATH);return u.href;}catch(_){}}return window.location?.origin==='https://hrtechifyed.github.io'?`https://growwithhr.onrender.com${DELIVERY_PATH}`:DELIVERY_PATH;}
+function pdfs(v={}){return(Array.isArray(v.pdfs)?v.pdfs:[v]).filter(Boolean).map(p=>({filename:clean(p.filename,`GrowWithHR-Advisory-${clean(p.theme,'light')}.pdf`),theme:clean(p.theme,v.theme||'light'),base64:clean(p.base64||p.dataUri||p.data).replace(/^data:application\/pdf;base64,/i,''),sizeBytes:Number(p.sizeBytes)||0}));}
+function installEmail(){const e=window.GrowWithHREmail;if(!e||e.m4UnifiedDelivery)return;let active=null;const send=(action,p={})=>{if(active)return active;active=(async()=>{const validation=e.validateRecipientEmails?e.validateRecipientEmails(p.lead?.email||p.report?.recipientEmail):{valid:true,emails:[clean(p.lead?.email||p.report?.recipientEmail)]};if(!validation.valid)throw new Error(validation.message||'Enter a valid work email address.');const variants=pdfs(p.pdf);if(!variants.length||variants.some(x=>!x.base64))throw new Error('The advisory PDF was not generated.');const response=await window.fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',body:JSON.stringify({action,lead:{...(p.lead||{}),email:validation.emails[0],emails:validation.emails},report:{...(p.report||{}),recipientEmail:validation.emails[0],recipientEmails:validation.emails,reportThemes:variants.map(x=>x.theme)},answers:p.answers||{},pdfs:variants})});let r={};try{r=await response.json();}catch(_){}if(!response.ok||(r.customerSent!==true&&r.customerStatus!=='sent'))throw new Error(r.error||`Email server returned status ${response.status}.`);return{...r,ok:true,customerSent:true,customerStatus:'sent',variantCount:variants.length,reportThemes:variants.map(x=>x.theme)};})().finally(()=>active=null);return active;};window.GrowWithHREmail=Object.freeze({...e,m4UnifiedDelivery:true,dualThemeDelivery:true,sendAdvisory:p=>send(p?.action||'capture',p),resendCustomer:p=>send('resend-customer',p)});}
+const answer=(n,v)=>{const a=window.executiveAssessment;if(a?.stateModel?.setAnswer)a.stateModel.setAnswer(n,v);else if(a?.answers)a.answers[n]=v;};
+function css(){if(!document||document.getElementById('m4ReportIntegrationStyles'))return;const s=document.createElement('style');s.id='m4ReportIntegrationStyles';s.textContent=`.advisory-report-theme-choice{box-sizing:border-box!important;width:100%!important;margin:22px 0!important;padding:20px!important;border:1px solid rgba(148,163,184,.48)!important;border-radius:16px!important;background:rgba(15,23,42,.035)!important}.advisory-report-theme-choice>legend{padding:0 8px!important;font-weight:800!important}.advisory-state-separator{display:none!important}[data-field-wrapper="remoteBand"] .is-m4-disabled{opacity:.42}[data-field-wrapper="remoteBand"] .is-m4-disabled span{cursor:not-allowed}[data-field-wrapper="remoteBand"] .is-m4-selected span{border-color:#f59e0b!important;box-shadow:0 0 0 2px rgba(245,158,11,.22)!important}[data-field-wrapper="priorities"] .advisory-checkbox-card--all{display:block!important;width:100%!important;margin:8px 0 14px!important}[data-field-wrapper="priorities"] .advisory-checkbox-card--all>span{display:flex!important;width:100%!important;min-height:48px!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(245,158,11,.65)!important;border-radius:12px!important}`;document.head.appendChild(s);}
+function progress(){if(!document)return;const def=window.GrowWithHRModules?.AssessmentDefinition||{},mom=Array.isArray(def.MOMENTS)?def.MOMENTS:[],i=Math.max(0,Number(window.executiveAssessment?.currentMoment||0)),total=mom.length||7,step=Math.min(total,i+1),chapter=mom[i]?.eyebrow||'Your advisory',top=document.getElementById('stepIndicator'),bottom=document.getElementById('footerMessage');if(top)top.textContent=`Step ${step} of ${total} · ${chapter}`;if(bottom)bottom.textContent=`Step ${step} of ${total}`;const h=document.querySelector('.advisory-chapter-rail__heading>span');if(h)h.textContent='Your advisory sections';}
+function remote(){if(!document)return;const m=document.querySelector('input[name="workModel"]:checked')?.value,target=m==='Office Based'?'0':m==='Remote'?'100':'',controls=[...document.querySelectorAll('input[name="remoteBand"]')];controls.forEach(c=>{const l=c.closest('.advisory-choice-pill'),disabled=!!target&&c.value!==target;c.disabled=disabled;l?.classList.toggle('is-m4-disabled',disabled);l?.classList.toggle('is-m4-selected',!!target&&c.value===target);});if(target){const c=controls.find(x=>x.value===target);if(c)c.checked=true;answer('remoteBand',target);answer('remoteWorkforce',target==='0'?'None':'Fully remote');const exact=document.getElementById('remoteExactField');if(exact)exact.hidden=true;}}
+function semicolon(){const h=document.getElementById('primaryStateHelp');if(h&&/semicolons/i.test(h.textContent||''))h.textContent='Enter one state or union territory in each box.';document.querySelectorAll('.advisory-state-separator').forEach(x=>x.hidden=true);}
+function stateError(msg){const e=document.getElementById('operatingStatesError')||document.getElementById('primaryStateError');if(e){e.textContent=msg;e.hidden=false;}}
+function validateStates(){const c=document.querySelector('input[name="operatingStateCount"]:checked');if(!c||c.value==='pan-india')return true;const n=Number(c.value);if(![1,2,3].includes(n))return true;const v=[clean(document.getElementById('primaryState')?.value),clean(document.getElementById('operatingState2')?.value),clean(document.getElementById('operatingState3')?.value)].slice(0,n);if(v.filter(Boolean).length!==n){stateError(`You selected ${n} states. Enter ${n} different state names, or change the selection to 1 state.`);return false;}if(new Set(v.map(x=>x.toLowerCase())).size!==n){stateError('A state or union territory cannot be repeated.');return false;}return true;}
+function selectAll(){const w=document.querySelector('[data-field-wrapper="priorities"]');if(!w)return;const all=w.querySelector(`input[name="priorities"][value="${ALL}"]`),grid=w.querySelector('.advisory-checkbox-grid');if(!all||!grid)return;const l=all.closest('label');if(l){l.classList.add('advisory-checkbox-card--all');const text=l.querySelector('strong')||l.querySelector('span');if(text)text.textContent='Select all';if(l.nextElementSibling!==grid)w.insertBefore(l,grid);}}
+function syncAll(t){if(!(t instanceof HTMLInputElement)||t.name!=='priorities')return;const cs=[...document.querySelectorAll('input[name="priorities"]')],all=cs.find(x=>x.value===ALL),real=cs.filter(x=>x.value!==ALL);if(!all)return;if(t===all&&all.checked)real.forEach(x=>x.checked=true);else if(t!==all&&!t.checked)all.checked=false;else if(t!==all&&real.every(x=>x.checked))all.checked=true;answer('priorities',real.filter(x=>x.checked).map(x=>x.value));}
+function refresh(){css();progress();remote();semicolon();selectAll();}
+function installUx(){if(!document||window.__m4ReportUxFixesInstalled)return;window.__m4ReportUxFixesInstalled=true;refresh();document.addEventListener('change',e=>{if(e.target?.name==='workModel')queueMicrotask(remote);syncAll(e.target);setTimeout(refresh,0);},true);document.addEventListener('submit',e=>{if(e.target?.id==='storyForm'&&!validateStates()){e.preventDefault();e.stopImmediatePropagation();}},true);document.addEventListener('click',()=>setTimeout(refresh,0),true);const c=document.getElementById('storyContainer');if(c&&typeof MutationObserver==='function')new MutationObserver(()=>requestAnimationFrame(refresh)).observe(c,{childList:true,subtree:true});}
+const enhanced=Object.freeze({...base,lawTransparency:true,lawTransparencyVersion:VERSION,m4ReportIntegrationVersion:INTEGRATION,lawCatalog:LAW_CATALOG,buildLawTransparency,buildReportLawTransparency,buildAdvisoryPdf});window.GrowWithHRPDF=enhanced;window.GrowWithHRPDFPolishReady=Promise.resolve(enhanced);window.GrowWithHRLawTransparency=Object.freeze({version:VERSION,integrationVersion:INTEGRATION,lawCatalog:LAW_CATALOG,buildLawTransparency,buildReportLawTransparency,compareCount,isConfirmed,numberValue});installEmail();installUx();if(typeof window.addEventListener==='function')window.addEventListener('growwithhr:assessment-modules-ready',installUx,{once:true});
+})(window,typeof document!=='undefined'?document:null);

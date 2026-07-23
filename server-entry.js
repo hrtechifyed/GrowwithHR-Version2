@@ -1,6 +1,7 @@
 "use strict";
 
 const http = require("http");
+const { handleM4DeliveryRequest } = require("./server-m4-delivery");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
     "https://hrtechifyed.github.io"
@@ -83,6 +84,7 @@ function installApiCors() {
                     }
                 }
 
+                if (handleM4DeliveryRequest(request, response)) return;
                 listener(request, response);
             }
             : listener;

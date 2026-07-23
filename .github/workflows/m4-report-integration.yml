@@ -1,0 +1,37 @@
+name: M4 Report Integration
+
+on:
+  pull_request:
+    paths:
+      - "js/pdf-law-transparency.js"
+      - "server-entry.js"
+      - "server-m4-delivery.js"
+      - "tests/m4-law-transparency-combination-checks.mjs"
+      - "tests/m4-report-integration-checks.mjs"
+      - "docs/releases/v0.19.0-m4-report-integration.md"
+      - ".github/workflows/m4-report-integration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate M4 report integration syntax
+        run: |
+          node --check js/pdf-law-transparency.js
+          node --check server-entry.js
+          node --check server-m4-delivery.js
+          node --check tests/m4-report-integration-checks.mjs
+      - name: Run exhaustive law transparency combinations
+        run: node tests/m4-law-transparency-combination-checks.mjs
+      - name: Run M4 visible report and delivery contracts
+        run: node tests/m4-report-integration-checks.mjs

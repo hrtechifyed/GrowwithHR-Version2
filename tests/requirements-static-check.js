@@ -88,13 +88,13 @@ const siteShell =
 
 includes(
     siteShell,
-    "© 2026 HRTechify - People • Technology • Growth",
+    "HRTechify - People • Technology • Growth",
     "The shared footer must retain the current HRTechify brand line."
 );
 
 includes(
     siteShell,
-    "All Rights Reserved.",
+    "© 2026 All Rights Reserved.",
     "The shared footer must retain the rights line."
 );
 
