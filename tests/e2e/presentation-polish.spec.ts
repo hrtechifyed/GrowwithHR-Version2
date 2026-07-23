@@ -132,28 +132,65 @@ test("balances the five executive snapshot cards and contains long values", asyn
     expect(layout.every((card) => card.valueFits)).toBe(true);
 });
 
-test("loads the full-line dual-theme PDF renderer on the public sample route", async ({ page }) => {
+test("loads the all-running-text dual-theme PDF renderer on the public sample route", async ({ page }) => {
     await page.goto("/sample-advisory-report.html");
 
     await page.waitForFunction(() => (
         window.GrowWithHRPDF?.version === "3.3.0-justified-dual-theme" &&
-        window.GrowWithHRPDF?.lineLayoutVersion === "3.3.1-full-line-logo"
+        window.GrowWithHRPDF?.lineLayoutVersion === "3.3.1-full-line-logo" &&
+        window.GrowWithHRPDF?.runningTextPolicyVersion ===
+            "3.3.2-all-running-text-justify"
     ));
 
-    const capabilities = await page.evaluate(() => ({
-        version: window.GrowWithHRPDF?.version,
-        lineLayoutVersion: window.GrowWithHRPDF?.lineLayoutVersion,
-        supportsDualTheme: window.GrowWithHRPDF?.supportsDualTheme,
-        reflowedText: window.GrowWithHRPDFRunningTextFix?.fullParagraphText([
-            "Your leadership selections remain the primary focus of this advisory. Complementary Company DNA insights are",
-            "presented separately to help",
-            "you consider the broader capabilities needed for resilient, sustainable growth."
-        ])
-    }));
+    const capabilities = await page.evaluate(() => {
+        const helper = window.GrowWithHRPDFRunningTextFix;
+        const normalDoc = {
+            getFontSize: () => 9,
+            getFont: () => ({ fontStyle: "normal" }),
+            getTextWidth: () => 95
+        };
+        const boldDoc = {
+            getFontSize: () => 9,
+            getFont: () => ({ fontStyle: "bold" }),
+            getTextWidth: () => 95
+        };
+
+        return {
+            version: window.GrowWithHRPDF?.version,
+            lineLayoutVersion: window.GrowWithHRPDF?.lineLayoutVersion,
+            runningTextPolicyVersion:
+                window.GrowWithHRPDF?.runningTextPolicyVersion,
+            supportsDualTheme: window.GrowWithHRPDF?.supportsDualTheme,
+            allRunningTextJustified:
+                window.GrowWithHRPDF?.allRunningTextJustified,
+            minimumRunningWidth: helper?.minimumRunningWidth,
+            reflowedText: helper?.fullParagraphText([
+                "Your leadership selections remain the primary focus of this advisory. Complementary Company DNA insights are",
+                "presented separately to help",
+                "you consider the broader capabilities needed for resilient, sustainable growth."
+            ]),
+            narrowBodyIsRunningText: helper?.isRunningText(
+                normalDoc,
+                "Narrative table copy should wrap and use justified alignment consistently.",
+                { maxWidth: 45 }
+            ),
+            boldHeadingIsRunningText: helper?.isRunningText(
+                boldDoc,
+                "This bold heading must retain its natural heading alignment.",
+                { maxWidth: 45 }
+            )
+        };
+    });
 
     expect(capabilities.version).toBe("3.3.0-justified-dual-theme");
     expect(capabilities.lineLayoutVersion).toBe("3.3.1-full-line-logo");
+    expect(capabilities.runningTextPolicyVersion)
+        .toBe("3.3.2-all-running-text-justify");
     expect(capabilities.supportsDualTheme).toBe(true);
+    expect(capabilities.allRunningTextJustified).toBe(true);
+    expect(capabilities.minimumRunningWidth).toBe(0);
+    expect(capabilities.narrowBodyIsRunningText).toBe(true);
+    expect(capabilities.boldHeadingIsRunningText).toBe(false);
     expect(capabilities.reflowedText).toBe(
         "Your leadership selections remain the primary focus of this advisory. Complementary Company DNA insights are presented separately to help you consider the broader capabilities needed for resilient, sustainable growth."
     );
