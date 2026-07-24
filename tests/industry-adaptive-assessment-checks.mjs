@@ -12,6 +12,8 @@ new vm.Script(source, { filename: "js/industry-adaptive-assessment.js", importMo
     '"esiWageEligibility"',
     '"bonusWageEligibility"',
     "No individual salary is requested",
+    "Optional, but recommended",
+    "You may continue and the report will show exactly what remains unconfirmed.",
     "manufacturing:",
     "bpo:",
     "software:",
@@ -101,6 +103,7 @@ assert.equal(api.resolveProfile("Healthcare"), "");
 assert(api.universalFields.some(([name]) => name === "workerCategories"));
 assert(api.universalFields.some(([name]) => name === "esiWageEligibility"));
 assert(api.universalFields.some(([name]) => name === "bonusWageEligibility"));
+assert(api.universalFields.every(([, , , , required]) => required === false), "universal compliance inputs must improve precision without blocking the journey");
 assert(!api.profiles.software.fields.some(([name]) => name === "workerCategories"));
 assert(!api.profiles.software.fields.some(([name]) => name === "usesPower"));
 assert(!api.profiles.software.fields.some(([name]) => name === "workers"));
@@ -124,6 +127,7 @@ const healthcareApplication = {
     answers: { industry: "Healthcare" }
 };
 assert.equal(api.render(healthcareApplication), true);
+assert.equal(api.validate(healthcareApplication), true, "unanswered universal precision questions must not block Continue");
 assert.equal(appendCount, 1, "universal statutory questions must render even without an industry profile");
 assert.match(currentSection.innerHTML, /ESI wage-eligibility limit/);
 assert.doesNotMatch(currentSection.innerHTML, /INDUSTRY-SPECIFIC QUESTIONS/);
