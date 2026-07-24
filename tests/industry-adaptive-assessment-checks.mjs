@@ -5,9 +5,9 @@ import vm from "node:vm";
 const source = fs.readFileSync("js/industry-adaptive-assessment.js", "utf8");
 new vm.Script(source, { filename: "js/industry-adaptive-assessment.js" });
 
-assert(source.includes('manufacturing:'));
-assert(source.includes('bpo:'));
-assert(source.includes('software:'));
+assert(source.includes("manufacturing:"));
+assert(source.includes("bpo:"));
+assert(source.includes("software:"));
 assert(source.includes('"workers"'));
 assert(source.includes('"womenEmployees"'));
 assert(source.includes('"usesPower"'));
@@ -20,17 +20,26 @@ assert(source.includes('"nightSecurity"'));
 assert(source.includes('"workerCategories"'));
 assert(source.includes('"clientSiteWorkers"'));
 assert(source.includes('"overseasWorkers"'));
-assert(source.includes('Number(application?.currentMoment) !== 2'));
-assert(source.includes('Please answer this industry-specific question.'));
-assert(source.includes('application.answers[name] = value'));
-assert(source.includes('application.persist?.()'));
-assert(source.includes('application.saveProgress?.()'));
+assert(source.includes("applicationMoment(application) !== 2"));
+assert(source.includes("Please answer this industry-specific question."));
+assert(source.includes("application.stateModel.setAnswer(name, value)"));
+assert(source.includes("application.persist?.()"));
+assert(source.includes("application.saveProgress?.()"));
+assert(source.includes("installSubmitGuard(application)"));
+assert(source.includes('form.addEventListener("submit"'));
+assert(source.includes("event.stopImmediatePropagation()"));
+assert(source.includes("unlockNavigation(application)"));
+assert(source.includes("Review the highlighted required information before continuing."));
+assert(!source.includes("application.continueFromMoment = function industryAwareContinue"));
 
 const sandbox = {
     console,
     window: {
         addEventListener() {},
-        executiveAssessment: null
+        executiveAssessment: null,
+        setInterval() { return 1; },
+        clearInterval() {},
+        setTimeout(callback) { callback(); return 1; }
     },
     document: {
         body: null,
