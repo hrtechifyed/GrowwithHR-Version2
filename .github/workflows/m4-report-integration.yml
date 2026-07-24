@@ -6,12 +6,14 @@ on:
       - "js/pdf-law-transparency.js"
       - "js/industry-adaptive-assessment.js"
       - "js/report-runtime-corrections.js"
+      - "js/report-sequence-controller.js"
       - "server-entry.js"
       - "server-m4-delivery.js"
       - "tests/m4-law-transparency-combination-checks.mjs"
       - "tests/m4-report-integration-checks.mjs"
       - "tests/industry-adaptive-assessment-checks.mjs"
       - "tests/report-runtime-corrections-checks.mjs"
+      - "tests/report-sequence-controller-checks.mjs"
       - "docs/releases/v0.20.0-integrated-report-industry-profiles.md"
       - ".github/workflows/m4-report-integration.yml"
   workflow_dispatch:
@@ -36,16 +38,20 @@ jobs:
           node --check js/pdf-law-transparency.js
           node --check js/industry-adaptive-assessment.js
           node --check js/report-runtime-corrections.js
+          node --check js/report-sequence-controller.js
           node --check server-entry.js
           node --check server-m4-delivery.js
           node --check tests/m4-report-integration-checks.mjs
           node --check tests/industry-adaptive-assessment-checks.mjs
           node --check tests/report-runtime-corrections-checks.mjs
+          node --check tests/report-sequence-controller-checks.mjs
       - name: Run exhaustive law transparency combinations
         run: node tests/m4-law-transparency-combination-checks.mjs
       - name: Run industry-adaptive assessment contracts
         run: node tests/industry-adaptive-assessment-checks.mjs
       - name: Run report runtime correction contracts
         run: node tests/report-runtime-corrections-checks.mjs
+      - name: Run report sequence and work-model lock contracts
+        run: node tests/report-sequence-controller-checks.mjs
       - name: Run M4 visible report and delivery contracts
         run: node tests/m4-report-integration-checks.mjs
