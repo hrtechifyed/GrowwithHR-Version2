@@ -6,12 +6,16 @@ const read = (path) => fs.readFileSync(path, "utf8");
 const transparency = read("js/pdf-law-transparency.js");
 const adaptive = read("js/industry-adaptive-assessment.js");
 const sequence = read("js/report-sequence-controller.js");
+const founderSummary = read("js/report-founder-summary-corrections.js");
+const runtime = read("js/report-runtime-corrections.js");
 const serverEntry = read("server-entry.js");
 const delivery = read("server-m4-delivery.js");
 
 new vm.Script(transparency, { filename: "js/pdf-law-transparency.js" });
 new vm.Script(adaptive, { filename: "js/industry-adaptive-assessment.js" });
 new vm.Script(sequence, { filename: "js/report-sequence-controller.js" });
+new vm.Script(founderSummary, { filename: "js/report-founder-summary-corrections.js" });
+new vm.Script(runtime, { filename: "js/report-runtime-corrections.js" });
 new vm.Script(serverEntry, { filename: "server-entry.js" });
 new vm.Script(delivery, { filename: "server-m4-delivery.js" });
 
@@ -98,6 +102,22 @@ assert.deepEqual(Array.from(scoped, (law) => law.id), ["esi"], "ESIC must not cr
     "one leadership agenda rather than separate selected and suggested blocks"
 ].forEach((expected) => assert(sequence.includes(expected), `missing founder-first report marker: ${expected}`));
 
+[
+    "PRESENT · LEADERSHIP BRIEF",
+    "Founder five-minute brief",
+    "Where you are today",
+    "What needs attention now",
+    "What changes the answer in future",
+    "Founder takeaway",
+    "deleteSourceLabelledPages",
+    "deleteOldExecutiveSummary",
+    "AREAS REQUIRING LEADERSHIP ATTENTION",
+    "SELECTED BY YOU",
+    "COMPANY DNA SUGGESTION"
+].forEach((expected) => assert(founderSummary.includes(expected), `missing founder summary marker: ${expected}`));
+assert(runtime.includes('import("./report-founder-summary-corrections.js")'));
+assert(runtime.includes('import("./report-sequence-controller.js")'));
+
 assert(transparency.includes('["workers", "workerCount", "workmen", "factoryWorkers", "blueCollarWorkers"]'));
 assert(!transparency.includes('"totalWorkers", "employees"'), "employee count must not substitute for factory-worker count");
 assert(transparency.includes('["7,16,31", [0, 0, 0]]'));
@@ -106,6 +126,8 @@ assert(transparency.includes('panel: [10, 10, 10]'));
 assert(sequence.includes('page: [0, 0, 0]'));
 assert(sequence.includes('panel: [10, 10, 10]'));
 assert(sequence.includes('alt: [21, 21, 21]'));
+assert(founderSummary.includes('page: [0, 0, 0]'));
+assert(founderSummary.includes('panel: [10, 10, 10]'));
 
 assert(transparency.includes('import("./industry-adaptive-assessment.js")'));
 assert(adaptive.includes("WORKFORCE AND STATUTORY ELIGIBILITY"));
@@ -136,4 +158,4 @@ assert(!transparency.includes("confidencePercent"));
 assert(!transparency.includes("overallScore"));
 assert(!sequence.includes("sourceLabel:"), "selected/suggested labels must not be rendered as report blocks");
 
-console.log("Founder-first integrated report, black theme and universal compliance-input checks passed.");
+console.log("Founder-first integrated report, summary cleanup, black theme and universal compliance-input checks passed.");
