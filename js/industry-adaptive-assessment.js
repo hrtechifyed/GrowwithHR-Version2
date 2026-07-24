@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.23.0-founder-compliance-inputs";
+    const VERSION = "0.23.1-founder-compliance-inputs";
     const INSTALL_FLAG = "__industryAdaptiveAssessmentInstalled";
     const SUBMIT_GUARD_FLAG = "industryAdaptiveSubmitGuard";
 
@@ -28,16 +28,16 @@
                 ["overseas-employees", "Employees working outside India"],
                 ["not-sure", "Not sure"]
             ],
-            true,
-            "Select every category that applies. This helps identify which employment rules are relevant."
+            false,
+            "Optional, but recommended. Select every category that applies so the report can identify which employment rules are relevant."
         ],
         [
             "womenEmployees",
             "Are women employed by the organisation?",
             "choice",
             [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]],
-            true,
-            "This helps assess maternity-benefit, workplace-safety and related obligations."
+            false,
+            "Optional, but recommended. This helps assess maternity-benefit, workplace-safety and related obligations."
         ],
         [
             "esiWageEligibility",
@@ -48,8 +48,8 @@
                 ["no", "No — no employee is likely to be eligible"],
                 ["not-sure", "Not sure — payroll review is needed"]
             ],
-            true,
-            "No individual salary is requested. Choose Not sure when payroll needs to confirm the current statutory limit."
+            false,
+            "Optional, but recommended. No individual salary is requested. Choose Not sure when payroll needs to confirm the current statutory limit."
         ],
         [
             "bonusWageEligibility",
@@ -60,8 +60,8 @@
                 ["no", "No — no employee is likely to be eligible"],
                 ["not-sure", "Not sure — payroll review is needed"]
             ],
-            true,
-            "No individual salary is requested. Choose Not sure when payroll needs to confirm eligibility."
+            false,
+            "Optional, but recommended. No individual salary is requested. Choose Not sure when payroll needs to confirm eligibility."
         ]
     ]);
 
@@ -224,7 +224,7 @@
             <div class="advisory-industry-adaptive__heading">
                 <p class="advisory-field-help">WORKFORCE AND STATUTORY ELIGIBILITY</p>
                 <h3>Help us understand who works with you</h3>
-                <p>These questions make the legal assessment more precise. They do not request individual employee salaries.</p>
+                <p>These optional questions make the legal assessment more precise. They do not request individual employee salaries. You may continue and the report will show exactly what remains unconfirmed.</p>
             </div>
             <div class="advisory-field-group">${UNIVERSAL_FIELDS.map((field) => fieldMarkup(field, applicationAnswers(application))).join("")}</div>
             ${profile ? `
