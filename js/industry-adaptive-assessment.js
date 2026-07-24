@@ -1,14 +1,69 @@
-/* GrowWithHR industry-adaptive assessment questions */
+/* GrowWithHR universal and industry-adaptive assessment questions */
 (() => {
     "use strict";
 
-    const VERSION = "0.21.2-industry-adaptive-performance";
+    const VERSION = "0.23.0-founder-compliance-inputs";
     const INSTALL_FLAG = "__industryAdaptiveAssessmentInstalled";
     const SUBMIT_GUARD_FLAG = "industryAdaptiveSubmitGuard";
 
     import("./report-runtime-corrections.js").catch((error) => {
         console.error("GrowWithHR report runtime corrections could not load.", error);
     });
+
+    const UNIVERSAL_FIELDS = Object.freeze([
+        [
+            "workerCategories",
+            "Which types of people work with your organisation?",
+            "multi",
+            [
+                ["permanent-employees", "Permanent employees"],
+                ["fixed-term-employees", "Fixed-term employees"],
+                ["part-time-employees", "Part-time employees"],
+                ["factory-workers", "Factory, production or blue-collar workers"],
+                ["agency-contract-labour", "Contract labour supplied by an agency"],
+                ["independent-contractors", "Independent contractors or consultants"],
+                ["interns-trainees", "Interns or trainees"],
+                ["apprentices", "Apprentices"],
+                ["client-site-employees", "Employees working at client sites"],
+                ["overseas-employees", "Employees working outside India"],
+                ["not-sure", "Not sure"]
+            ],
+            true,
+            "Select every category that applies. This helps identify which employment rules are relevant."
+        ],
+        [
+            "womenEmployees",
+            "Are women employed by the organisation?",
+            "choice",
+            [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]],
+            true,
+            "This helps assess maternity-benefit, workplace-safety and related obligations."
+        ],
+        [
+            "esiWageEligibility",
+            "Are any employees likely to fall within the current ESI wage-eligibility limit?",
+            "choice",
+            [
+                ["yes", "Yes — at least one employee may be eligible"],
+                ["no", "No — no employee is likely to be eligible"],
+                ["not-sure", "Not sure — payroll review is needed"]
+            ],
+            true,
+            "No individual salary is requested. Choose Not sure when payroll needs to confirm the current statutory limit."
+        ],
+        [
+            "bonusWageEligibility",
+            "Are any employees likely to fall within the statutory bonus eligibility limit?",
+            "choice",
+            [
+                ["yes", "Yes — at least one employee may be eligible"],
+                ["no", "No — no employee is likely to be eligible"],
+                ["not-sure", "Not sure — payroll review is needed"]
+            ],
+            true,
+            "No individual salary is requested. Choose Not sure when payroll needs to confirm eligibility."
+        ]
+    ]);
 
     const PROFILE_RULES = Object.freeze({
         manufacturing: {
@@ -18,7 +73,6 @@
             fields: [
                 ["manufacturingOperations", "Does the organisation carry out a manufacturing process?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], true],
                 ["workers", "How many factory, production or blue-collar workers are engaged?", "number", null, true],
-                ["womenEmployees", "Are women employed at this establishment?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], true],
                 ["usesPower", "Is power used in the manufacturing process?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], true],
                 ["shiftPattern", "How is production work scheduled?", "choice", [["day-only", "Day shift only"], ["multiple", "Two or more shifts"], ["continuous", "Continuous operations"], ["not-sure", "Not sure"]], true],
                 ["nightShifts", "Does any shift operate at night?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], true],
@@ -32,7 +86,6 @@
             fields: [
                 ["shiftPattern", "How are teams scheduled?", "choice", [["day-only", "Day shift only"], ["rotational", "Rotational shifts"], ["continuous", "24×7 operations"], ["not-sure", "Not sure"]], true],
                 ["nightShifts", "Do employees work night shifts?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], true],
-                ["womenEmployees", "Are women employed in these operations?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], true],
                 ["womenNightShifts", "Do women work night shifts?", "choice", [["yes", "Yes"], ["no", "No"], ["not-applicable", "Not applicable"], ["not-sure", "Not sure"]], false],
                 ["nightTransport", "Is employer-arranged transport provided for night-shift staff?", "choice", [["yes", "Yes"], ["no", "No"], ["not-applicable", "Not applicable"], ["not-sure", "Not sure"]], false],
                 ["nightSecurity", "Are documented night-shift safety and security controls in place?", "choice", [["yes", "Yes"], ["no", "No"], ["not-applicable", "Not applicable"], ["not-sure", "Not sure"]], false]
@@ -41,9 +94,8 @@
         software: {
             matches: /software|saas|information technology|\bit\b|technology|digital product|cloud/i,
             title: "Software and technology operations",
-            description: "These questions are shown because distributed teams, contractors and multi-state employment are usually more relevant than factory-specific questions.",
+            description: "These questions are shown because distributed teams, client-site work and international employment may be more relevant than factory-specific questions.",
             fields: [
-                ["workerCategories", "Which workforce groups are used?", "multi", [["employees", "Employees"], ["contractors", "Independent contractors or consultants"], ["interns", "Interns or trainees"], ["agency", "Agency or outsourced staff"]], true],
                 ["clientSiteWorkers", "Do employees regularly work from client sites?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], false],
                 ["overseasWorkers", "Are any employees engaged outside India?", "choice", [["yes", "Yes"], ["no", "No"], ["not-sure", "Not sure"]], false]
             ]
@@ -92,11 +144,12 @@
     }
 
     function fieldMarkup(field, answers) {
-        const [name, label, type, options, required] = field;
+        const [name, label, type, options, required, helper = ""] = field;
         const value = answers?.[name];
         if (type === "number") {
             return `<div class="advisory-field" data-field-wrapper="${escapeHtml(name)}" data-industry-field="${escapeHtml(name)}">
                 <label for="${escapeHtml(name)}">${escapeHtml(label)}${required ? " <span aria-hidden=\"true\">*</span>" : ""}</label>
+                ${helper ? `<p class="advisory-field-help">${escapeHtml(helper)}</p>` : ""}
                 <input id="${escapeHtml(name)}" name="${escapeHtml(name)}" type="number" min="0" step="1" inputmode="numeric" value="${escapeHtml(value)}" ${required ? "required" : ""}>
                 <p class="advisory-field-error" id="${escapeHtml(name)}Error" hidden></p>
             </div>`;
@@ -104,6 +157,7 @@
         const multiple = type === "multi";
         return `<fieldset class="advisory-choice-fieldset industry-adaptive-field" data-field-wrapper="${escapeHtml(name)}" data-industry-field="${escapeHtml(name)}">
             <legend>${escapeHtml(label)}${required ? " <span aria-hidden=\"true\">*</span>" : ""}</legend>
+            ${helper ? `<p class="advisory-field-help">${escapeHtml(helper)}</p>` : ""}
             <div class="advisory-choice-pills">${optionMarkup(name, options, value, multiple)}</div>
             <p class="advisory-field-error" id="${escapeHtml(name)}Error" hidden></p>
         </fieldset>`;
@@ -141,6 +195,12 @@
         application.saveNow?.();
     }
 
+    function activeFields(application) {
+        const profileKey = resolveProfile(resolveIndustry(application));
+        const profileFields = profileKey ? PROFILE_RULES[profileKey].fields : [];
+        return { profileKey, fields: [...UNIVERSAL_FIELDS, ...profileFields] };
+    }
+
     function render(application) {
         const container = document.getElementById("storyContainer");
         if (!container) return false;
@@ -151,37 +211,40 @@
             return false;
         }
 
-        const profileKey = resolveProfile(resolveIndustry(application));
-        if (!profileKey) {
-            existing?.remove();
-            return false;
-        }
-
-        if (existing?.dataset.industryAdaptive === profileKey) return true;
+        const { profileKey } = activeFields(application);
+        const renderKey = profileKey || "universal";
+        if (existing?.dataset.industryAdaptive === renderKey) return true;
         existing?.remove();
 
-        const profile = PROFILE_RULES[profileKey];
+        const profile = profileKey ? PROFILE_RULES[profileKey] : null;
         const section = document.createElement("section");
         section.className = "advisory-industry-adaptive";
-        section.dataset.industryAdaptive = profileKey;
+        section.dataset.industryAdaptive = renderKey;
         section.innerHTML = `
             <div class="advisory-industry-adaptive__heading">
-                <p class="advisory-field-help">INDUSTRY-SPECIFIC QUESTIONS</p>
-                <h3>${escapeHtml(profile.title)}</h3>
-                <p>${escapeHtml(profile.description)}</p>
+                <p class="advisory-field-help">WORKFORCE AND STATUTORY ELIGIBILITY</p>
+                <h3>Help us understand who works with you</h3>
+                <p>These questions make the legal assessment more precise. They do not request individual employee salaries.</p>
             </div>
-            <div class="advisory-field-group">${profile.fields.map((field) => fieldMarkup(field, applicationAnswers(application))).join("")}</div>`;
+            <div class="advisory-field-group">${UNIVERSAL_FIELDS.map((field) => fieldMarkup(field, applicationAnswers(application))).join("")}</div>
+            ${profile ? `
+                <div class="advisory-industry-adaptive__heading">
+                    <p class="advisory-field-help">INDUSTRY-SPECIFIC QUESTIONS</p>
+                    <h3>${escapeHtml(profile.title)}</h3>
+                    <p>${escapeHtml(profile.description)}</p>
+                </div>
+                <div class="advisory-field-group">${profile.fields.map((field) => fieldMarkup(field, applicationAnswers(application))).join("")}</div>` : ""}`;
         container.appendChild(section);
         return true;
     }
 
     function validate(application) {
         if (applicationMoment(application) !== 2) return true;
-        const profileKey = resolveProfile(resolveIndustry(application));
-        if (!profileKey) return true;
         const answers = applicationAnswers(application);
+        const { fields } = activeFields(application);
         let valid = true;
-        for (const [name, , type, , required] of PROFILE_RULES[profileKey].fields) {
+
+        for (const [name, , type, , required] of fields) {
             if (!required) continue;
             const value = answers[name];
             const missing = type === "multi" ? !Array.isArray(value) || !value.length : clean(value) === "";
@@ -191,10 +254,11 @@
             wrapper?.querySelector("input")?.setAttribute("aria-invalid", missing ? "true" : "false");
             if (error) {
                 error.hidden = !missing;
-                error.textContent = missing ? "Please answer this industry-specific question." : "";
+                error.textContent = missing ? "Please answer this question before continuing." : "";
             }
             if (missing) valid = false;
         }
+
         if (!valid) document.querySelector("[data-industry-adaptive]")?.scrollIntoView?.({ behavior: "smooth", block: "start" });
         return valid;
     }
@@ -287,8 +351,10 @@
 
     window.GrowWithHRIndustryAdaptiveAssessment = Object.freeze({
         version: VERSION,
+        universalFields: UNIVERSAL_FIELDS,
         profiles: PROFILE_RULES,
         resolveProfile,
+        activeFields,
         validate,
         install,
         render
