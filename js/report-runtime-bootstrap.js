@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.24.1-report-runtime-bootstrap";
+    const VERSION = "0.24.2-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
@@ -30,6 +30,41 @@
             }
             return this;
         };
+    }
+
+    function installChoiceStateGuard() {
+        if (document.documentElement.dataset.growwithhrChoiceStateGuard === "true") return;
+        document.documentElement.dataset.growwithhrChoiceStateGuard = "true";
+
+        document.addEventListener("change", (event) => {
+            const input = event.target;
+            if (!(input instanceof HTMLInputElement)) return;
+            if (!input.closest("#storyContainer")) return;
+            if (!input.name || !["radio", "checkbox"].includes(input.type)) return;
+
+            const snapshot = {
+                name: input.name,
+                value: input.value,
+                type: input.type,
+                checked: input.checked
+            };
+
+            queueMicrotask(() => {
+                const selector = `#storyContainer input[name="${CSS.escape(snapshot.name)}"][value="${CSS.escape(snapshot.value)}"]`;
+                const current = document.querySelector(selector);
+                if (!(current instanceof HTMLInputElement)) return;
+                if (current.checked === snapshot.checked) return;
+
+                if (snapshot.type === "radio" && snapshot.checked) {
+                    document.querySelectorAll(`#storyContainer input[name="${CSS.escape(snapshot.name)}"]`)
+                        .forEach((peer) => {
+                            if (peer instanceof HTMLInputElement) peer.checked = peer === current;
+                        });
+                } else {
+                    current.checked = snapshot.checked;
+                }
+            });
+        }, true);
     }
 
     async function load() {
@@ -62,5 +97,6 @@
         }
     }
 
+    installChoiceStateGuard();
     load();
 })();
