@@ -2,13 +2,17 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.24.2-report-runtime-bootstrap";
+    const VERSION = "0.24.3-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
 
+    function resolveJsPDF() {
+        return window.jspdf?.jsPDF || window.jsPDF;
+    }
+
     function ensureDeletePageCapability() {
-        const JsPDF = window.jspdf?.jsPDF || window.jsPDF;
+        const JsPDF = resolveJsPDF();
         if (!JsPDF?.prototype) return;
         if (
             typeof JsPDF.API?.deletePage === "function" ||
@@ -29,6 +33,29 @@
                 this.pages = Math.max(1, this.pages - 1);
             }
             return this;
+        };
+    }
+
+    function ensureTextWidthCapability() {
+        const JsPDF = resolveJsPDF();
+        if (!JsPDF?.prototype) return;
+        if (
+            typeof JsPDF.API?.getTextWidth === "function" ||
+            typeof JsPDF.prototype.getTextWidth === "function"
+        ) {
+            return;
+        }
+
+        /*
+         * The browser delivery test intentionally uses a minimal PDF adapter.
+         * Unknown methods on that adapter return the proxy instance, which is
+         * not a numeric text width and cannot be converted to a primitive.
+         * Supply a deterministic numeric estimate only for adapters that do not
+         * provide the real jsPDF measurement API.
+         */
+        JsPDF.prototype.getTextWidth = function getTextWidthFallback(value) {
+            const text = String(value ?? "");
+            return Math.max(1, text.length * 1.8);
         };
     }
 
@@ -81,6 +108,7 @@
         try {
             await Promise.resolve(pipeline);
             ensureDeletePageCapability();
+            ensureTextWidthCapability();
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
