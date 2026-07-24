@@ -1,30 +1,42 @@
-/* GrowWithHR report runtime corrections v0.23.0 */
+/* GrowWithHR report runtime corrections v0.23.1 */
 (() => {
     "use strict";
 
-    const VERSION = "0.23.0-report-runtime-corrections";
+    const VERSION = "0.23.1-report-runtime-corrections";
     const INTELLIGENCE_LABEL = "UNDERSTANDING INTELLIGENCE ENGINE";
 
-    function loadFounderReportCorrections() {
-        let attempts = 0;
-        const waitForSequence = () => {
-            attempts += 1;
-            if (window.GrowWithHRPDF?.reportSequenceVersion) {
-                import("./report-founder-summary-corrections.js").catch((error) => {
-                    console.error("GrowWithHR founder summary corrections could not load.", error);
-                });
-                return;
-            }
-            if (attempts < 100) window.setTimeout(waitForSequence, 100);
-        };
-        waitForSequence();
+    async function restorePdfCapabilities() {
+        const current = window.GrowWithHRPDF;
+        if (!current || typeof current.buildAdvisoryPdf !== "function") return false;
+
+        const [executive, lineLayout] = await Promise.all([
+            Promise.resolve(window.GrowWithHRPDFExecutiveEnhancementsReady).catch(() => null),
+            Promise.resolve(window.GrowWithHRPDFLineLayoutReady).catch(() => null)
+        ]);
+
+        const enhanced = Object.freeze({
+            ...current,
+            version: executive?.version || current.version,
+            supportsDualTheme: executive?.supportsDualTheme ?? current.supportsDualTheme,
+            lineLayoutVersion: lineLayout?.lineLayoutVersion || current.lineLayoutVersion,
+            runningTextPolicyVersion: lineLayout?.runningTextPolicyVersion || current.runningTextPolicyVersion,
+            allRunningTextJustified: lineLayout?.allRunningTextJustified ?? current.allRunningTextJustified
+        });
+
+        window.GrowWithHRPDF = enhanced;
+        window.GrowWithHRPDFPolishReady = Promise.resolve(enhanced);
+        return true;
     }
 
-    import("./report-sequence-controller.js")
-        .then(loadFounderReportCorrections)
-        .catch((error) => {
-            console.error("GrowWithHR founder-first report corrections could not load.", error);
-        });
+    async function loadFounderReportCorrections() {
+        await import("./report-sequence-controller.js");
+        await import("./report-founder-summary-corrections.js");
+        await restorePdfCapabilities();
+    }
+
+    loadFounderReportCorrections().catch((error) => {
+        console.error("GrowWithHR founder-first report corrections could not load.", error);
+    });
 
     function replaceReportLabels(value) {
         return String(value)
@@ -98,6 +110,7 @@
         version: VERSION,
         intelligenceLabel: INTELLIGENCE_LABEL,
         replaceReportLabels,
-        loadFounderReportCorrections
+        loadFounderReportCorrections,
+        restorePdfCapabilities
     });
 })();
