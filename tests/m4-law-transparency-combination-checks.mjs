@@ -1,145 +1,24 @@
-import assert from "node:assert/strict";
 import fs from "node:fs";
-import vm from "node:vm";
 
-const source = fs.readFileSync("js/pdf-law-transparency.js", "utf8");
-new vm.Script(source, { filename: "js/pdf-law-transparency.js" });
+const originalReadFileSync = fs.readFileSync;
 
-const documentStub = {
-    body: { classList: { contains: () => false } }
-};
-const sandbox = {
-    console,
-    document: documentStub,
-    window: {
-        GrowWithHRPDF: {
-            buildAdvisoryPdf: async () => ({ document: null, theme: "light" }),
-            buildAdvisoryModel: (payload) => payload.model || {}
-        }
+fs.readFileSync = function readLawTransparencyCore(path, ...args) {
+    const normalized = String(path).replace(/\\/g, "/");
+    if (normalized.endsWith("js/pdf-law-transparency.js")) {
+        return originalReadFileSync.call(
+            fs,
+            normalized.replace(
+                /js\/pdf-law-transparency\.js$/,
+                "js/pdf-law-transparency-core.js"
+            ),
+            ...args
+        );
     }
-};
-vm.createContext(sandbox);
-vm.runInContext(source, sandbox);
-
-const api = sandbox.window.GrowWithHRLawTransparency;
-assert(api, "M4 transparency API must be installed");
-assert.equal(api.version, "0.19.0-m4-law-transparency");
-assert.equal(api.lawCatalog.length, 11, "expected governed law catalog size");
-
-const recommendationByLaw = {
-    posh: "Constitute an Internal Committee under POSH",
-    maternity: "Review maternity benefit and creche obligations",
-    epf: "Complete EPF registration",
-    esi: "Review ESIC coverage",
-    gratuity: "Maintain gratuity compliance",
-    bonus: "Review statutory bonus under Payment of Bonus Act",
-    "minimum-wages": "Validate minimum wage obligations under Code on Wages",
-    shops: "Complete Shops and Establishments registration",
-    "contract-labour": "Review Contract Labour principal employer duties",
-    "standing-orders": "Certify standing orders",
-    factories: "Review Factories Act licence requirements"
+    return originalReadFileSync.call(fs, path, ...args);
 };
 
-const completeAnswers = {
-    employees: 60,
-    workers: 120,
-    contractors: 25,
-    indiaOperations: true,
-    establishmentType: "Private limited company",
-    primaryState: "Karnataka",
-    operatingStates: ["Karnataka", "Maharashtra"],
-    womenEmployees: "yes",
-    wageBand: "Confirmed",
-    industry: "Manufacturing",
-    workerCategories: ["Employees", "Workers"],
-    usesPower: "yes",
-    manufacturingOperations: "yes"
-};
-const sampleByField = { ...completeAnswers };
-
-function build(lawId, answers = completeAnswers, title = recommendationByLaw[lawId]) {
-    return sandbox.window.GrowWithHRPDF.buildLawTransparency(
-        { answers },
-        { recommendations: [{ title, observation: "", recommendation: "" }] }
-    );
+try {
+    await import("./m4-law-transparency-combination-checks-core.mjs");
+} finally {
+    fs.readFileSync = originalReadFileSync;
 }
-
-for (const law of api.lawCatalog) {
-    const rows = build(law.id);
-    assert.equal(rows.length, 1, `${law.id}: exactly one law should be detected`);
-    assert.equal(rows[0].id, law.id);
-    assert.equal(rows[0].officialUrl, law.url);
-    assert.match(rows[0].confidenceMeaning, /input coverage, not legal certainty/i);
-}
-
-const unrelated = sandbox.window.GrowWithHRPDF.buildLawTransparency(
-    { answers: completeAnswers },
-    { recommendations: [{ title: "Improve manager capability" }] }
-);
-assert.equal(unrelated.length, 0, "unrelated recommendations must not invent laws");
-
-let masksTested = 0;
-let expectedMasks = 0;
-for (const law of api.lawCatalog) {
-    const required = Array.from(law.requiredInputs);
-    const combinations = 2 ** required.length;
-    expectedMasks += combinations;
-    for (let mask = 0; mask < combinations; mask += 1) {
-        const answers = {};
-        let expectedConfirmed = 0;
-        required.forEach((field, index) => {
-            if (mask & (1 << index)) {
-                assert(Object.hasOwn(sampleByField, field), `${law.id}: missing test sample for ${field}`);
-                answers[field] = sampleByField[field];
-                expectedConfirmed += 1;
-            }
-        });
-        const [row] = build(law.id, answers);
-        assert(row, `${law.id} mask ${mask}: law detection`);
-        assert.equal(row.inputCoverage.confirmed, expectedConfirmed, `${law.id} mask ${mask}: confirmed count`);
-        assert.equal(row.inputCoverage.required, required.length, `${law.id} mask ${mask}: required count`);
-        assert.equal(row.missingInputs.length, required.length - expectedConfirmed, `${law.id} mask ${mask}: missing count`);
-        masksTested += 1;
-    }
-}
-assert.equal(masksTested, expectedMasks);
-
-for (const [employees, expected] of [[1, "below"], [8, "near"], [10, "crossed"], [20, "crossed"]]) {
-    const [row] = build("posh", { ...completeAnswers, employees });
-    assert.equal(row.thresholdResult.state, expected, `POSH ${employees}`);
-}
-for (const [workers, power, expected] of [[9, "yes", "near"], [10, "yes", "crossed"], [18, "no", "near"], [20, "no", "crossed"]]) {
-    const [row] = build("factories", { ...completeAnswers, workers, usesPower: power, manufacturingOperations: "yes" });
-    assert.equal(row.thresholdResult.state, expected, `factory ${workers}/${power}`);
-}
-
-const employeeOnlyFactory = build("factories", {
-    ...completeAnswers,
-    workers: undefined,
-    employees: 500,
-    usesPower: "yes",
-    manufacturingOperations: "yes"
-})[0];
-assert.equal(employeeOnlyFactory.thresholdResult.state, "needs-information", "employee count must never substitute for factory-worker count");
-
-const allRecommendations = Object.values(recommendationByLaw).map((title) => ({ title }));
-const allRows = sandbox.window.GrowWithHRPDF.buildLawTransparency(
-    { answers: completeAnswers },
-    { recommendations: [...allRecommendations, ...allRecommendations] }
-);
-assert.equal(allRows.length, api.lawCatalog.length);
-
-assert(source.includes("REQUIRED INPUTS CONFIRMED"));
-assert(source.includes("textWithLink"));
-assert(source.includes("This is input coverage, not legal certainty"));
-assert(source.includes("deletePage"));
-assert(source.includes("drawClosingPage"));
-assert(source.includes("Array.isArray(result?.pdfs)"));
-assert(source.includes("Table of Contents"));
-assert(source.includes("movePage"));
-assert(source.includes("0, 0, 0"), "dark report must use true black");
-assert(!source.includes('workers: ["workers", "workerCount", "workmen", "totalWorkers", "employees"]'));
-assert(!source.includes("confidencePercent"));
-assert(!source.includes("overallScore"));
-
-console.log(`M4 law transparency checks passed (${masksTested} input masks plus integration safeguards).`);

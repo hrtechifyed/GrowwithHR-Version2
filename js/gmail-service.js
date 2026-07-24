@@ -23,7 +23,7 @@
     const PAN_INDIA_LABEL = "Pan India";
     const ALL_PRIORITIES_VALUE = "all-of-the-above";
     const INDIA_COMPLIANCE_SCOPE_NOTICE =
-        "Compliance analysis in this report is restricted to the organisation’s India operations only. International compliance is not in the scope of the report for now.";
+        "Compliance analysis in this report is restricted to the organisation’s India operations only. Operations in other countries are recorded for context but are outside the scope of this report.";
     const ALL_PRIORITY_VALUES = Object.freeze([
         "hiring-onboarding", "policies-compliance", "performance-rewards",
         "manager-capability", "culture-engagement", "hr-operations-technology",
@@ -415,7 +415,8 @@
                         id: fieldId,
                         label: `State or union territory ${stateNumber}`,
                         helper: stateNumber === 1
-                            ? "Enter one state in each box. The report combines selected states with semicolons,
+                            ? "Enter one state in each box. The report combines selected states with semicolons."
+                            : "",
                         placeholder: "Start typing a state or union territory",
                         options: Array.isArray(definitions.STATES) ? definitions.STATES : [],
                         required: visible,

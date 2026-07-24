@@ -1,12 +1,41 @@
-/* GrowWithHR report runtime corrections v0.22.0 */
+/* GrowWithHR report runtime corrections v0.23.1 */
 (() => {
     "use strict";
 
-    const VERSION = "0.22.0-report-runtime-corrections";
+    const VERSION = "0.23.1-report-runtime-corrections";
     const INTELLIGENCE_LABEL = "UNDERSTANDING INTELLIGENCE ENGINE";
 
-    import("./report-sequence-controller.js").catch((error) => {
-        console.error("GrowWithHR report sequence controller could not load.", error);
+    async function restorePdfCapabilities() {
+        const current = window.GrowWithHRPDF;
+        if (!current || typeof current.buildAdvisoryPdf !== "function") return false;
+
+        const [executive, lineLayout] = await Promise.all([
+            Promise.resolve(window.GrowWithHRPDFExecutiveEnhancementsReady).catch(() => null),
+            Promise.resolve(window.GrowWithHRPDFLineLayoutReady).catch(() => null)
+        ]);
+
+        const enhanced = Object.freeze({
+            ...current,
+            version: executive?.version || current.version,
+            supportsDualTheme: executive?.supportsDualTheme ?? current.supportsDualTheme,
+            lineLayoutVersion: lineLayout?.lineLayoutVersion || current.lineLayoutVersion,
+            runningTextPolicyVersion: lineLayout?.runningTextPolicyVersion || current.runningTextPolicyVersion,
+            allRunningTextJustified: lineLayout?.allRunningTextJustified ?? current.allRunningTextJustified
+        });
+
+        window.GrowWithHRPDF = enhanced;
+        window.GrowWithHRPDFPolishReady = Promise.resolve(enhanced);
+        return true;
+    }
+
+    async function loadFounderReportCorrections() {
+        await import("./report-sequence-controller.js");
+        await import("./report-founder-summary-corrections.js");
+        await restorePdfCapabilities();
+    }
+
+    loadFounderReportCorrections().catch((error) => {
+        console.error("GrowWithHR founder-first report corrections could not load.", error);
     });
 
     function replaceReportLabels(value) {
@@ -80,6 +109,8 @@
     window.GrowWithHRReportRuntimeCorrections = Object.freeze({
         version: VERSION,
         intelligenceLabel: INTELLIGENCE_LABEL,
-        replaceReportLabels
+        replaceReportLabels,
+        loadFounderReportCorrections,
+        restorePdfCapabilities
     });
 })();
