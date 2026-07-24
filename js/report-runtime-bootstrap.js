@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.23.0-report-runtime-bootstrap";
+    const VERSION = "0.24.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
@@ -21,6 +21,7 @@
         try {
             await Promise.resolve(pipeline);
             await import("./report-runtime-corrections.js");
+            await import("./report-acceptance-corrections.js");
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
                 ready: true
