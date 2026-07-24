@@ -1,8 +1,8 @@
-/* GrowWithHR report sequencing and working-model locks */
+/* GrowWithHR founder-first report sequencing and working-model locks */
 (() => {
     "use strict";
 
-    const VERSION = "0.22.0-report-sequence";
+    const VERSION = "0.23.0-founder-first-report";
     const INSTALL_FLAG = "__growwithhrReportSequenceInstalled";
     const WORK_MODEL_LOCK_FLAG = "__growwithhrWorkModelLockInstalled";
 
@@ -25,20 +25,20 @@
     ]);
 
     const SECTION_ANCHORS = Object.freeze({
-        snapshot: ["EXECUTIVE SNAPSHOT"],
-        summary: ["EXECUTIVE SUMMARY"],
+        snapshot: ["EXECUTIVE SNAPSHOT", "ABOUT YOUR ORGANISATION"],
+        summary: ["EXECUTIVE SUMMARY", "WHAT MATTERS NEXT"],
         understanding: ["UNDERSTANDING INTELLIGENCE ENGINE", "M4 EXPLAINABLE INTELLIGENCE"],
         evidence: ["EVIDENCE AND MISSING INFORMATION"],
         positive: ["POSITIVE FOUNDATIONS"],
-        compliance: ["COMPLIANCE REVIEW"],
+        compliance: ["COMPLIANCE REVIEW", "WHAT YOU SHOULD REVIEW", "HOW TO KEEP COMPLIANCE UNDER CONTROL"],
         strategic: ["STRATEGIC RECOMMENDATIONS", "RECOMMENDED ACTIONS"],
         priority: ["PRIORITY COMPLIANCE ACTIONS", "PRIORITY ACTIONS"],
         upcoming: ["UPCOMING COMPLIANCE TRIGGERS"],
-        roadmap: ["ROADMAP - 0 TO 90 DAYS", "0–90 DAYS ROADMAP", "0-90 DAYS ROADMAP"],
-        looking: ["LOOKING AHEAD"],
+        roadmap: ["ROADMAP - 0 TO 90 DAYS", "0–90 DAYS ROADMAP", "0-90 DAYS ROADMAP", "EXECUTIVE IMPLEMENTATION ROADMAP"],
+        looking: ["LOOKING AHEAD", "PREPARING FOR THE NEXT STAGE OF GROWTH"],
         law: ["LAW-BY-LAW UNDERSTANDING", "LAWS APPLICABLE"],
         index: ["GOVERNED LAW INDEX", "APPENDIX"],
-        important: ["IMPORTANT INFORMATION"],
+        important: ["IMPORTANT INFORMATION", "CONFIDENTIALITY, PRIVACY AND DISCLAIMER"],
         end: ["END OF REPORT"]
     });
 
@@ -60,8 +60,61 @@
         ["Important Information", "important"]
     ]);
 
+    const STATUS_ORDER = Object.freeze([
+        "Applicable",
+        "Review required",
+        "Needs information",
+        "Not currently triggered"
+    ]);
+
+    const STATUS_EXPLANATIONS = Object.freeze({
+        "Applicable": "The reported organisation position crosses the displayed general trigger and the governed inputs needed for this conclusion were confirmed. Confirm the current legal position and maintain the required controls.",
+        "Review required": "The law may affect the organisation, but the answer depends on state rules, workforce categories or a trigger that does not use one universal headcount threshold. Review it before deciding that no action is needed.",
+        "Needs information": "The assessment cannot yet reach a reliable governed conclusion because one or more specific inputs are missing or were answered as Not sure.",
+        "Not currently triggered": "The displayed general trigger is not currently reached based on the information supplied. Reassess when workforce size, worker type, location or operations change."
+    });
+
+    const FIELD_LABELS = Object.freeze({
+        employees: "employee strength",
+        workers: "factory or blue-collar worker strength",
+        contractors: "contractor workforce",
+        indiaOperations: "India operations",
+        establishmentType: "legal establishment type",
+        primaryState: "primary operating state",
+        operatingStates: "operating states",
+        womenEmployees: "whether women are employed",
+        esiWageEligibility: "ESI wage eligibility",
+        bonusWageEligibility: "statutory bonus eligibility",
+        wageBand: "wage eligibility information",
+        industry: "industry",
+        workerCategories: "worker categories",
+        usesPower: "manufacturing power usage",
+        manufacturingOperations: "manufacturing activities"
+    });
+
+    const FIELD_QUESTIONS = Object.freeze({
+        workerCategories: "Which types of people work with your organisation?",
+        womenEmployees: "Are women employed by the organisation?",
+        esiWageEligibility: "Are any employees likely to fall within the current ESI wage-eligibility limit?",
+        bonusWageEligibility: "Are any employees likely to fall within the statutory bonus eligibility limit?",
+        wageBand: "Confirm ESI and statutory bonus wage eligibility.",
+        employees: "Roughly how many employees are on the team today?",
+        workers: "How many factory, production or blue-collar workers are engaged?",
+        contractors: "How many contract and outsourced workers are engaged?",
+        indiaOperations: "Does the organisation operate in India?",
+        establishmentType: "How is the organisation legally structured?",
+        primaryState: "What is the primary operating state?",
+        operatingStates: "In which states does the organisation operate?",
+        industry: "Which industry best describes the organisation?",
+        usesPower: "Is power used in the manufacturing process?",
+        manufacturingOperations: "Does the organisation carry out a manufacturing process?"
+    });
+
     const clean = (value, fallback = "") => String(value ?? "").replace(/\s+/g, " ").trim() || fallback;
     const unique = (values) => [...new Set(values.map((value) => clean(value)).filter(Boolean))];
+    const asArray = (value) => Array.isArray(value)
+        ? value.map((item) => clean(item)).filter(Boolean)
+        : (clean(value) ? [clean(value)] : []);
 
     function palette(name) {
         return /dark/i.test(clean(name))
@@ -101,6 +154,33 @@
         colour(doc, "setDrawColor", colours.line);
         doc.setLineWidth(0.35);
         doc.rect(5.5, 5.5, 199, 286, "S");
+    }
+
+    function statusColour(status, colours) {
+        if (status === "Applicable") return colours.green;
+        if (status === "Review required") return colours.amber;
+        if (status === "Needs information") return colours.red;
+        return colours.muted;
+    }
+
+    function fieldLabel(field) {
+        return FIELD_LABELS[field] || clean(field);
+    }
+
+    function fieldQuestion(field) {
+        return FIELD_QUESTIONS[field] || fieldLabel(field);
+    }
+
+    function shortText(value, max = 130) {
+        const text = clean(value);
+        if (text.length <= max) return text;
+        return `${text.slice(0, Math.max(0, max - 1)).trim()}…`;
+    }
+
+    function cleanRecommendation(value) {
+        return clean(value)
+            .replace(/^(Selected by you|Company DNA suggestion)\s*[-–:]\s*/i, "")
+            .replace(/^(Selected by you|Company DNA suggestion)\s*/i, "");
     }
 
     function createWriter(doc, colours) {
@@ -169,46 +249,184 @@
             y += height;
         }
 
-        function lawCard(row) {
-            const missing = row.missingInputs.map((field) => fieldLabel(field));
-            const paragraphs = [
-                `Your organisation: ${clean(row.thresholdResult?.count, "Not confirmed")} ${row.id === "contract-labour" ? "contract workers" : row.id === "factories" || row.id === "standing-orders" ? "factory or blue-collar workers" : "employees"}`,
-                `Threshold status: ${clean(row.thresholdResult?.label, "Needs information")}`,
-                `Required inputs confirmed: ${row.inputCoverage?.confirmed ?? 0} of ${row.inputCoverage?.required ?? 0}. This is input coverage, not legal certainty.`,
-                `Threshold: ${clean(row.threshold, "Confirm the current statutory trigger.")}`,
-                `Why this law is included: ${clean(row.whyIncluded)}`,
-                `Required action: ${clean(row.requiredAction)}`,
-                `Missing information: ${missing.length ? missing.join(", ") : "none for the governed inputs"}.`
-            ];
-            ensure(52);
-            const top = y - 4;
+        function callout(title, body, options = {}) {
+            const width = Number(options.width || 178);
+            const x = Number(options.x || 16);
+            const titleLines = split(title, width - 12);
+            const bodyLines = split(body, width - 12);
+            const height = Math.max(22, titleLines.length * lineHeight(9.2, 1.2) + bodyLines.length * lineHeight(8.1, 1.3) + 14);
+            ensure(height + 5);
+            colour(doc, "setFillColor", options.fill || colours.panel);
+            colour(doc, "setDrawColor", options.draw || colours.line);
+            doc.roundedRect(x, y - 4, width, height, 2, 2, "FD");
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9.2);
+            colour(doc, "setTextColor", options.titleColour || colours.head);
+            doc.text(titleLines, x + 6, y + 3, { lineHeightFactor: 1.2, maxWidth: width - 12 });
+            const bodyY = y + 4 + titleLines.length * lineHeight(9.2, 1.2) + 3;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(8.1);
+            colour(doc, "setTextColor", options.bodyColour || colours.text);
+            doc.text(bodyLines, x + 6, bodyY, { lineHeightFactor: 1.3, maxWidth: width - 12 });
+            y += height + 5;
+        }
+
+        function statusSummary(status, rows) {
+            const count = rows.length;
+            const title = `${count} ${count === 1 ? "law" : "laws"} · ${status}`;
+            const laws = rows.length ? rows.map((row) => row.shortTitle).join(", ") : "No laws in this category.";
+            callout(title, `${STATUS_EXPLANATIONS[status]}\n\nIncluded here: ${laws}`, {
+                titleColour: statusColour(status, colours),
+                fill: colours.panel
+            });
+        }
+
+        function progressBar(confirmed, required, missingQuestions = []) {
+            const safeRequired = Math.max(0, Number(required) || 0);
+            const safeConfirmed = Math.min(safeRequired, Math.max(0, Number(confirmed) || 0));
+            ensure(24 + missingQuestions.length * 7);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(8.1);
+            colour(doc, "setTextColor", colours.head);
+            doc.text(`Required inputs confirmed · ${safeConfirmed} of ${safeRequired}`, 16, y);
+            y += 6;
+            const segments = 10;
+            const filled = safeRequired ? Math.round((safeConfirmed / safeRequired) * segments) : segments;
+            for (let index = 0; index < segments; index += 1) {
+                colour(doc, "setFillColor", index < filled ? colours.accent : colours.alt);
+                colour(doc, "setDrawColor", colours.line);
+                doc.roundedRect(16 + index * 12.8, y - 3.5, 10.7, 4.5, 0.8, 0.8, "FD");
+            }
+            y += 7;
+            if (missingQuestions.length) {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(8);
+                colour(doc, "setTextColor", colours.red);
+                doc.text("Still needed:", 16, y);
+                y += 5;
+                missingQuestions.forEach((question) => bullet(question, colours.red));
+            } else {
+                text("All governed inputs for this law were confirmed. This shows input coverage, not legal certainty.", { size: 7.8, colour: colours.muted, after: 4 });
+            }
+        }
+
+        function lawCard(row, actionId = "") {
+            const missingQuestions = row.missingQuestions?.length
+                ? row.missingQuestions
+                : (row.missingInputs || []).map(fieldQuestion);
+            ensure(68);
             colour(doc, "setFillColor", colours.panel);
             colour(doc, "setDrawColor", colours.line);
-            doc.roundedRect(16, top, 178, 11, 2, 2, "FD");
+            doc.roundedRect(16, y - 4, 178, 12, 2, 2, "FD");
             doc.setFont("helvetica", "bold");
             doc.setFontSize(9.4);
             colour(doc, "setTextColor", colours.head);
-            doc.text(clean(row.shortTitle), 20, y + 2, { maxWidth: 120 });
-            doc.setFontSize(7.2);
+            doc.text(clean(row.shortTitle), 20, y + 3, { maxWidth: 115 });
+            doc.setFontSize(7.1);
             colour(doc, "setTextColor", statusColour(row.status, colours));
-            doc.text(`${clean(row.status).toUpperCase()} · ${clean(row.priority)}`, 190, y + 2, { align: "right" });
-            y += 13;
-            paragraphs.forEach((paragraph, index) => text(paragraph, {
-                size: index === 2 ? 7.6 : 8.05,
-                style: index === 2 ? "bold" : "normal",
-                colour: index === 2 ? colours.accent : colours.text,
-                after: 2
-            }));
+            doc.text(`${clean(row.status).toUpperCase()} · ${clean(row.priority)}`, 190, y + 3, { align: "right" });
+            y += 15;
+
+            text(clean(row.thresholdResult?.explanation, row.thresholdResult?.label), {
+                size: 8.6,
+                style: "bold",
+                colour: colours.head,
+                after: 5
+            });
+
+            subheading("What this means");
+            const meaning = row.status === "Applicable"
+                ? "The displayed general trigger has been crossed and the governed inputs used for this conclusion were confirmed. Confirm the current legal position and maintain the relevant controls."
+                : row.status === "Review required"
+                    ? "This law may affect the organisation, but the conclusion depends on state rules, workforce categories or a non-universal trigger. Review is required before treating it as not applicable."
+                    : row.status === "Needs information"
+                        ? "The assessment cannot yet reach a governed conclusion because specific information is missing or was answered as Not sure."
+                        : "The displayed general trigger is not currently reached. Reassess when the organisation changes.";
+            text(meaning);
+
+            subheading("What to do now");
+            text(`${actionId ? `${actionId} · ` : ""}${clean(row.requiredAction)}`, { style: "bold" });
+
+            subheading("Your position versus the displayed trigger");
+            callout(
+                clean(row.thresholdResult?.positionText, "Organisation position not confirmed"),
+                `Displayed trigger: ${clean(row.thresholdResult?.triggerText, row.threshold)}\nCurrent result: ${clean(row.thresholdResult?.label, row.status)}`,
+                { fill: colours.alt }
+            );
+
+            progressBar(row.inputCoverage?.confirmed, row.inputCoverage?.required, missingQuestions);
+
+            text(`Why this law is included: ${clean(row.whyIncluded)}`, { size: 8, colour: colours.muted, after: 4 });
             if (row.officialUrl) {
                 ensure(8);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(8.2);
                 colour(doc, "setTextColor", colours.accent);
                 doc.textWithLink(`Open official ${clean(row.shortTitle)}`, 16, y, { url: row.officialUrl });
-                y += 8;
+                y += 9;
             } else {
-                text("Exact state legislation link requires the confirmed operating state and enactment.", { size: 8, colour: colours.muted, after: 6 });
+                text("Exact state legislation link requires the confirmed operating state and enactment.", { size: 8, colour: colours.muted, after: 7 });
             }
+        }
+
+        function tableHeader(columns) {
+            ensure(13);
+            colour(doc, "setFillColor", colours.head);
+            doc.rect(16, y - 5, 178, 12, "F");
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(7.1);
+            colour(doc, "setTextColor", [255, 255, 255]);
+            let x = 16;
+            columns.forEach((column) => {
+                doc.text(column.label, x + 3, y + 1, { maxWidth: column.width - 6 });
+                x += column.width;
+            });
+            y += 12;
+        }
+
+        function lawIndexTable(rows) {
+            const columns = [
+                { label: "LAW & STATUS", width: 55 },
+                { label: "GENERAL TRIGGER", width: 41 },
+                { label: "YOUR CURRENT STATE", width: 41 },
+                { label: "NEXT STEP", width: 41 }
+            ];
+            tableHeader(columns);
+
+            rows.forEach((row, index) => {
+                const cells = [
+                    `${clean(row.shortTitle)}\n${clean(row.status)}`,
+                    clean(row.thresholdResult?.triggerText, row.threshold),
+                    `${clean(row.thresholdResult?.positionText, "Not confirmed")}\n${clean(row.thresholdResult?.label)}`,
+                    shortText(row.requiredAction, 180)
+                ];
+                const lineCounts = cells.map((cell, cellIndex) => split(cell, columns[cellIndex].width - 6).length);
+                const rowHeight = Math.max(18, Math.max(...lineCounts) * lineHeight(6.8, 1.25) + 7);
+                if (y + rowHeight > 270) {
+                    addPage(true);
+                    tableHeader(columns);
+                }
+                colour(doc, "setFillColor", index % 2 ? colours.panel : colours.alt);
+                colour(doc, "setDrawColor", colours.line);
+                doc.rect(16, y - 5, 178, rowHeight, "FD");
+                let x = 16;
+                cells.forEach((cell, cellIndex) => {
+                    doc.setFont("helvetica", cellIndex === 0 ? "bold" : "normal");
+                    doc.setFontSize(6.8);
+                    colour(doc, "setTextColor", cellIndex === 0 ? colours.head : colours.text);
+                    const lines = split(cell, columns[cellIndex].width - 6);
+                    doc.text(lines, x + 3, y + 1, { lineHeightFactor: 1.25, maxWidth: columns[cellIndex].width - 6 });
+                    x += columns[cellIndex].width;
+                });
+                y += rowHeight;
+                if (row.officialUrl) {
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(6.5);
+                    colour(doc, "setTextColor", colours.accent);
+                    doc.textWithLink("Open Act", 19, y - 4, { url: row.officialUrl });
+                }
+            });
+            y += 5;
         }
 
         return {
@@ -216,36 +434,16 @@
             subheading,
             text,
             bullet,
+            callout,
+            statusSummary,
+            progressBar,
             lawCard,
+            lawIndexTable,
+            addPage,
+            ensure,
             getY: () => y,
             setY: (value) => { y = Number(value); }
         };
-    }
-
-    function fieldLabel(field) {
-        const labels = {
-            employees: "employee strength",
-            workers: "factory or blue-collar worker strength",
-            contractors: "contractor workforce",
-            indiaOperations: "India operations",
-            establishmentType: "legal establishment type",
-            primaryState: "primary operating state",
-            operatingStates: "operating states",
-            womenEmployees: "women employees",
-            wageBand: "wage eligibility information",
-            industry: "industry",
-            workerCategories: "worker categories",
-            usesPower: "manufacturing power usage",
-            manufacturingOperations: "manufacturing activities"
-        };
-        return labels[field] || clean(field);
-    }
-
-    function statusColour(status, colours) {
-        if (status === "Applicable") return colours.green;
-        if (status === "Review required") return colours.amber;
-        if (status === "Needs information") return colours.red;
-        return colours.muted;
     }
 
     function pageText(doc, page) {
@@ -270,10 +468,18 @@
             .map((key) => ({ key, start: findSectionPage(doc, key) }))
             .filter((entry) => entry.start)
             .sort((left, right) => left.start - right.start);
-        return starts.map((entry, index) => ({
+
+        const seenPages = new Set();
+        const uniqueStarts = starts.filter((entry) => {
+            if (seenPages.has(entry.start)) return false;
+            seenPages.add(entry.start);
+            return true;
+        });
+
+        return uniqueStarts.map((entry, index) => ({
             key: entry.key,
             start: entry.start,
-            end: index + 1 < starts.length ? starts[index + 1].start - 1 : doc.getNumberOfPages()
+            end: index + 1 < uniqueStarts.length ? uniqueStarts[index + 1].start - 1 : doc.getNumberOfPages()
         }));
     }
 
@@ -291,33 +497,87 @@
         return Object.assign({}, payload, payload.lead || {}, payload.answers || {}, payload.report || {}, model || {});
     }
 
-    function renderUnderstanding(doc, colours, rows) {
-        const writer = createWriter(doc, colours);
-        const counts = Object.fromEntries(["Applicable", "Review required", "Needs information", "Not currently triggered"]
-            .map((status) => [status, rows.filter((row) => row.status === status).length]));
-        const next = rows.find((row) => row.status === "Applicable" && row.priority === "HIGH") ||
-            rows.find((row) => row.status === "Applicable") ||
-            rows.find((row) => row.status === "Review required") ||
-            rows.find((row) => row.status === "Needs information");
+    function assignActionIds(rows) {
+        const rank = { "Applicable": 0, "Needs information": 1, "Review required": 2, "Not currently triggered": 3 };
+        const priority = { HIGH: 0, REVIEW: 1, MEDIUM: 2, LOW: 3 };
+        return [...rows]
+            .filter((row) => row.status !== "Not currently triggered")
+            .sort((left, right) => (rank[left.status] ?? 9) - (rank[right.status] ?? 9) || (priority[left.priority] ?? 9) - (priority[right.priority] ?? 9) || clean(left.shortTitle).localeCompare(clean(right.shortTitle)))
+            .reduce((map, row, index) => map.set(row.id, `A${index + 1}`), new Map());
+    }
 
-        writer.heading("Executive insight", "Understanding Intelligence Engine", "A transparent view of statutory triggers, organisation position, evidence coverage and missing information. This is general guidance, not legal certification.");
-        writer.subheading("Current statutory position");
-        writer.bullet(`${counts.Applicable || 0} laws assessed as applicable`, colours.green);
-        writer.bullet(`${counts["Review required"] || 0} laws require review`, colours.amber);
-        writer.bullet(`${counts["Needs information"] || 0} laws need more information`, colours.red);
-        writer.bullet(`${counts["Not currently triggered"] || 0} laws are not currently triggered`, colours.muted);
-        writer.subheading("Next recommended action");
-        writer.text(next?.requiredAction || "Complete the missing organisation information before relying on statutory recommendations.", { style: "bold" });
-        writer.subheading("How to read this section");
-        writer.bullet("Threshold conclusions use the organisation information supplied in the assessment.");
-        writer.bullet("Evidence coverage shows which governed inputs were confirmed.");
-        writer.bullet("Evidence coverage is not a compliance score or legal-certainty percentage.");
+    function actionRows(rows, actionIds) {
+        return [...actionIds.entries()].map(([id, actionId]) => ({
+            row: rows.find((row) => row.id === id),
+            actionId
+        })).filter((item) => item.row);
+    }
+
+    function ownerForLaw(row) {
+        if (["epf", "esi", "bonus", "gratuity", "minimum-wages"].includes(row.id)) return "Suggested owner: Finance/Payroll with People or HR";
+        if (["factories", "standing-orders", "contract-labour"].includes(row.id)) return "Suggested owner: Operations/Plant with People or HR and Legal";
+        if (row.id === "posh") return "Suggested owner: Founder/Leadership with the Internal Committee and People or HR";
+        return "Suggested owner: Founder/Leadership with People or HR and qualified advice";
+    }
+
+    function renderUnderstanding(doc, colours, rows, actionIds) {
+        const writer = createWriter(doc, colours);
+        writer.heading(
+            "PRESENT · UNDERSTAND",
+            "Understanding Intelligence Engine",
+            "This section answers four founder questions: what appears to apply now, what needs review, what information is missing, and what is not currently triggered. It is general guidance, not legal certification."
+        );
+
+        writer.callout(
+            "Your report in one sentence",
+            "Start with the applicable and review-required laws, close any missing-information questions, then use the 0–90-day roadmap to assign owners and retain evidence."
+        );
+
+        STATUS_ORDER.forEach((status) => writer.statusSummary(status, rows.filter((row) => row.status === status)));
+
+        const firstActions = actionRows(rows, actionIds).slice(0, 3);
+        writer.subheading("The first three leadership decisions");
+        if (!firstActions.length) {
+            writer.bullet("No immediate governed action was generated. Reassess after a material change in workforce or operations.", colours.green);
+        } else {
+            firstActions.forEach(({ row, actionId }) => {
+                writer.bullet(`${actionId} · ${row.shortTitle}: ${row.requiredAction}`, statusColour(row.status, colours));
+            });
+        }
+
+        writer.callout(
+            "What this means for you",
+            "The status count is a navigation aid, not a score. A low number of applicable laws does not mean the organisation is compliant, and a high number does not mean it is non-compliant."
+        );
     }
 
     function renderEvidence(doc, colours, rows, payload, model) {
         const writer = createWriter(doc, colours);
         const data = source(payload, model);
-        const missing = unique(rows.flatMap((row) => row.missingInputs || []).map(fieldLabel));
+        const missingFields = unique(rows.flatMap((row) => row.missingInputs || []));
+        const allMissingQuestions = rows.flatMap((row) => row.missingQuestions || []);
+        const missingQuestions = unique(allMissingQuestions.length ? allMissingQuestions : missingFields.map(fieldQuestion));
+
+        writer.heading(
+            "PRESENT · COMPLETE THE PICTURE",
+            "Evidence and Missing Information",
+            "The report should never blame a user for information the assessment did not ask. The workforce step now asks universal worker-category, women-employment, ESI wage-eligibility and statutory-bonus eligibility questions."
+        );
+
+        writer.subheading("Information still needed");
+        if (!missingQuestions.length) {
+            writer.callout("No governed assessment inputs are missing", "The report has the assessment inputs it requires for the displayed conclusions. Documents and registrations are still not independently verified.", { titleColour: colours.green });
+        } else {
+            missingQuestions.forEach((question) => {
+                writer.callout(
+                    question,
+                    "Where to answer: Story 3 — Your people → Workforce and statutory eligibility. Choose Not sure when payroll or operations needs to confirm the answer.",
+                    { titleColour: colours.red }
+                );
+            });
+        }
+
+        writer.subheading("Evidence used by this report");
         const evidence = [
             ["Assessment responses", true],
             ["Organisation profile", true],
@@ -325,75 +585,237 @@
             ["Government registrations", Boolean(data.governmentRegistrations)],
             ["Previous assessments", Boolean(data.previousAssessments || data.generatedAt)]
         ];
-
-        writer.heading("Evidence basis", "Evidence and Missing Information", "This page shows what the assessment used and what still needs confirmation before leadership relies on the statutory interpretation.");
-        writer.subheading("Missing information");
-        (missing.length ? missing : ["No governed assessment inputs are missing."]).forEach((item) => writer.bullet(item, missing.length ? colours.amber : colours.green));
-        writer.subheading("Evidence used");
         evidence.forEach(([label, used]) => writer.bullet(`${label}: ${used ? "Used" : "Not connected"}`, used ? colours.green : colours.muted));
-        writer.text("Evidence completeness reflects information available to this assessment. It is not proof of statutory compliance.", { style: "italic", colour: colours.muted, after: 6 });
+        writer.callout(
+            "Evidence boundary",
+            "Input coverage shows which assessment questions were confirmed. It is not proof that a registration exists, a payment was made, a committee is operating or a statutory record is complete."
+        );
     }
 
-    function renderPriority(doc, colours, rows) {
+    function renderComplianceReview(doc, colours, model) {
         const writer = createWriter(doc, colours);
-        const actionable = rows.filter((row) => row.status === "Applicable" || row.status === "Review required" || row.status === "Needs information");
-        writer.heading("Leadership action", "Priority Compliance Actions", "Actions are ordered by statutory position and evidence completeness. Confirm current legal interpretation before implementation.");
-        (actionable.length ? actionable.slice(0, 10) : rows.slice(0, 5)).forEach((row) => {
-            writer.subheading(`${clean(row.priority)} · ${clean(row.shortTitle)}`);
-            writer.text(clean(row.requiredAction));
-            writer.text(`Reason: ${clean(row.thresholdResult?.explanation, row.thresholdResult?.label)}`, { colour: colours.muted });
+        writer.heading(
+            "PRESENT · GOVERN",
+            "Compliance Review",
+            "A founder does not need to personally perform every compliance task. The founder does need a simple operating rhythm that makes ownership, evidence, review and escalation visible."
+        );
+
+        const compliance = asArray(model.compliance).slice(0, 5);
+        if (compliance.length) {
+            writer.subheading("Current review prompts");
+            compliance.forEach((item) => writer.bullet(cleanRecommendation(item)));
+        }
+
+        const rhythms = [
+            ["R1 · Assign an owner", "One person is accountable for each law, policy or recurring obligation. They may delegate the work, but they remain responsible for completion and escalation. Typical owners include the founder, People/HR, Finance/Payroll, Operations/Plant and an external adviser."],
+            ["R2 · Retain evidence", "Keep proof that the task was completed and communicated. Examples include registration certificates, payment confirmations, committee constitution records, training attendance, wage registers, contractor licences and review minutes."],
+            ["R3 · Review on a cadence", "Monthly: payroll, wage, EPF, ESI and contractor evidence. Quarterly: workforce thresholds, policy controls, POSH and leadership exceptions. Annually: registrations, committee structures, training and major policies. Event-triggered: new state, new location, headcount growth, manufacturing, night shifts or a new worker category."],
+            ["R4 · Escalate exceptions", "Overdue, incomplete or high-risk items should appear in a regular leadership forum. Compliance should not remain invisible inside HR, payroll or an external vendor."],
+            ["R5 · Reassess after change", "Run the assessment again when workforce size, worker type, location, operating model, manufacturing activity, shift pattern or ownership materially changes."]
+        ];
+        rhythms.forEach(([title, body]) => writer.callout(title, body));
+
+        writer.callout(
+            "What this means for you",
+            "A simple rhythm is stronger than a long policy library with no owner, evidence or review date. Start with the highest-priority actions and make completion visible."
+        );
+    }
+
+    function renderStrategic(doc, colours, model) {
+        const writer = createWriter(doc, colours);
+        const recommendations = Array.isArray(model.recommendations) ? model.recommendations : [];
+        writer.heading(
+            "ACT · BUILD THE BUSINESS",
+            "Strategic Recommendations",
+            "These recommendations connect the organisation profile with practical people capabilities. They are presented as one leadership agenda rather than separate selected and suggested blocks."
+        );
+
+        if (!recommendations.length) {
+            writer.bullet("No strategic recommendation was available from the advisory model.");
+            return;
+        }
+
+        recommendations.slice(0, 7).forEach((item, index) => {
+            const title = cleanRecommendation(item.title || `Priority ${index + 1}`);
+            const observation = cleanRecommendation(item.observation || item.suggestionReason || "This area affects the organisation's ability to scale with clarity and consistency.");
+            const recommendation = cleanRecommendation(item.recommendation || "Define a practical owner, minimum repeatable process and evidence of progress.");
+            writer.callout(`S${index + 1} · ${title}`, `Why it matters: ${observation}\n\nRecommended move: ${recommendation}`);
+        });
+
+        writer.callout(
+            "What this means for you",
+            "Do not launch every recommendation at once. Choose the actions that protect business momentum, assign an owner and place them into the 0–90-day roadmap."
+        );
+    }
+
+    function renderPriority(doc, colours, rows, actionIds) {
+        const writer = createWriter(doc, colours);
+        const actions = actionRows(rows, actionIds);
+        writer.heading(
+            "ACT · COMPLIANCE PRIORITIES",
+            "Priority Compliance Actions",
+            "Each action is connected to the Act and threshold reasoning that produced it. The same action ID appears in the roadmap and detailed law card."
+        );
+
+        if (!actions.length) {
+            writer.bullet("No applicable, review-required or missing-information law produced an immediate action.", colours.green);
+            return;
+        }
+
+        actions.slice(0, 10).forEach(({ row, actionId }) => {
+            writer.callout(
+                `${actionId} · ${row.shortTitle}`,
+                `${row.thresholdResult?.explanation || row.thresholdResult?.label}\n\nDo now: ${row.requiredAction}\n${ownerForLaw(row)}\nDetailed reference: Law-by-Law Understanding.`,
+                { titleColour: statusColour(row.status, colours) }
+            );
         });
     }
 
     function renderUpcoming(doc, colours, rows) {
         const writer = createWriter(doc, colours);
         const upcoming = rows.filter((row) => ["near", "below"].includes(row.thresholdResult?.state));
-        writer.heading("Forward view", "Upcoming Compliance Triggers", "These triggers use reported workforce information and general statutory thresholds. State amendments and notifications may change the result.");
-        if (!upcoming.length) writer.bullet("No governed headcount trigger is currently shown as approaching or below the displayed threshold.", colours.green);
-        upcoming.forEach((row) => writer.bullet(`${clean(row.shortTitle)}: ${clean(row.thresholdResult?.explanation)}`, colours.amber));
+        writer.heading(
+            "FUTURE · WATCH THE TRIGGERS",
+            "Upcoming Compliance Triggers",
+            "This is the future view: what change in workforce or operations could change the report's conclusion. State amendments and notifications may alter the displayed general triggers."
+        );
+
+        if (!upcoming.length) {
+            writer.callout("No approaching or below-threshold item was identified", "Reassess after a material change in headcount, worker type, location, manufacturing activity or working model.", { titleColour: colours.green });
+        } else {
+            upcoming.forEach((row) => {
+                writer.callout(
+                    row.shortTitle,
+                    `Current position: ${row.thresholdResult?.positionText || row.thresholdResult?.explanation}\nDisplayed trigger: ${row.thresholdResult?.triggerText || row.threshold}\nReassess when: the relevant workforce count, state, worker category or operating model changes.`,
+                    { titleColour: colours.amber }
+                );
+            });
+        }
     }
 
-    function renderLawUnderstanding(doc, colours, rows) {
+    function renderRoadmap(doc, colours, rows, model, actionIds) {
         const writer = createWriter(doc, colours);
-        writer.heading("Annexure", "Law-by-Law Understanding", "Every card shows the statutory trigger, reported organisation position, resulting status, reasoning, required action, evidence coverage, missing inputs and official source.");
-        rows.forEach((row) => writer.lawCard(row));
+        const actions = actionRows(rows, actionIds);
+        const cleanList = (items) => unique(asArray(items).map(cleanRecommendation));
+        const first30 = unique([
+            ...actions.slice(0, 3).map(({ row, actionId }) => `${actionId} · ${row.requiredAction}`),
+            ...cleanList(model.roadmap?.first30)
+        ]).slice(0, 7);
+        const next60 = unique([
+            ...actions.slice(3, 6).map(({ row, actionId }) => `${actionId} · ${row.requiredAction}`),
+            ...cleanList(model.roadmap?.next60)
+        ]).slice(0, 7);
+        const next90 = unique([
+            ...actions.slice(6, 9).map(({ row, actionId }) => `${actionId} · ${row.requiredAction}`),
+            ...cleanList(model.roadmap?.next90)
+        ]).slice(0, 7);
+
+        writer.heading(
+            "ACT · SEQUENCE THE WORK",
+            "Roadmap - 0 to 90 days",
+            "The roadmap keeps the report crisp by sequencing work. All three time periods use the same neutral visual treatment; priority comes from the action ID and wording, not from unrelated colours."
+        );
+
+        const stage = (label, purpose, items) => {
+            writer.callout(label, purpose, { fill: colours.panel });
+            (items.length ? items : ["No additional action was generated for this period."]).forEach((item) => writer.bullet(item));
+        };
+        stage("0–30 DAYS · Create clarity", "Confirm the highest-risk legal positions, assign owners and gather the evidence that already exists.", first30);
+        stage("31–60 DAYS · Build consistency", "Close priority gaps, standardise recurring processes and make review dates visible.", next60);
+        stage("61–90 DAYS · Embed and review", "Test whether the controls are operating, close exceptions and establish the next recurring review.", next90);
+
+        writer.callout(
+            "Founder checkpoint at day 90",
+            "Ask: Which actions are complete? What evidence proves completion? Which exceptions remain? What business or workforce change requires the report to be refreshed?"
+        );
+    }
+
+    function renderLawUnderstanding(doc, colours, rows, actionIds) {
+        const writer = createWriter(doc, colours);
+        writer.heading(
+            "ANNEXURE · DETAILED REFERENCE",
+            "Law-by-Law Understanding",
+            "Use this annexure after reading the founder brief. Every card starts with why the Act is being shown, then explains the meaning, action, threshold comparison, input coverage, missing questions and official source."
+        );
+        rows.forEach((row) => writer.lawCard(row, actionIds.get(row.id) || ""));
     }
 
     function renderLawIndex(doc, colours, rows) {
         const writer = createWriter(doc, colours);
-        writer.heading("Annexure", "Governed Law Index", "Laws are listed alphabetically. Open Act links point to the official legislation identified for that law.");
-        [...rows].sort((left, right) => clean(left.shortTitle).localeCompare(clean(right.shortTitle))).forEach((row) => {
-            writer.text(`${clean(row.shortTitle)} · ${clean(row.status)} · ${clean(row.thresholdResult?.label)}`, { style: "bold", after: 1 });
-            if (row.officialUrl) {
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(8);
-                colour(doc, "setTextColor", colours.accent);
-                doc.textWithLink("Open Act", 16, writer.getY(), { url: row.officialUrl });
-                writer.setY(writer.getY() + 6);
-            }
-        });
+        writer.heading(
+            "ANNEXURE · QUICK REFERENCE",
+            "Governed Law Index",
+            "The table gives a compact view of each law, its present status, the displayed general trigger, the organisation's current state and the next leadership step."
+        );
+        writer.lawIndexTable([...rows].sort((left, right) => clean(left.shortTitle).localeCompare(clean(right.shortTitle))));
     }
 
-    function drawClosingPage(doc, colours) {
+    let logoPromise = null;
+    function loadLogoDataUrl() {
+        if (logoPromise) return logoPromise;
+        if (typeof document === "undefined" || typeof Image !== "function") return Promise.resolve("");
+        logoPromise = new Promise((resolve) => {
+            const image = new Image();
+            image.decoding = "async";
+            image.crossOrigin = "anonymous";
+            image.onload = () => {
+                try {
+                    const canvas = document.createElement("canvas");
+                    const size = 320;
+                    canvas.width = size;
+                    canvas.height = size;
+                    const context = canvas.getContext("2d");
+                    if (!context) return resolve("");
+                    context.clearRect(0, 0, size, size);
+                    context.drawImage(image, 0, 0, size, size);
+                    resolve(canvas.toDataURL("image/png"));
+                } catch (_error) {
+                    resolve("");
+                }
+            };
+            image.onerror = () => resolve("");
+            image.src = new URL("assets/hrtechify-logo.png", window.location.href).href;
+        });
+        return logoPromise;
+    }
+
+    function drawClosingPage(doc, colours, logoDataUrl, payload, model) {
         doc.addPage();
         paintPage(doc, colours);
+        if (logoDataUrl) {
+            try {
+                doc.addImage(logoDataUrl, "PNG", 88, 80, 34, 34, undefined, "FAST");
+            } catch (_error) {}
+        }
         doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        colour(doc, "setTextColor", colours.accent);
+        doc.text("HRTECHIFY · GROWWITHHR", 105, 128, { align: "center" });
         doc.setFontSize(22);
         colour(doc, "setTextColor", colours.head);
-        doc.text("End of Report", 105, 166, { align: "center" });
+        doc.text("End of Report", 105, 154, { align: "center" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        colour(doc, "setTextColor", colours.muted);
+        const data = source(payload, model);
+        doc.text(clean(data.companyName, "Your Organisation"), 105, 168, { align: "center", maxWidth: 160 });
+        doc.text("Revisit this advisory when workforce, locations or the operating model materially change.", 105, 184, { align: "center", maxWidth: 155 });
         colour(doc, "setDrawColor", colours.accent);
-        doc.line(67, 153, 90, 153);
-        doc.line(120, 153, 143, 153);
+        doc.line(67, 139, 90, 139);
+        doc.line(120, 139, 143, 139);
     }
 
-    function appendRequestedSections(doc, colours, rows, payload, model) {
-        renderUnderstanding(doc, colours, rows);
+    function appendRequestedSections(doc, colours, rows, payload, model, actionIds, logoDataUrl) {
+        renderUnderstanding(doc, colours, rows, actionIds);
         renderEvidence(doc, colours, rows, payload, model);
-        renderPriority(doc, colours, rows);
+        renderComplianceReview(doc, colours, model);
+        renderStrategic(doc, colours, model);
+        renderPriority(doc, colours, rows, actionIds);
         renderUpcoming(doc, colours, rows);
-        renderLawUnderstanding(doc, colours, rows);
+        renderRoadmap(doc, colours, rows, model, actionIds);
+        renderLawUnderstanding(doc, colours, rows, actionIds);
         renderLawIndex(doc, colours, rows);
-        drawClosingPage(doc, colours);
+        drawClosingPage(doc, colours, logoDataUrl, payload, model);
     }
 
     function reorderPageReferences(doc, desiredPages) {
@@ -448,29 +870,29 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(8.2);
         colour(doc, "setTextColor", colours.muted);
-        doc.text("Light and dark reports use the same section order and one continuous page sequence.", 16, 49, { maxWidth: 178 });
+        doc.text("Read the founder brief first: present position → meaning → action → future triggers. Use the annexure for detailed legal reference.", 16, 49, { maxWidth: 178 });
 
-        let y = 61;
+        let y = 63;
         TOC_ITEMS.forEach(([label, key], index) => {
             if (key === "group") {
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(7.5);
                 colour(doc, "setTextColor", colours.accent);
                 doc.text(label, 20, y + 1);
-                y += 10;
+                y += 9;
                 return;
             }
             const page = findSectionPage(doc, key);
-            if (!page) return;
+            if (!page || y > 267) return;
             colour(doc, "setFillColor", index % 2 ? colours.panel : colours.alt);
             doc.roundedRect(16, y - 6, 178, 10.5, 1.5, 1.5, "F");
             doc.setFont("helvetica", "bold");
             doc.setFontSize(7.8);
             colour(doc, "setTextColor", colours.text);
-            doc.text(label, key === "law" || key === "index" || key === "important" ? 27 : 21, y + 0.5);
+            doc.text(label, ["law", "index", "important"].includes(key) ? 27 : 21, y + 0.5);
             colour(doc, "setTextColor", colours.accent);
             doc.text(String(Math.max(1, page - 2)), 188, y + 0.5, { align: "right" });
-            y += 12;
+            y += 11.5;
         });
     }
 
@@ -479,7 +901,7 @@
         for (let page = 3; page < doc.getNumberOfPages(); page += 1) {
             doc.setPage(page);
             colour(doc, "setFillColor", colours.page);
-            doc.rect(162, 278, 34, 10, "F");
+            doc.rect(158, 278, 38, 10, "F");
             doc.setFont("helvetica", "normal");
             doc.setFontSize(7.5);
             colour(doc, "setTextColor", colours.muted);
@@ -487,11 +909,23 @@
         }
     }
 
-    function rebuildVariant(doc, themeName, rows, payload, model) {
+    function rebuildVariant(doc, themeName, rows, payload, model, logoDataUrl) {
         if (!doc || !Array.isArray(rows)) return;
         const colours = palette(themeName);
-        deleteSectionBlocks(doc, ["understanding", "evidence", "priority", "upcoming", "law", "index", "end"]);
-        appendRequestedSections(doc, colours, rows, payload, model);
+        deleteSectionBlocks(doc, [
+            "understanding",
+            "evidence",
+            "compliance",
+            "strategic",
+            "priority",
+            "upcoming",
+            "roadmap",
+            "law",
+            "index",
+            "end"
+        ]);
+        const actionIds = assignActionIds(rows);
+        appendRequestedSections(doc, colours, rows, payload, model, actionIds, logoDataUrl);
         reorderSections(doc);
         redrawContents(doc, colours);
         redrawPageNumbers(doc, colours);
@@ -523,10 +957,11 @@
             const rows = typeof service.buildReportLawTransparency === "function"
                 ? service.buildReportLawTransparency(payload, model)
                 : [];
+            const logoDataUrl = await loadLogoDataUrl();
             const variants = Array.isArray(result?.pdfs) ? result.pdfs : [result];
             variants.forEach((variant) => {
                 if (!variant?.document) return;
-                rebuildVariant(variant.document, variant.theme || payload.theme || result.theme, rows, payload, model);
+                rebuildVariant(variant.document, variant.theme || payload.theme || result.theme, rows, payload, model, logoDataUrl);
                 serialiseVariant(variant);
             });
             if (Array.isArray(result?.pdfs)) {
@@ -538,7 +973,12 @@
             return Object.assign(result, { reportSequenceVersion: VERSION });
         }
 
-        const enhanced = Object.freeze({ ...service, [INSTALL_FLAG]: true, reportSequenceVersion: VERSION, buildAdvisoryPdf });
+        const enhanced = Object.freeze({
+            ...service,
+            [INSTALL_FLAG]: true,
+            reportSequenceVersion: VERSION,
+            buildAdvisoryPdf
+        });
         window.GrowWithHRPDF = enhanced;
         window.GrowWithHRPDFPolishReady = Promise.resolve(enhanced);
         return true;
@@ -638,9 +1078,12 @@
         version: VERSION,
         reportOrder: REPORT_ORDER,
         tocItems: TOC_ITEMS,
+        fieldQuestions: FIELD_QUESTIONS,
         resolveRemoteBand,
         reorderPageReferences,
         installReportSequence,
-        syncWorkingModel
+        syncWorkingModel,
+        cleanRecommendation,
+        assignActionIds
     });
 })();
