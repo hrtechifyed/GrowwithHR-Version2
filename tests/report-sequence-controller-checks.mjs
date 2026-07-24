@@ -12,13 +12,15 @@ const sandbox = {
         executiveAssessment: null,
         addEventListener() {},
         setInterval() { return 1; },
-        clearInterval() {}
+        clearInterval() {},
+        location: { href: "https://example.com/analyze-company.html" }
     },
     document: {
         addEventListener() {},
         getElementById() { return null; },
         querySelector() { return null; },
-        querySelectorAll() { return []; }
+        querySelectorAll() { return []; },
+        createElement() { return null; }
     },
     MutationObserver: class { observe() {} },
     queueMicrotask
@@ -28,6 +30,7 @@ vm.runInContext(source, sandbox);
 
 const api = sandbox.window.GrowWithHRReportSequenceController;
 assert(api);
+assert.equal(api.version, "0.23.0-founder-first-report");
 assert.deepEqual(Array.from(api.reportOrder), [
     "snapshot",
     "summary",
@@ -69,6 +72,23 @@ assert.equal(api.resolveRemoteBand("Office Based"), "0");
 assert.equal(api.resolveRemoteBand("Full Onsite"), "0");
 assert.equal(api.resolveRemoteBand("Hybrid"), "");
 
+assert.equal(api.cleanRecommendation("Selected by you - Manager capability"), "Manager capability");
+assert.equal(api.cleanRecommendation("Company DNA suggestion: Policies and compliance"), "Policies and compliance");
+assert.match(api.fieldQuestions.esiWageEligibility, /ESI wage-eligibility/i);
+assert.match(api.fieldQuestions.workerCategories, /types of people/i);
+
+const rows = [
+    { id: "a", status: "Applicable", priority: "HIGH", shortTitle: "Act A" },
+    { id: "b", status: "Needs information", priority: "REVIEW", shortTitle: "Act B" },
+    { id: "c", status: "Review required", priority: "MEDIUM", shortTitle: "Act C" },
+    { id: "d", status: "Not currently triggered", priority: "LOW", shortTitle: "Act D" }
+];
+const actionIds = api.assignActionIds(rows);
+assert.equal(actionIds.get("a"), "A1");
+assert.equal(actionIds.get("b"), "A2");
+assert.equal(actionIds.get("c"), "A3");
+assert.equal(actionIds.has("d"), false);
+
 const a = { id: "a" };
 const b = { id: "b" };
 const c = { id: "c" };
@@ -83,6 +103,26 @@ assert(api.reorderPageReferences(doc, [null, c, a, b]));
 assert.deepEqual(doc.internal.pages.slice(1).map((page) => page.id), ["c", "a", "b"]);
 
 [
+    "STATUS_EXPLANATIONS",
+    "PRESENT · UNDERSTAND",
+    "FUTURE · WATCH THE TRIGGERS",
+    "ACT · SEQUENCE THE WORK",
+    "R1 · Assign an owner",
+    "R2 · Retain evidence",
+    "R3 · Review on a cadence",
+    "R4 · Escalate exceptions",
+    "R5 · Reassess after change",
+    "Required inputs confirmed",
+    "Still needed:",
+    "lawIndexTable",
+    "LAW & STATUS",
+    "GENERAL TRIGGER",
+    "YOUR CURRENT STATE",
+    "NEXT STEP",
+    "Detailed reference: Law-by-Law Understanding",
+    "Where to answer: Story 3 — Your people",
+    "doc.addImage",
+    "HRTECHIFY · GROWWITHHR",
     "input.disabled = locked",
     "selected.checked = true",
     "setAnswer(application, \"remoteBand\", target)",
@@ -90,7 +130,9 @@ assert.deepEqual(doc.internal.pages.slice(1).map((page) => page.id), ["c", "a", 
     "Array.isArray(result?.pdfs)",
     "deleteSectionBlocks(doc",
     "reorderSections(doc)",
-    "Light and dark reports use the same section order"
-].forEach((marker) => assert(source.includes(marker), `missing sequence or lock marker: ${marker}`));
+    "palette(themeName)"
+].forEach((marker) => assert(source.includes(marker), `missing sequence marker: ${marker}`));
+assert(!source.includes("sourceLabel:"), "the report must not render selected/suggested source labels");
+assert(!source.includes("Selected by you - ${"), "roadmap must not prefix actions with selected-by-you labels");
 
-console.log("Report sequence and working-model lock checks passed.");
+console.log("Founder-first report sequence and working-model lock checks passed.");
