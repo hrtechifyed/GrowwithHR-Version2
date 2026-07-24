@@ -2,8 +2,12 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.20.0-industry-adaptive";
+    const VERSION = "0.21.0-industry-adaptive-runtime";
     const INSTALL_FLAG = "__industryAdaptiveAssessmentInstalled";
+
+    import("./report-runtime-corrections.js").catch((error) => {
+        console.error("GrowWithHR report runtime corrections could not load.", error);
+    });
 
     const PROFILE_RULES = Object.freeze({
         manufacturing: {
@@ -53,12 +57,21 @@
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 
+    function applicationAnswers(application) {
+        return application?.answers || application?.stateModel?.answers || application?.state?.answers || {};
+    }
+
+    function applicationMoment(application) {
+        return Number(application?.currentMoment ?? application?.stateModel?.currentMoment ?? application?.state?.currentMoment);
+    }
+
     function resolveIndustry(application) {
-        const answers = application?.answers || {};
+        const answers = applicationAnswers(application);
         return clean(
             answers.industryRuleProfile ||
             answers.industryCategory ||
             answers.industry ||
+            answers.customIndustry ||
             document.getElementById("industry")?.value ||
             document.getElementById("customIndustry")?.value
         );
@@ -99,23 +112,19 @@
         if (!(target instanceof HTMLInputElement) || !target.closest("[data-industry-adaptive]")) return;
         const name = target.name;
         if (!name) return;
-        let value;
-        if (target.type === "checkbox") {
-            value = Array.from(document.querySelectorAll(`[data-industry-adaptive] input[name="${CSS.escape(name)}"]:checked`)).map((input) => input.value);
-        } else {
-            value = target.value;
-        }
-        application.answers = application.answers || {};
-        application.answers[name] = value;
+        const answers = applicationAnswers(application);
+        answers[name] = target.type === "checkbox"
+            ? Array.from(document.querySelectorAll(`[data-industry-adaptive] input[name="${CSS.escape(name)}"]:checked`)).map((input) => input.value)
+            : target.value;
         application.persist?.();
         application.saveProgress?.();
+        application.saveNow?.();
     }
 
     function render(application) {
         const container = document.getElementById("storyContainer");
-        if (!container || Number(application?.currentMoment) !== 2) return;
-        const industry = resolveIndustry(application);
-        const profileKey = resolveProfile(industry);
+        if (!container || applicationMoment(application) !== 2) return;
+        const profileKey = resolveProfile(resolveIndustry(application));
         container.querySelector("[data-industry-adaptive]")?.remove();
         if (!profileKey) return;
         const profile = PROFILE_RULES[profileKey];
@@ -128,19 +137,19 @@
                 <h3>${escapeHtml(profile.title)}</h3>
                 <p>${escapeHtml(profile.description)}</p>
             </div>
-            <div class="advisory-field-group">${profile.fields.map((field) => fieldMarkup(field, application.answers || {})).join("")}</div>`;
+            <div class="advisory-field-group">${profile.fields.map((field) => fieldMarkup(field, applicationAnswers(application))).join("")}</div>`;
         container.appendChild(section);
     }
 
     function validate(application) {
-        if (Number(application?.currentMoment) !== 2) return true;
+        if (applicationMoment(application) !== 2) return true;
         const profileKey = resolveProfile(resolveIndustry(application));
         if (!profileKey) return true;
-        const profile = PROFILE_RULES[profileKey];
+        const answers = applicationAnswers(application);
         let valid = true;
-        for (const [name, , type, , required] of profile.fields) {
+        for (const [name, , type, , required] of PROFILE_RULES[profileKey].fields) {
             if (!required) continue;
-            const value = application.answers?.[name];
+            const value = answers[name];
             const missing = type === "multi" ? !Array.isArray(value) || !value.length : clean(value) === "";
             const error = document.getElementById(`${name}Error`);
             if (error) {
@@ -154,33 +163,54 @@
     }
 
     function install(application) {
-        if (!application || application[INSTALL_FLAG]) return;
+        if (!application || application[INSTALL_FLAG]) return false;
         Object.defineProperty(application, INSTALL_FLAG, { value: true });
-        const originalContinue = application.continueFromMoment?.bind(application);
-        if (originalContinue) {
-            application.continueFromMoment = function industryAwareContinue() {
-                this.captureAllStoryInputs?.();
-                if (!validate(this)) return false;
-                return originalContinue();
+
+        const originalRender = application.renderCurrentMoment?.bind(application);
+        if (originalRender) {
+            application.renderCurrentMoment = function industryAwareRender(...args) {
+                const result = originalRender(...args);
+                queueMicrotask(() => render(this));
+                return result;
             };
         }
+
+        const originalContinue = application.continueFromMoment?.bind(application);
+        if (originalContinue) {
+            application.continueFromMoment = function industryAwareContinue(...args) {
+                this.captureAllStoryInputs?.();
+                if (!validate(this)) return false;
+                return originalContinue(...args);
+            };
+        }
+
         document.addEventListener("input", (event) => syncField(application, event.target));
         document.addEventListener("change", (event) => syncField(application, event.target));
         const story = document.getElementById("storyContainer");
-        if (story) {
-            const observer = new MutationObserver(() => queueMicrotask(() => render(application)));
-            observer.observe(story, { childList: true, subtree: false });
-        }
-        render(application);
+        if (story) new MutationObserver(() => queueMicrotask(() => render(application))).observe(story, { childList: true });
+        queueMicrotask(() => render(application));
+        return true;
+    }
+
+    function findApplication() {
+        return window.executiveAssessment || window.GrowWithHRExecutiveAssessment || window.assessmentApp || null;
     }
 
     window.addEventListener("growwithhr:assessment-modules-ready", (event) => install(event.detail?.application));
-    if (window.executiveAssessment) install(window.executiveAssessment);
+    if (!install(findApplication())) {
+        let attempts = 0;
+        const timer = window.setInterval(() => {
+            attempts += 1;
+            if (install(findApplication()) || attempts >= 80) window.clearInterval(timer);
+        }, 100);
+    }
 
     window.GrowWithHRIndustryAdaptiveAssessment = Object.freeze({
         version: VERSION,
         profiles: PROFILE_RULES,
         resolveProfile,
-        validate
+        validate,
+        install,
+        render
     });
 })();
