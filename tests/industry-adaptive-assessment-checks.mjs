@@ -30,7 +30,10 @@ assert(source.includes('form.addEventListener("submit"'));
 assert(source.includes("event.stopImmediatePropagation()"));
 assert(source.includes("unlockNavigation(application)"));
 assert(source.includes("Review the highlighted required information before continuing."));
+assert(source.includes("existing?.dataset.industryAdaptive === profileKey"));
+assert(source.includes("if (!setAnswer(application, name, value)) return"));
 assert(!source.includes("application.continueFromMoment = function industryAwareContinue"));
+assert(!source.includes("new MutationObserver"), "adaptive questions must not observe and rebuild their own container");
 
 const sandbox = {
     console,
@@ -44,11 +47,11 @@ const sandbox = {
     document: {
         body: null,
         getElementById() { return null; },
+        createElement() { return null; },
         addEventListener() {},
         querySelector() { return null; },
         querySelectorAll() { return []; }
     },
-    MutationObserver: class { observe() {} },
     HTMLInputElement: class {},
     CSS: { escape: (value) => value },
     queueMicrotask,
@@ -66,5 +69,37 @@ assert(!api.profiles.software.fields.some(([name]) => name === "usesPower"));
 assert(!api.profiles.software.fields.some(([name]) => name === "workers"));
 assert(api.profiles.manufacturing.fields.some(([name]) => name === "workers"));
 assert(api.profiles.bpo.fields.some(([name]) => name === "nightTransport"));
+
+let currentSection = null;
+let appendCount = 0;
+const container = {
+    querySelector(selector) {
+        return selector === "[data-industry-adaptive]" ? currentSection : null;
+    },
+    appendChild(section) {
+        currentSection = section;
+        appendCount += 1;
+    }
+};
+sandbox.document.getElementById = (id) => id === "storyContainer" ? container : null;
+sandbox.document.createElement = () => {
+    const section = {
+        className: "",
+        dataset: {},
+        innerHTML: "",
+        remove() {
+            if (currentSection === section) currentSection = null;
+        }
+    };
+    return section;
+};
+
+const manufacturingApplication = {
+    currentMoment: 2,
+    answers: { industry: "Manufacturing" }
+};
+assert.equal(api.render(manufacturingApplication), true);
+assert.equal(api.render(manufacturingApplication), true);
+assert.equal(appendCount, 1, "rendering the same workforce profile twice must not rebuild the section");
 
 console.log("Industry-adaptive assessment checks passed.");
