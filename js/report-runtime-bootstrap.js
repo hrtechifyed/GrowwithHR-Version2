@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.24.4-report-runtime-bootstrap";
+    const VERSION = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
@@ -21,59 +21,33 @@
         );
     }
 
-    function ensureDeletePageCapability() {
+    function installTestAdapterCompatibility() {
         const JsPDF = resolveJsPDF();
-        if (!JsPDF?.prototype) return;
-        if (
-            typeof JsPDF.API?.deletePage === "function" ||
-            typeof JsPDF.prototype.deletePage === "function"
-        ) {
-            return;
+        if (!isLightweightAdapter(JsPDF)) return;
+
+        if (typeof JsPDF.prototype.deletePage !== "function") {
+            JsPDF.prototype.deletePage = function deletePageFallback() {
+                if (typeof this.pages === "number") {
+                    this.pages = Math.max(1, this.pages - 1);
+                }
+                return this;
+            };
         }
-        if (!isLightweightAdapter(JsPDF)) return;
 
-        /*
-         * The end-to-end browser test uses a deliberately small PDF adapter.
-         * The acceptance assembler trims pre-existing pages before rebuilding,
-         * so that adapter needs the same page-count behaviour as real jsPDF.
-         */
-        JsPDF.prototype.deletePage = function deletePageFallback() {
-            if (typeof this.pages === "number") {
-                this.pages = Math.max(1, this.pages - 1);
-            }
-            return this;
-        };
-    }
+        if (typeof JsPDF.prototype.getTextWidth !== "function") {
+            JsPDF.prototype.getTextWidth = function getTextWidthFallback(value) {
+                return Math.max(1, String(value ?? "").length * 1.8);
+            };
+        }
 
-    function ensureTextWidthCapability() {
-        const JsPDF = resolveJsPDF();
-        if (!JsPDF?.prototype) return;
-        if (typeof JsPDF.prototype.getTextWidth === "function") return;
-        if (!isLightweightAdapter(JsPDF)) return;
-
-        JsPDF.prototype.getTextWidth = function getTextWidthFallback(value) {
-            const text = String(value ?? "");
-            return Math.max(1, text.length * 1.8);
-        };
-    }
-
-    function ensurePrimitiveCapability() {
-        const JsPDF = resolveJsPDF();
-        if (!isLightweightAdapter(JsPDF)) return;
-        if (typeof JsPDF.prototype[Symbol.toPrimitive] === "function") return;
-
-        /*
-         * The lightweight adapter returns its proxy for unimplemented drawing
-         * methods. A defensive primitive conversion keeps harmless return
-         * values from throwing while the test exercises delivery rather than
-         * PDF typography. Real jsPDF exposes an API object and is never changed.
-         */
-        Object.defineProperty(JsPDF.prototype, Symbol.toPrimitive, {
-            configurable: true,
-            value(hint) {
-                return hint === "string" ? "[GrowWithHR test PDF adapter]" : 0;
-            }
-        });
+        if (typeof JsPDF.prototype[Symbol.toPrimitive] !== "function") {
+            Object.defineProperty(JsPDF.prototype, Symbol.toPrimitive, {
+                configurable: true,
+                value(hint) {
+                    return hint === "string" ? "[GrowWithHR test PDF adapter]" : 0;
+                }
+            });
+        }
     }
 
     async function load() {
@@ -89,9 +63,7 @@
         loading = true;
         try {
             await Promise.resolve(pipeline);
-            ensureDeletePageCapability();
-            ensureTextWidthCapability();
-            ensurePrimitiveCapability();
+            installTestAdapterCompatibility();
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
