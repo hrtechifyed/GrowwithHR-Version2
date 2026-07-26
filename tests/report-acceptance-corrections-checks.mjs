@@ -39,6 +39,8 @@ assert.doesNotMatch(source, /displayed general trigger/i);
 assert.doesNotMatch(source, /governed inputs/i);
 assert.doesNotMatch(source, /Required inputs confirmed/i);
 assert.doesNotMatch(source, /originalBuild/);
+assert.match(bootstrap, /0\.25\.0-report-runtime-bootstrap/);
+assert.match(bootstrap, /installTestAdapterCompatibility/);
 assert.match(bootstrap, /report-acceptance-corrections\.js/);
 
 console.log("Single-tier report acceptance contracts passed.");
