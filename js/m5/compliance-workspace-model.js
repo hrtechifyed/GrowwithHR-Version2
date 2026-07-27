@@ -2,7 +2,7 @@
 (function installComplianceWorkspaceModel(root) {
     "use strict";
 
-    const VERSION = "0.20.0-rc1";
+    const VERSION = "0.20.0-rc2";
     const SCHEMA_VERSION = "1.0.0";
     const STORAGE_KEY = "growwithhr-compliance-workspace-v1";
     const TASK_STATUSES = Object.freeze([
@@ -32,6 +32,47 @@
         return `${prefix}-${Date.now().toString(36)}-${random}`;
     }
 
+    function isObject(value) {
+        return Boolean(value && typeof value === "object" && !Array.isArray(value));
+    }
+
+    function isText(value, allowEmpty = true) {
+        return typeof value === "string" && (allowEmpty || clean(value).length > 0);
+    }
+
+    function isAuditEntry(entry) {
+        return isObject(entry) && isText(entry.id, false) && isText(entry.type, false) &&
+            isText(entry.at, false) && isText(entry.note);
+    }
+
+    function isStatusHistoryEntry(entry) {
+        return isObject(entry) && TASK_STATUSES.includes(entry.status) &&
+            isText(entry.at, false) && isText(entry.note);
+    }
+
+    function isTask(task) {
+        return isObject(task) && isText(task.id, false) && isText(task.title, false) &&
+            isText(task.description) && isText(task.owner, false) &&
+            TASK_STATUSES.includes(task.status) && isText(task.dueDate) &&
+            DUE_DATE_SOURCES.includes(task.dueDateSource) && isText(task.sourceReference) &&
+            isText(task.createdAt, false) && isText(task.updatedAt, false) &&
+            Array.isArray(task.statusHistory) && task.statusHistory.length > 0 &&
+            task.statusHistory.every(isStatusHistoryEntry);
+    }
+
+    function isEvidencePlaceholder(entry) {
+        return isObject(entry) && isText(entry.id, false) && isText(entry.taskId) &&
+            isText(entry.label, false) && isText(entry.description) &&
+            entry.state === "placeholder-only" && isText(entry.localFileName) &&
+            isText(entry.createdAt, false) && isText(entry.updatedAt, false);
+    }
+
+    function isCalendarEntry(entry) {
+        return isObject(entry) && isText(entry.id, false) && isText(entry.taskId) &&
+            isText(entry.title, false) && isText(entry.date, false) &&
+            DUE_DATE_SOURCES.includes(entry.source) && isText(entry.createdAt, false);
+    }
+
     function createWorkspace(options = {}) {
         const createdAt = clean(options.createdAt, nowIso());
         return {
@@ -59,6 +100,7 @@
     }
 
     function touch(workspace, type, note, at = nowIso()) {
+        if (!validateWorkspace(workspace)) throw new Error("Workspace structure is invalid.");
         const next = copy(workspace);
         next.updatedAt = at;
         next.audit.push({ id: identifier("event"), type, at, note: clean(note) });
@@ -120,7 +162,9 @@
     function addCalendarEntry(workspace, input = {}) {
         const title = clean(input.title);
         const date = clean(input.date);
+        const source = clean(input.source, "internal-target");
         if (!title || !date) throw new Error("Calendar title and date are required.");
+        if (!DUE_DATE_SOURCES.includes(source)) throw new Error("Unsupported calendar date source.");
         const at = clean(input.createdAt, nowIso());
         const next = touch(workspace, "calendar-entry-created", title, at);
         next.calendar.push({
@@ -128,21 +172,24 @@
             taskId: clean(input.taskId),
             title,
             date,
-            source: clean(input.source, "internal-target"),
+            source,
             createdAt: at
         });
         return next;
     }
 
     function validateWorkspace(value) {
-        if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-        if (value.schemaVersion !== SCHEMA_VERSION) return false;
-        if (!Array.isArray(value.tasks) || !Array.isArray(value.audit)) return false;
-        if (!Array.isArray(value.evidencePlaceholders) || !Array.isArray(value.calendar)) return false;
-        return value.tasks.every((task) =>
-            clean(task.id) && clean(task.title) && TASK_STATUSES.includes(task.status) &&
-            DUE_DATE_SOURCES.includes(task.dueDateSource)
-        );
+        if (!isObject(value) || value.schemaVersion !== SCHEMA_VERSION) return false;
+        if (!isText(value.workspaceVersion, false) || !isText(value.workspaceId, false) ||
+            !isText(value.organisationName, false) || !isText(value.sourceSnapshotId) ||
+            !isText(value.createdAt, false) || !isText(value.updatedAt, false)) return false;
+        if (!Array.isArray(value.tasks) || !value.tasks.every(isTask)) return false;
+        if (!Array.isArray(value.evidencePlaceholders) ||
+            !value.evidencePlaceholders.every(isEvidencePlaceholder)) return false;
+        if (!Array.isArray(value.calendar) || !value.calendar.every(isCalendarEntry)) return false;
+        if (!Array.isArray(value.audit) || value.audit.length === 0 ||
+            !value.audit.every(isAuditEntry)) return false;
+        return true;
     }
 
     function exportWorkspace(workspace) {
