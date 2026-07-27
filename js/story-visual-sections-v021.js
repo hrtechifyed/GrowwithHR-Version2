@@ -92,7 +92,7 @@
         container.querySelectorAll(".advisory-field-group").forEach((group) => {
             group.classList.add("advisory-field-group--sectioned");
             [...group.children].forEach((child) => {
-                if (!(child instanceof HTMLElement)) return;
+                if (!(child instanceof HTMLElement) || child.hidden) return;
                 if (!child.matches(".advisory-field, .advisory-choice-fieldset, .industry-adaptive-field, [data-field-wrapper]")) return;
                 child.classList.add("advisory-question-card");
                 const choiceCount = child.querySelectorAll('input[type="radio"], input[type="checkbox"]').length;
