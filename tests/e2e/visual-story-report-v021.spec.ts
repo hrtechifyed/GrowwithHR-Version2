@@ -43,7 +43,7 @@ test.describe("v0.21 visual story and report", () => {
 
     test("turns the first story into concise question cards", async ({ page }) => {
         await page.getByTestId("begin-executive-assessment").click();
-        await expect(page.locator("#stepTitle")).toHaveText("Tell us the essentials.");
+        await expect(page.locator("#stepTitle .advisory-visible-step-title")).toHaveText("Tell us the essentials.");
         await expect(page.locator("#stepDescription")).toHaveText("Three quick answers about the organisation.");
         await expect(page.locator("#storyQuickGuide")).toBeVisible();
         await expect(page.locator("#storyContainer .advisory-question-card")).toHaveCount(3);
