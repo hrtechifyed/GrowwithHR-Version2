@@ -1,6 +1,6 @@
 {
   "name": "growitwithhr",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "GrowItWithHR Compliance Monitoring Engine",
   "main": "server.js",
   "engines": {
@@ -35,6 +35,7 @@
     "test:m1": "node tests/m1-v3-contract-checks.js",
     "test:m2": "node tests/m2-traceability-contract-checks.mjs && node tests/m2-recommendation-evaluator-checks.mjs && node tests/m2-traceability-adapter-checks.mjs",
     "test:m3": "node tests/m3-compliance-story-contract-checks.mjs",
+    "test:m5": "node tests/m5-compliance-workspace-contract-checks.mjs",
     "test:static": "node tests/requirements-static-check.js",
     "test:report-scenarios": "node tests/report-dynamic-scenarios.js",
     "test:golden": "node tests/golden-scenario-checks.js",
@@ -43,9 +44,9 @@
     "test:footprint-priorities": "node tests/operating-footprint-priority-checks.mjs",
     "test:presentation": "node tests/presentation-polish-checks.mjs",
     "test:report-experience": "node tests/report-experience-v019-checks.mjs",
-    "test": "npm run test:baseline && npm run test:m1 && npm run test:m2 && npm run test:m3 && npm run test:client-readiness && npm run test:server-cors && npm run test:email-signature && npm run test:footprint-priorities && npm run test:presentation && npm run test:report-experience && npm run test:static && npm run test:frontend && npm run test:journeys && npm run test:input-combinations && npm run test:report-scenarios && npm run test:golden && npm run test:ux",
+    "test": "npm run test:baseline && npm run test:m1 && npm run test:m2 && npm run test:m3 && npm run test:m5 && npm run test:client-readiness && npm run test:server-cors && npm run test:email-signature && npm run test:footprint-priorities && npm run test:presentation && npm run test:report-experience && npm run test:static && npm run test:frontend && npm run test:journeys && npm run test:input-combinations && npm run test:report-scenarios && npm run test:golden && npm run test:ux",
     "test:release": "npm run version:check && npm run validate:compliance && npm test",
-    "test:release:e2e": "playwright test tests/e2e/executive-assessment-modules.spec.ts tests/e2e/assessment-first-scene.spec.ts tests/e2e/assessment-complete-delivery.spec.ts tests/e2e/analyze-company-current.spec.ts tests/e2e/analyze-company-v3.spec.ts tests/e2e/analyze-company-v3-traceability.spec.ts tests/e2e/analyze-company-v3-compliance-story.spec.ts tests/e2e/homepage-client-readiness.spec.ts --project=chromium",
+    "test:release:e2e": "playwright test tests/e2e/executive-assessment-modules.spec.ts tests/e2e/assessment-first-scene.spec.ts tests/e2e/assessment-complete-delivery.spec.ts tests/e2e/analyze-company-current.spec.ts tests/e2e/analyze-company-v3.spec.ts tests/e2e/analyze-company-v3-traceability.spec.ts tests/e2e/analyze-company-v3-compliance-story.spec.ts tests/e2e/homepage-client-readiness.spec.ts tests/e2e/m5-compliance-workspace.spec.ts --project=chromium",
     "test:e2e": "playwright test",
     "test:advisory": "playwright test tests/e2e/analyze-company-current.spec.ts tests/e2e/assessment-complete-delivery.spec.ts",
     "version:sync": "node scripts/sync-version.mjs",
