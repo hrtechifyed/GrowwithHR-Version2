@@ -8,7 +8,7 @@
 const APP_CONFIG = Object.freeze({
     productName: "GrowWithHR",
     companyName: "HRTechify",
-    version: "0.18.0",
+    version: "0.19.0",
     releaseName: "Private Beta",
 
     website:
@@ -38,27 +38,21 @@ const APP_CONFIG = Object.freeze({
                 new URLSearchParams(
                     runtime?.location?.search || ""
                 );
-
             const queryValue =
                 query.get(name);
-
             if (queryValue === "1" || queryValue === "true") {
                 return true;
             }
-
             if (queryValue === "0" || queryValue === "false") {
                 return false;
             }
-
             const stored =
                 runtime?.localStorage?.getItem(
                     `${this.featureFlagStoragePrefix}${name}`
                 );
-
             if (stored === "enabled") {
                 return true;
             }
-
             if (stored === "disabled") {
                 return false;
             }
@@ -68,7 +62,6 @@ const APP_CONFIG = Object.freeze({
                 error
             );
         }
-
         return configured;
     },
 
