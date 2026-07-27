@@ -50,6 +50,14 @@
         }
     }
 
+    async function waitFor(predicate, maximum = 200, delay = 25) {
+        for (let index = 0; index < maximum; index += 1) {
+            if (predicate()) return true;
+            await new Promise((resolve) => window.setTimeout(resolve, delay));
+        }
+        return false;
+    }
+
     async function load() {
         if (loading || window.GrowWithHRReportRuntimeBootstrap?.ready) return;
         attempts += 1;
@@ -66,7 +74,19 @@
             installTestAdapterCompatibility();
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
+            const acceptanceReady = await waitFor(() => Boolean(
+                window.GrowWithHRPDF?.acceptanceReportVersion &&
+                window.GrowWithHRPDF?.reportStructureVersion === "single-tier-v1"
+            ));
+            if (!acceptanceReady) throw new Error("The single-tier report assembler did not become ready.");
+
             await import("./report-intelligence-v020-fixes.js");
+            const intelligenceReady = await waitFor(() => Boolean(
+                window.GrowWithHRPDF?.reportIntelligenceFixVersion &&
+                window.GrowWithHRPDF?.reportStructureVersion === "contextual-single-tier-v2"
+            ));
+            if (!intelligenceReady) throw new Error("The contextual report assembler did not become ready.");
+
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
                 ready: true,
