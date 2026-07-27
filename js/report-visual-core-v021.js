@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.21.0-visual-sectioned-report";
+    const VERSION = "0.21.1-visual-sectioned-report";
     const PAGE = Object.freeze({ width: 210, height: 297, left: 16, right: 194, top: 20, bottom: 266 });
     const clean = (value, fallback = "") => String(value ?? "").replace(/\s+/g, " ").trim() || fallback;
     const values = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -61,7 +61,7 @@
         return logoPromise;
     }
 
-    function createWriter(doc, colours) {
+    function createWriter(doc, colours, sectionPages = {}) {
         let y = PAGE.top;
         const split = (value, width = 178) => doc.splitTextToSize(clean(value), width);
         const lineHeight = (size, factor = 1.22) => size * 0.3528 * factor;
@@ -89,21 +89,33 @@
                 y += introLines.length * lineHeight(8.8, 1.28) + 8;
             }
         }
-        function sectionPage(value, intro = "") { if (y > PAGE.top + 2) newPage(); title(value, intro); }
+        function sectionPage(key, value, intro = "") {
+            if (y > PAGE.top + 2) newPage();
+            sectionPages[key] = doc.getNumberOfPages();
+            title(value, intro);
+        }
         function statCard(x, top, width, value, caption, colour) {
+            const height = 42;
+            const valueText = String(value);
+            const captionLines = split(caption, width - 18);
             doc.setFillColor(...colours.surface); doc.setDrawColor(...colours.line);
-            doc.roundedRect(x, top, width, 34, 3, 3, "FD");
-            doc.setFillColor(...colour); doc.roundedRect(x, top, 4, 34, 2, 2, "F");
-            doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.setTextColor(...colours.heading);
-            doc.text(String(value), x + 10, top + 15);
-            doc.setFontSize(7.5); doc.setTextColor(...colours.muted);
-            doc.text(split(caption, width - 18), x + 10, top + 24, { lineHeightFactor: 1.15, maxWidth: width - 18 });
+            doc.roundedRect(x, top, width, height, 3, 3, "FD");
+            doc.setFillColor(...colour); doc.roundedRect(x, top, 4, height, 2, 2, "F");
+            doc.setFont("helvetica", "bold"); doc.setFontSize(valueText.length > 4 ? 12.5 : 18); doc.setTextColor(...colours.heading);
+            doc.text(valueText, x + 10, top + 15);
+            doc.setFontSize(7.3); doc.setTextColor(...colours.muted);
+            doc.text(captionLines, x + 10, top + 25, { lineHeightFactor: 1.15, maxWidth: width - 18 });
         }
         function infoCard(cardTitle, rows, options = {}) {
             const width = Number(options.width || 178);
             const titleLines = split(cardTitle, width - 20);
-            const prepared = rows.filter((row) => clean(row?.[1])).map(([rowLabel, value]) => ({ label: clean(rowLabel), lines: split(compact(value, options.maxChars || 190), width - 28) }));
-            const height = 16 + titleLines.length * lineHeight(10, 1.16) + prepared.reduce((sum, row) => sum + 6 + row.lines.length * lineHeight(8, 1.24), 0) + 8;
+            const prepared = rows
+                .filter((row) => clean(row?.[1]))
+                .map(([rowLabel, value]) => ({ label: clean(rowLabel), lines: split(compact(value, options.maxChars || 190), width - 28) }));
+            const linkUrl = clean(options.link?.url);
+            const linkLabel = clean(options.link?.label, "Open official source");
+            const linkHeight = linkUrl ? 17 : 0;
+            const height = 16 + titleLines.length * lineHeight(10, 1.16) + prepared.reduce((sum, row) => sum + 6 + row.lines.length * lineHeight(8, 1.24), 0) + linkHeight + 8;
             ensure(height + 5);
             const top = y;
             doc.setFillColor(...(options.fill || colours.surface)); doc.setDrawColor(...colours.line);
@@ -119,6 +131,29 @@
                 doc.text(row.lines, PAGE.left + 10, cursor, { lineHeightFactor: 1.24, maxWidth: width - 28 });
                 cursor += row.lines.length * lineHeight(8, 1.24) + 5;
             });
+            if (linkUrl) {
+                let measuredWidth = NaN;
+                try {
+                    const candidate = typeof doc.getTextWidth === "function"
+                        ? doc.getTextWidth(linkLabel)
+                        : undefined;
+                    if (typeof candidate === "number" && Number.isFinite(candidate)) {
+                        measuredWidth = candidate;
+                    }
+                } catch (_error) {}
+                const labelWidth = Number.isFinite(measuredWidth)
+                    ? measuredWidth
+                    : linkLabel.length * 2;
+                const chipWidth = Math.min(width - 20, Math.max(48, 14 + labelWidth));
+                doc.setFillColor(...colours.surfaceAlt); doc.setDrawColor(...colours.blue);
+                doc.roundedRect(PAGE.left + 10, cursor, chipWidth, 10, 2, 2, "FD");
+                doc.setFont("helvetica", "bold"); doc.setFontSize(7.2); doc.setTextColor(...colours.blue);
+                if (typeof doc.textWithLink === "function") doc.textWithLink(linkLabel, PAGE.left + 15, cursor + 6.5, { url: linkUrl });
+                else {
+                    doc.text(linkLabel, PAGE.left + 15, cursor + 6.5);
+                    if (typeof doc.link === "function") doc.link(PAGE.left + 10, cursor, chipWidth, 10, { url: linkUrl });
+                }
+            }
             y = top + height + 5;
         }
         function checkItem(value, colour = colours.red) {
@@ -147,16 +182,6 @@
             doc.text(lines, PAGE.left + 25, top + 20, { lineHeightFactor: 1.22, maxWidth: 152 });
             y += height + 4;
         }
-        function linkChip(labelText, url, colour = colours.blue) {
-            if (!clean(url)) return;
-            ensure(14);
-            doc.setFillColor(...colours.surfaceAlt); doc.setDrawColor(...colour);
-            doc.roundedRect(PAGE.left, y, 58, 10, 2, 2, "FD");
-            doc.setFont("helvetica", "bold"); doc.setFontSize(7.2); doc.setTextColor(...colour);
-            if (typeof doc.textWithLink === "function") doc.textWithLink(clean(labelText, "Official source"), PAGE.left + 5, y + 6.5, { url });
-            else { doc.text(clean(labelText, "Official source"), PAGE.left + 5, y + 6.5); if (typeof doc.link === "function") doc.link(PAGE.left, y, 58, 10, { url }); }
-            y += 14;
-        }
         function compactTable(headers, rows, widths) {
             const size = 7;
             const drawRow = (cells, header = false) => {
@@ -176,7 +201,7 @@
             drawRow(headers, true); rows.forEach((row) => drawRow(row)); y += 4;
         }
         paint();
-        return { document: doc, colours, newPage, ensure, label, title, sectionPage, statCard, infoCard, checkItem, timelineCard, linkChip, compactTable, getY: () => y, setY: (value) => { y = value; } };
+        return { document: doc, colours, sectionPages, newPage, ensure, label, title, sectionPage, statCard, infoCard, checkItem, timelineCard, compactTable, getY: () => y, setY: (value) => { y = value; } };
     }
 
     const actionRows = (rows) => rows.filter((row) => ["Applicable", "Review required", "Needs information"].includes(row.status));
@@ -200,7 +225,7 @@
         const dataUri = doc.output("datauristring");
         const buffer = doc.output("arraybuffer");
         const company = clean(data.companyName, "Organisation").replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "Organisation";
-        return { document: doc, theme, filename: `GrowWithHR-Action-Brief-${company}-${theme === "dark" ? "Dark" : "Light"}.pdf`, dataUri, base64: dataUri.includes(",") ? dataUri.split(",")[1] : dataUri, sizeBytes: buffer.byteLength, pageCount: doc.getNumberOfPages(), reportLayoutVersion: VERSION, reportStructureVersion: "visual-sectioned-v3" };
+        return { document: doc, theme, filename: `GrowWithHR-Action-Brief-${company}-${theme === "dark" ? "Dark" : "Light"}.pdf`, dataUri, base64: dataUri.includes(",") ? dataUri.split(",")[1] : dataUri, sizeBytes: buffer.byteLength, pageCount: doc.getNumberOfPages(), reportLayoutVersion: VERSION, reportStructureVersion: "visual-sectioned-v4" };
     }
 
     window.GrowWithHRVisualReportCore = Object.freeze({ VERSION, PAGE, clean, values, unique, mergeSource, compact, palette, statusColour, selectedThemes, loadLogo, createWriter, actionRows, actionId, addFooter, serialise });

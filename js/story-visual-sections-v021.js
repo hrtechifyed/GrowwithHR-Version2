@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.21.0-story-visual-sections";
+    const VERSION = "0.21.1-story-visual-sections";
     const INSTALL_FLAG = "__growwithhrStoryVisualSectionsInstalled";
     const COPY = Object.freeze({
         "business-basics": {
@@ -49,6 +49,24 @@
         }
     });
 
+    const CHAPTER_INSIGHTS = Object.freeze({
+        workforce: {
+            complete: "Business context captured",
+            learned: "You helped us understand what the organisation does, its industry, legal structure and current stage.",
+            next: "Now we can ask only the workforce questions that affect the People compliance checks."
+        },
+        "operating-footprint": {
+            complete: "People context captured",
+            learned: "You helped us understand who works with the organisation and how the team usually works.",
+            next: "Now we can assess how location, state and operating reach change the advice."
+        },
+        "growth-direction": {
+            complete: "Operating context captured",
+            learned: "You helped us understand where work happens and how distributed the organisation is.",
+            next: "Now we can prioritise the foundations needed for the next stage of growth."
+        }
+    });
+
     function ensureStylesheet() {
         if (document.querySelector('link[data-growwithhr-story-visual-sections]')) return;
         const link = document.createElement("link");
@@ -62,12 +80,44 @@
         return window.executiveAssessment || window.GrowWithHRExecutiveAssessment || window.assessmentApp || null;
     }
 
+    function currentMoment(app) {
+        return window.GrowWithHRModules?.AssessmentDefinition?.MOMENTS?.[
+            Number(app?.currentMoment ?? app?.stateModel?.currentMoment ?? 0)
+        ];
+    }
+
     function visibleQuestionCards(container) {
         return [...container.querySelectorAll(".advisory-question-card")]
             .filter((card) => !card.hidden && card.getClientRects().length > 0);
     }
 
-    function addQuickGuide(app, container) {
+    function addChapterInsight(app) {
+        const description = app?.elements?.stepDescription || document.getElementById("stepDescription");
+        if (!description) return null;
+        const insight = CHAPTER_INSIGHTS[currentMoment(app)?.id];
+        let banner = document.getElementById("chapterInsight");
+        if (!insight) {
+            banner?.remove();
+            return null;
+        }
+        if (!banner) {
+            banner = document.createElement("section");
+            banner.id = "chapterInsight";
+            banner.className = "advisory-chapter-insight";
+            banner.setAttribute("aria-label", "What your previous answers clarified");
+        }
+        banner.innerHTML = `
+            <span class="advisory-chapter-insight__check" aria-hidden="true">✓</span>
+            <div>
+                <strong>${insight.complete}</strong>
+                <p>${insight.learned}</p>
+                <small>${insight.next}</small>
+            </div>`;
+        description.insertAdjacentElement("afterend", banner);
+        return banner;
+    }
+
+    function addQuickGuide(app, container, chapterInsight = null) {
         const description = app?.elements?.stepDescription || document.getElementById("stepDescription");
         if (!description) return;
         let guide = document.getElementById("storyQuickGuide");
@@ -76,8 +126,9 @@
             guide.id = "storyQuickGuide";
             guide.className = "advisory-story-quick-guide";
             guide.setAttribute("aria-live", "polite");
-            description.insertAdjacentElement("afterend", guide);
         }
+        const anchor = chapterInsight || description;
+        anchor.insertAdjacentElement("afterend", guide);
         const count = visibleQuestionCards(container).length;
         const content = [
             `<span><strong>${count || 1}</strong> ${count === 1 ? "question" : "questions"}</span>`,
@@ -114,19 +165,37 @@
                 if (!child.matches(".advisory-field, .advisory-choice-fieldset, .industry-adaptive-field, [data-field-wrapper]")) return;
                 child.classList.add("advisory-question-card");
                 const choiceCount = child.querySelectorAll('input[type="radio"], input[type="checkbox"]').length;
-                if (child.querySelector("textarea") || child.matches("fieldset") || choiceCount > 4 || child.classList.contains("advisory-field--nested")) {
-                    child.classList.add("advisory-question-card--wide");
-                }
+                const shouldSpan = Boolean(
+                    child.querySelector("textarea") ||
+                    choiceCount > 4 ||
+                    child.classList.contains("advisory-field--nested")
+                );
+                child.classList.toggle("advisory-question-card--wide", shouldSpan);
                 const help = findHelperCopy(child);
                 if (help) createHelpDisclosure(help, child);
             });
         });
     }
 
+    function compactAdaptiveHeadings(container) {
+        const headings = [...container.querySelectorAll(".advisory-industry-adaptive__heading")];
+        headings.forEach((heading, index) => {
+            const eyebrow = heading.querySelector(".advisory-field-help");
+            const title = heading.querySelector("h3");
+            const body = heading.querySelector("p:not(.advisory-field-help)");
+            if (index === 0) {
+                if (eyebrow) eyebrow.textContent = "WORKFORCE DETAILS";
+                if (title) title.textContent = "Who works with you?";
+                if (body) body.textContent = "Optional answers improve the legal checks. No individual salaries are requested; choose Not sure when needed.";
+                return;
+            }
+            if (eyebrow) eyebrow.textContent = "INDUSTRY CONTEXT";
+            if (body) body.textContent = "These questions appear because your industry can change which People compliance duties need attention.";
+        });
+    }
+
     function compactCopy(app) {
-        const moment = window.GrowWithHRModules?.AssessmentDefinition?.MOMENTS?.[
-            Number(app?.currentMoment ?? app?.stateModel?.currentMoment ?? 0)
-        ];
+        const moment = currentMoment(app);
         const copy = COPY[moment?.id];
         if (!copy) return;
         const eyebrow = app?.elements?.storyEyebrow || document.getElementById("storyEyebrow");
@@ -146,8 +215,10 @@
         if (!container) return false;
         document.body.classList.add("advisory-compact-story");
         compactCopy(app);
+        compactAdaptiveHeadings(container);
         decorateCards(container);
-        addQuickGuide(app, container);
+        const chapterInsight = addChapterInsight(app);
+        addQuickGuide(app, container, chapterInsight);
         container.dataset.visualSectionVersion = VERSION;
         return true;
     }
@@ -187,6 +258,7 @@
         ensureStylesheet,
         install,
         decorate,
-        copy: COPY
+        copy: COPY,
+        chapterInsights: CHAPTER_INSIGHTS
     });
 })();

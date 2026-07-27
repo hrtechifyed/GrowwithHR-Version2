@@ -14,11 +14,55 @@
     line-height: 1.45;
 }
 
+.analyze-company-page .advisory-chapter-insight {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    max-width: 760px;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(69, 212, 131, 0.24);
+    border-radius: 16px;
+    background: rgba(69, 212, 131, 0.07);
+}
+
+.analyze-company-page .advisory-chapter-insight__check {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: #07130d;
+    background: var(--advisory-success);
+    font-size: 0.88rem;
+    font-weight: 900;
+}
+
+.analyze-company-page .advisory-chapter-insight strong {
+    display: block;
+    color: var(--advisory-text);
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+
+.analyze-company-page .advisory-chapter-insight p,
+.analyze-company-page .advisory-chapter-insight small {
+    display: block;
+    margin: 4px 0 0 !important;
+    color: var(--advisory-text-secondary);
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+}
+
+.analyze-company-page .advisory-chapter-insight small {
+    color: var(--advisory-text-muted);
+}
+
 .analyze-company-page .advisory-story-quick-guide {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 16px;
+    margin-top: 14px;
 }
 
 .analyze-company-page .advisory-story-quick-guide span {
@@ -40,25 +84,48 @@
 }
 
 .analyze-company-page.advisory-compact-story #storyContainer {
+    width: 100%;
     margin-top: 22px;
 }
 
 .analyze-company-page.advisory-compact-story .advisory-field-group--sectioned {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    align-items: start;
+    gap: 16px;
+    align-items: stretch;
+    margin: 0;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-field-group--sectioned + .advisory-field-group--sectioned {
+    margin-top: 16px;
 }
 
 .analyze-company-page.advisory-compact-story .advisory-question-card {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
+    min-height: 0;
     margin: 0;
     padding: 18px;
     border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 18px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.047), rgba(255, 255, 255, 0.025));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.047), rgba(255, 255, 255, 0.025));
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+}
+
+.analyze-company-page.advisory-compact-story fieldset.advisory-question-card {
+    min-inline-size: 0;
+}
+
+.analyze-company-page.advisory-compact-story fieldset.advisory-question-card > legend {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 12px;
+}
+
+.analyze-company-page.advisory-compact-story fieldset.advisory-question-card > legend + * {
+    clear: both;
 }
 
 .analyze-company-page.advisory-compact-story .advisory-question-card--wide,
@@ -69,17 +136,38 @@
 .analyze-company-page.advisory-compact-story .advisory-question-card > label,
 .analyze-company-page.advisory-compact-story .advisory-question-card > legend {
     display: block;
-    margin-bottom: 10px;
     color: var(--advisory-text);
     font-size: 0.96rem;
     font-weight: 780;
     line-height: 1.35;
 }
 
+.analyze-company-page.advisory-compact-story .advisory-question-card > label {
+    margin-bottom: 10px;
+}
+
 .analyze-company-page.advisory-compact-story .advisory-question-card input,
 .analyze-company-page.advisory-compact-story .advisory-question-card select,
 .analyze-company-page.advisory-compact-story .advisory-question-card textarea {
+    width: 100%;
     margin-top: 0;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-question-card textarea {
+    min-height: 118px;
+    max-height: 240px;
+    resize: vertical;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-question-card .advisory-choice-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-question-card .advisory-choice-pill {
+    margin: 0;
 }
 
 .analyze-company-page .advisory-field-help--compact-source {
@@ -95,7 +183,8 @@
 }
 
 .analyze-company-page .advisory-help-disclosure {
-    margin-top: 10px;
+    margin-top: auto;
+    padding-top: 12px;
     color: var(--advisory-text-muted);
     font-size: 0.78rem;
 }
@@ -134,9 +223,57 @@
     line-height: 1.45 !important;
 }
 
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive {
+    display: grid;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive__heading {
+    margin: 8px 0 0;
+    padding: 15px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--advisory-gold);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive__heading:first-child {
+    margin-top: 0;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive__heading .advisory-field-help {
+    margin: 0 0 5px !important;
+    color: var(--advisory-text-muted);
+    font-size: 0.68rem !important;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    line-height: 1.2 !important;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive__heading h3 {
+    margin: 0;
+    color: var(--advisory-text);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.25;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive__heading > p:not(.advisory-field-help) {
+    max-width: 760px;
+    margin: 7px 0 0 !important;
+    color: var(--advisory-text-secondary);
+    font-size: 0.84rem !important;
+    line-height: 1.5 !important;
+}
+
+.analyze-company-page.advisory-compact-story .advisory-industry-adaptive > .advisory-field-group {
+    margin: 0;
+}
+
 @media (max-width: 820px) {
     .analyze-company-page.advisory-compact-story .advisory-field-group--sectioned {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .analyze-company-page.advisory-compact-story .advisory-question-card--wide,
@@ -147,5 +284,19 @@
     .analyze-company-page.advisory-compact-story .advisory-question-card {
         padding: 16px;
         border-radius: 16px;
+    }
+
+    .analyze-company-page .advisory-chapter-insight {
+        grid-template-columns: 24px minmax(0, 1fr);
+        padding: 13px 14px;
+    }
+
+    .analyze-company-page .advisory-chapter-insight__check {
+        width: 24px;
+        height: 24px;
+    }
+
+    .analyze-company-page.advisory-compact-story .advisory-industry-adaptive__heading {
+        padding: 14px 15px;
     }
 }
