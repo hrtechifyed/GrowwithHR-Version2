@@ -1,0 +1,35 @@
+name: M5 Compliance Workspace
+
+on:
+  pull_request:
+    paths:
+      - 'm5-compliance-workspace.html'
+      - 'js/m5/**'
+      - 'tests/m5-compliance-workspace-contract-checks.mjs'
+      - 'docs/releases/v0.20.0-m5-compliance-workspace-beta.md'
+      - '.github/workflows/m5-compliance-workspace.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'm5-compliance-workspace.html'
+      - 'js/m5/**'
+      - 'tests/m5-compliance-workspace-contract-checks.mjs'
+      - 'docs/releases/v0.20.0-m5-compliance-workspace-beta.md'
+
+permissions:
+  contents: read
+
+jobs:
+  contract-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check syntax
+        run: |
+          node --check js/m5/compliance-workspace-model.js
+          node --check js/m5/compliance-workspace-app.js
+      - name: Run M5 workspace contracts
+        run: node tests/m5-compliance-workspace-contract-checks.mjs
