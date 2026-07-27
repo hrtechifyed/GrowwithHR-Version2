@@ -17,6 +17,24 @@
         return originalApi || window.GrowWithHRSectorContextIntelligence || null;
     }
 
+    function withSelectedTheme(payload = {}) {
+        const next = clone(payload);
+        const explicit = clean(
+            next.theme || next.reportTheme || next.pdfTheme || next.reportOptions?.theme
+        ).toLowerCase();
+        if (explicit) return next;
+        let checked = [];
+        try {
+            checked = Array.from(document.querySelectorAll(
+                "input[name='advisoryReportTheme']:checked, input[name='reportTheme']:checked"
+            )).map((input) => clean(input.value).toLowerCase());
+        } catch (_error) {}
+        if (checked.includes("both")) next.theme = "both";
+        else if (checked.includes("dark")) next.theme = "dark";
+        else if (checked.includes("light")) next.theme = "light";
+        return next;
+    }
+
     function sanitiseKnownSectorPayload(payload = {}) {
         const api = baseApi();
         if (!api) return clone(payload);
@@ -114,7 +132,7 @@
             [PDF_FLAG]: true,
             sectorContextHardeningVersion: VERSION,
             buildAdvisoryPdf(payload = {}) {
-                return buildPdf(sanitiseKnownSectorPayload(payload));
+                return buildPdf(sanitiseKnownSectorPayload(withSelectedTheme(payload)));
             },
             buildReportLawTransparency(payload = {}, model = {}) {
                 if (typeof buildRows !== "function") return [];
