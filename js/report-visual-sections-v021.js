@@ -34,8 +34,8 @@
                 selectedThemes: themes,
                 dualThemeDelivery: themes.length === 2,
                 reportLayoutVersion: core.VERSION,
-                reportStructureVersion: "visual-sectioned-v3",
-                readingSections: ["At a glance", "What to do now", "Complete the picture", "Your 90-day plan", "Watch as you grow", "The profile used"]
+                reportStructureVersion: "visual-sectioned-v4",
+                readingSections: ["Table of Contents", "At a glance", "What to do now", "Complete the picture", "Your 90-day plan", "Watch as you grow", "The profile used", "End of Report"]
             };
         }
 
@@ -44,7 +44,7 @@
             [INSTALL_FLAG]: true,
             visualSectionedReportVersion: core.VERSION,
             reportLayoutVersion: core.VERSION,
-            reportStructureVersion: "visual-sectioned-v3",
+            reportStructureVersion: "visual-sectioned-v4",
             buildAdvisoryPdf
         });
         window.GrowWithHRPDF = enhanced;
