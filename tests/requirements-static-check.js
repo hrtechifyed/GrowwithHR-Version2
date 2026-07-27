@@ -73,7 +73,7 @@ for (const file of htmlFiles) {
     ) {
         includes(
             html,
-            "GrowWithHR Public 0.18.0",
+            "GrowWithHR Public 0.19.0",
             `${file} must display the current release version.`
         );
     }
