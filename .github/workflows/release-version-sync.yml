@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Synchronize version surfaces
         run: npm run version:sync
       - name: Commit synchronized version files
@@ -34,6 +34,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json js/config/app-config.js '*.html' 'pages/*.html'
+          git add -A
           git commit -m "release: synchronize version surfaces"
           git push
