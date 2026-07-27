@@ -3,13 +3,19 @@ import fs from "node:fs";
 import vm from "node:vm";
 
 const fixes = fs.readFileSync("js/report-intelligence-v020-fixes.js", "utf8");
+const questionUi = fs.readFileSync("js/report-context-question-ui-fixes.js", "utf8");
 const bootstrap = fs.readFileSync("js/report-runtime-bootstrap.js", "utf8");
 
 new vm.Script(fixes, { filename: "js/report-intelligence-v020-fixes.js" });
+new vm.Script(questionUi, { filename: "js/report-context-question-ui-fixes.js" });
 new vm.Script(bootstrap, { filename: "js/report-runtime-bootstrap.js" });
 
 assert.match(fixes, /0\.20\.1-report-intelligence-fixes/);
+assert.match(questionUi, /0\.20\.1-context-question-ui/);
 assert.match(bootstrap, /report-intelligence-v020-fixes\.js/);
+assert.match(bootstrap, /report-context-question-ui-fixes\.js/);
+assert.match(bootstrap, /acceptanceReady/);
+assert.match(bootstrap, /intelligenceReady/);
 
 // One selected edition must generate one report; both remains an explicit option.
 assert.match(fixes, /requested === "both"/);
@@ -43,6 +49,14 @@ assert.match(fixes, /context\.employees >= 20/);
 assert.match(fixes, /workforcePresence/);
 assert.match(fixes, /manufacturingOperations/);
 assert.match(fixes, /productionQuestionsVisible/);
+
+// OPC transitions must not leave synthetic owner-only answers selected.
+assert.match(questionUi, /value="not-sure"/);
+assert.match(questionUi, /closest\("label"\)\?\.remove/);
+assert.match(questionUi, /clearOwnerOnlyDefaults/);
+assert.match(questionUi, /workerCategories/);
+assert.match(questionUi, /manufacturingOperations/);
+assert.match(questionUi, /event\.target\.value === "other-people"/);
 
 // Raw A-number coverage statements are intentionally removed from the new report.
 assert.doesNotMatch(fixes, /You answered \$\{confirmed\} of \$\{required\}/);
