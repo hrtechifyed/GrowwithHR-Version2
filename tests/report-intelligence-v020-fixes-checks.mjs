@@ -4,18 +4,22 @@ import vm from "node:vm";
 
 const fixes = fs.readFileSync("js/report-intelligence-v020-fixes.js", "utf8");
 const sectorIntelligence = fs.readFileSync("js/sector-context-intelligence-v020.js", "utf8");
+const sectorHardening = fs.readFileSync("js/sector-context-intelligence-v020-patch.js", "utf8");
 const questionUi = fs.readFileSync("js/report-context-question-ui-fixes.js", "utf8");
 const bootstrap = fs.readFileSync("js/report-runtime-bootstrap.js", "utf8");
 
 new vm.Script(fixes, { filename: "js/report-intelligence-v020-fixes.js" });
 new vm.Script(sectorIntelligence, { filename: "js/sector-context-intelligence-v020.js" });
+new vm.Script(sectorHardening, { filename: "js/sector-context-intelligence-v020-patch.js" });
 new vm.Script(questionUi, { filename: "js/report-context-question-ui-fixes.js" });
 new vm.Script(bootstrap, { filename: "js/report-runtime-bootstrap.js" });
 
 assert.match(fixes, /0\.20\.1-report-intelligence-fixes/);
 assert.match(sectorIntelligence, /0\.20\.1-all-sector-context-intelligence/);
+assert.match(sectorHardening, /0\.20\.1-sector-context-hardening/);
 assert.match(questionUi, /0\.20\.1-context-question-ui/);
 assert.match(questionUi, /sector-context-intelligence-v020\.js/);
+assert.match(questionUi, /sector-context-intelligence-v020-patch\.js/);
 assert.match(bootstrap, /report-intelligence-v020-fixes\.js/);
 assert.match(bootstrap, /report-context-question-ui-fixes\.js/);
 assert.match(bootstrap, /acceptanceReady/);
@@ -70,6 +74,15 @@ assert.match(sectorIntelligence, /Hidden questions are not counted as missing in
 assert.match(sectorIntelligence, /context\.ownerOnly \|\| !context\.peoplePresent/);
 assert.match(sectorIntelligence, /!context\.manufacturingContext/);
 assert.match(sectorIntelligence, /agency-contract-labour/);
+
+// Hardening makes activity-led night questions and removes stale manufacturing answers from known non-manufacturing profiles.
+assert.match(sectorHardening, /activities\.includes\("night-operations"\)/);
+assert.match(sectorHardening, /active\.add\("nightShifts"\)/);
+assert.match(sectorHardening, /knownNonManufacturing/);
+assert.match(sectorHardening, /manufacturingOperations: "no"/);
+assert.match(sectorHardening, /workers: 0/);
+assert.match(sectorHardening, /usesPower: "no"/);
+assert.match(sectorHardening, /originalApi/);
 
 // OPC transitions must not leave synthetic owner-only answers selected.
 assert.match(questionUi, /value="not-sure"/);
