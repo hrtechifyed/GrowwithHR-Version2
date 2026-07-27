@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.26.0-visual-sectioned-runtime-bootstrap";
+    const VERSION = "0.26.1-visual-sectioned-runtime-bootstrap";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -103,7 +103,7 @@
             const visualReady = await waitFor(() => Boolean(
                 window.GrowWithHRStoryVisualSections?.version &&
                 window.GrowWithHRPDF?.visualSectionedReportVersion &&
-                window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v3"
+                window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v4"
             ));
             if (!visualReady) throw new Error("The visual story and report layer did not become ready.");
 
