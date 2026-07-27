@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.25.0-report-runtime-bootstrap";
+    const VERSION = "0.26.0-visual-sectioned-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
@@ -88,11 +88,32 @@
             ));
             if (!intelligenceReady) throw new Error("The contextual report assembler did not become ready.");
 
+            await import("./sector-context-intelligence-v020.js");
+            await import("./sector-context-intelligence-v020-patch.js");
+            const sectorReady = await waitFor(() => Boolean(
+                window.GrowWithHRSectorContextIntelligence?.patchVersion
+            ));
+            if (!sectorReady) throw new Error("The all-sector context layer did not become ready.");
+
+            await import("./story-visual-sections-v021.js");
+            await import("./report-visual-core-v021.js");
+            await import("./report-visual-renderers-v021.js");
+            await import("./report-visual-sections-v021.js");
+            const visualReady = await waitFor(() => Boolean(
+                window.GrowWithHRStoryVisualSections?.version &&
+                window.GrowWithHRPDF?.visualSectionedReportVersion &&
+                window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v3"
+            ));
+            if (!visualReady) throw new Error("The visual story and report layer did not become ready.");
+
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
                 ready: true,
                 reportIntelligenceFixes: true,
-                contextualQuestionUiFixes: true
+                contextualQuestionUiFixes: true,
+                allSectorContextIntelligence: true,
+                compactStorySections: true,
+                visualSectionedReport: true
             });
         } catch (error) {
             loading = false;
