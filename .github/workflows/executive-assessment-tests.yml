@@ -34,6 +34,7 @@ on:
       - "js/report-sequence-controller.js"
       - "js/report-founder-summary-corrections.js"
       - "js/report-acceptance-corrections.js"
+      - "js/report-intelligence-v020-fixes.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
       - "playwright.config.ts"
@@ -72,6 +73,7 @@ on:
       - "js/report-sequence-controller.js"
       - "js/report-founder-summary-corrections.js"
       - "js/report-acceptance-corrections.js"
+      - "js/report-intelligence-v020-fixes.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
       - "playwright.config.ts"
@@ -126,6 +128,7 @@ jobs:
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
+          tests/e2e/report-intelligence-v020.spec.ts
           --project=chromium
 
       - name: Upload Playwright report
