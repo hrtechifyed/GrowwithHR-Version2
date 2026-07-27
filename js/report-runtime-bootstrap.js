@@ -3,6 +3,7 @@
     "use strict";
 
     const VERSION = "0.26.0-visual-sectioned-runtime-bootstrap";
+    const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
@@ -108,6 +109,7 @@
 
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
+                acceptanceBootstrapCompatibility: ACCEPTANCE_BOOTSTRAP_COMPATIBILITY,
                 ready: true,
                 reportIntelligenceFixes: true,
                 contextualQuestionUiFixes: true,
