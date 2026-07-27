@@ -79,11 +79,12 @@
             description.insertAdjacentElement("afterend", guide);
         }
         const count = visibleQuestionCards(container).length;
-        guide.innerHTML = [
+        const content = [
             `<span><strong>${count || 1}</strong> ${count === 1 ? "question" : "questions"}</span>`,
             "<span>Answer only what applies</span>",
             "<span>Saved automatically</span>"
         ].join("");
+        if (guide.innerHTML !== content) guide.innerHTML = content;
     }
 
     function createHelpDisclosure(help, card) {
@@ -106,7 +107,7 @@
                 if (child.querySelector("textarea") || child.matches("fieldset") || choiceCount > 4 || child.classList.contains("advisory-field--nested")) {
                     child.classList.add("advisory-question-card--wide");
                 }
-                const help = child.querySelector(":scope > .advisory-field-help, :scope > p.advisory-field-help");
+                const help = child.querySelector(":scope > .advisory-field-help, :scope > .advisory-field-helper, :scope > p.advisory-field-help");
                 if (help) createHelpDisclosure(help, child);
             });
         });
@@ -121,9 +122,12 @@
         const eyebrow = app?.elements?.storyEyebrow || document.getElementById("storyEyebrow");
         const title = app?.elements?.stepTitle || document.getElementById("stepTitle");
         const description = app?.elements?.stepDescription || document.getElementById("stepDescription");
-        if (eyebrow) eyebrow.textContent = copy.eyebrow;
-        if (title) title.innerHTML = `<span class="advisory-visible-step-title">${copy.title}</span><span class="advisory-visually-hidden" aria-hidden="true">${copy.legacyTitle || ""}</span>`;
-        if (description) description.textContent = copy.description;
+        if (eyebrow && eyebrow.textContent !== copy.eyebrow) eyebrow.textContent = copy.eyebrow;
+        if (title) {
+            const content = `<span class="advisory-visible-step-title">${copy.title}</span><span class="advisory-visually-hidden" aria-hidden="true">${copy.legacyTitle || ""}</span>`;
+            if (title.innerHTML !== content) title.innerHTML = content;
+        }
+        if (description && description.textContent !== copy.description) description.textContent = copy.description;
     }
 
     function decorate(app = application()) {
