@@ -96,6 +96,16 @@
         card.appendChild(disclosure);
     }
 
+    function findHelperCopy(card) {
+        const candidates = [...card.querySelectorAll("p")];
+        return candidates.find((paragraph) => {
+            if (!paragraph.textContent?.trim()) return false;
+            if (paragraph.closest(".advisory-help-disclosure")) return false;
+            if (paragraph.matches(".advisory-field-error, [role='alert']")) return false;
+            return true;
+        }) || null;
+    }
+
     function decorateCards(container) {
         container.querySelectorAll(".advisory-field-group").forEach((group) => {
             group.classList.add("advisory-field-group--sectioned");
@@ -107,11 +117,7 @@
                 if (child.querySelector("textarea") || child.matches("fieldset") || choiceCount > 4 || child.classList.contains("advisory-field--nested")) {
                     child.classList.add("advisory-question-card--wide");
                 }
-                const help = child.querySelector(
-                    ":scope > .advisory-field-help, " +
-                    ":scope > .advisory-field-helper, " +
-                    ":scope > p:not(.advisory-field-error):not([role='alert'])"
-                );
+                const help = findHelperCopy(child);
                 if (help) createHelpDisclosure(help, child);
             });
         });
