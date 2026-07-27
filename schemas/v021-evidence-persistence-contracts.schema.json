@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://growwithhr.hrtechify.com/schemas/v021-evidence-persistence-contracts.schema.json",
+  "title": "GrowWithHR v0.21 Evidence and Persistence Contract Package",
+  "description": "Approval-gated contracts for future persistence. This schema does not enable runtime persistence.",
+  "type": "object",
+  "required": ["contractVersion", "generatedAt", "runtimeEnabled", "tenantBoundary", "contracts"],
+  "properties": {
+    "contractVersion": { "const": "0.21.0-contract.1" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "runtimeEnabled": { "const": false },
+    "tenantBoundary": { "$ref": "#/$defs/tenantBoundary" },
+    "contracts": {
+      "type": "object",
+      "required": ["organisationProfile", "workspaceTask", "evidenceMetadata", "consentRecord", "auditEvent", "exportPackage", "deletionReceipt", "backupManifest", "migrationReceipt"],
+      "properties": {
+        "organisationProfile": { "$ref": "#/$defs/organisationProfile" },
+        "workspaceTask": { "$ref": "#/$defs/workspaceTask" },
+        "evidenceMetadata": { "$ref": "#/$defs/evidenceMetadata" },
+        "consentRecord": { "$ref": "#/$defs/consentRecord" },
+        "auditEvent": { "$ref": "#/$defs/auditEvent" },
+        "exportPackage": { "$ref": "#/$defs/exportPackage" },
+        "deletionReceipt": { "$ref": "#/$defs/deletionReceipt" },
+        "backupManifest": { "$ref": "#/$defs/backupManifest" },
+        "migrationReceipt": { "$ref": "#/$defs/migrationReceipt" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": { "type": "string", "minLength": 3, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "tenantBoundary": {
+      "type": "object",
+      "required": ["tenantId", "organisationId"],
+      "properties": {
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "sourceProvenance": {
+      "type": "object",
+      "required": ["sourceType", "sourceReference", "recordedAt"],
+      "properties": {
+        "sourceType": { "enum": ["browser-local", "user-entered", "assessment-snapshot", "official-source", "specialist-review", "system-generated"] },
+        "sourceReference": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "recordedAt": { "$ref": "#/$defs/timestamp" }
+      },
+      "additionalProperties": false
+    },
+    "statusHistoryEvent": {
+      "type": "object",
+      "required": ["eventId", "status", "occurredAt", "actorType"],
+      "properties": {
+        "eventId": { "$ref": "#/$defs/identifier" },
+        "status": { "enum": ["not-started", "in-progress", "blocked", "complete", "cancelled"] },
+        "occurredAt": { "$ref": "#/$defs/timestamp" },
+        "actorType": { "enum": ["user", "system", "specialist"] },
+        "actorId": { "$ref": "#/$defs/identifier" },
+        "note": { "type": "string", "maxLength": 2000 }
+      },
+      "additionalProperties": false
+    },
+    "organisationProfile": {
+      "type": "object",
+      "required": ["schemaVersion", "profileId", "tenantId", "organisationId", "organisationName", "status", "createdAt", "updatedAt", "sourceProvenance"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "profileId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "organisationName": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "status": { "enum": ["draft", "active", "suspended", "deleted"] },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "sourceProvenance": { "$ref": "#/$defs/sourceProvenance" }
+      },
+      "additionalProperties": false
+    },
+    "workspaceTask": {
+      "type": "object",
+      "required": ["schemaVersion", "taskId", "tenantId", "organisationId", "title", "ownerRef", "status", "dueDate", "dueDateSource", "statusHistory", "createdAt", "updatedAt", "sourceProvenance"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "taskId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "ownerRef": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "status": { "enum": ["not-started", "in-progress", "blocked", "complete", "cancelled"] },
+        "dueDate": { "type": "string", "format": "date" },
+        "dueDateSource": { "enum": ["statutory", "official-guidance", "internal-target", "specialist-advice", "not-confirmed"] },
+        "sourceReference": { "type": "string", "maxLength": 512 },
+        "statusHistory": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/statusHistoryEvent" } },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "sourceProvenance": { "$ref": "#/$defs/sourceProvenance" }
+      },
+      "additionalProperties": false
+    },
+    "evidenceMetadata": {
+      "type": "object",
+      "required": ["schemaVersion", "evidenceId", "tenantId", "organisationId", "taskId", "label", "lifecycleState", "verificationState", "contentStored", "createdAt", "updatedAt", "sourceProvenance"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "evidenceId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "taskId": { "$ref": "#/$defs/identifier" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "fileName": { "type": "string", "maxLength": 512 },
+        "mediaType": { "type": "string", "maxLength": 128 },
+        "lifecycleState": { "enum": ["placeholder", "declared", "received", "under-review", "verified", "rejected", "deleted"] },
+        "verificationState": { "enum": ["not-requested", "not-verified", "specialist-review", "verified", "rejected"] },
+        "contentStored": { "const": false },
+        "retentionClass": { "enum": ["not-set", "temporary", "standard", "legal-hold"] },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "sourceProvenance": { "$ref": "#/$defs/sourceProvenance" }
+      },
+      "additionalProperties": false
+    },
+    "consentRecord": {
+      "type": "object",
+      "required": ["schemaVersion", "consentId", "tenantId", "organisationId", "subjectRef", "purpose", "scope", "status", "policyVersion", "recordedAt"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "consentId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "subjectRef": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "purpose": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "scope": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["profile", "tasks", "evidence-metadata", "audit", "cross-device-resume"] } },
+        "status": { "enum": ["granted", "withdrawn", "expired", "denied"] },
+        "policyVersion": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "recordedAt": { "$ref": "#/$defs/timestamp" },
+        "withdrawnAt": { "$ref": "#/$defs/timestamp" }
+      },
+      "allOf": [{ "if": { "properties": { "status": { "const": "withdrawn" } }, "required": ["status"] }, "then": { "required": ["withdrawnAt"] } }],
+      "additionalProperties": false
+    },
+    "auditEvent": {
+      "type": "object",
+      "required": ["schemaVersion", "eventId", "tenantId", "organisationId", "eventType", "actorType", "objectType", "objectId", "occurredAt", "sourceProvenance"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "eventId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "eventType": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "actorType": { "enum": ["user", "system", "specialist", "administrator"] },
+        "actorId": { "$ref": "#/$defs/identifier" },
+        "objectType": { "enum": ["profile", "task", "evidence-metadata", "consent", "export", "deletion", "backup", "migration"] },
+        "objectId": { "$ref": "#/$defs/identifier" },
+        "occurredAt": { "$ref": "#/$defs/timestamp" },
+        "previousEventHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "eventHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "sourceProvenance": { "$ref": "#/$defs/sourceProvenance" }
+      },
+      "additionalProperties": false
+    },
+    "itemCounts": {
+      "type": "object",
+      "required": ["profiles", "tasks", "evidenceMetadata", "auditEvents"],
+      "properties": {
+        "profiles": { "type": "integer", "minimum": 0 },
+        "tasks": { "type": "integer", "minimum": 0 },
+        "evidenceMetadata": { "type": "integer", "minimum": 0 },
+        "auditEvents": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "exportPackage": {
+      "type": "object",
+      "required": ["schemaVersion", "exportId", "tenantId", "organisationId", "requestedAt", "producedAt", "status", "includedTypes", "itemCounts", "integrityDigest"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "exportId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "requestedAt": { "$ref": "#/$defs/timestamp" },
+        "producedAt": { "$ref": "#/$defs/timestamp" },
+        "status": { "enum": ["complete", "partial", "failed"] },
+        "includedTypes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["profile", "tasks", "evidence-metadata", "audit", "consent"] } },
+        "itemCounts": { "$ref": "#/$defs/itemCounts" },
+        "integrityDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "deletionReceipt": {
+      "type": "object",
+      "required": ["schemaVersion", "requestId", "tenantId", "organisationId", "requestedAt", "completedAt", "status", "scopes", "deletedItemCounts", "backupExpiryAt"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "requestId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "requestedAt": { "$ref": "#/$defs/timestamp" },
+        "completedAt": { "$ref": "#/$defs/timestamp" },
+        "status": { "enum": ["complete", "partial", "failed"] },
+        "scopes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["profile", "tasks", "evidence-metadata", "audit-indexes", "derived-indexes"] } },
+        "deletedItemCounts": { "$ref": "#/$defs/itemCounts" },
+        "backupExpiryAt": { "$ref": "#/$defs/timestamp" },
+        "limitations": { "type": "array", "items": { "type": "string", "maxLength": 500 } }
+      },
+      "additionalProperties": false
+    },
+    "backupManifest": {
+      "type": "object",
+      "required": ["schemaVersion", "backupId", "tenantId", "organisationId", "createdAt", "encrypted", "itemCounts", "integrityDigest", "restoreStatus"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "backupId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "encrypted": { "const": true },
+        "itemCounts": { "$ref": "#/$defs/itemCounts" },
+        "integrityDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "restoreStatus": { "enum": ["not-tested", "passed", "failed"] },
+        "lastRestoreTestedAt": { "$ref": "#/$defs/timestamp" }
+      },
+      "additionalProperties": false
+    },
+    "migrationReceipt": {
+      "type": "object",
+      "required": ["schemaVersion", "migrationId", "tenantId", "organisationId", "sourceSchema", "destinationSchema", "startedAt", "completedAt", "itemCounts", "outcome", "sourcePreserved", "idempotencyKey"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "migrationId": { "$ref": "#/$defs/identifier" },
+        "tenantId": { "$ref": "#/$defs/identifier" },
+        "organisationId": { "$ref": "#/$defs/identifier" },
+        "sourceSchema": { "const": "growwithhr-compliance-workspace-v1" },
+        "destinationSchema": { "const": "v021-evidence-persistence-1.0.0" },
+        "startedAt": { "$ref": "#/$defs/timestamp" },
+        "completedAt": { "$ref": "#/$defs/timestamp" },
+        "itemCounts": { "$ref": "#/$defs/itemCounts" },
+        "outcome": { "enum": ["complete", "partial", "failed", "no-op"] },
+        "sourcePreserved": { "const": true },
+        "idempotencyKey": { "$ref": "#/$defs/identifier" },
+        "failureReason": { "type": "string", "maxLength": 1000 }
+      },
+      "additionalProperties": false
+    }
+  }
+}
