@@ -11,9 +11,10 @@
     const clone = (value) => JSON.parse(JSON.stringify(value || {}));
     const application = () => window.executiveAssessment || window.GrowWithHRExecutiveAssessment || window.assessmentApp || null;
     const answersFor = (app) => app?.answers || app?.stateModel?.answers || app?.state?.answers || {};
+    let originalApi = null;
 
     function baseApi() {
-        return window.GrowWithHRSectorContextIntelligence || null;
+        return originalApi || window.GrowWithHRSectorContextIntelligence || null;
     }
 
     function sanitiseKnownSectorPayload(payload = {}) {
@@ -88,10 +89,12 @@
     }
 
     function installApi() {
-        const api = baseApi();
-        if (!api || api.patchVersion === VERSION) return Boolean(api);
+        const current = window.GrowWithHRSectorContextIntelligence || null;
+        if (!current) return false;
+        if (current.patchVersion === VERSION) return true;
+        originalApi = current;
         window.GrowWithHRSectorContextIntelligence = Object.freeze({
-            ...api,
+            ...current,
             patchVersion: VERSION,
             activeQuestionFields: enhancedActiveQuestionFields,
             normalisePayload,
