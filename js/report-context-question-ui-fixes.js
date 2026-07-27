@@ -5,6 +5,10 @@
     const VERSION = "0.20.1-context-question-ui";
     const MARKER = "ownerOnlyDefaultsApplied";
 
+    import("./sector-context-intelligence-v020.js").catch((error) => {
+        console.error("GrowWithHR all-sector contextual intelligence could not load.", error);
+    });
+
     function application() {
         return window.executiveAssessment || window.GrowWithHRExecutiveAssessment || window.assessmentApp || null;
     }
@@ -74,7 +78,10 @@
         }
 
         repairGate();
-        queueMicrotask(() => window.GrowWithHRReportIntelligenceFixes?.syncAssessmentQuestions?.(app));
+        queueMicrotask(() => {
+            window.GrowWithHRReportIntelligenceFixes?.syncAssessmentQuestions?.(app);
+            window.GrowWithHRSectorContextIntelligence?.syncSectorQuestions?.(app);
+        });
     }
 
     document.addEventListener("change", onWorkforcePresenceChange, true);
