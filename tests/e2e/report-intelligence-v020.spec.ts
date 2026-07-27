@@ -40,6 +40,10 @@ test.describe("v0.20 contextual report intelligence", () => {
             (window as Window & { GrowWithHRPDF?: { reportIntelligenceFixVersion?: string } })
                 .GrowWithHRPDF?.reportIntelligenceFixVersion
         ));
+        await page.waitForFunction(() => Boolean(
+            (window as Window & { GrowWithHRSectorContextIntelligence?: { version?: string } })
+                .GrowWithHRSectorContextIntelligence?.version
+        ));
     });
 
     test("generates only the selected light edition unless both is explicitly selected", async ({ page }) => {
@@ -200,5 +204,125 @@ test.describe("v0.20 contextual report intelligence", () => {
         await section.locator('input[name="manufacturingOperations"][value="yes"]').check({ force: true });
         await expect(section.locator('[data-field-wrapper="workers"]')).toBeVisible();
         await expect(section.locator('[data-field-wrapper="usesPower"]')).toBeVisible();
+    });
+
+    test("selects different operating questions for major sector families", async ({ page }) => {
+        const result = await page.evaluate(() => {
+            const api = (window as Window & {
+                GrowWithHRSectorContextIntelligence?: {
+                    profileFor: (industry: string) => string;
+                    activeQuestionFields: (data: Record<string, unknown>) => Set<string>;
+                };
+            }).GrowWithHRSectorContextIntelligence!;
+            const fields = (data: Record<string, unknown>) => [...api.activeQuestionFields(data)].sort();
+            const base = { entity: "Private Limited", employees: 32, workforcePresence: "other-people" };
+            return {
+                profiles: {
+                    software: api.profileFor("Software and SaaS"),
+                    retail: api.profileFor("Retail and e-commerce"),
+                    healthcare: api.profileFor("Hospital and diagnostics"),
+                    logistics: api.profileFor("Logistics and warehousing"),
+                    construction: api.profileFor("Construction and real estate"),
+                    finance: api.profileFor("Banking, insurance and fintech"),
+                    unknown: api.profileFor("Specialised custom business")
+                },
+                software: fields({ ...base, industry: "Software and SaaS" }),
+                retail: fields({ ...base, industry: "Retail and e-commerce" }),
+                healthcare: fields({ ...base, industry: "Hospital and diagnostics" }),
+                construction: fields({ ...base, industry: "Construction and real estate" })
+            };
+        });
+
+        expect(result.profiles).toEqual({
+            software: "software",
+            retail: "retail-ecommerce",
+            healthcare: "healthcare-life-sciences",
+            logistics: "logistics-warehousing",
+            construction: "construction-real-estate",
+            finance: "finance-fintech",
+            unknown: "mixed"
+        });
+        expect(result.software).toEqual(expect.arrayContaining(["clientSiteWorkers", "overseasWorkers", "outsourcedOperations"]));
+        expect(result.software).not.toEqual(expect.arrayContaining(["manufacturingOperations", "usesPower", "workers"]));
+        expect(result.retail).toEqual(expect.arrayContaining(["warehouseOperations", "shiftOperations", "seasonalWorkers", "multiLocationOperations"]));
+        expect(result.healthcare).toEqual(expect.arrayContaining(["continuousOperations", "agencyLabourUsed", "outsourcedOperations"]));
+        expect(result.construction).toEqual(expect.arrayContaining(["projectSiteOperations", "agencyLabourUsed", "seasonalWorkers"]));
+    });
+
+    test("owner-only OPC overrides every sector and mixed businesses reveal activity-led follow-ups", async ({ page }) => {
+        const result = await page.evaluate(() => {
+            const api = (window as Window & {
+                GrowWithHRSectorContextIntelligence?: {
+                    activeQuestionFields: (data: Record<string, unknown>) => Set<string>;
+                    normalisePayload: (payload: any) => any;
+                };
+            }).GrowWithHRSectorContextIntelligence!;
+            const ownerOnly = [
+                "Manufacturing", "Software and SaaS", "Retail and e-commerce", "Hospital",
+                "Logistics", "Construction", "Financial services", "Hospitality"
+            ].map((industry) => [...api.activeQuestionFields({
+                entity: "One Person Company",
+                industry,
+                employees: 1,
+                workers: 0,
+                contractors: 0,
+                workforcePresence: "owner-only"
+            })]);
+            const mixed = [...api.activeQuestionFields({
+                entity: "Private Limited",
+                industry: "Specialised custom business",
+                employees: 12,
+                workforcePresence: "other-people",
+                businessActivities: ["manufacturing", "night-operations"],
+                manufacturingOperations: "yes",
+                shiftOperations: "yes"
+            })];
+            const staleSoftware = api.normalisePayload({
+                answers: {
+                    entity: "Private Limited",
+                    industry: "Software and SaaS",
+                    employees: 8,
+                    workforcePresence: "other-people",
+                    manufacturingOperations: "yes",
+                    workers: 18,
+                    usesPower: "yes"
+                },
+                report: {
+                    entity: "Private Limited",
+                    industry: "Software and SaaS",
+                    employees: 8,
+                    workforcePresence: "other-people",
+                    manufacturingOperations: "yes",
+                    workers: 18,
+                    usesPower: "yes"
+                }
+            });
+            const agency = api.normalisePayload({
+                answers: {
+                    entity: "Private Limited",
+                    industry: "Hospitality",
+                    employees: 24,
+                    workforcePresence: "other-people",
+                    agencyLabourUsed: "yes",
+                    workerCategories: ["permanent-employees"]
+                }
+            });
+            return {
+                ownerOnly,
+                mixed,
+                staleSoftware: staleSoftware.answers,
+                agencyCategories: agency.answers.workerCategories
+            };
+        });
+
+        result.ownerOnly.forEach((fields) => expect(fields).toEqual(["workforcePresence"]));
+        expect(result.mixed).toEqual(expect.arrayContaining([
+            "businessActivities", "manufacturingOperations", "workers", "usesPower", "shiftOperations", "nightShifts"
+        ]));
+        expect(result.staleSoftware.manufacturingOperations).toBe("no");
+        expect(result.staleSoftware.workers).toBe(0);
+        expect(result.staleSoftware.usesPower).toBe("no");
+        expect(result.staleSoftware.esiWageEligibility).toBe("no");
+        expect(result.agencyCategories).toContain("agency-contract-labour");
     });
 });
