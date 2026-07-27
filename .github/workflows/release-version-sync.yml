@@ -1,0 +1,39 @@
+name: Release Version Sync
+
+on:
+  push:
+    branches:
+      - 'release/v*'
+    paths:
+      - package.json
+      - scripts/sync-version.mjs
+      - .github/workflows/release-version-sync.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Synchronize version surfaces
+        run: npm run version:sync
+      - name: Commit synchronized version files
+        run: |
+          if git diff --quiet; then
+            echo "Version surfaces already synchronized."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "release: synchronize version surfaces"
+          git push
