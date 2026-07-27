@@ -5,7 +5,7 @@ import fs from "node:fs";
 const require = createRequire(import.meta.url);
 const model = require("../js/m5/compliance-workspace-model.js");
 
-assert.equal(model.version, "0.20.0-rc1");
+assert.equal(model.version, "0.20.0-rc2");
 assert.equal(model.storageKey, "growwithhr-compliance-workspace-v1");
 assert.ok(model.taskStatuses.includes("complete"));
 assert.ok(model.dueDateSources.includes("not-confirmed"));
@@ -66,6 +66,20 @@ assert.deepEqual(restored, workspace);
 assert.equal(model.validateWorkspace(restored), true);
 assert.throws(() => model.importWorkspace("{}"), /type is not supported/);
 assert.throws(() => model.addTask(workspace, { title: "Bad", dueDateSource: "server" }), /Unsupported/);
+assert.throws(() => model.addCalendarEntry(workspace, { title: "Bad", date: "2026-08-10", source: "server" }), /Unsupported/);
+
+const malformed = JSON.parse(backup);
+delete malformed.workspace.tasks[0].statusHistory;
+assert.equal(model.validateWorkspace(malformed.workspace), false);
+assert.throws(() => model.importWorkspace(JSON.stringify(malformed)), /supported schema/);
+
+const malformedEvidence = JSON.parse(backup);
+delete malformedEvidence.workspace.evidencePlaceholders[0].state;
+assert.equal(model.validateWorkspace(malformedEvidence.workspace), false);
+
+const malformedCalendar = JSON.parse(backup);
+malformedCalendar.workspace.calendar[0].source = "unknown";
+assert.equal(model.validateWorkspace(malformedCalendar.workspace), false);
 
 const html = fs.readFileSync(new URL("../m5-compliance-workspace.html", import.meta.url), "utf8");
 const app = fs.readFileSync(new URL("../js/m5/compliance-workspace-app.js", import.meta.url), "utf8");
@@ -73,6 +87,11 @@ assert.match(html, /noindex,nofollow/);
 assert.match(html, /Nothing on this page is uploaded to a server/);
 assert.match(html, /Export backup/);
 assert.match(html, /Import backup/);
+assert.match(html, /workspaceEvidenceForm/);
+assert.match(html, /workspaceCalendarForm/);
+assert.match(app, /addEvidencePlaceholder/);
+assert.match(app, /addCalendarEntry/);
+assert.match(app, /Browser storage is unavailable/);
 assert.match(app, /window\.localStorage/);
 assert.doesNotMatch(app, /\bfetch\s*\(/);
 assert.doesNotMatch(app, /XMLHttpRequest|axios|sendBeacon/);
