@@ -1,9 +1,9 @@
 # GrowWithHR Product Roadmap
 
-Current application version: `0.18.0`
+Current application version: `0.20.0`
 Current public route: `/analyze-company.html`
 Private-beta route: `/analyze-company-v3.html` with `complianceDnaV3: false`
-Last updated: 22 July 2026
+Last updated: 27 July 2026
 
 ## Completed milestones
 
@@ -19,29 +19,31 @@ Complete and validated. Added confirmed/derived facts, deterministic rule evalua
 ### M3 — Compliance Story and Safe Health Model (`0.18.0`)
 Complete, validated and published. Added a versioned Compliance Story model, company snapshot, safe status counts, ranked priorities, grouped findings, assumptions and limitations without changing stable contracts.
 
+### M4 — Explainable Intelligence (`0.19.0`)
+Complete, validated and released. Added separate profile-completeness, applicability-certainty and evidence-coverage dimensions, information-gain questions, reproducible decision trace and founder-facing report integration without introducing a blended compliance score.
+
+### M5 — Compliance Workspace Beta (`0.20.0`)
+Complete, validated and released. Added a private browser-local workspace with tasks, owners, status history, due-date source states, evidence placeholders, calendar entries, strict JSON backup import/export, isolated reset and an in-memory fallback when browser storage is unavailable.
+
 ## Next milestone
 
-### M4 — Actionable Report Experience (`0.19.0`, release candidate)
+### M6 — Evidence and Persistence Beta (`0.21.0`, approval required)
 
-Implemented candidate scope:
+M6 is the only milestone authorised to change the storage and privacy posture. It requires explicit privacy, legal and security approval before implementation.
 
-- selectable light print-friendly and dark HRTechify PDF reports;
-- compact page-safe PDF presentation with corrected report logo;
-- employee-count minimum of one and One Person Company lock at one employee;
-- count-aware singular and plural report wording;
-- deduplicated website and PDF report presentation;
-- recommendation implementation steps, accountable owner and suggested timing;
-- downloadable starter templates for compliance calendars, employee documents, onboarding, policies, registrations, contractor review and HR action planning;
-- no cloud persistence, accounts or document upload;
-- maintained report-experience static tests included in the complete regression suite.
+Planned scope:
 
-M4 continues to consume deterministic assessment and advisory data. Templates are starting points and must not be represented as legal certification or proof of compliance.
+- consent-based durable organisation profiles;
+- authentication and tenant isolation;
+- database-backed tasks and evidence metadata;
+- audit events and status history;
+- export and deletion controls;
+- backup and restore;
+- continued support for browser-only users and local export.
 
-## Later milestones
+## Later milestone
 
-- **M5 — Browser-local workspace (`0.20.0`, planned):** local tasks, calendar and optional local backup/import.
-- **M6 — Consent-based persistence (`0.21.0`, approval required):** authentication, tenant isolation, retention, deletion/export and audit controls.
-- **M7 — RAG-ready hardening (`0.22.0`, planned):** frozen citation contracts, source lifecycle, monitoring, security and disaster-recovery evidence. RAG must never replace deterministic applicability decisions.
+- **M7 — RAG-ready hardening (`0.22.0`, planned):** frozen profile, obligation, applicability and citation contracts; normalized sources and effective dates; monitoring, performance, security, disaster-recovery and handoff evidence. RAG must never replace deterministic applicability decisions.
 
 ## Release gates
 
