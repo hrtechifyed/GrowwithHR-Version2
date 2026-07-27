@@ -3,6 +3,7 @@
     "use strict";
 
     const VERSION = "0.20.1-sector-context-hardening";
+    const API_VERSION = "0.20.1-all-sector-context-intelligence";
     const PDF_FLAG = "__growwithhrSectorContextHardeningInstalled";
     const clean = (value, fallback = "") => String(value ?? "").replace(/\s+/g, " ").trim() || fallback;
     const list = (value) => Array.isArray(value)
@@ -113,6 +114,7 @@
         originalApi = current;
         window.GrowWithHRSectorContextIntelligence = Object.freeze({
             ...current,
+            version: current.baseVersion || current.version || API_VERSION,
             patchVersion: VERSION,
             activeQuestionFields: enhancedActiveQuestionFields,
             normalisePayload,
