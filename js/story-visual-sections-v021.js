@@ -107,7 +107,11 @@
                 if (child.querySelector("textarea") || child.matches("fieldset") || choiceCount > 4 || child.classList.contains("advisory-field--nested")) {
                     child.classList.add("advisory-question-card--wide");
                 }
-                const help = child.querySelector(":scope > .advisory-field-help, :scope > .advisory-field-helper, :scope > p.advisory-field-help");
+                const help = child.querySelector(
+                    ":scope > .advisory-field-help, " +
+                    ":scope > .advisory-field-helper, " +
+                    ":scope > p:not(.advisory-field-error):not([role='alert'])"
+                );
                 if (help) createHelpDisclosure(help, child);
             });
         });
