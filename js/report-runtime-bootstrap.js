@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.25.0-report-runtime-bootstrap";
+    const VERSION = "0.26.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
@@ -66,9 +66,11 @@
             installTestAdapterCompatibility();
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
+            await import("./report-intelligence-v020-fixes.js");
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
-                ready: true
+                ready: true,
+                reportIntelligenceFixes: true
             });
         } catch (error) {
             loading = false;
