@@ -10,6 +10,7 @@ on:
       - "executive-advisory-report.html"
       - "analyze-company.html"
       - "analyze-company-v3.html"
+      - "m5-compliance-workspace.html"
       - "assets/hrtechify-logo-transparent.svg"
       - "css/16-homepage-refresh.css"
       - "css/17-advisory-briefing.css"
@@ -22,6 +23,7 @@ on:
       - "js/executive-assessment.js"
       - "js/executive-assessment/**"
       - "js/assessment-v3/**"
+      - "js/m5/**"
       - "js/build-marker.js"
       - "js/pdf.js"
       - "js/pdf-polish.js"
@@ -46,6 +48,7 @@ on:
       - "executive-advisory-report.html"
       - "analyze-company.html"
       - "analyze-company-v3.html"
+      - "m5-compliance-workspace.html"
       - "assets/hrtechify-logo-transparent.svg"
       - "css/16-homepage-refresh.css"
       - "css/17-advisory-briefing.css"
@@ -58,6 +61,7 @@ on:
       - "js/executive-assessment.js"
       - "js/executive-assessment/**"
       - "js/assessment-v3/**"
+      - "js/m5/**"
       - "js/build-marker.js"
       - "js/pdf.js"
       - "js/pdf-polish.js"
@@ -108,7 +112,7 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Run assessment, report and homepage browser tests
+      - name: Run assessment, report, homepage and workspace browser tests
         run: >
           npx playwright test
           tests/e2e/executive-assessment-modules.spec.ts
@@ -121,6 +125,7 @@ jobs:
           tests/e2e/analyze-company-v3-compliance-story.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
+          tests/e2e/m5-compliance-workspace.spec.ts
           --project=chromium
 
       - name: Upload Playwright report
