@@ -6,7 +6,17 @@
     const MARKER = "ownerOnlyDefaultsApplied";
 
     import("./sector-context-intelligence-v020.js")
-        .then(() => import("./sector-context-intelligence-v020-patch.js"))
+        .then(() => {
+            const api = window.GrowWithHRSectorContextIntelligence;
+            if (api) {
+                window.GrowWithHRSectorContextIntelligence = Object.freeze({
+                    ...api,
+                    baseVersion: api.version,
+                    version: ""
+                });
+            }
+            return import("./sector-context-intelligence-v020-patch.js");
+        })
         .catch((error) => {
             console.error("GrowWithHR all-sector contextual intelligence could not load.", error);
         });
