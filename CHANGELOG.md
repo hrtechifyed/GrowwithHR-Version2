@@ -6,48 +6,60 @@ All notable changes to GrowWithHR are documented here.
 
 ## [Unreleased]
 
-### Report experience candidate for v0.19.0
+No unreleased product changes are currently recorded.
 
-- Added a light, print-friendly PDF option and a dark HRTechify presentation option at lead capture.
-- Rebuilt the A4 PDF presentation to reduce unused page space while retaining page-safe wrapping and pagination.
-- Corrected PDF branding to use the established HRTechify logo with a circular crop.
-- Normalised employee count to a minimum of one and locked One Person Company assessments to one employee.
-- Added count-aware singular and plural workforce wording.
-- Removed repeated report copy and aligned the website report with the shared advisory model.
-- Added implementation steps, suggested ownership, timing and resource links to strategic recommendations.
-- Added compliance calendar, employee document, onboarding, policy register, statutory tracker, contractor due-diligence and HR action-plan templates.
-- Added maintained report-experience static validation to the complete CI suite.
+---
 
-### Client readiness
+## [v0.20.0] - Compliance Workspace Beta
 
-- Clarified the production stack and canonical documentation.
-- Restored visible desktop capability-carousel controls.
-- Retired obsolete duplicate routes and unused backup/legacy files.
-- Added a valid favicon and repaired internal file references.
-- Separated product, experience and schema versions in the assessment configuration.
-- Reworded the illustrative report to use safe advisory and source-reference language.
-- Added maintained client-readiness static and browser checks.
-- Recorded the historical credential-rotation and history-purge release blocker.
-- Routed GitHub Pages advisory-email requests to the Render API.
-- Added exact-origin CORS handling, preflight support and disallowed-origin rejection.
-- Added automated server CORS coverage.
+**Release Date:** 2026-07-27
 
-### Documentation
+### Added
 
-- Updated `docs/ARCHITECTURE.md` to reflect the current deployed architecture.
-- Documented the current use of browser `localStorage`.
-- Documented browser-side advisory report and PDF generation.
-- Documented the Node.js and Express advisory-delivery backend.
-- Documented Gmail API processing and email retention.
-- Added `docs/DATA_FLOW.md`.
-- Updated the public privacy explanation in `more-info.html`.
-- Updated the experimental React privacy and data-handling components.
-- Clarified that GrowWithHR does not currently maintain a dedicated assessment database.
-- Clarified that same-browser progress is not a user account, cloud-save service or cross-device resume service.
-- Added a formal approval gate for future databases, user accounts, compliance workspaces, document storage, evidence storage and RAG conversation history.
-- Clarified that sent advisory emails and PDF attachments may remain in the connected Gmail account according to its retention settings.
-- Documented the GitHub Pages-to-Render delivery boundary and optional origin configuration.
-- Added the v0.19 report-experience specification and implementation-resource documentation.
+- Added a private no-index browser-local Compliance Workspace route.
+- Added compliance tasks with owners, descriptions, due dates, due-date source states and status history.
+- Added local evidence placeholders that do not upload or store file content.
+- Added browser-local calendar entries with explicit date-source states.
+- Added JSON backup export and strict import validation for nested task, evidence, calendar and audit structures.
+- Added isolated workspace reset using only `growwithhr-compliance-workspace-v1`.
+- Added in-memory operation and user guidance when browser storage is unavailable.
+- Added JSON Schema, maintained contract checks, dedicated CI and Playwright browser coverage.
+
+### Safety and compatibility
+
+- Kept `/analyze-company.html` as the stable public route.
+- Kept private v3 and M4 routes unchanged.
+- Added no server upload, account, authentication, database or cloud persistence.
+- Preserved assessment, report, PDF, email and delivery contracts.
+- Treated evidence entries as placeholders rather than proof of compliance.
+
+### Validation
+
+- GrowWithHR CI passed.
+- M5 Compliance Workspace checks passed.
+- Executive Assessment Tests passed, including persistence, reset and storage-unavailable coverage.
+- The complete maintained release chain includes the M5 contract checks.
+
+---
+
+## [v0.19.0] - Explainable Intelligence and Founder Report Integration
+
+**Release Date:** 2026-07-27
+
+### Added
+
+- Added separate profile-completeness, applicability-certainty and evidence-coverage dimensions.
+- Added information-gain questions and a reproducible decision trace.
+- Integrated governed law explanations into founder-facing Light and Dark reports.
+- Rebuilt final PDF generation as a single-tier report with one contents page, one page-count system and an optional annexure.
+- Added report input snapshots, stable action IDs, founder brief, evidence boundaries and future reassessment triggers.
+- Added the approved Warm Wishes customer-email signature.
+
+### Safety and compatibility
+
+- Produced no blended compliance, health or maturity score.
+- Kept the stable public route and disabled-by-default v3 flag.
+- Added no cloud persistence or storage migration.
 
 ---
 
@@ -162,15 +174,9 @@ All notable changes to GrowWithHR are documented here.
 ### Known limitations
 
 - GrowWithHR remains a beta-stage, rules-based advisory product.
-- The current customer-facing report primarily focuses on the compliance pillar.
 - Browser progress is available only in the same browser.
 - Browser data may be cleared or replaced.
-- GrowWithHR does not currently provide user accounts.
-- GrowWithHR does not currently provide cloud-saved assessments.
+- GrowWithHR does not currently provide user accounts or cloud-saved assessments.
 - GrowWithHR does not currently provide cross-device resume.
-- GrowWithHR does not currently provide a persistent customer-report database.
-- GrowWithHR does not currently provide compliance evidence storage.
-- GrowWithHR does not currently provide a customer compliance workspace.
-- GrowWithHR does not currently provide RAG conversation-history storage.
+- Evidence placeholders in M5 are not uploaded evidence and do not prove compliance.
 - Sent-email retention depends on the connected Gmail account.
-- Automated deletion controls for sent Gmail messages are not currently available.
