@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+const ASSESSMENT_KEY = "growwithhr-advisory-briefing-v2";
+
 test.describe("v0.20 contextual report intelligence", () => {
     test.beforeEach(async ({ page }) => {
         await page.route("**/jspdf.umd.min.js", async (route) => {
@@ -151,5 +153,52 @@ test.describe("v0.20 contextual report intelligence", () => {
         expect(result.context.manufacturingContext).toBe(false);
         expect(result.ids).toEqual(["shops"]);
         expect(result.questions).toEqual([]);
+    });
+
+    test("asks OPC and manufacturing questions progressively", async ({ page }) => {
+        await page.evaluate(({ key }) => {
+            localStorage.setItem(key, JSON.stringify({
+                version: "2.1.0",
+                started: true,
+                completed: false,
+                currentMoment: 2,
+                answers: {
+                    companyName: "Progressive Manufacturing OPC",
+                    industry: "Manufacturing",
+                    customIndustry: "",
+                    entity: "One Person Company",
+                    employees: 1,
+                    locations: "1",
+                    countries: "1",
+                    expansionPlans: [],
+                    priorities: []
+                },
+                lead: { name: "", email: "", role: "", marketingConsent: false },
+                ui: { showSupplementalWorkforce: false },
+                updatedAt: new Date().toISOString()
+            }));
+        }, { key: ASSESSMENT_KEY });
+
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.getByRole("button", { name: /Continue my advisory/ }).click();
+
+        const section = page.locator('[data-industry-adaptive="manufacturing"]');
+        await expect(section).toBeVisible();
+        await expect(section.locator('[data-field-wrapper="workforcePresence"]')).toBeVisible();
+        await expect(section.locator('input[name="workforcePresence"][value="not-sure"]')).toHaveCount(0);
+        await expect(section.locator('[data-field-wrapper="workerCategories"]')).toBeHidden();
+        await expect(section.locator('[data-field-wrapper="manufacturingOperations"]')).toBeHidden();
+        await expect(section.locator('[data-field-wrapper="workers"]')).toBeHidden();
+        await expect(section.locator('[data-field-wrapper="usesPower"]')).toBeHidden();
+
+        await section.locator('input[name="workforcePresence"][value="other-people"]').check({ force: true });
+        await expect(section.locator('[data-field-wrapper="workerCategories"]')).toBeVisible();
+        await expect(section.locator('[data-field-wrapper="manufacturingOperations"]')).toBeVisible();
+        await expect(section.locator('[data-field-wrapper="workers"]')).toBeHidden();
+        await expect(section.locator('[data-field-wrapper="usesPower"]')).toBeHidden();
+
+        await section.locator('input[name="manufacturingOperations"][value="yes"]').check({ force: true });
+        await expect(section.locator('[data-field-wrapper="workers"]')).toBeVisible();
+        await expect(section.locator('[data-field-wrapper="usesPower"]')).toBeVisible();
     });
 });
