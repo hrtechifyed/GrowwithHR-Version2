@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>GrowWithHR Compliance Workspace Beta</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{background:#f5f7fb;color:#0a1830}.workspace-shell{max-width:1100px;margin:0 auto;padding:32px 20px 64px}.workspace-hero,.workspace-panel{background:#fff;border:1px solid #a6b5ca;border-radius:16px;padding:24px;margin-bottom:20px}.workspace-hero h1{margin:6px 0;color:#041c43}.workspace-eyebrow{color:#b86600;font-weight:700;letter-spacing:.08em}.workspace-actions{display:flex;gap:12px;flex-wrap:wrap}.workspace-actions button,.workspace-actions label{display:inline-flex;align-items:center;gap:8px;background:#041c43;color:white;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}.workspace-actions input{display:none}.workspace-task{display:grid;grid-template-columns:1fr 180px;gap:20px;padding:18px 0;border-bottom:1px solid #d8e0eb}.workspace-task:last-child{border-bottom:0}.workspace-task h3{margin:0 0 6px}.workspace-task p{margin:0 0 6px}.workspace-task select,.workspace-form input,.workspace-form textarea,.workspace-form select{width:100%;padding:10px;border:1px solid #93a4bb;border-radius:8px}.workspace-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.workspace-form .wide{grid-column:1/-1}.workspace-form button{background:#f59e0b;color:#041c43;border:0;border-radius:8px;padding:12px 16px;font-weight:700}.workspace-notice[data-state="error"]{color:#a31919}.workspace-note{background:#fff4d6;border-left:4px solid #f59e0b;padding:12px 14px}@media(max-width:720px){.workspace-task,.workspace-form{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="workspace-shell">
+    <section class="workspace-hero">
+      <div class="workspace-eyebrow">M5 · v0.20.0 RELEASE CANDIDATE</div>
+      <h1>Compliance Workspace Beta</h1>
+      <p>Turn advisory actions into a browser-local task and evidence plan. Nothing on this page is uploaded to a server.</p>
+      <p class="workspace-note"><strong>Privacy boundary:</strong> tasks, dates, status history and evidence placeholders stay in this browser unless you export a JSON backup.</p>
+      <p id="workspaceSummary"></p>
+      <div class="workspace-actions">
+        <button id="workspaceExport" type="button">Export backup</button>
+        <label>Import backup<input id="workspaceImport" type="file" accept="application/json"></label>
+        <button id="workspaceReset" type="button">Reset workspace</button>
+      </div>
+      <p id="workspaceNotice" class="workspace-notice" aria-live="polite"></p>
+    </section>
+
+    <section class="workspace-panel">
+      <h2>Current tasks</h2>
+      <div id="workspaceTaskList"></div>
+    </section>
+
+    <section class="workspace-panel">
+      <h2>Add a compliance task</h2>
+      <form id="workspaceTaskForm" class="workspace-form">
+        <label>Task title<input name="title" required></label>
+        <label>Owner<input name="owner" placeholder="Founder, HR lead, adviser"></label>
+        <label class="wide">Description<textarea name="description" rows="3"></textarea></label>
+        <label>Due date<input name="dueDate" type="date"></label>
+        <label>Due-date source<select name="dueDateSource">
+          <option value="not-confirmed">Not confirmed</option>
+          <option value="statutory">Statutory</option>
+          <option value="official-guidance">Official guidance</option>
+          <option value="internal-target">Internal target</option>
+          <option value="specialist-advice">Specialist advice</option>
+        </select></label>
+        <label class="wide">Source reference<input name="sourceReference" placeholder="Official URL, adviser note or internal decision"></label>
+        <button class="wide" type="submit">Save task locally</button>
+      </form>
+    </section>
+  </main>
+  <script src="js/m5/compliance-workspace-model.js"></script>
+  <script src="js/m5/compliance-workspace-app.js"></script>
+</body>
+</html>
