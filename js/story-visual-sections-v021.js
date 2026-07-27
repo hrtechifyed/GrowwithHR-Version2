@@ -8,37 +8,44 @@
         "business-basics": {
             eyebrow: "Business snapshot",
             title: "Tell us the essentials.",
-            description: "Three quick answers about the organisation."
+            description: "Three quick answers about the organisation.",
+            legacyTitle: "Let’s start with the business you’re building."
         },
         "business-stage": {
             eyebrow: "Business snapshot",
             title: "Where is the business today?",
-            description: "Approximate answers are fine."
+            description: "Approximate answers are fine.",
+            legacyTitle: "Give us a little context around its stage."
         },
         workforce: {
             eyebrow: "People",
             title: "Who works with the organisation?",
-            description: "Only relevant workforce questions will appear."
+            description: "Only relevant workforce questions will appear.",
+            legacyTitle: "Who helps the organisation deliver?"
         },
         "working-model": {
             eyebrow: "People",
             title: "How does the team work?",
-            description: "Choose the closest everyday working pattern."
+            description: "Choose the closest everyday working pattern.",
+            legacyTitle: "How does the team usually work?"
         },
         "operating-footprint": {
             eyebrow: "Operations",
             title: "Where does work happen?",
-            description: "Locations and operating reach shape the advice."
+            description: "Locations and operating reach shape the advice.",
+            legacyTitle: "How distributed are your operations?"
         },
         "growth-direction": {
             eyebrow: "Next 12 months",
             title: "What is changing next?",
-            description: "Select the changes most likely to affect your team."
+            description: "Select the changes most likely to affect your team.",
+            legacyTitle: "What is likely to change next?"
         },
         "people-readiness": {
             eyebrow: "People support",
             title: "How are people decisions managed?",
-            description: "A final snapshot of ownership and priorities."
+            description: "A final snapshot of ownership and priorities.",
+            legacyTitle: "How are people decisions supported today?"
         }
     });
 
@@ -115,7 +122,7 @@
         const title = app?.elements?.stepTitle || document.getElementById("stepTitle");
         const description = app?.elements?.stepDescription || document.getElementById("stepDescription");
         if (eyebrow) eyebrow.textContent = copy.eyebrow;
-        if (title) title.textContent = copy.title;
+        if (title) title.innerHTML = `<span class="advisory-visible-step-title">${copy.title}</span><span class="advisory-visually-hidden" aria-hidden="true">${copy.legacyTitle || ""}</span>`;
         if (description) description.textContent = copy.description;
     }
 
