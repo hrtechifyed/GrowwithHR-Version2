@@ -132,7 +132,19 @@
                 cursor += row.lines.length * lineHeight(8, 1.24) + 5;
             });
             if (linkUrl) {
-                const chipWidth = Math.min(width - 20, Math.max(48, 14 + (typeof doc.getTextWidth === "function" ? doc.getTextWidth(linkLabel) : linkLabel.length * 2)));
+                let measuredWidth = NaN;
+                try {
+                    const candidate = typeof doc.getTextWidth === "function"
+                        ? doc.getTextWidth(linkLabel)
+                        : undefined;
+                    if (typeof candidate === "number" && Number.isFinite(candidate)) {
+                        measuredWidth = candidate;
+                    }
+                } catch (_error) {}
+                const labelWidth = Number.isFinite(measuredWidth)
+                    ? measuredWidth
+                    : linkLabel.length * 2;
+                const chipWidth = Math.min(width - 20, Math.max(48, 14 + labelWidth));
                 doc.setFillColor(...colours.surfaceAlt); doc.setDrawColor(...colours.blue);
                 doc.roundedRect(PAGE.left + 10, cursor, chipWidth, 10, 2, 2, "FD");
                 doc.setFont("helvetica", "bold"); doc.setFontSize(7.2); doc.setTextColor(...colours.blue);
