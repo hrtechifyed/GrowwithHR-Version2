@@ -177,6 +177,23 @@
         });
     }
 
+    function compactAdaptiveHeadings(container) {
+        const headings = [...container.querySelectorAll(".advisory-industry-adaptive__heading")];
+        headings.forEach((heading, index) => {
+            const eyebrow = heading.querySelector(".advisory-field-help");
+            const title = heading.querySelector("h3");
+            const body = heading.querySelector("p:not(.advisory-field-help)");
+            if (index === 0) {
+                if (eyebrow) eyebrow.textContent = "WORKFORCE DETAILS";
+                if (title) title.textContent = "Who works with you?";
+                if (body) body.textContent = "Optional answers improve the legal checks. No individual salaries are requested; choose Not sure when needed.";
+                return;
+            }
+            if (eyebrow) eyebrow.textContent = "INDUSTRY CONTEXT";
+            if (body) body.textContent = "These questions appear because your industry can change which People compliance duties need attention.";
+        });
+    }
+
     function compactCopy(app) {
         const moment = currentMoment(app);
         const copy = COPY[moment?.id];
@@ -198,6 +215,7 @@
         if (!container) return false;
         document.body.classList.add("advisory-compact-story");
         compactCopy(app);
+        compactAdaptiveHeadings(container);
         decorateCards(container);
         const chapterInsight = addChapterInsight(app);
         addQuickGuide(app, container, chapterInsight);
