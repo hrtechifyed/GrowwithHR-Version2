@@ -10,6 +10,15 @@ on:
       - "js/report-acceptance-corrections.js"
       - "js/report-sequence-controller.js"
       - "js/report-founder-summary-corrections.js"
+      - "js/report-intelligence-v020-fixes.js"
+      - "js/report-context-question-ui-fixes.js"
+      - "js/sector-context-intelligence-v020.js"
+      - "js/sector-context-intelligence-v020-patch.js"
+      - "js/story-visual-sections-v021.js"
+      - "js/report-visual-core-v021.js"
+      - "js/report-visual-renderers-v021.js"
+      - "js/report-visual-sections-v021.js"
+      - "css/21-story-visual-sections.css"
       - "server-entry.js"
       - "server-m4-delivery.js"
       - "tests/m4-law-transparency-combination-checks.mjs"
@@ -18,6 +27,7 @@ on:
       - "tests/report-runtime-corrections-checks.mjs"
       - "tests/report-sequence-controller-checks.mjs"
       - "tests/report-acceptance-corrections-checks.mjs"
+      - "tests/visual-story-report-v021-checks.mjs"
       - "docs/releases/v0.20.0-integrated-report-industry-profiles.md"
       - "docs/releases/v0.23.0-founder-first-report.md"
       - ".github/workflows/m4-report-integration.yml"
@@ -47,6 +57,10 @@ jobs:
           node --check js/report-acceptance-corrections.js
           node --check js/report-sequence-controller.js
           node --check js/report-founder-summary-corrections.js
+          node --check js/story-visual-sections-v021.js
+          node --check js/report-visual-core-v021.js
+          node --check js/report-visual-renderers-v021.js
+          node --check js/report-visual-sections-v021.js
           node --check server-entry.js
           node --check server-m4-delivery.js
           node --check tests/m4-report-integration-checks.mjs
@@ -54,6 +68,7 @@ jobs:
           node --check tests/report-runtime-corrections-checks.mjs
           node --check tests/report-sequence-controller-checks.mjs
           node --check tests/report-acceptance-corrections-checks.mjs
+          node --check tests/visual-story-report-v021-checks.mjs
       - name: Run client readiness contract
         run: npm run test:client-readiness
       - name: Run server CORS contract
@@ -72,5 +87,7 @@ jobs:
         run: node tests/report-sequence-controller-checks.mjs
       - name: Run report acceptance correction contracts
         run: node tests/report-acceptance-corrections-checks.mjs
+      - name: Run visual story and report contracts
+        run: node tests/visual-story-report-v021-checks.mjs
       - name: Run M4 visible report and delivery contracts
         run: node tests/m4-report-integration-checks.mjs

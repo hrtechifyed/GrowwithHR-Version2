@@ -17,6 +17,7 @@ on:
       - "css/19-compliance-dna.css"
       - "css/19-presentation-polish.css"
       - "css/20-compliance-story.css"
+      - "css/21-story-visual-sections.css"
       - "data/assessment/**"
       - "data/schema/**"
       - "js/config/app-config.js"
@@ -38,6 +39,10 @@ on:
       - "js/report-context-question-ui-fixes.js"
       - "js/sector-context-intelligence-v020.js"
       - "js/sector-context-intelligence-v020-patch.js"
+      - "js/story-visual-sections-v021.js"
+      - "js/report-visual-core-v021.js"
+      - "js/report-visual-renderers-v021.js"
+      - "js/report-visual-sections-v021.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
       - "playwright.config.ts"
@@ -59,6 +64,7 @@ on:
       - "css/19-compliance-dna.css"
       - "css/19-presentation-polish.css"
       - "css/20-compliance-story.css"
+      - "css/21-story-visual-sections.css"
       - "data/assessment/**"
       - "data/schema/**"
       - "js/config/app-config.js"
@@ -80,6 +86,10 @@ on:
       - "js/report-context-question-ui-fixes.js"
       - "js/sector-context-intelligence-v020.js"
       - "js/sector-context-intelligence-v020-patch.js"
+      - "js/story-visual-sections-v021.js"
+      - "js/report-visual-core-v021.js"
+      - "js/report-visual-renderers-v021.js"
+      - "js/report-visual-sections-v021.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
       - "playwright.config.ts"
@@ -135,6 +145,7 @@ jobs:
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
           tests/e2e/report-intelligence-v020.spec.ts
+          tests/e2e/visual-story-report-v021.spec.ts
           --project=chromium
 
       - name: Upload Playwright report

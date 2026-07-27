@@ -8,6 +8,7 @@ on:
       - "fix/**"
       - "release/**"
       - "hotfix/**"
+      - "agent/**"
 
   pull_request:
     branches:
@@ -65,10 +66,11 @@ jobs:
       - name: Run presentation checks
         run: npm run test:presentation
 
-      - name: Run report experience and intelligence checks
+      - name: Run report experience, intelligence and visual-section checks
         run: >
           npm run test:report-experience &&
-          npm run test:report-intelligence
+          npm run test:report-intelligence &&
+          npm run test:visual-story-report
 
       - name: Run journey and scenario regression checks
         run: >
