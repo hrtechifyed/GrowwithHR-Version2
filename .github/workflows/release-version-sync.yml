@@ -13,6 +13,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release-version-sync-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   sync-version:
     runs-on: ubuntu-latest
