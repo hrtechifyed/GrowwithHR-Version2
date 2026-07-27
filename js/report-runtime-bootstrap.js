@@ -81,6 +81,7 @@
             if (!acceptanceReady) throw new Error("The single-tier report assembler did not become ready.");
 
             await import("./report-intelligence-v020-fixes.js");
+            await import("./report-context-question-ui-fixes.js");
             const intelligenceReady = await waitFor(() => Boolean(
                 window.GrowWithHRPDF?.reportIntelligenceFixVersion &&
                 window.GrowWithHRPDF?.reportStructureVersion === "contextual-single-tier-v2"
@@ -90,7 +91,8 @@
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
                 ready: true,
-                reportIntelligenceFixes: true
+                reportIntelligenceFixes: true,
+                contextualQuestionUiFixes: true
             });
         } catch (error) {
             loading = false;
