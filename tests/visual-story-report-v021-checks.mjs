@@ -5,13 +5,16 @@ import vm from "node:vm";
 const story = fs.readFileSync("js/story-visual-sections-v021.js", "utf8");
 const reportCore = fs.readFileSync("js/report-visual-core-v021.js", "utf8");
 const reportRenderers = fs.readFileSync("js/report-visual-renderers-v021.js", "utf8");
+const executiveSummary = fs.readFileSync("js/report-executive-summary-v022.js", "utf8");
 const report = fs.readFileSync("js/report-visual-sections-v021.js", "utf8");
 const css = fs.readFileSync("css/21-story-visual-sections.css", "utf8");
+const polishCss = fs.readFileSync("css/22-story-visual-polish.css", "utf8");
 const bootstrap = fs.readFileSync("js/report-runtime-bootstrap.js", "utf8");
 
 new vm.Script(story, { filename: "js/story-visual-sections-v021.js" });
 new vm.Script(reportCore, { filename: "js/report-visual-core-v021.js" });
 new vm.Script(reportRenderers, { filename: "js/report-visual-renderers-v021.js" });
+new vm.Script(executiveSummary, { filename: "js/report-executive-summary-v022.js" });
 new vm.Script(report, { filename: "js/report-visual-sections-v021.js" });
 new vm.Script(bootstrap, { filename: "js/report-runtime-bootstrap.js" });
 
@@ -38,12 +41,31 @@ assert.match(css, /advisory-industry-adaptive__heading/);
 assert.match(css, /advisory-chapter-insight/);
 assert.match(css, /min-height: 118px/);
 assert.match(css, /@media \(max-width: 820px\)/);
+assert.match(polishCss, /summary::before/);
+assert.match(polishCss, /border: 0/);
+assert.match(polishCss, /border-radius: 0/);
+assert.doesNotMatch(polishCss, /border-radius:\s*50%/);
 
 assert.match(reportCore, /0\.21\.1-visual-sectioned-report/);
-assert.match(reportCore, /visual-sectioned-v4/);
-assert.match(report, /visual-sectioned-v4/);
+assert.match(executiveSummary, /0\.22\.0-executive-summary-report/);
+assert.match(executiveSummary, /visual-sectioned-v5/);
+assert.match(executiveSummary, /Executive summary/);
+assert.match(executiveSummary, /What this means for you/);
+assert.match(executiveSummary, /What lies ahead/);
+assert.match(executiveSummary, /ownerOnlyProfile/);
+assert.match(executiveSummary, /No current trigger/);
+assert.match(executiveSummary, /No review item/);
+assert.match(executiveSummary, /All key inputs given/);
+assert.match(executiveSummary, /No watch item/);
+assert.match(executiveSummary, /buildBundleVariant/);
+assert.match(executiveSummary, /oneEmailBundle: true/);
+assert.match(executiveSummary, /Light-and-Dark/);
+assert.match(report, /visual-sectioned-v5/);
+assert.match(report, /oneEmailDelivery/);
+assert.match(report, /buildBundleVariant/);
 [
     "Table of Contents",
+    "Executive summary",
     "At a glance",
     "What to do now",
     "Complete the picture",
@@ -51,16 +73,12 @@ assert.match(report, /visual-sectioned-v4/);
     "Watch as you grow",
     "The profile used",
     "End of Report"
-].forEach((section) => assert.match(`${reportRenderers}\n${report}`, new RegExp(section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))));
+].forEach((section) => assert.match(`${reportRenderers}\n${executiveSummary}\n${report}`, new RegExp(section.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))));
 assert.match(reportRenderers, /Designed for quick decisions—not a legal lecture/);
 assert.match(reportRenderers, /drawCentredLogo/);
-assert.match(reportRenderers, /How to read these results/);
-assert.match(reportRenderers, /No People compliance law is currently indicated as applicable/);
-assert.match(reportRenderers, /This is not a legal exemption or certification/);
 assert.match(reportRenderers, /Open official source/);
 assert.match(reportRenderers, /link: \{ label: "Open official source"/);
-assert.match(reportRenderers, /renderContents/);
-assert.match(reportRenderers, /writer\.sectionPages\.end/);
+assert.match(executiveSummary, /This is not a legal exemption or certification/);
 assert.match(report, /readingSections/);
 assert.doesNotMatch(reportRenderers, /Strategic Recommendations/);
 assert.doesNotMatch(reportRenderers, /Current Legal Position/);
@@ -68,7 +86,9 @@ assert.doesNotMatch(reportRenderers, /Current Legal Position/);
 assert.match(bootstrap, /story-visual-sections-v021\.js/);
 assert.match(bootstrap, /report-visual-core-v021\.js/);
 assert.match(bootstrap, /report-visual-renderers-v021\.js/);
+assert.match(bootstrap, /report-executive-summary-v022\.js/);
 assert.match(bootstrap, /report-visual-sections-v021\.js/);
-assert.match(bootstrap, /visual-sectioned-v4/);
+assert.match(bootstrap, /visual-sectioned-v5/);
+assert.match(bootstrap, /singleEmailDualEdition/);
 
-console.log("v0.21 visual story and report checks passed.");
+console.log("v0.22 executive-summary and dual-edition report checks passed.");

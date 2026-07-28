@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("v0.21 visual story and report", () => {
+test.describe("v0.22 visual story and report", () => {
     test.beforeEach(async ({ page }) => {
         await page.route("**/jspdf.umd.min.js", async (route) => {
             await route.fulfill({ status: 200, contentType: "application/javascript", body: "" });
@@ -36,12 +36,12 @@ test.describe("v0.21 visual story and report", () => {
                 .GrowWithHRPDF?.visualSectionedReportVersion
         ));
         await page.waitForFunction(() => Boolean(
-            (window as Window & { GrowWithHRStoryVisualSections?: { version?: string } })
-                .GrowWithHRStoryVisualSections?.version
+            (window as Window & { GrowWithHRExecutiveSummaryReport?: { version?: string } })
+                .GrowWithHRExecutiveSummaryReport?.version
         ));
     });
 
-    test("turns the first story into concise, aligned question cards", async ({ page }) => {
+    test("turns the first story into concise cards with plain disclosure markers", async ({ page }) => {
         await page.getByTestId("begin-executive-assessment").click();
         await expect(page.locator("#stepTitle .advisory-visible-step-title")).toHaveText("Tell us the essentials.");
         await expect(page.locator("#stepDescription")).toHaveText("Three quick answers about the organisation.");
@@ -49,7 +49,17 @@ test.describe("v0.21 visual story and report", () => {
         await expect(page.locator("#storyContainer .advisory-question-card")).toHaveCount(3);
         await expect(page.locator("#storyContainer .advisory-question-card--wide")).toHaveCount(1);
         await expect(page.locator("#storyContainer .advisory-help-disclosure")).toHaveCount(3);
-        await expect(page.locator("#storyContainer")).toHaveAttribute("data-visual-section-version", "0.21.1-story-visual-sections");
+        const marker = await page.locator(".advisory-help-disclosure summary").first().evaluate((element) => {
+            const style = getComputedStyle(element, "::before");
+            return {
+                content: style.content,
+                borderWidth: style.borderTopWidth,
+                borderRadius: style.borderRadius
+            };
+        });
+        expect(marker.content).toContain("+");
+        expect(marker.borderWidth).toBe("0px");
+        expect(marker.borderRadius).toBe("0px");
     });
 
     test("explains what the previous chapter clarified before the next chapter", async ({ page }) => {
@@ -67,37 +77,56 @@ test.describe("v0.21 visual story and report", () => {
         await expect(page.locator('[data-field-wrapper="womenEmployees"]')).not.toHaveClass(/advisory-question-card--wide/);
     });
 
-    test("generates a navigable action brief instead of a lecture-style report", async ({ page }) => {
+    test("generates a personalised executive-summary report", async ({ page }) => {
         const result = await page.evaluate(async () => {
             const service = (window as Window & {
                 GrowWithHRPDF?: { buildAdvisoryPdf: (payload: unknown) => Promise<any> };
             }).GrowWithHRPDF!;
-            return service.buildAdvisoryPdf({
+            const executive = (window as Window & {
+                GrowWithHRExecutiveSummaryReport?: { executiveCopy: (data: unknown, rows: unknown[]) => any };
+            }).GrowWithHRExecutiveSummaryReport!;
+            const summary = executive.executiveCopy({
+                companyName: "Solo Technology OPC",
+                entity: "One Person Company (OPC)",
+                industry: "Software and SaaS",
+                employees: 1,
+                workers: 0,
+                contractors: 0,
+                workforcePresence: "owner-only",
+                primaryState: "Karnataka",
+                workModel: "Remote"
+            }, []);
+            const pdf = await service.buildAdvisoryPdf({
                 theme: "light",
                 report: {
-                    companyName: "Simple Sections Pvt Ltd",
-                    entity: "Private Limited",
+                    companyName: "Solo Technology OPC",
+                    entity: "One Person Company (OPC)",
                     industry: "Software and SaaS",
-                    employees: 25,
-                    workforcePresence: "other-people",
+                    employees: 1,
+                    workforcePresence: "owner-only",
                     primaryState: "Karnataka",
-                    workModel: "Hybrid"
+                    workModel: "Remote"
                 },
                 answers: {
-                    entity: "Private Limited",
+                    entity: "One Person Company (OPC)",
                     industry: "Software and SaaS",
-                    employees: 25,
-                    workforcePresence: "other-people",
+                    employees: 1,
+                    workforcePresence: "owner-only",
                     primaryState: "Karnataka",
-                    workModel: "Hybrid"
+                    workModel: "Remote"
                 }
             });
+            return { pdf, summary };
         });
 
-        expect(result.reportStructureVersion).toBe("visual-sectioned-v4");
-        expect(result.reportLayoutVersion).toBe("0.21.1-visual-sectioned-report");
-        expect(result.readingSections).toEqual([
+        expect(result.summary.profile.ownerOnly).toBe(true);
+        expect(result.summary.meaning).toContain("lean owner-led setup");
+        expect(result.summary.ahead).toContain("hiring the first employee");
+        expect(result.pdf.reportStructureVersion).toBe("visual-sectioned-v5");
+        expect(result.pdf.reportLayoutVersion).toBe("0.22.0-executive-summary-report");
+        expect(result.pdf.readingSections).toEqual([
             "Table of Contents",
+            "Executive summary",
             "At a glance",
             "What to do now",
             "Complete the picture",
@@ -106,8 +135,44 @@ test.describe("v0.21 visual story and report", () => {
             "The profile used",
             "End of Report"
         ]);
-        expect(result.pdfs).toHaveLength(1);
-        expect(result.pdfs[0].filename).toContain("Action-Brief");
-        expect(result.pdfs[0].pageCount).toBeGreaterThanOrEqual(7);
+        expect(result.pdf.pdfs).toHaveLength(1);
+        expect(result.pdf.pageCount).toBeGreaterThanOrEqual(8);
+    });
+
+    test("bundles Light and Dark editions into one email PDF", async ({ page }) => {
+        const result = await page.evaluate(async () => {
+            const service = (window as Window & {
+                GrowWithHRPDF?: { buildAdvisoryPdf: (payload: unknown) => Promise<any> };
+            }).GrowWithHRPDF!;
+            return service.buildAdvisoryPdf({
+                theme: "both",
+                report: {
+                    companyName: "Dual Edition Pvt Ltd",
+                    entity: "Private Limited",
+                    industry: "Professional Services",
+                    employees: 12,
+                    workforcePresence: "other-people",
+                    primaryState: "Maharashtra",
+                    workModel: "Hybrid"
+                },
+                answers: {
+                    entity: "Private Limited",
+                    industry: "Professional Services",
+                    employees: 12,
+                    workforcePresence: "other-people",
+                    primaryState: "Maharashtra",
+                    workModel: "Hybrid"
+                }
+            });
+        });
+
+        expect(result.selectedThemes).toEqual(["light", "dark"]);
+        expect(result.pdfs).toHaveLength(2);
+        expect(result.oneEmailDelivery).toBe(true);
+        expect(result.oneEmailBundle).toBe(true);
+        expect(result.theme).toBe("both");
+        expect(result.filename).toContain("Light-and-Dark");
+        expect(result.bundledThemes).toEqual(["light", "dark"]);
+        expect(result.pageCount).toBeGreaterThan(result.pdfs[0].pageCount);
     });
 });

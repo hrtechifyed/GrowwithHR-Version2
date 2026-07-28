@@ -1,0 +1,26 @@
+/* GrowWithHR v0.22 story disclosure and alignment polish */
+
+.analyze-company-page .advisory-help-disclosure summary::before {
+    content: "+";
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-right: 7px;
+    border: 0;
+    border-radius: 0;
+    color: currentColor;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1;
+    vertical-align: -0.04em;
+}
+
+.analyze-company-page .advisory-help-disclosure[open] summary::before {
+    content: "−";
+}
+
+.analyze-company-page .advisory-help-disclosure summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+}
