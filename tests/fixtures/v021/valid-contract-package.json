@@ -1,0 +1,178 @@
+{
+  "contractVersion": "0.21.0-contract.1",
+  "generatedAt": "2026-07-28T10:00:00.000Z",
+  "runtimeEnabled": false,
+  "tenantBoundary": {
+    "tenantId": "tenant.demo-001",
+    "organisationId": "organisation.demo-001"
+  },
+  "contracts": {
+    "organisationProfile": {
+      "schemaVersion": "1.0.0",
+      "profileId": "profile.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "organisationName": "Example Private Limited",
+      "status": "draft",
+      "createdAt": "2026-07-28T10:00:00.000Z",
+      "updatedAt": "2026-07-28T10:00:00.000Z",
+      "sourceProvenance": {
+        "sourceType": "browser-local",
+        "sourceReference": "growwithhr-compliance-workspace-v1",
+        "recordedAt": "2026-07-28T10:00:00.000Z"
+      }
+    },
+    "workspaceTask": {
+      "schemaVersion": "1.0.0",
+      "taskId": "task.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "title": "Confirm registration position",
+      "description": "Review the advisory item and confirm the next action.",
+      "ownerRef": "Founder",
+      "status": "not-started",
+      "dueDate": "2026-08-31",
+      "dueDateSource": "internal-target",
+      "sourceReference": "Founder decision",
+      "statusHistory": [
+        {
+          "eventId": "task-event.demo-001",
+          "status": "not-started",
+          "occurredAt": "2026-07-28T10:01:00.000Z",
+          "actorType": "user",
+          "actorId": "user.demo-001",
+          "note": "Created from the browser-local workspace."
+        }
+      ],
+      "createdAt": "2026-07-28T10:01:00.000Z",
+      "updatedAt": "2026-07-28T10:01:00.000Z",
+      "sourceProvenance": {
+        "sourceType": "browser-local",
+        "sourceReference": "growwithhr-compliance-workspace-v1/task.demo-001",
+        "recordedAt": "2026-07-28T10:01:00.000Z"
+      }
+    },
+    "evidenceMetadata": {
+      "schemaVersion": "1.0.0",
+      "evidenceId": "evidence.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "taskId": "task.demo-001",
+      "label": "Registration certificate",
+      "fileName": "registration-certificate.pdf",
+      "mediaType": "application/pdf",
+      "lifecycleState": "placeholder",
+      "verificationState": "not-verified",
+      "contentStored": false,
+      "retentionClass": "not-set",
+      "createdAt": "2026-07-28T10:02:00.000Z",
+      "updatedAt": "2026-07-28T10:02:00.000Z",
+      "sourceProvenance": {
+        "sourceType": "user-entered",
+        "sourceReference": "Local evidence placeholder",
+        "recordedAt": "2026-07-28T10:02:00.000Z"
+      }
+    },
+    "consentRecord": {
+      "schemaVersion": "1.0.0",
+      "consentId": "consent.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "subjectRef": "user.demo-001",
+      "purpose": "Contract validation fixture only; runtime persistence remains disabled.",
+      "scope": ["profile", "tasks", "evidence-metadata", "audit", "cross-device-resume"],
+      "status": "granted",
+      "policyVersion": "draft-0.21.0",
+      "recordedAt": "2026-07-28T10:03:00.000Z"
+    },
+    "auditEvent": {
+      "schemaVersion": "1.0.0",
+      "eventId": "audit.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "eventType": "contract.fixture.created",
+      "actorType": "system",
+      "actorId": "system.contract-test",
+      "objectType": "migration",
+      "objectId": "migration.demo-001",
+      "occurredAt": "2026-07-28T10:04:00.000Z",
+      "eventHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "sourceProvenance": {
+        "sourceType": "system-generated",
+        "sourceReference": "tests/v021-evidence-persistence-contract-checks.mjs",
+        "recordedAt": "2026-07-28T10:04:00.000Z"
+      }
+    },
+    "exportPackage": {
+      "schemaVersion": "1.0.0",
+      "exportId": "export.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "requestedAt": "2026-07-28T10:05:00.000Z",
+      "producedAt": "2026-07-28T10:05:10.000Z",
+      "status": "complete",
+      "includedTypes": ["profile", "tasks", "evidence-metadata", "audit", "consent"],
+      "itemCounts": {
+        "profiles": 1,
+        "tasks": 1,
+        "evidenceMetadata": 1,
+        "auditEvents": 1
+      },
+      "integrityDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "deletionReceipt": {
+      "schemaVersion": "1.0.0",
+      "requestId": "deletion.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "requestedAt": "2026-07-28T10:06:00.000Z",
+      "completedAt": "2026-07-28T10:06:30.000Z",
+      "status": "complete",
+      "scopes": ["profile", "tasks", "evidence-metadata", "audit-indexes", "derived-indexes"],
+      "deletedItemCounts": {
+        "profiles": 1,
+        "tasks": 1,
+        "evidenceMetadata": 1,
+        "auditEvents": 0
+      },
+      "backupExpiryAt": "2026-08-27T10:06:30.000Z",
+      "limitations": ["Audit events may be retained where legally required and must be documented separately."]
+    },
+    "backupManifest": {
+      "schemaVersion": "1.0.0",
+      "backupId": "backup.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "createdAt": "2026-07-28T10:07:00.000Z",
+      "encrypted": true,
+      "itemCounts": {
+        "profiles": 1,
+        "tasks": 1,
+        "evidenceMetadata": 1,
+        "auditEvents": 1
+      },
+      "integrityDigest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "restoreStatus": "passed",
+      "lastRestoreTestedAt": "2026-07-28T10:08:00.000Z"
+    },
+    "migrationReceipt": {
+      "schemaVersion": "1.0.0",
+      "migrationId": "migration.demo-001",
+      "tenantId": "tenant.demo-001",
+      "organisationId": "organisation.demo-001",
+      "sourceSchema": "growwithhr-compliance-workspace-v1",
+      "destinationSchema": "v021-evidence-persistence-1.0.0",
+      "startedAt": "2026-07-28T10:09:00.000Z",
+      "completedAt": "2026-07-28T10:09:10.000Z",
+      "itemCounts": {
+        "profiles": 1,
+        "tasks": 1,
+        "evidenceMetadata": 1,
+        "auditEvents": 1
+      },
+      "outcome": "complete",
+      "sourcePreserved": true,
+      "idempotencyKey": "migration-key.demo-001"
+    }
+  }
+}
