@@ -9,13 +9,12 @@
         throw new Error("GrowWithHR visual report modules must load before the executive-summary refinement.");
     }
 
-    const VERSION = "0.22.0-executive-summary-report";
+    const VERSION = "0.22.1-profile-tailored-executive-summary";
     const STRUCTURE_VERSION = "visual-sectioned-v5";
 
     const {
         clean,
         compact,
-        values,
         mergeSource,
         palette,
         createWriter,
@@ -44,6 +43,15 @@
         return clean(value).toLowerCase();
     }
 
+    function values(value) {
+        if (Array.isArray(value)) return value.map((item) => clean(item)).filter(Boolean);
+        return clean(value).split(/[;,|]/).map((item) => item.trim()).filter(Boolean);
+    }
+
+    function truthy(value) {
+        return value === true || ["yes", "true", "1", "active", "planned"].includes(lower(value));
+    }
+
     function ownerOnlyProfile(data = {}) {
         const workforcePresence = lower(data.workforcePresence || data.peoplePresence || data.teamPresence);
         const legalStructure = lower(data.entity || data.legalStructure || data.establishmentType);
@@ -61,6 +69,46 @@
         return (explicitOwnerOnly || opcLeanProfile) && workerCount === 0 && contractorCount === 0;
     }
 
+    function legalFamily(value) {
+        const text = lower(value);
+        if (/one person|\bopc\b|sole propriet/.test(text)) return "owner-led";
+        if (/partnership|\bllp\b/.test(text)) return "partnership";
+        if (/non.?profit|section 8|trust|society|ngo/.test(text)) return "mission-led";
+        if (/public limited|listed/.test(text)) return "public-company";
+        if (/private limited|company|corporat/.test(text)) return "company";
+        return "other";
+    }
+
+    function sectorFamily(value) {
+        const text = lower(value);
+        if (/software|saas|technology|it services|consult|professional|agency/.test(text)) return "knowledge-services";
+        if (/retail|e-?commerce|hospitality|restaurant|hotel|travel/.test(text)) return "customer-operations";
+        if (/health|hospital|clinic|life science|pharma|education|school|training/.test(text)) return "care-education";
+        if (/construction|real estate|logistics|warehouse|transport|delivery/.test(text)) return "site-operations";
+        if (/manufactur|factory|industrial|production|semiconductor/.test(text)) return "manufacturing";
+        if (/bank|financial|insurance|fintech|investment/.test(text)) return "financial-services";
+        if (/media|creative|entertainment|non.?profit|social enterprise/.test(text)) return "creative-mission";
+        return "general";
+    }
+
+    function workforceStage(total, ownerOnly) {
+        if (ownerOnly) return "owner-only";
+        if (total <= 0) return "workforce-unconfirmed";
+        if (total <= 9) return "micro-team";
+        if (total <= 19) return "emerging-team";
+        if (total <= 49) return "growing-team";
+        if (total <= 99) return "established-team";
+        return "scaled-workforce";
+    }
+
+    function workforceMix(employees, workers, contractors) {
+        if (contractors > 0 && employees === 0 && workers === 0) return "contractor-led";
+        if (employees > 0 && (workers > 0 || contractors > 0)) return "mixed-workforce";
+        if (workers > 0 && employees === 0) return "worker-led";
+        if (employees > 0) return "employee-led";
+        return "not-confirmed";
+    }
+
     function organisationProfile(data = {}) {
         const companyName = clean(data.companyName, "Your Organisation");
         const legalStructure = clean(
@@ -71,9 +119,15 @@
         const state = clean(data.primaryState || data.state, "location not specified");
         const workModel = clean(data.workModel || data.workingModel, "working model not specified");
         const employees = numberValue(data.employees, data.employeeCount, data.headcount);
-        const workers = numberValue(data.workers, data.workerCount);
+        const workers = numberValue(data.workers, data.workerCount, data.blueCollarWorkers);
         const contractors = numberValue(data.contractors, data.contractWorkers, data.consultants);
         const ownerOnly = ownerOnlyProfile(data);
+        const totalPeople = ownerOnly ? 0 : employees + workers + contractors;
+        const operatingStates = values(data.operatingStates || data.states || data.locations);
+        const multiState = /pan.?india|multiple states/.test(lower(state)) || operatingStates.length > 1;
+        const shifts = truthy(data.shiftWork || data.nightShift || data.continuousOperations) || /shift|night|24.?7/.test(lower(data.operatingModel));
+        const manufacturing = truthy(data.manufacturingProcess || data.manufacturingActivity) || sectorFamily(industry) === "manufacturing";
+        const expansion = values(data.expansionPlans || data.hiringPlans || data.growthPlans || data.priorities);
         return {
             companyName,
             legalStructure,
@@ -83,7 +137,17 @@
             employees,
             workers,
             contractors,
-            ownerOnly
+            totalPeople,
+            ownerOnly,
+            legalFamily: legalFamily(legalStructure),
+            sectorFamily: sectorFamily(industry),
+            workforceStage: workforceStage(totalPeople, ownerOnly),
+            workforceMix: workforceMix(employees, workers, contractors),
+            operatingStates,
+            multiState,
+            shifts,
+            manufacturing,
+            expansion
         };
     }
 
@@ -96,47 +160,93 @@
         };
     }
 
+    function legalStructureGuidance(profile) {
+        const guidance = {
+            "owner-led": "Keep the entity, tax, banking and engagement records aligned with the owner-led operating model.",
+            partnership: "Keep partner authority, engagement decisions and responsibility for People matters clearly documented.",
+            company: "Use clear director or management ownership for People compliance, records and approvals.",
+            "public-company": "Use formal governance, documented ownership and an auditable review rhythm across business units.",
+            "mission-led": "Keep trustee, board or governing-body oversight aligned with the way staff, volunteers and contractors are engaged.",
+            other: "Confirm who is accountable for People decisions and retain the records supporting the organisation structure."
+        };
+        return guidance[profile.legalFamily];
+    }
+
+    function workforceGuidance(profile) {
+        const guidance = {
+            "owner-only": "The current profile is lean and owner/director-led. Employee-law obligations generally become more relevant when another person begins working with the organisation.",
+            "workforce-unconfirmed": "The workforce position is not yet fully confirmed, so the report should be refreshed as soon as employee, worker or contractor numbers are known.",
+            "micro-team": "A small team allows simple controls, but appointment terms, attendance, pay records, leave and role ownership should be established early.",
+            "emerging-team": "The organisation is approaching common headcount thresholds, so records, payroll controls and workplace responsibilities should become more formal.",
+            "growing-team": "The team size can activate additional threshold-based duties. Assign owners, maintain evidence and review applicability before further hiring.",
+            "established-team": "A more established workforce needs repeatable controls across hiring, pay, leave, welfare, complaints and statutory records.",
+            "scaled-workforce": "A scaled workforce benefits from central standards, local accountability, audit evidence and a scheduled compliance review cycle."
+        };
+        let text = guidance[profile.workforceStage];
+        if (profile.workforceMix === "contractor-led") text += " Contractor classification, scopes of work, invoices and principal-employer responsibilities deserve particular attention.";
+        if (profile.workforceMix === "mixed-workforce") text += " Apply consistent rules while keeping employee, worker and contractor records clearly separated.";
+        if (profile.workforceMix === "worker-led") text += " Site conditions, working hours, welfare and worker records should be managed as operating controls, not only HR administration.";
+        return text;
+    }
+
+    function sectorGuidance(profile) {
+        const guidance = {
+            "knowledge-services": "For knowledge and professional services, keep employment or consultancy terms, remote-work expectations, client-site arrangements and information-handling responsibilities clear.",
+            "customer-operations": "For customer-facing operations, monitor establishment locations, opening hours, shifts, temporary staff and seasonal workforce changes.",
+            "care-education": "For care or education settings, workforce credentials, safeguarding, shift coverage, outsourced staff and facility-specific responsibilities may need closer review.",
+            "site-operations": "For site-based operations, track project or warehouse locations, contractor chains, migrant or agency labour, safety responsibilities and state-specific registrations.",
+            manufacturing: "For manufacturing or production, factory status, power use, worker categories, shifts, welfare, safety and site records should be reviewed together.",
+            "financial-services": "For financial services, combine People controls with regulated outsourcing, confidentiality, fit-and-proper responsibilities and location-specific operations.",
+            "creative-mission": "For creative or mission-led work, distinguish employees, freelancers, volunteers and project staff, and document who owns workplace responsibilities.",
+            general: "The report uses the activities, workforce and locations supplied rather than assuming that every law applies to the sector."
+        };
+        return guidance[profile.sectorFamily];
+    }
+
+    function operatingGuidance(profile) {
+        const points = [];
+        if (profile.multiState) points.push("Because more than one state or a Pan-India footprint is indicated, confirm establishment and state-specific requirements location by location.");
+        if (/remote|hybrid/.test(lower(profile.workModel))) points.push("For remote or hybrid work, document the employing location, work location, working-time expectations and equipment or expense arrangements.");
+        if (/office|onsite|on-site|site/.test(lower(profile.workModel))) points.push("For workplace-based work, keep establishment, attendance, safety and local operating records aligned to each site.");
+        if (profile.shifts) points.push("Shift or night operations can change working-hour, transport, safety and women-worker requirements, so confirm them before scheduling people.");
+        if (profile.manufacturing) points.push("Production activity can create a separate factory and worker-compliance pathway; confirm the actual process and site facts before relying on a conclusion.");
+        if (!points.length) points.push("Reassess the report when the working model, locations, shifts or business activities change.");
+        return points.join(" ");
+    }
+
     function executiveCopy(data = {}, rows = []) {
         const profile = organisationProfile(data);
         const counts = statusCounts(rows);
+        const peopleText = profile.ownerOnly
+            ? "an owner/director-only operating model"
+            : profile.totalPeople
+                ? `${profile.totalPeople} people across the reported employee, worker and contractor categories`
+                : "a workforce position that still needs confirmation";
         const locationText = profile.state === "location not specified"
-            ? "with the operating location still to be confirmed"
+            ? "with the primary operating location still to be confirmed"
             : `with ${profile.state} recorded as the primary operating location`;
-        const modelText = profile.workModel === "working model not specified"
-            ? ""
-            : ` The reported working model is ${profile.workModel}.`;
+        const modelText = profile.workModel === "working model not specified" ? "" : ` The reported working model is ${profile.workModel}.`;
 
-        let overview;
-        let meaning;
-        let ahead;
-        let nextStep;
+        const overview = `${profile.companyName} is described as a ${profile.legalStructure} in ${profile.industry}, ${locationText}, and currently reports ${peopleText}.${modelText}`;
 
-        if (profile.ownerOnly) {
-            overview = `${profile.companyName} is described as a ${profile.legalStructure} in ${profile.industry}, ${locationText}. The answers indicate an owner/director-led organisation without a non-owner workforce.${modelText}`;
-            meaning = "The answers do not currently indicate a People-law trigger arising from employees or other workers. That supports continuing with a lean owner-led setup while company records, contracts, registrations and sector-specific obligations are maintained separately. This report is not a legal exemption or certification.";
-            ahead = "The position should be reassessed before hiring the first employee, regularly engaging contractors, opening a workplace, operating in another state, introducing shifts or beginning a new regulated activity. Those changes can activate payroll, welfare, workplace, registration and record-keeping duties.";
-            nextStep = "Keep a simple owner-led compliance file, record the current operating model and revisit this assessment before another person starts working with the organisation.";
+        let currentPosition;
+        if (counts.applicable) {
+            currentPosition = `${counts.applicable} People-compliance ${counts.applicable === 1 ? "requirement appears" : "requirements appear"} to meet the usual trigger from the answers supplied. Confirm each position through the official source and retain evidence.`;
+        } else if (counts.review) {
+            currentPosition = `No requirement is currently indicated as directly applicable, but ${counts.review} ${counts.review === 1 ? "item needs" : "items need"} qualified review before that conclusion is relied on.`;
+        } else if (counts.missing) {
+            currentPosition = "No requirement is currently indicated as directly applicable, but unanswered information could change the result.";
         } else {
-            const peopleSummary = [
-                profile.employees ? `${profile.employees} employee${profile.employees === 1 ? "" : "s"}` : "no confirmed employee count",
-                profile.workers ? `${profile.workers} worker${profile.workers === 1 ? "" : "s"}` : "",
-                profile.contractors ? `${profile.contractors} contractor${profile.contractors === 1 ? "" : "s"}` : ""
-            ].filter(Boolean).join(", ");
-            overview = `${profile.companyName} is described as a ${profile.legalStructure} in ${profile.industry}, ${locationText}. The current people profile records ${peopleSummary}.${modelText}`;
-            meaning = counts.applicable
-                ? `${counts.applicable} People-compliance ${counts.applicable === 1 ? "check appears" : "checks appear"} to meet the usual trigger from the answers supplied. The practical focus is to confirm the current legal position, assign ownership and retain evidence.`
-                : counts.review
-                    ? `No People-compliance law is currently indicated as directly applicable, but ${counts.review} ${counts.review === 1 ? "item needs" : "items need"} qualified review before that conclusion is relied on.`
-                    : "No current People-law trigger is indicated from the answers supplied. The organisation should still maintain basic records and reassess after a material workforce or operating change.";
-            ahead = counts.missing
-                ? `${counts.missing} unanswered ${counts.missing === 1 ? "item can" : "items can"} change the result. Confirming those answers is the fastest way to improve the reliability of the brief.`
-                : counts.watch
-                    ? `${counts.watch} future ${counts.watch === 1 ? "trigger has" : "triggers have"} been identified. Growth in headcount, locations, shifts, worker categories or business activities may make those requirements relevant.`
-                    : "The current profile is complete for this assessment. Reassess before a material change in headcount, location, legal structure, worker mix or operating model.";
-            nextStep = counts.applicable || counts.review || counts.missing
-                ? "Start with the first action card, confirm the official source and assign an accountable owner and target date."
-                : "Keep the current profile and supporting records together, then regenerate the brief when the organisation changes.";
+            currentPosition = "No People-compliance law is currently indicated as applicable from the answers supplied. This is not a legal exemption or certification.";
         }
+
+        const meaning = `${currentPosition} ${workforceGuidance(profile)} ${legalStructureGuidance(profile)}`;
+        const ahead = `${sectorGuidance(profile)} ${operatingGuidance(profile)}${profile.expansion.length ? ` The stated growth priorities—${compact(profile.expansion.slice(0, 3).join(", "), 130)}—should trigger a fresh review before implementation.` : ""}`;
+        const nextStep = counts.applicable || counts.review || counts.missing
+            ? "Begin with the first action card, confirm the official source, assign an accountable owner and set a target date."
+            : profile.ownerOnly
+                ? "Keep a simple owner-led compliance file and repeat the assessment before the first employee, regular contractor, new workplace, new state or regulated activity."
+                : "Keep the organisation profile and supporting records together, then regenerate the brief before a material workforce, location, shift or activity change.";
 
         return { profile, counts, overview, meaning, ahead, nextStep };
     }
@@ -144,32 +254,29 @@
     function renderExecutiveSummary(writer, rows, data) {
         const copy = executiveCopy(data, rows);
         const profile = copy.profile;
-        writer.sectionPage(
-            "executive",
-            "Executive summary",
-            copy.overview
-        );
+        const peopleProfile = profile.ownerOnly
+            ? "Owner/director only; no non-owner workforce reported."
+            : `${profile.employees} employees · ${profile.workers} workers · ${profile.contractors} contractors`;
+        writer.sectionPage("executive", "Executive summary", copy.overview);
         writer.infoCard(`${profile.companyName} at a glance`, [
             ["Legal structure", profile.legalStructure],
             ["Sector", profile.industry],
-            ["People profile", profile.ownerOnly
-                ? "Owner/director only; no non-owner workforce reported."
-                : `${profile.employees} employees · ${profile.workers} workers · ${profile.contractors} contractors`],
+            ["People profile", peopleProfile],
             ["Operating context", `${profile.state} · ${profile.workModel}`]
         ], { accent: writer.colours.blue, maxChars: 190 });
 
         writer.infoCard("What this means for you", [
             ["Current position", copy.meaning],
-            ["Why this is useful", "It identifies the decisions to take now and the business changes that should trigger a fresh review."]
+            ["Why this is useful", "The summary combines legal structure, sector, workforce scale and mix, locations, working model, shifts and activities rather than using one generic message."]
         ], {
             accent: copy.counts.applicable ? writer.colours.green : copy.counts.review ? writer.colours.amber : writer.colours.blue,
-            maxChars: 245
+            maxChars: 330
         });
 
         writer.infoCard("What lies ahead", [
-            ["Growth outlook", copy.ahead],
+            ["Business outlook", copy.ahead],
             ["Best next step", copy.nextStep]
-        ], { accent: writer.colours.accent, maxChars: 245 });
+        ], { accent: writer.colours.accent, maxChars: 330 });
     }
 
     function overviewValue(count, singularLabel, zeroLabel) {
@@ -183,7 +290,7 @@
         writer.sectionPage(
             "overview",
             "At a glance",
-            "A quick reading of the current People-compliance position. The wording below explains what each status means for this organisation."
+            "A quick reading of the current People-compliance position. Each status is stated as an outcome, not just a number."
         );
         const top = writer.getY();
         writer.statCard(16, top, 84, overviewValue(counts.applicable, "current trigger", "No current trigger"), "usual threshold appears met", writer.colours.green);
@@ -296,14 +403,14 @@
         }
     }
 
-    function serialise(doc, theme, data, suffix = "") {
+    function serialise(doc, theme, data) {
         const dataUri = doc.output("datauristring");
         const buffer = doc.output("arraybuffer");
         const company = clean(data.companyName, "Organisation")
             .replace(/[^a-z0-9]+/gi, "-")
             .replace(/^-+|-+$/g, "")
             .slice(0, 60) || "Organisation";
-        const edition = suffix || (theme === "dark" ? "Dark" : theme === "both" ? "Light-and-Dark" : "Light");
+        const edition = theme === "dark" ? "Dark" : "Light";
         return {
             document: doc,
             theme,
@@ -317,10 +424,9 @@
         };
     }
 
-    function renderEditionInto(doc, theme, rows, model, payload, trace, logo, startOnNewPage = false) {
+    function renderEditionInto(doc, theme, rows, model, payload, trace, logo) {
         const colours = palette(theme);
         const data = mergeSource(payload, model);
-        if (startOnNewPage) doc.addPage();
         const startPage = doc.getNumberOfPages();
         baseRenderers.renderCover(doc, colours, data, theme, logo);
         doc.addPage();
@@ -344,27 +450,8 @@
 
     function buildVariant(JsPDF, theme, rows, model, payload, trace, logo) {
         const doc = new JsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true, putOnlyUsedFonts: true });
-        const edition = renderEditionInto(doc, theme, rows, model, payload, trace, logo, false);
+        const edition = renderEditionInto(doc, theme, rows, model, payload, trace, logo);
         return serialise(doc, theme, edition.data);
-    }
-
-    function buildBundleVariant(JsPDF, themes, rows, model, payload, trace, logo) {
-        const selected = values(themes).length ? values(themes) : ["light", "dark"];
-        const doc = new JsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true, putOnlyUsedFonts: true });
-        let data = mergeSource(payload, model);
-        const editions = selected.map((theme, index) => {
-            const edition = renderEditionInto(doc, theme, rows, model, payload, trace, logo, index > 0);
-            data = edition.data;
-            return edition;
-        });
-        editions.forEach((edition) => {
-            addFooterRange(doc, edition.colours, edition.data.companyName, edition.startPage, edition.endPage);
-        });
-        return {
-            ...serialise(doc, "both", data, "Light-and-Dark"),
-            bundledThemes: selected,
-            oneEmailBundle: true
-        };
     }
 
     ensureStylesheet();
@@ -383,7 +470,6 @@
         renderOverview,
         renderContentsAt,
         buildVariant,
-        buildBundleVariant,
         executiveCopy
     });
 
@@ -393,7 +479,7 @@
         version: VERSION,
         structureVersion: STRUCTURE_VERSION,
         ownerOnlyProfile,
-        executiveCopy,
-        buildBundleVariant
+        organisationProfile,
+        executiveCopy
     });
 })();

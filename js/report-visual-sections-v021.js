@@ -4,6 +4,8 @@
 
     const INSTALL_FLAG = "__growwithhrVisualSectionedReportInstalled";
     const STRUCTURE_VERSION = "visual-sectioned-v5";
+    const SHARED_TEMPLATE_ID = "hrtechify-action-brief-shared-v1";
+    const BRAND_LOGO_ASSET = "assets/hrtechify-logo.png";
 
     async function install() {
         const core = window.GrowWithHRVisualReportCore;
@@ -24,21 +26,33 @@
             const data = core.mergeSource(payload, model);
             const trace = { changes: core.values(payload.inputChanges || payload.trace?.changes) };
             const pdfs = themes.map((theme) => renderers.buildVariant(JsPDF, theme, rows, model, payload, trace, logo));
-            const deliveryPdf = themes.length === 2 && typeof renderers.buildBundleVariant === "function"
-                ? renderers.buildBundleVariant(JsPDF, themes, rows, model, payload, trace, logo)
-                : pdfs[0];
+            const pageCounts = Object.fromEntries(pdfs.map((item) => [item.theme, item.pageCount]));
+            const sharedTemplateParity = themes.length < 2 || new Set(Object.values(pageCounts)).size === 1;
+            if (!sharedTemplateParity) {
+                throw new Error("Light and Dark reports must use the same template and page geometry.");
+            }
+            const first = pdfs[0];
+            const dualAttachments = themes.length === 2 ? pdfs : [];
             return {
-                ...deliveryPdf,
+                ...first,
                 pdfs,
-                pageCounts: Object.fromEntries(pdfs.map((item) => [item.theme, item.pageCount])),
+                emailAttachments: dualAttachments,
+                deliveryAttachments: dualAttachments,
+                attachmentCount: dualAttachments.length || 1,
+                pageCounts,
                 totalSizeBytes: pdfs.reduce((sum, item) => sum + Number(item.sizeBytes || 0), 0),
-                deliverySizeBytes: Number(deliveryPdf?.sizeBytes || 0),
                 generatedAt: new Date().toISOString(),
                 companyName: core.clean(data.companyName, "Your Organisation"),
                 selectedThemes: themes,
                 dualThemeDelivery: themes.length === 2,
                 oneEmailDelivery: themes.length === 2,
-                bundledThemes: themes.length === 2 ? themes : [],
+                deliveryMode: themes.length === 2
+                    ? "two-separate-pdfs-one-email"
+                    : "single-pdf-one-email",
+                sharedTemplateId: SHARED_TEMPLATE_ID,
+                sharedTemplateParity,
+                lightDarkDifference: "colour-palette-only",
+                brandLogoAsset: BRAND_LOGO_ASSET,
                 reportLayoutVersion: core.VERSION,
                 reportStructureVersion: STRUCTURE_VERSION,
                 readingSections: [
@@ -61,6 +75,8 @@
             visualSectionedReportVersion: core.VERSION,
             reportLayoutVersion: core.VERSION,
             reportStructureVersion: STRUCTURE_VERSION,
+            sharedTemplateId: SHARED_TEMPLATE_ID,
+            brandLogoAsset: BRAND_LOGO_ASSET,
             buildAdvisoryPdf
         });
         window.GrowWithHRPDF = enhanced;
@@ -68,6 +84,9 @@
         window.GrowWithHRVisualSectionedReport = Object.freeze({
             version: core.VERSION,
             structureVersion: STRUCTURE_VERSION,
+            sharedTemplateId: SHARED_TEMPLATE_ID,
+            brandLogoAsset: BRAND_LOGO_ASSET,
+            sameLayoutForLightAndDark: true,
             installed: true,
             selectedThemes: core.selectedThemes,
             compact: core.compact

@@ -2,6 +2,7 @@
 
 const http = require("http");
 const { handleM4DeliveryRequest } = require("./server-m4-delivery");
+const { handleDualEditionDeliveryRequest } = require("./server-dual-edition-delivery");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
     "https://hrtechifyed.github.io"
@@ -74,7 +75,7 @@ function installApiCors() {
 
                     response.setHeader("Access-Control-Allow-Origin", origin);
                     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+                    response.setHeader("Access-Control-Allow-Headers", "Content-Type, X-GrowWithHR-Attachment-Count");
                     response.setHeader("Access-Control-Max-Age", "600");
 
                     if (request.method === "OPTIONS") {
@@ -84,6 +85,7 @@ function installApiCors() {
                     }
                 }
 
+                if (handleDualEditionDeliveryRequest(request, response)) return;
                 if (handleM4DeliveryRequest(request, response)) return;
                 listener(request, response);
             }
