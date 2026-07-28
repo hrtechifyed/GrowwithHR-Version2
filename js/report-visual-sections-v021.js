@@ -24,21 +24,24 @@
             const data = core.mergeSource(payload, model);
             const trace = { changes: core.values(payload.inputChanges || payload.trace?.changes) };
             const pdfs = themes.map((theme) => renderers.buildVariant(JsPDF, theme, rows, model, payload, trace, logo));
-            const deliveryPdf = themes.length === 2 && typeof renderers.buildBundleVariant === "function"
-                ? renderers.buildBundleVariant(JsPDF, themes, rows, model, payload, trace, logo)
-                : pdfs[0];
+            const first = pdfs[0];
+            const dualAttachments = themes.length === 2 ? pdfs : [];
             return {
-                ...deliveryPdf,
+                ...first,
                 pdfs,
+                emailAttachments: dualAttachments,
+                deliveryAttachments: dualAttachments,
+                attachmentCount: dualAttachments.length || 1,
                 pageCounts: Object.fromEntries(pdfs.map((item) => [item.theme, item.pageCount])),
                 totalSizeBytes: pdfs.reduce((sum, item) => sum + Number(item.sizeBytes || 0), 0),
-                deliverySizeBytes: Number(deliveryPdf?.sizeBytes || 0),
                 generatedAt: new Date().toISOString(),
                 companyName: core.clean(data.companyName, "Your Organisation"),
                 selectedThemes: themes,
                 dualThemeDelivery: themes.length === 2,
                 oneEmailDelivery: themes.length === 2,
-                bundledThemes: themes.length === 2 ? themes : [],
+                deliveryMode: themes.length === 2
+                    ? "two-separate-pdfs-one-email"
+                    : "single-pdf-one-email",
                 reportLayoutVersion: core.VERSION,
                 reportStructureVersion: STRUCTURE_VERSION,
                 readingSections: [
