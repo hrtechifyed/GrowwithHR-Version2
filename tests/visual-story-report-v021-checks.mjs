@@ -7,6 +7,7 @@ const reportCore = fs.readFileSync("js/report-visual-core-v021.js", "utf8");
 const brandTemplate = fs.readFileSync("js/report-brand-template-v022.js", "utf8");
 const reportRenderers = fs.readFileSync("js/report-visual-renderers-v021.js", "utf8");
 const executiveSummary = fs.readFileSync("js/report-executive-summary-v022.js", "utf8");
+const templateParity = fs.readFileSync("js/report-template-parity-v022.js", "utf8");
 const report = fs.readFileSync("js/report-visual-sections-v021.js", "utf8");
 const dualEmail = fs.readFileSync("js/dual-edition-email-v022.js", "utf8");
 const serverDualDelivery = fs.readFileSync("server-dual-edition-delivery.js", "utf8");
@@ -20,6 +21,7 @@ new vm.Script(reportCore, { filename: "js/report-visual-core-v021.js" });
 new vm.Script(brandTemplate, { filename: "js/report-brand-template-v022.js" });
 new vm.Script(reportRenderers, { filename: "js/report-visual-renderers-v021.js" });
 new vm.Script(executiveSummary, { filename: "js/report-executive-summary-v022.js" });
+new vm.Script(templateParity, { filename: "js/report-template-parity-v022.js" });
 new vm.Script(report, { filename: "js/report-visual-sections-v021.js" });
 new vm.Script(dualEmail, { filename: "js/dual-edition-email-v022.js" });
 new vm.Script(serverDualDelivery, { filename: "server-dual-edition-delivery.js" });
@@ -99,6 +101,15 @@ assert.match(executiveSummary, /This is not a legal exemption or certification/)
 assert.doesNotMatch(executiveSummary, /buildBundleVariant/);
 assert.doesNotMatch(executiveSummary, /Light-and-Dark/);
 
+assert.match(templateParity, /0\.22\.1-shared-hrtechify-template/);
+assert.match(templateParity, /hrtechify-action-brief-shared-v1/);
+assert.match(templateParity, /assets\/hrtechify-logo\.png/);
+assert.match(templateParity, /HRTECHIFY_CONTENTS_LOGO/);
+assert.match(templateParity, /sameGeometry: true/);
+assert.match(templateParity, /onlyPaletteChanges: true/);
+assert.match(templateParity, /colour-palette-only/);
+assert.doesNotMatch(templateParity, /assets\/(?!hrtechify-logo\.png)[^"']*logo[^"']*/i);
+
 assert.match(report, /visual-sectioned-v5/);
 assert.match(report, /oneEmailDelivery/);
 assert.match(report, /emailAttachments/);
@@ -147,12 +158,14 @@ assert.match(bootstrap, /report-visual-core-v021\.js/);
 assert.match(bootstrap, /report-brand-template-v022\.js/);
 assert.match(bootstrap, /report-visual-renderers-v021\.js/);
 assert.match(bootstrap, /report-executive-summary-v022\.js/);
+assert.match(bootstrap, /report-template-parity-v022\.js/);
 assert.match(bootstrap, /report-visual-sections-v021\.js/);
 assert.match(bootstrap, /dual-edition-email-v022\.js/);
 assert.match(bootstrap, /visual-sectioned-v5/);
 assert.match(bootstrap, /singleEmailDualEdition/);
 assert.match(bootstrap, /profileTailoredExecutiveSummary/);
 assert.match(bootstrap, /sharedLightDarkTemplate/);
+assert.match(bootstrap, /sameTemplateGeometry/);
 assert.match(bootstrap, /assets\/hrtechify-logo\.png/);
 
 console.log("v0.22 shared HRTechify template, profile summary and two-attachment email checks passed.");
