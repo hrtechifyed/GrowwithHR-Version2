@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.26.1-visual-sectioned-runtime-bootstrap";
+    const VERSION = "0.26.2-executive-summary-runtime-bootstrap";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -99,13 +99,15 @@
             await import("./story-visual-sections-v021.js");
             await import("./report-visual-core-v021.js");
             await import("./report-visual-renderers-v021.js");
+            await import("./report-executive-summary-v022.js");
             await import("./report-visual-sections-v021.js");
             const visualReady = await waitFor(() => Boolean(
                 window.GrowWithHRStoryVisualSections?.version &&
+                window.GrowWithHRExecutiveSummaryReport?.version &&
                 window.GrowWithHRPDF?.visualSectionedReportVersion &&
-                window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v4"
+                window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v5"
             ));
-            if (!visualReady) throw new Error("The visual story and report layer did not become ready.");
+            if (!visualReady) throw new Error("The executive-summary report layer did not become ready.");
 
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
@@ -115,7 +117,9 @@
                 contextualQuestionUiFixes: true,
                 allSectorContextIntelligence: true,
                 compactStorySections: true,
-                visualSectionedReport: true
+                visualSectionedReport: true,
+                executiveSummaryReport: true,
+                singleEmailDualEdition: true
             });
         } catch (error) {
             loading = false;
