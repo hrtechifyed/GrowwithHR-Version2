@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.26.4-shared-hrtechify-template-bootstrap";
+    const VERSION = "0.26.5-shared-hrtechify-parity-bootstrap";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -101,12 +101,15 @@
             await import("./report-brand-template-v022.js");
             await import("./report-visual-renderers-v021.js");
             await import("./report-executive-summary-v022.js");
+            await import("./report-template-parity-v022.js");
             await import("./report-visual-sections-v021.js");
             await import("./dual-edition-email-v022.js");
             const visualReady = await waitFor(() => Boolean(
                 window.GrowWithHRStoryVisualSections?.version &&
                 window.GrowWithHRReportBrandTemplate?.sameLayoutForLightAndDark === true &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
+                window.GrowWithHRReportTemplateParity?.sameGeometry === true &&
+                window.GrowWithHRReportTemplateParity?.onlyPaletteChanges === true &&
                 window.GrowWithHRExecutiveSummaryReport?.version &&
                 window.GrowWithHRPDF?.visualSectionedReportVersion &&
                 window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v5" &&
@@ -126,6 +129,8 @@
                 executiveSummaryReport: true,
                 profileTailoredExecutiveSummary: true,
                 sharedLightDarkTemplate: true,
+                sameTemplateGeometry: true,
+                lightDarkDifference: "colour-palette-only",
                 reportTemplateId: "hrtechify-action-brief-shared-v1",
                 reportLogoAsset: "assets/hrtechify-logo.png",
                 singleEmailDualEdition: true,
