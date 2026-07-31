@@ -2,14 +2,14 @@
 
 const RESPONSE_SCHEMA = require("../schemas/legal-explanation-response.schema.v1.json");
 
-const CLOUDFLARE_WORKERS_AI_PROVIDER_VERSION = "0.2.0";
+const CLOUDFLARE_WORKERS_AI_PROVIDER_VERSION = "0.3.0";
 const CLOUDFLARE_WORKERS_AI_PROVIDER_NAME = "cloudflare-workers-ai";
-const CLOUDFLARE_WORKERS_AI_MODEL = "@cf/qwen/qwen3-30b-a3b-fp8";
+const CLOUDFLARE_WORKERS_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast";
 const CLOUDFLARE_API_ORIGIN = "https://api.cloudflare.com";
 const DEFAULT_TIMEOUT_MS = 12000;
 const MIN_TIMEOUT_MS = 1000;
 const MAX_TIMEOUT_MS = 30000;
-const MAX_OUTPUT_TOKENS = 400;
+const MAX_OUTPUT_TOKENS = 1000;
 const MAX_REQUEST_CHARACTERS = 60000;
 const FORBIDDEN_REQUEST_KEYS = new Set([
     "answers",
@@ -135,13 +135,32 @@ function assertProtectedExplanationRequest(value) {
     return request;
 }
 
-function cloudflareResponseSchema(value = RESPONSE_SCHEMA) {
-    const schema = JSON.parse(JSON.stringify(object(value)));
-    delete schema.$schema;
-    delete schema.$id;
-    delete schema.title;
-    delete schema.description;
+function cloudflareSchemaNode(value) {
+    if (Array.isArray(value)) return value.map(cloudflareSchemaNode);
+    if (!value || typeof value !== "object") return value;
+
+    const source = object(value);
+    const schema = {};
+
+    if (source.type !== undefined) schema.type = source.type;
+    if (source.const !== undefined) schema.enum = [source.const];
+    else if (Array.isArray(source.enum)) schema.enum = [...source.enum];
+    if (source.additionalProperties !== undefined) schema.additionalProperties = source.additionalProperties;
+    if (Array.isArray(source.required)) schema.required = [...source.required];
+    if (source.properties && typeof source.properties === "object") {
+        schema.properties = Object.fromEntries(
+            Object.entries(source.properties).map(([key, item]) => [key, cloudflareSchemaNode(item)])
+        );
+    }
+    if (source.items !== undefined) schema.items = cloudflareSchemaNode(source.items);
+    if (Number.isInteger(source.minItems)) schema.minItems = source.minItems;
+    if (Number.isInteger(source.maxItems)) schema.maxItems = source.maxItems;
+
     return schema;
+}
+
+function cloudflareResponseSchema(value = RESPONSE_SCHEMA) {
+    return cloudflareSchemaNode(value);
 }
 
 function buildCloudflareWorkersAIRequest(value, responseSchema = RESPONSE_SCHEMA) {
@@ -151,15 +170,13 @@ function buildCloudflareWorkersAIRequest(value, responseSchema = RESPONSE_SCHEMA
         "The deterministic legal decision is already fixed and cannot be changed.",
         "Use only the supplied governed source chunks.",
         "Do not infer assessment facts, legal applicability, legal approval, certification, or evidence verification.",
-        "Return exactly one valid JSON object and nothing else.",
-        "Do not use markdown fences, commentary, preambles, or reasoning text.",
-        "The JSON object must match the supplied response schema exactly."
+        "Return the JSON object required by the supplied JSON schema.",
+        "Copy all protected fields exactly and do not add properties."
     ].join(" ");
     const userMessage = {
         protectedRequest: request,
-        requiredResponseSchema: cloudflareResponseSchema(responseSchema),
         outputRules: [
-            "Copy protected status, reason code, fingerprints and boolean authority fields exactly.",
+            "Copy contractVersion, decisionFingerprint, decisionStatus, reasonCode, legalReviewStatus, usedForDecision, mayChangeDecision and legalAdvice exactly.",
             "Use only citationChunkIds present in protectedRequest.retrievalReference.retrievedChunks.",
             "Include every string in protectedRequest.requiredLimitations exactly.",
             "Generate only summary, rationale statements and next steps; do not add properties."
@@ -171,6 +188,10 @@ function buildCloudflareWorkersAIRequest(value, responseSchema = RESPONSE_SCHEMA
             { role: "system", content: systemMessage },
             { role: "user", content: JSON.stringify(userMessage) }
         ],
+        response_format: {
+            type: "json_schema",
+            json_schema: cloudflareResponseSchema(responseSchema)
+        },
         stream: false,
         temperature: 0,
         top_p: 0.1,
@@ -205,12 +226,6 @@ function parseStrictJsonObject(candidate) {
     }
 }
 
-function qwenMessageContent(result) {
-    const choices = Array.isArray(result.choices) ? result.choices : [];
-    const firstChoice = object(choices[0]);
-    return object(firstChoice.message).content;
-}
-
 function extractCloudflareWorkersAIResponse(payload) {
     const envelope = object(payload);
     if (envelope.success !== true) {
@@ -220,19 +235,11 @@ function extractCloudflareWorkersAIResponse(payload) {
         );
     }
 
-    const result = object(envelope.result);
-    const candidates = [
-        qwenMessageContent(result),
-        result.response
-    ];
-
-    for (const candidate of candidates) {
-        const parsed = parseStrictJsonObject(candidate);
-        if (parsed) return parsed;
-    }
+    const parsed = parseStrictJsonObject(object(envelope.result).response);
+    if (parsed) return parsed;
 
     throw new CloudflareWorkersAIProviderError(
-        "Cloudflare Workers AI did not return one strict JSON object in the Qwen response.",
+        "Cloudflare Workers AI did not return one structured JSON object in result.response.",
         { code: "cloudflare-invalid-structured-output", details: envelope }
     );
 }
@@ -251,7 +258,7 @@ function createCloudflareWorkersAILegalExplanationProvider(options = {}) {
     }
     if (config.freeOnly !== true || config.model !== CLOUDFLARE_WORKERS_AI_MODEL) {
         throw new CloudflareWorkersAIProviderError(
-            "The Cloudflare adapter permits only the approved free-only Qwen configuration.",
+            "The Cloudflare adapter permits only the approved free-only Llama JSON Mode configuration.",
             { code: "cloudflare-free-only-configuration-required" }
         );
     }
