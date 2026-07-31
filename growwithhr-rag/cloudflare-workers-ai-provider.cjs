@@ -2,7 +2,7 @@
 
 const RESPONSE_SCHEMA = require("../schemas/legal-explanation-response.schema.v1.json");
 
-const CLOUDFLARE_WORKERS_AI_PROVIDER_VERSION = "0.1.0";
+const CLOUDFLARE_WORKERS_AI_PROVIDER_VERSION = "0.2.0";
 const CLOUDFLARE_WORKERS_AI_PROVIDER_NAME = "cloudflare-workers-ai";
 const CLOUDFLARE_WORKERS_AI_MODEL = "@cf/qwen/qwen3-30b-a3b-fp8";
 const CLOUDFLARE_API_ORIGIN = "https://api.cloudflare.com";
@@ -140,6 +140,7 @@ function cloudflareResponseSchema(value = RESPONSE_SCHEMA) {
     delete schema.$schema;
     delete schema.$id;
     delete schema.title;
+    delete schema.description;
     return schema;
 }
 
@@ -150,23 +151,31 @@ function buildCloudflareWorkersAIRequest(value, responseSchema = RESPONSE_SCHEMA
         "The deterministic legal decision is already fixed and cannot be changed.",
         "Use only the supplied governed source chunks.",
         "Do not infer assessment facts, legal applicability, legal approval, certification, or evidence verification.",
-        "Return only one JSON object matching the supplied schema, with no markdown and no text outside JSON."
+        "Return exactly one valid JSON object and nothing else.",
+        "Do not use markdown fences, commentary, preambles, or reasoning text.",
+        "The JSON object must match the supplied response schema exactly."
     ].join(" ");
+    const userMessage = {
+        protectedRequest: request,
+        requiredResponseSchema: cloudflareResponseSchema(responseSchema),
+        outputRules: [
+            "Copy protected status, reason code, fingerprints and boolean authority fields exactly.",
+            "Use only citationChunkIds present in protectedRequest.retrievalReference.retrievedChunks.",
+            "Include every string in protectedRequest.requiredLimitations exactly.",
+            "Generate only summary, rationale statements and next steps; do not add properties."
+        ]
+    };
 
     return deepFreeze({
         messages: [
             { role: "system", content: systemMessage },
-            { role: "user", content: JSON.stringify(request) }
+            { role: "user", content: JSON.stringify(userMessage) }
         ],
         stream: false,
         temperature: 0,
         top_p: 0.1,
         seed: 1,
-        max_tokens: MAX_OUTPUT_TOKENS,
-        response_format: {
-            type: "json_schema",
-            json_schema: cloudflareResponseSchema(responseSchema)
-        }
+        max_tokens: MAX_OUTPUT_TOKENS
     });
 }
 
@@ -175,6 +184,31 @@ function cloudflareErrorCode(status) {
     if (status === 401 || status === 403) return "cloudflare-authentication-failed";
     if (status >= 500) return "cloudflare-service-unavailable";
     return "cloudflare-request-failed";
+}
+
+function parseStrictJsonObject(candidate) {
+    if (candidate && typeof candidate === "object" && !Array.isArray(candidate)) {
+        return candidate;
+    }
+    if (typeof candidate !== "string") return null;
+
+    const serialized = candidate.trim();
+    if (!serialized.startsWith("{") || !serialized.endsWith("}")) return null;
+
+    try {
+        const parsed = JSON.parse(serialized);
+        return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+            ? parsed
+            : null;
+    } catch (_error) {
+        return null;
+    }
+}
+
+function qwenMessageContent(result) {
+    const choices = Array.isArray(result.choices) ? result.choices : [];
+    const firstChoice = object(choices[0]);
+    return object(firstChoice.message).content;
 }
 
 function extractCloudflareWorkersAIResponse(payload) {
@@ -187,21 +221,18 @@ function extractCloudflareWorkersAIResponse(payload) {
     }
 
     const result = object(envelope.result);
-    const candidate = result.response;
-    if (candidate && typeof candidate === "object" && !Array.isArray(candidate)) {
-        return candidate;
-    }
-    if (typeof candidate === "string") {
-        try {
-            const parsed = JSON.parse(candidate);
-            if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed;
-        } catch (_error) {
-            // Fail closed below. Do not repair or guess malformed provider output.
-        }
+    const candidates = [
+        qwenMessageContent(result),
+        result.response
+    ];
+
+    for (const candidate of candidates) {
+        const parsed = parseStrictJsonObject(candidate);
+        if (parsed) return parsed;
     }
 
     throw new CloudflareWorkersAIProviderError(
-        "Cloudflare Workers AI did not return one structured JSON object.",
+        "Cloudflare Workers AI did not return one strict JSON object in the Qwen response.",
         { code: "cloudflare-invalid-structured-output", details: envelope }
     );
 }
