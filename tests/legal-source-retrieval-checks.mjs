@@ -178,7 +178,7 @@ async function main() {
         assert.match(verifierSource, /createHash\("sha256"\)/);
         assert.match(verifierSource, /Unregistered PDF files/);
         assert.match(readme, /retrieval happens only after a deterministic decision/i);
-        assert.match(readme, /does not use embeddings or a vector database/i);
+        assert.match(readme, /does not use embeddings or a\s+vector database/i);
         assert.equal(packageJson.scripts["test:legal-source-retrieval"], "node tests/legal-source-retrieval-checks.mjs");
         assert.match(packageJson.scripts["test:m2"], /test:legal-source-retrieval/);
 
