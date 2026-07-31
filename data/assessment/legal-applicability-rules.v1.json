@@ -1,0 +1,307 @@
+{
+  "catalogVersion": "0.1.0",
+  "title": "GrowWithHR Provisional Legal Applicability Rules",
+  "updatedAt": "2026-07-31",
+  "jurisdiction": "India",
+  "legalRuleCatalog": true,
+  "legalReviewStatus": "needs-legal-review",
+  "applicabilityAuthority": "deterministic-only",
+  "retrievalRole": "source-retrieval-only",
+  "llmRole": "explanation-only",
+  "advisoryOnly": true,
+  "privateBetaOnly": true,
+  "stableReportMutation": false,
+  "sourceRegistry": {
+    "name": "Source Register",
+    "location": "GrowWithHR-RAG/00-project-control/Source Register.xlsx",
+    "reviewStatus": "needs-legal-review"
+  },
+  "approval": {
+    "status": "draft",
+    "approvedBy": null,
+    "approvedAt": null
+  },
+  "defaults": {
+    "ruleVersion": "0.1.0",
+    "requiredFactMode": "all",
+    "evidence": {
+      "status": "not-verified",
+      "notes": "Assessment facts and legal applicability have not been independently verified.",
+      "verificationProcessId": null,
+      "verifiedAt": null
+    },
+    "limitations": [
+      "This catalog is provisional product logic and is not independent legal approval.",
+      "Assessment answers are user-supplied and have not been independently verified.",
+      "Retrieval may return only registered source material and must not determine applicability.",
+      "A language model may explain a deterministic result but must not create, change or override it.",
+      "The stable public report and PDF contracts are not changed by this catalog."
+    ]
+  },
+  "sources": [
+    {
+      "id": "source.posh.act-2013",
+      "registrySourceId": "posh-act-2013",
+      "title": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+      "publisher": "Government of India",
+      "url": "https://www.indiacode.nic.in/handle/123456789/2104?locale=en",
+      "jurisdiction": "India - Central",
+      "sourceType": "legislation",
+      "documentType": "official-legal-source",
+      "reviewedAt": "2026-07-31",
+      "reviewStatus": "needs-legal-review",
+      "fileName": "posh-act-2013-official-indiacode.pdf",
+      "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/01-act/posh-act-2013-official-indiacode.pdf",
+      "notes": "Official India Code Act record. Source identity does not constitute legal approval of the product rule.",
+      "official": true
+    },
+    {
+      "id": "source.posh.rules-2013",
+      "registrySourceId": "posh-rules-2013",
+      "title": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Rules, 2013",
+      "publisher": "Government of India",
+      "url": "https://www.indiacode.nic.in/handle/123456789/2104?view_type=search&col=123456789/1362",
+      "jurisdiction": "India - Central",
+      "sourceType": "regulation",
+      "documentType": "official-legal-source",
+      "reviewedAt": "2026-07-31",
+      "reviewStatus": "needs-legal-review",
+      "fileName": "posh-rules-2013-official-indiacode.pdf",
+      "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/02-rules/posh-rules-2013-official-indiacode.pdf",
+      "notes": "Official Rules file retained in the governed source pack. Exact rule-to-section mapping remains subject to legal review.",
+      "official": true
+    },
+    {
+      "id": "source.posh.commencement-2013",
+      "registrySourceId": "posh-commencement-2013",
+      "title": "Commencement Notification S.O. 3606(E), dated 9 December 2013",
+      "publisher": "Ministry of Women and Child Development, Government of India",
+      "url": "https://www.indiacode.nic.in/handle/123456789/2104?view_type=search&col=123456789/1362",
+      "jurisdiction": "India - Central",
+      "sourceType": "legislation",
+      "documentType": "official-gazette-notification",
+      "reviewedAt": "2026-07-31",
+      "reviewStatus": "needs-legal-review",
+      "fileName": "posh-commencement-notification-so-3606e-official-gazette.pdf",
+      "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/03-notifications/posh-commencement-notification-so-3606e-official-gazette.pdf",
+      "notes": "Official Gazette notification downloaded through the India Code notification record. Confirms commencement on 9 December 2013.",
+      "official": true
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule.legal.posh.internal-committee-threshold",
+      "productRuleId": "posh",
+      "version": "0.1.0",
+      "domain": "legal",
+      "title": "Provisional POSH Internal Committee threshold review",
+      "description": "Evaluates the existing GrowWithHR ten-employee product threshold using confirmed assessment facts while preserving legal-review and per-location limitations.",
+      "jurisdiction": {
+        "country": "IN",
+        "level": "central",
+        "code": "IN"
+      },
+      "sourceRecordId": "CENTRAL-POSH",
+      "legalReviewStatus": "needs-legal-review",
+      "requiredAssessmentFacts": [
+        {
+          "factId": "fact.workforce.employee-count",
+          "sourceAssessmentField": "employees",
+          "type": "non-negative-integer",
+          "required": true
+        },
+        {
+          "factId": "fact.footprint.primary-state",
+          "sourceAssessmentField": "primaryState",
+          "type": "text",
+          "required": true
+        },
+        {
+          "factId": "fact.footprint.location-count",
+          "sourceAssessmentField": "locations",
+          "type": "positive-integer",
+          "required": true
+        }
+      ],
+      "requiredFactMode": "all",
+      "requiredFactIds": [
+        "fact.workforce.employee-count",
+        "fact.footprint.primary-state",
+        "fact.footprint.location-count"
+      ],
+      "missingInformationHandling": {
+        "defaultStatus": "more-information-needed",
+        "reasonCode": "POSH_REQUIRED_FACTS_MISSING",
+        "neverInferMissingFacts": true,
+        "allowRetrievalToFillFacts": false,
+        "allowLlmToFillFacts": false
+      },
+      "match": {
+        "mode": "all",
+        "conditions": [
+          {
+            "factId": "fact.workforce.employee-count",
+            "operator": "greater-than-or-equal",
+            "value": 10
+          },
+          {
+            "factId": "fact.footprint.primary-state",
+            "operator": "exists"
+          },
+          {
+            "factId": "fact.footprint.location-count",
+            "operator": "greater-than-or-equal",
+            "value": 1
+          }
+        ]
+      },
+      "outcomes": {
+        "matched": {
+          "status": "specialist-review",
+          "reasonCode": "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED",
+          "reason": "The organisation reported at least 10 employees and supplied an Indian operating state and location count. The current product threshold is crossed, but legal review and per-office or administrative-unit facts remain required before an applicability conclusion is presented as approved.",
+          "recommendation": {
+            "id": "recommendation.legal.posh.obtain-specialist-review",
+            "title": "Review the POSH Internal Committee requirement",
+            "action": "Confirm employee distribution across each office or administrative unit and obtain qualified legal review before treating the Internal Committee conclusion as approved.",
+            "timeline": "Before relying on the product result as a legal conclusion",
+            "limitations": [
+              "The assessment captures total employee count, not employee count for each office or administrative unit.",
+              "This result is a deterministic product review flag and not legal approval."
+            ]
+          }
+        },
+        "notMatched": {
+          "status": "not-currently-applicable",
+          "reasonCode": "POSH_IC_THRESHOLD_NOT_MET",
+          "reason": "The reported total employee count is below the current GrowWithHR ten-employee Internal Committee threshold. This outcome does not assess or remove broader POSH duties.",
+          "recommendation": null
+        },
+        "missing": {
+          "status": "more-information-needed",
+          "reasonCode": "POSH_REQUIRED_FACTS_MISSING",
+          "reason": "Employee count, primary operating state and permanent location count are required before the current product threshold can be evaluated.",
+          "recommendation": {
+            "id": "recommendation.legal.posh.confirm-threshold-facts",
+            "title": "Confirm the POSH threshold facts",
+            "action": "Confirm total employee count, primary operating state and permanent location count. Do not use retrieval or a language model to infer missing answers.",
+            "timeline": "Before evaluating the POSH product threshold",
+            "limitations": [
+              "No applicability conclusion has been reached.",
+              "Employee distribution by office or administrative unit is not captured by the current assessment."
+            ]
+          }
+        }
+      },
+      "permittedResultStatuses": [
+        "specialist-review",
+        "not-currently-applicable",
+        "more-information-needed"
+      ],
+      "sourceIds": [
+        "source.posh.act-2013",
+        "source.posh.rules-2013",
+        "source.posh.commencement-2013"
+      ],
+      "officialSourceIds": [
+        "posh-act-2013",
+        "posh-rules-2013",
+        "posh-commencement-2013"
+      ],
+      "sourceSections": [
+        {
+          "registrySourceId": "posh-act-2013",
+          "reference": "Section 4",
+          "purpose": "Internal Committee constitution provision"
+        },
+        {
+          "registrySourceId": "posh-rules-2013",
+          "reference": "Document-level source",
+          "purpose": "Procedural source; exact mapping remains pending legal review"
+        },
+        {
+          "registrySourceId": "posh-commencement-2013",
+          "reference": "S.O. 3606(E)",
+          "purpose": "Commencement date"
+        }
+      ],
+      "effectiveDateMetadata": {
+        "effectiveFrom": "2013-12-09",
+        "effectiveTo": null,
+        "sourceRegistryId": "posh-commencement-2013"
+      },
+      "limitations": [
+        "legalReviewStatus remains needs-legal-review.",
+        "The rule mirrors the existing GrowWithHR product threshold and must not be represented as independently approved legal advice.",
+        "The current assessment does not capture employee count separately for every office or administrative unit.",
+        "A below-threshold result concerns only the current product Internal Committee trigger and does not assess broader POSH obligations.",
+        "Retrieval and language models must not create or change assessment facts or applicability results."
+      ],
+      "automatedBoundaryTestScenarios": [
+        {
+          "scenarioId": "posh-ic-below-threshold",
+          "description": "Nine reported employees with complete India operating facts",
+          "answers": {
+            "employees": 9,
+            "primaryState": "Maharashtra",
+            "locations": 1
+          },
+          "expectedStatus": "not-currently-applicable",
+          "expectedReasonCode": "POSH_IC_THRESHOLD_NOT_MET"
+        },
+        {
+          "scenarioId": "posh-ic-at-threshold",
+          "description": "Exactly ten reported employees with complete India operating facts",
+          "answers": {
+            "employees": 10,
+            "primaryState": "Maharashtra",
+            "locations": 1
+          },
+          "expectedStatus": "specialist-review",
+          "expectedReasonCode": "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED"
+        },
+        {
+          "scenarioId": "posh-ic-above-threshold",
+          "description": "More than ten reported employees with multiple permanent locations",
+          "answers": {
+            "employees": 25,
+            "primaryState": "Karnataka",
+            "locations": 3
+          },
+          "expectedStatus": "specialist-review",
+          "expectedReasonCode": "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED"
+        },
+        {
+          "scenarioId": "posh-ic-missing-employee-count",
+          "description": "Employee count is missing",
+          "answers": {
+            "primaryState": "Delhi (NCT)",
+            "locations": 1
+          },
+          "expectedStatus": "more-information-needed",
+          "expectedReasonCode": "POSH_REQUIRED_FACTS_MISSING"
+        },
+        {
+          "scenarioId": "posh-ic-missing-primary-state",
+          "description": "Primary operating state is missing",
+          "answers": {
+            "employees": 10,
+            "locations": 1
+          },
+          "expectedStatus": "more-information-needed",
+          "expectedReasonCode": "POSH_REQUIRED_FACTS_MISSING"
+        },
+        {
+          "scenarioId": "posh-ic-missing-location-count",
+          "description": "Permanent location count is missing",
+          "answers": {
+            "employees": 10,
+            "primaryState": "Tamil Nadu"
+          },
+          "expectedStatus": "more-information-needed",
+          "expectedReasonCode": "POSH_REQUIRED_FACTS_MISSING"
+        }
+      ]
+    }
+  ]
+}
