@@ -42,10 +42,10 @@ fingerprint.
 - `tests/legal-explanation-contract-checks.mjs` - explanation schema, citation,
   provider isolation and decision-override rejection checks.
 
-The retrieval proof uses governed lexical metadata. It does not use embeddings
-or a vector database. The explanation proof does not select or call a hosted
-provider; it accepts an injected provider function only after the decision and
-retrieval traces already exist.
+The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database.
+The explanation proof does not select or call a hosted provider; it accepts an
+injected provider function only after the decision and retrieval traces already
+exist.
 
 ## Retrieval trace contract
 
