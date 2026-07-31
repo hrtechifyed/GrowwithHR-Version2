@@ -47,9 +47,8 @@ status, reason code, facts or decision fingerprint.
   free-only configuration, quota, output and contract-boundary checks.
 
 The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database.
-The hosted-provider proof uses the Cloudflare Workers AI REST endpoint and does
-not add a Cloudflare SDK, a second hosted provider, browser credentials or a
-browser-to-provider request.
+The hosted-provider proof uses the Cloudflare Workers AI REST endpoint. It has no second hosted provider.
+It does not add a Cloudflare SDK, browser credentials or a browser-to-provider request.
 
 ## Retrieval trace contract
 
