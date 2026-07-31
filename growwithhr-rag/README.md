@@ -1,9 +1,9 @@
 # GrowWithHR governed legal retrieval and explanation proof
 
 This directory contains private-beta proofs of constrained official-source
-retrieval and provider-neutral legal explanation. It is not connected to the
-current public product, stable report, PDF generator, browser storage, email
-delivery or customer-facing legal output.
+retrieval, governed legal explanation and one server-only hosted provider
+adapter. It is not connected to the current public product, stable report, PDF
+generator, browser storage, email delivery or customer-facing legal output.
 
 ## Mandatory execution order
 
@@ -14,7 +14,8 @@ delivery or customer-facing legal output.
 5. A retrieval trace returns approved citations.
 6. A provider-neutral explanation contract receives only the fixed decision
    reference and governed retrieval trace.
-7. Any provider response is validated before it can be accepted as explanation.
+7. The Cloudflare adapter may send that protected request to the approved model.
+8. The explanation contract validates any provider response before acceptance.
 
 Retrieval happens only after a deterministic decision. Explanation happens only
 after completed governed retrieval. Explanation cannot change the deterministic decision,
@@ -31,7 +32,9 @@ status, reason code, facts or decision fingerprint.
 - `growwithhr-rag/legal-source-retrieval.js` - pure deterministic retrieval and
   citation-trace module.
 - `growwithhr-rag/legal-explanation-contract.js` - provider-neutral request,
-  fallback, response validation and injected-provider runner.
+  deterministic fallback, response validation and injected-provider runner.
+- `growwithhr-rag/cloudflare-workers-ai-provider.cjs` - server-only Cloudflare
+  REST adapter fixed to `@cf/qwen/qwen3-30b-a3b-fp8`.
 - `schemas/legal-explanation-response.schema.v1.json` - strict structured
   response schema for explanation-only provider output.
 - `scripts/verify-posh-source-pack.mjs` - optional offline verification of the
@@ -40,11 +43,12 @@ status, reason code, facts or decision fingerprint.
   fail-closed and architecture-boundary checks.
 - `tests/legal-explanation-contract-checks.mjs` - explanation schema, citation,
   provider isolation and decision-override rejection checks.
+- `tests/cloudflare-workers-ai-provider-checks.mjs` - mocked Cloudflare request,
+  free-only configuration, quota, output and contract-boundary checks.
 
 The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database.
-The explanation proof does not select or call a hosted provider; it accepts an
-injected provider function only after the decision and retrieval traces already
-exist.
+The hosted-provider proof uses the Cloudflare Workers AI REST endpoint. It has no second hosted provider.
+It does not add a Cloudflare SDK, browser credentials or a browser-to-provider request.
 
 ## Retrieval trace contract
 
@@ -82,8 +86,47 @@ A provider response is accepted only when:
 - no unexpected decision or applicability fields are returned;
 - definitive certification wording is rejected.
 
-A deterministic non-LLM fallback uses the same response contract. This makes the
-explanation boundary testable before a hosted provider is selected.
+The deterministic non-LLM explanation remains part of the provider-neutral
+contract. The Cloudflare adapter does not automatically invoke it and does not
+retry through another hosted provider. Cloudflare quota, timeout, authentication
+or invalid-output failures therefore fail closed at the adapter boundary.
+
+## Cloudflare Workers AI configuration
+
+Approved provider and model:
+
+```text
+Provider: Cloudflare Workers AI
+Model: @cf/qwen/qwen3-30b-a3b-fp8
+Mode: free-only proof
+```
+
+Create a Workers AI API token and copy the Cloudflare Account ID. Configure
+these values only in the server environment:
+
+```text
+CLOUDFLARE_ACCOUNT_ID=<Cloudflare account ID>
+CLOUDFLARE_WORKERS_AI_API_TOKEN=<Workers AI API token>
+CLOUDFLARE_WORKERS_AI_FREE_ONLY=true
+CLOUDFLARE_WORKERS_AI_TIMEOUT_MS=12000
+```
+
+`CLOUDFLARE_WORKERS_AI_TIMEOUT_MS` is optional and is restricted to 1,000-30,000
+milliseconds. The adapter always uses the fixed approved model, a maximum of 400
+output tokens and one Cloudflare request. It does not log or return the API
+token.
+
+For free-only operation, keep the Cloudflare account on the Workers Free plan
+and do not enable paid overage. `CLOUDFLARE_WORKERS_AI_FREE_ONLY=true` is an
+explicit deployment guard, but it cannot inspect the Cloudflare billing plan.
+When the free allocation or a provider rate limit is unavailable, the adapter
+returns `cloudflare-free-quota-or-rate-limit` and makes no alternate-provider
+request.
+
+Cloudflare accepts a requested response schema, but provider output is never
+trusted directly. The existing GrowWithHR explanation contract revalidates the
+status, reason code, decision fingerprint, citations, limitations and legal
+review flags before accepting the explanation.
 
 ## Optional private source-pack verification
 
@@ -100,7 +143,7 @@ Archived files are outside the active ingestion boundary.
 
 ## Safety boundaries
 
-Retrieval and explanation components must not:
+Retrieval, explanation and hosted-provider components must not:
 
 - invent, infer or fill assessment facts;
 - decide whether a law applies;
@@ -108,6 +151,7 @@ Retrieval and explanation components must not:
 - retrieve or cite sources not approved by the decision;
 - treat official-source status as legal approval;
 - claim evidence verification or professional legal review;
+- expose provider credentials to browser code;
 - mutate protected report, PDF, storage or delivery contracts.
 
 ## Current implementation status
@@ -120,9 +164,12 @@ Implemented:
 - deterministic post-decision retrieval;
 - visible decision and citation trace data;
 - strict provider-neutral explanation request and response contract;
-- deterministic non-LLM explanation fallback;
+- deterministic non-LLM explanation capability;
+- Cloudflare Workers AI free-only Qwen provider adapter;
+- server-environment configuration validation;
+- timeout, quota, authentication and malformed-output handling;
 - injected-provider validation and decision-override rejection;
-- retrieval and explanation isolation tests;
+- retrieval, explanation and mocked Cloudflare isolation tests;
 - source-pack fingerprint verification command.
 
 Not implemented:
@@ -131,8 +178,8 @@ Not implemented:
 - embeddings or vector search;
 - Chroma or another vector database;
 - PageIndex;
-- retrieval HTTP endpoints;
-- a selected hosted language-model provider or SDK;
-- provider credentials or environment configuration;
-- production report, UI or PDF integration;
+- a public legal-explanation HTTP endpoint;
+- production assessment, report, UI or PDF integration;
+- a live Cloudflare credential test in CI;
+- a second hosted provider or paid fallback;
 - legal approval.
