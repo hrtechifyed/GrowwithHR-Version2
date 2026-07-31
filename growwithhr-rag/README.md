@@ -48,8 +48,8 @@ deterministic decision, status, reason code, facts, or decision fingerprint.
 - `tests/` — deterministic, retrieval, explanation, Cloudflare, endpoint,
   privacy, concurrency, and fail-closed checks.
 
-The retrieval proof uses governed lexical metadata. It does not use embeddings
-or a vector database, Chroma, or PageIndex.
+The retrieval proof uses governed lexical metadata. It does not use embeddings or a
+vector database, Chroma, or PageIndex.
 
 ## Retrieval boundary
 
