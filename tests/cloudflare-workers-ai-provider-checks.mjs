@@ -105,6 +105,26 @@ function responseEnvelope(value, status = 200) {
     };
 }
 
+function qwenEnvelope(content) {
+    return {
+        success: true,
+        result: {
+            id: "chatcmpl-test",
+            object: "chat.completion",
+            created: 1,
+            model: "@cf/qwen/qwen3-30b-a3b-fp8",
+            choices: [{
+                index: 0,
+                message: { role: "assistant", content },
+                finish_reason: "stop"
+            }],
+            usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }
+        },
+        errors: [],
+        messages: []
+    };
+}
+
 async function main() {
     const provider = require(providerPath);
     const [schema, source, readme, packageJson] = await Promise.all([
@@ -116,6 +136,7 @@ async function main() {
     const loaded = await loadContract();
 
     try {
+        assert.equal(provider.CLOUDFLARE_WORKERS_AI_PROVIDER_VERSION, "0.2.0");
         assert.equal(provider.CLOUDFLARE_WORKERS_AI_MODEL, "@cf/qwen/qwen3-30b-a3b-fp8");
         assert.equal(provider.CLOUDFLARE_WORKERS_AI_PROVIDER_NAME, "cloudflare-workers-ai");
         assert.equal(provider.MAX_OUTPUT_TOKENS, 400);
@@ -145,13 +166,16 @@ async function main() {
 
         const request = fixtureRequest();
         const outbound = provider.buildCloudflareWorkersAIRequest(request, schema);
+        const promptPayload = JSON.parse(outbound.messages[1].content);
         assert.equal(outbound.stream, false);
         assert.equal(outbound.temperature, 0);
         assert.equal(outbound.max_tokens, 400);
-        assert.equal(outbound.response_format.type, "json_schema");
-        assert.equal(outbound.response_format.json_schema.additionalProperties, false);
-        assert.equal(Object.hasOwn(outbound.response_format.json_schema, "$schema"), false);
-        assert.equal(Object.hasOwn(outbound.response_format.json_schema, "$id"), false);
+        assert.equal(Object.hasOwn(outbound, "response_format"), false);
+        assert.equal(promptPayload.requiredResponseSchema.additionalProperties, false);
+        assert.equal(Object.hasOwn(promptPayload.requiredResponseSchema, "$schema"), false);
+        assert.equal(Object.hasOwn(promptPayload.requiredResponseSchema, "$id"), false);
+        assert.equal(promptPayload.protectedRequest.decisionReference.status, "specialist-review");
+        assert.match(outbound.messages[0].content, /Do not use markdown fences/i);
         assert.equal(outbound.messages[1].content.includes("assessmentAnswers"), false);
 
         assert.throws(
@@ -166,12 +190,7 @@ async function main() {
             callCount += 1;
             capturedUrl = url;
             capturedInit = init;
-            return responseEnvelope({
-                success: true,
-                result: { response: validResponse(request) },
-                errors: [],
-                messages: []
-            });
+            return responseEnvelope(qwenEnvelope(JSON.stringify(validResponse(request))));
         };
 
         const completed = await provider.runCloudflareWorkersAILegalExplanation({
@@ -189,8 +208,21 @@ async function main() {
         assert.equal(capturedUrl, config.endpoint);
         assert.equal(capturedInit.headers.Authorization, "Bearer secret-token");
         assert.equal(capturedInit.body.includes("secret-token"), false);
+        assert.equal(capturedInit.body.includes("response_format"), false);
 
-        const stringProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
+        const legacyObjectProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
+            config,
+            responseSchema: schema,
+            fetchImpl: async () => responseEnvelope({
+                success: true,
+                result: { response: validResponse(request) },
+                errors: [],
+                messages: []
+            })
+        });
+        assert.deepEqual(await legacyObjectProvider.generate(request), validResponse(request));
+
+        const legacyStringProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
             config,
             responseSchema: schema,
             fetchImpl: async () => responseEnvelope({
@@ -200,7 +232,7 @@ async function main() {
                 messages: []
             })
         });
-        assert.deepEqual(await stringProvider.generate(request), validResponse(request));
+        assert.deepEqual(await legacyStringProvider.generate(request), validResponse(request));
 
         let quotaCalls = 0;
         const quotaProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
@@ -217,30 +249,29 @@ async function main() {
         );
         assert.equal(quotaCalls, 1, "The free-only adapter must not retry through another provider.");
 
-        const invalidProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
-            config,
-            responseSchema: schema,
-            fetchImpl: async () => responseEnvelope({
-                success: true,
-                result: { response: "not-json" },
-                errors: [],
-                messages: []
-            })
-        });
-        await assert.rejects(
-            invalidProvider.generate(request),
-            (error) => error.code === "cloudflare-invalid-structured-output"
-        );
+        for (const content of [
+            "not-json",
+            `\u0060\u0060\u0060json\n${JSON.stringify(validResponse(request))}\n\u0060\u0060\u0060`,
+            JSON.stringify([validResponse(request)])
+        ]) {
+            const invalidProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
+                config,
+                responseSchema: schema,
+                fetchImpl: async () => responseEnvelope(qwenEnvelope(content))
+            });
+            await assert.rejects(
+                invalidProvider.generate(request),
+                (error) => error.code === "cloudflare-invalid-structured-output"
+            );
+        }
 
         const overrideProvider = provider.createCloudflareWorkersAILegalExplanationProvider({
             config,
             responseSchema: schema,
-            fetchImpl: async () => responseEnvelope({
-                success: true,
-                result: { response: { ...validResponse(request), decisionStatus: "applicable" } },
-                errors: [],
-                messages: []
-            })
+            fetchImpl: async () => responseEnvelope(qwenEnvelope(JSON.stringify({
+                ...validResponse(request),
+                decisionStatus: "applicable"
+            })))
         });
         await assert.rejects(
             loaded.contract.runLegalExplanationProvider({
@@ -254,6 +285,7 @@ async function main() {
 
         for (const forbidden of [
             /createDeterministicLegalExplanation/,
+            /response_format/,
             /openai/i,
             /anthropic/i,
             /gemini/i,
@@ -265,9 +297,11 @@ async function main() {
         }
 
         assert.match(readme, /@cf\/qwen\/qwen3-30b-a3b-fp8/);
+        assert.match(readme, /prompt-constrained JSON/i);
+        assert.match(readme, /choices\[0\]\.message\.content/);
         assert.match(readme, /CLOUDFLARE_WORKERS_AI_FREE_ONLY=true/);
         assert.match(readme, /no second hosted provider/i);
-        assert.match(readme, /fails closed/i);
+        assert.match(readme, /fail closed/i);
         assert.equal(packageJson.scripts["test:cloudflare-workers-ai-provider"], "node tests/cloudflare-workers-ai-provider-checks.mjs");
         assert.match(packageJson.scripts["test:m2"], /test:cloudflare-workers-ai-provider/);
 
@@ -275,6 +309,7 @@ async function main() {
             "Cloudflare Workers AI provider checks passed.",
             `Provider: ${provider.CLOUDFLARE_WORKERS_AI_PROVIDER_NAME}`,
             `Model: ${provider.CLOUDFLARE_WORKERS_AI_MODEL}`,
+            "Qwen live response envelope: choices[0].message.content",
             "Free-only alternate-provider retries: 0"
         ].join("\n"));
     } finally {
