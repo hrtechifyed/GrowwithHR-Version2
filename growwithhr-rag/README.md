@@ -17,9 +17,8 @@ delivery or customer-facing legal output.
 7. Any provider response is validated before it can be accepted as explanation.
 
 Retrieval happens only after a deterministic decision. Explanation happens only
-after completed governed retrieval. Neither retrieval nor explanation can
-change the deterministic decision, status, reason code, facts or decision
-fingerprint.
+after completed governed retrieval. Explanation cannot change the deterministic decision,
+status, reason code, facts or decision fingerprint.
 
 ## Implemented proof components
 
