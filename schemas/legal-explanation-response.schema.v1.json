@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://growwithhr.hrtechify.com/schemas/legal-explanation-response.schema.v1.json",
+  "title": "GrowWithHR Legal Explanation Response",
+  "description": "Strict provider response contract for source-grounded explanation after a deterministic legal decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "decisionFingerprint",
+    "decisionStatus",
+    "reasonCode",
+    "summary",
+    "rationale",
+    "nextSteps",
+    "limitations",
+    "legalReviewStatus",
+    "usedForDecision",
+    "mayChangeDecision",
+    "legalAdvice"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "1.0.0"
+    },
+    "decisionFingerprint": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "decisionStatus": {
+      "enum": [
+        "specialist-review",
+        "not-currently-applicable",
+        "more-information-needed"
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]+$"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "rationale": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "statement",
+          "citationChunkIds"
+        ],
+        "properties": {
+          "statement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 900
+          },
+          "citationChunkIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          }
+        }
+      }
+    },
+    "nextSteps": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      },
+      "allOf": [
+        {
+          "contains": {
+            "const": "This explanation does not change the deterministic decision."
+          }
+        },
+        {
+          "contains": {
+            "const": "The rule and source interpretation remain subject to legal review."
+          }
+        },
+        {
+          "contains": {
+            "const": "Assessment answers and evidence have not been independently verified."
+          }
+        }
+      ]
+    },
+    "legalReviewStatus": {
+      "const": "needs-legal-review"
+    },
+    "usedForDecision": {
+      "const": false
+    },
+    "mayChangeDecision": {
+      "const": false
+    },
+    "legalAdvice": {
+      "const": false
+    }
+  }
+}
