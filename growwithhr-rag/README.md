@@ -23,8 +23,8 @@ legal output.
    governed chunk text.
 
 Retrieval happens only after a deterministic decision. Explanation happens only
-after completed governed retrieval. Retrieval and explanation cannot change the
-deterministic decision, status, reason code, facts, or decision fingerprint.
+after completed governed retrieval.
+Retrieval and explanation cannot change the deterministic decision, status, reason code, facts, or decision fingerprint.
 
 ## Implemented components
 
