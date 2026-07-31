@@ -1,58 +1,99 @@
-# GrowWithHR RAG Research Area
+# GrowWithHR governed legal retrieval proof
 
-This directory remains future research only. It is not built, deployed or used by the current public product.
+This directory contains a private-beta proof of constrained official-source
+retrieval. It is not connected to the current public product, stable report,
+PDF generator, browser storage, email delivery or customer-facing legal output.
 
-## Deterministic legal-rule foundation
+## Mandatory execution order
 
-The provisional legal-rule assurance foundation is kept outside this research directory so applicability remains independent from retrieval and language-model components:
+1. Protected assessment answers are mapped to deterministic facts.
+2. The governed legal-rule catalog produces a deterministic decision.
+3. The decision supplies its approved Source Register IDs and reason code.
+4. Retrieval runs only over governed chunks belonging to those source IDs.
+5. A retrieval trace returns citations for later explanation.
 
-- `data/knowledge-base/laws/central/posh.json` — existing governed POSH legal-source record.
-- `data/assessment/legal-applicability-rules.v1.json` — provisional POSH product-rule catalog, marked `needs-legal-review`.
-- `js/assessment-v3/fact-mapper.js` — existing deterministic assessment-to-fact mapper.
-- `js/assessment-v3/recommendation-evaluator.js` — existing deterministic condition evaluator.
-- `js/assessment-v3/legal-rule-assurance.js` — legal-specific guardrails and decision envelope.
-- `tests/legal-rule-assurance-checks.mjs` — source, boundary, determinism and role-separation checks.
+Retrieval happens only after a deterministic decision. Disabling retrieval must
+not change the decision status, reason code, facts or decision fingerprint.
 
-The provisional catalog is private-beta and does not mutate `js/pdf-law-transparency-core.js`, the stable public report, PDF output, email delivery or protected browser-storage contracts.
+## Implemented proof components
 
-## Mandatory architecture boundary
+- `data/assessment/legal-applicability-rules.v1.json` - provisional POSH
+  applicability rule, still marked `needs-legal-review`.
+- `js/assessment-v3/legal-rule-assurance.js` - deterministic legal-assurance
+  wrapper that runs before retrieval.
+- `growwithhr-rag/data/posh-source-chunks.v1.json` - governed source manifest,
+  source fingerprints, page references and curated POSH chunks.
+- `growwithhr-rag/legal-source-retrieval.js` - pure deterministic retrieval and
+  citation-trace module.
+- `scripts/verify-posh-source-pack.mjs` - optional offline verification of the
+  private source pack against registered byte lengths and SHA-256 fingerprints.
+- `tests/legal-source-retrieval-checks.mjs` - integration, isolation,
+  fail-closed and architecture-boundary checks.
 
-Assessment answers
-→ deterministic fact mapping
-→ governed legal-rule evaluation
-→ registered official sources
-→ constrained retrieval
-→ hosted language model for explanation only
-→ existing report generation
+The proof uses governed lexical metadata. It does not use embeddings or a
+vector database. It also does not use Chroma, PageIndex, a hosted language
+model or a retrieval endpoint.
 
-Retrieval and language models must not:
+## Retrieval trace contract
 
-- invent or fill assessment facts;
+Each trace identifies:
+
+- the deterministic rule ID, version, status and reason code;
+- a decision fingerprint that remains stable when retrieval is disabled or
+  retrieved text changes;
+- the approved Source Register IDs requested by the decision;
+- retrieved chunk IDs, page ranges, official URLs and source fingerprints;
+- `usedForDecision: false` and `applicabilityAuthority: none`;
+- `llmUsed: false`;
+- `legalReviewStatus: needs-legal-review`.
+
+Retrieval must fail closed when a decision requests an unknown Source Register
+ID or when a chunk does not resolve to a registered official source.
+
+## Optional private source-pack verification
+
+The source PDFs are not committed to this repository. To verify a local export
+of the private source pack, run:
+
+```bash
+npm run verify:posh-source-pack -- /absolute/path/to/GrowWithHR-RAG
+```
+
+The command verifies the three registered active POSH PDFs by byte length and
+SHA-256 and rejects additional PDFs inside the active official POSH folders.
+Archived files are outside the active ingestion boundary.
+
+## Safety boundaries
+
+Retrieval and later explanation components must not:
+
+- invent, infer or fill assessment facts;
 - decide whether a law applies;
 - change a deterministic status or reason code;
-- treat an official source as legal approval;
-- claim evidence verification;
+- retrieve sources not approved by the decision;
+- treat official-source status as legal approval;
+- claim evidence verification or professional legal review;
 - mutate protected report, PDF, storage or delivery contracts.
 
 ## Current implementation status
 
-Implemented in the provisional foundation:
+Implemented:
 
-- one structured POSH product rule;
-- explicit required facts and missing-information handling;
-- deterministic threshold conditions;
-- closed result statuses;
-- Source Register IDs and exact Drive paths;
-- effective-date metadata;
-- `needs-legal-review` governance status;
-- automated threshold and missing-fact scenarios.
+- deterministic POSH legal-rule assurance;
+- verified three-source POSH manifest metadata;
+- governed curated source chunks with page references;
+- deterministic post-decision retrieval;
+- visible decision and citation trace data;
+- retrieval-disable and changed-content isolation tests;
+- source-pack fingerprint verification command.
 
 Not implemented:
 
+- automatic PDF text extraction in production;
+- embeddings or vector search;
 - Chroma or another vector database;
-- embeddings;
 - PageIndex;
-- retrieval endpoints;
-- hosted language-model calls;
-- production report integration;
+- retrieval HTTP endpoints;
+- hosted language-model explanation;
+- production report or PDF integration;
 - legal approval.
