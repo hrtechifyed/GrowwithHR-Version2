@@ -16,8 +16,8 @@ legal output.
 5. A retrieval trace returns approved citations.
 6. A provider-neutral explanation contract receives only the fixed decision
    reference and governed retrieval trace.
-7. The Cloudflare adapter may send that protected request to the approved Qwen
-   model.
+7. The Cloudflare adapter may send that protected request to the approved Llama
+   JSON Mode model.
 8. The explanation contract validates the provider output before acceptance.
 9. The endpoint returns a minimized response without raw assessment answers or
    governed chunk text.
@@ -39,7 +39,7 @@ Retrieval and explanation cannot change the deterministic decision, status, reas
 - `growwithhr-rag/legal-explanation-contract.js` — provider-neutral request,
   response validation, deterministic capability, and injected-provider runner.
 - `growwithhr-rag/cloudflare-workers-ai-provider.cjs` — free-only Cloudflare
-  REST adapter fixed to `@cf/qwen/qwen3-30b-a3b-fp8`.
+  REST adapter fixed to `@cf/meta/llama-3.1-8b-instruct-fast`.
 - `server-legal-explanation.js` — disabled-by-default server endpoint,
   deterministic orchestration, response minimization, request sharing, cache,
   bounded concurrency, and provider-failure backoff.
@@ -48,8 +48,7 @@ Retrieval and explanation cannot change the deterministic decision, status, reas
 - `tests/` — deterministic, retrieval, explanation, Cloudflare, endpoint,
   privacy, concurrency, and fail-closed checks.
 
-The retrieval proof uses governed lexical metadata. It does not use embeddings or a
-vector database, Chroma, or PageIndex.
+The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database, Chroma, or PageIndex.
 
 ## Retrieval boundary
 
@@ -89,38 +88,40 @@ provider-neutral contract, but the Cloudflare adapter and live endpoint do not
 invoke it automatically. There is no second hosted provider, paid fallback, or
 automatic deterministic fallback. Provider failure must fail closed.
 
-## Cloudflare Qwen live response mode
+## Cloudflare Llama JSON Mode
 
 Approved provider and model:
 
 ```text
 Provider: Cloudflare Workers AI
-Model: @cf/qwen/qwen3-30b-a3b-fp8
+Model: @cf/meta/llama-3.1-8b-instruct-fast
 Mode: free-only
+Structured output: Cloudflare JSON Mode
 ```
 
-Cloudflare's model-specific synchronous interface returns a chat-completion
-result. The adapter reads only:
+Cloudflare lists this model as supporting JSON Mode. The adapter sends:
 
 ```text
-result.choices[0].message.content
+response_format.type = json_schema
 ```
 
-Cloudflare's published JSON Mode support list does not currently include this
-Qwen model. The adapter therefore does not send `response_format` or request
-Cloudflare JSON-schema mode. It uses prompt-constrained JSON instead:
+The provider receives a compatibility schema that preserves the required object
+shape, required fields, enumerated protected values, arrays, and nested objects.
+Schema keywords that are unnecessary for generation are omitted from the
+provider request. The committed GrowWithHR explanation contract remains the
+strict final validator and still enforces exact fingerprints, exact decision
+status and reason code, required limitation statements, governed citations,
+length limits, prohibited claims, and all legal-review flags.
 
-1. The protected legal explanation request and strict response schema are sent
-   inside the model prompt.
-2. Qwen is instructed to return one JSON object with no markdown, preamble, or
-   reasoning text.
-3. The adapter parses only a complete JSON object. It does not repair markdown,
-   extract JSON fragments, or guess malformed output.
-4. The existing GrowWithHR explanation contract then revalidates all protected
-   values, citations, limitations, and legal-review flags.
+Cloudflare JSON Mode returns the generated object under:
 
-The adapter also accepts the earlier `result.response` envelope for compatibility,
-but the same strict JSON parsing and explanation-contract validation apply.
+```text
+result.response
+```
+
+The adapter accepts only a JSON object or a string containing one complete JSON
+object in that field. Arrays, markdown fences, fragments, malformed JSON, other
+response envelopes, and decision changes fail closed.
 
 ## Private POSH explanation endpoint
 
@@ -193,16 +194,16 @@ Optional provider timeout:
 CLOUDFLARE_WORKERS_AI_TIMEOUT_MS=12000
 ```
 
-The adapter always uses the fixed Qwen model, a maximum of 400 output tokens,
-and one Cloudflare request. It does not log or return the API token. Keep the
-Cloudflare account on the Workers Free plan and do not enable paid overage. The
-`CLOUDFLARE_WORKERS_AI_FREE_ONLY=true` setting is an explicit deployment guard,
-but it cannot inspect the Cloudflare billing plan.
+The adapter always uses the fixed Llama JSON Mode model, a maximum of 1,000
+output tokens, and one Cloudflare request. It does not log or return the API
+token. Keep the Cloudflare account on the Workers Free plan and do not enable
+paid overage. The `CLOUDFLARE_WORKERS_AI_FREE_ONLY=true` setting is an explicit
+deployment guard, but it cannot inspect the Cloudflare billing plan.
 
 When free allocation or rate capacity is unavailable, the adapter returns
 `cloudflare-free-quota-or-rate-limit` and makes no alternate-provider request.
-Timeout, authentication, network, malformed-output, and contract-validation
-failures also fail closed.
+Timeout, authentication, network, JSON Mode, malformed-output, and
+contract-validation failures also fail closed.
 
 ## Optional source-pack verification
 
