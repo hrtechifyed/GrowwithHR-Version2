@@ -1,6 +1,7 @@
 "use strict";
 
 const http = require("http");
+const { handleLegalExplanationRequest } = require("./server-legal-explanation");
 const { handleM4DeliveryRequest } = require("./server-m4-delivery");
 const { handleDualEditionDeliveryRequest } = require("./server-dual-edition-delivery");
 
@@ -85,6 +86,7 @@ function installApiCors() {
                     }
                 }
 
+                if (handleLegalExplanationRequest(request, response)) return;
                 if (handleDualEditionDeliveryRequest(request, response)) return;
                 if (handleM4DeliveryRequest(request, response)) return;
                 listener(request, response);
