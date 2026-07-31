@@ -20,17 +20,9 @@ const DEFAULT_MAX_QUEUE = 100;
 const ALLOWED_BODY_KEYS = new Set(["answers"]);
 const ALLOWED_ANSWER_KEYS = new Set(["employees", "primaryState", "locations"]);
 
-function cleanText(value) {
-    return String(value ?? "").trim();
-}
-
-function object(value) {
-    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
-}
-
-function clone(value) {
-    return JSON.parse(JSON.stringify(value));
-}
+const cleanText = (value) => String(value ?? "").trim();
+const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+const clone = (value) => JSON.parse(JSON.stringify(value));
 
 function deepFreeze(value) {
     if (!value || typeof value !== "object" || Object.isFrozen(value)) return value;
@@ -41,8 +33,9 @@ function deepFreeze(value) {
 
 function boundedInteger(value, fallback, minimum, maximum) {
     const parsed = Number.parseInt(cleanText(value), 10);
-    if (!Number.isInteger(parsed)) return fallback;
-    return Math.min(maximum, Math.max(minimum, parsed));
+    return Number.isInteger(parsed)
+        ? Math.min(maximum, Math.max(minimum, parsed))
+        : fallback;
 }
 
 class LegalExplanationEndpointError extends Error {
@@ -108,17 +101,14 @@ function normalizeOptionalInteger(value, fieldName, minimum) {
 
 function normalizeAnswers(value) {
     const answers = object(value);
-    const unknownKeys = Object.keys(answers).filter((key) => !ALLOWED_ANSWER_KEYS.has(key));
-    if (unknownKeys.length) {
-        throw invalidInput(`Unsupported assessment fields: ${unknownKeys.join(", ")}.`);
-    }
+    const unknown = Object.keys(answers).filter((key) => !ALLOWED_ANSWER_KEYS.has(key));
+    if (unknown.length) throw invalidInput(`Unsupported assessment fields: ${unknown.join(", ")}.`);
 
     const employees = normalizeOptionalInteger(answers.employees, "employees", 0);
     const locations = normalizeOptionalInteger(answers.locations, "locations", 1);
     const primaryState = answers.primaryState === undefined || answers.primaryState === null
         ? undefined
         : cleanText(answers.primaryState);
-
     if (primaryState && primaryState.length > 120) {
         throw invalidInput("primaryState must contain no more than 120 characters.");
     }
@@ -132,10 +122,8 @@ function normalizeAnswers(value) {
 
 function normalizeBody(value) {
     const body = object(value);
-    const unknownKeys = Object.keys(body).filter((key) => !ALLOWED_BODY_KEYS.has(key));
-    if (unknownKeys.length) {
-        throw invalidInput(`Unsupported request properties: ${unknownKeys.join(", ")}.`);
-    }
+    const unknown = Object.keys(body).filter((key) => !ALLOWED_BODY_KEYS.has(key));
+    if (unknown.length) throw invalidInput(`Unsupported request properties: ${unknown.join(", ")}.`);
     if (!Object.hasOwn(body, "answers") || !body.answers || typeof body.answers !== "object" || Array.isArray(body.answers)) {
         throw invalidInput("A JSON answers object is required.");
     }
@@ -153,7 +141,11 @@ function loadLegalModules() {
             import(moduleUrl("js", "assessment-v3", "legal-rule-assurance.js")),
             import(moduleUrl("growwithhr-rag", "legal-source-retrieval.js")),
             import(moduleUrl("growwithhr-rag", "legal-explanation-contract.js"))
-        ]).then(([assurance, retrieval, contract]) => deepFreeze({ assurance, retrieval, contract }));
+        ]).then(([assurance, retrieval, contract]) => Object.freeze({
+            assurance,
+            retrieval,
+            contract
+        }));
     }
     return legalModulesPromise;
 }
@@ -192,40 +184,38 @@ function createConcurrencyGate(limit, maxQueue) {
             }
             return new Promise((resolve, reject) => queue.push({ task, resolve, reject }));
         },
-        stats() {
-            return Object.freeze({ active, queued: queue.length, limit, maxQueue });
-        }
+        stats: () => Object.freeze({ active, queued: queue.length, limit, maxQueue })
     });
 }
 
-function decisionView(decision) {
-    const source = object(decision);
+function decisionView(value) {
+    const decision = object(value);
     return deepFreeze({
-        productRuleId: cleanText(source.productRuleId),
-        ruleId: cleanText(source.ruleId),
-        ruleVersion: cleanText(source.ruleVersion),
-        sourceRecordId: cleanText(source.sourceRecordId),
-        status: cleanText(source.status),
-        reasonCode: cleanText(source.reasonCode),
-        reason: cleanText(source.reason),
-        sourceRegistryIds: Array.isArray(source.sourceRegistryIds) ? [...source.sourceRegistryIds] : [],
-        sourceSections: Array.isArray(source.sourceSections) ? clone(source.sourceSections) : [],
-        legalReviewStatus: cleanText(source.legalReviewStatus),
-        limitations: Array.isArray(source.limitations) ? [...source.limitations] : []
+        productRuleId: cleanText(decision.productRuleId),
+        ruleId: cleanText(decision.ruleId),
+        ruleVersion: cleanText(decision.ruleVersion),
+        sourceRecordId: cleanText(decision.sourceRecordId),
+        status: cleanText(decision.status),
+        reasonCode: cleanText(decision.reasonCode),
+        reason: cleanText(decision.reason),
+        sourceRegistryIds: Array.isArray(decision.sourceRegistryIds) ? [...decision.sourceRegistryIds] : [],
+        sourceSections: Array.isArray(decision.sourceSections) ? clone(decision.sourceSections) : [],
+        legalReviewStatus: cleanText(decision.legalReviewStatus),
+        limitations: Array.isArray(decision.limitations) ? [...decision.limitations] : []
     });
 }
 
-function citationView(chunk) {
-    const source = object(chunk);
+function citationView(value) {
+    const chunk = object(value);
     return deepFreeze({
-        chunkId: cleanText(source.chunkId),
-        registrySourceId: cleanText(source.registrySourceId),
-        sourceTitle: cleanText(source.sourceTitle),
-        sectionReference: cleanText(source.sectionReference),
-        pageStart: source.pageStart,
-        pageEnd: source.pageEnd,
-        officialUrl: cleanText(source.officialUrl),
-        contentSha256: cleanText(source.contentSha256)
+        chunkId: cleanText(chunk.chunkId),
+        registrySourceId: cleanText(chunk.registrySourceId),
+        sourceTitle: cleanText(chunk.sourceTitle),
+        sectionReference: cleanText(chunk.sectionReference),
+        pageStart: chunk.pageStart,
+        pageEnd: chunk.pageEnd,
+        officialUrl: cleanText(chunk.officialUrl),
+        contentSha256: cleanText(chunk.contentSha256)
     });
 }
 
@@ -268,6 +258,7 @@ function cacheKey(retrievalTrace) {
 function endpointErrorFromProvider(error) {
     if (error instanceof LegalExplanationEndpointError) return error;
     const code = cleanText(error?.code);
+
     if (code === "cloudflare-free-quota-or-rate-limit") {
         return new LegalExplanationEndpointError("Cloudflare free capacity is unavailable.", {
             code,
@@ -276,19 +267,18 @@ function endpointErrorFromProvider(error) {
             publicMessage: "The free explanation allowance is currently unavailable. Please try again later."
         });
     }
-    if (code === "cloudflare-timeout" || code === "cloudflare-network-error" || code === "cloudflare-service-unavailable") {
+    if (["cloudflare-timeout", "cloudflare-network-error", "cloudflare-service-unavailable"].includes(code)) {
         return new LegalExplanationEndpointError("Cloudflare Workers AI is temporarily unavailable.", {
-            code: code || "cloudflare-service-unavailable",
+            code,
             status: 503,
             retryable: true,
             publicMessage: "The free explanation service is temporarily unavailable. Please try again later."
         });
     }
-    if (code === "cloudflare-configuration-missing" || code === "cloudflare-authentication-failed") {
+    if (["cloudflare-configuration-missing", "cloudflare-authentication-failed"].includes(code)) {
         return new LegalExplanationEndpointError("The Cloudflare provider is not configured.", {
-            code: code || "cloudflare-configuration-missing",
+            code,
             status: 503,
-            retryable: false,
             publicMessage: "The explanation service is not available on this deployment."
         });
     }
@@ -296,14 +286,12 @@ function endpointErrorFromProvider(error) {
         return new LegalExplanationEndpointError("The provider output failed the governed explanation contract.", {
             code: code || "legal-explanation-provider-output-rejected",
             status: 502,
-            retryable: false,
             publicMessage: "The generated explanation could not be accepted."
         });
     }
     return new LegalExplanationEndpointError("The legal explanation service failed.", {
         code: "legal-explanation-internal-error",
         status: 500,
-        retryable: false,
         publicMessage: "The explanation service could not complete this request."
     });
 }
@@ -337,7 +325,6 @@ function createLegalExplanationService(options = {}) {
             throw new LegalExplanationEndpointError("The legal explanation endpoint is disabled.", {
                 code: "legal-explanation-endpoint-disabled",
                 status: 404,
-                retryable: false,
                 publicMessage: "Not found."
             });
         }
@@ -358,6 +345,7 @@ function createLegalExplanationService(options = {}) {
                 publicMessage: "The POSH explanation could not be prepared."
             });
         }
+
         const decision = decisions[0];
         const retrievalTrace = modules.retrieval.retrieveLegalDecisionSources({
             decision,
@@ -376,10 +364,8 @@ function createLegalExplanationService(options = {}) {
 
         const cached = cache.get(key);
         if (cached) return withDelivery(cached.value, "hit");
-
         const failed = failures.get(key);
         if (failed) throw failed.error;
-
         const existing = inFlight.get(key);
         if (existing) return withDelivery(await existing, "shared");
 
@@ -416,14 +402,12 @@ function createLegalExplanationService(options = {}) {
     return Object.freeze({
         explain,
         config,
-        stats() {
-            return deepFreeze({
-                cacheEntries: cache.size,
-                failureEntries: failures.size,
-                inFlight: inFlight.size,
-                gate: gate.stats()
-            });
-        }
+        stats: () => deepFreeze({
+            cacheEntries: cache.size,
+            failureEntries: failures.size,
+            inFlight: inFlight.size,
+            gate: gate.stats()
+        })
     });
 }
 
@@ -453,12 +437,11 @@ function readJsonBody(request) {
         const chunks = [];
         let received = 0;
         let settled = false;
-
-        function fail(error) {
+        const fail = (error) => {
             if (settled) return;
             settled = true;
             reject(error);
-        }
+        };
 
         request.on("data", (chunk) => {
             if (settled) return;
@@ -469,7 +452,6 @@ function readJsonBody(request) {
                     status: 413,
                     publicMessage: "The request body is too large."
                 }));
-                request.destroy();
                 return;
             }
             chunks.push(chunk);
@@ -479,8 +461,7 @@ function readJsonBody(request) {
             if (settled) return;
             settled = true;
             try {
-                const text = Buffer.concat(chunks).toString("utf8");
-                resolve(JSON.parse(text || "{}"));
+                resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"));
             } catch (_error) {
                 reject(new LegalExplanationEndpointError("The request body must contain valid JSON.", {
                     code: "legal-explanation-invalid-json",
@@ -523,10 +504,8 @@ function errorPayload(error) {
 
 function createLegalExplanationRequestHandler(options = {}) {
     const service = options.service || createLegalExplanationService(options);
-
     return function handleLegalExplanationRequest(request, response) {
-        const requestPath = cleanText(request.url).split("?")[0];
-        if (requestPath !== ROUTE) return false;
+        if (cleanText(request.url).split("?")[0] !== ROUTE) return false;
 
         if (request.method !== "POST") {
             response.setHeader("Allow", "POST, OPTIONS");
@@ -543,14 +522,12 @@ function createLegalExplanationRequestHandler(options = {}) {
         (async () => {
             try {
                 const body = await readJsonBody(request);
-                const result = await service.explain(body);
-                writeJson(response, 200, result);
+                writeJson(response, 200, await service.explain(body));
             } catch (error) {
                 const failure = errorPayload(error);
                 writeJson(response, failure.status, failure.payload);
             }
         })();
-
         return true;
     };
 }
