@@ -158,11 +158,9 @@ the fixed decision, citation metadata, and accepted explanation envelope.
 
 ### Free-capacity protection
 
-Identical decision and retrieval fingerprints share one in-flight Cloudflare
-request and one process-local success-cache entry. The automated test covers 50
-simultaneous identical requests and expects one provider request, one cache
-miss, and 49 shared responses. Distinct outcomes may each require one provider
-request.
+Identical decision and retrieval fingerprints share one in-flight Cloudflare request and one process-local success-cache entry.
+The automated test covers 50 simultaneous identical requests and expects one provider request, one cache miss, and 49 shared responses.
+Distinct outcomes may each require one provider request.
 
 The cache contains no assessment answers and is cleared when the server process
 restarts. Provider failures are not cached as successful responses. A short
