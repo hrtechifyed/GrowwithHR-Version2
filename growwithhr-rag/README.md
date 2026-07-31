@@ -1,10 +1,11 @@
 # GrowWithHR governed legal retrieval and explanation proof
 
-This directory contains private-beta proofs of constrained official-source
-retrieval, governed legal explanation, one server-only hosted provider adapter
-and a disabled-by-default POSH explanation endpoint. It is not connected to the
-current public assessment UI, stable report, PDF generator, browser storage,
-email delivery or customer-facing legal output.
+This directory contains the private-beta POSH legal-rule assurance, governed
+source retrieval, provider-neutral explanation contract, one server-only
+Cloudflare Workers AI adapter, and a disabled-by-default POSH explanation
+endpoint. It is not connected to the current public assessment UI, stable
+report, PDF generator, browser storage, email delivery, or customer-facing
+legal output.
 
 ## Mandatory execution order
 
@@ -15,89 +16,111 @@ email delivery or customer-facing legal output.
 5. A retrieval trace returns approved citations.
 6. A provider-neutral explanation contract receives only the fixed decision
    reference and governed retrieval trace.
-7. The Cloudflare adapter may send that protected request to the approved model.
-8. The explanation contract validates any provider response before acceptance.
-9. The endpoint returns the fixed decision, citation metadata and accepted
-   explanation without returning or logging the submitted assessment answers.
+7. The Cloudflare adapter may send that protected request to the approved Qwen
+   model.
+8. The explanation contract validates the provider output before acceptance.
+9. The endpoint returns a minimized response without raw assessment answers or
+   governed chunk text.
 
 Retrieval happens only after a deterministic decision. Explanation happens only
-after completed governed retrieval. Explanation cannot change the deterministic decision,
-status, reason code, facts or decision fingerprint.
+after completed governed retrieval. Retrieval and explanation cannot change the
+deterministic decision, status, reason code, facts, or decision fingerprint.
 
-## Implemented proof components
+## Implemented components
 
-- `data/assessment/legal-applicability-rules.v1.json` - provisional POSH
-  applicability rule, still marked `needs-legal-review`.
-- `js/assessment-v3/legal-rule-assurance.js` - deterministic legal-assurance
-  wrapper that runs before retrieval.
-- `growwithhr-rag/data/posh-source-chunks.v1.json` - governed source manifest,
-  source fingerprints, page references and curated POSH chunks.
-- `growwithhr-rag/legal-source-retrieval.js` - pure deterministic retrieval and
-  citation-trace module.
-- `growwithhr-rag/legal-explanation-contract.js` - provider-neutral request,
-  deterministic fallback, response validation and injected-provider runner.
-- `growwithhr-rag/cloudflare-workers-ai-provider.cjs` - server-only Cloudflare
+- `data/assessment/legal-applicability-rules.v1.json` — provisional POSH rule,
+  still marked `needs-legal-review`.
+- `js/assessment-v3/legal-rule-assurance.js` — deterministic legal-assurance
+  evaluation before retrieval.
+- `growwithhr-rag/data/posh-source-chunks.v1.json` — governed official-source
+  manifest and curated POSH chunks.
+- `growwithhr-rag/legal-source-retrieval.js` — deterministic post-decision
+  retrieval and citation trace.
+- `growwithhr-rag/legal-explanation-contract.js` — provider-neutral request,
+  response validation, deterministic capability, and injected-provider runner.
+- `growwithhr-rag/cloudflare-workers-ai-provider.cjs` — free-only Cloudflare
   REST adapter fixed to `@cf/qwen/qwen3-30b-a3b-fp8`.
-- `server-legal-explanation.js` - disabled-by-default server endpoint,
-  deterministic orchestration, response minimisation, in-flight request sharing,
-  bounded concurrency, success cache and provider-failure backoff.
-- `schemas/legal-explanation-response.schema.v1.json` - strict structured
-  response schema for explanation-only provider output.
-- `scripts/verify-posh-source-pack.mjs` - optional offline verification of the
-  private source pack against registered byte lengths and SHA-256 fingerprints.
-- `tests/legal-source-retrieval-checks.mjs` - retrieval integration, isolation,
-  fail-closed and architecture-boundary checks.
-- `tests/legal-explanation-contract-checks.mjs` - explanation schema, citation,
-  provider isolation and decision-override rejection checks.
-- `tests/cloudflare-workers-ai-provider-checks.mjs` - mocked Cloudflare request,
-  free-only configuration, quota, output and contract-boundary checks.
-- `tests/legal-explanation-endpoint-checks.mjs` - endpoint input, privacy,
-  concurrency, caching, backoff and HTTP-boundary checks.
+- `server-legal-explanation.js` — disabled-by-default server endpoint,
+  deterministic orchestration, response minimization, request sharing, cache,
+  bounded concurrency, and provider-failure backoff.
+- `schemas/legal-explanation-response.schema.v1.json` — strict accepted-response
+  contract.
+- `tests/` — deterministic, retrieval, explanation, Cloudflare, endpoint,
+  privacy, concurrency, and fail-closed checks.
 
-The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database.
-The hosted-provider proof uses the Cloudflare Workers AI REST endpoint. It has no second hosted provider.
-It does not add a Cloudflare SDK, browser credentials or a browser-to-provider request.
+The retrieval proof uses governed lexical metadata. It does not use embeddings
+or a vector database, Chroma, or PageIndex.
 
-## Retrieval trace contract
+## Retrieval boundary
 
-Each retrieval trace identifies:
+Each retrieval trace records the deterministic rule, version, status, reason
+code, decision fingerprint, approved Source Register IDs, retrieved chunk IDs,
+page ranges, official URLs, and source fingerprints. It also records:
 
-- the deterministic rule ID, version, status and reason code;
-- a decision fingerprint that remains stable when retrieval is disabled or
-  retrieved text changes;
-- the approved Source Register IDs requested by the decision;
-- retrieved chunk IDs, page ranges, official URLs and source fingerprints;
-- `usedForDecision: false` and `applicabilityAuthority: none`;
-- `llmUsed: false`;
-- `legalReviewStatus: needs-legal-review`.
+```text
+usedForDecision: false
+applicabilityAuthority: none
+llmUsed: false
+legalReviewStatus: needs-legal-review
+```
 
-Retrieval fails closed when a decision requests an unknown Source Register ID or
-when a chunk does not resolve to a registered official source.
+Retrieval refuses unknown Source Register IDs and chunks that do not resolve to
+a registered official source.
 
 ## Explanation contract
 
-The provider-neutral explanation request contains:
-
-- the fixed deterministic status, reason code and decision fingerprint;
-- the completed retrieval fingerprint;
-- only governed retrieved chunks and citation identifiers;
-- no raw assessment-answer object and no authority to fill facts;
-- explicit instructions that explanation is not legal advice or approval.
+The protected provider request contains the fixed deterministic status, reason
+code, decision fingerprint, completed retrieval fingerprint, governed chunks,
+and citation identifiers. It contains no raw assessment-answer object and gives
+no authority to fill facts or determine legal applicability.
 
 A provider response is accepted only when:
 
-- its status, reason code and decision fingerprint exactly match the request;
-- every rationale item cites at least one retrieved governed chunk;
-- every cited chunk belongs to the approved retrieval trace;
-- all mandatory legal-review and evidence limitations are present;
-- `usedForDecision`, `mayChangeDecision` and `legalAdvice` are all `false`;
-- no unexpected decision or applicability fields are returned;
-- definitive certification wording is rejected.
+- status, reason code, and decision fingerprint match exactly;
+- every rationale item cites at least one governed retrieved chunk;
+- every citation belongs to the approved retrieval trace;
+- all required legal-review and evidence limitations are present;
+- `usedForDecision`, `mayChangeDecision`, and `legalAdvice` are `false`;
+- no unexpected applicability or decision properties are present;
+- definitive compliance, certification, or legal-approval language is absent.
 
-The deterministic non-LLM explanation remains part of the provider-neutral
-contract. The Cloudflare adapter and live endpoint do not automatically invoke
-it and do not retry through another hosted provider. Cloudflare quota, timeout,
-authentication or invalid-output failures therefore fail closed.
+The deterministic non-LLM explanation capability remains in the
+provider-neutral contract, but the Cloudflare adapter and live endpoint do not
+invoke it automatically. There is no second hosted provider, paid fallback, or
+automatic deterministic fallback. Provider failure must fail closed.
+
+## Cloudflare Qwen live response mode
+
+Approved provider and model:
+
+```text
+Provider: Cloudflare Workers AI
+Model: @cf/qwen/qwen3-30b-a3b-fp8
+Mode: free-only
+```
+
+Cloudflare's model-specific synchronous interface returns a chat-completion
+result. The adapter reads only:
+
+```text
+result.choices[0].message.content
+```
+
+Cloudflare's published JSON Mode support list does not currently include this
+Qwen model. The adapter therefore does not send `response_format` or request
+Cloudflare JSON-schema mode. It uses prompt-constrained JSON instead:
+
+1. The protected legal explanation request and strict response schema are sent
+   inside the model prompt.
+2. Qwen is instructed to return one JSON object with no markdown, preamble, or
+   reasoning text.
+3. The adapter parses only a complete JSON object. It does not repair markdown,
+   extract JSON fragments, or guess malformed output.
+4. The existing GrowWithHR explanation contract then revalidates all protected
+   values, citations, limitations, and legal-review flags.
+
+The adapter also accepts the earlier `result.response` envelope for compatibility,
+but the same strict JSON parsing and explanation-contract validation apply.
 
 ## Private POSH explanation endpoint
 
@@ -107,13 +130,13 @@ Route:
 POST /api/legal-explanation/posh
 ```
 
-The endpoint is disabled unless this server variable is present:
+The endpoint is disabled unless:
 
 ```text
 LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
 ```
 
-The request body may contain only:
+Allowed request body:
 
 ```json
 {
@@ -125,33 +148,28 @@ The request body may contain only:
 }
 ```
 
-Missing fields remain missing and produce the deterministic
-`more-information-needed` path. Unknown fields are rejected so names, email
-addresses, company information, evidence and the wider assessment object cannot
-enter this endpoint accidentally.
+Unknown fields are rejected. Names, email addresses, company information,
+evidence, wider assessment objects, browser-supplied decisions, citations, and
+explanations are not accepted.
 
-The server recomputes the POSH decision from the governed rule catalog. It does
-not trust a decision, retrieval trace, source ID, citation or explanation sent
-by the browser. Only the resulting protected explanation request is sent to
-Cloudflare. The response omits raw answers, mapped facts and governed chunk text;
-it returns the deterministic decision, citation metadata and validated
-explanation envelope.
+The server recomputes the POSH decision, runs governed retrieval, builds the
+protected request, calls Cloudflare, validates the response, and returns only
+the fixed decision, citation metadata, and accepted explanation envelope.
 
-### Free-capacity protection for simultaneous users
+### Free-capacity protection
 
-Identical deterministic decision and retrieval fingerprints share one in-flight
-Cloudflare request. The accepted result is then cached in memory. With the
-current single POSH rule, 50 simultaneous users who produce the same outcome
-create one provider request rather than 50. Simultaneous users split across the
-current three possible POSH outcomes create at most one provider request per
-distinct outcome while those requests are in flight or cached.
+Identical decision and retrieval fingerprints share one in-flight Cloudflare
+request and one process-local success-cache entry. The automated test covers 50
+simultaneous identical requests and expects one provider request, one cache
+miss, and 49 shared responses. Distinct outcomes may each require one provider
+request.
 
-The cache contains no assessment answers. It is process-local and is cleared
-when the server restarts. Provider failures are not treated as successful
-responses; a short backoff prevents repeated requests from immediately consuming
-more free capacity.
+The cache contains no assessment answers and is cleared when the server process
+restarts. Provider failures are not cached as successful responses. A short
+backoff prevents repeated failed calls from immediately consuming more free
+capacity.
 
-Optional endpoint controls:
+Optional controls:
 
 ```text
 LEGAL_EXPLANATION_CACHE_TTL_MS=21600000
@@ -160,108 +178,70 @@ LEGAL_EXPLANATION_MAX_CONCURRENCY=4
 LEGAL_EXPLANATION_MAX_QUEUE=100
 ```
 
-The success-cache TTL is restricted to 5 minutes-24 hours. Failure backoff is
-restricted to 5 seconds-5 minutes. Distinct Cloudflare requests are bounded to
-1-20 concurrent requests and a queue of 1-500 requests.
+## Server configuration
 
-## Cloudflare Workers AI configuration
-
-Approved provider and model:
-
-```text
-Provider: Cloudflare Workers AI
-Model: @cf/qwen/qwen3-30b-a3b-fp8
-Mode: free-only proof
-```
-
-Create a Workers AI API token and copy the Cloudflare Account ID. Configure
-these values only in the server environment:
+Required server-only values:
 
 ```text
 CLOUDFLARE_ACCOUNT_ID=<Cloudflare account ID>
 CLOUDFLARE_WORKERS_AI_API_TOKEN=<Workers AI API token>
 CLOUDFLARE_WORKERS_AI_FREE_ONLY=true
-CLOUDFLARE_WORKERS_AI_TIMEOUT_MS=12000
 LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
 ```
 
-`CLOUDFLARE_WORKERS_AI_TIMEOUT_MS` is optional and is restricted to 1,000-30,000
-milliseconds. The adapter always uses the fixed approved model, a maximum of 400
-output tokens and one Cloudflare request. It does not log or return the API
-token.
+Optional provider timeout:
 
-For free-only operation, keep the Cloudflare account on the Workers Free plan
-and do not enable paid overage. `CLOUDFLARE_WORKERS_AI_FREE_ONLY=true` is an
-explicit deployment guard, but it cannot inspect the Cloudflare billing plan.
-When the free allocation or a provider rate limit is unavailable, the adapter
-returns `cloudflare-free-quota-or-rate-limit` and makes no alternate-provider
-request.
+```text
+CLOUDFLARE_WORKERS_AI_TIMEOUT_MS=12000
+```
 
-Cloudflare accepts a requested response schema, but provider output is never
-trusted directly. The existing GrowWithHR explanation contract revalidates the
-status, reason code, decision fingerprint, citations, limitations and legal
-review flags before accepting the explanation.
+The adapter always uses the fixed Qwen model, a maximum of 400 output tokens,
+and one Cloudflare request. It does not log or return the API token. Keep the
+Cloudflare account on the Workers Free plan and do not enable paid overage. The
+`CLOUDFLARE_WORKERS_AI_FREE_ONLY=true` setting is an explicit deployment guard,
+but it cannot inspect the Cloudflare billing plan.
 
-## Optional private source-pack verification
+When free allocation or rate capacity is unavailable, the adapter returns
+`cloudflare-free-quota-or-rate-limit` and makes no alternate-provider request.
+Timeout, authentication, network, malformed-output, and contract-validation
+failures also fail closed.
 
-The source PDFs are not committed to this repository. To verify a local export
-of the private source pack, run:
+## Optional source-pack verification
+
+The official source PDFs are not committed to this repository. Verify a local
+source-pack export with:
 
 ```bash
 npm run verify:posh-source-pack -- /absolute/path/to/GrowWithHR-RAG
 ```
 
 The command verifies the three registered active POSH PDFs by byte length and
-SHA-256 and rejects additional PDFs inside the active official POSH folders.
-Archived files are outside the active ingestion boundary.
+SHA-256 and rejects extra PDFs in the active official POSH folders.
 
 ## Safety boundaries
 
-Retrieval, explanation, hosted-provider and endpoint components must not:
+Retrieval, explanation, provider, and endpoint components must not:
 
-- invent, infer or fill assessment facts;
+- invent, infer, or fill assessment facts;
 - decide whether a law applies;
-- change a deterministic status, reason code or fingerprint;
-- trust a browser-supplied decision, source ID, citation or explanation;
-- retrieve or cite sources not approved by the decision;
+- change deterministic status, reason code, or fingerprints;
+- trust browser-supplied decisions, sources, citations, or explanations;
+- retrieve or cite unapproved sources;
 - treat official-source status as legal approval;
 - claim evidence verification or professional legal review;
 - expose provider credentials to browser code;
 - return raw assessment answers or mapped facts;
-- mutate protected report, PDF, storage or delivery contracts.
+- mutate the protected report, PDF, storage, email, or delivery contracts.
 
-## Current implementation status
-
-Implemented:
-
-- deterministic POSH legal-rule assurance;
-- verified three-source POSH manifest metadata;
-- governed curated source chunks with page references;
-- deterministic post-decision retrieval;
-- visible decision and citation trace data;
-- strict provider-neutral explanation request and response contract;
-- deterministic non-LLM explanation capability;
-- Cloudflare Workers AI free-only Qwen provider adapter;
-- disabled-by-default `/api/legal-explanation/posh` server endpoint;
-- server-side deterministic recomputation and source retrieval;
-- input allow-listing and response data minimisation;
-- fingerprint-based in-flight request sharing and success caching;
-- bounded concurrency and provider-failure backoff;
-- server-environment configuration validation;
-- timeout, quota, authentication and malformed-output handling;
-- injected-provider validation and decision-override rejection;
-- retrieval, explanation, mocked Cloudflare and endpoint isolation tests;
-- source-pack fingerprint verification command.
+## Current limitations
 
 Not implemented:
 
-- automatic PDF text extraction in production;
-- embeddings or vector search;
-- Chroma or another vector database;
-- PageIndex;
-- public assessment-page invocation of the endpoint;
-- production report, UI or PDF integration;
-- a live Cloudflare credential test in CI;
-- a shared cache across multiple server instances;
+- public assessment-page invocation;
+- stable report, UI, email, or PDF integration;
+- live Cloudflare credential calls in CI;
+- shared cache across multiple server instances;
 - a second hosted provider or paid fallback;
+- automatic PDF text extraction;
+- embeddings, vector search, Chroma, or PageIndex;
 - legal approval.
