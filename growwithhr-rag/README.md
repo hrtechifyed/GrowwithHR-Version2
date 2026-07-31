@@ -1,9 +1,10 @@
 # GrowWithHR governed legal retrieval and explanation proof
 
 This directory contains private-beta proofs of constrained official-source
-retrieval, governed legal explanation and one server-only hosted provider
-adapter. It is not connected to the current public product, stable report, PDF
-generator, browser storage, email delivery or customer-facing legal output.
+retrieval, governed legal explanation, one server-only hosted provider adapter
+and a disabled-by-default POSH explanation endpoint. It is not connected to the
+current public assessment UI, stable report, PDF generator, browser storage,
+email delivery or customer-facing legal output.
 
 ## Mandatory execution order
 
@@ -16,6 +17,8 @@ generator, browser storage, email delivery or customer-facing legal output.
    reference and governed retrieval trace.
 7. The Cloudflare adapter may send that protected request to the approved model.
 8. The explanation contract validates any provider response before acceptance.
+9. The endpoint returns the fixed decision, citation metadata and accepted
+   explanation without returning or logging the submitted assessment answers.
 
 Retrieval happens only after a deterministic decision. Explanation happens only
 after completed governed retrieval. Explanation cannot change the deterministic decision,
@@ -35,6 +38,9 @@ status, reason code, facts or decision fingerprint.
   deterministic fallback, response validation and injected-provider runner.
 - `growwithhr-rag/cloudflare-workers-ai-provider.cjs` - server-only Cloudflare
   REST adapter fixed to `@cf/qwen/qwen3-30b-a3b-fp8`.
+- `server-legal-explanation.js` - disabled-by-default server endpoint,
+  deterministic orchestration, response minimisation, in-flight request sharing,
+  bounded concurrency, success cache and provider-failure backoff.
 - `schemas/legal-explanation-response.schema.v1.json` - strict structured
   response schema for explanation-only provider output.
 - `scripts/verify-posh-source-pack.mjs` - optional offline verification of the
@@ -45,6 +51,8 @@ status, reason code, facts or decision fingerprint.
   provider isolation and decision-override rejection checks.
 - `tests/cloudflare-workers-ai-provider-checks.mjs` - mocked Cloudflare request,
   free-only configuration, quota, output and contract-boundary checks.
+- `tests/legal-explanation-endpoint-checks.mjs` - endpoint input, privacy,
+  concurrency, caching, backoff and HTTP-boundary checks.
 
 The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database.
 The hosted-provider proof uses the Cloudflare Workers AI REST endpoint. It has no second hosted provider.
@@ -87,9 +95,74 @@ A provider response is accepted only when:
 - definitive certification wording is rejected.
 
 The deterministic non-LLM explanation remains part of the provider-neutral
-contract. The Cloudflare adapter does not automatically invoke it and does not
-retry through another hosted provider. Cloudflare quota, timeout, authentication
-or invalid-output failures therefore fail closed at the adapter boundary.
+contract. The Cloudflare adapter and live endpoint do not automatically invoke
+it and do not retry through another hosted provider. Cloudflare quota, timeout,
+authentication or invalid-output failures therefore fail closed.
+
+## Private POSH explanation endpoint
+
+Route:
+
+```text
+POST /api/legal-explanation/posh
+```
+
+The endpoint is disabled unless this server variable is present:
+
+```text
+LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
+```
+
+The request body may contain only:
+
+```json
+{
+  "answers": {
+    "employees": 10,
+    "primaryState": "Maharashtra",
+    "locations": 1
+  }
+}
+```
+
+Missing fields remain missing and produce the deterministic
+`more-information-needed` path. Unknown fields are rejected so names, email
+addresses, company information, evidence and the wider assessment object cannot
+enter this endpoint accidentally.
+
+The server recomputes the POSH decision from the governed rule catalog. It does
+not trust a decision, retrieval trace, source ID, citation or explanation sent
+by the browser. Only the resulting protected explanation request is sent to
+Cloudflare. The response omits raw answers, mapped facts and governed chunk text;
+it returns the deterministic decision, citation metadata and validated
+explanation envelope.
+
+### Free-capacity protection for simultaneous users
+
+Identical deterministic decision and retrieval fingerprints share one in-flight
+Cloudflare request. The accepted result is then cached in memory. With the
+current single POSH rule, 50 simultaneous users who produce the same outcome
+create one provider request rather than 50. Simultaneous users split across the
+current three possible POSH outcomes create at most one provider request per
+distinct outcome while those requests are in flight or cached.
+
+The cache contains no assessment answers. It is process-local and is cleared
+when the server restarts. Provider failures are not treated as successful
+responses; a short backoff prevents repeated requests from immediately consuming
+more free capacity.
+
+Optional endpoint controls:
+
+```text
+LEGAL_EXPLANATION_CACHE_TTL_MS=21600000
+LEGAL_EXPLANATION_FAILURE_BACKOFF_MS=60000
+LEGAL_EXPLANATION_MAX_CONCURRENCY=4
+LEGAL_EXPLANATION_MAX_QUEUE=100
+```
+
+The success-cache TTL is restricted to 5 minutes-24 hours. Failure backoff is
+restricted to 5 seconds-5 minutes. Distinct Cloudflare requests are bounded to
+1-20 concurrent requests and a queue of 1-500 requests.
 
 ## Cloudflare Workers AI configuration
 
@@ -109,6 +182,7 @@ CLOUDFLARE_ACCOUNT_ID=<Cloudflare account ID>
 CLOUDFLARE_WORKERS_AI_API_TOKEN=<Workers AI API token>
 CLOUDFLARE_WORKERS_AI_FREE_ONLY=true
 CLOUDFLARE_WORKERS_AI_TIMEOUT_MS=12000
+LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
 ```
 
 `CLOUDFLARE_WORKERS_AI_TIMEOUT_MS` is optional and is restricted to 1,000-30,000
@@ -143,15 +217,17 @@ Archived files are outside the active ingestion boundary.
 
 ## Safety boundaries
 
-Retrieval, explanation and hosted-provider components must not:
+Retrieval, explanation, hosted-provider and endpoint components must not:
 
 - invent, infer or fill assessment facts;
 - decide whether a law applies;
 - change a deterministic status, reason code or fingerprint;
+- trust a browser-supplied decision, source ID, citation or explanation;
 - retrieve or cite sources not approved by the decision;
 - treat official-source status as legal approval;
 - claim evidence verification or professional legal review;
 - expose provider credentials to browser code;
+- return raw assessment answers or mapped facts;
 - mutate protected report, PDF, storage or delivery contracts.
 
 ## Current implementation status
@@ -166,10 +242,15 @@ Implemented:
 - strict provider-neutral explanation request and response contract;
 - deterministic non-LLM explanation capability;
 - Cloudflare Workers AI free-only Qwen provider adapter;
+- disabled-by-default `/api/legal-explanation/posh` server endpoint;
+- server-side deterministic recomputation and source retrieval;
+- input allow-listing and response data minimisation;
+- fingerprint-based in-flight request sharing and success caching;
+- bounded concurrency and provider-failure backoff;
 - server-environment configuration validation;
 - timeout, quota, authentication and malformed-output handling;
 - injected-provider validation and decision-override rejection;
-- retrieval, explanation and mocked Cloudflare isolation tests;
+- retrieval, explanation, mocked Cloudflare and endpoint isolation tests;
 - source-pack fingerprint verification command.
 
 Not implemented:
@@ -178,8 +259,9 @@ Not implemented:
 - embeddings or vector search;
 - Chroma or another vector database;
 - PageIndex;
-- a public legal-explanation HTTP endpoint;
-- production assessment, report, UI or PDF integration;
+- public assessment-page invocation of the endpoint;
+- production report, UI or PDF integration;
 - a live Cloudflare credential test in CI;
+- a shared cache across multiple server instances;
 - a second hosted provider or paid fallback;
 - legal approval.
