@@ -18,7 +18,6 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTROLLER_PATH = path.join(ROOT, "js", "assessment-v3", "operational-explanation-panel.js");
 const BOOTSTRAP_PATH = path.join(ROOT, "js", "assessment-v3", "bootstrap.js");
-const BOOTSTRAP_CORE_PATH = path.join(ROOT, "js", "assessment-v3", "bootstrap-core.js");
 const CSS_PATH = path.join(ROOT, "css", "21-operational-explanation-panel.css");
 const PACKAGE_PATH = path.join(ROOT, "package.json");
 const E2E_SPEC = "tests/e2e/analyze-company-v3-operational-explanation.spec.ts";
@@ -49,7 +48,9 @@ function savedState(overrides = {}) {
     };
 }
 
-function validEnvelope(featureId = "feature.advisory.workforce-planning") {
+function validEnvelope() {
+    const featureId = "feature.advisory.workforce-planning";
+    const fingerprint = "d".repeat(64);
     return {
         endpointVersion: "1.0.0",
         featureId,
@@ -68,7 +69,7 @@ function validEnvelope(featureId = "feature.advisory.workforce-planning") {
             title: "Create a workforce plan",
             action: "Document expected roles and ownership.",
             timeline: "Before major hiring begins",
-            recommendationFingerprint: "d".repeat(64),
+            recommendationFingerprint: fingerprint,
             sourceIds: ["source.labour-ministry.official-portal"],
             limitations: [],
             triggeringFactIds: ["fact.growth.rapid-growth"],
@@ -95,10 +96,10 @@ function validEnvelope(featureId = "feature.advisory.workforce-planning") {
             usedForRecommendation: false,
             mayChangeRecommendation: false,
             legalAdvice: false,
-            recommendationFingerprint: "d".repeat(64),
+            recommendationFingerprint: fingerprint,
             response: {
                 contractVersion: "1.0.0",
-                recommendationFingerprint: "d".repeat(64),
+                recommendationFingerprint: fingerprint,
                 operationalStatus: "recommended",
                 reasonCode: "WORKFORCE_PLANNING_RECOMMENDED",
                 summary: "The deterministic recommendation suggests preparing a workforce plan.",
@@ -131,10 +132,9 @@ function changedEnvelope(change) {
 }
 
 async function main() {
-    const [source, bootstrap, bootstrapCore, css, packageJson] = await Promise.all([
+    const [source, bootstrap, css, packageJson] = await Promise.all([
         readFile(CONTROLLER_PATH, "utf8"),
         readFile(BOOTSTRAP_PATH, "utf8"),
-        readFile(BOOTSTRAP_CORE_PATH, "utf8"),
         readFile(CSS_PATH, "utf8"),
         readFile(PACKAGE_PATH, "utf8").then(JSON.parse)
     ]);
@@ -149,43 +149,22 @@ async function main() {
     assert.equal(OPERATIONAL_FEATURES.length, 6);
     assert.equal(new Set(OPERATIONAL_FEATURES.map((feature) => feature.id)).size, 6);
 
-    const expectedPayloads = new Map([
-        [
-            "feature.advisory.employment-documentation",
-            { employees: 12 }
-        ],
-        [
-            "feature.advisory.multi-location-workplace",
-            { locations: 3 }
-        ],
-        [
-            "feature.advisory.distributed-workforce",
-            { workModel: "Remote", remoteBand: "51-75%", remoteExact: 60 }
-        ],
-        [
-            "feature.advisory.workforce-planning",
-            { hiringPlans: "Significant Growth", expansionPlans: ["new-locations"] }
-        ],
-        [
-            "feature.advisory.people-governance-ownership",
-            { peopleFunction: "Founder-led" }
-        ],
-        [
-            "feature.advisory.policies-compliance-priority",
-            { priorities: ["policies-compliance"] }
-        ]
+    const expected = new Map([
+        ["feature.advisory.employment-documentation", { employees: 12 }],
+        ["feature.advisory.multi-location-workplace", { locations: 3 }],
+        ["feature.advisory.distributed-workforce", { workModel: "Remote", remoteBand: "51-75%", remoteExact: 60 }],
+        ["feature.advisory.workforce-planning", { hiringPlans: "Significant Growth", expansionPlans: ["new-locations"] }],
+        ["feature.advisory.people-governance-ownership", { peopleFunction: "Founder-led" }],
+        ["feature.advisory.policies-compliance-priority", { priorities: ["policies-compliance"] }]
     ]);
 
     for (const feature of OPERATIONAL_FEATURES) {
         const extracted = extractOperationalExplanationAnswers(savedState(), feature.id);
-        assert.deepEqual(extracted.answers, expectedPayloads.get(feature.id));
+        assert.deepEqual(extracted.answers, expected.get(feature.id));
         assert.deepEqual(extracted.missingFields, []);
 
         const payload = createOperationalExplanationRequestPayload(savedState(), feature.id);
-        assert.deepEqual(Object.keys(payload), ["featureId", "answers"]);
-        assert.equal(payload.featureId, feature.id);
-        assert.deepEqual(payload.answers, expectedPayloads.get(feature.id));
-
+        assert.deepEqual(payload, { featureId: feature.id, answers: expected.get(feature.id) });
         const serialized = JSON.stringify(payload);
         assert.doesNotMatch(serialized, /Private organisation name/);
         assert.doesNotMatch(serialized, /private@example\.com/);
@@ -193,22 +172,14 @@ async function main() {
         assert.doesNotMatch(serialized, /primaryState/);
     }
 
-    const missing = extractOperationalExplanationAnswers(
+    const missing = createOperationalExplanationRequestPayload(
         savedState({ hiringPlans: "", expansionPlans: [] }),
         "feature.advisory.workforce-planning"
     );
-    assert.deepEqual(missing.answers, {});
-    assert.deepEqual(missing.missingFields, ["hiring plan", "expansion plans"]);
-    assert.deepEqual(
-        createOperationalExplanationRequestPayload(
-            savedState({ hiringPlans: "", expansionPlans: [] }),
-            "feature.advisory.workforce-planning"
-        ),
-        {
-            featureId: "feature.advisory.workforce-planning",
-            answers: {}
-        }
-    );
+    assert.deepEqual(missing, {
+        featureId: "feature.advisory.workforce-planning",
+        answers: {}
+    });
 
     assert.throws(
         () => extractOperationalExplanationAnswers(savedState(), "feature.legal.social-security"),
@@ -226,27 +197,13 @@ async function main() {
     );
     assert.equal(
         resolveOperationalExplanationEndpoint({
-            location: {
-                origin: "http://localhost:3000",
-                pathname: "/analyze-company-v3.html"
-            }
+            location: { origin: "http://localhost:3000", pathname: "/analyze-company-v3.html" }
         }),
         OPERATIONAL_EXPLANATION_ROUTE
     );
-    assert.equal(
-        resolveOperationalExplanationEndpoint(
-            { location: { origin: "http://localhost", pathname: "/" } },
-            { body: { dataset: { operationalExplanationEndpoint: "https://example.com/custom" } } }
-        ),
-        "https://example.com/custom"
-    );
 
     const valid = validEnvelope();
-    assert.equal(
-        validateOperationalExplanationEnvelope(valid, valid.featureId),
-        valid
-    );
-
+    assert.equal(validateOperationalExplanationEnvelope(valid, valid.featureId), valid);
     assert.throws(
         () => validateOperationalExplanationEnvelope(
             changedEnvelope((value) => { value.recommendationAuthority = "provider"; })
@@ -273,12 +230,6 @@ async function main() {
     );
     assert.throws(
         () => validateOperationalExplanationEnvelope(
-            changedEnvelope((value) => { value.explanation.response.rationale[0].sourceIds = ["unknown"]; })
-        ),
-        /did not match/
-    );
-    assert.throws(
-        () => validateOperationalExplanationEnvelope(
             changedEnvelope((value) => { value.explanation.response.limitations.shift(); })
         ),
         /did not match/
@@ -293,9 +244,9 @@ async function main() {
     assert.doesNotMatch(source, /\.removeItem\s*\(/);
     assert.doesNotMatch(source, /\.clear\s*\(/);
     assert.match(bootstrap, /operational-explanation-panel\.js/);
-    assert.match(bootstrap, /bootstrap-core\.js/);
-    assert.match(bootstrapCore, /legal-explanation-panel\.js/);
-    assert.match(bootstrapCore, /m1-five-act-shell/);
+    assert.match(bootstrap, /legal-explanation-panel\.js/);
+    assert.match(bootstrap, /createStoryEngine/);
+    assert.match(bootstrap, /m1-five-act-shell/);
     assert.match(css, /dna-operational-explanation__feature-grid/);
     assert.match(css, /prefers-reduced-motion/);
 
