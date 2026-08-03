@@ -17,6 +17,7 @@ on:
       - "css/19-compliance-dna.css"
       - "css/19-presentation-polish.css"
       - "css/20-compliance-story.css"
+      - "css/20-legal-explanation-panel.css"
       - "css/21-story-visual-sections.css"
       - "data/assessment/**"
       - "data/schema/**"
@@ -64,6 +65,7 @@ on:
       - "css/19-compliance-dna.css"
       - "css/19-presentation-polish.css"
       - "css/20-compliance-story.css"
+      - "css/20-legal-explanation-panel.css"
       - "css/21-story-visual-sections.css"
       - "data/assessment/**"
       - "data/schema/**"
@@ -141,6 +143,7 @@ jobs:
           tests/e2e/analyze-company-v3.spec.ts
           tests/e2e/analyze-company-v3-traceability.spec.ts
           tests/e2e/analyze-company-v3-compliance-story.spec.ts
+          tests/e2e/analyze-company-v3-legal-explanation.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
