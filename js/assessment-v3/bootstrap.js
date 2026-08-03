@@ -11,6 +11,7 @@
  * or modify the stable v2 assessment.
  */
 
+import "./legal-explanation-panel.js";
 import createStoryEngine from "./story-engine.js";
 
 const STABLE_ASSESSMENT_ROUTE =
@@ -396,7 +397,7 @@ function updateActNavigation(
 
         const isActive =
             buttonActNumber ===
-            state.currentActNumber;
+                state.currentActNumber;
 
         if (isActive) {
             button.setAttribute(
