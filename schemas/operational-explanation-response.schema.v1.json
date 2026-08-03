@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://growwithhr.example/schemas/operational-explanation-response.schema.v1.json",
+  "title": "GrowWithHR operational explanation response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "recommendationFingerprint",
+    "operationalStatus",
+    "reasonCode",
+    "summary",
+    "rationale",
+    "nextSteps",
+    "limitations",
+    "usedForRecommendation",
+    "mayChangeRecommendation",
+    "legalAdvice"
+  ],
+  "properties": {
+    "contractVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "recommendationFingerprint": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "operationalStatus": {
+      "type": "string",
+      "enum": [
+        "recommended",
+        "not-triggered",
+        "more-information-needed"
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 160
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "rationale": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "statement",
+          "sourceIds"
+        ],
+        "properties": {
+          "statement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 900
+          },
+          "sourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 180
+            }
+          }
+        }
+      }
+    },
+    "nextSteps": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "usedForRecommendation": {
+      "type": "boolean",
+      "const": false
+    },
+    "mayChangeRecommendation": {
+      "type": "boolean",
+      "const": false
+    },
+    "legalAdvice": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}
