@@ -1,0 +1,463 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:growwithhr:schema:feature-coverage-registry:1.0",
+  "title": "GrowWithHR Feature Coverage Registry",
+  "description": "Descriptive coverage and readiness registry. It does not evaluate legal applicability.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "registryVersion",
+    "legalReviewStatus",
+    "features"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "registryVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "legalReviewStatus": {
+      "const": "needs-legal-review"
+    },
+    "features": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/feature"
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "classification",
+        "domain",
+        "currentRuleRefs",
+        "assessmentFacts",
+        "knowledgeBaseRecords",
+        "sourcePack",
+        "explanation",
+        "delivery",
+        "legalReviewStatus",
+        "readiness",
+        "blockers",
+        "nextAction"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^feature\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "classification": {
+          "type": "string",
+          "enum": [
+            "legal-assurance",
+            "operational-advisory",
+            "legacy-readiness"
+          ]
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "legal",
+            "governance",
+            "workplace",
+            "workforce",
+            "growth",
+            "people",
+            "hiring",
+            "policy",
+            "talent",
+            "rewards",
+            "learning",
+            "culture"
+          ]
+        },
+        "currentRuleRefs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "assessmentFacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "available",
+            "missing"
+          ],
+          "properties": {
+            "available": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^fact\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "missing": {
+              "$ref": "#/$defs/stringArray"
+            }
+          }
+        },
+        "knowledgeBaseRecords": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9._*-]*$"
+          }
+        },
+        "sourcePack": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "registrySourceIds",
+            "chunkCatalog"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "complete",
+                "partial",
+                "not-started",
+                "not-required"
+              ]
+            },
+            "registrySourceIds": {
+              "$ref": "#/$defs/stringArray"
+            },
+            "chunkCatalog": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "complete"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "registrySourceIds": {
+                    "minItems": 1
+                  },
+                  "chunkCatalog": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "not-required"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "registrySourceIds": {
+                    "maxItems": 0
+                  },
+                  "chunkCatalog": {
+                    "type": "null"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "not-started"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "registrySourceIds": {
+                    "maxItems": 0
+                  },
+                  "chunkCatalog": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "explanation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "route",
+            "uiSurface"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "live",
+                "blocked",
+                "not-started"
+              ]
+            },
+            "route": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "uiSurface": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "live"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "route": {
+                    "type": "string",
+                    "pattern": "^/api/"
+                  },
+                  "uiSurface": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "route": {
+                    "type": "null"
+                  },
+                  "uiSurface": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "delivery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stableReportMutation",
+            "stablePdfMutation",
+            "stableEmailMutation"
+          ],
+          "properties": {
+            "stableReportMutation": {
+              "const": false
+            },
+            "stablePdfMutation": {
+              "const": false
+            },
+            "stableEmailMutation": {
+              "const": false
+            }
+          }
+        },
+        "legalReviewStatus": {
+          "type": "string",
+          "enum": [
+            "needs-legal-review",
+            "not-applicable"
+          ]
+        },
+        "readiness": {
+          "type": "string",
+          "enum": [
+            "live-governed",
+            "governed-advisory",
+            "blocked",
+            "migration-required"
+          ]
+        },
+        "blockers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "nextAction": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "legal-assurance"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "domain": {
+                "const": "legal"
+              },
+              "legalReviewStatus": {
+                "const": "needs-legal-review"
+              },
+              "readiness": {
+                "enum": [
+                  "live-governed",
+                  "blocked"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "operational-advisory"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "legalReviewStatus": {
+                "const": "not-applicable"
+              },
+              "readiness": {
+                "const": "governed-advisory"
+              },
+              "sourcePack": {
+                "properties": {
+                  "status": {
+                    "const": "not-required"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification": {
+                "const": "legacy-readiness"
+              }
+            },
+            "required": [
+              "classification"
+            ]
+          },
+          "then": {
+            "properties": {
+              "legalReviewStatus": {
+                "const": "not-applicable"
+              },
+              "readiness": {
+                "const": "migration-required"
+              },
+              "sourcePack": {
+                "properties": {
+                  "status": {
+                    "const": "not-required"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "readiness": {
+                "const": "live-governed"
+              }
+            },
+            "required": [
+              "readiness"
+            ]
+          },
+          "then": {
+            "properties": {
+              "classification": {
+                "const": "legal-assurance"
+              },
+              "sourcePack": {
+                "properties": {
+                  "status": {
+                    "const": "complete"
+                  }
+                }
+              },
+              "explanation": {
+                "properties": {
+                  "status": {
+                    "const": "live"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
