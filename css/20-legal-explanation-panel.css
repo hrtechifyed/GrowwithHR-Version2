@@ -1,0 +1,403 @@
+/* ==========================================================
+   GrowWithHR Compliance DNA
+   Private-Beta POSH Legal Explanation Panel
+
+   This stylesheet is loaded only by the private-beta controller.
+========================================================== */
+
+body.compliance-dna-page .dna-legal-explanation {
+    position: relative;
+    margin-top: clamp(36px, 6vw, 72px);
+    padding: clamp(24px, 5vw, 52px);
+    overflow: hidden;
+    border: 1px solid rgba(168, 85, 247, 0.28);
+    border-radius: var(--radius-xl);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(168, 85, 247, 0.10),
+            rgba(37, 99, 235, 0.05),
+            rgba(255, 255, 255, 0.025)
+        ),
+        rgba(7, 12, 24, 0.92);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(20px);
+}
+
+body.compliance-dna-page .dna-legal-explanation::before {
+    position: absolute;
+    z-index: 0;
+    right: -170px;
+    bottom: -190px;
+    width: 410px;
+    height: 410px;
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle,
+            rgba(168, 85, 247, 0.17),
+            transparent 69%
+        );
+}
+
+body.compliance-dna-page .dna-legal-explanation > * {
+    position: relative;
+    z-index: 1;
+}
+
+body.compliance-dna-page .dna-legal-explanation__header {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+    align-items: start;
+    gap: var(--space-4);
+}
+
+body.compliance-dna-page .dna-legal-explanation__heading {
+    max-width: 760px;
+}
+
+body.compliance-dna-page .dna-legal-explanation__eyebrow {
+    margin: 0 0 10px;
+    color: #D8B4FE;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+body.compliance-dna-page .dna-legal-explanation__title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+body.compliance-dna-page .dna-legal-explanation__description {
+    max-width: 720px;
+    margin: 16px 0 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+body.compliance-dna-page .dna-legal-explanation__button {
+    min-width: 220px;
+    white-space: nowrap;
+}
+
+body.compliance-dna-page .dna-legal-explanation__status {
+    margin: var(--space-3) 0 0;
+    padding: 13px 16px;
+    border: 1px solid rgba(168, 85, 247, 0.24);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    background: rgba(168, 85, 247, 0.08);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation[data-legal-explanation-state="ready"]
+    .dna-legal-explanation__status,
+body.compliance-dna-page
+    .dna-legal-explanation[data-legal-explanation-state="complete"]
+    .dna-legal-explanation__status {
+    border-color: rgba(34, 197, 94, 0.28);
+    color: #BBF7D0;
+    background: rgba(34, 197, 94, 0.08);
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation[data-legal-explanation-state="loading"]
+    .dna-legal-explanation__status {
+    border-color: rgba(79, 139, 255, 0.28);
+    color: #BFDBFE;
+    background: rgba(37, 99, 235, 0.09);
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation[data-legal-explanation-state="error"]
+    .dna-legal-explanation__status {
+    border-color: rgba(239, 68, 68, 0.32);
+    color: #FECACA;
+    background: rgba(239, 68, 68, 0.09);
+}
+
+body.compliance-dna-page .dna-legal-explanation__notice {
+    margin-top: var(--space-3);
+    padding: clamp(20px, 4vw, 30px);
+    border: 1px solid rgba(245, 158, 11, 0.30);
+    border-radius: var(--radius-lg);
+    color: var(--text-secondary);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+body.compliance-dna-page .dna-legal-explanation__notice--error {
+    border-color: rgba(239, 68, 68, 0.32);
+    background: rgba(239, 68, 68, 0.09);
+}
+
+body.compliance-dna-page .dna-legal-explanation__notice h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    line-height: 1.35;
+}
+
+body.compliance-dna-page .dna-legal-explanation__notice p {
+    max-width: 720px;
+    margin: 10px 0 0;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation__notice
+    .dna-secondary-button {
+    margin-top: 20px;
+}
+
+body.compliance-dna-page .dna-legal-explanation__content {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: clamp(30px, 5vw, 48px);
+}
+
+body.compliance-dna-page .dna-legal-explanation__summary-card,
+body.compliance-dna-page .dna-legal-explanation__detail {
+    min-width: 0;
+    padding: clamp(20px, 3.5vw, 30px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.018)
+        );
+    box-shadow: var(--shadow-sm);
+}
+
+body.compliance-dna-page .dna-legal-explanation__summary-card {
+    border-color: rgba(168, 85, 247, 0.25);
+}
+
+body.compliance-dna-page .dna-legal-explanation__summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+body.compliance-dna-page .dna-legal-explanation__summary-header h3,
+body.compliance-dna-page .dna-legal-explanation__detail h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.08rem, 2vw, 1.35rem);
+    line-height: 1.35;
+}
+
+body.compliance-dna-page .dna-legal-explanation__decision-badge {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 30px;
+    padding: 6px 10px;
+    border: 1px solid rgba(168, 85, 247, 0.38);
+    border-radius: var(--radius-pill);
+    color: #E9D5FF;
+    background: rgba(168, 85, 247, 0.11);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.035em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation__decision-badge[data-decision-status="not-currently-applicable"] {
+    border-color: rgba(148, 163, 184, 0.30);
+    color: var(--text-secondary);
+    background: rgba(148, 163, 184, 0.08);
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation__decision-badge[data-decision-status="more-information-needed"] {
+    border-color: rgba(245, 158, 11, 0.38);
+    color: #FDE68A;
+    background: rgba(245, 158, 11, 0.10);
+}
+
+body.compliance-dna-page .dna-legal-explanation__summary {
+    margin: 18px 0 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.72;
+}
+
+body.compliance-dna-page .dna-legal-explanation__detail-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+}
+
+body.compliance-dna-page .dna-legal-explanation__detail > div {
+    margin-top: 14px;
+}
+
+body.compliance-dna-page .dna-legal-explanation__list,
+body.compliance-dna-page .dna-legal-explanation__citation-list {
+    display: grid;
+    gap: 11px;
+    padding-left: 20px;
+    margin: 0;
+}
+
+body.compliance-dna-page .dna-legal-explanation__list li,
+body.compliance-dna-page .dna-legal-explanation__citation-list li {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+body.compliance-dna-page .dna-legal-explanation__list p {
+    margin: 0;
+}
+
+body.compliance-dna-page .dna-legal-explanation__list code,
+body.compliance-dna-page .dna-legal-explanation__citation-list code {
+    display: block;
+    margin-top: 7px;
+    overflow-wrap: anywhere;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+}
+
+body.compliance-dna-page .dna-legal-explanation__citation-list {
+    padding-left: 0;
+    list-style: none;
+}
+
+body.compliance-dna-page .dna-legal-explanation__citation-list li {
+    padding: 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.028);
+}
+
+body.compliance-dna-page .dna-legal-explanation__citation-list a {
+    display: block;
+    color: var(--brand-blue-light);
+    font-weight: 800;
+    line-height: 1.45;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+body.compliance-dna-page .dna-legal-explanation__citation-list span {
+    display: block;
+    margin-top: 7px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+body.compliance-dna-page .dna-legal-explanation__metadata {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+
+body.compliance-dna-page .dna-legal-explanation__metadata > div {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.028);
+}
+
+body.compliance-dna-page .dna-legal-explanation__metadata dt {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+body.compliance-dna-page .dna-legal-explanation__metadata dd {
+    margin: 7px 0 0;
+    overflow-wrap: anywhere;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+body.compliance-dna-page
+    .dna-legal-explanation[data-legal-explanation-state="loading"]
+    .dna-legal-explanation__content {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+body.compliance-dna-page .dna-legal-explanation a:focus-visible {
+    outline: 3px solid rgba(255, 176, 0, 0.55);
+    outline-offset: 3px;
+}
+
+@media (max-width: 980px) {
+    body.compliance-dna-page .dna-legal-explanation__header {
+        grid-template-columns: 1fr;
+    }
+
+    body.compliance-dna-page .dna-legal-explanation__button {
+        justify-self: start;
+    }
+
+    body.compliance-dna-page .dna-legal-explanation__metadata {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    body.compliance-dna-page .dna-legal-explanation {
+        padding: 24px 20px;
+        border-radius: var(--radius-lg);
+    }
+
+    body.compliance-dna-page .dna-legal-explanation__button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    body.compliance-dna-page .dna-legal-explanation__detail-grid,
+    body.compliance-dna-page .dna-legal-explanation__metadata {
+        grid-template-columns: 1fr;
+    }
+
+    body.compliance-dna-page .dna-legal-explanation__summary-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    body.compliance-dna-page .dna-legal-explanation__decision-badge {
+        justify-content: center;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.compliance-dna-page .dna-legal-explanation__content {
+        transition: none;
+    }
+}
