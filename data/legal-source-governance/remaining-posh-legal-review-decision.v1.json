@@ -1,0 +1,243 @@
+{
+  "schemaVersion": 1,
+  "decisionVersion": "0.1.0",
+  "title": "Remaining POSH duties limited-scope legal review decision record",
+  "preparedAt": "2026-08-04",
+  "status": "awaiting-qualified-legal-review",
+  "legalReviewStatus": "needs-legal-review",
+  "ragApprovalStatus": "not-approved",
+  "runtimeActivation": false,
+  "legalAdvice": false,
+  "controlledDriveRegisterPath": "GrowWithHR-RAG/00-project-control/Legal Feature Review Register.xlsx",
+  "repositoryCompanionOnly": true,
+  "allowedLegalReviewDecisions": [
+    "reviewed-with-conditions",
+    "approved",
+    "rejected"
+  ],
+  "reviewMaterials": {
+    "sectionMapping": "data/legal-source-governance/posh-section-mapping.v1.json",
+    "factContract": "data/assessment/posh-assessment-fact-contract.v1.json",
+    "rulesPageVerification": "data/legal-source-governance/posh-rules-page-verification.v1.json",
+    "sourceCatalog": "growwithhr-rag/data/posh-source-chunks.v1.json",
+    "reviewPacket": "docs/legal-source-governance/review-packets/remaining-posh-legal-review-packet.md"
+  },
+  "sourceBaseline": [
+    {
+      "registrySourceId": "posh-act-2013",
+      "sha256": "e59776d9ce4300c35acb8f3ed8150b33c18a77b5b553423ef9f1c69dbd144475",
+      "pageCount": 14,
+      "exactControlledDriveFileVerifiedForThisReview": false,
+      "legalReviewDecision": null
+    },
+    {
+      "registrySourceId": "posh-rules-2013",
+      "sha256": "d372e3dbc83f1f960ed9d4c9f2204eac2f716c70688a8e299c75e03753c8f09d",
+      "pageCount": 6,
+      "exactControlledDriveFileVerifiedForThisReview": false,
+      "legalReviewDecision": null
+    },
+    {
+      "registrySourceId": "posh-commencement-2013",
+      "sha256": "87c595e66e29e803ae3dc38ce5d2cb510038e5d95ff8d2d5be7f4341bcfa91e5",
+      "pageCount": 1,
+      "exactControlledDriveFileVerifiedForThisReview": false,
+      "legalReviewDecision": null
+    }
+  ],
+  "reviewPrerequisites": [
+    {
+      "id": "controlled-drive-source-hashes",
+      "description": "Confirm the exact controlled Drive files match the registered SHA-256, byte length and page count.",
+      "status": "pending",
+      "evidenceReference": null
+    },
+    {
+      "id": "controlled-drive-section-map",
+      "description": "Update the controlled Drive section-mapping workbook with exact Rules physical-PDF pages after the hash gate passes.",
+      "status": "pending",
+      "evidenceReference": null
+    },
+    {
+      "id": "reviewer-qualification",
+      "description": "Record the qualified legal reviewer's identity or controlled reviewer reference and scope of instruction.",
+      "status": "pending",
+      "evidenceReference": null
+    }
+  ],
+  "globalDecisions": [
+    {
+      "decisionId": "posh-current-law-and-supersession",
+      "question": "Are the registered Act, Rules and commencement notification current and sufficient for this limited review scope, subject to any identified amendment, notification or supersession condition?",
+      "decision": null,
+      "conditions": [],
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "decisionId": "posh-2016-terminology-amendment",
+      "question": "Should the unregistered 2016 POSH terminology-amendment record identified in the expansion plan be verified and added to the governed source pack, or remain excluded?",
+      "decision": null,
+      "conditions": [],
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "decisionId": "posh-fact-sufficiency",
+      "question": "Are the 35 proposed privacy-safe facts sufficient and appropriately scoped for deterministic review of the six feature families?",
+      "decision": null,
+      "conditions": [],
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "decisionId": "posh-status-and-reason-code-model",
+      "question": "Are the proposed statuses and reason-code families suitable, including more-information-needed and specialist-review outcomes where facts or interpretation are incomplete?",
+      "decision": null,
+      "conditions": [],
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "decisionId": "posh-privacy-and-provider-boundary",
+      "question": "Are the complaint, committee, evidence and annual-report privacy boundaries adequate for assessment capture, deterministic processing and any future explanation-provider payload?",
+      "decision": null,
+      "conditions": [],
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "decisionId": "posh-customer-wording-boundary",
+      "question": "Are the proposed customer-wording limitations sufficient to avoid certification, legal approval, guaranteed compliance or unsupported conclusions?",
+      "decision": null,
+      "conditions": [],
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    }
+  ],
+  "featureDecisions": [
+    {
+      "featureId": "feature.legal.posh.policy-review",
+      "proposedRuleId": "rule.legal.posh.policy-review",
+      "reviewQuestion": "May Section 19 and Rule 13(a), subject to current-law verification, support a deterministic evidence-based review of policy existence, ownership, coverage, dissemination and review evidence without claiming legal approval?",
+      "sourceScope": ["Section 19", "Rule 13(a)", "S.O. 3606(E)"],
+      "factCount": 6,
+      "decision": null,
+      "approvedStatuses": [],
+      "approvedReasonCodes": [],
+      "approvedSourceScopes": [],
+      "conditions": [],
+      "customerWordingApproved": false,
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "featureId": "feature.legal.posh.awareness-training-review",
+      "proposedRuleId": "rule.legal.posh.awareness-training-review",
+      "reviewQuestion": "May Section 19(c) and Rule 13(b)-(f), subject to current-law verification, support deterministic review of awareness, orientation and capacity-building evidence without certifying legal sufficiency from attendance evidence alone?",
+      "sourceScope": ["Section 19(c)", "Rule 13(b)-(f)", "S.O. 3606(E)"],
+      "factCount": 4,
+      "decision": null,
+      "approvedStatuses": [],
+      "approvedReasonCodes": [],
+      "approvedSourceScopes": [],
+      "conditions": [],
+      "customerWordingApproved": false,
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "featureId": "feature.legal.posh.notice-display-review",
+      "proposedRuleId": "rule.legal.posh.notice-display-review",
+      "reviewQuestion": "May Section 19(b) and Rule 13(e), subject to current-law verification, support per-location review of required display evidence without generalising one location's evidence to all offices or units?",
+      "sourceScope": ["Section 19(b)", "Rule 13(e)", "S.O. 3606(E)"],
+      "factCount": 4,
+      "decision": null,
+      "approvedStatuses": [],
+      "approvedReasonCodes": [],
+      "approvedSourceScopes": [],
+      "conditions": [],
+      "customerWordingApproved": false,
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "featureId": "feature.legal.posh.complaint-mechanism-records-review",
+      "proposedRuleId": "rule.legal.posh.complaint-mechanism-records-review",
+      "reviewQuestion": "May Sections 9-18 and Rules 6-12, subject to exact-file and current-law verification, support a control-only review of complaint routes, timelines, confidentiality and records without collecting or transmitting case content?",
+      "sourceScope": ["Sections 9-18", "Rules 6-12", "S.O. 3606(E)"],
+      "factCount": 6,
+      "decision": null,
+      "approvedStatuses": [],
+      "approvedReasonCodes": [],
+      "approvedSourceScopes": [],
+      "conditions": [],
+      "customerWordingApproved": false,
+      "privacyBoundaryApproved": false,
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "featureId": "feature.legal.posh.internal-committee-composition-unit-review",
+      "proposedRuleId": "rule.legal.posh.internal-committee-composition-unit-review",
+      "reviewQuestion": "May Section 4(1)-(2) and Rule 3, subject to exact-file and current-law verification, support deterministic review of committee composition and office or administrative-unit coverage without inferring unit facts from company totals?",
+      "sourceScope": ["Section 4(1)-(2)", "Rule 3", "S.O. 3606(E)"],
+      "factCount": 8,
+      "decision": null,
+      "approvedStatuses": [],
+      "approvedReasonCodes": [],
+      "approvedSourceScopes": [],
+      "conditions": [],
+      "customerWordingApproved": false,
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    },
+    {
+      "featureId": "feature.legal.posh.annual-reporting-review",
+      "proposedRuleId": "rule.legal.posh.annual-reporting-review",
+      "reviewQuestion": "May Sections 21-22 and Rule 14, subject to exact-file and current-law verification, support privacy-safe review of annual-report preparation and submission using aggregate control evidence only?",
+      "sourceScope": ["Sections 21-22", "Rule 14", "S.O. 3606(E)"],
+      "factCount": 7,
+      "decision": null,
+      "approvedStatuses": [],
+      "approvedReasonCodes": [],
+      "approvedSourceScopes": [],
+      "conditions": [],
+      "customerWordingApproved": false,
+      "privacyBoundaryApproved": false,
+      "reviewer": null,
+      "reviewDate": null,
+      "nextReviewDate": null,
+      "notes": null
+    }
+  ],
+  "completionRules": [
+    "A blank decision is not approval.",
+    "An official source is not by itself an approved product interpretation.",
+    "No feature may receive RAG approval until the exact controlled Drive file hash and section scope are recorded.",
+    "No feature may become live-governed until legal review conditions, facts, deterministic rules, chunks, retrieval, provider, endpoint, UI and regression gates pass.",
+    "The repository decision record must agree with the controlled Drive review register before release."
+  ]
+}
