@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "mappingVersion": "0.1.0",
+  "title": "Draft section mapping for remaining POSH duties",
+  "updatedAt": "2026-08-04",
+  "status": "draft-section-map",
+  "legalReviewStatus": "needs-legal-review",
+  "ragApprovalStatus": "not-approved",
+  "runtimeActivation": false,
+  "sourceRegisterPath": "GrowWithHR-RAG/00-project-control/Source Register.xlsx",
+  "limitations": [
+    "This repository file is a companion to the controlled Drive section-mapping workbook and is not the legal source of truth.",
+    "No mapping entry activates a deterministic rule, retrieval chunk, endpoint, provider call, or UI surface.",
+    "Page references marked pending must be verified against the exact registered file hash before legal review or RAG approval.",
+    "Complaint content, case details, personal data, and raw assessment answers must not be included in governed chunks or provider requests."
+  ],
+  "features": [
+    {
+      "featureId": "feature.legal.posh.policy-review",
+      "proposedRuleId": "rule.legal.posh.policy-review",
+      "dutyOrLegalQuestion": "Does the employer have a current and appropriately disseminated POSH policy or declaration supported by evidence?",
+      "requiredAssessmentFacts": [
+        "fact.posh.policy.exists",
+        "fact.posh.policy.issue-date",
+        "fact.posh.policy.owner",
+        "fact.posh.policy.coverage",
+        "fact.posh.policy.dissemination-evidence",
+        "fact.posh.policy.review-evidence"
+      ],
+      "proposedStatuses": ["review-required", "more-information-needed", "specialist-review"],
+      "proposedReasonCodes": ["POSH_POLICY_REVIEW_REQUIRED", "POSH_POLICY_FACTS_MISSING", "POSH_POLICY_SPECIALIST_REVIEW"],
+      "customerWordingLimitations": ["Do not state that a policy is legally approved or fully compliant."],
+      "sourceMappings": [
+        {"registrySourceId": "posh-act-2013", "reference": "Section 19", "pdfPageStart": 11, "pdfPageEnd": 12, "pageVerificationStatus": "verified-from-current-catalog", "purpose": "Employer duties and supporting implementation obligations"},
+        {"registrySourceId": "posh-rules-2013", "reference": "Rule 13(a)", "pdfPageStart": 6, "pdfPageEnd": 6, "pageVerificationStatus": "verified-from-current-catalog", "purpose": "Internal policy or declaration and dissemination"}
+      ]
+    },
+    {
+      "featureId": "feature.legal.posh.awareness-training-review",
+      "proposedRuleId": "rule.legal.posh.awareness-training-review",
+      "dutyOrLegalQuestion": "Is there evidence of employee awareness and Internal Committee orientation or capacity-building activity?",
+      "requiredAssessmentFacts": [
+        "fact.posh.awareness.employee-cadence",
+        "fact.posh.awareness.employee-evidence",
+        "fact.posh.training.ic-orientation-evidence",
+        "fact.posh.training.capacity-building-evidence"
+      ],
+      "proposedStatuses": ["review-required", "more-information-needed", "specialist-review"],
+      "proposedReasonCodes": ["POSH_AWARENESS_TRAINING_REVIEW_REQUIRED", "POSH_AWARENESS_TRAINING_FACTS_MISSING", "POSH_AWARENESS_TRAINING_SPECIALIST_REVIEW"],
+      "customerWordingLimitations": ["Do not certify training quality or legal sufficiency from attendance evidence alone."],
+      "sourceMappings": [
+        {"registrySourceId": "posh-act-2013", "reference": "Section 19(c)", "pdfPageStart": 11, "pdfPageEnd": 11, "pageVerificationStatus": "verified-against-official-act", "purpose": "Workshops and awareness programmes plus committee orientation"},
+        {"registrySourceId": "posh-rules-2013", "reference": "Rule 13(b)-(f)", "pdfPageStart": 6, "pdfPageEnd": 6, "pageVerificationStatus": "verified-from-current-catalog", "purpose": "Orientation awareness capacity building contact details and official modules"}
+      ]
+    },
+    {
+      "featureId": "feature.legal.posh.notice-display-review",
+      "proposedRuleId": "rule.legal.posh.notice-display-review",
+      "dutyOrLegalQuestion": "Are required POSH notices and Internal Committee details evidenced at each relevant location?",
+      "requiredAssessmentFacts": [
+        "fact.posh.notice.penal-consequences-displayed-by-location",
+        "fact.posh.notice.ic-order-displayed-by-location",
+        "fact.posh.notice.member-contact-details-displayed-by-location",
+        "fact.posh.notice.locations-reviewed"
+      ],
+      "proposedStatuses": ["review-required", "more-information-needed", "specialist-review"],
+      "proposedReasonCodes": ["POSH_NOTICE_DISPLAY_REVIEW_REQUIRED", "POSH_NOTICE_DISPLAY_FACTS_MISSING", "POSH_NOTICE_DISPLAY_SPECIALIST_REVIEW"],
+      "customerWordingLimitations": ["Do not generalise evidence from one location to all offices or administrative units."],
+      "sourceMappings": [
+        {"registrySourceId": "posh-act-2013", "reference": "Section 19(b)", "pdfPageStart": 11, "pdfPageEnd": 11, "pageVerificationStatus": "verified-against-official-act", "purpose": "Display of penal consequences and the order constituting the Internal Committee"},
+        {"registrySourceId": "posh-rules-2013", "reference": "Rule 13(e)", "pdfPageStart": 6, "pdfPageEnd": 6, "pageVerificationStatus": "verified-from-current-catalog", "purpose": "Names and contact details of committee members"}
+      ]
+    },
+    {
+      "featureId": "feature.legal.posh.complaint-mechanism-records-review",
+      "proposedRuleId": "rule.legal.posh.complaint-mechanism-records-review",
+      "dutyOrLegalQuestion": "Are privacy-safe complaint routes process controls timelines confidentiality and record controls defined without exposing case content?",
+      "requiredAssessmentFacts": [
+        "fact.posh.complaint.route-defined",
+        "fact.posh.complaint.process-owner",
+        "fact.posh.complaint.timeline-controls",
+        "fact.posh.complaint.confidentiality-controls",
+        "fact.posh.complaint.record-retention-controls",
+        "fact.posh.complaint.against-employer-route"
+      ],
+      "proposedStatuses": ["review-required", "more-information-needed", "specialist-review"],
+      "proposedReasonCodes": ["POSH_COMPLAINT_PROCESS_REVIEW_REQUIRED", "POSH_COMPLAINT_PROCESS_FACTS_MISSING", "POSH_COMPLAINT_PROCESS_SPECIALIST_REVIEW"],
+      "customerWordingLimitations": ["Never send complaint narratives names allegations evidence findings or case-level statistics to the explanation provider."],
+      "sourceMappings": [
+        {"registrySourceId": "posh-act-2013", "reference": "Sections 9-18", "pdfPageStart": 8, "pdfPageEnd": 11, "pageVerificationStatus": "verified-against-official-act", "purpose": "Complaint inquiry confidentiality appeal and related process controls"},
+        {"registrySourceId": "posh-rules-2013", "reference": "Rules 6-12", "pdfPageStart": null, "pdfPageEnd": null, "pageVerificationStatus": "pending-exact-file-verification", "purpose": "Prescribed complaint and inquiry procedure details"}
+      ],
+      "privacyBoundary": "Only control-presence booleans dates owners and evidence references may be assessed. No case content is permitted."
+    },
+    {
+      "featureId": "feature.legal.posh.internal-committee-composition-unit-review",
+      "proposedRuleId": "rule.legal.posh.internal-committee-composition-unit-review",
+      "dutyOrLegalQuestion": "Does the Internal Committee composition and office or administrative-unit coverage have sufficient evidence for deterministic review?",
+      "requiredAssessmentFacts": [
+        "fact.posh.ic.presiding-officer",
+        "fact.posh.ic.employee-member-count",
+        "fact.posh.ic.external-member",
+        "fact.posh.ic.women-member-ratio",
+        "fact.posh.ic.nomination-dates",
+        "fact.posh.ic.unit-count",
+        "fact.posh.ic.workers-by-unit",
+        "fact.posh.ic.committees-by-unit"
+      ],
+      "proposedStatuses": ["review-required", "more-information-needed", "specialist-review"],
+      "proposedReasonCodes": ["POSH_IC_COMPOSITION_UNIT_REVIEW_REQUIRED", "POSH_IC_COMPOSITION_UNIT_FACTS_MISSING", "POSH_IC_COMPOSITION_UNIT_SPECIALIST_REVIEW"],
+      "customerWordingLimitations": ["Do not infer per-unit coverage from total company headcount or a single committee record."],
+      "sourceMappings": [
+        {"registrySourceId": "posh-act-2013", "reference": "Section 4(1)-(2)", "pdfPageStart": 5, "pdfPageEnd": 6, "pageVerificationStatus": "verified-against-official-act", "purpose": "Committee constitution member composition and multi-unit coverage"},
+        {"registrySourceId": "posh-rules-2013", "reference": "Rule 3", "pdfPageStart": null, "pdfPageEnd": null, "pageVerificationStatus": "pending-exact-file-verification", "purpose": "Fees or allowances for the external member"}
+      ]
+    },
+    {
+      "featureId": "feature.legal.posh.annual-reporting-review",
+      "proposedRuleId": "rule.legal.posh.annual-reporting-review",
+      "dutyOrLegalQuestion": "Is annual-report preparation submission and employer reporting evidenced using privacy-safe aggregate fields?",
+      "requiredAssessmentFacts": [
+        "fact.posh.annual-report.reporting-year",
+        "fact.posh.annual-report.prepared",
+        "fact.posh.annual-report.submitted-to-employer",
+        "fact.posh.annual-report.submitted-to-district-officer",
+        "fact.posh.annual-report.aggregate-complaint-statistics-present",
+        "fact.posh.annual-report.workshop-count-present",
+        "fact.posh.annual-report.action-status-present"
+      ],
+      "proposedStatuses": ["review-required", "more-information-needed", "specialist-review"],
+      "proposedReasonCodes": ["POSH_ANNUAL_REPORT_REVIEW_REQUIRED", "POSH_ANNUAL_REPORT_FACTS_MISSING", "POSH_ANNUAL_REPORT_SPECIALIST_REVIEW"],
+      "customerWordingLimitations": ["Use aggregate control evidence only and do not expose complaint details."],
+      "sourceMappings": [
+        {"registrySourceId": "posh-act-2013", "reference": "Sections 21-22", "pdfPageStart": 12, "pdfPageEnd": 12, "pageVerificationStatus": "verified-against-official-act", "purpose": "Committee annual report and employer annual reporting duties"},
+        {"registrySourceId": "posh-rules-2013", "reference": "Rule 14", "pdfPageStart": null, "pdfPageEnd": null, "pageVerificationStatus": "pending-exact-file-verification", "purpose": "Annual-report contents"}
+      ],
+      "privacyBoundary": "Only aggregate counts and control evidence are permitted. No names allegations evidence or case narratives."
+    }
+  ]
+}

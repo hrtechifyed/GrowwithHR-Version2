@@ -1,0 +1,19 @@
+featureId,title,rolloutPhase,sourcePackStatus,legalReviewStatus,ragApproval,owner,nextAction,notes
+feature.legal.posh.internal-committee-threshold,POSH Internal Committee threshold review,maintain,complete,needs-legal-review,not-approved,product-owner,Maintain current governed boundary,No approval claim
+feature.legal.posh.policy-review,POSH policy review,phase-1,partial,needs-legal-review,not-approved,product-owner,Complete section and fact review,Reuse POSH Act and Rules
+feature.legal.posh.awareness-training-review,POSH awareness and training review,phase-1,partial,needs-legal-review,not-approved,product-owner,Complete section and fact review,Reuse POSH Act and Rules
+feature.legal.posh.notice-display-review,POSH notice and display review,phase-1,partial,needs-legal-review,not-approved,product-owner,Complete per-location evidence model,Reuse POSH Act and Rules
+feature.legal.posh.complaint-mechanism-records-review,POSH complaint mechanism and records review,phase-1,partial,needs-legal-review,not-approved,product-owner,Approve privacy-safe fact model,No case content in RAG
+feature.legal.posh.internal-committee-composition-unit-review,POSH Internal Committee composition and unit review,phase-1,partial,needs-legal-review,not-approved,product-owner,Complete member and unit fact model,Reuse POSH Act and Rules
+feature.legal.posh.annual-reporting-review,POSH annual reporting review,phase-1,partial,needs-legal-review,not-approved,product-owner,Approve privacy-safe annual-report fields,No complaint details in provider input
+feature.legal.jurisdiction.appropriate-government,Appropriate-government and jurisdiction review,phase-8,not-started,needs-legal-review,not-approved,product-owner,Create cross-cutting jurisdiction pack,Resolver routes review only
+feature.legal.state.shops-establishments,State Shops and Establishments review,phase-2,not-started,needs-legal-review,not-approved,product-owner,Build Maharashtra pack first,No wildcard state activation
+feature.legal.code-on-wages,Code on Wages feature family,phase-5,not-started,needs-legal-review,not-approved,product-owner,Separate obligations and notifications,Version state rates
+feature.legal.social-security,Social Security feature family,phase-6,not-started,needs-legal-review,not-approved,product-owner,Build scheme-specific subpacks,No combined applicability result
+feature.legal.oshwc,OSHWC feature family,phase-4,not-started,needs-legal-review,not-approved,product-owner,Resolve operative and transitional position,Use per-site facts
+feature.legal.industrial-relations,Industrial Relations feature family,phase-7,not-started,needs-legal-review,not-approved,product-owner,Resolve transition and state variations,Keep complex actions in specialist review
+feature.legal.apprentices,Apprentices Act review,phase-2,not-started,needs-legal-review,not-approved,product-owner,Build official central pack,Collect apprentice-specific facts
+feature.legal.child-adolescent-labour,Child and adolescent labour review,phase-3,not-started,needs-legal-review,not-approved,product-owner,Govern age and task facts,Do not trigger from headcount alone
+feature.legal.bonded-forced-labour,Bonded and forced labour prevention review,phase-3,not-started,needs-legal-review,not-approved,product-owner,Approve risk-review fact model,Not a simple threshold rule
+feature.legal.contract-workforce,Contract workforce legal review,phase-4,not-started,needs-legal-review,not-approved,product-owner,Build per-site and contractor model,Keep decision separate from OSHWC
+feature.legal.multi-country-employment,Multi-country employment review,phase-9,not-started,needs-legal-review,not-approved,product-owner,Defer until India governance is stable,One pack per jurisdiction
