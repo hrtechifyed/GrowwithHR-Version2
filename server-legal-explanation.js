@@ -1,83 +1,38 @@
 "use strict";
 
-const path = require("path");
-const { pathToFileURL } = require("url");
+/*
+ * Compatibility facade. The generic orchestrator owns the protected
+ * decisionFingerprint and retrievalFingerprint cache key, cacheStatus,
+ * and failureBackoffMs behavior used by this route.
+ */
 
-const LEGAL_RULE_CATALOG = require("./data/assessment/legal-applicability-rules.v1.json");
-const RETRIEVAL_CATALOG = require("./growwithhr-rag/data/posh-source-chunks.v1.json");
 const {
-    CloudflareWorkersAIProviderError,
-    runCloudflareWorkersAILegalExplanation
-} = require("./growwithhr-rag/cloudflare-workers-ai-provider.cjs");
+    LegalExplanationOrchestrationError,
+    legalExplanationOrchestratorConfig,
+    createConcurrencyGate,
+    orchestrationError,
+    createGenericLegalExplanationOrchestrator
+} = require("./server-legal-explanation-orchestrator.js");
 
 const ROUTE = "/api/legal-explanation/posh";
+const FEATURE_ID = "feature.legal.posh.internal-committee-threshold";
 const ENDPOINT_VERSION = "0.1.0";
 const MAX_REQUEST_BYTES = 16 * 1024;
-const DEFAULT_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
-const DEFAULT_FAILURE_BACKOFF_MS = 60 * 1000;
-const DEFAULT_MAX_CONCURRENCY = 4;
-const DEFAULT_MAX_QUEUE = 100;
 const ALLOWED_BODY_KEYS = new Set(["answers"]);
 const ALLOWED_ANSWER_KEYS = new Set(["employees", "primaryState", "locations"]);
 
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
-const clone = (value) => JSON.parse(JSON.stringify(value));
 
-function deepFreeze(value) {
-    if (!value || typeof value !== "object" || Object.isFrozen(value)) return value;
-    Object.freeze(value);
-    Object.values(value).forEach(deepFreeze);
-    return value;
-}
-
-function boundedInteger(value, fallback, minimum, maximum) {
-    const parsed = Number.parseInt(cleanText(value), 10);
-    return Number.isInteger(parsed)
-        ? Math.min(maximum, Math.max(minimum, parsed))
-        : fallback;
-}
-
-class LegalExplanationEndpointError extends Error {
+class LegalExplanationEndpointError extends LegalExplanationOrchestrationError {
     constructor(message, options = {}) {
-        super(cleanText(message) || "The legal explanation request failed.");
+        super(message, options);
         this.name = "LegalExplanationEndpointError";
-        this.code = cleanText(options.code) || "legal-explanation-error";
-        this.status = Number.isInteger(options.status) ? options.status : 500;
-        this.retryable = options.retryable === true;
-        this.publicMessage = cleanText(options.publicMessage) || this.message;
     }
 }
 
 function legalExplanationEndpointConfig(environment = process.env) {
-    const env = object(environment);
-    return deepFreeze({
-        enabled: cleanText(env.LEGAL_EXPLANATION_ENDPOINT_ENABLED).toLowerCase() === "true",
-        cacheTtlMs: boundedInteger(
-            env.LEGAL_EXPLANATION_CACHE_TTL_MS,
-            DEFAULT_CACHE_TTL_MS,
-            5 * 60 * 1000,
-            24 * 60 * 60 * 1000
-        ),
-        failureBackoffMs: boundedInteger(
-            env.LEGAL_EXPLANATION_FAILURE_BACKOFF_MS,
-            DEFAULT_FAILURE_BACKOFF_MS,
-            5 * 1000,
-            5 * 60 * 1000
-        ),
-        maxConcurrency: boundedInteger(
-            env.LEGAL_EXPLANATION_MAX_CONCURRENCY,
-            DEFAULT_MAX_CONCURRENCY,
-            1,
-            20
-        ),
-        maxQueue: boundedInteger(
-            env.LEGAL_EXPLANATION_MAX_QUEUE,
-            DEFAULT_MAX_QUEUE,
-            1,
-            500
-        )
-    });
+    return legalExplanationOrchestratorConfig(environment);
 }
 
 function invalidInput(message) {
@@ -113,7 +68,7 @@ function normalizeAnswers(value) {
         throw invalidInput("primaryState must contain no more than 120 characters.");
     }
 
-    return deepFreeze({
+    return Object.freeze({
         ...(employees === undefined ? {} : { employees }),
         ...(primaryState ? { primaryState } : {}),
         ...(locations === undefined ? {} : { locations })
@@ -127,287 +82,14 @@ function normalizeBody(value) {
     if (!Object.hasOwn(body, "answers") || !body.answers || typeof body.answers !== "object" || Array.isArray(body.answers)) {
         throw invalidInput("A JSON answers object is required.");
     }
-    return deepFreeze({ answers: normalizeAnswers(body.answers) });
-}
-
-function moduleUrl(...segments) {
-    return pathToFileURL(path.join(__dirname, ...segments)).href;
-}
-
-let legalModulesPromise = null;
-function loadLegalModules() {
-    if (!legalModulesPromise) {
-        legalModulesPromise = Promise.all([
-            import(moduleUrl("js", "assessment-v3", "legal-rule-assurance.js")),
-            import(moduleUrl("growwithhr-rag", "legal-source-retrieval.js")),
-            import(moduleUrl("growwithhr-rag", "legal-explanation-contract.js"))
-        ]).then(([assurance, retrieval, contract]) => Object.freeze({
-            assurance,
-            retrieval,
-            contract
-        }));
-    }
-    return legalModulesPromise;
-}
-
-function createConcurrencyGate(limit, maxQueue) {
-    let active = 0;
-    const queue = [];
-
-    function launch(entry) {
-        active += 1;
-        Promise.resolve()
-            .then(entry.task)
-            .then(entry.resolve, entry.reject)
-            .finally(() => {
-                active -= 1;
-                const next = queue.shift();
-                if (next) launch(next);
-            });
-    }
-
-    return Object.freeze({
-        run(task) {
-            if (active < limit) {
-                return new Promise((resolve, reject) => launch({ task, resolve, reject }));
-            }
-            if (queue.length >= maxQueue) {
-                return Promise.reject(new LegalExplanationEndpointError(
-                    "The free explanation queue is currently full.",
-                    {
-                        code: "legal-explanation-queue-full",
-                        status: 503,
-                        retryable: true,
-                        publicMessage: "The free explanation service is busy. Please try again shortly."
-                    }
-                ));
-            }
-            return new Promise((resolve, reject) => queue.push({ task, resolve, reject }));
-        },
-        stats: () => Object.freeze({ active, queued: queue.length, limit, maxQueue })
-    });
-}
-
-function decisionView(value) {
-    const decision = object(value);
-    return deepFreeze({
-        productRuleId: cleanText(decision.productRuleId),
-        ruleId: cleanText(decision.ruleId),
-        ruleVersion: cleanText(decision.ruleVersion),
-        sourceRecordId: cleanText(decision.sourceRecordId),
-        status: cleanText(decision.status),
-        reasonCode: cleanText(decision.reasonCode),
-        reason: cleanText(decision.reason),
-        sourceRegistryIds: Array.isArray(decision.sourceRegistryIds) ? [...decision.sourceRegistryIds] : [],
-        sourceSections: Array.isArray(decision.sourceSections) ? clone(decision.sourceSections) : [],
-        legalReviewStatus: cleanText(decision.legalReviewStatus),
-        limitations: Array.isArray(decision.limitations) ? [...decision.limitations] : []
-    });
-}
-
-function citationView(value) {
-    const chunk = object(value);
-    return deepFreeze({
-        chunkId: cleanText(chunk.chunkId),
-        registrySourceId: cleanText(chunk.registrySourceId),
-        sourceTitle: cleanText(chunk.sourceTitle),
-        sectionReference: cleanText(chunk.sectionReference),
-        pageStart: chunk.pageStart,
-        pageEnd: chunk.pageEnd,
-        officialUrl: cleanText(chunk.officialUrl),
-        contentSha256: cleanText(chunk.contentSha256)
-    });
-}
-
-function baseEnvelope(decision, retrievalTrace, explanation) {
-    return deepFreeze({
-        endpointVersion: ENDPOINT_VERSION,
-        lawId: "posh",
-        legalReviewStatus: "needs-legal-review",
-        applicabilityAuthority: "deterministic-only",
-        providerRole: "explanation-only",
-        usedForDecision: false,
-        mayChangeDecision: false,
-        decision: decisionView(decision),
-        retrieval: {
-            retrievalStatus: cleanText(retrievalTrace.retrievalStatus),
-            decisionFingerprint: cleanText(retrievalTrace.decisionFingerprint),
-            retrievalFingerprint: cleanText(retrievalTrace.retrievalFingerprint),
-            citations: Array.isArray(retrievalTrace.retrievedChunks)
-                ? retrievalTrace.retrievedChunks.map(citationView)
-                : []
-        },
-        explanation
-    });
-}
-
-function withDelivery(value, cacheStatus) {
-    return deepFreeze({
-        ...clone(value),
-        delivery: {
-            cacheStatus,
-            providerRequestsForThisResponse: cacheStatus === "miss" ? 1 : 0
-        }
-    });
-}
-
-function cacheKey(retrievalTrace) {
-    return `${cleanText(retrievalTrace.decisionFingerprint)}:${cleanText(retrievalTrace.retrievalFingerprint)}`;
-}
-
-function endpointErrorFromProvider(error) {
-    if (error instanceof LegalExplanationEndpointError) return error;
-    const code = cleanText(error?.code);
-
-    if (code === "cloudflare-free-quota-or-rate-limit") {
-        return new LegalExplanationEndpointError("Cloudflare free capacity is unavailable.", {
-            code,
-            status: 429,
-            retryable: true,
-            publicMessage: "The free explanation allowance is currently unavailable. Please try again later."
-        });
-    }
-    if (["cloudflare-timeout", "cloudflare-network-error", "cloudflare-service-unavailable"].includes(code)) {
-        return new LegalExplanationEndpointError("Cloudflare Workers AI is temporarily unavailable.", {
-            code,
-            status: 503,
-            retryable: true,
-            publicMessage: "The free explanation service is temporarily unavailable. Please try again later."
-        });
-    }
-    if (["cloudflare-configuration-missing", "cloudflare-authentication-failed"].includes(code)) {
-        return new LegalExplanationEndpointError("The Cloudflare provider is not configured.", {
-            code,
-            status: 503,
-            publicMessage: "The explanation service is not available on this deployment."
-        });
-    }
-    if (error instanceof CloudflareWorkersAIProviderError || error?.name === "LegalExplanationContractError") {
-        return new LegalExplanationEndpointError("The provider output failed the governed explanation contract.", {
-            code: code || "legal-explanation-provider-output-rejected",
-            status: 502,
-            publicMessage: "The generated explanation could not be accepted."
-        });
-    }
-    return new LegalExplanationEndpointError("The legal explanation service failed.", {
-        code: "legal-explanation-internal-error",
-        status: 500,
-        publicMessage: "The explanation service could not complete this request."
-    });
+    return Object.freeze({ answers: normalizeAnswers(body.answers) });
 }
 
 function createLegalExplanationService(options = {}) {
-    const source = object(options);
-    const environment = source.environment || process.env;
-    const config = source.config || legalExplanationEndpointConfig(environment);
-    const modulesLoader = source.modulesLoader || loadLegalModules;
-    const now = typeof source.now === "function" ? source.now : () => new Date();
-    const providerRunner = typeof source.providerRunner === "function"
-        ? source.providerRunner
-        : ({ contract, request }) => runCloudflareWorkersAILegalExplanation({
-            contract,
-            request,
-            environment,
-            fetchImpl: source.fetchImpl
-        });
-    const gate = createConcurrencyGate(config.maxConcurrency, config.maxQueue);
-    const cache = new Map();
-    const failures = new Map();
-    const inFlight = new Map();
-
-    function prune(currentTime) {
-        for (const [key, item] of cache) if (item.expiresAt <= currentTime) cache.delete(key);
-        for (const [key, item] of failures) if (item.expiresAt <= currentTime) failures.delete(key);
-    }
-
-    async function explain(bodyValue) {
-        if (config.enabled !== true) {
-            throw new LegalExplanationEndpointError("The legal explanation endpoint is disabled.", {
-                code: "legal-explanation-endpoint-disabled",
-                status: 404,
-                publicMessage: "Not found."
-            });
-        }
-
-        const body = normalizeBody(bodyValue);
-        const evaluatedAt = now().toISOString();
-        const modules = await modulesLoader();
-        const assurance = modules.assurance.evaluateLegalRuleAssurance({
-            answers: body.answers,
-            catalog: LEGAL_RULE_CATALOG,
-            evaluatedAt
-        });
-        const decisions = assurance.decisions.filter((item) => item.productRuleId === "posh");
-        if (decisions.length !== 1) {
-            throw new LegalExplanationEndpointError("The governed POSH decision was not uniquely resolved.", {
-                code: "legal-explanation-posh-decision-unavailable",
-                status: 500,
-                publicMessage: "The POSH explanation could not be prepared."
-            });
-        }
-
-        const decision = decisions[0];
-        const retrievalTrace = modules.retrieval.retrieveLegalDecisionSources({
-            decision,
-            catalog: RETRIEVAL_CATALOG,
-            queryTerms: ["POSH", "Internal Committee", "Local Committee", "commencement"],
-            maxChunks: 4
-        });
-        const request = modules.contract.buildLegalExplanationRequest({
-            decision,
-            retrievalTrace,
-            requestedAt: evaluatedAt
-        });
-        const key = cacheKey(retrievalTrace);
-        const currentTime = now().getTime();
-        prune(currentTime);
-
-        const cached = cache.get(key);
-        if (cached) return withDelivery(cached.value, "hit");
-        const failed = failures.get(key);
-        if (failed) throw failed.error;
-        const existing = inFlight.get(key);
-        if (existing) return withDelivery(await existing, "shared");
-
-        const pending = gate.run(async () => {
-            try {
-                const explanation = await providerRunner({
-                    contract: modules.contract,
-                    request,
-                    decision,
-                    retrievalTrace
-                });
-                const value = baseEnvelope(decision, retrievalTrace, explanation);
-                cache.set(key, {
-                    value,
-                    expiresAt: now().getTime() + config.cacheTtlMs
-                });
-                return value;
-            } catch (error) {
-                const endpointError = endpointErrorFromProvider(error);
-                failures.set(key, {
-                    error: endpointError,
-                    expiresAt: now().getTime() + config.failureBackoffMs
-                });
-                throw endpointError;
-            } finally {
-                inFlight.delete(key);
-            }
-        });
-
-        inFlight.set(key, pending);
-        return withDelivery(await pending, "miss");
-    }
-
-    return Object.freeze({
-        explain,
-        config,
-        stats: () => deepFreeze({
-            cacheEntries: cache.size,
-            failureEntries: failures.size,
-            inFlight: inFlight.size,
-            gate: gate.stats()
-        })
+    return createGenericLegalExplanationOrchestrator({
+        ...options,
+        featureId: FEATURE_ID,
+        normalizeBody
     });
 }
 
@@ -487,7 +169,7 @@ function writeJson(response, status, payload) {
 }
 
 function errorPayload(error) {
-    const endpointError = endpointErrorFromProvider(error);
+    const endpointError = orchestrationError(error);
     return {
         status: endpointError.status,
         payload: {
@@ -540,6 +222,7 @@ function handleLegalExplanationRequest(request, response) {
 
 module.exports = Object.freeze({
     ROUTE,
+    FEATURE_ID,
     ENDPOINT_VERSION,
     MAX_REQUEST_BYTES,
     LegalExplanationEndpointError,
