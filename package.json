@@ -36,6 +36,7 @@
     "test:feature-coverage-registry": "node tests/feature-coverage-registry-checks.mjs",
     "test:legal-source-governance": "node tests/legal-source-governance-checks.mjs",
     "test:posh-assessment-fact-contract": "node tests/posh-assessment-fact-contract-checks.mjs",
+    "test:posh-rules-page-verification": "node tests/posh-rules-page-verification-checks.mjs",
     "test:legal-rule-assurance": "node tests/legal-rule-assurance-checks.mjs",
     "test:legal-source-retrieval": "node tests/legal-source-retrieval-checks.mjs",
     "test:legal-explanation-contract": "node tests/legal-explanation-contract-checks.mjs",
@@ -46,7 +47,7 @@
     "test:cloudflare-workers-ai-operational-provider": "node tests/cloudflare-workers-ai-operational-provider-checks.mjs",
     "test:operational-explanation-endpoint": "node tests/operational-explanation-endpoint-checks.mjs",
     "test:operational-explanation-client": "node tests/operational-explanation-client-checks.mjs",
-    "test:m2": "node tests/m2-traceability-contract-checks.mjs && node tests/m2-recommendation-evaluator-checks.mjs && node tests/m2-traceability-adapter-checks.mjs && npm run test:feature-coverage-registry && npm run test:legal-source-governance && npm run test:posh-assessment-fact-contract && npm run test:legal-rule-assurance && npm run test:legal-source-retrieval && npm run test:legal-explanation-contract && npm run test:cloudflare-workers-ai-provider && npm run test:legal-explanation-endpoint && npm run test:legal-explanation-client && npm run test:operational-explanation-contract && npm run test:cloudflare-workers-ai-operational-provider && npm run test:operational-explanation-endpoint && npm run test:operational-explanation-client",
+    "test:m2": "node tests/m2-traceability-contract-checks.mjs && node tests/m2-recommendation-evaluator-checks.mjs && node tests/m2-traceability-adapter-checks.mjs && npm run test:feature-coverage-registry && npm run test:legal-source-governance && npm run test:posh-assessment-fact-contract && npm run test:posh-rules-page-verification && npm run test:legal-rule-assurance && npm run test:legal-source-retrieval && npm run test:legal-explanation-contract && npm run test:cloudflare-workers-ai-provider && npm run test:legal-explanation-endpoint && npm run test:legal-explanation-client && npm run test:operational-explanation-contract && npm run test:cloudflare-workers-ai-operational-provider && npm run test:operational-explanation-endpoint && npm run test:operational-explanation-client",
     "test:m3": "node tests/m3-compliance-story-contract-checks.mjs",
     "test:m5": "node tests/m5-compliance-workspace-contract-checks.mjs",
     "test:m6-contracts": "node tests/v021-evidence-persistence-contract-checks.mjs",
@@ -68,6 +69,7 @@
     "version:sync": "node scripts/sync-version.mjs",
     "version:check": "node scripts/sync-version.mjs --check",
     "test:client-readiness": "node tests/client-readiness-checks.mjs",
-    "verify:posh-source-pack": "node scripts/verify-posh-source-pack.mjs"
+    "verify:posh-source-pack": "node scripts/verify-posh-source-pack.mjs",
+    "verify:posh-rules-page-gate": "node scripts/verify-posh-rules-page-gate.mjs"
   }
 }
