@@ -11,6 +11,7 @@
  * or modify the stable v2 assessment.
  */
 
+import "./operational-explanation-panel.js";
 import "./legal-explanation-panel.js";
 import createStoryEngine from "./story-engine.js";
 
