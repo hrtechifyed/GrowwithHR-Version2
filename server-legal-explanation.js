@@ -1,5 +1,11 @@
 "use strict";
 
+/*
+ * Compatibility facade. The generic orchestrator owns the protected
+ * decisionFingerprint and retrievalFingerprint cache key, cacheStatus,
+ * and failureBackoffMs behavior used by this route.
+ */
+
 const {
     LegalExplanationOrchestrationError,
     legalExplanationOrchestratorConfig,
