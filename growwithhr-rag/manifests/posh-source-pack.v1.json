@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": "0.1.0",
+  "title": "POSH governed source-pack build manifest",
+  "updatedAt": "2026-08-04",
+  "builderRole": "curated-source-pack-compilation-only",
+  "applicabilityAuthority": "none",
+  "automaticLegalInterpretation": false,
+  "outputCatalogPath": "growwithhr-rag/data/posh-source-chunks.v1.json",
+  "catalog": {
+    "catalogVersion": "0.1.0",
+    "title": "GrowWithHR POSH Governed Retrieval Proof Catalog",
+    "updatedAt": "2026-07-31",
+    "jurisdiction": "India",
+    "retrievalCatalog": true,
+    "retrievalRole": "source-retrieval-only",
+    "applicabilityAuthority": "none",
+    "llmRole": "none",
+    "legalReviewStatus": "needs-legal-review",
+    "advisoryOnly": true,
+    "privateBetaOnly": true,
+    "productionIntegration": false,
+    "sourceRegisterPath": "GrowWithHR-RAG/00-project-control/Source Register.xlsx"
+  },
+  "sourcePack": {
+    "name": "GrowWithHR-RAG final preflight",
+    "verifiedAt": "2026-07-31",
+    "ingestionMode": "curated-offline-proof",
+    "runtimeSourceAccess": false,
+    "rootFolderName": "GrowWithHR-RAG",
+    "officialFolder": "01-source-documents/official/posh",
+    "rejectUnregisteredPdfs": true,
+    "notes": "This catalog is a governed retrieval snapshot derived from the verified private source pack. It is not a legal approval and is not a production ingestion service."
+  },
+  "contentPolicy": {
+    "curatedOfficialSourceTextOnly": true,
+    "allowRawAssessmentAnswers": false,
+    "allowPersonalData": false,
+    "allowComplaintCaseContent": false,
+    "allowEvidenceBodies": false
+  },
+  "sources": [
+    {
+      "registrySourceId": "posh-act-2013",
+      "title": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+      "documentType": "Act",
+      "official": true,
+      "reviewStatus": "needs-legal-review",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/2104?locale=en",
+      "fileName": "posh-act-2013-official-indiacode.pdf",
+      "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/01-act/posh-act-2013-official-indiacode.pdf",
+      "sha256": "e59776d9ce4300c35acb8f3ed8150b33c18a77b5b553423ef9f1c69dbd144475",
+      "byteLength": 236208,
+      "pageCount": 14
+    },
+    {
+      "registrySourceId": "posh-rules-2013",
+      "title": "Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Rules, 2013",
+      "documentType": "Rules",
+      "official": true,
+      "reviewStatus": "needs-legal-review",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/2104?locale=en",
+      "fileName": "posh-rules-2013-official-indiacode.pdf",
+      "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/02-rules/posh-rules-2013-official-indiacode.pdf",
+      "sha256": "d372e3dbc83f1f960ed9d4c9f2204eac2f716c70688a8e299c75e03753c8f09d",
+      "byteLength": 138947,
+      "pageCount": 6
+    },
+    {
+      "registrySourceId": "posh-commencement-2013",
+      "title": "Commencement Notification S.O. 3606(E), dated 9 December 2013",
+      "documentType": "Official Gazette notification",
+      "official": true,
+      "reviewStatus": "needs-legal-review",
+      "officialUrl": "https://upload.indiacode.nic.in/showfile?actid=AC_CEN_13_14_00009_201314_1517807327213&type=notification&filename=Notification%2009%20Dec%202013.pdf",
+      "fileName": "posh-commencement-notification-so-3606e-official-gazette.pdf",
+      "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/03-notifications/posh-commencement-notification-so-3606e-official-gazette.pdf",
+      "sha256": "87c595e66e29e803ae3dc38ce5d2cb510038e5d95ff8d2d5be7f4341bcfa91e5",
+      "byteLength": 91982,
+      "pageCount": 1
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "posh-act-2013-section-2f-001",
+      "registrySourceId": "posh-act-2013",
+      "title": "Employee definition",
+      "sectionReference": "Section 2(f)",
+      "pageStart": 4,
+      "pageEnd": 4,
+      "priority": 90,
+      "reasonCodes": [
+        "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED",
+        "POSH_IC_THRESHOLD_NOT_MET",
+        "POSH_REQUIRED_FACTS_MISSING"
+      ],
+      "retrievalTerms": [
+        "employee",
+        "worker count",
+        "contract worker",
+        "probationer",
+        "trainee",
+        "apprentice",
+        "temporary",
+        "daily wage",
+        "voluntary"
+      ],
+      "text": "“employee” means a person employed at a workplace for any work on regular, temporary, ad hoc or daily wage basis, either directly or through an agent, including a contractor, with or without the knowledge of the principal employer, whether for remuneration or not, or working on a voluntary basis or otherwise, whether the terms of employment are express or implied and includes a co-worker, a contract worker, probationer, trainee, apprentice or called by any other such name.",
+      "expectedContentSha256": "cd56cad8eaac294439d3cfe3bcc3ec38bab6ac7e4125553e875c755ca82718f1"
+    },
+    {
+      "chunkId": "posh-act-2013-section-4-001",
+      "registrySourceId": "posh-act-2013",
+      "title": "Constitution of Internal Committee",
+      "sectionReference": "Section 4(1)",
+      "pageStart": 5,
+      "pageEnd": 6,
+      "priority": 100,
+      "reasonCodes": [
+        "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED",
+        "POSH_REQUIRED_FACTS_MISSING"
+      ],
+      "retrievalTerms": [
+        "internal committee",
+        "office",
+        "administrative unit",
+        "different places",
+        "divisional",
+        "sub-divisional",
+        "workplace",
+        "employer"
+      ],
+      "text": "Every employer of a workplace shall, by an order in writing, constitute a Committee to be known as the “Internal Complaints Committee”. Where the offices or administrative units of the workplace are located at different places or divisional or sub-divisional level, the Internal Committee shall be constituted at all administrative units or offices.",
+      "expectedContentSha256": "c4672dd3cd5d0cc7f895c5ab08287dd440b2362aa64439c424fce29ed5a43228"
+    },
+    {
+      "chunkId": "posh-act-2013-section-6-001",
+      "registrySourceId": "posh-act-2013",
+      "title": "Local Committee complaint route",
+      "sectionReference": "Section 6(1)",
+      "pageStart": 6,
+      "pageEnd": 7,
+      "priority": 100,
+      "reasonCodes": [
+        "POSH_IC_THRESHOLD_NOT_MET"
+      ],
+      "retrievalTerms": [
+        "local committee",
+        "less than ten workers",
+        "complaint against employer",
+        "complaint route",
+        "district officer"
+      ],
+      "text": "Every District Officer shall constitute in the district concerned a committee to be known as the “Local Committee” to receive complaints of sexual harassment from establishments where the Internal Committee has not been constituted due to having less than ten workers or if the complaint is against the employer himself.",
+      "expectedContentSha256": "2588c19fd6efbead00e084e0c09ed1baddcb13ce867f936cdee5002703535140"
+    },
+    {
+      "chunkId": "posh-act-2013-section-19-001",
+      "registrySourceId": "posh-act-2013",
+      "title": "Wider duties of employer",
+      "sectionReference": "Section 19",
+      "pageStart": 11,
+      "pageEnd": 12,
+      "priority": 80,
+      "reasonCodes": [
+        "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED",
+        "POSH_IC_THRESHOLD_NOT_MET"
+      ],
+      "retrievalTerms": [
+        "duties of employer",
+        "safe working environment",
+        "display",
+        "awareness programmes",
+        "orientation",
+        "committee facilities",
+        "annual reports"
+      ],
+      "text": "Every employer shall provide a safe working environment; display the penal consequences of sexual harassment and the order constituting the Internal Committee; organise workshops and awareness programmes and orientation programmes for committee members; provide necessary facilities to the Internal Committee or Local Committee; and monitor the timely submission of reports by the Internal Committee.",
+      "expectedContentSha256": "4608694da4a27cf639bbacee5f40b673f95fb4bc62805733bcf30cae328c4e68"
+    },
+    {
+      "chunkId": "posh-rules-2013-rule-13-001",
+      "registrySourceId": "posh-rules-2013",
+      "title": "Workshops and awareness programmes",
+      "sectionReference": "Rule 13",
+      "pageStart": 6,
+      "pageEnd": 6,
+      "priority": 70,
+      "reasonCodes": [
+        "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED",
+        "POSH_IC_THRESHOLD_NOT_MET"
+      ],
+      "retrievalTerms": [
+        "workshops",
+        "awareness",
+        "orientation",
+        "internal policy",
+        "committee members",
+        "contact details",
+        "capacity building"
+      ],
+      "text": "Subject to section 19, every employer shall formulate and widely disseminate an internal policy or declaration for prohibition, prevention and redressal of sexual harassment; carry out orientation programmes for members of the Internal Committee; carry out employee awareness programmes; conduct capacity-building programmes; declare the names and contact details of committee members; and use State Government modules for workshops and awareness programmes.",
+      "expectedContentSha256": "ca9f52c84f1fa7c515811035434d70cbe8366892a1e5f4b3f9961e0dd017d824"
+    },
+    {
+      "chunkId": "posh-commencement-2013-so-3606e-001",
+      "registrySourceId": "posh-commencement-2013",
+      "title": "Commencement of the Act",
+      "sectionReference": "S.O. 3606(E)",
+      "pageStart": 1,
+      "pageEnd": 1,
+      "priority": 60,
+      "reasonCodes": [
+        "POSH_IC_THRESHOLD_REACHED_REVIEW_REQUIRED",
+        "POSH_IC_THRESHOLD_NOT_MET",
+        "POSH_REQUIRED_FACTS_MISSING"
+      ],
+      "retrievalTerms": [
+        "commencement",
+        "effective date",
+        "9 December 2013",
+        "S.O. 3606(E)",
+        "come into force"
+      ],
+      "text": "In exercise of the powers conferred by sub-section (3) of Section 1 of the Act, the Central Government appoints 9 December 2013 as the date on which the provisions of the Act shall come into force.",
+      "expectedContentSha256": "62b4ce1295479451abe6a54bab0906325405649d3fe30f3fb3c02a5d57fc3c08"
+    }
+  ],
+  "publication": {
+    "status": "blocked-awaiting-exact-file-and-legal-approval",
+    "legalReviewStatus": "needs-legal-review",
+    "ragApprovalStatus": "not-approved",
+    "sourceFilesApproved": false,
+    "sectionMappingsApproved": false,
+    "runtimeActivationApproved": false,
+    "approvedBy": null,
+    "approvedAt": null
+  },
+  "limitations": [
+    "Applicability is determined before retrieval by the governed deterministic legal-rule catalog.",
+    "Retrieval can return only chunks whose Source Register IDs are present on the decision.",
+    "This proof uses governed lexical metadata and does not use embeddings or a vector database.",
+    "Retrieved text may support an explanation but cannot fill assessment facts or alter the decision.",
+    "All sources and chunks remain marked needs-legal-review."
+  ]
+}
