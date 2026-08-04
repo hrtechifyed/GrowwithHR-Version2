@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "verificationVersion": "0.1.0",
+  "title": "POSH Rules 2013 official-PDF page verification",
+  "observedAt": "2026-08-04",
+  "status": "official-pdf-pages-verified-drive-hash-pending",
+  "legalReviewStatus": "needs-legal-review",
+  "ragApprovalStatus": "not-approved",
+  "runtimeActivation": false,
+  "source": {
+    "registrySourceId": "posh-rules-2013",
+    "officialRecordUrl": "https://www.indiacode.nic.in/handle/123456789/2104?locale=en",
+    "officialDirectPdfUrl": "https://www.indiacode.nic.in/ViewFileUploaded?file=--------Rules%2C2013+09+Dec+2013.pdf&path=AC_CEN_13_14_00009_201314_1517807327213%2Frulesindividualfile%2F",
+    "expectedSha256": "d372e3dbc83f1f960ed9d4c9f2204eac2f716c70688a8e299c75e03753c8f09d",
+    "expectedByteLength": 138947,
+    "expectedPageCount": 6,
+    "drivePath": "GrowWithHR-RAG/01-source-documents/official/posh/02-rules/posh-rules-2013-official-indiacode.pdf"
+  },
+  "pageNumbering": {
+    "basis": "physical-pdf-page",
+    "languageLayout": "Hindi Gazette text occupies physical PDF pages 1-3; English Gazette text occupies physical PDF pages 4-6.",
+    "customerCitationRule": "Use the physical PDF page number recorded here, not the printed Gazette page number."
+  },
+  "pageMappings": [
+    {
+      "featureId": "feature.legal.posh.internal-committee-composition-unit-review",
+      "reference": "Rule 3",
+      "pdfPageStart": 4,
+      "pdfPageEnd": 4,
+      "observedTextStart": "3. Fees or allowances for Member of Internal Committee",
+      "verificationStatus": "official-pdf-page-verified-drive-hash-pending"
+    },
+    {
+      "featureId": "feature.legal.posh.complaint-mechanism-records-review",
+      "reference": "Rules 6-12",
+      "pdfPageStart": 4,
+      "pdfPageEnd": 6,
+      "observedTextStart": "6. Complaint of sexual harassment",
+      "observedTextEnd": "12. Penalty for contravention of provisions of section 16",
+      "verificationStatus": "official-pdf-page-verified-drive-hash-pending"
+    },
+    {
+      "featureId": "feature.legal.posh.annual-reporting-review",
+      "reference": "Rule 14",
+      "pdfPageStart": 6,
+      "pdfPageEnd": 6,
+      "observedTextStart": "14. Preparation of annual report",
+      "verificationStatus": "official-pdf-page-verified-drive-hash-pending"
+    }
+  ],
+  "approvalBoundary": {
+    "pageObservationComplete": true,
+    "exactDriveFileHashVerifiedInThisRecord": false,
+    "legalInterpretationApproved": false,
+    "approvedForRag": false,
+    "allowedNextAction": "Run the local source-pack verifier against the controlled Drive export, then submit the exact-file page mapping for qualified legal review.",
+    "prohibitedActions": [
+      "Do not change the section map to exact-file-verified until the controlled Drive PDF matches the expected SHA-256 and byte length.",
+      "Do not create governed chunks from this record alone.",
+      "Do not activate a deterministic rule, explanation route, provider call or UI surface from this record."
+    ]
+  },
+  "notes": [
+    "The official India Code PDF was inspected for page placement only.",
+    "The controlled Drive source-pack file was not available in this work session, so its exact bytes were not independently rehashed here.",
+    "A matching exact file hash makes these fixed physical-page observations reproducible for the registered source."
+  ]
+}
