@@ -1,0 +1,575 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "0.1.0",
+  "title": "Draft POSH assessment fact and privacy contract",
+  "updatedAt": "2026-08-04",
+  "status": "draft-fact-contract",
+  "legalReviewStatus": "needs-legal-review",
+  "runtimeMapping": false,
+  "assessmentCapture": false,
+  "ruleActivation": false,
+  "providerPolicy": {
+    "rawAssessmentAnswersAllowed": false,
+    "personalNamesAllowed": false,
+    "contactDetailsAllowed": false,
+    "complaintNarrativesAllowed": false,
+    "allegationsAllowed": false,
+    "caseEvidenceAllowed": false,
+    "caseFindingsAllowed": false,
+    "caseLevelStatisticsAllowed": false,
+    "permittedFuturePayload": "validated deterministic result plus explicitly approved privacy-safe summaries only"
+  },
+  "collectionRules": [
+    "Use stable role, location and administrative-unit references instead of personal names wherever possible.",
+    "Evidence fields store references or presence indicators, not document bodies or complaint content.",
+    "Per-location and per-unit records must not be inferred from company totals.",
+    "Missing facts must remain missing and must not be filled by retrieval or a language model.",
+    "No field in this contract is live until assessment design, privacy review and legal review are separately approved."
+  ],
+  "allowedValueTypes": [
+    "boolean",
+    "date",
+    "date-array",
+    "year",
+    "non-negative-integer",
+    "positive-integer",
+    "percentage",
+    "controlled-text",
+    "controlled-text-array",
+    "role-reference",
+    "role-eligibility-record",
+    "evidence-reference-array",
+    "control-status",
+    "location-reference-array",
+    "location-control-array",
+    "unit-count-array",
+    "unit-control-array"
+  ],
+  "facts": [
+    {
+      "factId": "fact.posh.policy.exists",
+      "answerKey": "poshPolicyExists",
+      "featureIds": [
+        "feature.legal.posh.policy-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-presence",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Whether a policy or declaration is recorded as existing."
+    },
+    {
+      "factId": "fact.posh.policy.issue-date",
+      "answerKey": "poshPolicyIssueDate",
+      "featureIds": [
+        "feature.legal.posh.policy-review"
+      ],
+      "valueType": "date",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-metadata",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Issue or approval date only; no document text."
+    },
+    {
+      "factId": "fact.posh.policy.owner",
+      "answerKey": "poshPolicyOwnerRole",
+      "featureIds": [
+        "feature.legal.posh.policy-review"
+      ],
+      "valueType": "role-reference",
+      "collectionUnit": "organisation",
+      "evidenceMode": "role-reference",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Role or function only; do not collect a person's name."
+    },
+    {
+      "factId": "fact.posh.policy.coverage",
+      "answerKey": "poshPolicyCoverage",
+      "featureIds": [
+        "feature.legal.posh.policy-review"
+      ],
+      "valueType": "controlled-text-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "coverage-summary",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Controlled coverage categories only."
+    },
+    {
+      "factId": "fact.posh.policy.dissemination-evidence",
+      "answerKey": "poshPolicyDisseminationEvidence",
+      "featureIds": [
+        "feature.legal.posh.policy-review"
+      ],
+      "valueType": "evidence-reference-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "evidence-reference",
+      "sensitivity": "restricted",
+      "providerHandling": "never",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "References or control indicators only; do not send evidence content to a provider."
+    },
+    {
+      "factId": "fact.posh.policy.review-evidence",
+      "answerKey": "poshPolicyReviewEvidence",
+      "featureIds": [
+        "feature.legal.posh.policy-review"
+      ],
+      "valueType": "evidence-reference-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "evidence-reference",
+      "sensitivity": "restricted",
+      "providerHandling": "never",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "References or control indicators only; do not send evidence content to a provider."
+    },
+    {
+      "factId": "fact.posh.awareness.employee-cadence",
+      "answerKey": "poshEmployeeAwarenessCadence",
+      "featureIds": [
+        "feature.legal.posh.awareness-training-review"
+      ],
+      "valueType": "controlled-text",
+      "collectionUnit": "organisation",
+      "evidenceMode": "cadence-summary",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Controlled cadence label; no attendee names."
+    },
+    {
+      "factId": "fact.posh.awareness.employee-evidence",
+      "answerKey": "poshEmployeeAwarenessEvidence",
+      "featureIds": [
+        "feature.legal.posh.awareness-training-review"
+      ],
+      "valueType": "evidence-reference-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "evidence-reference",
+      "sensitivity": "restricted",
+      "providerHandling": "never",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Evidence references only; no attendee lists or free-text narratives."
+    },
+    {
+      "factId": "fact.posh.training.ic-orientation-evidence",
+      "answerKey": "poshIcOrientationEvidence",
+      "featureIds": [
+        "feature.legal.posh.awareness-training-review"
+      ],
+      "valueType": "evidence-reference-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "evidence-reference",
+      "sensitivity": "restricted",
+      "providerHandling": "never",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Evidence references only; no participant names."
+    },
+    {
+      "factId": "fact.posh.training.capacity-building-evidence",
+      "answerKey": "poshCapacityBuildingEvidence",
+      "featureIds": [
+        "feature.legal.posh.awareness-training-review"
+      ],
+      "valueType": "evidence-reference-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "evidence-reference",
+      "sensitivity": "restricted",
+      "providerHandling": "never",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Evidence references only; no participant names."
+    },
+    {
+      "factId": "fact.posh.notice.penal-consequences-displayed-by-location",
+      "answerKey": "poshPenalConsequencesDisplayByLocation",
+      "featureIds": [
+        "feature.legal.posh.notice-display-review"
+      ],
+      "valueType": "location-control-array",
+      "collectionUnit": "location",
+      "evidenceMode": "control-by-location",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Per-location yes/no/unknown status using stable location references."
+    },
+    {
+      "factId": "fact.posh.notice.ic-order-displayed-by-location",
+      "answerKey": "poshIcOrderDisplayByLocation",
+      "featureIds": [
+        "feature.legal.posh.notice-display-review"
+      ],
+      "valueType": "location-control-array",
+      "collectionUnit": "location",
+      "evidenceMode": "control-by-location",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Per-location yes/no/unknown status using stable location references."
+    },
+    {
+      "factId": "fact.posh.notice.member-contact-details-displayed-by-location",
+      "answerKey": "poshMemberContactDisplayByLocation",
+      "featureIds": [
+        "feature.legal.posh.notice-display-review"
+      ],
+      "valueType": "location-control-array",
+      "collectionUnit": "location",
+      "evidenceMode": "control-by-location",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Record presence only; do not collect or expose member contact details."
+    },
+    {
+      "factId": "fact.posh.notice.locations-reviewed",
+      "answerKey": "poshNoticeLocationsReviewed",
+      "featureIds": [
+        "feature.legal.posh.notice-display-review"
+      ],
+      "valueType": "location-reference-array",
+      "collectionUnit": "location",
+      "evidenceMode": "coverage-reference",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Stable location references only; no street-address requirement."
+    },
+    {
+      "factId": "fact.posh.complaint.route-defined",
+      "answerKey": "poshComplaintRouteDefined",
+      "featureIds": [
+        "feature.legal.posh.complaint-mechanism-records-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-presence",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Control-presence only; no complaint content."
+    },
+    {
+      "factId": "fact.posh.complaint.process-owner",
+      "answerKey": "poshComplaintProcessOwnerRole",
+      "featureIds": [
+        "feature.legal.posh.complaint-mechanism-records-review"
+      ],
+      "valueType": "role-reference",
+      "collectionUnit": "organisation",
+      "evidenceMode": "role-reference",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Role or function only; do not collect a person's name."
+    },
+    {
+      "factId": "fact.posh.complaint.timeline-controls",
+      "answerKey": "poshComplaintTimelineControls",
+      "featureIds": [
+        "feature.legal.posh.complaint-mechanism-records-review"
+      ],
+      "valueType": "control-status",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-status",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Controlled status only; no case timelines."
+    },
+    {
+      "factId": "fact.posh.complaint.confidentiality-controls",
+      "answerKey": "poshComplaintConfidentialityControls",
+      "featureIds": [
+        "feature.legal.posh.complaint-mechanism-records-review"
+      ],
+      "valueType": "control-status",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-status",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Controlled status only; no case content."
+    },
+    {
+      "factId": "fact.posh.complaint.record-retention-controls",
+      "answerKey": "poshComplaintRetentionControls",
+      "featureIds": [
+        "feature.legal.posh.complaint-mechanism-records-review"
+      ],
+      "valueType": "control-status",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-status",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Controlled status only; no case records."
+    },
+    {
+      "factId": "fact.posh.complaint.against-employer-route",
+      "answerKey": "poshComplaintAgainstEmployerRoute",
+      "featureIds": [
+        "feature.legal.posh.complaint-mechanism-records-review"
+      ],
+      "valueType": "control-status",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-status",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Route-presence status only; no allegation or identity data."
+    },
+    {
+      "factId": "fact.posh.ic.presiding-officer",
+      "answerKey": "poshIcPresidingOfficerEligibility",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "role-eligibility-record",
+      "collectionUnit": "organisation",
+      "evidenceMode": "role-eligibility",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Eligibility and role attributes only; do not collect a person's name."
+    },
+    {
+      "factId": "fact.posh.ic.employee-member-count",
+      "answerKey": "poshIcEmployeeMemberCount",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "non-negative-integer",
+      "collectionUnit": "organisation",
+      "evidenceMode": "aggregate-count",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Aggregate count only."
+    },
+    {
+      "factId": "fact.posh.ic.external-member",
+      "answerKey": "poshIcExternalMemberEligibility",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "role-eligibility-record",
+      "collectionUnit": "organisation",
+      "evidenceMode": "role-eligibility",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Eligibility and engagement attributes only; do not collect a person's name."
+    },
+    {
+      "factId": "fact.posh.ic.women-member-ratio",
+      "answerKey": "poshIcWomenMemberRatio",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "percentage",
+      "collectionUnit": "organisation",
+      "evidenceMode": "aggregate-ratio",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Aggregate percentage only; no member identities."
+    },
+    {
+      "factId": "fact.posh.ic.nomination-dates",
+      "answerKey": "poshIcNominationDates",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "date-array",
+      "collectionUnit": "organisation",
+      "evidenceMode": "control-metadata",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Dates only; no names."
+    },
+    {
+      "factId": "fact.posh.ic.unit-count",
+      "answerKey": "poshIcUnitCount",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "positive-integer",
+      "collectionUnit": "organisation",
+      "evidenceMode": "aggregate-count",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Count of offices or administrative units in scope."
+    },
+    {
+      "factId": "fact.posh.ic.workers-by-unit",
+      "answerKey": "poshWorkersByUnit",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "unit-count-array",
+      "collectionUnit": "administrative-unit",
+      "evidenceMode": "aggregate-count-by-unit",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Stable unit references and aggregate worker counts only."
+    },
+    {
+      "factId": "fact.posh.ic.committees-by-unit",
+      "answerKey": "poshCommitteesByUnit",
+      "featureIds": [
+        "feature.legal.posh.internal-committee-composition-unit-review"
+      ],
+      "valueType": "unit-control-array",
+      "collectionUnit": "administrative-unit",
+      "evidenceMode": "control-by-unit",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Stable unit references and committee-presence status only."
+    },
+    {
+      "factId": "fact.posh.annual-report.reporting-year",
+      "answerKey": "poshAnnualReportYear",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "year",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "period-reference",
+      "sensitivity": "internal",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Reporting year only."
+    },
+    {
+      "factId": "fact.posh.annual-report.prepared",
+      "answerKey": "poshAnnualReportPrepared",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "control-presence",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Prepared status only."
+    },
+    {
+      "factId": "fact.posh.annual-report.submitted-to-employer",
+      "answerKey": "poshAnnualReportSubmittedToEmployer",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "control-presence",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Submission status only."
+    },
+    {
+      "factId": "fact.posh.annual-report.submitted-to-district-officer",
+      "answerKey": "poshAnnualReportSubmittedToDistrictOfficer",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "control-presence",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Submission status only."
+    },
+    {
+      "factId": "fact.posh.annual-report.aggregate-complaint-statistics-present",
+      "answerKey": "poshAnnualReportAggregateStatsPresent",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "control-presence",
+      "sensitivity": "highly-restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Presence only; do not collect complaint counts in this contract."
+    },
+    {
+      "factId": "fact.posh.annual-report.workshop-count-present",
+      "answerKey": "poshAnnualReportWorkshopCountPresent",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "control-presence",
+      "sensitivity": "restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Presence only; do not transmit underlying report content."
+    },
+    {
+      "factId": "fact.posh.annual-report.action-status-present",
+      "answerKey": "poshAnnualReportActionStatusPresent",
+      "featureIds": [
+        "feature.legal.posh.annual-reporting-review"
+      ],
+      "valueType": "boolean",
+      "collectionUnit": "reporting-period",
+      "evidenceMode": "control-presence",
+      "sensitivity": "highly-restricted",
+      "providerHandling": "deterministic-summary-only",
+      "collectionStatus": "planned-not-captured",
+      "legalReviewStatus": "needs-legal-review",
+      "notes": "Presence only; do not collect case or action details."
+    }
+  ]
+}
