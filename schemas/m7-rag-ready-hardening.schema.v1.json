@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://growwithhr.hrtechify.com/schemas/m7-rag-ready-hardening.schema.v1.json",
+  "title": "GrowWithHR M7 RAG-Ready Hardening Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "milestone",
+    "targetRelease",
+    "implementationVersion",
+    "implementationStatus",
+    "releaseCut",
+    "preparedAt",
+    "authorityBoundary",
+    "frozenContracts",
+    "sourceLifecycle",
+    "operationalHardening",
+    "protectedContracts",
+    "reliabilityExit",
+    "activationBoundary",
+    "releaseGates"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "milestone": { "const": "M7" },
+    "targetRelease": { "const": "0.22.0" },
+    "implementationVersion": { "const": "0.22.0-hardening.1" },
+    "implementationStatus": {
+      "enum": [
+        "planned",
+        "implemented-awaiting-release-evidence",
+        "release-ready",
+        "released"
+      ]
+    },
+    "releaseCut": { "type": "boolean" },
+    "preparedAt": { "type": "string", "format": "date" },
+    "authorityBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicabilityAuthority",
+        "retrievalRole",
+        "providerRole",
+        "ragMayChangeDecision",
+        "legalAdvice"
+      ],
+      "properties": {
+        "applicabilityAuthority": { "const": "deterministic-only" },
+        "retrievalRole": { "const": "source-retrieval-only" },
+        "providerRole": { "const": "explanation-only" },
+        "ragMayChangeDecision": { "const": false },
+        "legalAdvice": { "const": false }
+      }
+    },
+    "frozenContracts": {
+      "type": "array",
+      "minItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contractId",
+          "category",
+          "path",
+          "baselineGitBlobSha",
+          "contractVersion",
+          "runtimeEnabled",
+          "compatibilityPolicy",
+          "requiredInvariants"
+        ],
+        "properties": {
+          "contractId": {
+            "type": "string",
+            "pattern": "^contract\\.(profile|obligation|applicability|citation)\\.[a-z0-9.-]+$"
+          },
+          "category": {
+            "enum": ["profile", "obligation", "applicability", "citation"]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*\\.\\./).+\\.(json|js)$"
+          },
+          "baselineGitBlobSha": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$"
+          },
+          "contractVersion": { "type": "string", "minLength": 1 },
+          "runtimeEnabled": { "type": "boolean" },
+          "compatibilityPolicy": { "type": "string", "minLength": 1 },
+          "requiredInvariants": {
+            "type": "array",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "sourceLifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modulePath",
+        "allowedStatuses",
+        "dateFields",
+        "dateInferenceAllowed",
+        "highCertaintyRequiresCurrentSources",
+        "changedOrSupersededSourcesInvalidateHighCertaintyOutput"
+      ],
+      "properties": {
+        "modulePath": { "const": "growwithhr-rag/source-lifecycle.js" },
+        "allowedStatuses": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "current",
+              "not-yet-effective",
+              "superseded",
+              "effective-date-unconfirmed",
+              "review-required"
+            ]
+          }
+        },
+        "dateFields": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": { "enum": ["effectiveFrom", "effectiveTo", "reviewedAt"] }
+        },
+        "dateInferenceAllowed": { "const": false },
+        "highCertaintyRequiresCurrentSources": { "const": true },
+        "changedOrSupersededSourcesInvalidateHighCertaintyOutput": { "const": true }
+      }
+    },
+    "operationalHardening": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readinessRoute",
+        "monitoring",
+        "performanceBudgets",
+        "securityControls",
+        "disasterRecovery"
+      ],
+      "properties": {
+        "readinessRoute": { "const": "/api/m7/readiness" },
+        "monitoring": { "type": "object" },
+        "performanceBudgets": { "type": "object" },
+        "securityControls": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "disasterRecovery": { "type": "object" }
+      }
+    },
+    "protectedContracts": { "type": "object" },
+    "reliabilityExit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledgerPath",
+        "requiredConsecutiveQualifiedReleases",
+        "currentQualifiedReleases",
+        "status",
+        "technicalImplementationMayBeCompleteBeforeReleaseExit"
+      ],
+      "properties": {
+        "ledgerPath": { "const": "data/releases/m7-reliability-evidence.v1.json" },
+        "requiredConsecutiveQualifiedReleases": { "const": 2 },
+        "currentQualifiedReleases": { "type": "integer", "minimum": 0 },
+        "status": {
+          "enum": [
+            "pending-production-evidence",
+            "one-qualified-release",
+            "satisfied"
+          ]
+        },
+        "technicalImplementationMayBeCompleteBeforeReleaseExit": { "const": true }
+      }
+    },
+    "activationBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "newLegalProfilesActivated",
+        "newCorporaApproved",
+        "remotePersistenceActivated",
+        "publicV3Cutover",
+        "reportPdfEmailMutation"
+      ],
+      "properties": {
+        "newLegalProfilesActivated": { "const": false },
+        "newCorporaApproved": { "const": false },
+        "remotePersistenceActivated": { "const": false },
+        "publicV3Cutover": { "const": false },
+        "reportPdfEmailMutation": { "const": false }
+      }
+    },
+    "releaseGates": {
+      "type": "array",
+      "minItems": 7,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
