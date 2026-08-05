@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M7",
+  "targetRelease": "0.22.0",
+  "implementationVersion": "0.22.0-hardening.1",
+  "implementationStatus": "implemented-awaiting-release-evidence",
+  "releaseCut": false,
+  "preparedAt": "2026-08-06",
+  "authorityBoundary": {
+    "applicabilityAuthority": "deterministic-only",
+    "retrievalRole": "source-retrieval-only",
+    "providerRole": "explanation-only",
+    "ragMayChangeDecision": false,
+    "legalAdvice": false
+  },
+  "frozenContracts": [
+    {
+      "contractId": "contract.profile.persistence-v1",
+      "category": "profile",
+      "path": "schemas/v021-evidence-persistence-contracts.schema.json",
+      "baselineGitBlobSha": "f3c80a27dd67bc2db9085754c7c0f6be3a80d2ec",
+      "contractVersion": "0.21.0-contract.1",
+      "runtimeEnabled": false,
+      "compatibilityPolicy": "additive-only-within-major",
+      "requiredInvariants": [
+        "remote persistence remains disabled until separate M6 approval",
+        "tenant and organisation boundaries remain explicit",
+        "evidence content is not stored by the metadata contract",
+        "export, deletion, backup and migration receipts remain explicit"
+      ]
+    },
+    {
+      "contractId": "contract.obligation.workspace-v1",
+      "category": "obligation",
+      "path": "js/m5/compliance-workspace-model.js",
+      "baselineGitBlobSha": "b767fbc65ed8a747efc1b693c66aded0ee085757",
+      "contractVersion": "1.0.0",
+      "runtimeEnabled": true,
+      "compatibilityPolicy": "backward-compatible-storage",
+      "requiredInvariants": [
+        "storage key remains growwithhr-compliance-workspace-v1",
+        "tasks retain status history",
+        "due-date source state remains visible",
+        "evidence remains placeholder-only",
+        "backup export and import remain browser-local"
+      ]
+    },
+    {
+      "contractId": "contract.applicability.traceability-schema-v1",
+      "category": "applicability",
+      "path": "data/schema/recommendation-traceability.schema.v1.json",
+      "baselineGitBlobSha": "c4d1537f42bac6604a320918b79fad5c71ce50b3",
+      "contractVersion": "1.0.0",
+      "runtimeEnabled": true,
+      "compatibilityPolicy": "new-major-for-breaking-change",
+      "requiredInvariants": [
+        "confirmed and derived facts remain separate",
+        "applicability and evidence statuses remain separate",
+        "rule and recommendation source references remain resolvable",
+        "missing facts remain explicit"
+      ]
+    },
+    {
+      "contractId": "contract.applicability.traceability-runtime-v1",
+      "category": "applicability",
+      "path": "js/assessment-v3/traceability-contract.js",
+      "baselineGitBlobSha": "a8f5e2f49f898241ddf8dcccdc394eb7d94b1b73",
+      "contractVersion": "1.0.0",
+      "runtimeEnabled": true,
+      "compatibilityPolicy": "new-major-for-breaking-change",
+      "requiredInvariants": [
+        "contract construction remains deterministic and side-effect free",
+        "safe applicability statuses remain stable",
+        "evidence verification cannot be inferred"
+      ]
+    },
+    {
+      "contractId": "contract.applicability.legal-rules-v1",
+      "category": "applicability",
+      "path": "data/assessment/legal-applicability-rules.v1.json",
+      "baselineGitBlobSha": "363455799b2a1aad7b8ae833f47e2929eb9ced9c",
+      "contractVersion": "0.1.0",
+      "runtimeEnabled": true,
+      "compatibilityPolicy": "reviewed-versioned-rules-only",
+      "requiredInvariants": [
+        "applicability authority remains deterministic-only",
+        "retrieval cannot determine applicability",
+        "provider role remains explanation-only",
+        "legal review status remains explicit"
+      ]
+    },
+    {
+      "contractId": "contract.citation.response-schema-v1",
+      "category": "citation",
+      "path": "schemas/legal-explanation-response.schema.v1.json",
+      "baselineGitBlobSha": "d8d1f37c105ca595158ff6609eb2fcfe41e871ba",
+      "contractVersion": "1.0.0",
+      "runtimeEnabled": true,
+      "compatibilityPolicy": "new-major-for-breaking-change",
+      "requiredInvariants": [
+        "every rationale item cites governed chunk identifiers",
+        "decision status and fingerprint remain unchanged",
+        "usedForDecision, mayChangeDecision and legalAdvice remain false",
+        "mandatory limitations remain present"
+      ]
+    },
+    {
+      "contractId": "contract.citation.runtime-v1",
+      "category": "citation",
+      "path": "growwithhr-rag/legal-explanation-contract.js",
+      "baselineGitBlobSha": "a3e2b891ebe84b3aa0f35ab1ee3a9bdd75b6d709",
+      "contractVersion": "1.0.0",
+      "runtimeEnabled": true,
+      "compatibilityPolicy": "new-major-for-breaking-change",
+      "requiredInvariants": [
+        "only retrieved governed chunks may be cited",
+        "raw assessment answers and evidence remain outside provider authority",
+        "definitive compliance claims remain prohibited"
+      ]
+    }
+  ],
+  "sourceLifecycle": {
+    "modulePath": "growwithhr-rag/source-lifecycle.js",
+    "allowedStatuses": [
+      "current",
+      "not-yet-effective",
+      "superseded",
+      "effective-date-unconfirmed",
+      "review-required"
+    ],
+    "dateFields": [
+      "effectiveFrom",
+      "effectiveTo",
+      "reviewedAt"
+    ],
+    "dateInferenceAllowed": false,
+    "highCertaintyRequiresCurrentSources": true,
+    "changedOrSupersededSourcesInvalidateHighCertaintyOutput": true
+  },
+  "operationalHardening": {
+    "readinessRoute": "/api/m7/readiness",
+    "monitoring": {
+      "boundedProcessLocalMetrics": true,
+      "trackedOperations": [
+        "m7-readiness",
+        "legal-rag-status",
+        "legal-explanation"
+      ],
+      "sensitivePayloadLogging": false
+    },
+    "performanceBudgets": {
+      "readinessP95Milliseconds": 250,
+      "routerOverheadP95Milliseconds": 150,
+      "maximumMetricSamplesPerOperation": 200,
+      "maximumRequestBytes": 16384
+    },
+    "securityControls": [
+      "no credentials in browser or readiness output",
+      "no raw assessment answers in monitoring",
+      "safe repository-relative catalogue paths",
+      "blocked profiles fail before provider execution",
+      "no source-scope or reason-code expansion",
+      "no automatic provider fallback"
+    ],
+    "disasterRecovery": {
+      "drillCommand": "npm run drill:m7",
+      "rollbackTarget": "v0.21.x-compatible local and deterministic mode",
+      "ragDisableMode": "LEGAL_EXPLANATION_ENDPOINT_ENABLED=false",
+      "deterministicDecisionsIndependentOfRag": true,
+      "remotePersistenceRequired": false
+    }
+  },
+  "protectedContracts": {
+    "publicRoute": "/analyze-company.html",
+    "privateRoute": "/analyze-company-v3.html",
+    "featureFlag": "complianceDnaV3=false",
+    "storageKeys": [
+      "growwithhr-advisory-briefing-v2",
+      "growwithhr-report",
+      "growwithhr-lead",
+      "growwithhr-advisory-delivery-v1",
+      "growwithhr-industry-catalog-v1",
+      "growwithhr-compliance-workspace-v1"
+    ],
+    "deliveryEndpoint": "POST /api/send-advisory",
+    "compatibilityLegalEndpoint": "POST /api/legal-explanation/posh"
+  },
+  "reliabilityExit": {
+    "ledgerPath": "data/releases/m7-reliability-evidence.v1.json",
+    "requiredConsecutiveQualifiedReleases": 2,
+    "currentQualifiedReleases": 0,
+    "status": "pending-production-evidence",
+    "technicalImplementationMayBeCompleteBeforeReleaseExit": true
+  },
+  "activationBoundary": {
+    "newLegalProfilesActivated": false,
+    "newCorporaApproved": false,
+    "remotePersistenceActivated": false,
+    "publicV3Cutover": false,
+    "reportPdfEmailMutation": false
+  },
+  "releaseGates": [
+    "all contract, source lifecycle, operational and DR checks pass",
+    "full repository regression and browser suites pass",
+    "security and privacy review are recorded",
+    "source coverage is measured against approved catalogues only",
+    "two consecutive qualified production releases meet reliability targets",
+    "rollback and disaster-recovery evidence is archived",
+    "explicit release approval is recorded"
+  ]
+}
