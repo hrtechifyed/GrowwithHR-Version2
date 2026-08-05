@@ -2,6 +2,9 @@
 
 const http = require("http");
 const {
+    handleM7ReadinessRequest
+} = require("./server-m7-operational-readiness");
+const {
     handleSharedLegalExplanationRequest
 } = require("./server-legal-explanation-router");
 const { handleLegalExplanationRequest } = require("./server-legal-explanation");
@@ -90,6 +93,7 @@ function installApiCors() {
                     }
                 }
 
+                if (handleM7ReadinessRequest(request, response)) return;
                 if (handleSharedLegalExplanationRequest(request, response)) return;
                 if (handleLegalExplanationRequest(request, response)) return;
                 if (handleOperationalExplanationRequest(request, response)) return;
