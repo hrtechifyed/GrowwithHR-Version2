@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M7",
+  "targetRelease": "0.22.0",
+  "evidenceRole": "release-exit-evidence-only",
+  "requiredConsecutiveQualifiedReleases": 2,
+  "qualifiedReleases": [],
+  "currentConsecutiveQualifiedReleases": 0,
+  "status": "awaiting-production-releases",
+  "reliabilityTargets": {
+    "minimumSuccessfulRequestRate": 0.995,
+    "maximumReadinessP95Milliseconds": 250,
+    "maximumRouterOverheadP95Milliseconds": 150,
+    "maximumSourceScopeViolations": 0,
+    "maximumDecisionMutationViolations": 0,
+    "maximumSensitivePayloadLoggingViolations": 0,
+    "drDrillMustPass": true,
+    "rollbackEvidenceRequired": true
+  },
+  "candidateEvidence": [
+    {
+      "candidateId": "m7-hardening-implementation",
+      "qualifiedRelease": false,
+      "reason": "Automated branch and pull-request validation is implementation evidence, not production-release reliability evidence.",
+      "requiredChecks": [
+        "M7 contract freeze",
+        "source lifecycle normalization",
+        "operational readiness",
+        "disaster-recovery drill",
+        "complete repository regression",
+        "browser regression"
+      ]
+    }
+  ],
+  "qualificationRules": [
+    "A qualified release must be deployed to the intended production environment.",
+    "The release must complete the documented observation window.",
+    "Every reliability target must be supported by archived evidence.",
+    "A pull request, local test or CI run alone is not a qualified production release.",
+    "The two qualifying releases must be consecutive and must not have an intervening failed release."
+  ],
+  "releaseExitSatisfied": false,
+  "limitations": [
+    "This ledger intentionally contains no fabricated production release evidence.",
+    "M7 technical implementation can be complete while the release-exit gate remains pending.",
+    "Legal, privacy, security and release approvals remain separate decisions."
+  ]
+}
