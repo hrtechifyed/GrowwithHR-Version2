@@ -31,10 +31,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Run M7 hardening checks
         run: npm run test:m7
@@ -43,7 +42,7 @@ jobs:
         run: npm run drill:m7 -- --output m7-dr-drill.json
 
       - name: Upload DR evidence
-        if: always()
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: m7-dr-drill-${{ github.run_id }}
