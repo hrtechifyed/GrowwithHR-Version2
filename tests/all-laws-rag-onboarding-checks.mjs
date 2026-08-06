@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const require = createRequire(import.meta.url);
 const registry = require("../data/legal-source-governance/all-laws-rag-onboarding.v1.json");
-const onboarding = require("../growwithhr-rag/all-laws-onboarding.js");
+const onboarding = require("../growwithhr-rag/all-laws-onboarding.cjs");
 
 const validation = onboarding.validateAllLawsOnboardingRegistry(registry);
 assert.equal(validation.valid, true, validation.issues.join("\n"));
@@ -98,7 +98,7 @@ const unsafePathValidation = onboarding.validateAllLawsOnboardingRegistry(unsafe
 assert.equal(unsafePathValidation.valid, false);
 assert.ok(unsafePathValidation.issues.some((issue) => issue.includes("unsafe catalogue path")));
 
-const source = await readFile(new URL("../growwithhr-rag/all-laws-onboarding.js", import.meta.url), "utf8");
+const source = await readFile(new URL("../growwithhr-rag/all-laws-onboarding.cjs", import.meta.url), "utf8");
 assert.doesNotMatch(source, /\bfetch\s*\(/);
 assert.doesNotMatch(source, /XMLHttpRequest|axios|sendBeacon/);
 assert.doesNotMatch(source, /\bdocument\b|\bwindow\b|localStorage|sessionStorage/);
