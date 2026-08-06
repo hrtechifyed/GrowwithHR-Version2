@@ -1,0 +1,71 @@
+name: Live v0.20.2 Deployment Smoke
+
+on:
+  push:
+    branches:
+      - agent/all-laws-governed-rag-onboarding
+    paths:
+      - .github/workflows/live-v0202-smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Wait for GitHub Pages v0.20.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://hrtechifyed.github.io/GrowwithHR-Version2/index.html"
+          for attempt in $(seq 1 60); do
+            body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url" 2>/dev/null || true)"
+            if grep -Fq "How GrowWithHR reaches a compliance answer" <<<"$body" && grep -Fq "GrowWithHR Public 0.20.2" <<<"$body"; then
+              echo "GitHub Pages v0.20.2 is live."
+              exit 0
+            fi
+            echo "GitHub Pages not updated yet (attempt $attempt/60)."
+            sleep 10
+          done
+          echo "GitHub Pages did not expose v0.20.2 within the smoke window." >&2
+          exit 1
+
+      - name: Wait for Render homepage v0.20.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/index.html"
+          for attempt in $(seq 1 60); do
+            body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
+            if grep -Fq "How GrowWithHR reaches a compliance answer" <<<"$body" && grep -Fq "GrowWithHR Public 0.20.2" <<<"$body"; then
+              echo "Render homepage v0.20.2 is live."
+              exit 0
+            fi
+            echo "Render homepage not updated yet (attempt $attempt/60)."
+            sleep 10
+          done
+          echo "Render homepage did not expose v0.20.2 within the smoke window." >&2
+          exit 1
+
+      - name: Validate live legal RAG status
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/api/legal-rag/status"
+          for attempt in $(seq 1 30); do
+            body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
+            if grep -Fq '"platformStatus":"all-laws-runnable-private-beta"' <<<"$body" && \
+               grep -Fq '"activeProfileCount":57' <<<"$body" && \
+               grep -Fq '"blockedProfileCount":0' <<<"$body"; then
+              echo "$body" > live-legal-rag-status.json
+              echo "Live legal RAG status is valid."
+              exit 0
+            fi
+            echo "Legal RAG status not ready yet (attempt $attempt/30)."
+            sleep 10
+          done
+          echo "Live legal RAG status did not meet the v0.20.2 contract." >&2
+          exit 1
