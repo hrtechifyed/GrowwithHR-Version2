@@ -25,9 +25,10 @@ const {
 const thresholdCatalog = require(path.join(ROOT, "data/assessment/legal-applicability-rules.v1.json"));
 
 const modules = await createCompleteLegalModulesLoader({ retrievalMode: "lexical" })();
+const ragRuntime = await import("../growwithhr-rag/legal-rag-runtime.js");
 const registry = router.DEFAULT_PROFILE_REGISTRY;
 const specifications = router.defaultFeatureSpecifications();
-const registryValidation = modules.ragEngine.validateLegalRagProfiles(registry);
+const registryValidation = ragRuntime.validateLegalRagProfiles(registry);
 
 assert.equal(registryValidation.valid, true, JSON.stringify(registryValidation.errors, null, 2));
 assert.equal(registry.profiles.length, 57);
