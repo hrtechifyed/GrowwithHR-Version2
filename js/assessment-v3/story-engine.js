@@ -3,6 +3,7 @@ import "./epf-wave3b-explanation-panel.js";
 import "./epf-wave3c-explanation-panel.js";
 import "./esi-wave4a-explanation-panel.js";
 import "./esi-wave4b-explanation-panel.js";
+import "./esi-wave4c-explanation-panel.js";
 
 /**
  * GrowWithHR Compliance DNA
