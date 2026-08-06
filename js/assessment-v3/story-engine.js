@@ -1,5 +1,6 @@
 import "./epf-wave3a-explanation-panel.js";
 import "./epf-wave3b-explanation-panel.js";
+import "./epf-wave3c-explanation-panel.js";
 
 /**
  * GrowWithHR Compliance DNA
