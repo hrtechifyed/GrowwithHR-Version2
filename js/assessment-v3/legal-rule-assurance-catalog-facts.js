@@ -179,6 +179,53 @@ function uniqueTexts(values) {
     return [...new Set(array(values).map(text).filter(Boolean))];
 }
 
+function usesControlReviewOutcomeModel(catalog) {
+    return text(object(catalog).outcomeModel) === "control-review";
+}
+
+function createEvaluatorCompatibleCatalog(catalogValue) {
+    const catalog = clone(object(catalogValue));
+    if (!usesControlReviewOutcomeModel(catalog)) return catalog;
+
+    array(catalog.rules).forEach((rule) => {
+        const source = object(rule);
+        const outcomes = object(source.outcomes);
+        const notMatched = object(outcomes.notMatched);
+        if (text(notMatched.status) !== "specialist-review") return;
+        notMatched.status = "not-currently-applicable";
+        source.permittedResultStatuses = uniqueTexts([
+            ...array(source.permittedResultStatuses),
+            "not-currently-applicable"
+        ]);
+    });
+    return catalog;
+}
+
+function restoreControlReviewStatuses(traceabilityValue, catalog) {
+    if (!usesControlReviewOutcomeModel(catalog)) return traceabilityValue;
+    const traceability = clone(traceabilityValue);
+    const ruleById = new Map(array(catalog.rules).map((rule) => [text(rule.id), rule]));
+
+    array(traceability.ruleEvaluations).forEach((evaluation) => {
+        if (text(object(evaluation.metadata).outcome) !== "notMatched") return;
+        const rule = object(ruleById.get(text(evaluation.ruleId)));
+        const status = text(object(object(rule.outcomes).notMatched).status);
+        if (status) evaluation.status = status;
+    });
+    array(traceability.recommendations).forEach((recommendation) => {
+        if (text(object(recommendation.metadata).outcome) !== "notMatched") return;
+        const rule = object(ruleById.get(text(recommendation.ruleId)));
+        const status = text(object(object(rule.outcomes).notMatched).status);
+        if (status) recommendation.applicabilityStatus = status;
+    });
+    traceability.metadata = {
+        ...object(traceability.metadata),
+        outcomeModel: "control-review",
+        notMatchedMeaning: "reported-control-gap"
+    };
+    return traceability;
+}
+
 function buildDecisions(catalog, traceability) {
     const ruleById = new Map(array(catalog.rules).map((rule) => [text(rule.id), rule]));
     const sourceById = new Map(array(catalog.sources).map((source) => [text(source.id), source]));
@@ -215,7 +262,11 @@ function buildDecisions(catalog, traceability) {
 }
 
 export function validateLegalRuleCatalog(catalog) {
-    return validateBaseCatalog(catalog);
+    const source = object(catalog);
+    if (text(source.factMappingMode) !== "catalog-defined") {
+        return validateBaseCatalog(source);
+    }
+    return validateBaseCatalog(createEvaluatorCompatibleCatalog(source));
 }
 
 export function evaluateLegalRuleAssurance(input = {}) {
@@ -225,14 +276,15 @@ export function evaluateLegalRuleAssurance(input = {}) {
         return evaluateBaseAssurance(source);
     }
 
-    const validation = validateBaseCatalog(catalog);
+    const evaluatorCatalog = createEvaluatorCompatibleCatalog(catalog);
+    const validation = validateBaseCatalog(evaluatorCatalog);
     if (!validation.valid) throw new LegalRuleAssuranceError(validation.errors);
 
     const evaluatedAt = text(source.evaluatedAt);
     const facts = createCatalogFacts(source.answers, catalog, evaluatedAt);
-    const traceability = evaluateRecommendationRules({
+    const evaluatedTraceability = evaluateRecommendationRules({
         facts,
-        catalog,
+        catalog: evaluatorCatalog,
         evaluatedAt,
         generatedAt: evaluatedAt,
         limitations: [
@@ -248,6 +300,7 @@ export function evaluateLegalRuleAssurance(input = {}) {
             llmRole: "explanation-only"
         }
     });
+    const traceability = restoreControlReviewStatuses(evaluatedTraceability, catalog);
 
     return deepFreeze({
         assuranceVersion: LEGAL_RULE_ASSURANCE_VERSION,
