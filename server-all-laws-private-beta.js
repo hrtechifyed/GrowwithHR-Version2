@@ -3,9 +3,9 @@
 /**
  * Runnable private-beta registry for every governed legal profile.
  *
- * Seven POSH profiles use substantive, source-scoped deterministic catalogs:
- * the existing Internal Committee threshold plus the six Wave 1 controls.
- * The remaining profiles retain conservative governance-fallback behavior.
+ * Seven POSH profiles and ten Maternity Benefit Wave 2 profiles use
+ * substantive, source-scoped deterministic catalogs. Remaining profiles retain
+ * conservative governance-fallback behavior.
  */
 
 const BASE_PROFILE_REGISTRY = require("./growwithhr-rag/data/legal-rag-profiles.v1.json");
@@ -16,8 +16,14 @@ const {
     POSH_WAVE1_PROFILE_DEFINITIONS,
     POSH_WAVE1_FEATURE_IDS
 } = require("./server-posh-wave1-rule-catalogs.js");
+const {
+    MATERNITY_CATALOG_ID,
+    MATERNITY_WAVE2_CATALOG_PATH,
+    MATERNITY_WAVE2_PROFILE_DEFINITIONS,
+    MATERNITY_WAVE2_FEATURE_IDS
+} = require("./server-maternity-wave2-rule-catalogs.js");
 
-const MODULE_VERSION = "1.1.0";
+const MODULE_VERSION = "1.2.0";
 const POSH_THRESHOLD_FEATURE_ID = "feature.legal.posh.internal-committee-threshold";
 const FALLBACK_CATALOG_ID = "catalog.legal.all-laws-governance-fallback.v1";
 const FALLBACK_CATALOG_PATH = "growwithhr-rag/data/all-laws-governance-fallback-chunks.v1.json";
@@ -169,6 +175,13 @@ function createConservativeDecisionEvaluator(entry) {
     };
 }
 
+function substantiveDefinitionMap() {
+    return new Map([
+        ...POSH_WAVE1_PROFILE_DEFINITIONS.map((item) => [item.featureId, { ...item, lawFamilyId: "posh", catalogId: POSH_CATALOG_ID }]),
+        ...MATERNITY_WAVE2_PROFILE_DEFINITIONS.map((item) => [item.featureId, { ...item, lawFamilyId: "maternity", catalogId: MATERNITY_CATALOG_ID }])
+    ]);
+}
+
 function buildAllLawsPrivateBetaRegistry(options = {}) {
     const source = object(options);
     const baseRegistry = source.baseRegistry || BASE_PROFILE_REGISTRY;
@@ -182,8 +195,12 @@ function buildAllLawsPrivateBetaRegistry(options = {}) {
     }
 
     const entries = featureEntries(onboarding);
-    const wave1ByFeature = new Map(POSH_WAVE1_PROFILE_DEFINITIONS.map((item) => [item.featureId, item]));
-    const substantiveFeatureIds = new Set([POSH_THRESHOLD_FEATURE_ID, ...POSH_WAVE1_FEATURE_IDS]);
+    const substantiveByFeature = substantiveDefinitionMap();
+    const substantiveFeatureIds = new Set([
+        POSH_THRESHOLD_FEATURE_ID,
+        ...POSH_WAVE1_FEATURE_IDS,
+        ...MATERNITY_WAVE2_FEATURE_IDS
+    ]);
     const fallbackFeatureIds = entries
         .map((entry) => entry.featureId)
         .filter((featureId) => !substantiveFeatureIds.has(featureId))
@@ -201,18 +218,18 @@ function buildAllLawsPrivateBetaRegistry(options = {}) {
 
     entries.forEach((entry) => {
         if (entry.featureId === POSH_THRESHOLD_FEATURE_ID) return;
-        const wave1 = wave1ByFeature.get(entry.featureId);
-        if (wave1) {
+        const substantive = substantiveByFeature.get(entry.featureId);
+        if (substantive) {
             profiles.push({
                 profileId: `rag.legal.${entry.featureId.replace(/^feature\.legal\./, "")}`,
                 featureId: entry.featureId,
-                lawFamilyId: "posh",
+                lawFamilyId: substantive.lawFamilyId,
                 activationStatus: "active-private-beta",
-                catalogId: POSH_CATALOG_ID,
-                ruleIds: [wave1.ruleId],
-                productRuleIds: [wave1.productRuleId],
-                queryTerms: clone(wave1.queryTerms),
-                maxChunks: wave1.maxChunks,
+                catalogId: substantive.catalogId,
+                ruleIds: [substantive.ruleId],
+                productRuleIds: [substantive.productRuleId],
+                queryTerms: clone(substantive.queryTerms),
+                maxChunks: substantive.maxChunks,
                 explanationEnabled: true,
                 compatibilityRoutes: [],
                 privateBetaMode: "statutory-catalogue",
@@ -250,12 +267,22 @@ function buildAllLawsPrivateBetaRegistry(options = {}) {
         runtimeStatus: "available-private-beta",
         legalReviewStatus: "needs-legal-review",
         catalogMode: "statutory",
-        allowedFeatureIds: [...substantiveFeatureIds].sort()
+        allowedFeatureIds: [POSH_THRESHOLD_FEATURE_ID, ...POSH_WAVE1_FEATURE_IDS].sort()
+    };
+    const maternityCatalog = {
+        catalogId: MATERNITY_CATALOG_ID,
+        lawFamilyId: "maternity",
+        catalogPath: MATERNITY_WAVE2_CATALOG_PATH,
+        format: "governed-legal-source-chunks-v1",
+        runtimeStatus: "available-private-beta",
+        legalReviewStatus: "needs-legal-review",
+        catalogMode: "statutory",
+        allowedFeatureIds: [...MATERNITY_WAVE2_FEATURE_IDS].sort()
     };
 
     return deepFreeze({
         schemaVersion: 1,
-        registryVersion: "0.3.0",
+        registryVersion: "0.4.0",
         title: "GrowWithHR all-laws runnable private-beta RAG profiles",
         updatedAt: "2026-08-06",
         runtimeRole: "post-decision-rag-routing-only",
@@ -265,6 +292,7 @@ function buildAllLawsPrivateBetaRegistry(options = {}) {
         defaults: clone(object(baseRegistry).defaults),
         catalogs: [
             poshCatalog,
+            maternityCatalog,
             {
                 catalogId: FALLBACK_CATALOG_ID,
                 lawFamilyId: "all-laws-governance-fallback",
@@ -279,9 +307,9 @@ function buildAllLawsPrivateBetaRegistry(options = {}) {
         profiles,
         limitations: [
             "Every registered profile is callable in private beta.",
-            "Seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue.",
+            "Seven POSH and ten Maternity Benefit profiles use feature-specific deterministic rules and governed statutory catalogues.",
             "The remaining profiles use conservative governance-fallback rules until their law-specific sources and rules complete review.",
-            "No profile is legally approved; substantive POSH control outcomes remain specialist-review or more-information-needed.",
+            "No profile is legally approved; substantive control and entitlement-route outcomes remain specialist-review or more-information-needed.",
             "A language model may explain a deterministic result but cannot create or change it."
         ]
     });
@@ -290,7 +318,11 @@ function buildAllLawsPrivateBetaRegistry(options = {}) {
 function createAllLawsPrivateBetaFeatureSpecifications(options = {}) {
     const onboarding = object(options).onboardingRegistry || ONBOARDING_REGISTRY;
     const specifications = {};
-    const substantiveFeatureIds = new Set([POSH_THRESHOLD_FEATURE_ID, ...POSH_WAVE1_FEATURE_IDS]);
+    const substantiveFeatureIds = new Set([
+        POSH_THRESHOLD_FEATURE_ID,
+        ...POSH_WAVE1_FEATURE_IDS,
+        ...MATERNITY_WAVE2_FEATURE_IDS
+    ]);
     featureEntries(onboarding).forEach((entry) => {
         if (substantiveFeatureIds.has(entry.featureId)) return;
         specifications[entry.featureId] = deepFreeze({
