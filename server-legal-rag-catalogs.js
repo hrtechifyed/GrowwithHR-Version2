@@ -10,7 +10,7 @@ const { buildAllLawsGovernanceFallbackCatalog } = require("./server-all-laws-fal
 const { MATERNITY_CATALOG_ID } = require("./server-maternity-wave2-rule-catalogs.js");
 const { buildMaternityWave2RetrievalCatalog } = require("./server-maternity-wave2-retrieval-catalog.js");
 
-const CATALOG_LOADER_VERSION = "1.2.0";
+const CATALOG_LOADER_VERSION = "1.1.0";
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
 const array = (value) => Array.isArray(value) ? value : [];
