@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "data/legal-source-governance/all-laws-rag-onboarding.v1.json"
-      - "growwithhr-rag/all-laws-onboarding.js"
+      - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "server-all-laws-*.js"
       - "server-legal-explanation-router.js"
