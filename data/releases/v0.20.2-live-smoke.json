@@ -1,0 +1,24 @@
+{
+  "releaseVersion": "0.20.2",
+  "checkedAt": "2026-08-06T05:40:49Z",
+  "sourceCommitSha": "7811c91fc68301bc24f52f7bfe17455affd8395b",
+  "status": "passed",
+  "checks": {
+    "githubPagesHomepage": {
+      "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/index.html",
+      "versionVisible": true,
+      "complianceEngineSectionVisible": true
+    },
+    "renderHomepage": {
+      "url": "https://growwithhr.onrender.com/index.html",
+      "versionVisible": true,
+      "complianceEngineSectionVisible": true
+    },
+    "legalRagStatus": {
+      "url": "https://growwithhr.onrender.com/api/legal-rag/status",
+      "platformStatus": "all-laws-runnable-private-beta",
+      "activeProfileCount": 57,
+      "blockedProfileCount": 0
+    }
+  }
+}
