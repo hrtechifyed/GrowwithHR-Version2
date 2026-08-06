@@ -15,23 +15,24 @@ node tests/esi-wave4a-private-beta-checks.mjs
 node tests/esi-wave4b-private-beta-checks.mjs
 node tests/esi-wave4c-private-beta-checks.mjs
 node tests/esi-wave4d-private-beta-checks.mjs
+node tests/jurisdiction-wave5a-private-beta-checks.mjs
 ```
 
-The maintained baseline command validates Wave 1 and Wave 2. The Wave 3A–3C and Wave 4A–4D overlay commands validate the complete stacked 57-profile registry.
+The maintained baseline command validates Wave 1 and Wave 2. The Wave 3A–3C, Wave 4A–4D and Wave 5A overlay commands validate the complete stacked 57-profile registry.
 
-## Required Wave 4D pass indicators
+## Required Wave 5A pass indicators
 
 ```json
 {
   "valid": true,
   "profileCount": 57,
-  "substantiveProfiles": 44,
-  "substantiveEsiWave4dProfiles": 2,
-  "wave4dScenarios": 6,
-  "governanceFallbackProfiles": 13,
-  "activeCatalogs": 10,
-  "esiWave4dSources": 8,
-  "esiWave4dChunks": 10
+  "substantiveProfiles": 45,
+  "substantiveJurisdictionWave5aProfiles": 1,
+  "wave5aScenarios": 3,
+  "governanceFallbackProfiles": 12,
+  "activeCatalogs": 11,
+  "jurisdictionWave5aSources": 9,
+  "jurisdictionWave5aChunks": 10
 }
 ```
 
@@ -49,39 +50,38 @@ The maintained test evaluates complete, reported-gap and missing-information sce
 
 The maintained overlay tests evaluate the EPF, EPS and EDLI operational, source-routing and specialist-control profiles while preserving contribution, membership, exemption, certificate and individual-entitlement boundaries.
 
-## ESI Waves 4A–4C checks
+## ESI Waves 4A–4D checks
 
-The maintained ESI overlays evaluate establishment, employee-insurance, contractor, payment, accident, coverage-routing, wage-ceiling, rate-source, special-route, benefit-process and medical-administration controls while preserving applicability, calculation, claim, medical and individual-entitlement boundaries.
+The maintained ESI overlays evaluate establishment, employee-insurance, contractor, payment, accident, coverage-routing, wage-ceiling, rate-source, special-route, benefit-process, medical-administration, exemption-governance and enforcement-authority controls while preserving applicability, calculation, claim, medical, exemption, enforcement and individual-entitlement boundaries.
 
-## ESI Wave 4D checks
+## Appropriate Government Wave 5A checks
 
-The Wave 4D overlay evaluates complete, reported-gap and missing-information scenarios for:
+The Wave 5A overlay evaluates complete, reported-gap and missing-information scenarios for cross-code Appropriate Government source routing.
 
-- exemption-governance and source controls;
-- enforcement-authority source routing.
+For every Wave 5A scenario the suite proves that:
 
-For every Wave 4D scenario the suite proves that:
-
-- only declared organisation-level notification, source, version, exclusion, authority and escalation controls plus evidence references are mapped;
+- only the declared candidate route, cross-code definition source status, Central and State source-set statuses, establishment and activity classification control, multi-location routing, effective-date and version control, specialist escalation and evidence references are mapped;
 - the deterministic decision exists before retrieval;
-- complete and reported-gap scenarios remain `specialist-review` because exemption validity, authority, service, limitation, jurisdiction, legal effect and evidence quality are not certified;
+- complete and reported-gap scenarios remain `specialist-review` because the legally appropriate Government, governing source set, establishment classification, effective-date treatment, forum and evidence quality are not certified;
 - absent required facts produce `more-information-needed`;
 - retrieval reports `usedForDecision: false` and `applicabilityAuthority: none`;
 - retrieved chunks stay inside the deterministic reason-code and Source Register allow-list;
 - explanations preserve status, reason code and decision fingerprint;
-- no rule grants or validates an exemption, authenticates a notice, order, signature or officer, decides liability or recovery, calculates an amount, determines penalty or prosecution, or resolves jurisdiction.
+- no rule infers a location, classifies an establishment, chooses Central or State jurisdiction, selects a State or Union Territory source set, resolves conflicts, validates a delegation or selects a forum.
 
-The Wave 4D browser payload check proves that names, contact details, Aadhaar, insurance numbers, wages, payroll and contribution records, exemption notifications, benefit-comparison bodies, officer names, notices, orders, signatures, inspection findings, recovery amounts, dispute narratives and evidence bodies are excluded. Evidence arrays are reduced to controlled references. The Chromium test verifies two selectable reviews, no automatic request, allow-listed submission, rendered citations and zero browser-storage writes.
+The Wave 5A browser payload check proves that names, contact details, addresses, registration numbers, employee identities, wages, payroll, disputes, allegations, notices, orders, contracts, legal submissions and evidence bodies are excluded. Evidence arrays are reduced to controlled references. The Chromium test verifies no automatic request, allow-listed submission, rendered citations and zero browser-storage writes.
 
 ## Source-governance checks
 
-The Wave 4D catalogue uses the Code, Social Security (Central) Rules, commencement notification and corrigendum as controlled central sources. S.O. 2350(E), S.O. 2353(E), S.O. 2354(E) and S.O. 2356(E) are registered only as controlled authority-source records.
+The Wave 5A catalogue contains nine official source identities and ten reason-code-scoped chunks.
 
-Those authority notifications do not prove customer-specific delegation, service, limitation, jurisdiction, document authenticity, liability or legal effect. Establishment-specific exemption notifications, benefit-comparison evidence, compliance history, customer notices and orders, signatures, findings and recovery records remain explicit specialist-review dependencies.
+The Social Security Code and Social Security (Central) Rules retain controlled-file fingerprints. The Code on Wages, Industrial Relations Code, OSHWC Code, their 2026 Central Rules and the Ministry labour-jurisdiction page use clearly labelled `source-identity-only` fingerprints. The test prevents those records from being represented as verified full files or complete linked-source archives.
+
+No State or Union Territory Act, rule, amendment, notification, delegation, forum or effective-date pack is represented as complete. Exact customer-specific establishment, ownership, control, industry, activity, location and contract facts remain specialist-review dependencies.
 
 ## Runtime status check
 
-After starting the Wave 4D server entrypoint, inspect:
+After starting the Wave 5A server entrypoint, inspect:
 
 ```text
 GET /api/legal-rag/status
@@ -92,12 +92,12 @@ The response should report:
 - `platformStatus: all-laws-runnable-private-beta`;
 - 57 active profiles;
 - zero blocked runtime profiles;
-- `substantiveProfileCount: 44`;
-- `governanceFallbackProfileCount: 13`;
-- nine substantive catalogues and one governance-fallback catalogue.
+- `substantiveProfileCount: 45`;
+- `governanceFallbackProfileCount: 12`;
+- ten substantive catalogues and one governance-fallback catalogue.
 
 ## Runtime versus legal approval
 
-A green runtime test proves that Waves 1, 2, 3A–3C and 4A–4D have feature-specific deterministic rules, source-scoped governed retrieval, strict request adapters and contract-valid explanations. It does not record qualified legal approval, verify customer evidence, approve exemptions, authenticate documents or officers, decide liability, recovery, penalty, prosecution or jurisdiction, or certify compliance.
+A green runtime test proves that Waves 1, 2, 3A–3C, 4A–4D and 5A have feature-specific deterministic rules, source-scoped governed retrieval, strict request adapters and contract-valid explanations. It does not record qualified legal approval, verify customer evidence, approve exemptions, authenticate documents or officers, decide liability or recovery, select the legally appropriate Government, determine applicable law or forum, or certify compliance.
 
-The onboarding-readiness snapshot remains separate. It may continue to report pending legal, privacy, source-file, mapping, RAG or release decisions until those controlled approvals are explicitly recorded. Passing software tests is not approval.
+The onboarding-readiness snapshot remains separate. It may continue to report pending legal, privacy, source-file, mapping, RAG, security or release decisions until those controlled approvals are explicitly recorded. Passing software tests is not approval.
