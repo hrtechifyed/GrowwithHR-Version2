@@ -11,7 +11,7 @@ const profiles = require(path.join(ROOT, "growwithhr-rag", "data", "legal-rag-pr
 
 loader.resetDefaultGovernedLegalCatalogsForTests();
 const snapshot = loader.loadDefaultGovernedLegalCatalogs();
-assert.equal(snapshot.loaderVersion, "1.0.0");
+assert.equal(snapshot.loaderVersion, "1.1.0");
 assert.deepEqual(snapshot.activeCatalogIds, ["catalog.legal.posh.v1"]);
 assert.equal(Object.keys(snapshot.catalogs).length, 1);
 assert.equal(snapshot.metadata.length, 1);

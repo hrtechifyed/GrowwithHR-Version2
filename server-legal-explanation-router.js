@@ -3,8 +3,10 @@
 /**
  * Shared legal explanation router and RAG status endpoint.
  *
- * Active profiles can use one feature-addressed route. Blocked profiles fail
- * before deterministic evaluation, retrieval or provider execution.
+ * Every registered legal profile is callable in private beta. POSH threshold
+ * uses its law-specific rule and statutory catalogue; all other profiles use
+ * conservative escalation-only rules and governed readiness retrieval until
+ * their law-specific corpora replace the fallback.
  */
 
 const {
@@ -16,17 +18,23 @@ const {
     createGenericLegalExplanationOrchestrator,
     orchestrationError
 } = require("./server-legal-explanation-orchestrator.js");
-const DEFAULT_PROFILE_REGISTRY = require("./growwithhr-rag/data/legal-rag-profiles.v1.json");
 const {
-    loadDefaultGovernedLegalCatalogs
+    buildAllLawsPrivateBetaRegistry
+} = require("./server-all-laws-private-beta.js");
+const {
+    createRunnableAllLawsFeatureSpecifications
+} = require("./server-all-laws-rule-catalogs.js");
+const {
+    loadGovernedLegalCatalogs
 } = require("./server-legal-rag-catalogs.js");
 const {
     createCompleteLegalModulesLoader
 } = require("./server-legal-rag-modules.js");
 
+const DEFAULT_PROFILE_REGISTRY = buildAllLawsPrivateBetaRegistry();
 const SHARED_ROUTE_PREFIX = "/api/legal-explanation/feature/";
 const STATUS_ROUTE = "/api/legal-rag/status";
-const SHARED_ROUTER_VERSION = "1.0.0";
+const SHARED_ROUTER_VERSION = "1.1.0";
 
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -129,8 +137,10 @@ function defaultFeatureSpecifications() {
     return Object.freeze({
         [POSH_FEATURE_ID]: Object.freeze({
             featureId: POSH_FEATURE_ID,
-            normalizeBody: normalizePoshBody
-        })
+            normalizeBody: normalizePoshBody,
+            privateBetaMode: "statutory-catalogue"
+        }),
+        ...createRunnableAllLawsFeatureSpecifications()
     });
 }
 
@@ -146,33 +156,44 @@ function decodeFeatureId(requestPath) {
 
 function statusPayload(registry, catalogSnapshot, retrievalMode) {
     const profiles = array(object(registry).profiles);
+    const activeProfiles = profiles
+        .filter((profile) => cleanText(profile.activationStatus) === "active-private-beta")
+        .map((profile) => ({
+            featureId: cleanText(profile.featureId),
+            profileId: cleanText(profile.profileId),
+            lawFamilyId: cleanText(profile.lawFamilyId),
+            catalogId: cleanText(profile.catalogId),
+            activationStatus: cleanText(profile.activationStatus),
+            privateBetaMode: cleanText(profile.privateBetaMode || "statutory-catalogue")
+        }));
     return {
         routerVersion: SHARED_ROUTER_VERSION,
-        platformStatus: "governed-private-beta",
+        platformStatus: "all-laws-runnable-private-beta",
         applicabilityAuthority: "deterministic-only",
         retrievalRole: "source-retrieval-only",
         providerRole: "explanation-only",
         legalReviewStatus: "needs-legal-review",
         retrievalMode,
         profileCount: profiles.length,
-        activeProfiles: profiles
-            .filter((profile) => cleanText(profile.activationStatus) === "active-private-beta")
-            .map((profile) => ({
-                featureId: cleanText(profile.featureId),
-                profileId: cleanText(profile.profileId),
-                catalogId: cleanText(profile.catalogId),
-                activationStatus: cleanText(profile.activationStatus)
-            })),
+        activeProfileCount: activeProfiles.length,
+        activeProfiles,
         blockedProfileCount: profiles
             .filter((profile) => cleanText(profile.activationStatus) !== "active-private-beta")
             .length,
         catalogs: array(catalogSnapshot.metadata).map((item) => ({
             catalogId: cleanText(item.catalogId),
             lawFamilyId: cleanText(item.lawFamilyId),
+            catalogMode: cleanText(item.catalogMode || "statutory"),
             sourceCount: item.sourceCount,
             chunkCount: item.chunkCount,
             fileSha256: cleanText(item.fileSha256)
-        }))
+        })),
+        limitations: [
+            "POSH Internal Committee threshold uses the existing law-specific deterministic rule and statutory catalogue.",
+            "Other profiles are runnable through a conservative governance-fallback catalogue.",
+            "Fallback profiles may return only more-information-needed or specialist-review.",
+            "The model cannot create facts or alter deterministic outcomes."
+        ]
     };
 }
 
@@ -181,7 +202,9 @@ function createSharedLegalExplanationRequestHandler(options = {}) {
     const profileRegistry = source.profileRegistry || DEFAULT_PROFILE_REGISTRY;
     const profiles = profileMap(profileRegistry);
     const featureSpecifications = source.featureSpecifications || defaultFeatureSpecifications();
-    const catalogSnapshot = source.catalogSnapshot || loadDefaultGovernedLegalCatalogs();
+    const catalogSnapshot = source.catalogSnapshot || loadGovernedLegalCatalogs({
+        profileRegistry
+    });
     const catalogs = source.catalogs || catalogSnapshot.catalogs;
     const environment = source.environment || process.env;
     const retrievalMode = cleanText(
@@ -197,6 +220,7 @@ function createSharedLegalExplanationRequestHandler(options = {}) {
             ...source,
             featureId,
             normalizeBody: specification.normalizeBody,
+            ruleCatalog: specification.ruleCatalog || source.ruleCatalog,
             profileRegistry,
             catalogs,
             environment,
@@ -302,6 +326,7 @@ module.exports = Object.freeze({
     SHARED_ROUTER_VERSION,
     SHARED_ROUTE_PREFIX,
     STATUS_ROUTE,
+    DEFAULT_PROFILE_REGISTRY,
     defaultFeatureSpecifications,
     statusPayload,
     createSharedLegalExplanationRequestHandler,
