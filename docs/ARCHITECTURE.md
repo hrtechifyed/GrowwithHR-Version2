@@ -41,3 +41,32 @@ The default approved cross-origin client is `https://hrtechifyed.github.io`. Add
 - `growwithhr-report-theme` (presentation preference only)
 
 Feature-flag overrides use the documented `growwithhr-feature-` prefix and are not assessment records.
+
+## Compliance decision and governed RAG architecture
+
+The compliance engine now uses one authority boundary across legal features:
+
+```text
+assessment answers
+→ deterministic fact mapper
+→ deterministic rule evaluator
+→ immutable decision
+→ legal RAG profile resolver
+→ governed catalogue retrieval
+→ explanation-only provider
+→ strict response validation
+```
+
+The deterministic decision owns applicability, status and reason-code selection. Retrieval has `applicabilityAuthority: none` and `usedForDecision: false`. Provider output must preserve the decision fingerprint, status, reason code and supplied citation scope.
+
+The v0.20.2 private-beta registry exposes 57 active profiles. POSH Internal Committee threshold uses its governed statutory catalogue; 56 other profiles use conservative governance-readiness retrieval and cannot make positive or negative applicability conclusions until feature-specific source packs and rules are approved.
+
+Operational endpoints:
+
+```text
+POST /api/legal-explanation/feature/:featureId
+GET  /api/legal-rag/status
+GET  /api/m7/readiness
+```
+
+See `docs/architecture/compliance-engine-differentiation.md` and `docs/testing/all-laws-rag-validation.md`.

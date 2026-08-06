@@ -631,3 +631,15 @@ No additional law should be exposed through Cloudflare or the V3 legal panel unt
 - a strict feature-specific explanation boundary;
 - `needs-legal-review` status;
 - a controlled live test.
+
+## 2026-08-06 runtime addendum
+
+The earlier inventory described the pre-onboarding state. GrowWithHR v0.20.2 adds a shared private-beta runtime for all 57 registered legal feature profiles.
+
+| Runtime category | Profiles | Current authority |
+|---|---:|---|
+| POSH Internal Committee threshold | 1 | Deterministic statutory rule plus governed statutory chunks |
+| Other registered legal features | 56 | Deterministic escalation-only rule plus governance-readiness retrieval |
+| Runtime-blocked profiles | 0 | Not applicable |
+
+This changes runtime coverage, not statutory assurance depth. The 56 fallback profiles remain unable to emit positive or negative applicability conclusions and require controlled law-specific source packs, facts, rules and approvals before being reclassified as substantive governed legal assurance.

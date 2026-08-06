@@ -1,0 +1,85 @@
+/* GrowWithHR compliance-engine explanation section. */
+body.home-page .compliance-engine-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(10, 16, 32, .35), rgba(5, 7, 11, .92));
+}
+body.home-page .compliance-engine-heading { max-width: 920px; }
+body.home-page .compliance-engine-intro {
+  max-width: 820px;
+  margin: 18px auto 0;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, .96rem + .2vw, 1.15rem);
+  line-height: 1.75;
+}
+body.home-page .compliance-engine-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--home-gap);
+  margin-top: clamp(38px, 5vw, 60px);
+}
+body.home-page .engine-step,
+body.home-page .compliance-engine-difference {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+  box-shadow: var(--shadow-md);
+}
+body.home-page .engine-step {
+  min-height: 280px;
+  padding: clamp(22px, 2.5vw, 32px);
+}
+body.home-page .engine-step-number {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 26px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  color: var(--text-dark);
+  font-weight: 800;
+}
+body.home-page .engine-step h3,
+body.home-page .compliance-engine-difference h3 {
+  margin: 0 0 14px;
+  color: var(--text-primary);
+}
+body.home-page .engine-step p,
+body.home-page .compliance-engine-difference p,
+body.home-page .difference-list,
+body.home-page .compliance-engine-note {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+body.home-page .compliance-engine-difference {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+  margin-top: var(--home-gap);
+  padding: clamp(28px, 4vw, 52px);
+}
+body.home-page .difference-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding-left: 22px;
+}
+body.home-page .difference-list strong { color: var(--text-primary); }
+body.home-page .compliance-engine-note {
+  max-width: 980px;
+  margin: 24px auto 0;
+  padding: 16px 20px;
+  border-left: 3px solid var(--brand-orange);
+  background: rgba(255, 122, 0, .07);
+  font-size: .94rem;
+}
+@media (max-width: 1023px) {
+  body.home-page .compliance-engine-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  body.home-page .compliance-engine-flow,
+  body.home-page .compliance-engine-difference { grid-template-columns: minmax(0, 1fr); }
+  body.home-page .engine-step { min-height: 0; }
+}
