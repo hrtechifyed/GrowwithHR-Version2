@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 4D stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 5A stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
@@ -39,7 +39,8 @@ The Wave 4D stacked private-beta registry contains 57 runnable feature profiles:
 - five ESI Wave 4B profiles use deterministic coverage and source-routing rules and a governed seven-source catalogue;
 - three ESI Wave 4C profiles use deterministic special-route, benefit-process and medical-administration control rules and a governed seven-source catalogue;
 - two ESI Wave 4D profiles use deterministic exemption-governance and enforcement-authority source-routing rules and a governed eight-source catalogue;
-- 13 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- one Appropriate Government Wave 5A profile uses a deterministic cross-code source-readiness and escalation review with a governed nine-source catalogue;
+- 12 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
 ### Wave 1 — POSH
 
@@ -89,9 +90,15 @@ The two substantive Wave 4D profiles cover exemption-governance and source contr
 
 Wave 4D records only organisation-level notification, comparison, version, authority-source, document-exclusion and specialist-escalation controls. It does not grant, validate, renew or withdraw an exemption; authenticate a notice, order, officer or signature; decide liability, default, recovery, limitation, penalty, prosecution or jurisdiction; or process enforcement documents. S.O. 2350(E), S.O. 2353(E), S.O. 2354(E) and S.O. 2356(E) are retained as controlled authority-source records only. Customer-specific exemption instruments, benefit-comparison evidence, service, limitation, delegation and case-jurisdiction facts remain qualified-review dependencies.
 
-The Wave 1, Wave 2 and Wave 3A–4D profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll or contributions, decide individual insurance or entitlement, approve exemptions or determine enforcement outcomes.
+### Wave 5A — Appropriate Government source routing
 
-The private-beta v3 page includes explicit in-memory review panels for all nine waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. Wave 4D excludes names, contact details, Aadhaar, insurance numbers, wages, payroll and contribution records, notices, orders, signatures, inspection findings, recovery amounts, dispute narratives and evidence bodies.
+The substantive Wave 5A profile reviews whether the relevant labour-code definitions, Central-rule source sets, exact State or Union Territory materials, establishment and activity classification controls, multi-location routing, effective-date controls and specialist escalation are recorded.
+
+Wave 5A does not choose the legally appropriate Government, applicable law, State source set, forum or jurisdiction. The Social Security Code and Social Security (Central) Rules reuse controlled-file fingerprints. The Code on Wages, Industrial Relations Code, OSHWC Code, their Central Rules and the Ministry jurisdiction page are registered only as source-identity snapshots until exact controlled files are verified. No State or Union Territory source pack is represented as complete.
+
+The Wave 1, Wave 2, Wave 3A–4D and Wave 5A profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll or contributions, decide individual insurance or entitlement, approve exemptions, determine enforcement outcomes, or select jurisdiction.
+
+The private-beta v3 page includes explicit in-memory review panels for all ten waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. Wave 5A excludes names, contact details, addresses, registration numbers, employee identities, wages, payroll, disputes, notices, orders, contracts, legal submissions and evidence bodies.
 
 ## What makes GrowWithHR different
 
@@ -109,7 +116,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2 and Wave 3A–4D review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2, Wave 3A–4D and Wave 5A review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -123,6 +130,7 @@ node tests/esi-wave4a-private-beta-checks.mjs
 node tests/esi-wave4b-private-beta-checks.mjs
 node tests/esi-wave4c-private-beta-checks.mjs
 node tests/esi-wave4d-private-beta-checks.mjs
+node tests/jurisdiction-wave5a-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
