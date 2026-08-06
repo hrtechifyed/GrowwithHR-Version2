@@ -240,10 +240,38 @@ function buildConservativeRuleCatalog(entryValue) {
     });
 }
 
+function normalizeRecommendationIdentifier(value) {
+    return text(value)
+        .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+        .toLowerCase()
+        .replace(/[^a-z0-9.-]+/g, "-")
+        .replace(/-+/g, "-");
+}
+
+function createCompatibleMaternitySpecifications() {
+    const source = createMaternityWave2FeatureSpecifications();
+    const specifications = {};
+    Object.entries(source).forEach(([featureId, specification]) => {
+        const catalog = JSON.parse(JSON.stringify(specification.ruleCatalog));
+        array(catalog.rules).forEach((rule) => {
+            const outcomes = object(rule.outcomes);
+            ["matched", "notMatched", "missing"].forEach((outcomeName) => {
+                const recommendation = object(object(outcomes[outcomeName]).recommendation);
+                if (recommendation.id) recommendation.id = normalizeRecommendationIdentifier(recommendation.id);
+            });
+        });
+        specifications[featureId] = deepFreeze({
+            ...specification,
+            ruleCatalog: catalog
+        });
+    });
+    return deepFreeze(specifications);
+}
+
 function createRunnableAllLawsFeatureSpecifications() {
     const specifications = {
         ...createPoshWave1FeatureSpecifications(),
-        ...createMaternityWave2FeatureSpecifications()
+        ...createCompatibleMaternitySpecifications()
     };
     const substantiveIds = new Set([
         ...POSH_WAVE1_FEATURE_IDS,
