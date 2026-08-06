@@ -31,7 +31,7 @@ The default approved cross-origin client is `https://hrtechifyed.github.io`. Add
 
 `/analyze-company-v3.html` is no-index and disabled from public routing by default. M1-M5 modules consume protected assessment answers through compatibility adapters and produce isolated traceability, Compliance Story and workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route mounts nine legal-review surfaces:
+The v3 route mounts ten legal-review surfaces:
 
 - the existing POSH Internal Committee threshold explanation, which reads the three required facts from the protected assessment record;
 - the POSH Wave 1 control-review panel, which collects six feature-specific fact sets in memory;
@@ -41,7 +41,8 @@ The v3 route mounts nine legal-review surfaces:
 - the EPF Wave 3C panel, which exposes exemption-governance and international-worker or SSA control reviews using organisation-level statuses and evidence references;
 - the ESI Wave 4A panel, which exposes five establishment, employee-insurance, contractor, payment and accident-reporting control reviews using organisation-level statuses, a declared route and evidence references;
 - the ESI Wave 4B panel, which exposes five continuing or voluntary coverage, area commencement, wage-ceiling source, ceiling-continuation and contribution-rate source reviews using organisation-level statuses and evidence references;
-- the ESI Wave 4C panel, which exposes special-route, benefit-process and medical-administration source reviews using organisation-level routes, statuses and evidence references.
+- the ESI Wave 4C panel, which exposes special-route, benefit-process and medical-administration source reviews using organisation-level routes, statuses and evidence references;
+- the ESI Wave 4D panel, which exposes exemption-governance and enforcement-authority source reviews using organisation-level source, exclusion and escalation controls plus evidence references.
 
 All panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
@@ -75,7 +76,7 @@ The deterministic decision owns applicability, control-review or entitlement-rou
 
 ## Runtime coverage
 
-The Wave 4C stacked private-beta registry exposes 57 active profiles:
+The Wave 4D stacked private-beta registry exposes 57 active profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
@@ -85,11 +86,12 @@ The Wave 4C stacked private-beta registry exposes 57 active profiles:
 - five ESI Wave 4A profiles use deterministic employer-control rules and a six-source governed catalogue;
 - five ESI Wave 4B profiles use deterministic coverage and source-routing rules and a seven-source governed catalogue;
 - three ESI Wave 4C profiles use deterministic special-route, benefit-process and medical-administration control rules and a seven-source governed catalogue;
-- 15 profiles use conservative governance-readiness retrieval until their law-specific source packs, facts, rules and approvals are complete.
+- two ESI Wave 4D profiles use deterministic exemption-governance and enforcement-authority source-routing rules and an eight-source governed catalogue;
+- 13 profiles use conservative governance-readiness retrieval until their law-specific source packs, facts, rules and approvals are complete.
 
-Wave 4C covers seasonal, hazardous and plantation route controls, organisation-level benefit-process support controls and medical-administration source routing. It accepts controlled organisation-level routes, process statuses, source statuses, escalation controls and evidence references.
+Wave 4D covers ESI exemption-governance and enforcement-authority source routing. It accepts controlled organisation-level notification, comparison, version, authority-source, document-exclusion and specialist-escalation controls plus evidence references.
 
-The Wave 1, Wave 2 and Wave 3A–4C catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`. Wave 4C does not classify a special coverage route, decide a claim, validate a medical certificate, process medical records, select a provider or determine individual benefit entitlement.
+The Wave 1, Wave 2 and Wave 3A–4D catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`. Wave 4D does not approve an exemption, authenticate a customer document or officer, determine liability or recovery, calculate an amount, decide penalty or prosecution, or resolve jurisdiction.
 
 ## Source-governance boundary
 
@@ -99,7 +101,9 @@ Wave 4B adds S.O. 2351(E) as a controlled continuation source. That notification
 
 Wave 4C adds S.O. 2352(E) as a controlled medical-practitioner authority source and the Other Beneficiaries Medical Facilities Scheme, 2026 as bounded scheme context. Neither source validates a customer certificate, determines treatment, selects a provider or decides individual access. The hazardous-occupation notification, plantation opt-in instruments, State and Union Territory implementation sources, medical-administration agreements, local facility procedures and the other-beneficiaries user-charge instrument remain unresolved.
 
-The catalogues do not represent legacy instruments as automatically operative prospective authority. Area notifications, hazardous-route notifications, current portal specifications, due dates, forms, State medical administration, saved-law treatment, rate exceptions and effective-date treatment require qualified review.
+Wave 4D adds S.O. 2350(E), S.O. 2353(E), S.O. 2354(E) and S.O. 2356(E) as controlled authority-source records. They do not prove case-specific delegation, service, jurisdiction, limitation, authenticity, liability or legal effect. Establishment-specific exemption notifications, benefit-comparison evidence, compliance history, customer notices and orders, signatures, findings and recovery records remain outside the controlled payload and require qualified review.
+
+The catalogues do not represent legacy instruments as automatically operative prospective authority. Area notifications, hazardous-route notifications, current portal specifications, due dates, forms, State medical administration, saved-law treatment, rate exceptions, effective-date treatment and case-specific enforcement questions require qualified review.
 
 ## Privacy boundaries
 
@@ -119,6 +123,8 @@ ESI Wave 4B adapters additionally exclude addresses, wage-ceiling amounts and ra
 
 ESI Wave 4C adapters exclude diagnoses, medical certificates, prescriptions, treatment records, family details, claim bodies and benefit payment records in addition to the existing ESI exclusions. Only organisation-level route, process, source, exclusion and escalation controls plus evidence references are accepted.
 
+ESI Wave 4D adapters exclude exemption notifications, benefit-comparison bodies, compliance-history bodies, officer names, notices, orders, signatures, service records, inspection findings, recovery amounts, dispute narratives and all evidence bodies. Only organisation-level source, version, exclusion and escalation controls plus references are accepted.
+
 ## Operational endpoints
 
 ```text
@@ -127,6 +133,6 @@ GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
 
-`server-entry.js` uses the Wave 4C router overlay, which preserves Waves 1–4B while activating three ESI benefit and medical-control profiles and reporting the 42/15 runtime mix.
+`server-entry.js` uses the Wave 4D router overlay, which preserves Waves 1–4C while activating two ESI exemption and authority-control profiles and reporting the 44/13 runtime mix.
 
 See `docs/architecture/compliance-engine-differentiation.md`, `docs/architecture/all-laws-runnable-private-beta-rag.md` and `docs/testing/all-laws-rag-validation.md`.
