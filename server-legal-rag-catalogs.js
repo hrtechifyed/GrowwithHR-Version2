@@ -78,7 +78,16 @@ function activeCatalogIds(registry) {
 
 function generatedCatalog(catalogId) {
     if (catalogId === FALLBACK_CATALOG_ID) return buildAllLawsGovernanceFallbackCatalog();
-    if (catalogId === MATERNITY_CATALOG_ID) return buildMaternityWave2RetrievalCatalog();
+    if (catalogId === MATERNITY_CATALOG_ID) {
+        return {
+            ...buildMaternityWave2RetrievalCatalog(),
+            limitations: [
+                "The Maternity Wave 2 catalogue remains needs-legal-review and is not legal or entitlement advice.",
+                "Only controlled organisation facts, categories, bands and statuses are eligible for retrieval context.",
+                "Retrieval cannot create facts, resolve unsupported State material or change the deterministic decision."
+            ]
+        };
+    }
     return null;
 }
 
