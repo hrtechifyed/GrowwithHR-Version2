@@ -1,12 +1,8 @@
 "use strict";
 
 /**
- * Shared legal explanation router and RAG status endpoint.
- *
- * Every registered legal profile is callable in private beta. POSH threshold
- * uses its law-specific rule and statutory catalogue; all other profiles use
- * conservative escalation-only rules and governed readiness retrieval until
- * their law-specific corpora replace the fallback.
+ * Shared feature-addressed legal explanation router and RAG status endpoint.
+ * Deterministic rules decide; governed retrieval and providers explain only.
  */
 
 const {
@@ -25,6 +21,9 @@ const {
     createRunnableAllLawsFeatureSpecifications
 } = require("./server-all-laws-rule-catalogs.js");
 const {
+    normalizePoshNoticeBody
+} = require("./server-posh-wave1-normalizer-overrides.js");
+const {
     loadGovernedLegalCatalogs
 } = require("./server-legal-rag-catalogs.js");
 const {
@@ -34,7 +33,7 @@ const {
 const DEFAULT_PROFILE_REGISTRY = buildAllLawsPrivateBetaRegistry();
 const SHARED_ROUTE_PREFIX = "/api/legal-explanation/feature/";
 const STATUS_ROUTE = "/api/legal-rag/status";
-const SHARED_ROUTER_VERSION = "1.1.0";
+const SHARED_ROUTER_VERSION = "1.2.0";
 
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -51,11 +50,7 @@ function publicError(code, message, status, retryable = false) {
     return {
         status,
         payload: {
-            error: {
-                code,
-                message,
-                retryable
-            },
+            error: { code, message, retryable },
             legalReviewStatus: "needs-legal-review",
             usedForDecision: false
         }
@@ -92,7 +87,6 @@ function readJsonBody(request) {
             settled = true;
             reject(value);
         };
-
         request.on("data", (chunk) => {
             if (settled) return;
             received += chunk.length;
@@ -134,13 +128,20 @@ function profileMap(registry) {
 }
 
 function defaultFeatureSpecifications() {
+    const specifications = createRunnableAllLawsFeatureSpecifications();
+    const noticeFeatureId = "feature.legal.posh.notice-display-review";
+    const noticeSpecification = object(specifications[noticeFeatureId]);
     return Object.freeze({
         [POSH_FEATURE_ID]: Object.freeze({
             featureId: POSH_FEATURE_ID,
             normalizeBody: normalizePoshBody,
             privateBetaMode: "statutory-catalogue"
         }),
-        ...createRunnableAllLawsFeatureSpecifications()
+        ...specifications,
+        [noticeFeatureId]: Object.freeze({
+            ...noticeSpecification,
+            normalizeBody: normalizePoshNoticeBody
+        })
     });
 }
 
@@ -166,6 +167,11 @@ function statusPayload(registry, catalogSnapshot, retrievalMode) {
             activationStatus: cleanText(profile.activationStatus),
             privateBetaMode: cleanText(profile.privateBetaMode || "statutory-catalogue")
         }));
+    const substantiveProfiles = activeProfiles
+        .filter((profile) => profile.privateBetaMode === "statutory-catalogue");
+    const fallbackProfiles = activeProfiles
+        .filter((profile) => profile.privateBetaMode === "governance-fallback");
+
     return {
         routerVersion: SHARED_ROUTER_VERSION,
         platformStatus: "all-laws-runnable-private-beta",
@@ -176,6 +182,8 @@ function statusPayload(registry, catalogSnapshot, retrievalMode) {
         retrievalMode,
         profileCount: profiles.length,
         activeProfileCount: activeProfiles.length,
+        substantiveProfileCount: substantiveProfiles.length,
+        governanceFallbackProfileCount: fallbackProfiles.length,
         activeProfiles,
         blockedProfileCount: profiles
             .filter((profile) => cleanText(profile.activationStatus) !== "active-private-beta")
@@ -189,10 +197,10 @@ function statusPayload(registry, catalogSnapshot, retrievalMode) {
             fileSha256: cleanText(item.fileSha256)
         })),
         limitations: [
-            "POSH Internal Committee threshold uses the existing law-specific deterministic rule and statutory catalogue.",
-            "Other profiles are runnable through a conservative governance-fallback catalogue.",
-            "Fallback profiles may return only more-information-needed or specialist-review.",
-            "The model cannot create facts or alter deterministic outcomes."
+            "Seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue.",
+            "The six Wave 1 control reviews remain needs-legal-review and therefore emit specialist-review or more-information-needed, not legal certification.",
+            "The remaining profiles are runnable through conservative governance-fallback catalogues.",
+            "Retrieval and provider output cannot create facts or alter deterministic outcomes."
         ]
     };
 }
@@ -202,19 +210,13 @@ function createSharedLegalExplanationRequestHandler(options = {}) {
     const profileRegistry = source.profileRegistry || DEFAULT_PROFILE_REGISTRY;
     const profiles = profileMap(profileRegistry);
     const featureSpecifications = source.featureSpecifications || defaultFeatureSpecifications();
-    const catalogSnapshot = source.catalogSnapshot || loadGovernedLegalCatalogs({
-        profileRegistry
-    });
+    const catalogSnapshot = source.catalogSnapshot || loadGovernedLegalCatalogs({ profileRegistry });
     const catalogs = source.catalogs || catalogSnapshot.catalogs;
     const environment = source.environment || process.env;
     const retrievalMode = cleanText(
-        source.retrievalMode ||
-        environment.LEGAL_RAG_RETRIEVAL_MODE ||
-        "lexical"
+        source.retrievalMode || environment.LEGAL_RAG_RETRIEVAL_MODE || "lexical"
     ).toLowerCase();
-    const modulesLoader = source.modulesLoader || createCompleteLegalModulesLoader({
-        retrievalMode
-    });
+    const modulesLoader = source.modulesLoader || createCompleteLegalModulesLoader({ retrievalMode });
     const createService = source.createService || ((featureId, specification) =>
         createGenericLegalExplanationOrchestrator({
             ...source,
@@ -229,15 +231,12 @@ function createSharedLegalExplanationRequestHandler(options = {}) {
     const services = new Map();
 
     function serviceFor(featureId, specification) {
-        if (!services.has(featureId)) {
-            services.set(featureId, createService(featureId, specification));
-        }
+        if (!services.has(featureId)) services.set(featureId, createService(featureId, specification));
         return services.get(featureId);
     }
 
     return function handleSharedLegalExplanationRequest(request, response) {
         const requestPath = cleanText(request.url).split("?")[0];
-
         if (requestPath === STATUS_ROUTE) {
             if (request.method !== "GET") {
                 response.setHeader("Allow", "GET, OPTIONS");
@@ -251,9 +250,7 @@ function createSharedLegalExplanationRequestHandler(options = {}) {
             writeJson(response, 200, statusPayload(profileRegistry, catalogSnapshot, retrievalMode));
             return true;
         }
-
         if (!requestPath.startsWith(SHARED_ROUTE_PREFIX)) return false;
-
         if (request.method !== "POST") {
             response.setHeader("Allow", "POST, OPTIONS");
             writeJson(response, 405, publicError(
@@ -311,7 +308,6 @@ function createSharedLegalExplanationRequestHandler(options = {}) {
                 ).payload);
             }
         })();
-
         return true;
     };
 }
