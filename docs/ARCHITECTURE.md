@@ -31,13 +31,14 @@ The default approved cross-origin client is `https://hrtechifyed.github.io`. Add
 
 `/analyze-company-v3.html` is no-index and disabled from public routing by default. M1-M5 modules consume protected assessment answers through compatibility adapters and produce isolated traceability, Compliance Story and workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route mounts three legal-review surfaces:
+The v3 route mounts four legal-review surfaces:
 
 - the existing POSH Internal Committee threshold explanation, which reads the three required facts from the protected assessment record;
 - the POSH Wave 1 control-review panel, which collects six feature-specific fact sets in memory;
-- the Maternity Benefit Wave 2 panel, which exposes ten controlled organisation, category, band and status reviews in memory.
+- the Maternity Benefit Wave 2 panel, which exposes ten controlled organisation, category, band and status reviews in memory;
+- the EPF Wave 3A panel, which exposes five operational reviews using organisation-level statuses, counts and evidence references.
 
-The Wave 1 and Wave 2 panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
+All panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
 ## Protected browser keys
 
@@ -69,21 +70,24 @@ The deterministic decision owns applicability, control-review or entitlement-rou
 
 ## Runtime coverage
 
-The private-beta registry exposes 57 active profiles:
+The Wave 3A stacked private-beta registry exposes 57 active profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
-- 40 profiles use conservative governance-readiness retrieval until their law-specific source packs, facts, rules and approvals are complete.
+- five EPF operational profiles use feature-specific deterministic rules and a governed Social Security Code, EPF Scheme, commencement and corrigendum catalogue;
+- 35 profiles use conservative governance-readiness retrieval until their law-specific source packs, facts, rules and approvals are complete.
 
-The Maternity Benefit profiles cover establishment coverage, employee eligibility route, duration category, adopting or commissioning mother route, special leave, nursing breaks, crèche controls, notice/payment/records, employment protection and ESI overlap.
+The EPF Wave 3A profiles cover establishment coverage, member-inclusion controls, monthly contribution-process controls, contractor controls, and records and returns. Contribution-rate selection, wage ceilings, exemptions, international-worker treatment, EPS membership or pension routing, and EDLI coverage or rates remain on fallback.
 
-The Wave 1 and Wave 2 catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`. This keeps output substantive and source-traceable without claiming legal sufficiency, evidence verification, individual entitlement or compliance certification.
+The Wave 1, Wave 2 and Wave 3A catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`. This keeps output substantive and source-traceable without claiming legal sufficiency, evidence verification, payroll calculation, individual entitlement or membership, or compliance certification.
 
 ## Privacy boundaries
 
 POSH adapters exclude names, contact details, complaint narratives, allegations, evidence bodies, findings and case-level statistics. Per-location and per-unit facts remain separate.
 
 Maternity Benefit adapters exclude names, contact details, medical narratives, certificates, exact event dates, child details, adoption or surrogacy documents, completed claims, ESI identifiers, bank details, disciplinary evidence and completed forms. Central Rules are not used to resolve unsupported State appropriate-Government material.
+
+EPF Wave 3A adapters exclude names, UANs, employee-level wages, payroll rows, contribution histories, ECR bodies, bank details, claims, completed forms and evidence bodies. The monthly route records only whether an approved rate source and operational controls exist; it does not select or calculate a rate branch.
 
 ## Operational endpoints
 
@@ -92,5 +96,7 @@ POST /api/legal-explanation/feature/:featureId
 GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
+
+`server-entry.js` uses the Wave 3A router overlay, which preserves the Wave 1–2 implementation while activating the five EPF profiles and reporting the 22/35 runtime mix.
 
 See `docs/architecture/compliance-engine-differentiation.md`, `docs/architecture/all-laws-runnable-private-beta-rag.md` and `docs/testing/all-laws-rag-validation.md`.
