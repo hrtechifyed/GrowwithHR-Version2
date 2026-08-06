@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
     buildAllLawsReadinessSnapshot,
     buildCandidateManifestBlueprint
-} = require("../growwithhr-rag/all-laws-onboarding.js");
+} = require("../growwithhr-rag/all-laws-onboarding.cjs");
 
 function option(name) {
     const index = process.argv.indexOf(name);
