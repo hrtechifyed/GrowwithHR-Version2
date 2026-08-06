@@ -1,27 +1,16 @@
 "use strict";
 
-/**
- * Server-side governed legal catalogue loader.
- *
- * Loads repository-declared JSON catalogues and the deterministic generated
- * all-laws governance fallback. It does not download sources, parse PDFs,
- * approve a corpus or make an applicability decision.
- */
-
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
 const DEFAULT_PROFILE_REGISTRY = require("./growwithhr-rag/data/legal-rag-profiles.v1.json");
-const {
-    FALLBACK_CATALOG_ID
-} = require("./server-all-laws-private-beta.js");
-const {
-    buildAllLawsGovernanceFallbackCatalog
-} = require("./server-all-laws-fallback-catalog.js");
+const { FALLBACK_CATALOG_ID } = require("./server-all-laws-private-beta.js");
+const { buildAllLawsGovernanceFallbackCatalog } = require("./server-all-laws-fallback-catalog.js");
+const { MATERNITY_CATALOG_ID } = require("./server-maternity-wave2-rule-catalogs.js");
+const { buildMaternityWave2RetrievalCatalog } = require("./server-maternity-wave2-retrieval-catalog.js");
 
-const CATALOG_LOADER_VERSION = "1.1.0";
-
+const CATALOG_LOADER_VERSION = "1.2.0";
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
 const array = (value) => Array.isArray(value) ? value : [];
@@ -63,43 +52,34 @@ function safePath(rootDir, repositoryPath) {
     return resolved;
 }
 
-function catalogFingerprint(raw) {
-    return crypto.createHash("sha256").update(raw).digest("hex");
-}
+const catalogFingerprint = (raw) => crypto.createHash("sha256").update(raw).digest("hex");
 
 function assertCatalogShape(catalog, descriptor) {
     const value = object(catalog);
     const catalogId = cleanText(descriptor.catalogId);
-    if (value.retrievalCatalog !== true ||
-        value.retrievalRole !== "source-retrieval-only" ||
-        value.applicabilityAuthority !== "none" ||
-        value.llmRole !== "none" ||
-        !array(value.sources).length ||
-        !array(value.chunks).length) {
-        throw new LegalRagCatalogLoaderError(
-            `Catalogue ${catalogId} does not satisfy the governed retrieval shape.`,
-            {
-                code: "legal-rag-catalog-invalid",
-                catalogId,
-                catalogPath: descriptor.catalogPath
-            }
-        );
+    if (value.retrievalCatalog !== true || value.retrievalRole !== "source-retrieval-only" ||
+        value.applicabilityAuthority !== "none" || value.llmRole !== "none" ||
+        !array(value.sources).length || !array(value.chunks).length) {
+        throw new LegalRagCatalogLoaderError(`Catalogue ${catalogId} does not satisfy the governed retrieval shape.`, {
+            code: "legal-rag-catalog-invalid",
+            catalogId,
+            catalogPath: descriptor.catalogPath
+        });
     }
     return value;
 }
 
 function activeCatalogIds(registry) {
-    return new Set(
-        array(object(registry).profiles)
-            .filter((profile) => cleanText(profile.activationStatus) === "active-private-beta")
-            .map((profile) => cleanText(profile.catalogId))
-            .filter(Boolean)
-    );
+    return new Set(array(object(registry).profiles)
+        .filter((profile) => cleanText(profile.activationStatus) === "active-private-beta")
+        .map((profile) => cleanText(profile.catalogId))
+        .filter(Boolean));
 }
 
 function generatedCatalog(catalogId) {
-    if (catalogId !== FALLBACK_CATALOG_ID) return null;
-    return buildAllLawsGovernanceFallbackCatalog();
+    if (catalogId === FALLBACK_CATALOG_ID) return buildAllLawsGovernanceFallbackCatalog();
+    if (catalogId === MATERNITY_CATALOG_ID) return buildMaternityWave2RetrievalCatalog();
+    return null;
 }
 
 function loadGovernedLegalCatalogs(options = {}) {
@@ -117,24 +97,18 @@ function loadGovernedLegalCatalogs(options = {}) {
         const descriptor = object(descriptorValue);
         const catalogId = cleanText(descriptor.catalogId);
         if (!catalogId || seen.has(catalogId)) {
-            throw new LegalRagCatalogLoaderError(
-                `Catalogue descriptor ${catalogId || "(missing)"} is missing or duplicated.`,
-                {
-                    code: "legal-rag-catalog-descriptor-invalid",
-                    catalogId
-                }
-            );
+            throw new LegalRagCatalogLoaderError(`Catalogue descriptor ${catalogId || "(missing)"} is missing or duplicated.`, {
+                code: "legal-rag-catalog-descriptor-invalid",
+                catalogId
+            });
         }
         seen.add(catalogId);
-
-        const shouldLoad = activeIds.has(catalogId) ||
-            cleanText(descriptor.runtimeStatus) === "available-private-beta";
+        const shouldLoad = activeIds.has(catalogId) || cleanText(descriptor.runtimeStatus) === "available-private-beta";
         if (!shouldLoad) continue;
 
         safePath(rootDir, descriptor.catalogPath);
-        let raw;
         let parsed = generatedCatalog(catalogId);
-
+        let raw;
         if (parsed) {
             raw = JSON.stringify(parsed);
         } else {
@@ -142,29 +116,22 @@ function loadGovernedLegalCatalogs(options = {}) {
             try {
                 raw = readFileSync(filePath, "utf8");
             } catch (error) {
-                throw new LegalRagCatalogLoaderError(
-                    `Catalogue ${catalogId} could not be read.`,
-                    {
-                        code: "legal-rag-catalog-file-unavailable",
-                        catalogId,
-                        catalogPath: descriptor.catalogPath,
-                        cause: error
-                    }
-                );
+                throw new LegalRagCatalogLoaderError(`Catalogue ${catalogId} could not be read.`, {
+                    code: "legal-rag-catalog-file-unavailable",
+                    catalogId,
+                    catalogPath: descriptor.catalogPath,
+                    cause: error
+                });
             }
-
             try {
                 parsed = JSON.parse(raw);
             } catch (error) {
-                throw new LegalRagCatalogLoaderError(
-                    `Catalogue ${catalogId} is not valid JSON.`,
-                    {
-                        code: "legal-rag-catalog-json-invalid",
-                        catalogId,
-                        catalogPath: descriptor.catalogPath,
-                        cause: error
-                    }
-                );
+                throw new LegalRagCatalogLoaderError(`Catalogue ${catalogId} is not valid JSON.`, {
+                    code: "legal-rag-catalog-json-invalid",
+                    catalogId,
+                    catalogPath: descriptor.catalogPath,
+                    cause: error
+                });
             }
         }
 
@@ -185,13 +152,10 @@ function loadGovernedLegalCatalogs(options = {}) {
 
     for (const catalogId of activeIds) {
         if (!Object.hasOwn(catalogs, catalogId)) {
-            throw new LegalRagCatalogLoaderError(
-                `Active profile catalogue ${catalogId} was not loaded.`,
-                {
-                    code: "legal-rag-active-catalog-unavailable",
-                    catalogId
-                }
-            );
+            throw new LegalRagCatalogLoaderError(`Active profile catalogue ${catalogId} was not loaded.`, {
+                code: "legal-rag-active-catalog-unavailable",
+                catalogId
+            });
         }
     }
 
@@ -208,10 +172,7 @@ function loadDefaultGovernedLegalCatalogs() {
     if (!defaultSnapshot) defaultSnapshot = loadGovernedLegalCatalogs();
     return defaultSnapshot;
 }
-
-function resetDefaultGovernedLegalCatalogsForTests() {
-    defaultSnapshot = null;
-}
+function resetDefaultGovernedLegalCatalogsForTests() { defaultSnapshot = null; }
 
 module.exports = Object.freeze({
     CATALOG_LOADER_VERSION,
