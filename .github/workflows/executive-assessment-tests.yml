@@ -149,6 +149,7 @@ jobs:
           tests/e2e/analyze-company-v3-epf-wave3a.spec.ts
           tests/e2e/analyze-company-v3-epf-wave3b.spec.ts
           tests/e2e/analyze-company-v3-epf-wave3c.spec.ts
+          tests/e2e/analyze-company-v3-esi-wave4a.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts

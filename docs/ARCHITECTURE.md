@@ -31,14 +31,15 @@ The default approved cross-origin client is `https://hrtechifyed.github.io`. Add
 
 `/analyze-company-v3.html` is no-index and disabled from public routing by default. M1-M5 modules consume protected assessment answers through compatibility adapters and produce isolated traceability, Compliance Story and workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route mounts six legal-review surfaces:
+The v3 route mounts seven legal-review surfaces:
 
 - the existing POSH Internal Committee threshold explanation, which reads the three required facts from the protected assessment record;
 - the POSH Wave 1 control-review panel, which collects six feature-specific fact sets in memory;
 - the Maternity Benefit Wave 2 panel, which exposes ten controlled organisation, category, band and status reviews in memory;
 - the EPF Wave 3A panel, which exposes five operational reviews using organisation-level statuses, counts and evidence references;
 - the EPF Wave 3B panel, which exposes five wage-ceiling, rate-source, EPS and EDLI verification or routing reviews using controlled statuses, bands and evidence references;
-- the EPF Wave 3C panel, which exposes exemption-governance and international-worker or SSA control reviews using organisation-level statuses and evidence references.
+- the EPF Wave 3C panel, which exposes exemption-governance and international-worker or SSA control reviews using organisation-level statuses and evidence references;
+- the ESI Wave 4A panel, which exposes five establishment, employee-insurance, contractor, payment and accident-reporting control reviews using organisation-level statuses, a declared route and evidence references.
 
 All panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
@@ -72,28 +73,25 @@ The deterministic decision owns applicability, control-review or entitlement-rou
 
 ## Runtime coverage
 
-The Wave 3C stacked private-beta registry exposes 57 active profiles:
+The Wave 4A stacked private-beta registry exposes 57 active profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
 - five EPF Wave 3A operational profiles use feature-specific deterministic rules and a governed Social Security Code, EPF Scheme, commencement and corrigendum catalogue;
 - five EPF, EPS and EDLI Wave 3B profiles use feature-specific deterministic verification or routing rules and a governed seven-source catalogue;
 - two EPF Wave 3C profiles use deterministic exemption-governance and international-worker or SSA control-review rules and an eight-source governed catalogue;
-- 28 profiles use conservative governance-readiness retrieval until their law-specific source packs, facts, rules and approvals are complete.
+- five ESI Wave 4A profiles use deterministic employer-control rules and a six-source governed catalogue;
+- 23 profiles use conservative governance-readiness retrieval until their law-specific source packs, facts, rules and approvals are complete.
 
-Wave 3C covers EPF exemption governance and source controls, and international-worker and Social Security Agreement controls. It accepts organisation-level route, source, trust, inspection, workforce, certificate-control, expiry-monitoring and escalation statuses plus evidence references.
+Wave 4A covers ESI establishment source and registration controls, employee-insurance process controls, contractor and principal-employer controls, monthly payment and return-process controls, and accident-register and reporting controls. It accepts controlled organisation-level statuses, one declared coverage route and evidence references.
 
-The Wave 1, Wave 2 and Wave 3A–3C catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`. Wave 3C does not determine an establishment exemption, interpret an exemption order, infer a person's country or nationality, validate a certificate of coverage, determine international-worker or excluded-employee status, or decide individual EPF or EPS membership.
+The Wave 1, Wave 2 and Wave 3A–4A catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`. Wave 4A does not decide ESI applicability, area or benefit commencement, special hazardous or plantation routes, a current wage ceiling, an applicable contribution rate, individual insured-person status, contribution amounts, accident causation, benefit entitlement, medical administration, exemption or enforcement outcomes.
 
 ## Source-governance boundary
 
-Wave 3C preserves source roles explicitly:
+Wave 4A uses the Code on Social Security, the Social Security (Central) Rules, commencement notification and corrigendum as controlled current central sources. The consolidated 1950 Central Rules are retained only as historical or transition context. The consolidated 1950 General Regulations are retained only as saved-law candidates for registration, payment, return and accident-process context.
 
-- the Code, EPF Scheme, commencement notification and corrigendum remain controlled statutory or regulatory sources;
-- EPFO exemption manuals, SOPs and international-worker FAQs are registered as `regulator-guidance`;
-- the EPFO operating SSA register is registered as an `official-portal` used to route reviewers to country-specific instruments.
-
-Guidance and portal records cannot establish exemption applicability, certificate validity or individual membership. Establishment-specific exemption orders, country agreements and administrative arrangements require qualified review outside the product.
+The catalogue does not represent the 1950 instruments as automatically operative prospective authority. Area notifications, hazardous-route notifications, the current wage-ceiling source, current portal specifications, due dates, forms, State medical administration and saved-law treatment require qualified review.
 
 ## Privacy boundaries
 
@@ -107,6 +105,8 @@ EPF Wave 3B adapters add controlled wage-band and declared-rate-branch values bu
 
 EPF Wave 3C adapters exclude names, UANs, passports, nationality documents, wage amounts, payroll rows, contribution histories, exemption-order bodies, certificate bodies, trust member or investment records, claims, family details and evidence bodies. No country or person-level classification is accepted.
 
+ESI Wave 4A adapters exclude names, contact details, Aadhaar, insurance numbers, employee wages, payroll rows, contribution histories, challans, returns, medical or family details, accident narratives, injury and witness records, claims, investigation files and evidence bodies. No individual insurance, entitlement, causation or contribution calculation is accepted.
+
 ## Operational endpoints
 
 ```text
@@ -115,6 +115,6 @@ GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
 
-`server-entry.js` uses the Wave 3C router overlay, which preserves Waves 1–3B while activating the two specialist-control profiles and reporting the 29/28 runtime mix.
+`server-entry.js` uses the Wave 4A router overlay, which preserves Waves 1–3C while activating five ESI employer-control profiles and reporting the 34/23 runtime mix.
 
 See `docs/architecture/compliance-engine-differentiation.md`, `docs/architecture/all-laws-runnable-private-beta-rag.md` and `docs/testing/all-laws-rag-validation.md`.

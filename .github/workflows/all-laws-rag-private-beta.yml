@@ -9,22 +9,27 @@ on:
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
       - "growwithhr-rag/data/epf-wave3b-source-chunks.v1.json"
       - "growwithhr-rag/data/epf-wave3c-source-chunks.v1.json"
+      - "growwithhr-rag/data/esi-wave4a-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
       - "server-epf-wave3c-*.js"
+      - "server-esi-wave4a-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
       - "server-legal-explanation-router-wave3c.js"
+      - "server-legal-explanation-router-wave4a.js"
       - "server-legal-rag-catalogs.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
       - "js/assessment-v3/epf-wave3c-*.js"
+      - "js/assessment-v3/esi-wave4a-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
       - "tests/epf-wave3c-*.mjs"
+      - "tests/esi-wave4a-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -64,6 +69,9 @@ jobs:
 
       - name: Validate EPF Wave 3C overlay
         run: node tests/epf-wave3c-private-beta-checks.mjs
+
+      - name: Validate ESI Wave 4A overlay
+        run: node tests/esi-wave4a-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
