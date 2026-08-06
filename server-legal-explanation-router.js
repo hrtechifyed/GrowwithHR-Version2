@@ -21,6 +21,9 @@ const {
     createRunnableAllLawsFeatureSpecifications
 } = require("./server-all-laws-rule-catalogs.js");
 const {
+    normalizePoshNoticeBody
+} = require("./server-posh-wave1-normalizer-overrides.js");
+const {
     loadGovernedLegalCatalogs
 } = require("./server-legal-rag-catalogs.js");
 const {
@@ -125,13 +128,20 @@ function profileMap(registry) {
 }
 
 function defaultFeatureSpecifications() {
+    const specifications = createRunnableAllLawsFeatureSpecifications();
+    const noticeFeatureId = "feature.legal.posh.notice-display-review";
+    const noticeSpecification = object(specifications[noticeFeatureId]);
     return Object.freeze({
         [POSH_FEATURE_ID]: Object.freeze({
             featureId: POSH_FEATURE_ID,
             normalizeBody: normalizePoshBody,
             privateBetaMode: "statutory-catalogue"
         }),
-        ...createRunnableAllLawsFeatureSpecifications()
+        ...specifications,
+        [noticeFeatureId]: Object.freeze({
+            ...noticeSpecification,
+            normalizeBody: normalizePoshNoticeBody
+        })
     });
 }
 
