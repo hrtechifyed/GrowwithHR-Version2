@@ -12,23 +12,24 @@ node tests/epf-wave3a-private-beta-checks.mjs
 node tests/epf-wave3b-private-beta-checks.mjs
 node tests/epf-wave3c-private-beta-checks.mjs
 node tests/esi-wave4a-private-beta-checks.mjs
+node tests/esi-wave4b-private-beta-checks.mjs
 ```
 
-The maintained baseline command validates Wave 1 and Wave 2. The Wave 3A–3C and Wave 4A overlay commands validate the complete stacked 57-profile registry.
+The maintained baseline command validates Wave 1 and Wave 2. The Wave 3A–3C and Wave 4A–4B overlay commands validate the complete stacked 57-profile registry.
 
-## Required Wave 4A pass indicators
+## Required Wave 4B pass indicators
 
 ```json
 {
   "valid": true,
   "profileCount": 57,
-  "substantiveProfiles": 34,
-  "substantiveEsiWave4aProfiles": 5,
-  "wave4aScenarios": 15,
-  "governanceFallbackProfiles": 23,
-  "activeCatalogs": 7,
-  "esiWave4aSources": 6,
-  "esiWave4aChunks": 11
+  "substantiveProfiles": 39,
+  "substantiveEsiWave4bProfiles": 5,
+  "wave4bScenarios": 15,
+  "governanceFallbackProfiles": 18,
+  "activeCatalogs": 8,
+  "esiWave4bSources": 7,
+  "esiWave4bChunks": 11
 }
 ```
 
@@ -48,36 +49,42 @@ The maintained overlay tests evaluate the EPF, EPS and EDLI operational, source-
 
 ## ESI Wave 4A checks
 
-The Wave 4A overlay evaluates complete, reported-gap and missing-information scenarios for:
+The Wave 4A overlay evaluates complete, reported-gap and missing-information scenarios for establishment source and registration controls, employee-insurance process controls, contractor and principal-employer controls, monthly payment and return-process controls, and accident-register and reporting controls.
 
-- ESI establishment source and registration controls;
-- ESI employee-insurance process controls;
-- ESI contractor and principal-employer controls;
-- ESI monthly payment and return-process controls;
-- ESI accident-register and reporting controls.
+## ESI Wave 4B checks
 
-For every Wave 4A scenario the suite proves that:
+The Wave 4B overlay evaluates complete, reported-gap and missing-information scenarios for:
 
-- only declared organisation-level statuses, one declared route and evidence references are mapped;
+- continuing and voluntary coverage routing;
+- area and benefit-commencement source review;
+- Chapter IV wage-ceiling source review;
+- contribution-period ceiling-continuation routing;
+- contribution-rate source verification.
+
+For every Wave 4B scenario the suite proves that:
+
+- only declared organisation-level source, routing and escalation statuses plus evidence references are mapped;
 - the deterministic decision exists before retrieval;
-- complete and reported-gap scenarios remain `specialist-review` because applicability, saved-law treatment, operational source sufficiency and evidence quality are not certified;
+- complete and reported-gap scenarios remain `specialist-review` because coverage, territorial applicability, source sufficiency, transition treatment and evidence quality are not certified;
 - absent required facts produce `more-information-needed`;
 - retrieval reports `usedForDecision: false` and `applicabilityAuthority: none`;
 - retrieved chunks stay inside the deterministic reason-code and Source Register allow-list;
 - explanations preserve status, reason code and decision fingerprint;
-- no rule decides ESI applicability, selects a wage ceiling or contribution rate, calculates amounts, determines individual insurance or benefit entitlement, or finds accident causation.
+- no rule supplies a missing notification, selects a wage ceiling or rate, calculates an amount, determines individual continuation or decides ESI applicability.
 
-The Wave 4A browser payload check proves that names, contact details, Aadhaar, insurance numbers, employee wage amounts, payroll rows, contribution histories, challans, returns, medical or family details, accident narratives, injury records, claims and evidence bodies are excluded. Evidence arrays are reduced to controlled references. The Chromium test verifies five selectable reviews, no automatic request, allow-listed submission, rendered citations and zero browser-storage writes.
+The Wave 4B browser payload check proves that names, contact details, Aadhaar, insurance numbers, addresses, employee wages, wage-ceiling amounts, rate percentages, payroll rows, contribution histories, challans, returns, medical, accident, claim and evidence bodies are excluded. Evidence arrays are reduced to controlled references. The Chromium test verifies five selectable reviews, no automatic request, allow-listed submission, rendered citations and zero browser-storage writes.
 
 ## Source-governance checks
 
-The Wave 4A catalogue uses the Code, Social Security (Central) Rules, commencement notification and corrigendum as controlled current central sources. The consolidated 1950 Central Rules are represented as historical or transition context only. The consolidated 1950 General Regulations are represented as saved-law candidates only.
+The Wave 4B catalogue uses the Code, Social Security (Central) Rules, commencement notification, corrigendum and S.O. 2351(E) as controlled current central sources. S.O. 2351(E) is represented only as a continuation source that depends on a separately notified Chapter IV wage ceiling; it is not represented as supplying the ceiling.
 
-The test prevents those legacy instruments from being represented as automatic prospective authority. Area commencement, hazardous routes, current wage ceiling, current portal procedures, forms, due dates, State medical administration and saved-law treatment remain explicit specialist-review dependencies.
+The consolidated 1950 Central Rules are historical or transition context only. The consolidated 1950 General Regulations are saved-law candidates only. The test prevents those legacy instruments from being represented as automatic prospective authority.
+
+The exact Chapter IV wage-ceiling notification, complete State, Union Territory, area and establishment notification set, contribution-period saved-law treatment, rate exceptions and effective-date treatment remain explicit specialist-review dependencies.
 
 ## Runtime status check
 
-After starting the Wave 4A server entrypoint, inspect:
+After starting the Wave 4B server entrypoint, inspect:
 
 ```text
 GET /api/legal-rag/status
@@ -88,12 +95,12 @@ The response should report:
 - `platformStatus: all-laws-runnable-private-beta`;
 - 57 active profiles;
 - zero blocked runtime profiles;
-- `substantiveProfileCount: 34`;
-- `governanceFallbackProfileCount: 23`;
-- six substantive catalogues and one governance-fallback catalogue.
+- `substantiveProfileCount: 39`;
+- `governanceFallbackProfileCount: 18`;
+- seven substantive catalogues and one governance-fallback catalogue.
 
 ## Runtime versus legal approval
 
-A green runtime test proves that Waves 1, 2, 3A–3C and 4A have feature-specific deterministic rules, source-scoped governed retrieval, strict request adapters and contract-valid explanations. It does not record qualified legal approval, verify customer evidence, decide ESI applicability, calculate payroll or contributions, determine individual insurance or benefits, decide accident causation, decide claims or certify compliance.
+A green runtime test proves that Waves 1, 2, 3A–3C and 4A–4B have feature-specific deterministic rules, source-scoped governed retrieval, strict request adapters and contract-valid explanations. It does not record qualified legal approval, verify customer evidence, decide ESI coverage or territorial applicability, select thresholds or rates, calculate payroll or contributions, determine individual insurance or continuation, decide benefits or certify compliance.
 
 The onboarding-readiness snapshot remains separate. It may continue to report pending legal, privacy, source-file, mapping, RAG or release decisions until those controlled approvals are explicitly recorded. Passing software tests is not approval.
