@@ -14,6 +14,7 @@
 import "./operational-explanation-panel.js";
 import "./legal-explanation-panel.js";
 import "./posh-wave1-explanation-panel.js";
+import "./maternity-wave2-explanation-panel.js";
 import createStoryEngine from "./story-engine.js";
 
 const STABLE_ASSESSMENT_ROUTE =

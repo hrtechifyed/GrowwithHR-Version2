@@ -145,6 +145,7 @@ jobs:
           tests/e2e/analyze-company-v3-compliance-story.spec.ts
           tests/e2e/analyze-company-v3-legal-explanation.spec.ts
           tests/e2e/analyze-company-v3-posh-wave1.spec.ts
+          tests/e2e/analyze-company-v3-maternity-wave2.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts

@@ -33,7 +33,7 @@ const {
 const DEFAULT_PROFILE_REGISTRY = buildAllLawsPrivateBetaRegistry();
 const SHARED_ROUTE_PREFIX = "/api/legal-explanation/feature/";
 const STATUS_ROUTE = "/api/legal-rag/status";
-const SHARED_ROUTER_VERSION = "1.2.0";
+const SHARED_ROUTER_VERSION = "1.3.0";
 
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -197,8 +197,8 @@ function statusPayload(registry, catalogSnapshot, retrievalMode) {
             fileSha256: cleanText(item.fileSha256)
         })),
         limitations: [
-            "Seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue.",
-            "The six Wave 1 control reviews remain needs-legal-review and therefore emit specialist-review or more-information-needed, not legal certification.",
+            "Seven POSH and ten Maternity Benefit profiles use feature-specific deterministic rules and governed statutory catalogues.",
+            "Wave 1 and Wave 2 reviews remain needs-legal-review and therefore emit specialist-review or more-information-needed, not legal certification or entitlement decisions.",
             "The remaining profiles are runnable through conservative governance-fallback catalogues.",
             "Retrieval and provider output cannot create facts or alter deterministic outcomes."
         ]
