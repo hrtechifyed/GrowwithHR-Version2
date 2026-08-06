@@ -180,7 +180,13 @@ function uniqueTexts(values) {
 }
 
 function usesControlReviewOutcomeModel(catalog) {
-    return text(object(catalog).outcomeModel) === "control-review";
+    const source = object(catalog);
+    return text(source.outcomeModel) === "control-review" || (
+        text(source.factMappingMode) === "catalog-defined" &&
+        array(source.rules).some((rule) =>
+            text(object(object(rule).outcomes).notMatched?.status) === "specialist-review"
+        )
+    );
 }
 
 function createEvaluatorCompatibleCatalog(catalogValue) {
