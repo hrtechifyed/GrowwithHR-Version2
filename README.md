@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 4A stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 4B stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
@@ -36,7 +36,8 @@ The Wave 4A stacked private-beta registry contains 57 runnable feature profiles:
 - five EPF, EPS and EDLI Wave 3B profiles use feature-specific deterministic verification or routing rules and a governed seven-source catalogue;
 - two EPF Wave 3C profiles use feature-specific deterministic specialist-control rules and a governed exemption and international-worker source catalogue;
 - five ESI Wave 4A profiles use feature-specific deterministic employer-control rules and a governed six-source catalogue;
-- 23 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- five ESI Wave 4B profiles use deterministic coverage and source-routing rules and a governed seven-source catalogue;
+- 18 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
 ### Wave 1 — POSH
 
@@ -68,9 +69,15 @@ The five substantive Wave 4A profiles cover establishment source and registratio
 
 Wave 4A accepts only controlled organisation statuses, a declared coverage route and evidence references. It does not decide ESI applicability, area or benefit commencement, hazardous or plantation routes, a current wage ceiling, an applicable contribution rate, individual insured-person status, contribution amounts, accident causation, benefit entitlement, medical administration, exemption or enforcement outcomes. The 1950 Central Rules are retained only as historical or transition context, and the 1950 General Regulations are retained only as saved-law candidates pending qualified legal review.
 
-The Wave 1, Wave 2 and Wave 3A–4A profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll or contributions, decide individual insurance or entitlement, or represent qualified legal approval.
+### Wave 4B — ESI coverage and source routing
 
-The private-beta v3 page includes explicit in-memory review panels for all six waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. Wave 4A excludes names, contact details, Aadhaar, insurance numbers, employee wages, payroll rows, contribution histories, challans, returns, medical or family details, accident narratives, injury records, claims and evidence bodies.
+The five substantive Wave 4B profiles cover continuing and voluntary coverage routing, area and benefit-commencement source review, Chapter IV wage-ceiling source review, contribution-period ceiling continuation and contribution-rate source verification.
+
+Wave 4B accepts only organisation-level source, routing and escalation statuses plus evidence references. It does not decide continuing or voluntary coverage, territorial applicability, benefit availability, contribution commencement, a Chapter IV wage-ceiling amount, individual continuation, an applicable rate or any contribution amount. S.O. 2351(E) is used only as a controlled continuation source that depends on a separately notified Chapter IV ceiling; it is not represented as supplying that ceiling. The exact Chapter IV ceiling notification and complete area-notification set remain controlled gaps.
+
+The Wave 1, Wave 2 and Wave 3A–4B profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll or contributions, decide individual insurance or entitlement, or represent qualified legal approval.
+
+The private-beta v3 page includes explicit in-memory review panels for all seven waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. Wave 4B excludes names, contact details, Aadhaar, insurance numbers, addresses, employee wages, wage ceilings, rate percentages, payroll rows, contribution histories, challans, returns, medical, accident, claim and evidence bodies.
 
 ## What makes GrowWithHR different
 
@@ -88,7 +95,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2 and Wave 3A–4A review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2 and Wave 3A–4B review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -99,6 +106,7 @@ node tests/epf-wave3a-private-beta-checks.mjs
 node tests/epf-wave3b-private-beta-checks.mjs
 node tests/epf-wave3c-private-beta-checks.mjs
 node tests/esi-wave4a-private-beta-checks.mjs
+node tests/esi-wave4b-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
