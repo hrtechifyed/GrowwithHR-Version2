@@ -6,10 +6,15 @@ on:
       - "data/legal-source-governance/all-laws-rag-onboarding.v1.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
+      - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
       - "server-all-laws-*.js"
+      - "server-epf-wave3a-*.js"
       - "server-legal-explanation-router.js"
+      - "server-legal-explanation-router-wave3a.js"
       - "server-legal-rag-catalogs.js"
+      - "js/assessment-v3/epf-wave3a-*.js"
       - "tests/all-laws-*.mjs"
+      - "tests/epf-wave3a-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -38,8 +43,11 @@ jobs:
       - name: Validate all-laws onboarding registry
         run: npm run test:all-laws-rag-onboarding
 
-      - name: Validate all 57 runnable profiles
+      - name: Validate Wave 1 and Wave 2 baseline profiles
         run: npm run test:all-laws-runnable-private-beta
+
+      - name: Validate EPF Wave 3A overlay
+        run: node tests/epf-wave3a-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
