@@ -3,9 +3,9 @@
 /**
  * Server-side governed legal catalogue loader.
  *
- * Loads only repository-declared JSON catalogues through safe relative paths.
- * It does not download sources, parse PDFs, approve a corpus or activate a
- * blocked profile.
+ * Loads repository-declared JSON catalogues and the deterministic generated
+ * all-laws governance fallback. It does not download sources, parse PDFs,
+ * approve a corpus or make an applicability decision.
  */
 
 const crypto = require("crypto");
@@ -13,7 +13,14 @@ const fs = require("fs");
 const path = require("path");
 
 const DEFAULT_PROFILE_REGISTRY = require("./growwithhr-rag/data/legal-rag-profiles.v1.json");
-const CATALOG_LOADER_VERSION = "1.0.0";
+const {
+    FALLBACK_CATALOG_ID
+} = require("./server-all-laws-private-beta.js");
+const {
+    buildAllLawsGovernanceFallbackCatalog
+} = require("./server-all-laws-fallback-catalog.js");
+
+const CATALOG_LOADER_VERSION = "1.1.0";
 
 const cleanText = (value) => String(value ?? "").trim();
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -90,6 +97,11 @@ function activeCatalogIds(registry) {
     );
 }
 
+function generatedCatalog(catalogId) {
+    if (catalogId !== FALLBACK_CATALOG_ID) return null;
+    return buildAllLawsGovernanceFallbackCatalog();
+}
+
 function loadGovernedLegalCatalogs(options = {}) {
     const source = object(options);
     const registry = source.profileRegistry || DEFAULT_PROFILE_REGISTRY;
@@ -119,35 +131,41 @@ function loadGovernedLegalCatalogs(options = {}) {
             cleanText(descriptor.runtimeStatus) === "available-private-beta";
         if (!shouldLoad) continue;
 
-        const filePath = safePath(rootDir, descriptor.catalogPath);
+        safePath(rootDir, descriptor.catalogPath);
         let raw;
-        try {
-            raw = readFileSync(filePath, "utf8");
-        } catch (error) {
-            throw new LegalRagCatalogLoaderError(
-                `Catalogue ${catalogId} could not be read.`,
-                {
-                    code: "legal-rag-catalog-file-unavailable",
-                    catalogId,
-                    catalogPath: descriptor.catalogPath,
-                    cause: error
-                }
-            );
-        }
+        let parsed = generatedCatalog(catalogId);
 
-        let parsed;
-        try {
-            parsed = JSON.parse(raw);
-        } catch (error) {
-            throw new LegalRagCatalogLoaderError(
-                `Catalogue ${catalogId} is not valid JSON.`,
-                {
-                    code: "legal-rag-catalog-json-invalid",
-                    catalogId,
-                    catalogPath: descriptor.catalogPath,
-                    cause: error
-                }
-            );
+        if (parsed) {
+            raw = JSON.stringify(parsed);
+        } else {
+            const filePath = safePath(rootDir, descriptor.catalogPath);
+            try {
+                raw = readFileSync(filePath, "utf8");
+            } catch (error) {
+                throw new LegalRagCatalogLoaderError(
+                    `Catalogue ${catalogId} could not be read.`,
+                    {
+                        code: "legal-rag-catalog-file-unavailable",
+                        catalogId,
+                        catalogPath: descriptor.catalogPath,
+                        cause: error
+                    }
+                );
+            }
+
+            try {
+                parsed = JSON.parse(raw);
+            } catch (error) {
+                throw new LegalRagCatalogLoaderError(
+                    `Catalogue ${catalogId} is not valid JSON.`,
+                    {
+                        code: "legal-rag-catalog-json-invalid",
+                        catalogId,
+                        catalogPath: descriptor.catalogPath,
+                        cause: error
+                    }
+                );
+            }
         }
 
         const catalog = assertCatalogShape(parsed, descriptor);
@@ -157,6 +175,7 @@ function loadGovernedLegalCatalogs(options = {}) {
             lawFamilyId: cleanText(descriptor.lawFamilyId),
             catalogPath: cleanText(descriptor.catalogPath),
             runtimeStatus: cleanText(descriptor.runtimeStatus),
+            catalogMode: cleanText(descriptor.catalogMode || catalog.catalogMode || "statutory"),
             allowedFeatureIds: array(descriptor.allowedFeatureIds).map(cleanText).filter(Boolean),
             fileSha256: catalogFingerprint(raw),
             sourceCount: array(catalog.sources).length,
