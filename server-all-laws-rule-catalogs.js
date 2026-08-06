@@ -74,6 +74,7 @@ function buildConservativeRuleCatalog(entry) {
     const registrySourceId = familySourceId(familyId);
     const matchedReasonCode = familyReasonCode(familyId, false);
     const missingReasonCode = familyReasonCode(familyId, true);
+    const structuralNotMatchedReasonCode = `${familySlug.toUpperCase().replace(/-/g, "_")}_STRUCTURAL_NOT_MATCHED`;
     const governedSourceId = sourceId(familyId);
     const ruleId = privateBetaRuleId(featureId);
 
@@ -111,7 +112,7 @@ function buildConservativeRuleCatalog(entry) {
             },
             limitations: [
                 "This catalog is conservative private-beta product logic and is not legal approval.",
-                "It may emit only specialist-review or more-information-needed.",
+                "Valid requests emit only specialist-review or more-information-needed.",
                 "Retrieval and language-model output cannot create facts or change the result."
             ]
         },
@@ -170,8 +171,7 @@ function buildConservativeRuleCatalog(entry) {
                     conditions: [
                         {
                             factId: "fact.workforce.employee-count",
-                            operator: "greater-than-or-equal",
-                            value: 0
+                            operator: "exists"
                         }
                     ]
                 },
@@ -187,14 +187,10 @@ function buildConservativeRuleCatalog(entry) {
                         )
                     },
                     notMatched: {
-                        status: "specialist-review",
-                        reasonCode: matchedReasonCode,
-                        reason: `${entry.title} remains a specialist-review path because the private-beta fallback cannot issue a negative applicability conclusion.`,
-                        recommendation: recommendation(
-                            `${featureSlug}.specialist-review`,
-                            `Complete the ${entry.title} specialist review`,
-                            entry.nextControlledAction
-                        )
+                        status: "not-currently-applicable",
+                        reasonCode: structuralNotMatchedReasonCode,
+                        reason: "This structural contract branch is unreachable for a valid request because the required fact is tested only for existence. It must not be presented as a substantive legal conclusion.",
+                        recommendation: null
                     },
                     missing: {
                         status: "more-information-needed",
@@ -207,7 +203,11 @@ function buildConservativeRuleCatalog(entry) {
                         )
                     }
                 },
-                permittedResultStatuses: ["specialist-review", "more-information-needed"],
+                permittedResultStatuses: [
+                    "specialist-review",
+                    "more-information-needed",
+                    "not-currently-applicable"
+                ],
                 sourceIds: [governedSourceId],
                 officialSourceIds: [registrySourceId],
                 sourceSections: [
@@ -224,7 +224,7 @@ function buildConservativeRuleCatalog(entry) {
                 },
                 limitations: [
                     "legalReviewStatus remains needs-legal-review.",
-                    "The fallback cannot emit applicable, likely-applicable or not-currently-applicable.",
+                    "Valid fallback requests cannot reach the structural not-currently-applicable branch.",
                     "The retrieved readiness record is not a substitute for statutory legal text.",
                     "Retrieval and language models cannot create facts or change the deterministic result."
                 ],
