@@ -28,13 +28,14 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 3B stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 3C stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
 - five EPF Wave 3A operational profiles use feature-specific deterministic rules and a governed Social Security Code, EPF Scheme, commencement and corrigendum catalogue;
 - five EPF, EPS and EDLI Wave 3B profiles use feature-specific deterministic verification or routing rules and a governed seven-source catalogue;
-- 30 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- two EPF Wave 3C profiles use feature-specific deterministic specialist-control rules and a governed exemption and international-worker source catalogue;
+- 28 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
 ### Wave 1 — POSH
 
@@ -52,11 +53,17 @@ The five substantive EPF profiles cover establishment coverage, member-inclusion
 
 The five substantive Wave 3B profiles cover EPF wage-ceiling source review, EPF contribution-rate source verification, EPS membership routing, EPS pension-process controls, and EDLI coverage and process controls.
 
-Wave 3B accepts only controlled wage bands, declared rate branches, routing statuses, process-control statuses and evidence references. It does not select the legally applicable 10% or 12% contribution branch, calculate contributions, determine individual EPF or EPS membership, calculate a pension or insurance benefit, or decide a claim. The exact official S.O. 320(E) rate source, current EDLI rate authority and transition or savings treatment remain subject to qualified legal review. EPF exemption and international-worker profiles remain on governance fallback.
+Wave 3B accepts only controlled wage bands, declared rate branches, routing statuses, process-control statuses and evidence references. It does not select the legally applicable 10% or 12% contribution branch, calculate contributions, determine individual EPF or EPS membership, calculate a pension or insurance benefit, or decide a claim. The exact official S.O. 320(E) rate source, current EDLI rate authority and transition or savings treatment remain subject to qualified legal review.
 
-The Wave 1, Wave 2, Wave 3A and Wave 3B profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll, decide an individual entitlement or membership, or represent qualified legal approval.
+### Wave 3C — EPF specialist controls
 
-The private-beta v3 page includes explicit in-memory review panels for all four waves. They send only strict allow-listed organisational facts, categories, bands, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. EPF, EPS and EDLI adapters exclude names, UANs, employee-level wage amounts, payroll rows, contribution histories, ECR bodies, bank details, claims, nominee or family details, completed forms and evidence bodies.
+The two substantive Wave 3C profiles cover EPF exemption governance and source controls, and international-worker and Social Security Agreement controls.
+
+Wave 3C records whether an organisation has controlled exemption, trust, returns, inspection, international-worker population, SSA routing, certificate-of-coverage, expiry-monitoring and specialist-escalation controls. It does not determine that an establishment is exempt, interpret an establishment-specific exemption order, infer a person's country or nationality, validate a certificate, determine international-worker or excluded-employee status, or decide individual EPF or EPS membership. Establishment-specific orders, country-specific agreements and administrative arrangements remain subject to qualified legal review.
+
+The Wave 1, Wave 2 and Wave 3A–3C profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll, decide an individual entitlement or membership, or represent qualified legal approval.
+
+The private-beta v3 page includes explicit in-memory review panels for all five waves. They send only strict allow-listed organisational facts, categories, bands, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. Wave 3C additionally excludes names, UANs, passports, nationality documents, wage amounts, payroll rows, contribution histories, exemption-order bodies, certificate bodies, trust member or investment records, claims, family details and evidence bodies.
 
 ## What makes GrowWithHR different
 
@@ -74,7 +81,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2, Wave 3A and Wave 3B review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2 and Wave 3A–3C review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -83,6 +90,7 @@ npm install
 npm run verify:all-laws-rag
 node tests/epf-wave3a-private-beta-checks.mjs
 node tests/epf-wave3b-private-beta-checks.mjs
+node tests/epf-wave3c-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
