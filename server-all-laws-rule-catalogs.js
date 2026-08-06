@@ -3,9 +3,9 @@
 /**
  * Deterministic rule catalogs for the shared legal explanation route.
  *
- * POSH Wave 1 profiles use feature-specific statutory catalogs. Remaining
- * profiles retain conservative escalation-only catalogs until their controlled
- * law-specific onboarding is complete.
+ * POSH Wave 1 and Maternity Benefit Wave 2 profiles use feature-specific
+ * statutory catalogs. Remaining profiles retain conservative escalation-only
+ * catalogs until controlled law-specific onboarding is complete.
  */
 
 const ONBOARDING_REGISTRY = require("./data/legal-source-governance/all-laws-rag-onboarding.v1.json");
@@ -20,8 +20,12 @@ const {
     POSH_WAVE1_FEATURE_IDS,
     createPoshWave1FeatureSpecifications
 } = require("./server-posh-wave1-rule-catalogs.js");
+const {
+    MATERNITY_WAVE2_FEATURE_IDS,
+    createMaternityWave2FeatureSpecifications
+} = require("./server-maternity-wave2-rule-catalogs.js");
 
-const MODULE_VERSION = "1.1.0";
+const MODULE_VERSION = "1.2.0";
 const GOVERNANCE_URL = "https://github.com/hrtechifyed/GrowwithHR-Version2/blob/main/data/legal-source-governance/all-laws-rag-onboarding.v1.json";
 
 const object = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -238,11 +242,15 @@ function buildConservativeRuleCatalog(entryValue) {
 
 function createRunnableAllLawsFeatureSpecifications() {
     const specifications = {
-        ...createPoshWave1FeatureSpecifications()
+        ...createPoshWave1FeatureSpecifications(),
+        ...createMaternityWave2FeatureSpecifications()
     };
-    const wave1Ids = new Set(POSH_WAVE1_FEATURE_IDS);
+    const substantiveIds = new Set([
+        ...POSH_WAVE1_FEATURE_IDS,
+        ...MATERNITY_WAVE2_FEATURE_IDS
+    ]);
     featureEntries().forEach((entry) => {
-        if (entry.featureId === POSH_THRESHOLD_FEATURE_ID || wave1Ids.has(entry.featureId)) return;
+        if (entry.featureId === POSH_THRESHOLD_FEATURE_ID || substantiveIds.has(entry.featureId)) return;
         specifications[entry.featureId] = deepFreeze({
             featureId: entry.featureId,
             lawFamilyId: entry.lawFamilyId,
