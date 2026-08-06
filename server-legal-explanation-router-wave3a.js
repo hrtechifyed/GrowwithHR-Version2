@@ -13,7 +13,10 @@ const {
 
 const SHARED_ROUTER_VERSION = "1.4.0";
 const DEFAULT_PROFILE_REGISTRY = buildAllLawsPrivateBetaRegistry();
-const DEFAULT_FEATURE_SPECIFICATIONS = createRunnableAllLawsFeatureSpecifications();
+const DEFAULT_FEATURE_SPECIFICATIONS = Object.freeze({
+    ...base.defaultFeatureSpecifications(),
+    ...createRunnableAllLawsFeatureSpecifications()
+});
 
 const text = (value) => String(value ?? "").trim();
 
