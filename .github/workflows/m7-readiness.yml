@@ -1,0 +1,51 @@
+name: M7 RAG-Ready Hardening
+
+on:
+  pull_request:
+    paths:
+      - "data/architecture/m7-rag-ready-hardening.v1.json"
+      - "data/releases/m7-reliability-evidence.v1.json"
+      - "schemas/m7-rag-ready-hardening.schema.v1.json"
+      - "growwithhr-rag/**"
+      - "server-m7-operational-readiness.js"
+      - "server-entry.js"
+      - "scripts/run-m7-dr-drill.mjs"
+      - "tests/m7-*.mjs"
+      - "package.json"
+      - ".github/workflows/m7-readiness.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hardening:
+    name: Contract, operations and DR checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run M7 hardening checks
+        run: npm run test:m7
+
+      - name: Run repository DR simulation
+        run: npm run drill:m7 -- --output m7-dr-drill.json
+
+      - name: Upload DR evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m7-dr-drill-${{ github.run_id }}
+          path: m7-dr-drill.json
+          if-no-files-found: error
+          retention-days: 30
