@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - data/releases/v0.20.2-live-smoke.json
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: live-release-smoke
@@ -18,6 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
       - name: Wait for GitHub Pages release
         shell: bash
         run: |
@@ -70,3 +77,41 @@ jobs:
           done
           echo "Live legal RAG status did not meet the v0.20.2 contract." >&2
           exit 1
+
+      - name: Archive successful smoke evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data/releases
+          checked_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          cat > data/releases/v0.20.2-live-smoke.json <<EOF
+          {
+            "releaseVersion": "0.20.2",
+            "checkedAt": "$checked_at",
+            "sourceCommitSha": "${GITHUB_SHA}",
+            "status": "passed",
+            "checks": {
+              "githubPagesHomepage": {
+                "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/index.html",
+                "versionVisible": true,
+                "complianceEngineSectionVisible": true
+              },
+              "renderHomepage": {
+                "url": "https://growwithhr.onrender.com/index.html",
+                "versionVisible": true,
+                "complianceEngineSectionVisible": true
+              },
+              "legalRagStatus": {
+                "url": "https://growwithhr.onrender.com/api/legal-rag/status",
+                "platformStatus": "all-laws-runnable-private-beta",
+                "activeProfileCount": 57,
+                "blockedProfileCount": 0
+              }
+            }
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/releases/v0.20.2-live-smoke.json
+          git commit -m "Archive v0.20.2 live smoke evidence"
+          git push origin HEAD:main
