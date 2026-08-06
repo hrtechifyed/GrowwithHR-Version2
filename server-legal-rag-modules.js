@@ -20,7 +20,7 @@ function createCompleteLegalModulesLoader(options = {}) {
     return function loadCompleteLegalModules() {
         if (!promise) {
             promise = Promise.all([
-                import(moduleUrl("js", "assessment-v3", "legal-rule-assurance.js")),
+                import(moduleUrl("js", "assessment-v3", "legal-rule-assurance-catalog-facts.js")),
                 import(moduleUrl("growwithhr-rag", "legal-rag-engine.js")),
                 import(moduleUrl("growwithhr-rag", "legal-explanation-contract.js"))
             ]).then(([assurance, engine, contract]) => Object.freeze({
