@@ -1,4 +1,5 @@
 /** GrowWithHR Compliance DNA — Appropriate Government Wave 5A source-routing panel. */
+// This surface records source readiness only; it never selects Central, State or Union Territory jurisdiction.
 import {JURISDICTION_WAVE5A_FEATURE_ID,createJurisdictionWave5aPayload,requestJurisdictionWave5aExplanation} from "./jurisdiction-wave5a-explanation-api-client.js";
 export const JURISDICTION_WAVE5A_PANEL_VERSION="1.0.0";
 const STATUS=Object.freeze(["evidenced","not-evidenced","unknown","not-applicable","conflict"]);
