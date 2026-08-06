@@ -33,3 +33,11 @@ test.describe("homepage client readiness", () => {
     await expect(page.locator("#landingScreen")).toBeVisible();
   });
 });
+
+test("homepage explains the compliance-engine authority boundary", async ({ page }) => {
+  await page.goto("/index.html", { waitUntil: "networkidle" });
+  await expect(page.getByRole("heading", { name: "How GrowWithHR reaches a compliance answer" })).toBeVisible();
+  await expect(page.locator("[data-testid=\"compliance-engine-flow\"] .engine-step")).toHaveCount(4);
+  await expect(page.getByText("Deterministic rules decide.", { exact: false })).toBeVisible();
+  await expect(page.getByText("AI is never the applicability authority.", { exact: false })).toBeVisible();
+});

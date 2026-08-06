@@ -1,6 +1,6 @@
 # All-laws runnable private-beta RAG
 
-Status: implemented on a stacked review branch  
+Status: released in GrowWithHR v0.20.2 private beta  
 Date: 6 August 2026
 
 ## Objective
@@ -132,3 +132,13 @@ npm run test:complete-legal-rag-platform
 ```
 
 The runnable test validates all 57 profiles, all 56 fallback rule catalogues, governed retrieval and deterministic explanation construction.
+
+## Human-verifiable acceptance test
+
+Run:
+
+```bash
+npm run verify:all-laws-rag
+```
+
+The run is accepted only when the output reports `valid: true`, `profileCount: 57`, `activeProfileCount: 57`, `blockedProfileCount: 0`, `statutoryProfiles: 1` and `governanceFallbackProfiles: 56`. The maintained test evaluates every profile, completes retrieval, confirms that retrieval was not used for the decision and builds a contract-valid explanation that cannot change the deterministic result.

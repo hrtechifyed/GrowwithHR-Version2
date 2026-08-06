@@ -83,10 +83,10 @@ assert.strictEqual(
     "package.json and app-config.js versions must match."
 );
 
-assert.strictEqual(
+assert.match(
     packageJson.version,
-    "0.20.0",
-    "The current release baseline must use version 0.20.0."
+    /^0\.20\.\d+(?:-[0-9A-Za-z.-]+)?$/,
+    "The current public release baseline must remain on the approved v0.20 line."
 );
 
 const indexHtml = read("index.html");

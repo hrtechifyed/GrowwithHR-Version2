@@ -29,7 +29,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
             <div class="hero-badge">
 
-                AI-powered company advisory platform
+                Decision-first HR compliance and advisory platform
 
             </div>
 
@@ -269,7 +269,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                 <p>
 
-                    Our intelligence engine evaluates compliance, governance and growth readiness.
+                    Deterministic rules evaluate compliance and governance before governed sources and AI explanation are used.
 
                 </p>
 
@@ -301,6 +301,55 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
     </div>
 
+</section>
+
+<section id="compliance-engine" class="compliance-engine-section compact-section" aria-labelledby="compliance-engine-title">
+  <div class="container">
+    <div class="section-heading compliance-engine-heading">
+      <div class="section-tag">HOW GROWWITHHR WORKS</div>
+      <h2 id="compliance-engine-title">How GrowWithHR reaches a compliance answer</h2>
+      <p class="compliance-engine-intro">GrowWithHR separates the legal decision from source retrieval and AI explanation, so every result can show what was known, which rule ran and why the next action was recommended.</p>
+    </div>
+
+    <div class="compliance-engine-flow" data-testid="compliance-engine-flow">
+      <article class="engine-step">
+        <span class="engine-step-number">01</span>
+        <h3>Capture explicit facts</h3>
+        <p>The assessment records confirmed information, derived context and missing facts without letting AI invent answers.</p>
+      </article>
+      <article class="engine-step">
+        <span class="engine-step-number">02</span>
+        <h3>Apply deterministic rules</h3>
+        <p>Versioned rules create an immutable status, reason code and decision trace before retrieval begins.</p>
+      </article>
+      <article class="engine-step">
+        <span class="engine-step-number">03</span>
+        <h3>Retrieve governed sources</h3>
+        <p>RAG can retrieve only the controlled sources and chunks permitted by that completed decision.</p>
+      </article>
+      <article class="engine-step">
+        <span class="engine-step-number">04</span>
+        <h3>Explain and move to action</h3>
+        <p>The model explains the fixed result with citations, limitations and practical next steps. It cannot change the decision.</p>
+      </article>
+    </div>
+
+    <div class="compliance-engine-difference">
+      <div>
+        <div class="section-tag">WHAT MAKES IT DIFFERENT</div>
+        <h3>Decision provenance, not an AI opinion</h3>
+        <p>Many systems surface alerts or generate an answer. GrowWithHR is designed to preserve the facts, rule version, reason code, source identity and decision fingerprint behind the recommendation.</p>
+      </div>
+      <ul class="difference-list">
+        <li><strong>Deterministic rules decide.</strong> AI is never the applicability authority.</li>
+        <li><strong>Sources are controlled.</strong> Retrieval is restricted by source IDs, reason codes and fingerprints.</li>
+        <li><strong>Uncertainty stays visible.</strong> Missing information and specialist review are valid outcomes.</li>
+        <li><strong>The engine fails safely.</strong> Core decisions remain available when RAG or the provider is disabled.</li>
+      </ul>
+    </div>
+
+    <p class="compliance-engine-note">Private-beta explanations support review and action planning; they are not legal certification. POSH Internal Committee threshold currently uses a statutory catalogue. Other legal profiles use conservative governance fallback until their controlled law-specific source packs and rules are approved.</p>
+  </div>
 </section>
 
 <section id="capabilities" class="capabilities-section compact-section">
@@ -530,7 +579,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   </div>
 </section>
 
-<footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name" id="productVersion">GrowWithHR Public 0.20.0</div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
+<footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name" id="productVersion">GrowWithHR Public 0.20.2</div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
 
 <script src="js/site-shell.js"></script>
 <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>

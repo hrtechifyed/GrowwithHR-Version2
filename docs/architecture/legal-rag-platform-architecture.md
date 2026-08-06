@@ -2,7 +2,7 @@
 
 **Version:** 0.1.0  
 **Prepared:** 4 August 2026  
-**Status:** Architecture foundation; only the existing POSH threshold profile is active  
+**Status:** Shared private-beta runtime released in v0.20.2; 57 profiles are runnable, with one statutory catalogue and 56 conservative governance fallbacks  
 **Authority boundary:** Deterministic rules decide. RAG retrieves approved sources. The provider explains only.
 
 ## 1. Why this layer exists
@@ -191,3 +191,16 @@ The architecture is complete when:
 - lexical and optional vector retrieval use one interface and the same authority boundaries;
 - every active feature has approved sources, deterministic rules, chunks and tests;
 - adding a feature requires data and configuration, not copying a POSH-specific server or panel.
+
+## 9. Runtime update — v0.20.2
+
+The shared architecture is now executable for every registered legal profile through `POST /api/legal-explanation/feature/:featureId`.
+
+- 57 profiles are active in private beta;
+- POSH Internal Committee threshold retains the statutory catalogue path;
+- 56 profiles use a governance-fallback catalogue while law-specific corpora are onboarded;
+- fallback outcomes are restricted to `more-information-needed` and `specialist-review`;
+- `GET /api/legal-rag/status` reports profile, catalogue and limitation metadata;
+- the authority boundary remains deterministic-only for applicability.
+
+Runtime availability is not equivalent to statutory-corpus completeness. Each fallback profile must still complete source fingerprinting, page and section review, fact and privacy approval, deterministic rule approval, chunk curation and release approval before it can issue a substantive applicability outcome.

@@ -15,7 +15,7 @@ const includes = (source, expected, message) => {
 };
 
 const packageJson = JSON.parse(read("package.json"));
-assert.strictEqual(packageJson.version, "0.20.0", "Static requirements must use the current v0.20.0 release.");
+assert.match(packageJson.version, /^0\.20\.\d+(?:-[0-9A-Za-z.-]+)?$/, "Static requirements must use an approved v0.20 release.");
 
 const htmlFiles = [
     "index.html",

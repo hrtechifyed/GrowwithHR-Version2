@@ -1,6 +1,6 @@
 # GrowWithHR Product Roadmap
 
-Current application version: `0.20.0`
+Current application version: `0.20.2`
 Current public route: `/analyze-company.html`
 Private-beta route: `/analyze-company-v3.html` with `complianceDnaV3: false`
 Last updated: 6 August 2026
@@ -30,6 +30,21 @@ Complete, validated and released. Added separate profile-completeness, applicabi
 ### M5 — Compliance Workspace Beta (`0.20.0`)
 
 Complete, validated and released. Added a private browser-local workspace with tasks, owners, status history, due-date source states, evidence placeholders, calendar entries, strict JSON backup import/export, isolated reset and an in-memory fallback when browser storage is unavailable.
+
+## Current product release
+
+### v0.20.2 — Governed Legal RAG Private Beta
+
+Released 6 August 2026. This release adds the shared all-laws private-beta runtime, a public explanation of the compliance-engine authority boundary and maintained validation for all registered legal RAG profiles.
+
+- 57 active private-beta profiles and zero runtime-blocked profiles;
+- one POSH statutory catalogue profile;
+- 56 conservative governance-fallback profiles;
+- shared feature and status endpoints;
+- homepage architecture and differentiation section;
+- repeatable all-laws validation command and documentation.
+
+This release does not activate M6 persistence and does not claim completion of the M7 v0.22.0 reliability exit. Law-specific statutory corpus replacement remains a controlled follow-on programme.
 
 ## Approval-gated milestone foundation
 

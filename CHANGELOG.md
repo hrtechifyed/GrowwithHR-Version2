@@ -10,6 +10,28 @@ No unreleased product changes are currently recorded.
 
 ---
 
+## [v0.20.2] - Governed Legal RAG Private Beta
+
+**Release Date:** 2026-08-06
+
+### Added
+
+- Added a shared legal explanation route for all 57 registered private-beta legal profiles.
+- Added one statutory POSH profile and 56 conservative governance-fallback profiles with zero runtime-blocked profiles.
+- Added a legal RAG status endpoint with explicit catalogue modes and limitations.
+- Added a homepage section explaining the decision-first compliance architecture and differentiation.
+- Added maintained all-laws runtime, retrieval and explanation validation plus a human-readable validation guide.
+
+### Safety and compatibility
+
+- Deterministic rules remain the sole applicability authority.
+- Fallback profiles return only `more-information-needed` or `specialist-review`.
+- Provider output cannot change status, reason code, decision fingerprint or citation scope.
+- M6 remote persistence remains disabled.
+- The release does not claim completion of the M7 v0.22.0 reliability exit.
+
+---
+
 ## [v0.20.0] - Compliance Workspace Beta
 
 **Release Date:** 2026-07-27

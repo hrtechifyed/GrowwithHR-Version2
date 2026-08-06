@@ -1,6 +1,6 @@
 {
   "name": "growitwithhr",
-  "version": "0.20.0",
+  "version": "0.20.2",
   "description": "GrowItWithHR Compliance Monitoring Engine",
   "main": "server.js",
   "engines": {
@@ -95,6 +95,7 @@
     "build:legal-rag-catalog:posh": "node scripts/build-legal-rag-catalog.mjs --manifest growwithhr-rag/manifests/posh-source-pack.v1.json --check --compare-existing",
     "verify:legal-rag-source-pack:posh": "node scripts/build-legal-rag-catalog.mjs --manifest growwithhr-rag/manifests/posh-source-pack.v1.json --verify-files",
     "verify:posh-source-pack": "node scripts/verify-posh-source-pack.mjs",
-    "verify:posh-rules-page-gate": "node scripts/verify-posh-rules-page-gate.mjs"
+    "verify:posh-rules-page-gate": "node scripts/verify-posh-rules-page-gate.mjs",
+    "verify:all-laws-rag": "npm run test:all-laws-runnable-private-beta && npm run report:all-laws-rag-readiness"
   }
 }

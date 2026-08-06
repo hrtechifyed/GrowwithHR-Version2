@@ -42,7 +42,8 @@ function assertSingleTenant(packageFixture) {
     }
 }
 
-assert.equal(packageJson.version, "0.20.0", "Contract foundation must not cut the v0.21 release.");
+assert.notEqual(packageJson.version, "0.21.0", "Contract foundation must not cut the approval-gated v0.21 release.");
+assert.match(packageJson.version, /^0\.20\.\d+(?:-[0-9A-Za-z.-]+)?$/, "M6 must remain contract-only while the product stays on the v0.20 release line.");
 assert.equal(packageJson.scripts["test:m6-contracts"], "node tests/v021-evidence-persistence-contract-checks.mjs");
 assert.equal(fixture.runtimeEnabled, false, "Contract foundation must keep runtime persistence disabled.");
 assert.equal(validate(fixture), true, JSON.stringify(validate.errors, null, 2));
