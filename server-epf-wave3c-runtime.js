@@ -6,25 +6,25 @@ const SOURCE_DEFINITIONS=Object.freeze({
   "epfo-exemption-manual-2023":Object.freeze({
     id:"source.epfo.exemption-manual-2023",title:"EPFO Exemption Manual and SOP set, 2023",
     publisher:"Employees' Provident Fund Organisation",url:"https://www.epfindia.gov.in/site_en/Exempted_Return.php",
-    sourceType:"guidance",fileName:"epfo-exemption-manual-2023.pdf",
+    sourceType:"regulator-guidance",fileName:"epfo-exemption-manual-2023.pdf",
     drivePath:"GrowWithHR-RAG/01-source-documents/official/social-security/04-guidance/epfo-exemption-manual-2023.pdf"
   }),
   "epfo-exemption-management-sop-2023":Object.freeze({
     id:"source.epfo.exemption-management-sop-2023",title:"EPFO SOP for Management and Regulation of EPF Exemption, 2023",
     publisher:"Employees' Provident Fund Organisation",url:"https://www.epfindia.gov.in/site_en/Exempted_Return.php",
-    sourceType:"guidance",fileName:"epfo-exemption-management-regulation-sop-2023.pdf",
+    sourceType:"regulator-guidance",fileName:"epfo-exemption-management-regulation-sop-2023.pdf",
     drivePath:"GrowWithHR-RAG/01-source-documents/official/social-security/04-guidance/epfo-exemption-management-regulation-sop-2023.pdf"
   }),
   "epfo-international-workers-faq-2026":Object.freeze({
     id:"source.epfo.international-workers-faq-2026",title:"EPFO International Workers FAQ snapshot, 2026",
     publisher:"Employees' Provident Fund Organisation",url:"https://www.epfindia.gov.in/site_en/FAQ.php",
-    sourceType:"guidance",fileName:"epfo-international-workers-faq-2026.html",
+    sourceType:"regulator-guidance",fileName:"epfo-international-workers-faq-2026.html",
     drivePath:"GrowWithHR-RAG/01-source-documents/official/social-security/04-guidance/epfo-international-workers-faq-2026.html"
   }),
   "epfo-operating-ssa-register-2026":Object.freeze({
     id:"source.epfo.operating-ssa-register-2026",title:"EPFO Operating Social Security Agreements register, 2026",
     publisher:"Employees' Provident Fund Organisation",url:"https://www.epfindia.gov.in/site_en/Operating_SSA.php",
-    sourceType:"guidance",fileName:"epfo-operating-ssa-register-2026.html",
+    sourceType:"official-portal",fileName:"epfo-operating-ssa-register-2026.html",
     drivePath:"GrowWithHR-RAG/01-source-documents/official/social-security/04-guidance/epfo-operating-ssa-register-2026.html"
   })
 });
@@ -40,7 +40,7 @@ function sourceRecord(registrySourceId){
   if(!s)throw new Error(`Unknown Wave 3C source ${registrySourceId}.`);
   return{
     id:s.id,registrySourceId,title:s.title,publisher:s.publisher,url:s.url,jurisdiction:"India",
-    sourceType:s.sourceType,documentType:s.sourceType==="guidance"?"controlled-official-guidance":"controlled-official-source",
+    sourceType:s.sourceType,documentType:["regulator-guidance","government-guidance","official-portal"].includes(s.sourceType)?"controlled-official-guidance":"controlled-official-source",
     reviewedAt:"2026-08-06",reviewStatus:"needs-legal-review",fileName:s.fileName,drivePath:s.drivePath,official:true
   };
 }
