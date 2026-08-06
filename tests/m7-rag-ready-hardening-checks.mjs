@@ -67,7 +67,8 @@ assert.equal(reliability.releaseExitSatisfied, false);
 assert.equal(reliability.status, "awaiting-production-releases");
 assert(reliability.qualificationRules.some((item) => /CI run alone is not/.test(item)));
 
-assert.equal(packageJson.version, "0.20.0", "M7 hardening must not silently cut v0.22.0.");
+assert.notEqual(packageJson.version, hardening.targetRelease, "M7 hardening must not silently cut v0.22.0.");
+assert.match(packageJson.version, /^0\.20\.\d+(?:-[0-9A-Za-z.-]+)?$/, "Pre-M7 product releases must remain on the v0.20 line until the M7 release exit is satisfied.");
 assert.equal(packageJson.scripts["test:m7-contract-freeze"], "node tests/m7-rag-ready-hardening-checks.mjs");
 assert.match(packageJson.scripts["test:m7"], /test:m7-contract-freeze/);
 assert.match(packageJson.scripts.test, /test:m7/);
