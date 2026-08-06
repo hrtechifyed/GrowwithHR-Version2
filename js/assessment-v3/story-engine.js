@@ -1,3 +1,5 @@
+import "./epf-wave3a-explanation-panel.js";
+
 /**
  * GrowWithHR Compliance DNA
  * M1 Five-Act Story Engine

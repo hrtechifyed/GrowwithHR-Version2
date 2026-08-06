@@ -32,7 +32,8 @@ The private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
-- 40 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- five EPF operational profiles use feature-specific deterministic rules and a governed Social Security Code, EPF Scheme, commencement and corrigendum catalogue;
+- 35 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
 ### Wave 1 — POSH
 
@@ -42,9 +43,15 @@ The seven substantive POSH profiles cover Internal Committee threshold, policy a
 
 The ten substantive Maternity Benefit profiles cover establishment coverage, employee eligibility route, benefit-duration category, adopting or commissioning mother route, special-leave controls, nursing-break controls, crèche controls, notice/payment/records, employment protection and ESI overlap.
 
-The Wave 1 and Wave 2 profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, decide an individual entitlement or represent qualified legal approval.
+### Wave 3A — EPF operational controls
 
-The private-beta v3 page includes explicit in-memory control-review panels for both waves. They send only strict allow-listed organisational facts, categories, bands and statuses after the user chooses to submit. They do not save inputs or results. The Maternity panel excludes names, contact details, medical narratives, certificates, exact event dates, child details, adoption or surrogacy documents, claim documents, ESI identifiers, bank details, disciplinary evidence and completed forms.
+The five substantive EPF profiles cover establishment coverage, member-inclusion controls, monthly contribution-process controls, contractor controls, and records and returns.
+
+Wave 3A deliberately excludes contribution-rate selection, wage ceilings, exemptions, international-worker treatment, EPS membership or pension routing, and EDLI coverage or rates. Those profiles remain on conservative governance fallback until their exact notification and transition sources are approved.
+
+The Wave 1, Wave 2 and Wave 3A profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, calculate payroll, decide an individual entitlement or membership, or represent qualified legal approval.
+
+The private-beta v3 page includes explicit in-memory control-review panels for all three waves. They send only strict allow-listed organisational facts, categories, bands, statuses, counts and evidence references after the user chooses to submit. They do not save inputs or results. The EPF panel excludes names, UANs, employee-level wages, payroll rows, contribution histories, ECR bodies, bank details, claims, completed forms and evidence bodies.
 
 ## What makes GrowWithHR different
 
@@ -62,13 +69,14 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1 and Wave 2 control-review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1, Wave 2 and Wave 3A control-review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
 ```bash
 npm install
 npm run verify:all-laws-rag
+node tests/epf-wave3a-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
