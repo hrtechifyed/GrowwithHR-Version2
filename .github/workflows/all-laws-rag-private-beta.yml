@@ -1,0 +1,45 @@
+name: All-Laws RAG Private Beta
+
+on:
+  pull_request:
+    paths:
+      - "data/legal-source-governance/all-laws-rag-onboarding.v1.json"
+      - "growwithhr-rag/all-laws-onboarding.js"
+      - "growwithhr-rag/manifests/candidates/**"
+      - "server-all-laws-*.js"
+      - "server-legal-explanation-router.js"
+      - "server-legal-rag-catalogs.js"
+      - "tests/all-laws-*.mjs"
+      - "tests/legal-rag-catalog-loader-checks.mjs"
+      - "package.json"
+      - ".github/workflows/all-laws-rag-private-beta.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  all-laws-rag:
+    name: Validate every runnable profile
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate all-laws onboarding registry
+        run: npm run test:all-laws-rag-onboarding
+
+      - name: Validate all 57 runnable profiles
+        run: npm run test:all-laws-runnable-private-beta
+
+      - name: Run complete legal RAG regression suite
+        run: npm run test:complete-legal-rag-platform
