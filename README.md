@@ -31,21 +31,20 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 The private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
-- 50 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
+- 40 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
-The seven substantive POSH private-beta profiles are:
+### Wave 1 — POSH
 
-1. Internal Committee threshold;
-2. policy and dissemination controls;
-3. awareness, orientation and capacity-building controls;
-4. notice and display controls by location;
-5. complaint-mechanism, confidentiality, timeline and records controls;
-6. Internal Committee composition and office or administrative-unit coverage;
-7. annual-reporting controls.
+The seven substantive POSH profiles cover Internal Committee threshold, policy and dissemination, awareness and training, location-specific notice display, complaint and records controls, committee composition and unit coverage, and annual reporting.
 
-The six Wave 1 control profiles remain `needs-legal-review`. Their permitted outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance or represent qualified legal approval.
+### Wave 2 — Maternity Benefit
 
-The private-beta v3 page includes an explicit in-memory Wave 1 control-review panel. It sends only strict allow-listed organisational control facts after the user chooses to submit. It does not save inputs or results and excludes names, complaint narratives, allegations, evidence bodies, findings, personal contact details and case-level statistics.
+The ten substantive Maternity Benefit profiles cover establishment coverage, employee eligibility route, benefit-duration category, adopting or commissioning mother route, special-leave controls, nursing-break controls, crèche controls, notice/payment/records, employment protection and ESI overlap.
+
+The Wave 1 and Wave 2 profiles remain `needs-legal-review`. Their permitted private-beta outcomes are `specialist-review` and `more-information-needed`; they do not certify compliance, decide an individual entitlement or represent qualified legal approval.
+
+The private-beta v3 page includes explicit in-memory control-review panels for both waves. They send only strict allow-listed organisational facts, categories, bands and statuses after the user chooses to submit. They do not save inputs or results. The Maternity panel excludes names, contact details, medical narratives, certificates, exact event dates, child details, adoption or surrogacy documents, claim documents, ESI identifiers, bank details, disciplinary evidence and completed forms.
 
 ## What makes GrowWithHR different
 
@@ -63,7 +62,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1 control-review panel is in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1 and Wave 2 control-review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
