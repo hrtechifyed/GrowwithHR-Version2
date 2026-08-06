@@ -289,7 +289,7 @@ export function evaluateLegalRuleAssurance(input = {}) {
     const evaluatedAt = text(source.evaluatedAt);
     const facts = createCatalogFacts(source.answers, catalog, evaluatedAt);
     const evaluatedTraceability = evaluateRecommendationRules({
-        facts,
+        facts: { confirmed: facts, derived: [] },
         catalog: evaluatorCatalog,
         evaluatedAt,
         generatedAt: evaluatedAt,
