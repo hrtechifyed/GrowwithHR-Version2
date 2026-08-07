@@ -1,4 +1,4 @@
-# Wave 5F includes bounded OSHWC Central/Maharashtra source-readiness review.
+# Wave 5G includes bounded Industrial Relations transition and standing-orders source-readiness review.
 name: All-Laws RAG Private Beta
 
 on:
@@ -11,12 +11,14 @@ on:
       - "data/legal-source-governance/gratuity-*.json"
       - "data/legal-source-governance/employee-compensation-*.json"
       - "data/legal-source-governance/oshwc-*.json"
+      - "data/legal-source-governance/industrial-relations-*.json"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
       - "data/assessment/code-on-wages-*.json"
       - "data/assessment/gratuity-*.json"
       - "data/assessment/employee-compensation-*.json"
       - "data/assessment/oshwc-*.json"
+      - "data/assessment/industrial-relations-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
@@ -32,6 +34,7 @@ on:
       - "growwithhr-rag/data/gratuity-wave5d-source-chunks.v1.json"
       - "growwithhr-rag/data/employee-compensation-wave5e-source-chunks.v1.json"
       - "growwithhr-rag/data/oshwc-wave5f-source-chunks.v1.json"
+      - "growwithhr-rag/data/industrial-relations-wave5g-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -46,6 +49,7 @@ on:
       - "server-gratuity-wave5d-*.js"
       - "server-employee-compensation-wave5e-*.js"
       - "server-oshwc-wave5f-*.js"
+      - "server-industrial-relations-wave5g-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -60,6 +64,7 @@ on:
       - "server-legal-explanation-router-wave5d.js"
       - "server-legal-explanation-router-wave5e.js"
       - "server-legal-explanation-router-wave5f.js"
+      - "server-legal-explanation-router-wave5g.js"
       - "server-legal-rag-catalogs.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
@@ -74,6 +79,7 @@ on:
       - "js/assessment-v3/gratuity-wave5d-*.js"
       - "js/assessment-v3/employee-compensation-wave5e-*.js"
       - "js/assessment-v3/oshwc-wave5f-*.js"
+      - "js/assessment-v3/industrial-relations-wave5g-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -88,6 +94,7 @@ on:
       - "tests/gratuity-wave5d-*.mjs"
       - "tests/employee-compensation-wave5e-*.mjs"
       - "tests/oshwc-wave5f-*.mjs"
+      - "tests/industrial-relations-wave5g-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -157,6 +164,9 @@ jobs:
 
       - name: Validate OSHWC Wave 5F overlay
         run: node tests/oshwc-wave5f-private-beta-checks.mjs
+
+      - name: Validate Industrial Relations Wave 5G overlay
+        run: node tests/industrial-relations-wave5g-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
