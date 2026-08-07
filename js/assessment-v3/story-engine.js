@@ -10,6 +10,7 @@ import "./shops-wave5b-explanation-panel.js";
 import "./code-on-wages-wave5c-explanation-panel.js";
 import "./gratuity-wave5d-explanation-panel.js";
 import "./employee-compensation-wave5e-explanation-panel.js";
+import "./oshwc-wave5f-explanation-panel.js";
 
 /**
  * GrowWithHR Compliance DNA
