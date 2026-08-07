@@ -1,4 +1,4 @@
-# Wave 5C includes the Code on Wages source-readiness browser panel.
+# Wave 5D includes the Gratuity source-readiness browser panel.
 name: Executive Assessment Tests
 
 on:
@@ -157,6 +157,7 @@ jobs:
           tests/e2e/analyze-company-v3-jurisdiction-wave5a.spec.ts
           tests/e2e/analyze-company-v3-shops-wave5b.spec.ts
           tests/e2e/analyze-company-v3-code-on-wages-wave5c.spec.ts
+          tests/e2e/analyze-company-v3-gratuity-wave5d.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
