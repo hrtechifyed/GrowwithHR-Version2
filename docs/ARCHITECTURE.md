@@ -21,7 +21,7 @@ The approved cross-origin client is `https://hrtechifyed.github.io`. Additional 
 
 `/analyze-company-v3.html` is no-index and disabled from public routing by default. Its Compliance DNA modules consume protected assessment answers through compatibility adapters and produce isolated traceability, legal-review and workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route now mounts the POSH, Maternity Benefit, EPF Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G and Apprentices Wave 5H review surfaces.
+The v3 route mounts the POSH, Maternity Benefit, EPF Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G, Apprentices Wave 5H and Child and Adolescent Labour Wave 5I review surfaces.
 
 All legal-review panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
@@ -38,8 +38,6 @@ Feature-flag overrides use the documented `growwithhr-feature-` prefix and are n
 
 ## Compliance decision and governed RAG architecture
 
-The compliance engine uses one authority boundary across legal features:
-
 ```text
 assessment answers
 → deterministic fact mapper
@@ -55,7 +53,7 @@ The deterministic rule owns status, reason code, missing facts and source scope.
 
 ## Runtime coverage
 
-The Wave 5H stacked private-beta registry exposes 57 callable profiles:
+The Wave 5I stacked private-beta registry exposes 57 callable profiles:
 
 - seven POSH;
 - ten Maternity Benefit;
@@ -69,16 +67,10 @@ The Wave 5H stacked private-beta registry exposes 57 callable profiles:
 - one OSHWC Wave 5F;
 - one Industrial Relations Wave 5G;
 - one Apprentices Wave 5H;
-- five conservative governance-fallback profiles.
+- one Child and Adolescent Labour Wave 5I;
+- four conservative governance-fallback profiles.
 
-The resulting runtime mix is:
-
-- **52 substantive profiles**;
-- **5 governance-fallback profiles**;
-- **18 catalogues** — 17 substantive plus one governance fallback;
-- zero blocked runtime profiles.
-
-All Wave 1–5H substantive catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing required facts produce `more-information-needed`.
+The resulting runtime mix is **53 substantive profiles / 4 governance-fallback profiles / 19 catalogues**, with zero blocked runtime profiles. All Wave 1–5I substantive catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing required facts produce `more-information-needed`.
 
 ## Wave 5A–5F authority boundaries
 
@@ -86,68 +78,51 @@ Wave 5A records cross-code jurisdiction-source readiness but does not select the
 
 ## Wave 5G authority boundary — Industrial Relations
 
-Wave 5G promotes `feature.legal.industrial-relations` into a substantive deterministic transition and standing-orders source-readiness profile. It accepts organisation-level controls for:
-
-- Industrial Relations Code and Central Rules source status;
-- commencement, removal-of-difficulties and 2026 amendment transition sources;
-- Model Standing Orders source status;
-- Maharashtra draft-rule and draft-final reconciliation;
-- standing-orders threshold-source and industrial-establishment classification controls;
-- adoption/certification/modification and authority-routing source controls;
-- repeal/savings and statutory-authority continuity controls;
-- specialist escalation and controlled references.
-
-Wave 5G does not determine Chapter IV applicability, worker thresholds, industrial-establishment or Model Standing Orders sector classification, certification/modification validity, territorial authority, saved rights, dismissal/disciplinary merits, disputes, strikes/lock-outs, retrenchment/closure, unfair labour practices, penalties, prosecution or remedies. Maharashtra's 2026 IR rules remain draft-only.
+Wave 5G promotes `feature.legal.industrial-relations` into a substantive deterministic transition and standing-orders source-readiness profile. It does not determine Chapter IV applicability, worker thresholds, industrial-establishment or Model Standing Orders sector classification, certification/modification validity, territorial authority, saved rights, dismissal/disciplinary merits, disputes, strikes/lock-outs, retrenchment/closure, unfair labour practices, penalties, prosecution or remedies. Maharashtra's 2026 IR rules remain draft-only.
 
 ## Wave 5H authority boundary — Apprentices
 
-Wave 5H promotes `feature.legal.apprentices` into a substantive deterministic source and classification-readiness profile. It accepts organisation-level controls for:
+Wave 5H promotes `feature.legal.apprentices` into a substantive deterministic source and classification-readiness profile. It accepts only organisation-level Act/Rules/amendment, current-Rules reconciliation, trade/category classification-source, manpower/band, State-variation, trade-register, portal/NAPS, authority, training-infrastructure, escalation and controlled-reference statuses.
 
-- current Apprentices Act source status;
-- DGT-hosted Apprenticeship Rules, 1992 base-source status;
-- Apprenticeship (Amendment) Rules, 2025 source status;
-- current-Rules-versus-portal-summary reconciliation;
-- designated-versus-optional trade classification source control;
-- apprentice-category classification source control;
-- establishment manpower and engagement-band source control;
-- State-variation source control;
-- designated- and optional-trade registers;
-- Apprenticeship India / NAPS-2 lifecycle source control;
-- Apprenticeship Adviser or Board authority routing;
-- training-infrastructure source control;
-- specialist escalation and controlled references.
+These are source/readiness controls only. Wave 5H does not determine Act applicability, mandatory apprentice engagement, worker strength, apprentice numbers, percentage bands, State-law effects, customer role trade classification, apprentice category, individual eligibility, contract validity, stipend, certification, NAPS eligibility/DBT, competent authority, enforcement, penalty, dispute or remedy.
 
-These are source/readiness controls only. Wave 5H does not determine Act applicability, mandatory apprentice engagement, worker strength, apprentice numbers, percentage bands, State-law effects, customer role trade classification, apprentice category, individual eligibility, age/education/fitness/reservation/disability treatment, contract validity, training period or completion, stipend/payment, examination/certification, NAPS eligibility/reimbursement/DBT, competent authority, enforcement, penalty, dispute or remedy.
+## Wave 5I authority boundary — Child and Adolescent Labour
 
-### Current-rules reconciliation rule
+Wave 5I promotes `feature.legal.child-adolescent-labour` into a substantive safeguarding-first source-readiness profile. It accepts only:
 
-Wave 5H deliberately distinguishes statutory sources from programme/portal summaries. The DGT base Rules file and DGT overview are not represented as a current consolidated legal text. Later Gazette amendments and current India Code material must be reconciled explicitly. Retrieval/provider output may not resolve conflicting or lagging portal wording by inference and may not calculate a customer obligation from portal copy.
+- a declared organisation-level safeguarding source route;
+- current central Act source status;
+- 1988 principal Rules and 2017 Amendment Rules source status;
+- S.O. 2823(E) commencement and S.O. 2827(E) hazardous Schedule source status;
+- current Act/Rules/Schedule reconciliation;
+- privacy-safe age-band source control without exact age or date of birth;
+- work-type/hazard classification-source control without classifying a customer activity;
+- family-enterprise and artist-participation exception-source controls without deciding an exception;
+- education-protection and register/notice source controls;
+- District-authority and immediate human safeguarding escalation controls;
+- State-variation source control and controlled references.
+
+Wave 5I does not determine whether a person is a child/adolescent, whether work/employment exists, whether an occupation or process is hazardous, whether Part A/Part B or a statutory exception applies, schooling impact, age disputes, register/notice compliance, offences, rescue/complaint requirements, authority jurisdiction, liability, penalty, prosecution, compounding, rehabilitation, fund/payment, State-law applicability or remedy.
+
+### Safeguarding-first execution boundary
+
+Wave 5I is not case management, an emergency service, automated age inference or safeguarding risk scoring. Any live safeguarding concern must leave the RAG path and follow an approved human process. Retrieval/provider execution receives no child/adolescent identity, exact age/date of birth, family identity, school or health record, allegation, abuse/trafficking narrative, rescue/complaint/case detail, victim/witness data or evidence body. The provider cannot decide a case disposition or replace human escalation.
 
 ## Source-governance boundary
 
-The platform distinguishes:
+The platform distinguishes controlled full files with verified hashes/pagination from `source-identity-only` snapshots, regulator/programme guidance, official portal context, draft instruments and historical/saved-law candidates.
 
-- controlled full files with verified hashes, byte lengths and physical pagination;
-- `source-identity-only` snapshots;
-- regulator or programme guidance;
-- official portal context;
-- draft instruments;
-- historical or saved-law candidates.
+Wave 5D and Wave 5E reuse exact controlled Social Security files already registered in Drive. Wave 5F and Wave 5G use bounded official source identities where exact full-file mirrors are pending and keep Maharashtra draft instruments explicitly draft-only. Wave 5H contains eight source-identity records and twelve chunks pending exact Apprentices mirrors.
 
-Wave 5D and Wave 5E reuse exact controlled Social Security files already registered in Drive. Wave 5F and Wave 5G use bounded official source identities where exact full-file mirrors are pending and keep Maharashtra draft instruments explicitly draft-only.
+Wave 5I contains five official `curated-source-identity-v1` / `source-identity-only` records and ten reason-code-scoped chunks:
 
-Wave 5H contains eight official `curated-source-identity-v1` / `source-identity-only` records and twelve reason-code-scoped chunks:
+1. current Child and Adolescent Labour (Prohibition and Regulation) Act, 1986 source identity;
+2. Child Labour (Prohibition and Regulation) Rules, 1988 principal Rules source identity;
+3. Child Labour (Prohibition and Regulation) Amendment Rules, 2017 — G.S.R. 543(E);
+4. S.O. 2823(E), 1 September 2016 commencement source identity;
+5. S.O. 2827(E), 30 August 2017 hazardous Schedule amendment source identity.
 
-1. current Apprentices Act, 1961 India Code text;
-2. DGT-hosted Apprenticeship Rules, 1992 base file;
-3. Apprenticeship (Amendment) Rules, 2025 — G.S.R. 610(E);
-4. DGT Apprenticeship Training overview;
-5. DGT designated-trades register;
-6. DGT optional-trades register;
-7. NAPS-2 Guidelines;
-8. Apprenticeship India portal.
-
-The active Drive Source Register does not yet contain exact controlled Apprentices full files. Exact mirrors, a qualified consolidated current-Rules set, applicable State variations and customer-specific authority/trade classification remain approval dependencies.
+The active Drive Source Register does not yet contain exact controlled Child and Adolescent Labour files. These SHA-256 values fingerprint curated source-identity records only; they are not byte hashes of the official PDFs. Exact full-file mirrors, qualified current-law consolidation and applicable State/UT variations remain open source/legal gates.
 
 ## Privacy boundaries
 
@@ -155,7 +130,9 @@ Earlier waves retain their established prohibitions on names, contact details, c
 
 Industrial Relations Wave 5G excludes employee/union-member identities, disciplinary or termination narratives, grievance/dispute/strike/lock-out bodies, payroll/wages/attendance, raw standing-order text, notices/orders/pleadings, settlements and evidence bodies.
 
-Apprentices Wave 5H excludes apprentice identities, date of birth/age, sex/gender, caste/community, disability/medical data, educational records, Aadhaar, contact/address data, contract bodies/numbers, bank/stipend/payroll data, training dates, attendance, assessments/certificates, disputes, notices/orders, injury information and evidence bodies. Worker-strength numbers, apprentice counts and individual eligibility facts are also outside the provider payload.
+Apprentices Wave 5H excludes apprentice identities, date of birth/age, sex/gender, caste/community, disability/medical data, educational records, Aadhaar, contact/address data, contract bodies/numbers, bank/stipend/payroll data, training dates, attendance, assessments/certificates, disputes, notices/orders, injury information and evidence bodies.
+
+Child and Adolescent Labour Wave 5I excludes child/adolescent identities, exact age/date of birth, parent/guardian/family identities, school/education records, medical/disability data, caste/community/religion, address/contact/precise child-linked location data, photographs/video, payment/payroll, schedules/attendance, allegation/abuse/trafficking/exploitation narratives, rescue/complaint/case/notice/order content, victim/witness data, police/CWC/District Magistrate case facts and evidence bodies. Only organisation-level source/control statuses and controlled reference identifiers are allowed.
 
 ## Operational endpoints
 
@@ -165,10 +142,10 @@ GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
 
-`server-entry.js` uses the Wave 5H router overlay. The overlay preserves earlier waves, activates the bounded Apprentices source/classification-readiness profile and reports the 52/5 runtime mix.
+`server-entry.js` uses the Wave 5I router overlay on this stacked private-beta branch. The overlay preserves earlier waves, activates the safeguarding-first Child and Adolescent Labour profile and reports the 53/4 runtime mix. This stacked state does not by itself prove `main` integration or deployment.
 
 ## Approval boundary
 
-Passing deterministic, retrieval, browser, report or hardening tests is software evidence only. It does not grant legal, privacy, RAG, exact-source-file, section-mapping, security or release approval. Every active catalogue remains `needs-legal-review` until qualified decisions are recorded.
+Passing deterministic, retrieval, browser, report or hardening tests is software evidence only. It does not grant legal, privacy, safeguarding, RAG, exact-source-file, section-mapping, security or release approval. Every active catalogue remains `needs-legal-review` until qualified decisions are recorded.
 
 See `docs/architecture/compliance-engine-differentiation.md`, `docs/architecture/all-laws-runnable-private-beta-rag.md` and `docs/testing/all-laws-rag-validation.md`.

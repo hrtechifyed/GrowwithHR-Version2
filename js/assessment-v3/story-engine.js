@@ -13,6 +13,7 @@ import "./employee-compensation-wave5e-explanation-panel.js";
 import "./oshwc-wave5f-explanation-panel.js";
 import "./industrial-relations-wave5g-explanation-panel.js";
 import "./apprentices-wave5h-explanation-panel.js";
+import "./child-adolescent-labour-wave5i-explanation-panel.js";
 
 /**
  * GrowWithHR Compliance DNA
