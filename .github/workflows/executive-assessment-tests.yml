@@ -1,4 +1,4 @@
-# Wave 5G includes the Industrial Relations standing-orders source-readiness browser panel.
+# Wave 5H includes the Apprentices source and classification-readiness browser panel.
 name: Executive Assessment Tests
 
 on:
@@ -161,6 +161,7 @@ jobs:
           tests/e2e/analyze-company-v3-employee-compensation-wave5e.spec.ts
           tests/e2e/analyze-company-v3-oshwc-wave5f.spec.ts
           tests/e2e/analyze-company-v3-industrial-relations-wave5g.spec.ts
+          tests/e2e/analyze-company-v3-apprentices-wave5h.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
