@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 5H stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 5I stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles;
 - ten Maternity Benefit profiles;
@@ -42,9 +42,10 @@ The Wave 5H stacked private-beta registry contains 57 runnable feature profiles:
 - one OSHWC Wave 5F profile;
 - one Industrial Relations Wave 5G profile;
 - one Apprentices Wave 5H profile;
-- five profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
+- one Child and Adolescent Labour Wave 5I profile;
+- four profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
 
-The resulting runtime mix is **57 callable / 52 substantive / 5 governance fallback / 18 catalogues**, with zero blocked runtime profiles.
+The resulting runtime mix is **57 callable / 53 substantive / 4 governance fallback / 19 catalogues**, with zero blocked runtime profiles.
 
 ### Waves 1–4D
 
@@ -76,49 +77,43 @@ Wave 5F reviews a bounded Central/Maharashtra source route, Code/Central Rules/c
 
 ### Wave 5G — Industrial Relations standing-orders readiness
 
-Wave 5G promotes `feature.legal.industrial-relations` into a bounded organisation-level transition and standing-orders source-readiness review. It records:
-
-- Industrial Relations Code, 2020 and current Central Rules source status;
-- commencement and transition-source controls;
-- the 2026 amendment and Model Standing Orders source status;
-- Maharashtra draft-rule and draft-final reconciliation controls;
-- standing-orders threshold-source, establishment-classification, adoption/certification and authority-routing controls;
-- legacy repeal/savings, authority-continuity, specialist-escalation and controlled-reference statuses.
+Wave 5G promotes `feature.legal.industrial-relations` into a bounded organisation-level transition and standing-orders source-readiness review. It records Industrial Relations Code/Rules, commencement/transition, the 2026 amendment, Model Standing Orders, Maharashtra draft-rule reconciliation, standing-orders threshold/classification, adoption/certification, authority, legacy savings, escalation and controlled-reference statuses.
 
 Wave 5G does **not** decide Chapter IV applicability, worker-count thresholds, industrial-establishment or Model Standing Orders sector classification, certification/modification validity, territorial authority, saved rights, pending forums, dismissal/disciplinary merits, disputes, strikes/lock-outs, lay-off/retrenchment/closure, unfair labour practices, penalties, prosecution or remedies.
 
-Its governed catalogue contains eight official source identities and twelve reason-code-scoped chunks. Maharashtra's 2026 Industrial Relations rules remain explicitly draft-only and exact controlled full-file mirrors remain an approval dependency.
-
 ### Wave 5H — Apprentices source and classification readiness
 
-Wave 5H promotes `feature.legal.apprentices` into a bounded organisation-level review of:
+Wave 5H reviews current Apprentices Act/Rules/amendment status, current-Rules-versus-portal reconciliation, designated/optional trade and apprentice-category classification-source controls, establishment manpower/band, State variation, trade registers, portal/NAPS lifecycle, authority routing, training infrastructure, escalation and controlled references.
 
-- current Apprentices Act source status;
-- the DGT-hosted Apprenticeship Rules, 1992 base-source status;
-- Apprenticeship (Amendment) Rules, 2025 — G.S.R. 610(E);
-- a mandatory current-Rules-versus-portal-summary reconciliation control;
-- designated-versus-optional trade source classification;
-- apprentice-category source classification;
-- establishment manpower and engagement-band source control;
-- State-variation source control;
-- DGT designated- and optional-trade registers;
-- Apprenticeship India / NAPS-2 lifecycle source control;
-- Apprenticeship Adviser or Board authority routing;
-- organisation training-infrastructure, specialist-escalation and controlled-reference statuses.
-
-Current official source surfaces are not assumed to be synchronized. The September 2025 amendment and current Gazette/India Code material must be reconciled against older base-rule or portal-summary wording; portal copy cannot be used to calculate an establishment obligation or silently replace current statutory material.
+Current official source surfaces are not assumed to be synchronized. The September 2025 amendment and current Gazette/India Code material must be reconciled against older base-rule or portal-summary wording; portal copy cannot calculate an establishment obligation or silently replace current statutory material.
 
 Wave 5H does **not** decide Apprentices Act applicability, mandatory engagement, worker strength, apprentice numbers, percentage bands, State-law effects, customer role trade classification, apprentice category, individual eligibility, age/education/fitness/reservation/disability treatment, contract validity, training period/completion, stipend/payment, examination/certification, NAPS eligibility/reimbursement/DBT, competent authority, enforcement, penalty, dispute or remedy.
 
-The governed Wave 5H catalogue contains eight official `curated-source-identity-v1` / `source-identity-only` records and twelve reason-code-scoped chunks. Exact controlled full-file Drive mirrors and a qualified consolidated current-Rules review remain approval dependencies.
+### Wave 5I — Child and Adolescent Labour safeguarding source readiness
+
+Wave 5I promotes `feature.legal.child-adolescent-labour` into a safeguarding-first organisation-level review of:
+
+- the current central Child and Adolescent Labour Act source identity;
+- the 1988 principal Rules and 2017 Amendment Rules source identities;
+- S.O. 2823(E), which brought the 2016 amendment into force on 1 September 2016;
+- S.O. 2827(E), the 30 August 2017 hazardous Schedule amendment source identity;
+- current Act/Rules/Schedule reconciliation;
+- privacy-safe age-band and work-type/hazard classification-source controls;
+- family-enterprise and artist-participation exception-source controls;
+- education-protection, register/notice, State-variation, District-authority and immediate human safeguarding-escalation controls;
+- controlled source references only.
+
+Wave 5I is **not** case management, an emergency service, automated age inference or safeguarding risk scoring. It does not determine whether a person is a child/adolescent, whether work/employment exists, whether an occupation/process is hazardous, whether a Schedule branch or statutory exception applies, schooling impact, an age dispute, register/notice compliance, an offence, rescue/complaint requirement, authority jurisdiction, liability, penalty, prosecution, compounding, rehabilitation, fund/payment, State-law applicability or remedy. Any live safeguarding concern must leave the RAG route for an approved human safeguarding process.
+
+The governed Wave 5I catalogue contains five official `curated-source-identity-v1` / `source-identity-only` records and ten reason-code-scoped chunks. The active Drive Source Register does not yet contain exact controlled Child and Adolescent Labour files, so exact full-file mirrors and qualified current-law/State-variation review remain approval dependencies.
 
 ## Legal and privacy status
 
-All Wave 1–5H catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Passing software tests is implementation evidence only and does not grant legal, privacy, RAG, source-file, security or release approval.
+All Wave 1–5I catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
 
-The private-beta v3 page includes explicit in-memory panels for seventeen substantive waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after the user explicitly submits. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts.
+The private-beta v3 page includes explicit in-memory panels for eighteen substantive waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after the user explicitly submits. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts.
 
-Wave 5H excludes apprentice identities, date of birth/age, sex/gender, caste/community, disability or medical data, education records, Aadhaar, contact/address information, contract bodies/numbers, bank/stipend/payroll data, training dates, attendance, assessments/certificates, disputes, notices/orders, injury information and evidence bodies. Evidence arrays are reduced to controlled references only.
+Wave 5I excludes child/adolescent identities, exact age/date of birth, parent/guardian/family identities, school or education records, medical/disability data, caste/community/religion, addresses/contact or precise child-linked location data, photographs/video, pay/payroll, schedules/attendance, allegation/abuse/trafficking/exploitation narratives, rescue/complaint/case/notice/order content, victim/witness data, police/CWC/District Magistrate case facts and evidence bodies. Evidence arrays are reduced to controlled references only.
 
 ## What makes GrowWithHR different
 
@@ -136,7 +131,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. Wave 1–5H legal-review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. Wave 1–5I legal-review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -158,6 +153,7 @@ node tests/employee-compensation-wave5e-private-beta-checks.mjs
 node tests/oshwc-wave5f-private-beta-checks.mjs
 node tests/industrial-relations-wave5g-private-beta-checks.mjs
 node tests/apprentices-wave5h-private-beta-checks.mjs
+node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
