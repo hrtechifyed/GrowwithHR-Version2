@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 5C stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 5D stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
@@ -42,7 +42,8 @@ The Wave 5C stacked private-beta registry contains 57 runnable feature profiles:
 - one Appropriate Government Wave 5A profile uses a deterministic cross-code source-readiness and escalation review with a governed nine-source catalogue;
 - one Maharashtra Shops and Establishments Wave 5B profile uses a deterministic State source-readiness and organisational-control review with a governed five-source catalogue;
 - one Code on Wages Wave 5C profile uses a deterministic organisation-level source-readiness, version, jurisdiction-routing and specialist-escalation review with a governed seven-source catalogue;
-- 10 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- one Gratuity Wave 5D profile uses a deterministic Chapter V, First Schedule, transition and organisational-control review with a governed four-source catalogue;
+- 9 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
 ### Wave 1 — POSH
 
@@ -90,28 +91,34 @@ The catalogue contains five official source identities and eight reason-code-sco
 
 ### Wave 5C — Code on Wages source readiness
 
-The Wave 5C profile promotes `feature.legal.code-on-wages` from the governance fallback into a bounded organisation-level review of:
-
-- declared Central, State, mixed, multi-state or unresolved source route;
-- Code on Wages, 2019 source status;
-- Code on Wages (Central) Rules, 2026 source status and the July 2026 Rules corrigendum control;
-- commencement and implementation source-set status, including S.O. 4604(E) and S.O. 5322(E);
-- effective-date and source-version control;
-- appropriate-Government source-routing control;
-- bounded rate-source and State/Union Territory instrument registers;
-- specialist escalation and controlled source references.
+The Wave 5C profile promotes `feature.legal.code-on-wages` from the governance fallback into a bounded organisation-level review of Code, Rules, commencement, version, jurisdiction and bounded source-register controls.
 
 Wave 5C does **not** select an individual's minimum wage, wage rate, wage category, zone, scheduled employment, applicable Government or State instrument. It performs no payroll, bonus, deduction, overtime, wage-period, entitlement, arrears, damages or remedy arithmetic and does not decide whether an employee is owed any amount.
 
-The governed retrieval catalogue contains seven official source identities and nine reason-code-scoped chunks. Existing Wave 5A Code, Central Rules and Ministry-jurisdiction identities are reused. The new commencement, corrigendum and notification-register records remain source-identity controls pending exact controlled-file acquisition and qualified review. State and Union Territory rate/category/zone source packs are not represented as complete or selected.
+### Wave 5D — Gratuity source readiness
+
+The Wave 5D profile promotes `feature.legal.social-security.gratuity` from the governance fallback into a bounded organisation-level review of:
+
+- declared source route;
+- Code on Social Security Chapter V, sections 53–58 source status;
+- First Schedule Chapter V applicability-source status;
+- Social Security (Central) Rules, 2026 Chapter V, Rules 31–34 source status;
+- commencement and corrigendum source controls;
+- transition from the Payment of Gratuity (Central) Rules, 1972 under the 2026 Rules' supersession-and-savings clause;
+- establishment-classification and workforce-category source controls;
+- authority/process source control, specialist escalation and controlled references.
+
+Wave 5D does **not** decide whether Chapter V applies to a customer, classify an establishment, count employees, determine an individual's eligibility, continuous service, fixed-term status, wages, gratuity amount, nomination, forfeiture, insurance, claim, appeal, recovery or remedy.
+
+The governed retrieval catalogue contains four exact controlled Social Security files and eight reason-code-scoped chunks. Wave 5D reuses their registered SHA-256 fingerprints rather than introducing unverified source-file claims. State and Union Territory instruments and customer-specific facts remain qualified-review dependencies.
 
 ## Legal and privacy status
 
-All Wave 1–5C catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. No wave certifies compliance or creates an individual entitlement, contribution, claim, exemption, enforcement, jurisdiction, applicable-wage or State-law conclusion.
+All Wave 1–5D catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. No wave certifies compliance or creates an individual entitlement, contribution, claim, exemption, enforcement, jurisdiction, applicable-wage, Gratuity-amount or State-law conclusion.
 
-The private-beta v3 page includes explicit in-memory review panels for twelve substantive waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and controlled references after the user chooses to submit. They do not save inputs or results.
+The private-beta v3 page includes explicit in-memory review panels for thirteen substantive waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and controlled references after the user chooses to submit. They do not save inputs or results.
 
-Wave 5C excludes employee identities, payroll, wage records, payslips, attendance, disputes, claims, notices, orders, individual entitlements and evidence bodies. Its rate-source and State-instrument controls contain source-readiness statuses and references only, not customer payroll or employee evidence.
+Wave 5D excludes employee identities, nominee or heir data, payroll, wages, payslips, attendance, service records, claims, disputes, notices, orders, medical or death information and evidence bodies.
 
 ## What makes GrowWithHR different
 
@@ -129,7 +136,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1–5C review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1–5D review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -146,6 +153,7 @@ node tests/esi-wave4d-private-beta-checks.mjs
 node tests/jurisdiction-wave5a-private-beta-checks.mjs
 node tests/shops-wave5b-private-beta-checks.mjs
 node tests/code-on-wages-wave5c-private-beta-checks.mjs
+node tests/gratuity-wave5d-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
