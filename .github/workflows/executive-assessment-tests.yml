@@ -1,3 +1,4 @@
+# Wave 4D includes the ESI exemption and enforcement-authority browser panel.
 name: Executive Assessment Tests
 
 on:
@@ -152,6 +153,7 @@ jobs:
           tests/e2e/analyze-company-v3-esi-wave4a.spec.ts
           tests/e2e/analyze-company-v3-esi-wave4b.spec.ts
           tests/e2e/analyze-company-v3-esi-wave4c.spec.ts
+          tests/e2e/analyze-company-v3-esi-wave4d.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts

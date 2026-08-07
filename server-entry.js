@@ -6,7 +6,7 @@ const {
 } = require("./server-m7-operational-readiness");
 const {
     handleSharedLegalExplanationRequest
-} = require("./server-legal-explanation-router-wave4c");
+} = require("./server-legal-explanation-router-wave4d");
 const { handleLegalExplanationRequest } = require("./server-legal-explanation");
 const { handleOperationalExplanationRequest } = require("./server-operational-explanation");
 const { handleM4DeliveryRequest } = require("./server-m4-delivery");

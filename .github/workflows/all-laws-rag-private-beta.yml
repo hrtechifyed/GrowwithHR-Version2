@@ -1,3 +1,4 @@
+# Wave 4D includes ESI exemption-governance and enforcement-authority controls.
 name: All-Laws RAG Private Beta
 
 on:
@@ -12,6 +13,7 @@ on:
       - "growwithhr-rag/data/esi-wave4a-source-chunks.v1.json"
       - "growwithhr-rag/data/esi-wave4b-source-chunks.v1.json"
       - "growwithhr-rag/data/esi-wave4c-source-chunks.v1.json"
+      - "growwithhr-rag/data/esi-wave4d-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -19,6 +21,7 @@ on:
       - "server-esi-wave4a-*.js"
       - "server-esi-wave4b-*.js"
       - "server-esi-wave4c-*.js"
+      - "server-esi-wave4d-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -26,6 +29,7 @@ on:
       - "server-legal-explanation-router-wave4a.js"
       - "server-legal-explanation-router-wave4b.js"
       - "server-legal-explanation-router-wave4c.js"
+      - "server-legal-explanation-router-wave4d.js"
       - "server-legal-rag-catalogs.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
@@ -33,6 +37,7 @@ on:
       - "js/assessment-v3/esi-wave4a-*.js"
       - "js/assessment-v3/esi-wave4b-*.js"
       - "js/assessment-v3/esi-wave4c-*.js"
+      - "js/assessment-v3/esi-wave4d-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -40,6 +45,7 @@ on:
       - "tests/esi-wave4a-*.mjs"
       - "tests/esi-wave4b-*.mjs"
       - "tests/esi-wave4c-*.mjs"
+      - "tests/esi-wave4d-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -88,6 +94,9 @@ jobs:
 
       - name: Validate ESI Wave 4C overlay
         run: node tests/esi-wave4c-private-beta-checks.mjs
+
+      - name: Validate ESI Wave 4D overlay
+        run: node tests/esi-wave4d-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
