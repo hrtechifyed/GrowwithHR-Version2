@@ -21,7 +21,7 @@ The approved cross-origin client is `https://hrtechifyed.github.io`. Additional 
 
 `/analyze-company-v3.html` is no-index and disabled from public routing by default. M1–M5 modules consume protected assessment answers through compatibility adapters and produce isolated traceability, Compliance Story and workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route mounts fifteen legal-review surfaces:
+The v3 route mounts sixteen legal-review surfaces:
 
 - the existing POSH Internal Committee threshold explanation;
 - the POSH Wave 1 panel;
@@ -32,7 +32,8 @@ The v3 route mounts fifteen legal-review surfaces:
 - the Maharashtra Shops Wave 5B panel;
 - the Code on Wages Wave 5C panel;
 - the Gratuity Wave 5D panel;
-- the Employee's Compensation Wave 5E panel.
+- the Employee's Compensation Wave 5E panel;
+- the OSHWC Wave 5F panel.
 
 All panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
@@ -66,7 +67,7 @@ The deterministic decision owns applicability, control-review or entitlement-rou
 
 ## Runtime coverage
 
-The Wave 5E stacked private-beta registry exposes 57 active profiles:
+The Wave 5F stacked private-beta registry exposes 57 active profiles:
 
 - seven POSH profiles;
 - ten Maternity Benefit profiles;
@@ -77,16 +78,17 @@ The Wave 5E stacked private-beta registry exposes 57 active profiles:
 - one Code on Wages Wave 5C profile;
 - one Gratuity Wave 5D profile;
 - one Employee's Compensation Wave 5E profile;
-- eight conservative governance-fallback profiles.
+- one OSHWC Wave 5F profile;
+- seven conservative governance-fallback profiles.
 
 The resulting runtime mix is:
 
-- 49 substantive profiles;
-- 8 governance-fallback profiles;
-- 15 catalogues, comprising 14 substantive catalogues and one governance fallback;
+- 50 substantive profiles;
+- 7 governance-fallback profiles;
+- 16 catalogues, comprising 15 substantive catalogues and one governance fallback;
 - zero blocked runtime profiles.
 
-The Wave 1–5E catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`.
+The Wave 1–5F catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`.
 
 ## Wave 5A authority boundary
 
@@ -108,41 +110,39 @@ The declared route is an organisation-level source-routing input, not a legal co
 
 ## Wave 5D authority boundary
 
-Wave 5D promotes `feature.legal.social-security.gratuity` into a substantive deterministic source-readiness profile. It accepts only:
+Wave 5D promotes `feature.legal.social-security.gratuity` into a substantive deterministic source-readiness profile. It accepts organisation-level Chapter V, First Schedule, Central Rules, commencement, transition, establishment-classification, workforce-category, authority/process, specialist escalation and controlled-reference statuses only.
 
-- a declared source route;
-- Chapter V, sections 53–58 source status;
-- First Schedule Chapter V applicability-source status;
-- Social Security (Central) Rules, 2026 Chapter V, Rules 31–34 source status;
-- commencement and corrigendum source-set status;
-- legacy gratuity-rule transition control;
-- establishment-classification control;
-- workforce-category source control;
-- authority/process source control;
-- specialist escalation;
-- controlled references.
-
-These are organisation-level controls only. Wave 5D does not determine customer coverage, classify an establishment, count employees or decide an individual's eligibility, continuous service, fixed-term status, wages, gratuity amount, nomination, forfeiture, insurance, claim, appeal, recovery or remedy.
+Wave 5D does not determine customer coverage, classify an establishment, count employees or decide an individual's eligibility, continuous service, fixed-term status, wages, gratuity amount, nomination, forfeiture, insurance, claim, appeal, recovery or remedy.
 
 ## Wave 5E authority boundary
 
-Wave 5E promotes `feature.legal.social-security.employee-compensation` into a substantive deterministic source-readiness profile. It accepts only:
+Wave 5E promotes `feature.legal.social-security.employee-compensation` into a substantive deterministic source-readiness profile. It accepts organisation-level Chapter VII, applicability/employee-class schedules, occupational-disease and compensation-factor schedule source statuses, current Central Rules, commencement, transition, ESI-overlap, employer-process, authority/process, specialist escalation and controlled references only.
 
-- a declared source route;
-- Chapter VII, sections 73–99 source status;
-- First and Second Schedule applicability/employee-class source-set status;
-- Third Schedule occupational-disease source status;
-- Sixth Schedule compensation-factor source status;
-- Social Security (Central) Rules, 2026 Chapter XIII, Rules 57–63 source status;
-- commencement and corrigendum source-set status;
-- legacy Employee's Compensation rules transition control;
-- ESI-overlap source-routing control;
-- employer reporting and employee-information control;
-- competent-authority/process source control;
+Wave 5E does not determine customer or worker coverage, ESI applicability, whether an accident or occupational disease arose out of or in the course of employment, diagnosis, causation, disablement, dependency, employer liability, monthly wages, compensation amount, interest, damages, claim, appeal, recovery or remedy. The Third and Sixth Schedules remain source-control inputs only; retrieval and provider output cannot diagnose a condition or perform compensation arithmetic.
+
+## Wave 5F authority boundary
+
+Wave 5F promotes `feature.legal.oshwc` into a substantive deterministic source-readiness profile. It accepts only:
+
+- a declared Central-sphere, Maharashtra general-labour, Maharashtra factory/other-port, mixed, multi-location or unresolved candidate source route;
+- OSHWC Code source status;
+- OSHWC Central Rules source status;
+- S.O. 5321(E) commencement-source status;
+- Maharashtra OSHWC (Labour) Rules, 2026 draft-source status;
+- Maharashtra OSHWC (Factories and Other Ports) Rules, 2026 draft-source status;
+- a draft-versus-final State-rule reconciliation control;
+- establishment-scope classification control;
+- registration source control;
+- core safety, health and welfare source control;
+- hours, leave and records source control;
+- authority and enforcement source control;
+- deferred special-category boundary control;
 - specialist escalation;
 - controlled references.
 
-These are organisation-level controls only. Wave 5E does not determine customer or worker coverage, ESI applicability, whether an accident or occupational disease arose out of or in the course of employment, diagnosis, causation, disablement, dependency, employer liability, monthly wages, compensation amount, interest, damages, claim, appeal, recovery or remedy. The Third and Sixth Schedules remain source-control inputs only; retrieval and provider output cannot diagnose a condition or perform compensation arithmetic.
+These are organisation-level source-readiness controls only. The two Maharashtra 2026 rule sets are drafts and may not be represented as final or operative. Wave 5F does not determine OSHWC applicability, worker-count thresholds, establishment or industry classification, factory/mine/port/plantation/building-work status, registration or licence liability, safety-standard sufficiency, working hours, overtime, leave, women-night-work conditions, incident-report sufficiency, inspection, penalty, prosecution or remedy.
+
+Contract labour, inter-State migrant workers and other Chapter XI special categories are deliberately deferred to later bounded packs. EPF and ESI dependencies remain separate deterministic source-routing questions.
 
 ## Source-governance boundary
 
@@ -163,16 +163,17 @@ Wave 5B contains five official Maharashtra source identities and eight reason-co
 
 Wave 5C contains seven official source identities and nine reason-code-scoped chunks. State/UT wage instruments, rate schedules, categories, zones and scheduled-employment mappings are not represented as selected or complete.
 
-Wave 5D contains four exact controlled files and eight reason-code-scoped chunks:
+Wave 5D contains four exact controlled Social Security files and eight reason-code-scoped chunks. Wave 5E reuses the same four exact files and contains nine reason-code-scoped chunks. State/UT instruments, customer-specific coverage and individual entitlement/injury facts remain qualified-review dependencies.
 
-1. Code on Social Security, 2020;
-2. Social Security (Central) Rules, 2026;
-3. S.O. 5319(E), dated 21 November 2025;
-4. S.O. 5936(E), dated 19 December 2025.
+Wave 5F contains five official source identities and ten reason-code-scoped chunks:
 
-The Wave 5D catalogue maps Chapter V sections 53–58, the First Schedule Chapter V entry, Rules 31–34, section 164/repeal-and-savings context, the 2026 Rules' supersession of the Payment of Gratuity (Central) Rules, 1972 subject to savings, and commencement/corrigendum context. It reuses the exact SHA-256 fingerprints registered in the active Source Register. State/UT instruments and customer-specific facts remain qualified-review dependencies.
+1. Occupational Safety, Health and Working Conditions Code, 2020;
+2. Occupational Safety, Health and Working Conditions (Central) Rules, 2026;
+3. S.O. 5321(E), dated 21 November 2025;
+4. draft Maharashtra Occupational Safety, Health and Working Conditions (Labour) Rules, 2026;
+5. draft Maharashtra Occupational Safety, Health and Working Conditions (Factories and Other Ports) Rules, 2026.
 
-Wave 5E reuses the same four exact controlled Social Security files and contains nine reason-code-scoped chunks. It maps Chapter VII sections 73–99, the First and Second Schedule applicability/employee-class sources, the Third Schedule occupational-disease source, the Sixth Schedule compensation-factor source, Rules 57–63, section 164/repeal-and-savings context, the 2026 Rules' supersession of the Employee's Compensation Rules, 1924, Employee's Compensation (Transfer of Money) Rules, 1935 and Employee's Compensation (Venue of Proceedings) Rules, 1996 subject to savings, and commencement/corrigendum context. State/UT instruments, customer-specific coverage and ESI-overlap determinations, and individual injury/entitlement facts remain qualified-review dependencies.
+The Code and Central Rules reuse existing Wave 5A source-identity registrations. The commencement and Maharashtra records are curated official source identities pending exact controlled full-file Drive mirrors. Both Maharashtra rule sets are explicitly `draft`; any final State rule instrument must be separately acquired, fingerprinted and approved before replacing draft-source controls. Wave 5F therefore cannot represent a complete final Maharashtra OSHWC rule pack.
 
 ## Privacy boundaries
 
@@ -184,9 +185,11 @@ Maharashtra Shops Wave 5B excludes names, addresses, contact details, registrati
 
 Code on Wages Wave 5C excludes employee identities, payroll, wage records, payslips, attendance, disputes, claims, notices, orders, individual entitlements and evidence bodies.
 
-Gratuity Wave 5D excludes employee identities, nominee or heir data, payroll, wages, payslips, attendance, service records, claims, disputes, notices, orders, medical or death information and evidence bodies. It accepts no individual service or wage values and no raw claim or entitlement evidence.
+Gratuity Wave 5D excludes employee identities, nominee or heir data, payroll, wages, payslips, attendance, service records, claims, disputes, notices, orders, medical or death information and evidence bodies.
 
-Employee's Compensation Wave 5E excludes employee and dependant identities, age, sex, addresses, payroll, wages, payslips, attendance, service history, accident or injury narratives, medical or death information, claims, disputes, notices, orders, bank/payment data, compensation amounts and evidence bodies. It accepts only organisation-level source-control statuses and controlled references.
+Employee's Compensation Wave 5E excludes employee and dependant identities, age, sex, addresses, payroll, wages, payslips, attendance, service history, accident or injury narratives, medical or death information, claims, disputes, notices, orders, bank/payment data, compensation amounts and evidence bodies.
+
+OSHWC Wave 5F excludes names, contact details, addresses, registration numbers, employee identities, age or sex data, work schedules, attendance, payroll, wages, appointment letters, medical or health records, accident or dangerous-occurrence narratives, licences, certificates, notices, orders, penalties, disputes and evidence bodies. It accepts only organisation-level source/control statuses and controlled references.
 
 ## Operational endpoints
 
@@ -196,7 +199,7 @@ GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
 
-`server-entry.js` uses the Wave 5E router overlay. The overlay preserves Waves 1–5D, activates the bounded Employee's Compensation source-readiness profile and reports the 49/8 runtime mix.
+`server-entry.js` uses the Wave 5F router overlay. The overlay preserves Waves 1–5E, activates the bounded OSHWC source-readiness profile and reports the 50/7 runtime mix.
 
 ## Approval boundary
 
