@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "researchVersion": "1.0.0",
+  "updatedAt": "2026-08-07",
+  "featureId": "feature.legal.bonded-forced-labour",
+  "lawFamilyId": "bonded-forced-labour",
+  "status": "research-inventory-prepared-runtime-blocked",
+  "runtimeRole": "none",
+  "assessmentCapture": false,
+  "runtimeActivation": false,
+  "ragCatalogCreationAllowed": false,
+  "browserSurfaceAllowed": false,
+  "applicabilityAuthority": "none",
+  "legalAdvice": false,
+  "legalReviewStatus": "needs-specialist-legal-review",
+  "safeguardingReviewStatus": "needs-specialist-safeguarding-review",
+  "sourceFileStatus": "no-family-specific-exact-controlled-files-in-active-source-register",
+  "researchConclusion": "The constitutional, bonded-labour, criminal, rescue/prosecution and rehabilitation frameworks overlap and cannot safely be reduced to a customer-facing bonded/forced-labour classifier or allegation intake. Keep this feature on governance fallback until qualified legal and safeguarding review approves a source boundary and a non-identifying organisational-control model.",
+  "sourceInventory": [
+    {
+      "sourceId": "constitution-of-india-2026-article-23",
+      "title": "The Constitution of India 2026 — Article 23",
+      "publisher": "Legislative Department, Ministry of Law and Justice",
+      "officialUrl": "https://www.legislative.gov.in/documents/constitution-of-india/constitution-of-india-AjN2EjMtQWa?pageTitle=Constitution-of-India",
+      "role": "constitutional-boundary",
+      "status": "official-source-identified-exact-controlled-file-pending",
+      "notes": "Article 23 prohibits traffic in human beings, begar and other similar forms of forced labour. It is a constitutional boundary, not a product classifier."
+    },
+    {
+      "sourceId": "bonded-labour-system-abolition-act-1976",
+      "title": "Bonded Labour System (Abolition) Act, 1976",
+      "publisher": "Ministry of Labour and Employment / India Code",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/1491",
+      "role": "primary-statute",
+      "status": "official-source-identified-exact-controlled-file-pending",
+      "notes": "Provides bonded-labour-system definitions, abolition, bonded-debt consequences, implementing authorities, Vigilance Committees and offences."
+    },
+    {
+      "sourceId": "bonded-labour-system-abolition-rules-1976",
+      "title": "Bonded Labour System (Abolition) Rules, 1976",
+      "publisher": "Government of India / India Code",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/1491",
+      "role": "primary-rules",
+      "status": "official-source-identified-exact-controlled-file-pending",
+      "notes": "India Code records the Rules dated 28 February 1976. Exact controlled file acquisition remains pending."
+    },
+    {
+      "sourceId": "bharatiya-nyaya-sanhita-2023-forced-labour-trafficking",
+      "title": "Bharatiya Nyaya Sanhita, 2023 — sections 143–146",
+      "publisher": "Ministry of Home Affairs / India Code",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/20062?col=123456789%2F1362",
+      "role": "criminal-law-overlap",
+      "status": "official-source-identified-exact-controlled-file-pending",
+      "notes": "The current criminal-law source separately covers trafficking, exploitation of trafficked persons, slavery and unlawful compulsory labour. Product logic must not collapse these offences into the Bonded Labour Act route."
+    },
+    {
+      "sourceId": "bonded-labour-rehabilitation-scheme-2021",
+      "title": "Central Sector Scheme for Rehabilitation of Bonded Labourer-2021",
+      "publisher": "Ministry of Labour and Employment",
+      "officialUrl": "https://labour.gov.in/sites/default/files/20220208154105_compressed.pdf",
+      "role": "rehabilitation-transition-source",
+      "status": "historical-current-transition-basis-not-standalone-2026-31-authority",
+      "notes": "The scheme was approved for FY 2021-22 to 2025-26. Its annexures contain highly sensitive individual and case data that is prohibited from product/provider capture."
+    },
+    {
+      "sourceId": "parliament-labour-standing-committee-report-15-2026",
+      "title": "Standing Committee on Labour, Textiles and Skill Development — Fifteenth Report, 2026",
+      "publisher": "Parliament of India",
+      "officialUrl": "https://sansad.in/getFile/app/lsscommittee/Labour%2C%20Textiles%20and%20Skill%20Development/18_Labour_Textiles_and_Skill_Development_15.pdf?source=app",
+      "role": "rehabilitation-transition-evidence",
+      "status": "official-current-transition-evidence",
+      "notes": "The Committee records that the 2021 rehabilitation scheme is being merged with the Labour Welfare Scheme for 2026-27 to 2030-31 and recommends a detailed post-merger operational plan. The product must not infer that plan."
+    },
+    {
+      "sourceId": "nhrc-bonded-labour-advisory-2-2021",
+      "title": "NHRC Advisory 2.0 to Identify, Release and Rehabilitate Bonded Labourers",
+      "publisher": "National Human Rights Commission",
+      "officialUrl": "https://www.nhrc.nic.in/activities/other_advisories",
+      "role": "human-rights-safeguarding-guidance",
+      "status": "official-guidance-identified-exact-controlled-file-pending",
+      "notes": "Current NHRC advisory listings continue to surface the 8 December 2021 advisory. It is safeguarding/administrative guidance, not an automated legal classifier."
+    },
+    {
+      "sourceId": "ministry-bonded-labour-sop-2026",
+      "title": "Standard Operating Procedure for Identification and Rescue of Bonded Labourers and Prosecution of Offenders — Ministry letter dated 14 May 2026",
+      "publisher": "Ministry of Labour and Employment",
+      "officialUrl": null,
+      "role": "current-rescue-prosecution-operational-source",
+      "status": "exact-official-ministry-file-pending",
+      "notes": "NHRC July 2026 materials expressly direct authorities to follow this Ministry SOP, but the exact Ministry-hosted source file has not yet been acquired. This is a hard activation blocker."
+    },
+    {
+      "sourceId": "prajwala-v-union-of-india-2026-insc-609",
+      "title": "Prajwala v. Union of India & Ors. — 2026 INSC 609",
+      "publisher": "Supreme Court of India",
+      "officialUrl": "https://api.sci.gov.in/supremecourt/2022/7980/7980_2022_6_1502_71676_Judgement_29-May-2026.pdf",
+      "role": "constitutional-jurisprudence-boundary",
+      "status": "official-current-judgment-identified-exact-controlled-file-pending",
+      "notes": "Use only for qualified constitutional/jurisprudential mapping. It must not be converted into a bonded-labour or trafficking classifier."
+    }
+  ],
+  "hardBlockers": [
+    {
+      "id": "exact-2026-ministry-sop",
+      "status": "open",
+      "requirement": "Acquire and fingerprint the exact Ministry of Labour and Employment SOP referenced as issued by letter dated 14 May 2026."
+    },
+    {
+      "id": "labour-welfare-scheme-2026-31-operational-plan",
+      "status": "open",
+      "requirement": "Acquire the notified/approved 2026-27 to 2030-31 Labour Welfare Scheme and detailed post-merger bonded-labour rehabilitation operational plan before representing current rehabilitation workflow, eligibility or amounts."
+    },
+    {
+      "id": "qualified-cross-framework-legal-mapping",
+      "status": "open",
+      "requirement": "Qualified counsel must map Article 23, the 1976 Act/Rules, BNS sections 143–146, current Supreme Court jurisprudence and State/authority process without collapsing distinct legal tests."
+    },
+    {
+      "id": "safeguarding-human-escalation-design",
+      "status": "open",
+      "requirement": "Approve a human-only escalation path for live allegations, rescue, threat, retaliation, trafficking, confinement, violence or other immediate safeguarding concerns outside the RAG/provider route."
+    },
+    {
+      "id": "privacy-access-retention-design",
+      "status": "open",
+      "requirement": "Approve collection minimisation, access, retention, deletion and incident-handling controls before any future case-adjacent data can be contemplated."
+    },
+    {
+      "id": "state-operational-variation-review",
+      "status": "open",
+      "requirement": "Review State/UT implementation, Vigilance Committee, District Magistrate and rehabilitation-fund operational variations before any jurisdiction-specific workflow."
+    }
+  ],
+  "futureAssessmentBoundary": {
+    "captureAllowed": false,
+    "indicatorTaxonomyCaptureAllowed": false,
+    "caseIntakeAllowed": false,
+    "riskScoringAllowed": false,
+    "automatedClassificationAllowed": false,
+    "providerNarrativeAnalysisAllowed": false,
+    "allowedCurrentAction": "research-and-qualified-review-only"
+  },
+  "prohibitedData": [
+    "person identity or contact data",
+    "home or precise current location",
+    "Aadhaar or other identity numbers",
+    "family or dependant identities",
+    "caste, community, sex/gender or other protected-characteristic data",
+    "disability, health or medical data",
+    "images, audio or video",
+    "recruiter, creditor, alleged captor or accused identity",
+    "debt amount, debt instrument or repayment narrative",
+    "wage, payroll, attendance or bank/DBT data",
+    "movement restriction, document retention or confinement narrative",
+    "violence, threat, retaliation, coercion or abuse narrative",
+    "trafficking or sexual exploitation narrative",
+    "complaint, rescue, FIR, case, prosecution or court material",
+    "victim or witness identity or statement",
+    "release certificate or rehabilitation application",
+    "evidence bodies or attachments"
+  ],
+  "prohibitedOutcomes": [
+    "person-is-bonded-labourer",
+    "forced-labour-determined",
+    "trafficking-determined",
+    "bonded-debt-determined",
+    "offence-or-liability-determined",
+    "rescue-or-release-required",
+    "release-certificate-validity-determined",
+    "rehabilitation-eligibility-determined",
+    "rehabilitation-amount-determined",
+    "competent-authority-selected",
+    "prosecution-or-penalty-determined",
+    "credibility-or-evidence-sufficiency-determined",
+    "compensation-or-remedy-determined"
+  ],
+  "approvalGates": {
+    "legalReview": false,
+    "safeguardingReview": false,
+    "privacyReview": false,
+    "ragApproval": false,
+    "sourceFiles": false,
+    "sectionMappings": false,
+    "assessmentFacts": false,
+    "deterministicRules": false,
+    "securityApproval": false,
+    "releaseApproval": false
+  }
+}
