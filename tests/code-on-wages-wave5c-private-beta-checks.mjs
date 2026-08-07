@@ -1,0 +1,80 @@
+import assert from "node:assert/strict";
+import {createRequire} from "node:module";
+import path from "node:path";
+import {fileURLToPath} from "node:url";
+import {createCodeOnWagesWave5cPayload,CODE_ON_WAGES_WAVE5C_FEATURE_ID as BROWSER_FEATURE_ID} from "../js/assessment-v3/code-on-wages-wave5c-explanation-api-client.js";
+const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
+const require=createRequire(import.meta.url);
+const router=require(path.join(ROOT,"server-legal-explanation-router-wave5c.js"));
+const loader=require(path.join(ROOT,"server-legal-rag-catalogs.js"));
+const {createCompleteLegalModulesLoader}=require(path.join(ROOT,"server-legal-rag-modules.js"));
+const {FALLBACK_CATALOG_ID}=require(path.join(ROOT,"server-all-laws-private-beta.js"));
+const {CODE_ON_WAGES_WAVE5C_CATALOG_ID,CODE_ON_WAGES_WAVE5C_FEATURE_IDS}=require(path.join(ROOT,"server-code-on-wages-wave5c-rule-catalogs.js"));
+const modules=await createCompleteLegalModulesLoader({retrievalMode:"lexical"})();
+const ragRuntime=await import("../growwithhr-rag/legal-rag-runtime.js");
+const registry=router.DEFAULT_PROFILE_REGISTRY;
+const specifications=router.defaultFeatureSpecifications();
+const validation=ragRuntime.validateLegalRagProfiles(registry);
+assert.equal(validation.valid,true,JSON.stringify(validation.errors,null,2));
+assert.equal(registry.profiles.length,57);
+assert.equal(Object.keys(specifications).length,57);
+assert.equal(registry.profiles.filter((p)=>p.catalogId===CODE_ON_WAGES_WAVE5C_CATALOG_ID).length,1);
+assert.equal(registry.profiles.filter((p)=>p.catalogId===FALLBACK_CATALOG_ID).length,10);
+const snapshot=loader.loadGovernedLegalCatalogs({profileRegistry:registry});
+assert.equal(Object.keys(snapshot.catalogs).length,13);
+const catalog=snapshot.catalogs[CODE_ON_WAGES_WAVE5C_CATALOG_ID];
+assert.equal(catalog.sources.length,7);
+assert.equal(catalog.chunks.length,9);
+assert.equal(catalog.sources.every((source)=>source.fingerprintBasis==="curated-source-identity-v1"),true);
+assert.equal(catalog.sources.every((source)=>source.snapshotRole==="source-identity-only"),true);
+for(const id of ["code-on-wages-2019","code-on-wages-central-rules-2026","code-on-wages-commencement-so-4604e-2020","code-on-wages-commencement-so-5322e-2025","code-on-wages-central-rules-corrigendum-2026","code-on-wages-central-notification-register-2026","ministry-labour-jurisdiction-2026"])assert.ok(catalog.sources.find((source)=>source.registrySourceId===id),id);
+const status=router.statusPayload(registry,snapshot,"lexical");
+assert.equal(status.profileCount,57);
+assert.equal(status.substantiveProfileCount,47);
+assert.equal(status.governanceFallbackProfileCount,10);
+let scenarios=0;
+for(const featureId of CODE_ON_WAGES_WAVE5C_FEATURE_IDS){
+ const profile=registry.profiles.find((p)=>p.featureId===featureId),spec=specifications[featureId];
+ assert.ok(profile);assert.ok(spec);assert.equal(profile.catalogId,CODE_ON_WAGES_WAVE5C_CATALOG_ID);
+ const catalogValidation=modules.assurance.validateLegalRuleCatalog(spec.ruleCatalog);
+ assert.equal(catalogValidation.valid,true,`${featureId}: ${JSON.stringify(catalogValidation.errors,null,2)}`);
+ for(const scenario of spec.ruleCatalog.rules[0].automatedBoundaryTestScenarios){
+  const normalized=spec.normalizeBody({answers:scenario.answers});
+  const assurance=modules.assurance.evaluateLegalRuleAssurance({answers:normalized.answers,catalog:spec.ruleCatalog,evaluatedAt:"2026-08-07T00:00:00.000Z"});
+  const decision=assurance.decisions[0];
+  assert.equal(decision.status,scenario.expectedStatus,`${featureId}/${scenario.scenarioId}`);
+  assert.equal(decision.reasonCode,scenario.expectedReasonCode,`${featureId}/${scenario.scenarioId}`);
+  const routed=modules.ragRuntime.runLegalRagRetrieval({featureId,decision,registry,catalogs:snapshot.catalogs});
+  assert.equal(routed.retrieval.retrievalStatus,"completed");
+  assert.equal(routed.retrieval.usedForDecision,false);
+  assert.equal(routed.retrieval.applicabilityAuthority,"none");
+  assert.equal(routed.retrieval.retrievedChunks.length>0,true);
+  assert.equal(routed.retrieval.retrievedChunks.every((chunk)=>decision.sourceRegistryIds.includes(chunk.registrySourceId)),true);
+  const request=modules.contract.buildLegalExplanationRequest({decision,retrievalTrace:routed.retrieval,requestedAt:"2026-08-07T00:00:00.000Z"});
+  const explanation=modules.contract.createDeterministicLegalExplanation({request});
+  assert.equal(explanation.decisionStatus,decision.status);assert.equal(explanation.reasonCode,decision.reasonCode);
+  scenarios+=1;
+ }
+}
+assert.equal(scenarios,3);
+assert.equal(BROWSER_FEATURE_ID,"feature.legal.code-on-wages");
+const payload=createCodeOnWagesWave5cPayload({answers:{
+ codeOnWagesDeclaredSourceRoute:"central-scope-candidate",codeOnWagesCodeSourceStatus:"evidenced",codeOnWagesCentralRulesSourceStatus:"evidenced",codeOnWagesRulesCorrigendumStatus:"evidenced",codeOnWagesCommencementSetStatus:"evidenced",codeOnWagesEffectiveDateVersionControl:"evidenced",codeOnWagesJurisdictionRoutingControl:"evidenced",codeOnWagesRateSourceRegisterControl:"evidenced",codeOnWagesStateInstrumentRegisterControl:"evidenced",codeOnWagesSpecialistEscalationControl:"evidenced",codeOnWagesEvidenceReferences:[{reference:"code-on-wages-source-readiness-register",body:"private evidence body"}],
+ employeeName:"Private Person",payrollBody:"private payroll",wageRecord:"private wage record",payslip:"private payslip",attendance:"private attendance",disputeNarrative:"private dispute",claimBody:"private claim",noticeBody:"private notice",orderBody:"private order",entitlementAmount:50000
+}});
+assert.deepEqual(payload,{answers:{codeOnWagesDeclaredSourceRoute:"central-scope-candidate",codeOnWagesCodeSourceStatus:"evidenced",codeOnWagesCentralRulesSourceStatus:"evidenced",codeOnWagesRulesCorrigendumStatus:"evidenced",codeOnWagesCommencementSetStatus:"evidenced",codeOnWagesEffectiveDateVersionControl:"evidenced",codeOnWagesJurisdictionRoutingControl:"evidenced",codeOnWagesRateSourceRegisterControl:"evidenced",codeOnWagesStateInstrumentRegisterControl:"evidenced",codeOnWagesSpecialistEscalationControl:"evidenced",codeOnWagesEvidenceReferences:["code-on-wages-source-readiness-register"]}});
+const payloadText=JSON.stringify(payload);
+for(const prohibited of ["Private Person","private payroll","private wage record","private payslip","private attendance","private dispute","private claim","private notice","private order","50000","private evidence body"])assert.equal(payloadText.includes(prohibited),false);
+const manifest=require(path.join(ROOT,"growwithhr-rag/manifests/candidates/code-on-wages-source-pack.candidate.v1.json"));
+const factContract=require(path.join(ROOT,"data/assessment/code-on-wages-assessment-fact-contract.v1.json"));
+const sectionMap=require(path.join(ROOT,"data/legal-source-governance/code-on-wages-section-mapping.v1.json"));
+const reviewDecision=require(path.join(ROOT,"data/legal-source-governance/code-on-wages-legal-review-decision.v1.json"));
+assert.equal(manifest.publication.legalReviewStatus,"needs-legal-review");
+assert.equal(manifest.sources.length,7);
+assert.equal(manifest.chunks,9);
+assert.equal(factContract.providerPolicy.employeeIdentitiesAllowed,false);
+assert.equal(factContract.providerPolicy.payrollBodiesAllowed,false);
+assert.equal(sectionMap.features[0].approvalStatus,"not-approved");
+assert.equal(reviewDecision.prohibitedOutcomes.includes("minimum-wage-selected"),true);
+assert.equal(reviewDecision.prohibitedOutcomes.includes("individual-entitlement-determined"),true);
+console.log(JSON.stringify({valid:true,profileCount:57,substantiveProfiles:47,substantiveCodeOnWagesWave5cProfiles:1,wave5cScenarios:scenarios,governanceFallbackProfiles:10,activeCatalogs:13,codeOnWagesSources:7,codeOnWagesChunks:9},null,2));

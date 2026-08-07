@@ -7,6 +7,7 @@ import "./esi-wave4c-explanation-panel.js";
 import "./esi-wave4d-explanation-panel.js";
 import "./jurisdiction-wave5a-explanation-panel.js";
 import "./shops-wave5b-explanation-panel.js";
+import "./code-on-wages-wave5c-explanation-panel.js";
 
 /**
  * GrowWithHR Compliance DNA
