@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 5D stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 5E stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles use feature-specific deterministic rules and the governed POSH statutory catalogue;
 - ten Maternity Benefit profiles use feature-specific deterministic rules and a governed Social Security Code, Central Rules, commencement and corrigendum catalogue;
@@ -43,7 +43,8 @@ The Wave 5D stacked private-beta registry contains 57 runnable feature profiles:
 - one Maharashtra Shops and Establishments Wave 5B profile uses a deterministic State source-readiness and organisational-control review with a governed five-source catalogue;
 - one Code on Wages Wave 5C profile uses a deterministic organisation-level source-readiness, version, jurisdiction-routing and specialist-escalation review with a governed seven-source catalogue;
 - one Gratuity Wave 5D profile uses a deterministic Chapter V, First Schedule, transition and organisational-control review with a governed four-source catalogue;
-- 9 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
+- one Employee's Compensation Wave 5E profile uses a deterministic Chapter VII, schedule, ESI-overlap, transition and organisational-process review with a governed four-source catalogue;
+- 8 profiles use conservative governance-fallback rules until their law-specific rules, official source packs and approvals are complete.
 
 ### Wave 1 — POSH
 
@@ -112,13 +113,31 @@ Wave 5D does **not** decide whether Chapter V applies to a customer, classify an
 
 The governed retrieval catalogue contains four exact controlled Social Security files and eight reason-code-scoped chunks. Wave 5D reuses their registered SHA-256 fingerprints rather than introducing unverified source-file claims. State and Union Territory instruments and customer-specific facts remain qualified-review dependencies.
 
+### Wave 5E — Employee's Compensation source readiness
+
+The Wave 5E profile promotes `feature.legal.social-security.employee-compensation` from the governance fallback into a bounded organisation-level review of:
+
+- declared source route;
+- Code on Social Security Chapter VII, sections 73–99 source status;
+- First and Second Schedule applicability and employee-class source-set status;
+- Third Schedule occupational-disease source status;
+- Sixth Schedule compensation-factor source status;
+- Social Security (Central) Rules, 2026 Chapter XIII, Rules 57–63 source status;
+- commencement and corrigendum source controls;
+- transition from the Employee's Compensation Rules, 1924, Employee's Compensation (Transfer of Money) Rules, 1935 and Employee's Compensation (Venue of Proceedings) Rules, 1996 under the 2026 Rules' supersession-and-savings clause;
+- ESI-overlap source-routing, employer reporting/employee-information, authority/process, specialist-escalation and controlled-reference statuses.
+
+Wave 5E does **not** decide whether Chapter VII applies to a customer or worker, whether ESI applies, whether an accident or occupational disease arose out of or in the course of employment, diagnosis, causation, disablement, dependency, employer liability, monthly wages, compensation amount, interest, damages, claim, appeal, recovery or remedy. The Third and Sixth Schedules are retrieval/source-control inputs only; they are not used to diagnose a condition or calculate compensation.
+
+The governed retrieval catalogue contains the same four exact controlled Social Security files and nine reason-code-scoped chunks. Wave 5E reuses their registered SHA-256 fingerprints and introduces no new unverified source-file claims. State and Union Territory instruments, customer-specific facts and individual injury/entitlement matters remain qualified-review dependencies.
+
 ## Legal and privacy status
 
-All Wave 1–5D catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. No wave certifies compliance or creates an individual entitlement, contribution, claim, exemption, enforcement, jurisdiction, applicable-wage, Gratuity-amount or State-law conclusion.
+All Wave 1–5E catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. No wave certifies compliance or creates an individual entitlement, contribution, claim, exemption, enforcement, jurisdiction, applicable-wage, Gratuity-amount, Employee's Compensation liability/amount or State-law conclusion.
 
-The private-beta v3 page includes explicit in-memory review panels for thirteen substantive waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and controlled references after the user chooses to submit. They do not save inputs or results.
+The private-beta v3 page includes explicit in-memory review panels for fourteen substantive waves. They send only strict allow-listed organisational facts, categories, bands, routes, statuses, counts and controlled references after the user chooses to submit. They do not save inputs or results.
 
-Wave 5D excludes employee identities, nominee or heir data, payroll, wages, payslips, attendance, service records, claims, disputes, notices, orders, medical or death information and evidence bodies.
+Wave 5E excludes employee and dependant identities, age, sex, addresses, payroll, wages, attendance, service records, accident or injury narratives, medical or death information, claims, disputes, notices, orders, bank/payment data and evidence bodies. Only organisation-level source-control statuses and controlled references are sent.
 
 ## What makes GrowWithHR different
 
@@ -136,7 +155,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1–5D review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. The Wave 1–5E review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -154,6 +173,7 @@ node tests/jurisdiction-wave5a-private-beta-checks.mjs
 node tests/shops-wave5b-private-beta-checks.mjs
 node tests/code-on-wages-wave5c-private-beta-checks.mjs
 node tests/gratuity-wave5d-private-beta-checks.mjs
+node tests/employee-compensation-wave5e-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
