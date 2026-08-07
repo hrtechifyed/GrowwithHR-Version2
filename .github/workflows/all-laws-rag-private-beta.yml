@@ -1,4 +1,4 @@
-# Wave 5D includes bounded Gratuity Chapter V source-readiness review.
+# Wave 5E includes bounded Employee's Compensation Chapter VII source-readiness review.
 name: All-Laws RAG Private Beta
 
 on:
@@ -9,10 +9,12 @@ on:
       - "data/legal-source-governance/shops-establishments-maharashtra-*.json"
       - "data/legal-source-governance/code-on-wages-*.json"
       - "data/legal-source-governance/gratuity-*.json"
+      - "data/legal-source-governance/employee-compensation-*.json"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
       - "data/assessment/code-on-wages-*.json"
       - "data/assessment/gratuity-*.json"
+      - "data/assessment/employee-compensation-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
@@ -26,6 +28,7 @@ on:
       - "growwithhr-rag/data/shops-wave5b-source-chunks.v1.json"
       - "growwithhr-rag/data/code-on-wages-wave5c-source-chunks.v1.json"
       - "growwithhr-rag/data/gratuity-wave5d-source-chunks.v1.json"
+      - "growwithhr-rag/data/employee-compensation-wave5e-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -38,6 +41,7 @@ on:
       - "server-shops-wave5b-*.js"
       - "server-code-on-wages-wave5c-*.js"
       - "server-gratuity-wave5d-*.js"
+      - "server-employee-compensation-wave5e-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -50,6 +54,7 @@ on:
       - "server-legal-explanation-router-wave5b.js"
       - "server-legal-explanation-router-wave5c.js"
       - "server-legal-explanation-router-wave5d.js"
+      - "server-legal-explanation-router-wave5e.js"
       - "server-legal-rag-catalogs.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
@@ -62,6 +67,7 @@ on:
       - "js/assessment-v3/shops-wave5b-*.js"
       - "js/assessment-v3/code-on-wages-wave5c-*.js"
       - "js/assessment-v3/gratuity-wave5d-*.js"
+      - "js/assessment-v3/employee-compensation-wave5e-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -74,6 +80,7 @@ on:
       - "tests/shops-wave5b-*.mjs"
       - "tests/code-on-wages-wave5c-*.mjs"
       - "tests/gratuity-wave5d-*.mjs"
+      - "tests/employee-compensation-wave5e-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -137,6 +144,9 @@ jobs:
 
       - name: Validate Gratuity Wave 5D overlay
         run: node tests/gratuity-wave5d-private-beta-checks.mjs
+
+      - name: Validate Employee Compensation Wave 5E overlay
+        run: node tests/employee-compensation-wave5e-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
