@@ -45,7 +45,7 @@ The Wave 5I stacked private-beta registry contains 57 runnable feature profiles:
 - one Child and Adolescent Labour Wave 5I profile;
 - four profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
 
-The resulting runtime mix is **57 callable / 53 substantive / 4 governance fallback / 19 catalogues**, with zero blocked runtime profiles.
+The resulting runtime mix is **57 callable / 53 substantive / 4 governance fallback / 19 catalogues**, with zero blocked runtime profiles. Wave 5J does not alter this runtime: it deliberately keeps Bonded and Forced Labour on the governance fallback while specialist research and safeguarding gates remain open.
 
 ### Waves 1–4D
 
@@ -107,13 +107,30 @@ Wave 5I is **not** case management, an emergency service, automated age inferenc
 
 The governed Wave 5I catalogue contains five official `curated-source-identity-v1` / `source-identity-only` records and ten reason-code-scoped chunks. The active Drive Source Register does not yet contain exact controlled Child and Adolescent Labour files, so exact full-file mirrors and qualified current-law/State-variation review remain approval dependencies.
 
+### Wave 5J — Bonded and Forced Labour specialist research boundary
+
+Wave 5J follows the handoff requirement to complete specialist legal and safeguarding research **before assessment capture**. It does not create a substantive profile or catalogue. `feature.legal.bonded-forced-labour` remains on the conservative governance fallback.
+
+The research packet records nine official/current source leads spanning Article 23, the Bonded Labour System (Abolition) Act and Rules, Bharatiya Nyaya Sanhita sections 143–146, current Supreme Court jurisprudence, the 2021 rehabilitation scheme, Parliament's 2026 scheme-merger evidence and NHRC safeguarding guidance.
+
+Runtime promotion is blocked because:
+
+- the exact Ministry SOP for identification/rescue/prosecution referenced by NHRC as issued on 14 May 2026 has not yet been acquired and fingerprinted;
+- Parliament records the 2021 rehabilitation scheme as being merged into the Labour Welfare Scheme for 2026-27 to 2030-31, while a detailed post-merger operational plan is still required for controlled current workflow claims;
+- Article 23, the 1976 Act/Rules and BNS contain distinct constitutional, statutory and criminal tests that require qualified cross-framework mapping;
+- human safeguarding, privacy, access, retention, deletion, security and State/UT operational-variation controls remain unapproved.
+
+Wave 5J therefore creates **no assessment fact contract, case intake, browser panel, statutory RAG catalogue, provider narrative route or new server router**. Coercion, debt, recruitment, movement and retaliation concepts remain research topics only and are not assessment indicators. Any live allegation or immediate safety concern must follow an approved human safeguarding/legal process outside RAG.
+
 ## Legal and privacy status
 
-All Wave 1–5I catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
+All Wave 1–5I catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Wave 5J has no substantive catalogue and remains `research-only-blocked`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
 
-The private-beta v3 page includes explicit in-memory panels for eighteen substantive waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after the user explicitly submits. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts.
+The private-beta v3 page includes explicit in-memory panels for eighteen substantive waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after the user explicitly submits. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts. Wave 5J adds no browser panel.
 
 Wave 5I excludes child/adolescent identities, exact age/date of birth, parent/guardian/family identities, school or education records, medical/disability data, caste/community/religion, addresses/contact or precise child-linked location data, photographs/video, pay/payroll, schedules/attendance, allegation/abuse/trafficking/exploitation narratives, rescue/complaint/case/notice/order content, victim/witness data, police/CWC/District Magistrate case facts and evidence bodies. Evidence arrays are reduced to controlled references only.
+
+Wave 5J additionally prohibits person, family, recruiter/creditor/alleged-captor or accused identities; Aadhaar/ID, protected-characteristic, health, contact/location, image/audio/video, debt, wage/payroll/attendance/bank/DBT, confinement, violence/threat/retaliation/coercion/abuse, trafficking/sexual-exploitation, complaint/rescue/FIR/case/prosecution, victim/witness, release-certificate, rehabilitation-application and evidence-body data from the legal-RAG/provider route.
 
 ## What makes GrowWithHR different
 
@@ -131,7 +148,7 @@ The deployed product is the root-level HTML, CSS and JavaScript application. `se
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. Wave 1–5I legal-review panels are in-memory only. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. Wave 1–5I legal-review panels are in-memory only. Wave 5J adds no assessment or persistence surface. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -154,6 +171,7 @@ node tests/oshwc-wave5f-private-beta-checks.mjs
 node tests/industrial-relations-wave5g-private-beta-checks.mjs
 node tests/apprentices-wave5h-private-beta-checks.mjs
 node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
+node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
