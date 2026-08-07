@@ -21,7 +21,7 @@ The approved cross-origin client is `https://hrtechifyed.github.io`. Additional 
 
 `/analyze-company-v3.html` is no-index and disabled from public routing by default. M1–M5 modules consume protected assessment answers through compatibility adapters and produce isolated traceability, Compliance Story and workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route mounts thirteen legal-review surfaces:
+The v3 route mounts fourteen legal-review surfaces:
 
 - the existing POSH Internal Committee threshold explanation;
 - the POSH Wave 1 panel;
@@ -30,7 +30,8 @@ The v3 route mounts thirteen legal-review surfaces:
 - ESI Wave 4A, 4B, 4C and 4D panels;
 - the Appropriate Government Wave 5A panel;
 - the Maharashtra Shops Wave 5B panel;
-- the Code on Wages Wave 5C panel.
+- the Code on Wages Wave 5C panel;
+- the Gratuity Wave 5D panel.
 
 All panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
@@ -64,7 +65,7 @@ The deterministic decision owns applicability, control-review or entitlement-rou
 
 ## Runtime coverage
 
-The Wave 5C stacked private-beta registry exposes 57 active profiles:
+The Wave 5D stacked private-beta registry exposes 57 active profiles:
 
 - seven POSH profiles;
 - ten Maternity Benefit profiles;
@@ -73,16 +74,17 @@ The Wave 5C stacked private-beta registry exposes 57 active profiles:
 - one Appropriate Government Wave 5A profile;
 - one Maharashtra Shops Wave 5B profile;
 - one Code on Wages Wave 5C profile;
-- ten conservative governance-fallback profiles.
+- one Gratuity Wave 5D profile;
+- nine conservative governance-fallback profiles.
 
 The resulting runtime mix is:
 
-- 47 substantive profiles;
-- 10 governance-fallback profiles;
-- 13 catalogues, comprising 12 substantive catalogues and one governance fallback;
+- 48 substantive profiles;
+- 9 governance-fallback profiles;
+- 14 catalogues, comprising 13 substantive catalogues and one governance fallback;
 - zero blocked runtime profiles.
 
-The Wave 1–5C catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`.
+The Wave 1–5D catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing facts produce `more-information-needed`.
 
 ## Wave 5A authority boundary
 
@@ -92,39 +94,33 @@ It does not select the legally appropriate Government, applicable law, State sou
 
 ## Wave 5B authority boundary
 
-Wave 5B accepts only:
-
-- declared Maharashtra State source scope;
-- 2017 Act and 2018 Rules source statuses;
-- amendment/notification register status;
-- draft-versus-final reconciliation control;
-- establishment-classification control;
-- worker-count-band control;
-- registration or intimation source control;
-- working-condition source control;
-- effective-date/version control;
-- specialist escalation;
-- evidence references.
+Wave 5B accepts only declared Maharashtra State source scope, Act/Rules source statuses, amendment and draft-reconciliation controls, establishment and worker-count controls, registration/working-condition source controls, effective-date/version control, specialist escalation and references.
 
 Wave 5B does not decide Act coverage, establishment classification, employee-count thresholds, registration, intimation, working hours, leave, night work, welfare, safety, records, penalties or enforcement.
 
 ## Wave 5C authority boundary
 
-Wave 5C promotes `feature.legal.code-on-wages` into a substantive deterministic source-readiness profile. It accepts only:
+Wave 5C promotes `feature.legal.code-on-wages` into a substantive deterministic source-readiness profile. It accepts only organisation-level Code/Rules, commencement, version, jurisdiction-routing, bounded rate-source and State-instrument controls plus specialist escalation and references.
 
-- a declared Central, State, mixed, multi-state or unresolved source route;
-- Code on Wages, 2019 source status;
-- Code on Wages (Central) Rules, 2026 source status;
-- July 2026 Central Rules corrigendum status;
-- commencement and implementation source-set status;
-- effective-date/version control;
-- appropriate-Government source-routing control;
-- bounded rate-source register control;
-- State or Union Territory instrument-register control;
+The declared route is an organisation-level source-routing input, not a legal conclusion. Wave 5C does not select the appropriate Government, an individual's applicable minimum wage, wage rate, wage category, zone, scheduled employment or State instrument. It does not perform payroll, bonus, deduction, overtime, wage-period, entitlement, arrears, damages or remedy arithmetic.
+
+## Wave 5D authority boundary
+
+Wave 5D promotes `feature.legal.social-security.gratuity` into a substantive deterministic source-readiness profile. It accepts only:
+
+- a declared source route;
+- Chapter V, sections 53–58 source status;
+- First Schedule Chapter V applicability-source status;
+- Social Security (Central) Rules, 2026 Chapter V, Rules 31–34 source status;
+- commencement and corrigendum source-set status;
+- legacy gratuity-rule transition control;
+- establishment-classification control;
+- workforce-category source control;
+- authority/process source control;
 - specialist escalation;
-- controlled source references.
+- controlled references.
 
-The declared route is an organisation-level source-routing input, not a legal conclusion. Wave 5C does not select the appropriate Government, an individual's applicable minimum wage, wage rate, wage category, zone, scheduled employment or State instrument. It does not perform payroll, bonus, deduction, overtime, wage-period, entitlement, arrears, damages or remedy arithmetic and does not determine whether an individual employee is owed an amount.
+These are organisation-level controls only. Wave 5D does not determine customer coverage, classify an establishment, count employees or decide an individual's eligibility, continuous service, fixed-term status, wages, gratuity amount, nomination, forfeiture, insurance, claim, appeal, recovery or remedy.
 
 ## Source-governance boundary
 
@@ -137,33 +133,34 @@ The platform distinguishes:
 - draft instruments;
 - historical or saved-law candidates.
 
-Wave 4A–4D preserve the controlled ESI current-source, historical, saved-law, authority, rate, ceiling, medical, exemption and enforcement distinctions documented in their catalogues. Missing area notifications, hazardous-route instruments, State implementation sources, customer-specific documents and transition treatment remain qualified-review dependencies.
+Wave 4A–4D preserve the controlled ESI current-source, historical, saved-law, authority, rate, ceiling, medical, exemption and enforcement distinctions documented in their catalogues.
 
-Wave 5A reuses controlled-file fingerprints for the Social Security Code and Social Security Central Rules. Other cross-code records remain source-identity snapshots until exact controlled files are verified. No complete State or Union Territory jurisdiction pack is represented.
+Wave 5A reuses controlled-file fingerprints for the Social Security Code and Social Security Central Rules. Other cross-code records remain source-identity snapshots until exact controlled files are verified.
 
-Wave 5B contains five official Maharashtra source identities and eight reason-code-scoped chunks. All five are `source-identity-only` records. The November 2025 record is explicitly draft and cannot be treated as final or operative. Exact current Act and Rules files, all final amendments, notifications and local implementation materials still require controlled-file acquisition and qualified Maharashtra review.
+Wave 5B contains five official Maharashtra source identities and eight reason-code-scoped chunks. All five are `source-identity-only` records. The November 2025 record is explicitly draft and cannot be treated as final or operative.
 
-Wave 5C contains seven official source identities and nine reason-code-scoped chunks:
+Wave 5C contains seven official source identities and nine reason-code-scoped chunks. State/UT wage instruments, rate schedules, categories, zones and scheduled-employment mappings are not represented as selected or complete.
 
-1. Code on Wages, 2019;
-2. Code on Wages (Central) Rules, 2026;
-3. S.O. 4604(E), dated 18 December 2020;
-4. S.O. 5322(E), dated 21 November 2025;
-5. the July 2026 corrigendum to the Central Rules;
-6. the Ministry Code on Wages notifications register;
-7. the Ministry labour-jurisdiction portal.
+Wave 5D contains four exact controlled files and eight reason-code-scoped chunks:
 
-The Code, Central Rules and jurisdiction identities reuse Wave 5A registrations. The added commencement, corrigendum and notification-register records are source-identity controls pending exact controlled-file acquisition. State/UT wage instruments, rate schedules, categories, zones and scheduled-employment mappings are not represented as selected or complete.
+1. Code on Social Security, 2020;
+2. Social Security (Central) Rules, 2026;
+3. S.O. 5319(E), dated 21 November 2025;
+4. S.O. 5936(E), dated 19 December 2025.
+
+The Wave 5D catalogue maps Chapter V sections 53–58, the First Schedule Chapter V entry, Rules 31–34, section 164/repeal-and-savings context, the 2026 Rules' supersession of the Payment of Gratuity (Central) Rules, 1972 subject to savings, and commencement/corrigendum context. It reuses the exact SHA-256 fingerprints registered in the active Source Register. State/UT instruments and customer-specific facts remain qualified-review dependencies.
 
 ## Privacy boundaries
 
 Earlier waves preserve their existing exclusions for names, contact details, complaint narratives, medical records, exact event dates, UANs, Aadhaar, insurance numbers, passports, payroll, contribution histories, claims, family data, accident narratives, exemption documents, notices, orders, signatures, findings, recovery amounts, disputes and evidence bodies.
 
-Appropriate Government Wave 5A excludes names, contact details, addresses, registration numbers, employee identities, wages, payroll, disputes, allegations, notices, orders, contracts, legal submissions and evidence bodies. It accepts no raw location or establishment narrative.
+Appropriate Government Wave 5A excludes names, contact details, addresses, registration numbers, employee identities, wages, payroll, disputes, allegations, notices, orders, contracts, legal submissions and evidence bodies.
 
 Maharashtra Shops Wave 5B excludes names, addresses, contact details, registration numbers, employee identities, age or gender data, schedules, attendance, wages, payroll, applications, certificates, notices, orders, disputes and evidence bodies.
 
-Code on Wages Wave 5C excludes employee identities, payroll, wage records, payslips, attendance, disputes, claims, notices, orders, individual entitlements and evidence bodies. It accepts no numeric wage-rate decision input and no raw employee or payroll evidence. Evidence arrays are reduced to controlled references before submission.
+Code on Wages Wave 5C excludes employee identities, payroll, wage records, payslips, attendance, disputes, claims, notices, orders, individual entitlements and evidence bodies.
+
+Gratuity Wave 5D excludes employee identities, nominee or heir data, payroll, wages, payslips, attendance, service records, claims, disputes, notices, orders, medical or death information and evidence bodies. It accepts no individual service or wage values and no raw claim or entitlement evidence.
 
 ## Operational endpoints
 
@@ -173,7 +170,7 @@ GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
 
-`server-entry.js` uses the Wave 5C router overlay. The overlay preserves Waves 1–5B, activates the bounded Code on Wages source-readiness profile and reports the 47/10 runtime mix.
+`server-entry.js` uses the Wave 5D router overlay. The overlay preserves Waves 1–5C, activates the bounded Gratuity source-readiness profile and reports the 48/9 runtime mix.
 
 ## Approval boundary
 
