@@ -1,4 +1,4 @@
-# Wave 5H includes bounded Apprentices source and classification-readiness review.
+# Wave 5I includes safeguarding-first Child and Adolescent Labour source-readiness review.
 name: All-Laws RAG Private Beta
 
 on:
@@ -13,6 +13,7 @@ on:
       - "data/legal-source-governance/oshwc-*.json"
       - "data/legal-source-governance/industrial-relations-*.json"
       - "data/legal-source-governance/apprentices-*.json"
+      - "data/legal-source-governance/child-adolescent-labour-*.json"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
       - "data/assessment/code-on-wages-*.json"
@@ -21,6 +22,7 @@ on:
       - "data/assessment/oshwc-*.json"
       - "data/assessment/industrial-relations-*.json"
       - "data/assessment/apprentices-*.json"
+      - "data/assessment/child-adolescent-labour-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
@@ -38,6 +40,7 @@ on:
       - "growwithhr-rag/data/oshwc-wave5f-source-chunks.v1.json"
       - "growwithhr-rag/data/industrial-relations-wave5g-source-chunks.v1.json"
       - "growwithhr-rag/data/apprentices-wave5h-source-chunks.v1.json"
+      - "growwithhr-rag/data/child-adolescent-labour-wave5i-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -54,6 +57,7 @@ on:
       - "server-oshwc-wave5f-*.js"
       - "server-industrial-relations-wave5g-*.js"
       - "server-apprentices-wave5h-*.js"
+      - "server-child-adolescent-labour-wave5i-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -70,6 +74,7 @@ on:
       - "server-legal-explanation-router-wave5f.js"
       - "server-legal-explanation-router-wave5g.js"
       - "server-legal-explanation-router-wave5h.js"
+      - "server-legal-explanation-router-wave5i.js"
       - "server-legal-rag-catalogs.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
@@ -86,6 +91,7 @@ on:
       - "js/assessment-v3/oshwc-wave5f-*.js"
       - "js/assessment-v3/industrial-relations-wave5g-*.js"
       - "js/assessment-v3/apprentices-wave5h-*.js"
+      - "js/assessment-v3/child-adolescent-labour-wave5i-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -102,6 +108,7 @@ on:
       - "tests/oshwc-wave5f-*.mjs"
       - "tests/industrial-relations-wave5g-*.mjs"
       - "tests/apprentices-wave5h-*.mjs"
+      - "tests/child-adolescent-labour-wave5i-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -177,6 +184,9 @@ jobs:
 
       - name: Validate Apprentices Wave 5H overlay
         run: node tests/apprentices-wave5h-private-beta-checks.mjs
+
+      - name: Validate Child and Adolescent Labour Wave 5I overlay
+        run: node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
