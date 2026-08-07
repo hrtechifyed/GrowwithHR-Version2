@@ -1,10 +1,12 @@
-# Wave 4D includes ESI exemption-governance and enforcement-authority controls.
+# Wave 5A includes Appropriate Government cross-code source-routing controls.
 name: All-Laws RAG Private Beta
 
 on:
   pull_request:
     paths:
       - "data/legal-source-governance/all-laws-rag-onboarding.v1.json"
+      - "data/legal-source-governance/appropriate-government-*.json"
+      - "data/assessment/appropriate-government-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
@@ -14,6 +16,7 @@ on:
       - "growwithhr-rag/data/esi-wave4b-source-chunks.v1.json"
       - "growwithhr-rag/data/esi-wave4c-source-chunks.v1.json"
       - "growwithhr-rag/data/esi-wave4d-source-chunks.v1.json"
+      - "growwithhr-rag/data/jurisdiction-wave5a-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -22,6 +25,7 @@ on:
       - "server-esi-wave4b-*.js"
       - "server-esi-wave4c-*.js"
       - "server-esi-wave4d-*.js"
+      - "server-jurisdiction-wave5a-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -30,6 +34,7 @@ on:
       - "server-legal-explanation-router-wave4b.js"
       - "server-legal-explanation-router-wave4c.js"
       - "server-legal-explanation-router-wave4d.js"
+      - "server-legal-explanation-router-wave5a.js"
       - "server-legal-rag-catalogs.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
@@ -38,6 +43,7 @@ on:
       - "js/assessment-v3/esi-wave4b-*.js"
       - "js/assessment-v3/esi-wave4c-*.js"
       - "js/assessment-v3/esi-wave4d-*.js"
+      - "js/assessment-v3/jurisdiction-wave5a-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -46,6 +52,7 @@ on:
       - "tests/esi-wave4b-*.mjs"
       - "tests/esi-wave4c-*.mjs"
       - "tests/esi-wave4d-*.mjs"
+      - "tests/jurisdiction-wave5a-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -97,6 +104,9 @@ jobs:
 
       - name: Validate ESI Wave 4D overlay
         run: node tests/esi-wave4d-private-beta-checks.mjs
+
+      - name: Validate jurisdiction Wave 5A overlay
+        run: node tests/jurisdiction-wave5a-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
