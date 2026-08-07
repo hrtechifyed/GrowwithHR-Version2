@@ -1,4 +1,4 @@
-# Wave 5E includes the Employee's Compensation source-readiness browser panel.
+# Wave 5F includes the OSHWC source-readiness browser panel.
 name: Executive Assessment Tests
 
 on:
@@ -159,6 +159,7 @@ jobs:
           tests/e2e/analyze-company-v3-code-on-wages-wave5c.spec.ts
           tests/e2e/analyze-company-v3-gratuity-wave5d.spec.ts
           tests/e2e/analyze-company-v3-employee-compensation-wave5e.spec.ts
+          tests/e2e/analyze-company-v3-oshwc-wave5f.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
