@@ -1,0 +1,85 @@
+{
+  "manifestVersion": "1.0.0-research-only",
+  "title": "GrowWithHR Bonded and Forced Labour Wave 5J specialist-research candidate",
+  "updatedAt": "2026-08-07",
+  "featureId": "feature.legal.bonded-forced-labour",
+  "lawFamilyId": "bonded-forced-labour",
+  "status": "research-only-blocked",
+  "runtimeActivation": false,
+  "assessmentCapture": false,
+  "browserSurface": false,
+  "catalogPublication": false,
+  "catalogPath": null,
+  "chunks": 0,
+  "sourceRegisterPath": "GrowWithHR-RAG/00-project-control/Source Register.xlsx",
+  "sourceRegisterFinding": "No bonded/forced-labour-specific exact controlled source row was identified in the active Source Register during Wave 5J research.",
+  "researchArtifactPath": "data/legal-source-governance/bonded-forced-labour-specialist-research.v1.json",
+  "sources": {
+    "count": 9,
+    "exactControlledFullFiles": false,
+    "runtimeSourceAccess": false,
+    "sourceIdentityPublication": false
+  },
+  "scope": {
+    "included": [
+      "constitutional Article 23 source boundary",
+      "Bonded Labour System (Abolition) Act and Rules source boundary",
+      "Bharatiya Nyaya Sanhita trafficking/slavery/unlawful-compulsory-labour overlap",
+      "current Supreme Court constitutional-jurisprudence boundary",
+      "2021 rehabilitation scheme transition status",
+      "2026-27 to 2030-31 Labour Welfare Scheme merger evidence",
+      "NHRC Advisory 2.0 safeguarding context",
+      "May 2026 Ministry SOP acquisition gap",
+      "privacy, access, retention and human-escalation blockers"
+    ],
+    "excluded": [
+      "assessment capture",
+      "case intake",
+      "identity or allegation capture",
+      "coercion/debt/recruitment/movement/retaliation indicator capture",
+      "risk scoring",
+      "bonded-labour or forced-labour classification",
+      "trafficking classification",
+      "offence or liability conclusion",
+      "rescue or release decision",
+      "release-certificate decision",
+      "rehabilitation eligibility or amount",
+      "authority selection",
+      "prosecution, penalty, compensation or remedy",
+      "RAG catalogue or provider narrative analysis"
+    ]
+  },
+  "activationBlockers": [
+    "exact-2026-ministry-sop",
+    "labour-welfare-scheme-2026-31-operational-plan",
+    "qualified-cross-framework-legal-mapping",
+    "safeguarding-human-escalation-design",
+    "privacy-access-retention-design",
+    "state-operational-variation-review"
+  ],
+  "runtimeInvariant": {
+    "expectedCallableProfiles": 57,
+    "expectedSubstantiveProfiles": 53,
+    "expectedGovernanceFallbackProfiles": 4,
+    "expectedActiveCatalogs": 19,
+    "bondedForcedLabourMustRemainGovernanceFallback": true
+  },
+  "approvalGates": {
+    "legalReview": false,
+    "safeguardingReview": false,
+    "privacyReview": false,
+    "ragApproval": false,
+    "sourceFiles": false,
+    "sectionMappings": false,
+    "assessmentFacts": false,
+    "deterministicRules": false,
+    "testApproval": false,
+    "securityApproval": false,
+    "releaseApproval": false
+  },
+  "notes": [
+    "This manifest is a research/governance artifact only. It is intentionally incompatible with statutory catalogue publication.",
+    "Passing governance tests must not be interpreted as permission to collect case facts, create a RAG catalogue or activate a substantive profile.",
+    "Any live safeguarding concern belongs in an approved human process outside this feature and outside the explanation provider."
+  ]
+}

@@ -1,4 +1,4 @@
-# Wave 5I includes safeguarding-first Child and Adolescent Labour source-readiness review.
+# Wave 5J adds research-only Bonded and Forced Labour governance checks without runtime activation.
 name: All-Laws RAG Private Beta
 
 on:
@@ -14,6 +14,8 @@ on:
       - "data/legal-source-governance/industrial-relations-*.json"
       - "data/legal-source-governance/apprentices-*.json"
       - "data/legal-source-governance/child-adolescent-labour-*.json"
+      - "data/legal-source-governance/bonded-forced-labour-*.json"
+      - "docs/legal-source-governance/review-packets/bonded-forced-labour-*.md"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
       - "data/assessment/code-on-wages-*.json"
@@ -109,6 +111,7 @@ on:
       - "tests/industrial-relations-wave5g-*.mjs"
       - "tests/apprentices-wave5h-*.mjs"
       - "tests/child-adolescent-labour-wave5i-*.mjs"
+      - "tests/bonded-forced-labour-wave5j-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -187,6 +190,9 @@ jobs:
 
       - name: Validate Child and Adolescent Labour Wave 5I overlay
         run: node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
+
+      - name: Validate Bonded and Forced Labour Wave 5J research-only boundary
+        run: node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
