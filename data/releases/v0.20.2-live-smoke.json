@@ -1,7 +1,7 @@
 {
   "releaseVersion": "0.20.2",
-  "checkedAt": "2026-08-06T07:55:29Z",
-  "sourceCommitSha": "8b0cb023107d999cb4710b085ae480082057bd71",
+  "checkedAt": "2026-08-10T08:14:35Z",
+  "sourceCommitSha": "a80c921b5824a8429d0e6dec093ec504c0ca7844",
   "status": "passed",
   "checks": {
     "githubPagesHomepage": {
