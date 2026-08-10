@@ -13,6 +13,8 @@ GrowWithHR is a deterministic, traceable HR compliance advisory engine. It recor
 - Legal RAG status route: `GET /api/legal-rag/status`
 - Main integration: legal-RAG stack through Wave 5M integrated on 10 August 2026
 
+The deployed product remains the root-level HTML/CSS/JavaScript application. `apps/web/src` remains an **archived experimental React/TypeScript UX layer** and is not part of the deployed build.
+
 ## Compliance-engine authority boundary
 
 ```text
