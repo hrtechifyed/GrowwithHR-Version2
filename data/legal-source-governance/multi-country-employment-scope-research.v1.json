@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "featureId": "feature.legal.multi-country-employment",
+  "title": "Multi-country Employment Wave 5M jurisdiction and cross-border data research boundary",
+  "updatedAt": "2026-08-10",
+  "status": "outside-supported-jurisdiction-country-pair-and-data-approval-required",
+  "classification": "outside-current-india-law-scope",
+  "applicabilityAuthority": "none",
+  "assessmentCapture": false,
+  "runtimeActivation": false,
+  "ragCatalogCreationAllowed": false,
+  "browserSurfaceAllowed": false,
+  "providerRouteAllowed": false,
+  "countryPair": {
+    "selected": false,
+    "countryA": null,
+    "countryB": null,
+    "selectionApprovedBy": null,
+    "selectionApprovedAt": null
+  },
+  "crossBorderDataApproval": {
+    "required": true,
+    "status": "not-approved",
+    "privacyReviewer": null,
+    "securityReviewer": null,
+    "legalReviewer": null,
+    "approvedAt": null
+  },
+  "researchLeads": [
+    {
+      "id": "india-dpdp-act-2023",
+      "title": "Digital Personal Data Protection Act, 2023",
+      "publisher": "Government of India / India Code",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/22037?locale=en",
+      "status": "research-lead-not-controlled-country-pair-source",
+      "notes": "Section 16 governs processing of personal data outside India when in force. India Code records sections 3-17, including section 16, in the eighteen-month commencement tranche from 13 November 2025; Wave 5M must not treat section 16 as an operative transfer rule as of 10 August 2026. Any later country-pair pack must re-check effective dates and any higher-protection Indian law."
+    },
+    {
+      "id": "india-dpdp-rules-2025",
+      "title": "Digital Personal Data Protection Rules, 2025",
+      "publisher": "Ministry of Electronics and Information Technology",
+      "officialUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa",
+      "status": "research-lead-not-controlled-country-pair-source",
+      "notes": "Current MeitY rules and enforcement-timeline material must be re-verified at the time a country pair is selected. Registration here is research context only and not cross-border transfer approval."
+    },
+    {
+      "id": "india-epfo-international-worker-ssa-current",
+      "title": "EPFO International Worker / Social Security Agreement current guidance",
+      "publisher": "Employees' Provident Fund Organisation",
+      "officialUrl": "https://www.epfindia.gov.in/site_en/FAQ.php",
+      "status": "research-lead-country-specific-agreement-required",
+      "notes": "EPFO current guidance identifies multiple bilateral Social Security Agreements and country-specific detachment rules. No SSA, certificate-of-coverage route, exclusion or contribution outcome may be selected until the country pair and exact agreement/administrative arrangement are controlled."
+    },
+    {
+      "id": "india-income-tax-2025-nonresident-current",
+      "title": "Income Tax Act, 2025 non-resident and residency guidance",
+      "publisher": "Income Tax Department",
+      "officialUrl": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/non%20resident%20-faq",
+      "status": "research-lead-country-treaty-required",
+      "notes": "Current guidance states that the Income Tax Act, 2025 governs residential status for tax years beginning on or after 1 April 2026. Residency, source, withholding, treaty relief, permanent-establishment and payroll consequences remain country-pair and fact specific."
+    },
+    {
+      "id": "india-immigration-foreigners-act-2025",
+      "title": "Immigration and Foreigners Act, 2025",
+      "publisher": "Government of India / India Code",
+      "officialUrl": "https://www.indiacode.nic.in/handle/123456789/21918?locale=en",
+      "status": "research-lead-country-and-visa-route-required",
+      "notes": "The Act is in force from 1 September 2025 and covers visa and foreigner-registration powers. Wave 5M does not select a visa/work-authorisation route or accept passport, nationality, visa or immigration case data."
+    }
+  ],
+  "requiredCountryPairResearchDomains": [
+    "mandatory employment law and local worker protections",
+    "employing entity, payroll entity, secondment and local registration model",
+    "immigration, visa, work authorisation and foreigner registration",
+    "individual and employer tax, residency, withholding, treaty and permanent-establishment risk",
+    "social security, bilateral agreement, certificate-of-coverage and benefit coordination",
+    "payroll, currency, remittance and local reporting controls",
+    "worker classification, agency, EOR/PEO and contractor boundaries",
+    "termination, collective rights, dispute forum and mandatory process",
+    "privacy, controller/processor roles, cross-border transfer, localisation and data-subject rights",
+    "security, access, retention, deletion, incident and vendor/subprocessor controls"
+  ],
+  "hardBlockers": [
+    {"id":"country-pair-selection","status":"open","requirement":"Select exactly one supported country pair and record the business operating model before any law/source pack is created."},
+    {"id":"specialist-jurisdictional-approval","status":"open","requirement":"Obtain qualified employment-law approval for both jurisdictions and the interaction model."},
+    {"id":"cross-border-data-approval","status":"open","requirement":"Obtain legal/privacy/security approval for the intended cross-border employee-data flow, roles, locations, vendors, access, retention and transfer mechanism."},
+    {"id":"immigration-work-authorisation-pack","status":"open","requirement":"Acquire exact current official immigration, visa, work-authorisation and registration sources for the selected pair."},
+    {"id":"tax-treaty-payroll-pack","status":"open","requirement":"Acquire exact current tax, residency, withholding, treaty, payroll and permanent-establishment sources for the selected pair."},
+    {"id":"social-security-ssa-pack","status":"open","requirement":"Acquire the exact bilateral SSA/administrative arrangement or record that no applicable agreement exists; do not infer from the EPFO country list."},
+    {"id":"employment-law-source-pack","status":"open","requirement":"Acquire exact current employment-law sources for both jurisdictions, including mandatory local rights, termination/process and dispute routing."},
+    {"id":"country-pair-source-fingerprints","status":"open","requirement":"Fingerprint the exact approved official files and create source/section mappings only after the pair is selected."},
+    {"id":"privacy-safe-fact-contract","status":"open","requirement":"Design and approve an organisation-level fact boundary before assessment capture; person-level mobility, payroll, tax, immigration and case data remain prohibited."}
+  ],
+  "prohibitedData": [
+    "employee, worker, contractor or dependant identity",
+    "personal contact details or home address",
+    "nationality, citizenship, passport or travel-document details",
+    "visa, immigration, work-authorisation or foreigner-registration identifiers or case content",
+    "tax identifiers, tax returns, residency-day counts or travel itinerary",
+    "UAN, social-security account numbers, certificate-of-coverage bodies or contribution histories",
+    "payroll rows, wages, compensation, bonus, equity or benefit amounts",
+    "bank, remittance, currency-conversion or payment data",
+    "medical, disability, injury, death, insurance, nominee or dependant information",
+    "employment, assignment, secondment, EOR/PEO or contractor agreement bodies",
+    "disciplinary, termination, grievance, claim, litigation, notice or order content",
+    "precise employee location or movement history",
+    "cross-border transfer logs tied to an identifiable person",
+    "evidence bodies or uploaded case documents"
+  ],
+  "futureProductBoundary": {
+    "countryPairMustBeExplicit": true,
+    "organisationLevelRoutingOnly": true,
+    "personLevelMobilityCaseIntakeAllowed": false,
+    "immigrationDecisionAllowed": false,
+    "taxResidencyDecisionAllowed": false,
+    "taxTreatyOrPermanentEstablishmentDecisionAllowed": false,
+    "payrollOrWithholdingCalculationAllowed": false,
+    "socialSecurityCoverageDecisionAllowed": false,
+    "employmentLawApplicabilityDecisionAllowed": false,
+    "crossBorderDataTransferApprovalByProductAllowed": false,
+    "providerNarrativeAnalysisOfPersonLevelDataAllowed": false
+  },
+  "nextControlledAction": "Select one country pair and operating model, obtain specialist jurisdictional plus cross-border data approval, then create exact country-specific source packs and a privacy-safe organisation-level fact contract before any runtime work."
+}
