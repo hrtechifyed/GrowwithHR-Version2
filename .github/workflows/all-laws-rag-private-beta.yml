@@ -1,4 +1,4 @@
-# Wave 5J adds research-only Bonded and Forced Labour governance checks without runtime activation.
+# Wave 5K adds bounded Contract Workforce cross-family source-readiness while retaining the Wave 5J research-only guard.
 name: All-Laws RAG Private Beta
 
 on:
@@ -15,6 +15,7 @@ on:
       - "data/legal-source-governance/apprentices-*.json"
       - "data/legal-source-governance/child-adolescent-labour-*.json"
       - "data/legal-source-governance/bonded-forced-labour-*.json"
+      - "data/legal-source-governance/contract-workforce-*.json"
       - "docs/legal-source-governance/review-packets/bonded-forced-labour-*.md"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
@@ -25,6 +26,7 @@ on:
       - "data/assessment/industrial-relations-*.json"
       - "data/assessment/apprentices-*.json"
       - "data/assessment/child-adolescent-labour-*.json"
+      - "data/assessment/contract-workforce-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
@@ -43,6 +45,7 @@ on:
       - "growwithhr-rag/data/industrial-relations-wave5g-source-chunks.v1.json"
       - "growwithhr-rag/data/apprentices-wave5h-source-chunks.v1.json"
       - "growwithhr-rag/data/child-adolescent-labour-wave5i-source-chunks.v1.json"
+      - "growwithhr-rag/data/contract-workforce-wave5k-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -60,6 +63,7 @@ on:
       - "server-industrial-relations-wave5g-*.js"
       - "server-apprentices-wave5h-*.js"
       - "server-child-adolescent-labour-wave5i-*.js"
+      - "server-contract-workforce-wave5k-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -77,7 +81,9 @@ on:
       - "server-legal-explanation-router-wave5g.js"
       - "server-legal-explanation-router-wave5h.js"
       - "server-legal-explanation-router-wave5i.js"
+      - "server-legal-explanation-router-wave5k.js"
       - "server-legal-rag-catalogs.js"
+      - "server-entry.js"
       - "js/assessment-v3/epf-wave3a-*.js"
       - "js/assessment-v3/epf-wave3b-*.js"
       - "js/assessment-v3/epf-wave3c-*.js"
@@ -94,6 +100,7 @@ on:
       - "js/assessment-v3/industrial-relations-wave5g-*.js"
       - "js/assessment-v3/apprentices-wave5h-*.js"
       - "js/assessment-v3/child-adolescent-labour-wave5i-*.js"
+      - "js/assessment-v3/contract-workforce-wave5k-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -112,6 +119,7 @@ on:
       - "tests/apprentices-wave5h-*.mjs"
       - "tests/child-adolescent-labour-wave5i-*.mjs"
       - "tests/bonded-forced-labour-wave5j-*.mjs"
+      - "tests/contract-workforce-wave5k-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -193,6 +201,9 @@ jobs:
 
       - name: Validate Bonded and Forced Labour Wave 5J research-only boundary
         run: node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
+
+      - name: Validate Contract Workforce Wave 5K overlay
+        run: node tests/contract-workforce-wave5k-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform

@@ -1,4 +1,4 @@
-# Wave 5I includes the Child and Adolescent Labour safeguarding source-readiness browser panel.
+# Wave 5K includes the Contract Workforce cross-family source-readiness browser panel.
 name: Executive Assessment Tests
 
 on:
@@ -163,6 +163,7 @@ jobs:
           tests/e2e/analyze-company-v3-industrial-relations-wave5g.spec.ts
           tests/e2e/analyze-company-v3-apprentices-wave5h.spec.ts
           tests/e2e/analyze-company-v3-child-adolescent-labour-wave5i.spec.ts
+          tests/e2e/analyze-company-v3-contract-workforce-wave5k.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
