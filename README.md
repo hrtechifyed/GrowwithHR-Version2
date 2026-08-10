@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 5K stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 5L stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles;
 - ten Maternity Benefit profiles;
@@ -44,9 +44,10 @@ The Wave 5K stacked private-beta registry contains 57 runnable feature profiles:
 - one Apprentices Wave 5H profile;
 - one Child and Adolescent Labour Wave 5I profile;
 - one Contract Workforce Wave 5K profile;
-- three profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
+- one generic Social Security family-routing Wave 5L profile;
+- two profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
 
-The resulting runtime mix is **57 callable / 54 substantive / 3 governance fallback / 20 catalogues**, with zero blocked runtime profiles. Wave 5J remains a research-only Bonded and Forced Labour governance layer and does not add a substantive catalogue or product surface.
+The resulting runtime mix is **57 callable / 55 substantive / 2 governance fallback / 21 catalogues**, with zero blocked runtime profiles. Wave 5J remains a research-only Bonded and Forced Labour governance layer and does not add a substantive catalogue or product surface.
 
 ### Waves 1–4D
 
@@ -114,13 +115,25 @@ The cross-family boundary is strict. An OSHWC Contract Workforce result cannot e
 
 Maharashtra's 2026 OSHWC Labour Rules remain draft-only. Wave 5K cannot decide OSHWC Chapter XI Part I applicability, thresholds, principal-employer/contractor classification, licence requirement/validity, fees/security, work-order validity, welfare breach, wage default/recovery, core-activity classification/prohibition, exemption, EPF/ESI substantive outcomes, State-law applicability, authority jurisdiction, inspection, penalty, prosecution, dispute or remedy.
 
+### Wave 5L — Generic Social Security family routing
+
+Wave 5L promotes `feature.legal.social-security` into a bounded organisation-level **chapter/source-family routing** review. It uses four exact controlled core files already present in the governed Social Security stack: the Code on Social Security, 2020; Social Security (Central) Rules, 2026; S.O. 5319(E) commencement; and S.O. 5936(E) corrigendum.
+
+The review records the declared family route, current core-source status, section 1(4)/First Schedule routing control, chapter-routing control and separate handoff controls for EPF/EPS/EDLI, ESI, Gratuity, Maternity Benefit and Employee's Compensation. It also records specialist handoffs for BOCW Chapter VIII and unorganised/gig/platform-worker Chapter IX, cross-family reconciliation, State/UT variation, specialist escalation and controlled references.
+
+The generic route is deliberately **not** an applicability engine. It cannot decide that the Code or a chapter applies, establish scheme coverage, classify an establishment/employee/worker/contractor/gig worker/platform worker/aggregator, calculate contributions or benefits, determine wage ceilings or rates, decide BOCW cess, process claims/exemptions/enforcement, or provide a remedy. Dedicated family results remain separate deterministic reviews and cannot be overridden, combined or inferred from the generic result.
+
+BOCW Chapter VIII and unorganised/gig/platform-worker Chapter IX remain specialist-review only because Wave 5L does not activate substantive product families for those chapters. The governed Wave 5L catalogue contains four exact controlled sources and twelve reason-code-scoped chunks.
+
 ## Legal and privacy status
 
-All substantive Wave 1–5K catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Wave 5J remains `research-only-blocked`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
+All substantive Wave 1–5L catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Wave 5J remains `research-only-blocked`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
 
 The private-beta v3 page includes explicit in-memory panels for substantive legal-review waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after explicit submission. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts. Wave 5J adds no browser panel.
 
-Wave 5K excludes contractor/worker identities, contact/address data, PAN/GST/registration identifiers, contract or work-order bodies, worker rosters, UAN/IP numbers, payroll/wage/contribution rows, attendance/schedules, bank/payment/invoice data, licences/certificates, notices/orders/disputes, accident/medical information and evidence bodies. Evidence arrays are reduced to controlled reference identifiers only.
+Wave 5K excludes contractor/worker identities, contact/address data, PAN/GST/registration identifiers, contract or work-order bodies, worker rosters, UAN/IP numbers, payroll/wage/contribution rows, attendance/schedules, bank/payment/invoice data, licences/certificates, notices/orders/disputes, accident/medical information and evidence bodies.
+
+Wave 5L excludes employee/member/worker identities, contact/address data, UAN/ESI or other government identifiers, payroll/wage/contribution rows, attendance/service records, medical/injury/death information, nominee/dependant data, claims and benefit amounts, bank/payment data, notices/orders/disputes and evidence bodies. Evidence arrays are reduced to controlled reference identifiers only.
 
 ## What makes GrowWithHR different
 
@@ -163,6 +176,7 @@ node tests/apprentices-wave5h-private-beta-checks.mjs
 node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
 node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
 node tests/contract-workforce-wave5k-private-beta-checks.mjs
+node tests/social-security-wave5l-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start

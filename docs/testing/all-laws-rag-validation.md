@@ -1,7 +1,7 @@
 # Validate RAG across all registered legal profiles
 
 **Release:** v0.20.2 private-beta branch  
-**Purpose:** prove that every profile is runnable, that retrieval/explanation remain outside deterministic authority, and that research-only families remain blocked from accidental product capture.
+**Purpose:** prove that every profile is runnable, that retrieval/explanation remain outside deterministic authority, that dedicated legal families cannot substitute for one another, and that research-only families remain blocked from accidental product capture.
 
 ## Acceptance commands
 
@@ -26,31 +26,32 @@ node tests/apprentices-wave5h-private-beta-checks.mjs
 node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
 node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
 node tests/contract-workforce-wave5k-private-beta-checks.mjs
+node tests/social-security-wave5l-private-beta-checks.mjs
 ```
 
 The maintained baseline validates Waves 1–2. Overlay commands validate the complete stacked 57-profile registry while Wave 5J separately proves that Bonded and Forced Labour remains research-only.
 
-## Required Wave 5K pass indicators
+## Required Wave 5L pass indicators
 
 ```json
 {
   "valid": true,
   "profileCount": 57,
-  "substantiveProfiles": 54,
-  "substantiveContractWorkforceWave5kProfiles": 1,
-  "wave5kScenarios": 3,
-  "governanceFallbackProfiles": 3,
-  "activeCatalogs": 20,
-  "contractWorkforceSources": 8,
-  "contractWorkforceChunks": 12
+  "substantiveProfiles": 55,
+  "substantiveSocialSecurityWave5lProfiles": 1,
+  "wave5lScenarios": 3,
+  "governanceFallbackProfiles": 2,
+  "activeCatalogs": 21,
+  "socialSecuritySources": 4,
+  "socialSecurityChunks": 12
 }
 ```
 
-The Wave 5K test fails when a profile is missing, a deterministic catalogue is invalid, an expected source fingerprint changes, cross-family reconciliation is absent, a scenario produces an unexpected status/reason code, retrieval escapes deterministic source scope, an explanation mutates the decision, prohibited browser data survives payload minimisation, or a governance artifact violates the non-substitution boundary.
+The Wave 5L test fails when a profile is missing, a deterministic catalogue is invalid, an exact controlled source fingerprint changes, First Schedule/chapter routing is absent, BOCW or Chapter IX is promoted beyond specialist routing, a scenario produces an unexpected status/reason code, retrieval escapes deterministic source scope, an explanation mutates the decision, prohibited browser data survives payload minimisation, or a governance artifact permits generic/dedicated-family substitution.
 
 ## Earlier wave checks
 
-The maintained suites continue to prove existing deterministic and privacy boundaries for POSH, Maternity Benefit, EPF/EPS/EDLI Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G, Apprentices Wave 5H and Child and Adolescent Labour Wave 5I.
+The maintained suites continue to prove existing deterministic and privacy boundaries for POSH, Maternity Benefit, EPF/EPS/EDLI Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G, Apprentices Wave 5H, Child and Adolescent Labour Wave 5I and Contract Workforce Wave 5K.
 
 Every substantive decision exists before retrieval. Governed retrieval reports `usedForDecision: false` and `applicabilityAuthority: none`, and explanation output remains fingerprint-bound.
 
@@ -58,64 +59,69 @@ Every substantive decision exists before retrieval. Governed retrieval reports `
 
 `tests/bonded-forced-labour-wave5j-research-governance-checks.mjs` proves that `feature.legal.bonded-forced-labour` remains on governance fallback while specialist research and safeguarding blockers are open. It fails if a Bonded/Forced Labour assessment contract, runtime source-chunk catalogue, browser panel, substantive server rule or router overlay appears prematurely.
 
-Wave 5K must not weaken this guard. The Wave 5J research-only boundary remains part of the All-Laws workflow before the Wave 5K acceptance check.
+Wave 5L must not weaken this guard. The Wave 5J research-only boundary remains part of the All-Laws workflow before Waves 5K and 5L acceptance checks.
 
-## Contract Workforce Wave 5K deterministic checks
+## Contract Workforce Wave 5K non-substitution checks
 
-Wave 5K evaluates complete, reported-gap and missing-information scenarios for `feature.legal.contract-workforce`.
+Wave 5K remains the bounded OSHWC Chapter XI Part I cross-family layer. Its acceptance test continues to prove that OSHWC, EPF and ESI contractor outcomes remain separate, Maharashtra's current OSHWC State rules remain draft-only, and no family result substitutes for another.
+
+## Social Security Wave 5L deterministic checks
+
+Wave 5L evaluates complete, reported-gap and missing-information scenarios for `feature.legal.social-security`.
 
 For every scenario the suite proves that:
 
-- only the declared source route, OSHWC Code/Central Rules/commencement status, State draft-final reconciliation, Chapter XI Part I scope/threshold source controls, principal-employer/contractor classification-source controls, licensing/work-order/welfare/wage/core-activity controls, separate EPF/ESI dependency statuses, cross-family reconciliation, authority/escalation and controlled references are mapped;
+- only the declared family route, four core-source statuses, First Schedule/chapter routing controls, dedicated-family handoffs, BOCW/Chapter IX specialist handoffs, cross-family reconciliation, State/UT variation, specialist escalation and controlled references are mapped;
 - the deterministic decision exists before retrieval;
 - complete and reported-gap scenarios remain `specialist-review`;
 - absent required facts produce `more-information-needed`;
 - retrieval reports `usedForDecision: false` and `applicabilityAuthority: none`;
 - retrieved chunks stay inside the deterministic source-registry allow-list;
 - explanations preserve decision status, reason code and fingerprint;
-- no rule, retrieval result or provider output turns an OSHWC result into an EPF/ESI result or vice versa.
+- no rule, retrieval result or provider output decides chapter applicability or scheme coverage;
+- the generic Social Security route cannot override, combine or infer a dedicated family result;
+- BOCW Chapter VIII and unorganised/gig/platform-worker Chapter IX remain specialist-only.
 
-## Wave 5K source-governance checks
+## Wave 5L source-governance checks
 
-The governed catalogue contains eight source records and twelve reason-code-scoped chunks.
+The governed catalogue contains four exact controlled full-file source records and twelve reason-code-scoped chunks.
 
-Four OSHWC records are verified as `curated-source-identity-v1` / `source-identity-only` using the existing Wave 5F fingerprints:
-
-1. `oshwc-code-2020`;
-2. `oshwc-central-rules-2026`;
-3. `oshwc-commencement-so-5321e-2025`;
-4. `maharashtra-oshwc-labour-draft-rules-2026`.
-
-The Maharashtra source must retain `instrumentStatus: draft`.
-
-Four dependency records must retain their exact controlled hashes, byte lengths and pagination from the existing EPF/ESI stack:
+The acceptance test verifies the existing Source Register fingerprints, byte lengths and pagination for:
 
 1. `social-security-code-2020`;
-2. `employees-provident-funds-scheme-2026`;
-3. `social-security-central-rules-2026`;
-4. `employees-state-insurance-general-regulations-1950`.
+2. `social-security-central-rules-2026`;
+3. `social-security-code-commencement-so-5319e-2025`;
+4. `social-security-code-corrigendum-so-5936e-2025`.
 
-The suite requires `contract-workforce-social-security-dependency-wave5k-001` to preserve the Rule 93(4) separate-dependency boundary, `contract-workforce-cross-family-reconciliation-wave5k-001` to prohibit family substitution, and `contract-workforce-maharashtra-draft-wave5k-001` to keep the State rules draft-only.
+No Wave 5L source is `source-identity-only` and no new uncontrolled legal source is represented as an exact file.
 
-## Wave 5K browser/privacy checks
+The suite requires:
 
-The browser adapter emits exactly the 18 allowed scalar controls plus `contractWorkforceEvidenceReferences`, with evidence reduced to controlled reference strings.
+- `social-security-first-schedule-wave5l-001` to preserve the section 1(4)/First Schedule routing-only boundary;
+- dedicated EPF/EPS/EDLI, ESI, Gratuity, Maternity Benefit and Employee's Compensation handoff chunks;
+- `social-security-bocw-family-wave5l-001` to remain specialist-only;
+- `social-security-chapter-ix-wave5l-001` to prohibit person/aggregator/platform classification;
+- `social-security-cross-family-wave5l-001` to prohibit family substitution and automatic saved-law resolution.
 
-The deterministic acceptance and Chromium tests protect against transmission or persistence of contractor/worker identities, contact/address data, PAN/GST/registration identifiers, contract/work-order bodies, worker rosters, UAN/IP numbers, payroll/wage/contribution rows, attendance, bank/payment/invoice data, licence/certificate bodies, notices/orders/disputes, accident/medical information and evidence bodies.
+## Wave 5L browser/privacy checks
+
+The browser adapter emits exactly the 18 allowed scalar controls plus `socialSecurityEvidenceReferences`, with evidence reduced to controlled reference strings.
+
+The deterministic acceptance and Chromium tests protect against transmission or persistence of employee/member/worker identities, contact/address data, UAN/ESI or government identifiers, payroll/wage/contribution rows, attendance/service records, medical/injury/death information, nominee/dependant data, claims/benefit amounts, bank/payment data, notices/orders/disputes and evidence bodies.
 
 The Chromium test verifies that:
 
-- the Wave 5K panel is visible on `/analyze-company-v3.html`;
+- the Wave 5L panel is visible on `/analyze-company-v3.html`;
 - no automatic explanation request occurs;
-- the panel states that EPF and ESI remain separate deterministic families;
-- Maharashtra's current State rules are described as draft-only;
+- the panel states that the generic result never decides chapter applicability or scheme coverage;
+- BOCW Chapter VIII and Chapter IX are visibly specialist-only;
 - only allow-listed fields are submitted after explicit user action;
-- `specialist-review` and governed Central Rules / Rule 93(4) citations render;
+- `specialist-review` and governed Code / First Schedule citations render;
 - zero local/session-storage writes occur.
 
 ## Runtime status check
 
-After starting the Wave 5K server entrypoint, inspect:
+After starting the Wave 5L server entrypoint, inspect:
 
 ```text
 GET /api/legal-rag/status
@@ -126,19 +132,19 @@ The response should report:
 - `platformStatus: all-laws-runnable-private-beta`;
 - 57 active profiles;
 - zero blocked runtime profiles;
-- `substantiveProfileCount: 54`;
-- `governanceFallbackProfileCount: 3`;
-- nineteen substantive catalogues and one governance-fallback catalogue;
-- router version `1.20.0`.
+- `substantiveProfileCount: 55`;
+- `governanceFallbackProfileCount: 2`;
+- twenty substantive catalogues and one governance-fallback catalogue;
+- router version `1.21.0`.
 
 ## Regression gates
 
-The All-Laws workflow runs all prior overlays, the Wave 5J research-only guard, the dedicated Wave 5K acceptance test and the complete legal-RAG platform suite.
+The All-Laws workflow runs all prior overlays, the Wave 5J research-only guard, Wave 5K non-substitution acceptance, the dedicated Wave 5L acceptance test and the complete legal-RAG platform suite.
 
-The Executive Assessment workflow runs the dedicated Contract Workforce Wave 5K Chromium test with all existing assessment, legal-review, report, homepage and workspace browser tests. Wave 5K must remain explicit-submit, in-memory only and absent from stable report, PDF and email contracts.
+The Executive Assessment workflow runs the dedicated Social Security Wave 5L Chromium test with all existing assessment, legal-review, report, homepage and workspace browser tests. Wave 5L must remain explicit-submit, in-memory only and absent from stable report, PDF and email contracts.
 
-M4 Report Integration and M7 RAG-Ready Hardening remain required regression gates for the Wave 5K product change.
+M4 Report Integration and M7 RAG-Ready Hardening remain required regression gates for the Wave 5L product change.
 
 ## Runtime versus legal approval
 
-A green Wave 5K runtime proves deterministic rules, source-scoped retrieval, strict request adapters, cross-family non-substitution and contract-valid explanations. It does **not** determine OSHWC contract-labour applicability, thresholds, principal-employer/contractor status, licensing, wages, core activity, EPF membership/contributions, ESI insurance/contributions, State law, enforcement or remedies, and it does not grant legal/privacy/RAG/source/security/release approval.
+A green Wave 5L runtime proves deterministic family routing, exact-source-scoped retrieval, strict request adapters, family non-substitution and contract-valid explanations. It does **not** determine Social Security Code or chapter applicability, scheme coverage, establishment/worker/aggregator classification, contributions, wage ceilings, rates, benefits, BOCW cess, claims, exemptions, enforcement, State/UT law or remedies, and it does not grant legal/privacy/RAG/source/security/release approval.
