@@ -1,4 +1,4 @@
-# Wave 5L adds generic Social Security family routing while preserving dedicated-family non-substitution and the Wave 5J research-only guard.
+# Wave 5M preserves Multi-country Employment as an out-of-scope governance fallback until a country pair and cross-border data approval exist.
 name: All-Laws RAG Private Beta
 
 on:
@@ -17,7 +17,9 @@ on:
       - "data/legal-source-governance/bonded-forced-labour-*.json"
       - "data/legal-source-governance/contract-workforce-*.json"
       - "data/legal-source-governance/social-security-family-routing-*.json"
+      - "data/legal-source-governance/multi-country-employment-*.json"
       - "docs/legal-source-governance/review-packets/bonded-forced-labour-*.md"
+      - "docs/legal-source-governance/review-packets/multi-country-employment-*.md"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
       - "data/assessment/code-on-wages-*.json"
@@ -127,6 +129,7 @@ on:
       - "tests/bonded-forced-labour-wave5j-*.mjs"
       - "tests/contract-workforce-wave5k-*.mjs"
       - "tests/social-security-wave5l-*.mjs"
+      - "tests/multi-country-employment-wave5m-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -214,6 +217,9 @@ jobs:
 
       - name: Validate Social Security Wave 5L overlay
         run: node tests/social-security-wave5l-private-beta-checks.mjs
+
+      - name: Validate Multi-country Employment Wave 5M out-of-scope boundary
+        run: node tests/multi-country-employment-wave5m-scope-guard-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
