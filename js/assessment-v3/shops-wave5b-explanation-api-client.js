@@ -1,0 +1,39 @@
+/** Privacy-safe browser client for the Maharashtra Shops Wave 5B source-controls profile. */
+export const SHOPS_WAVE5B_CLIENT_VERSION="1.0.0";
+export const SHOPS_WAVE5B_FEATURE_ID="feature.legal.state.shops-establishments";
+export const SHOPS_WAVE5B_ROUTE_PREFIX="/api/legal-explanation/feature/";
+export const SHOPS_WAVE5B_RENDER_ORIGIN="https://growwithhr.onrender.com";
+export const SHOPS_WAVE5B_TIMEOUT_MS=30_000;
+const GITHUB_PAGES_ORIGIN="https://hrtechifyed.github.io";
+const GITHUB_PAGES_PROJECT_PATH="/GrowwithHR-Version2/";
+const REQUIRED_LIMITATIONS=Object.freeze(["This explanation does not change the deterministic decision.","The rule and source interpretation remain subject to legal review.","Assessment answers and evidence have not been independently verified."]);
+const object=(v)=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+const array=(v)=>Array.isArray(v)?v:[];
+const text=(v)=>String(v??"").replace(/\s+/g," ").trim();
+const hasOwn=(v,k)=>Object.prototype.hasOwnProperty.call(v,k);
+function unwrap(v){const s=object(v),d=object(s.data);return Object.keys(d).length?d:s;}
+function scalar(v,max=120){if(["boolean","number"].includes(typeof v))return v;return text(v).slice(0,max);}
+function references(v){return[...new Set(array(v).slice(0,40).map((i)=>typeof i==="string"?text(i).slice(0,120):text(object(i).reference||object(i).ref||object(i).id).slice(0,120)).filter(Boolean))];}
+const FIELDS=Object.freeze([
+ ["shopsDeclaredStateScope","declared State source scope"],
+ ["shopsMaharashtraActSourceStatus","2017 Act source status"],
+ ["shopsMaharashtraRulesSourceStatus","2018 Rules source status"],
+ ["shopsMaharashtraAmendmentRegisterStatus","amendment and notification register status"],
+ ["shopsMaharashtraDraftFinalReconciliationControl","draft-versus-final reconciliation control"],
+ ["shopsMaharashtraEstablishmentClassificationControl","establishment-classification control"],
+ ["shopsMaharashtraWorkerCountBandControl","worker-count band control"],
+ ["shopsMaharashtraRegistrationRouteSourceControl","registration or intimation source control"],
+ ["shopsMaharashtraWorkingConditionsSourceControl","working-conditions source control"],
+ ["shopsMaharashtraEffectiveDateVersionControl","effective-date and version control"],
+ ["shopsMaharashtraSpecialistEscalationControl","Maharashtra specialist-escalation control"],
+ ["shopsMaharashtraEvidenceReferences","Maharashtra source references",references]
+]);
+function copyRequired(answers){const output={},missingFields=[];FIELDS.forEach(([key,label,transform=scalar])=>{if(!hasOwn(answers,key)){missingFields.push(label);return;}const value=transform(answers[key]);const present=value!==null&&value!==undefined&&value!==""&&(!Array.isArray(value)||value.length>0);if(!present){missingFields.push(label);return;}output[key]=value;});return Object.freeze({ready:missingFields.length===0,answers:missingFields.length?null:Object.freeze(output),missingFields:Object.freeze(missingFields)});}
+export function extractShopsWave5bAnswers(savedRecord){return copyRequired(object(unwrap(savedRecord).answers));}
+export function createShopsWave5bPayload(savedRecord){const extracted=extractShopsWave5bAnswers(savedRecord);if(!extracted.ready)throw new Error(`Maharashtra Shops source-controls review requires ${extracted.missingFields.join(", ")}.`);return Object.freeze({answers:extracted.answers});}
+function isGitHubPages(runtime){const l=runtime?.location;return Boolean(l&&l.origin===GITHUB_PAGES_ORIGIN&&(l.pathname==="/GrowwithHR-Version2"||l.pathname.startsWith(GITHUB_PAGES_PROJECT_PATH)));}
+export function resolveShopsWave5bEndpoint(runtime=globalThis,documentObject=runtime?.document){const explicit=text(documentObject?.body?.dataset?.legalExplanationEndpoint||runtime?.GROWWITHHR_LEGAL_EXPLANATION_ENDPOINT);const route=`${SHOPS_WAVE5B_ROUTE_PREFIX}${encodeURIComponent(SHOPS_WAVE5B_FEATURE_ID)}`;if(explicit)return explicit.endsWith("/")?`${explicit}${encodeURIComponent(SHOPS_WAVE5B_FEATURE_ID)}`:explicit;return isGitHubPages(runtime)?`${SHOPS_WAVE5B_RENDER_ORIGIN}${route}`:route;}
+function assertFalse(source,property){if(object(source)[property]!==false)throw new Error(`The legal explanation response violated ${property}.`);}
+export function validateShopsWave5bResponse(value){const response=object(value),decision=object(response.decision),retrieval=object(response.retrieval),explanation=object(response.explanation),generated=object(explanation.response),citations=array(retrieval.citations),citationIds=new Set(citations.map((i)=>text(object(i).chunkId)).filter(Boolean));if(response.featureId!==SHOPS_WAVE5B_FEATURE_ID||response.lawFamilyId!=="shops-establishments"||response.legalReviewStatus!=="needs-legal-review"||response.applicabilityAuthority!=="deterministic-only"||response.providerRole!=="explanation-only")throw new Error("The Wave 5B response did not preserve its feature and authority boundaries.");assertFalse(response,"usedForDecision");assertFalse(response,"mayChangeDecision");if(!["specialist-review","more-information-needed"].includes(text(decision.status))||!text(decision.reasonCode)||decision.legalReviewStatus!=="needs-legal-review")throw new Error("The deterministic Wave 5B decision is incomplete.");if(retrieval.retrievalStatus!=="completed"||!text(retrieval.decisionFingerprint)||!text(retrieval.retrievalFingerprint)||!citations.length||citationIds.size!==citations.length)throw new Error("The governed Wave 5B retrieval trace is incomplete.");if(explanation.explanationStatus!=="completed"||explanation.decisionFingerprint!==retrieval.decisionFingerprint||explanation.retrievalFingerprint!==retrieval.retrievalFingerprint||generated.decisionStatus!==decision.status||generated.reasonCode!==decision.reasonCode||generated.decisionFingerprint!==retrieval.decisionFingerprint||!text(generated.summary)||!array(generated.rationale).length||!array(generated.nextSteps).length||!REQUIRED_LIMITATIONS.every((item)=>array(generated.limitations).includes(item)))throw new Error("The generated Wave 5B explanation does not match the protected decision and retrieval trace.");[explanation,generated].forEach((item)=>{assertFalse(item,"usedForDecision");assertFalse(item,"mayChangeDecision");assertFalse(item,"legalAdvice");});array(generated.rationale).forEach((item)=>{const r=object(item),ids=array(r.citationChunkIds).map(text).filter(Boolean);if(!text(r.statement)||!ids.length||!ids.every((id)=>citationIds.has(id)))throw new Error("The generated Wave 5B rationale contains an invalid citation.");});return response;}
+export async function requestShopsWave5bExplanation(input={}){const request=object(input),runtime=request.runtime||globalThis,fetchImpl=request.fetchImpl||runtime.fetch;if(typeof fetchImpl!=="function")throw new Error("Fetch is unavailable.");const endpoint=request.endpoint||resolveShopsWave5bEndpoint(runtime,request.documentObject),payload=request.payload||createShopsWave5bPayload(request.savedRecord),controller=new AbortController(),timeout=runtime.setTimeout(()=>controller.abort(),Number.isInteger(request.timeoutMs)?request.timeoutMs:SHOPS_WAVE5B_TIMEOUT_MS);try{const response=await fetchImpl(endpoint,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},credentials:"omit",cache:"no-store",body:JSON.stringify(payload),signal:controller.signal});const body=await response.json();if(!response.ok)throw new Error(text(object(body).error?.message)||"The Maharashtra Shops source-controls request failed.");return validateShopsWave5bResponse(body);}finally{runtime.clearTimeout(timeout);}}
+export default Object.freeze({version:SHOPS_WAVE5B_CLIENT_VERSION,featureId:SHOPS_WAVE5B_FEATURE_ID,extractShopsWave5bAnswers,createShopsWave5bPayload,resolveShopsWave5bEndpoint,validateShopsWave5bResponse,requestShopsWave5bExplanation});

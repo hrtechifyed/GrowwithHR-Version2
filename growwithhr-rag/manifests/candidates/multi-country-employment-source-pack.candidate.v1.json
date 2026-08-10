@@ -1,0 +1,60 @@
+{
+  "manifestVersion": "1.0.0-research-only",
+  "title": "GrowWithHR Multi-country Employment Wave 5M blocked source-pack candidate",
+  "updatedAt": "2026-08-10",
+  "featureId": "feature.legal.multi-country-employment",
+  "lawFamilyId": "multi-country-employment",
+  "status": "outside-scope-country-pair-and-data-approval-required",
+  "runtimeActivation": false,
+  "assessmentCapture": false,
+  "browserSurface": false,
+  "providerRoute": false,
+  "catalogPublication": false,
+  "catalogPath": null,
+  "chunks": 0,
+  "controlledSources": 0,
+  "researchLeadCount": 5,
+  "countryPairSelected": false,
+  "crossBorderDataApproval": "not-approved",
+  "governanceArtifacts": [
+    "data/legal-source-governance/multi-country-employment-scope-research.v1.json",
+    "docs/legal-source-governance/review-packets/multi-country-employment-jurisdiction-data-gate.md"
+  ],
+  "activationBlockers": [
+    "country-pair-selection",
+    "specialist-jurisdictional-approval",
+    "cross-border-data-approval",
+    "immigration-work-authorisation-pack",
+    "tax-treaty-payroll-pack",
+    "social-security-ssa-pack",
+    "employment-law-source-pack",
+    "country-pair-source-fingerprints",
+    "privacy-safe-fact-contract"
+  ],
+  "runtimeInvariant": {
+    "expectedCallableProfiles": 57,
+    "expectedSubstantiveProfiles": 55,
+    "expectedGovernanceFallbackProfiles": 2,
+    "expectedActiveCatalogs": 21,
+    "multiCountryEmploymentMustRemainGovernanceFallback": true
+  },
+  "publication": {
+    "legalReviewStatus": "not-started-country-pair-required",
+    "privacyReviewStatus": "not-approved",
+    "ragApprovalStatus": "not-approved",
+    "sourceFilesApproved": false,
+    "sectionMappingsApproved": false,
+    "assessmentFactsApproved": false,
+    "deterministicRulesApproved": false,
+    "securityApprovalStatus": "not-approved",
+    "releaseApprovalStatus": "not-approved"
+  },
+  "limitations": [
+    "This file is a blocked planning manifest, not a governed RAG source pack.",
+    "No country pair has been selected and no foreign-jurisdiction legal source has been approved.",
+    "The five public-source records in the companion research file are research leads only; they are not controlled runtime sources.",
+    "No immigration, tax, treaty, permanent-establishment, payroll, social-security, employment-law or cross-border data conclusion may be produced from this wave.",
+    "Passing the Wave 5M guard is evidence that the product remains blocked, not approval to expand scope."
+  ],
+  "nextControlledAction": "Select a country pair and operating model, obtain specialist jurisdictional and cross-border data approval, then acquire exact official source files before proposing any assessment fact or deterministic rule."
+}

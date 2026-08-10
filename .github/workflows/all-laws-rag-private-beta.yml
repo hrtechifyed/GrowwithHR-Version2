@@ -1,15 +1,135 @@
+# Wave 5M preserves Multi-country Employment as an out-of-scope governance fallback until a country pair and cross-border data approval exist.
 name: All-Laws RAG Private Beta
 
 on:
   pull_request:
     paths:
       - "data/legal-source-governance/all-laws-rag-onboarding.v1.json"
+      - "data/legal-source-governance/appropriate-government-*.json"
+      - "data/legal-source-governance/shops-establishments-maharashtra-*.json"
+      - "data/legal-source-governance/code-on-wages-*.json"
+      - "data/legal-source-governance/gratuity-*.json"
+      - "data/legal-source-governance/employee-compensation-*.json"
+      - "data/legal-source-governance/oshwc-*.json"
+      - "data/legal-source-governance/industrial-relations-*.json"
+      - "data/legal-source-governance/apprentices-*.json"
+      - "data/legal-source-governance/child-adolescent-labour-*.json"
+      - "data/legal-source-governance/bonded-forced-labour-*.json"
+      - "data/legal-source-governance/contract-workforce-*.json"
+      - "data/legal-source-governance/social-security-family-routing-*.json"
+      - "data/legal-source-governance/multi-country-employment-*.json"
+      - "docs/legal-source-governance/review-packets/bonded-forced-labour-*.md"
+      - "docs/legal-source-governance/review-packets/multi-country-employment-*.md"
+      - "data/assessment/appropriate-government-*.json"
+      - "data/assessment/shops-establishments-maharashtra-*.json"
+      - "data/assessment/code-on-wages-*.json"
+      - "data/assessment/gratuity-*.json"
+      - "data/assessment/employee-compensation-*.json"
+      - "data/assessment/oshwc-*.json"
+      - "data/assessment/industrial-relations-*.json"
+      - "data/assessment/apprentices-*.json"
+      - "data/assessment/child-adolescent-labour-*.json"
+      - "data/assessment/contract-workforce-*.json"
+      - "data/assessment/social-security-family-routing-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
+      - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
+      - "growwithhr-rag/data/epf-wave3b-source-chunks.v1.json"
+      - "growwithhr-rag/data/epf-wave3c-source-chunks.v1.json"
+      - "growwithhr-rag/data/esi-wave4a-source-chunks.v1.json"
+      - "growwithhr-rag/data/esi-wave4b-source-chunks.v1.json"
+      - "growwithhr-rag/data/esi-wave4c-source-chunks.v1.json"
+      - "growwithhr-rag/data/esi-wave4d-source-chunks.v1.json"
+      - "growwithhr-rag/data/jurisdiction-wave5a-source-chunks.v1.json"
+      - "growwithhr-rag/data/shops-wave5b-source-chunks.v1.json"
+      - "growwithhr-rag/data/code-on-wages-wave5c-source-chunks.v1.json"
+      - "growwithhr-rag/data/gratuity-wave5d-source-chunks.v1.json"
+      - "growwithhr-rag/data/employee-compensation-wave5e-source-chunks.v1.json"
+      - "growwithhr-rag/data/oshwc-wave5f-source-chunks.v1.json"
+      - "growwithhr-rag/data/industrial-relations-wave5g-source-chunks.v1.json"
+      - "growwithhr-rag/data/apprentices-wave5h-source-chunks.v1.json"
+      - "growwithhr-rag/data/child-adolescent-labour-wave5i-source-chunks.v1.json"
+      - "growwithhr-rag/data/contract-workforce-wave5k-source-chunks.v1.json"
+      - "growwithhr-rag/data/social-security-wave5l-source-chunks.v1.json"
       - "server-all-laws-*.js"
+      - "server-epf-wave3a-*.js"
+      - "server-epf-wave3b-*.js"
+      - "server-epf-wave3c-*.js"
+      - "server-esi-wave4a-*.js"
+      - "server-esi-wave4b-*.js"
+      - "server-esi-wave4c-*.js"
+      - "server-esi-wave4d-*.js"
+      - "server-jurisdiction-wave5a-*.js"
+      - "server-shops-wave5b-*.js"
+      - "server-code-on-wages-wave5c-*.js"
+      - "server-gratuity-wave5d-*.js"
+      - "server-employee-compensation-wave5e-*.js"
+      - "server-oshwc-wave5f-*.js"
+      - "server-industrial-relations-wave5g-*.js"
+      - "server-apprentices-wave5h-*.js"
+      - "server-child-adolescent-labour-wave5i-*.js"
+      - "server-contract-workforce-wave5k-*.js"
+      - "server-social-security-wave5l-*.js"
       - "server-legal-explanation-router.js"
+      - "server-legal-explanation-router-wave3a.js"
+      - "server-legal-explanation-router-wave3b.js"
+      - "server-legal-explanation-router-wave3c.js"
+      - "server-legal-explanation-router-wave4a.js"
+      - "server-legal-explanation-router-wave4b.js"
+      - "server-legal-explanation-router-wave4c.js"
+      - "server-legal-explanation-router-wave4d.js"
+      - "server-legal-explanation-router-wave5a.js"
+      - "server-legal-explanation-router-wave5b.js"
+      - "server-legal-explanation-router-wave5c.js"
+      - "server-legal-explanation-router-wave5d.js"
+      - "server-legal-explanation-router-wave5e.js"
+      - "server-legal-explanation-router-wave5f.js"
+      - "server-legal-explanation-router-wave5g.js"
+      - "server-legal-explanation-router-wave5h.js"
+      - "server-legal-explanation-router-wave5i.js"
+      - "server-legal-explanation-router-wave5k.js"
+      - "server-legal-explanation-router-wave5l.js"
       - "server-legal-rag-catalogs.js"
+      - "server-entry.js"
+      - "js/assessment-v3/epf-wave3a-*.js"
+      - "js/assessment-v3/epf-wave3b-*.js"
+      - "js/assessment-v3/epf-wave3c-*.js"
+      - "js/assessment-v3/esi-wave4a-*.js"
+      - "js/assessment-v3/esi-wave4b-*.js"
+      - "js/assessment-v3/esi-wave4c-*.js"
+      - "js/assessment-v3/esi-wave4d-*.js"
+      - "js/assessment-v3/jurisdiction-wave5a-*.js"
+      - "js/assessment-v3/shops-wave5b-*.js"
+      - "js/assessment-v3/code-on-wages-wave5c-*.js"
+      - "js/assessment-v3/gratuity-wave5d-*.js"
+      - "js/assessment-v3/employee-compensation-wave5e-*.js"
+      - "js/assessment-v3/oshwc-wave5f-*.js"
+      - "js/assessment-v3/industrial-relations-wave5g-*.js"
+      - "js/assessment-v3/apprentices-wave5h-*.js"
+      - "js/assessment-v3/child-adolescent-labour-wave5i-*.js"
+      - "js/assessment-v3/contract-workforce-wave5k-*.js"
+      - "js/assessment-v3/social-security-wave5l-*.js"
       - "tests/all-laws-*.mjs"
+      - "tests/epf-wave3a-*.mjs"
+      - "tests/epf-wave3b-*.mjs"
+      - "tests/epf-wave3c-*.mjs"
+      - "tests/esi-wave4a-*.mjs"
+      - "tests/esi-wave4b-*.mjs"
+      - "tests/esi-wave4c-*.mjs"
+      - "tests/esi-wave4d-*.mjs"
+      - "tests/jurisdiction-wave5a-*.mjs"
+      - "tests/shops-wave5b-*.mjs"
+      - "tests/code-on-wages-wave5c-*.mjs"
+      - "tests/gratuity-wave5d-*.mjs"
+      - "tests/employee-compensation-wave5e-*.mjs"
+      - "tests/oshwc-wave5f-*.mjs"
+      - "tests/industrial-relations-wave5g-*.mjs"
+      - "tests/apprentices-wave5h-*.mjs"
+      - "tests/child-adolescent-labour-wave5i-*.mjs"
+      - "tests/bonded-forced-labour-wave5j-*.mjs"
+      - "tests/contract-workforce-wave5k-*.mjs"
+      - "tests/social-security-wave5l-*.mjs"
+      - "tests/multi-country-employment-wave5m-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -38,8 +158,68 @@ jobs:
       - name: Validate all-laws onboarding registry
         run: npm run test:all-laws-rag-onboarding
 
-      - name: Validate all 57 runnable profiles
+      - name: Validate Wave 1 and Wave 2 baseline profiles
         run: npm run test:all-laws-runnable-private-beta
+
+      - name: Validate EPF Wave 3A overlay
+        run: node tests/epf-wave3a-private-beta-checks.mjs
+
+      - name: Validate EPF Wave 3B overlay
+        run: node tests/epf-wave3b-private-beta-checks.mjs
+
+      - name: Validate EPF Wave 3C overlay
+        run: node tests/epf-wave3c-private-beta-checks.mjs
+
+      - name: Validate ESI Wave 4A overlay
+        run: node tests/esi-wave4a-private-beta-checks.mjs
+
+      - name: Validate ESI Wave 4B overlay
+        run: node tests/esi-wave4b-private-beta-checks.mjs
+
+      - name: Validate ESI Wave 4C overlay
+        run: node tests/esi-wave4c-private-beta-checks.mjs
+
+      - name: Validate ESI Wave 4D overlay
+        run: node tests/esi-wave4d-private-beta-checks.mjs
+
+      - name: Validate jurisdiction Wave 5A overlay
+        run: node tests/jurisdiction-wave5a-private-beta-checks.mjs
+
+      - name: Validate Maharashtra Shops Wave 5B overlay
+        run: node tests/shops-wave5b-private-beta-checks.mjs
+
+      - name: Validate Code on Wages Wave 5C overlay
+        run: node tests/code-on-wages-wave5c-private-beta-checks.mjs
+
+      - name: Validate Gratuity Wave 5D overlay
+        run: node tests/gratuity-wave5d-private-beta-checks.mjs
+
+      - name: Validate Employee Compensation Wave 5E overlay
+        run: node tests/employee-compensation-wave5e-private-beta-checks.mjs
+
+      - name: Validate OSHWC Wave 5F overlay
+        run: node tests/oshwc-wave5f-private-beta-checks.mjs
+
+      - name: Validate Industrial Relations Wave 5G overlay
+        run: node tests/industrial-relations-wave5g-private-beta-checks.mjs
+
+      - name: Validate Apprentices Wave 5H overlay
+        run: node tests/apprentices-wave5h-private-beta-checks.mjs
+
+      - name: Validate Child and Adolescent Labour Wave 5I overlay
+        run: node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
+
+      - name: Validate Bonded and Forced Labour Wave 5J research-only boundary
+        run: node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
+
+      - name: Validate Contract Workforce Wave 5K overlay
+        run: node tests/contract-workforce-wave5k-private-beta-checks.mjs
+
+      - name: Validate Social Security Wave 5L overlay
+        run: node tests/social-security-wave5l-private-beta-checks.mjs
+
+      - name: Validate Multi-country Employment Wave 5M out-of-scope boundary
+        run: node tests/multi-country-employment-wave5m-scope-guard-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform

@@ -1,3 +1,22 @@
+import "./epf-wave3a-explanation-panel.js";
+import "./epf-wave3b-explanation-panel.js";
+import "./epf-wave3c-explanation-panel.js";
+import "./esi-wave4a-explanation-panel.js";
+import "./esi-wave4b-explanation-panel.js";
+import "./esi-wave4c-explanation-panel.js";
+import "./esi-wave4d-explanation-panel.js";
+import "./jurisdiction-wave5a-explanation-panel.js";
+import "./shops-wave5b-explanation-panel.js";
+import "./code-on-wages-wave5c-explanation-panel.js";
+import "./gratuity-wave5d-explanation-panel.js";
+import "./employee-compensation-wave5e-explanation-panel.js";
+import "./oshwc-wave5f-explanation-panel.js";
+import "./industrial-relations-wave5g-explanation-panel.js";
+import "./apprentices-wave5h-explanation-panel.js";
+import "./child-adolescent-labour-wave5i-explanation-panel.js";
+import "./contract-workforce-wave5k-explanation-panel.js";
+import "./social-security-wave5l-explanation-panel.js";
+
 /**
  * GrowWithHR Compliance DNA
  * M1 Five-Act Story Engine

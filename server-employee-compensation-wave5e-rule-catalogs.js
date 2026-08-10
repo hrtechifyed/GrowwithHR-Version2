@@ -1,0 +1,37 @@
+"use strict";
+
+const {CONFIGS}=require("./server-employee-compensation-wave5e-configs.js");
+const {SOURCE_DEFINITIONS,COMMON_LIMITATIONS,clone,deepFreeze,unique,normalizeFeatureBody,sourceRecord,recommendation}=require("./server-employee-compensation-wave5e-runtime.js");
+const MODULE_VERSION="1.0.0";
+const EMPLOYEE_COMPENSATION_WAVE5E_CATALOG_ID="catalog.legal.employee-compensation-wave5e.v1";
+const EMPLOYEE_COMPENSATION_WAVE5E_CATALOG_PATH="growwithhr-rag/data/employee-compensation-wave5e-source-chunks.v1.json";
+function requiredFact(field){return{factId:field.factId,sourceAssessmentField:field.answerKey,type:field.type,label:field.label,required:true};}
+function condition(field){const operator=field.operator||"equals";const value=field.conditionValue!==undefined?field.conditionValue:field.complete;return operator==="exists"?{factId:field.factId,operator}:{factId:field.factId,operator,value};}
+function scenarioAnswers(config,mode){const answers={};config.fields.forEach((field,index)=>{answers[field.answerKey]=clone(mode==="gap"&&index===1?field.gap:field.complete);});return answers;}
+function buildRuleCatalog(config){const[matchedCode,gapCode,missingCode]=config.codes;const requiredFacts=config.fields.map(requiredFact);const requiredFactIds=config.fields.map((field)=>field.factId);const limitations=unique([...COMMON_LIMITATIONS,...config.limitations]);return deepFreeze({
+ catalogVersion:"1.0.0-private-beta",title:`${config.title} deterministic catalogue`,updatedAt:"2026-08-07",jurisdiction:"India",legalRuleCatalog:true,
+ legalReviewStatus:"needs-legal-review",applicabilityAuthority:"deterministic-only",retrievalRole:"source-retrieval-only",llmRole:"explanation-only",advisoryOnly:true,privateBetaOnly:true,stableReportMutation:false,factMappingMode:"catalog-defined",outcomeModel:"source-readiness-and-control-review",
+ sourceRegistry:{name:"GrowWithHR Employee's Compensation source register",location:"GrowWithHR-RAG/00-project-control/Source Register.xlsx",reviewStatus:"needs-legal-review"},
+ approval:{status:"draft",approvedBy:null,approvedAt:null},defaults:{ruleVersion:"1.0.0-private-beta",requiredFactMode:"all",evidence:{status:"not-verified",notes:"Organisation source-control assertions and references have not been independently verified.",verificationProcessId:null,verifiedAt:null},limitations},
+ sources:config.registrySourceIds.map(sourceRecord),rules:[{
+  id:config.ruleId,productRuleId:config.productRuleId,version:"1.0.0-private-beta",domain:"legal",title:config.title,
+  description:"Reviews organisation-level Employee's Compensation Chapter VII, schedule, Central Rules, commencement, transition, ESI-overlap, employer-process, authority-process and specialist-escalation controls without deciding individual injury, causation, liability, amount, claims or remedies.",jurisdiction:{country:"IN",level:"national-source-routing"},sourceRecordId:"EMPLOYEE-COMPENSATION-WAVE5E-SOURCE-READINESS",legalReviewStatus:"needs-legal-review",
+  requiredAssessmentFacts:requiredFacts,requiredFactMode:"all",requiredFactIds,missingInformationHandling:{defaultStatus:"more-information-needed",reasonCode:missingCode,neverInferMissingFacts:true,allowRetrievalToFillFacts:false,allowLlmToFillFacts:false},
+  match:{mode:"all",conditions:config.fields.map(condition)},outcomes:{
+   matched:{status:"specialist-review",reasonCode:matchedCode,reason:"The declared Employee's Compensation Chapter VII, schedule, Rules, commencement, transition, ESI-overlap, employer-process, authority-process and escalation controls are recorded. Customer coverage and all individual injury, liability, compensation and remedy questions remain subject to qualified review.",recommendation:recommendation("verify","Verify the Employee's Compensation source route","Confirm the exact controlled Code, schedules, Rules, commencement, transition and jurisdictional source set with qualified counsel before making any coverage, injury, causation, liability, amount, claim, appeal, recovery or remedy conclusion.")},
+   notMatched:{status:"specialist-review",reasonCode:gapCode,reason:"One or more Employee's Compensation Chapter VII, schedule, Rules, commencement, transition, ESI-overlap, employer-process, authority-process or escalation controls are missing, conflicted or unresolved.",recommendation:recommendation("remediate","Address Employee's Compensation source-control gaps","Complete the controlled source and organisational-control register without sending employee, dependant, accident, injury, medical, wage, payroll, claim, dispute, notice, order, payment or evidence content.")},
+   missing:{status:"more-information-needed",reasonCode:missingCode,reason:"The Employee's Compensation source-readiness review cannot run because one or more required privacy-safe organisation facts are missing.",recommendation:recommendation("complete-input","Complete Employee's Compensation source-readiness inputs","Provide the missing source-route, source-status, schedule, transition, ESI-overlap, employer-process, authority-process, escalation and reference values without individual injury or payroll data.")}
+  },permittedResultStatuses:["specialist-review","more-information-needed","not-currently-applicable"],sourceIds:config.registrySourceIds.map((id)=>SOURCE_DEFINITIONS[id].id),officialSourceIds:clone(config.registrySourceIds),sourceSections:clone(config.sections),
+  // Schema anchor only: private-beta source-review baseline, not a statutory commencement, coverage, injury, liability or entitlement determination.
+  effectiveDateMetadata:{effectiveFrom:"2026-08-07",effectiveTo:null,sourceRegistryId:"social-security-code-2020"},limitations,
+  automatedBoundaryTestScenarios:[
+   {scenarioId:"employee-compensation-source-readiness-complete",description:"All required privacy-safe Employee's Compensation source-readiness controls are supplied in the expected state.",answers:scenarioAnswers(config,"complete"),expectedStatus:"specialist-review",expectedReasonCode:matchedCode},
+   {scenarioId:"employee-compensation-source-readiness-gap",description:"All required facts are supplied and at least one Employee's Compensation source control is reported as a gap.",answers:scenarioAnswers(config,"gap"),expectedStatus:"specialist-review",expectedReasonCode:gapCode},
+   {scenarioId:"employee-compensation-source-readiness-missing",description:"Required privacy-safe organisation facts are omitted.",answers:{},expectedStatus:"more-information-needed",expectedReasonCode:missingCode}
+  ]
+ }]
+});}
+const EMPLOYEE_COMPENSATION_WAVE5E_PROFILE_DEFINITIONS=deepFreeze(CONFIGS.map((config)=>({featureId:config.featureId,ruleId:config.ruleId,productRuleId:config.productRuleId,queryTerms:clone(config.queryTerms),maxChunks:6})));
+const EMPLOYEE_COMPENSATION_WAVE5E_FEATURE_IDS=deepFreeze(CONFIGS.map((config)=>config.featureId));
+function createEmployeeCompensationWave5eFeatureSpecifications(){const specifications={};CONFIGS.forEach((config)=>{specifications[config.featureId]=deepFreeze({featureId:config.featureId,lawFamilyId:"employee-compensation",normalizeBody:(value)=>normalizeFeatureBody(config,value),ruleCatalog:buildRuleCatalog(config),privateBetaMode:"statutory-catalogue"});});return deepFreeze(specifications);}
+module.exports=Object.freeze({MODULE_VERSION,EMPLOYEE_COMPENSATION_WAVE5E_CATALOG_ID,EMPLOYEE_COMPENSATION_WAVE5E_CATALOG_PATH,EMPLOYEE_COMPENSATION_WAVE5E_FEATURE_IDS,EMPLOYEE_COMPENSATION_WAVE5E_PROFILE_DEFINITIONS,createEmployeeCompensationWave5eFeatureSpecifications});
