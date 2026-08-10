@@ -19,11 +19,13 @@ The approved cross-origin client is `https://hrtechifyed.github.io`. Additional 
 
 ## Private-beta architecture
 
-`/analyze-company-v3.html` is no-index and disabled from public routing by default. Its Compliance DNA modules consume protected assessment answers through compatibility adapters and produce isolated traceability, legal-review and workspace output without changing stable report, PDF, email or delivery contracts.
+`/analyze-company-v3.html` is no-index and disabled from public routing by default. Its Compliance DNA modules consume protected assessment answers through compatibility adapters and produce isolated traceability/legal-review/workspace output without changing stable report, PDF, email or delivery contracts.
 
-The v3 route mounts the POSH, Maternity Benefit, EPF Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G, Apprentices Wave 5H, Child and Adolescent Labour Wave 5I, Contract Workforce Wave 5K and generic Social Security Wave 5L review surfaces. Wave 5J Bonded and Forced Labour remains research-only and has no browser surface.
+The v3 route mounts the substantive review surfaces for POSH, Maternity Benefit, EPF Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G, Apprentices Wave 5H, Child and Adolescent Labour Wave 5I, Contract Workforce Wave 5K and generic Social Security Wave 5L.
 
-All legal-review panels submit only after explicit user action. Their inputs and results are not written to browser storage and are not inserted into the stable report, PDF or email.
+Wave 5J Bonded and Forced Labour and Wave 5M Multi-country Employment are governance-only fallbacks and intentionally have no assessment fact contract, browser panel, substantive runtime catalogue or provider route.
+
+All legal-review panels submit only after explicit user action. Their inputs/results are not written to browser storage and are not inserted into the stable report, PDF or email.
 
 ## Protected browser keys
 
@@ -36,7 +38,7 @@ All legal-review panels submit only after explicit user action. Their inputs and
 
 Feature-flag overrides use the documented `growwithhr-feature-` prefix and are not assessment records.
 
-## Compliance decision and governed RAG architecture
+## Deterministic decision and governed RAG architecture
 
 ```text
 assessment answers
@@ -51,56 +53,58 @@ assessment answers
 
 The deterministic rule owns status, reason code, missing facts and source scope. Retrieval has `applicabilityAuthority: none` and `usedForDecision: false`. Provider output must preserve the decision fingerprint, status, reason code and citation scope and may never fill missing assessment facts.
 
-## Runtime coverage
+Complete and reported-gap substantive scenarios stay `specialist-review`. Missing required facts return `more-information-needed`.
 
-The Wave 5L stacked private-beta registry exposes 57 callable profiles. The resulting runtime mix is **55 substantive profiles / 2 governance-fallback profiles / 21 catalogues**, with zero blocked runtime profiles.
+## Main-integrated runtime coverage
 
-The substantive stack includes POSH, Maternity Benefit, EPF/EPS/EDLI Waves 3A–3C, ESI Waves 4A–4D and one profile each for Appropriate Government, Maharashtra Shops, Code on Wages, Gratuity, Employee's Compensation, OSHWC, Industrial Relations, Apprentices, Child and Adolescent Labour, Contract Workforce and generic Social Security family routing. Bonded and Forced Labour remains a governance-fallback profile through the Wave 5J research-only boundary; Multi-country Employment remains outside the currently supported India-law scope.
+The legal-RAG implementation through Wave 5M is integrated into `main` as of 10 August 2026.
 
-All substantive catalogues remain `needs-legal-review`. Complete and reported-gap outcomes are `specialist-review`; missing required facts produce `more-information-needed`.
+Runtime invariant:
 
-## Wave 5A–5F authority boundaries
+- 57 callable profiles;
+- 55 substantive profiles;
+- 2 governance-fallback profiles;
+- 21 active catalogues;
+- zero blocked runtime profiles.
 
-Wave 5A records cross-code jurisdiction-source readiness but does not select the legally appropriate Government or forum. Wave 5B records Maharashtra Shops source and organisational controls but does not decide coverage, thresholds, registration or working conditions. Wave 5C records Code on Wages source/version/jurisdiction controls but does not select wage rates, categories, zones or individual entitlements. Wave 5D records Gratuity Chapter V and transition controls but does not decide eligibility or amounts. Wave 5E records Employee's Compensation Chapter VII/schedule/process controls but does not decide injury causation, liability or compensation. Wave 5F records a bounded Central/Maharashtra OSHWC route and draft-final controls but does not decide OSHWC applicability, industry classification, registration/licensing, working conditions or enforcement.
+The two governance fallbacks are Bonded and Forced Labour (Wave 5J research/safeguarding stop) and Multi-country Employment (Wave 5M jurisdiction/cross-border-data stop).
 
-## Wave 5G authority boundary — Industrial Relations
+All substantive catalogues remain `needs-legal-review`.
 
-Wave 5G promotes `feature.legal.industrial-relations` into a substantive deterministic transition and standing-orders source-readiness profile. It does not determine Chapter IV applicability, worker thresholds, industrial-establishment or Model Standing Orders sector classification, certification/modification validity, territorial authority, saved rights, disciplinary/dispute outcomes, strikes/lock-outs, retrenchment/closure, penalties or remedies. Maharashtra's 2026 IR rules remain draft-only.
+## Authority boundaries by later wave
 
-## Wave 5H authority boundary — Apprentices
+### Wave 5A — Appropriate Government
+Records cross-code jurisdiction/source readiness and escalation only. It does not select the legally appropriate Government, State/UT, law, source pack, forum or jurisdiction.
 
-Wave 5H promotes `feature.legal.apprentices` into a substantive deterministic source and classification-readiness profile. It accepts only organisation-level Act/Rules/amendment, current-Rules reconciliation, trade/category classification-source, manpower/band, State-variation, trade-register, portal/NAPS, authority, training-infrastructure, escalation and controlled-reference statuses. It does not determine Act applicability, mandatory engagement, counts/bands, individual eligibility, contract/stipend/certification, NAPS/DBT, enforcement or remedy.
+### Wave 5B — Maharashtra Shops and Establishments
+Records a Maharashtra-only source-readiness and organisation-control review. The 2025 amendment remains draft-only; no exact final instrument was found in the 10 August 2026 official re-check. The wave does not decide coverage, thresholds, registration, working conditions, penalties or enforcement.
 
-## Wave 5I authority boundary — Child and Adolescent Labour
+### Wave 5C — Code on Wages
+Records source/version/effective-date, jurisdiction-routing, rate-source-register and State/UT-instrument controls. It does not select rates/categories/zones/scheduled employment or perform employee-level payroll/entitlement/remedy arithmetic.
 
-Wave 5I is safeguarding-first. It accepts only current Act/Rules/Schedule source status, privacy-safe age-band and work-type classification-source controls, exception-source controls, education/register/notice controls, State variation, authority/human safeguarding escalation and controlled references. It is not case management, emergency handling, age inference or risk scoring and does not determine age/status, work, hazardous classification, exception, offence, rescue, prosecution, rehabilitation or remedy.
+### Wave 5D — Gratuity
+Records Chapter V, First Schedule, Rules and transition/source controls. It does not determine coverage, individual eligibility, continuous service, wages, gratuity amount, nomination, forfeiture, claim or remedy.
 
-## Wave 5J authority boundary — Bonded and Forced Labour
+### Wave 5E — Employee's Compensation
+Records Chapter VII, schedules, Rules, transition, ESI-overlap, employer-process and authority-source controls. It does not decide injury/disease causation, diagnosis, disablement, dependency, liability, wages, compensation, claims or remedies.
 
-Wave 5J is a research-only governance stop. `feature.legal.bonded-forced-labour` remains on governance fallback and no assessment fact contract, source-chunk catalogue, browser panel, substantive rule or router overlay exists. Runtime promotion is blocked pending exact current operational materials, qualified constitutional/statutory/criminal mapping, human-only safeguarding, privacy/security and State/UT controls.
+### Wave 5F — OSHWC
+Records a bounded Central/Maharashtra source route and generic establishment controls. Maharashtra's 2026 OSHWC Labour and Factories/Other Ports instruments remain draft-only after the 10 August 2026 official re-check. The wave does not decide applicability, thresholds, classification, registration/licensing, working conditions, incidents, penalties or enforcement.
 
-## Wave 5K authority boundary — Contract Workforce
+### Wave 5G — Industrial Relations
+Records Code/Rules, transition/amendment, Model Standing Orders, Maharashtra draft reconciliation and authority/source controls. The Maharashtra State rules remain draft-only after the 10 August 2026 re-check. It does not decide Chapter IV applicability, worker thresholds, certification, disciplinary/dispute outcomes, strikes/lock-outs, retrenchment/closure, penalties or remedies.
 
-Wave 5K promotes `feature.legal.contract-workforce` into a bounded cross-family source-readiness profile. Its first scope is OSHWC Chapter XI Part I and current Central Rules contract-labour material, plus State-rule reconciliation and **separate** EPF/ESI contractor dependencies.
+### Wave 5H — Apprentices
+Records Act/Rules/amendment status, current-Rules-versus-portal reconciliation, trade/category classification-source, manpower/band, State variation, portal/NAPS, authority and training-infrastructure controls. It does not decide Act applicability, mandatory engagement, counts, individual eligibility, contracts, stipend, certification, NAPS/DBT, enforcement or remedy.
 
-The 19-field deterministic contract records only organisation-level:
+### Wave 5I — Child and Adolescent Labour
+Safeguarding-first source/classification/exception/authority readiness only. It is not case management, emergency handling, age inference or risk scoring and does not determine age/status, work, hazardous classification, exceptions, offences, rescue, prosecution, rehabilitation or remedies.
 
-- declared Central/Maharashtra/mixed source route;
-- OSHWC Code, Central Rules and commencement status;
-- Maharashtra draft-versus-final reconciliation;
-- Chapter XI Part I scope and threshold source controls;
-- principal-employer/contractor classification-source controls;
-- contractor licensing and work-order/portal-intimation controls;
-- welfare and wage-responsibility controls;
-- core-activity classification source control;
-- separate EPF and ESI contractor-dependency statuses;
-- OSHWC/EPF/ESI reconciliation, authority/escalation, specialist escalation and controlled references.
+### Wave 5J — Bonded and Forced Labour
+Research-only governance stop. Runtime promotion is blocked pending exact current operational materials, qualified constitutional/statutory/criminal mapping, human-only safeguarding, privacy/security and State/UT controls. Current official research confirms the Ministry SOP referenced by NHRC as issued on 14 May 2026, but the exact Ministry-hosted file remains uncontrolled. The public Ministry source still surfaces the 2021 rehabilitation scheme and no exact approved/notified 2026–31 operational plan has been controlled.
 
-Wave 5K does **not** determine OSHWC contract-labour applicability, thresholds, principal-employer/contractor classification, licensing liability or validity, fees/security, work-order validity, welfare breach, wage default/recovery, core-activity classification/prohibition, exemption, authority jurisdiction, EPF membership/contribution, ESI insurance/contribution, State-law applicability, inspection, penalty, prosecution, dispute or remedy.
-
-### Contract-workforce cross-family non-substitution rule
-
-The contract-workforce layer is orchestration, not aggregation of legal authority:
+### Wave 5K — Contract Workforce
+Bounded OSHWC Chapter XI Part I source-readiness with separate EPF and ESI contractor dependencies.
 
 ```text
 OSHWC contract-workforce decision ─┐
@@ -108,27 +112,10 @@ EPF contractor-control decision ───┼─> separate dependency/reconciliat
 ESI contractor-control decision ───┘
 ```
 
-No family may determine another family's applicability or substantive result. Rule 93(4) of the current OSHWC Central Rules is treated as a routing dependency to the respective Social Security Code provisions, not as authority to infer EPF or ESI outcomes inside the OSHWC review.
+No family may determine another family's applicability or substantive result. Maharashtra OSHWC State rules remain draft-only.
 
-## Wave 5L authority boundary — Generic Social Security family routing
-
-Wave 5L promotes `feature.legal.social-security` into a bounded **chapter/source-family routing** profile. It does not become a generic Social Security applicability engine.
-
-The 19-field deterministic contract records only organisation-level:
-
-- a declared Social Security family route;
-- Code, Central Rules, commencement and corrigendum source status;
-- section 1(4)/First Schedule routing-source status;
-- chapter/source-family routing status;
-- separate handoff controls for EPF/EPS/EDLI, ESI, Gratuity, Maternity Benefit and Employee's Compensation;
-- specialist handoff controls for BOCW Chapter VIII and unorganised/gig/platform-worker Chapter IX;
-- cross-family non-substitution/reconciliation, State/UT variation, specialist escalation and controlled references.
-
-The generic route does **not** determine whether the Code or a chapter applies; establishment, employee, worker, contractor, gig/platform-worker or aggregator classification; scheme coverage; registration; contribution; wage ceiling; rate; benefit; entitlement; BOCW cess; claim; exemption; enforcement; penalty; dispute or remedy.
-
-### Social Security family non-substitution rule
-
-Wave 5L is a routing layer over already separated deterministic families:
+### Wave 5L — Generic Social Security family routing
+A chapter/source-family router, not a generic applicability engine.
 
 ```text
 generic Social Security route
@@ -141,25 +128,32 @@ generic Social Security route
   └─> Chapter IX unorganised/gig/platform specialist review
 ```
 
-The generic result cannot override, combine or infer a dedicated family result, and one dedicated family cannot substitute for another. BOCW Chapter VIII and Chapter IX remain specialist-only because Wave 5L does not activate substantive product families for them.
+The generic route cannot override, combine or infer a dedicated family result. BOCW Chapter VIII and Chapter IX remain specialist-only.
+
+### Wave 5M — Multi-country Employment
+Governance-only jurisdiction/data gate. No assessment, substantive rule, RAG catalogue, browser panel or provider route may exist until exactly one country pair and operating model are selected and specialist jurisdictional plus cross-border data approvals are recorded.
+
+Future pair-specific work must separately control employment law, immigration/work authorisation, tax/treaty/payroll/permanent-establishment, social-security/SSA and privacy/security sources for both jurisdictions. The product must not decide immigration, tax residence, withholding, social-security coverage, applicable employment law, EOR/PEO legality, cross-border transfer legality or remedy from generic data.
 
 ## Source-governance boundary
 
-The platform distinguishes controlled full files with verified hashes/pagination from `source-identity-only` snapshots, regulator/programme guidance, official portal context, draft instruments and historical/saved-law candidates.
+The platform distinguishes:
 
-Wave 5K contains eight source records and twelve reason-code-scoped chunks. Four OSHWC records are source-identity snapshots pending exact controlled mirrors: OSHWC Code 2020, OSHWC Central Rules 2026, S.O. 5321(E) commencement and Maharashtra OSHWC Labour draft Rules 2026. Four dependency records reuse exact controlled files already present in the governed EPF/ESI stack: Code on Social Security 2020, Employees' Provident Funds Scheme 2026, Social Security (Central) Rules 2026 and the ESI General Regulations 1950 consolidated 11 January 2024 saved-law candidate.
+- exact controlled full files with verified hashes/pagination;
+- `source-identity-only` snapshots;
+- regulator/programme or portal context;
+- draft instruments; and
+- historical/research-only sources.
 
-Wave 5L adds no new uncontrolled source identity. Its catalogue reuses four exact controlled full files with registered hashes and pagination: Code on Social Security 2020, Social Security (Central) Rules 2026, S.O. 5319(E) commencement and S.O. 5936(E) corrigendum. Its twelve chunks are restricted to family routing, handoff, transition and non-substitution context.
+The active Drive Source Register was reconciled through Wave 5M on 10 August 2026. Shared exact Social Security/EPF/ESI files are reused across families rather than duplicated. Missing exact files are not assigned fabricated hashes or pagination.
 
-Maharashtra's 2026 OSHWC Labour Rules remain draft-only. A later final State instrument must be independently acquired, fingerprinted and approved before any final-State rule can enter a substantive determination.
+Maharashtra Shops/OSHWC/IR draft instruments remain draft-only until exact final instruments are separately acquired, fingerprinted and approved. Wave 5J's exact Ministry SOP and 2026–31 rehabilitation/welfare operational-plan source blockers remain open.
 
 ## Privacy boundaries
 
-Earlier waves retain their established prohibitions on identities, contact details, complaints, medical records, payroll, claims, accident narratives, notices/orders and evidence bodies except where an explicitly approved privacy-safe organisational field is part of a deterministic contract.
+Earlier waves retain their established prohibitions on identities, contact details, complaints, medical records, payroll, claims, accident narratives, notices/orders and evidence bodies except where an explicitly approved privacy-safe organisation-level field is part of a deterministic fact contract.
 
-Wave 5K excludes contractor/worker identities, contact/address data, PAN/GST/registration identifiers, contract/work-order bodies, worker rosters, UAN/ESI insurance numbers, payroll/wage/contribution rows, attendance/schedules, bank/payment/invoice data, licence/certificate bodies, notices/orders/disputes, accident/medical information and evidence bodies. Only organisation-level statuses and controlled reference identifiers are allowed.
-
-Wave 5L excludes employee/member/worker identities, contact/address data, UAN/ESI or government identifiers, payroll/wage/contribution rows, attendance/service records, medical/injury/death information, nominee/dependant data, claims/benefit amounts, bank/payment data, notices/orders/disputes and evidence bodies. Only organisation-level family-routing/source-control statuses and controlled reference identifiers are allowed.
+Wave 5J prohibits identifying/allegation/coercion/debt/trafficking/rescue/case/victim/witness/evidence data. Wave 5M prohibits person-level mobility, passport/visa, nationality, tax-ID/residency-day, social-security, payroll/wage, bank/remittance, medical/dependant, agreement/dispute, precise-location and evidence-body data.
 
 ## Operational endpoints
 
@@ -169,10 +163,14 @@ GET  /api/legal-rag/status
 GET  /api/m7/readiness
 ```
 
-`server-entry.js` uses the Wave 5L router overlay on this stacked private-beta branch. The overlay preserves Waves 1–5K, leaves Wave 5J Bonded and Forced Labour on governance fallback, activates the generic Social Security family-routing profile and reports the 55/2 runtime mix. This stacked state does not by itself prove `main` integration or deployment.
+Current `main/server-entry.js` uses the Wave 5L shared router overlay. That is intentional: Wave 5M is governance-only and has no router. The main-integrated runtime reports the 57/55/2 profile mix and 21 catalogues.
+
+## Integration validation
+
+The exact integration head was green on All-Laws RAG, Executive Assessment, M4 Report Integration, M7 RAG-Ready Hardening and repository-wide GrowWithHR CI before merging to `main`.
 
 ## Approval boundary
 
-Passing deterministic, retrieval, browser, report or hardening tests is software evidence only. It does not grant legal, privacy, safeguarding, RAG, exact-source-file, State/UT, section-mapping, security or release approval. Every active catalogue remains `needs-legal-review` until qualified decisions are recorded.
+Passing deterministic, retrieval, browser, report, integration or hardening tests is software evidence only. It does **not** grant legal, privacy, safeguarding, RAG, exact-source-file, State/UT, section-mapping, assessment-fact, deterministic-rule, security, cross-border-data or release approval. Every active substantive catalogue remains `needs-legal-review` until qualified decisions are recorded.
 
 See `docs/architecture/compliance-engine-differentiation.md`, `docs/architecture/all-laws-runnable-private-beta-rag.md` and `docs/testing/all-laws-rag-validation.md`.
