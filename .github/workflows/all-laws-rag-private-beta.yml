@@ -1,4 +1,4 @@
-# Wave 5K adds bounded Contract Workforce cross-family source-readiness while retaining the Wave 5J research-only guard.
+# Wave 5L adds generic Social Security family routing while preserving dedicated-family non-substitution and the Wave 5J research-only guard.
 name: All-Laws RAG Private Beta
 
 on:
@@ -16,6 +16,7 @@ on:
       - "data/legal-source-governance/child-adolescent-labour-*.json"
       - "data/legal-source-governance/bonded-forced-labour-*.json"
       - "data/legal-source-governance/contract-workforce-*.json"
+      - "data/legal-source-governance/social-security-family-routing-*.json"
       - "docs/legal-source-governance/review-packets/bonded-forced-labour-*.md"
       - "data/assessment/appropriate-government-*.json"
       - "data/assessment/shops-establishments-maharashtra-*.json"
@@ -27,6 +28,7 @@ on:
       - "data/assessment/apprentices-*.json"
       - "data/assessment/child-adolescent-labour-*.json"
       - "data/assessment/contract-workforce-*.json"
+      - "data/assessment/social-security-family-routing-*.json"
       - "growwithhr-rag/all-laws-onboarding.cjs"
       - "growwithhr-rag/manifests/candidates/**"
       - "growwithhr-rag/data/epf-wave3a-source-chunks.v1.json"
@@ -46,6 +48,7 @@ on:
       - "growwithhr-rag/data/apprentices-wave5h-source-chunks.v1.json"
       - "growwithhr-rag/data/child-adolescent-labour-wave5i-source-chunks.v1.json"
       - "growwithhr-rag/data/contract-workforce-wave5k-source-chunks.v1.json"
+      - "growwithhr-rag/data/social-security-wave5l-source-chunks.v1.json"
       - "server-all-laws-*.js"
       - "server-epf-wave3a-*.js"
       - "server-epf-wave3b-*.js"
@@ -64,6 +67,7 @@ on:
       - "server-apprentices-wave5h-*.js"
       - "server-child-adolescent-labour-wave5i-*.js"
       - "server-contract-workforce-wave5k-*.js"
+      - "server-social-security-wave5l-*.js"
       - "server-legal-explanation-router.js"
       - "server-legal-explanation-router-wave3a.js"
       - "server-legal-explanation-router-wave3b.js"
@@ -82,6 +86,7 @@ on:
       - "server-legal-explanation-router-wave5h.js"
       - "server-legal-explanation-router-wave5i.js"
       - "server-legal-explanation-router-wave5k.js"
+      - "server-legal-explanation-router-wave5l.js"
       - "server-legal-rag-catalogs.js"
       - "server-entry.js"
       - "js/assessment-v3/epf-wave3a-*.js"
@@ -101,6 +106,7 @@ on:
       - "js/assessment-v3/apprentices-wave5h-*.js"
       - "js/assessment-v3/child-adolescent-labour-wave5i-*.js"
       - "js/assessment-v3/contract-workforce-wave5k-*.js"
+      - "js/assessment-v3/social-security-wave5l-*.js"
       - "tests/all-laws-*.mjs"
       - "tests/epf-wave3a-*.mjs"
       - "tests/epf-wave3b-*.mjs"
@@ -120,6 +126,7 @@ on:
       - "tests/child-adolescent-labour-wave5i-*.mjs"
       - "tests/bonded-forced-labour-wave5j-*.mjs"
       - "tests/contract-workforce-wave5k-*.mjs"
+      - "tests/social-security-wave5l-*.mjs"
       - "tests/legal-rag-catalog-loader-checks.mjs"
       - "package.json"
       - ".github/workflows/all-laws-rag-private-beta.yml"
@@ -204,6 +211,9 @@ jobs:
 
       - name: Validate Contract Workforce Wave 5K overlay
         run: node tests/contract-workforce-wave5k-private-beta-checks.mjs
+
+      - name: Validate Social Security Wave 5L overlay
+        run: node tests/social-security-wave5l-private-beta-checks.mjs
 
       - name: Run complete legal RAG regression suite
         run: npm run test:complete-legal-rag-platform
