@@ -28,7 +28,7 @@ Deterministic rules decide. RAG retrieves governed material. The hosted model ex
 
 ## Legal RAG coverage
 
-The Wave 5I stacked private-beta registry contains 57 runnable feature profiles:
+The Wave 5K stacked private-beta registry contains 57 runnable feature profiles:
 
 - seven POSH profiles;
 - ten Maternity Benefit profiles;
@@ -43,9 +43,10 @@ The Wave 5I stacked private-beta registry contains 57 runnable feature profiles:
 - one Industrial Relations Wave 5G profile;
 - one Apprentices Wave 5H profile;
 - one Child and Adolescent Labour Wave 5I profile;
-- four profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
+- one Contract Workforce Wave 5K profile;
+- three profiles using conservative governance-fallback rules until law-specific sources and rules complete review.
 
-The resulting runtime mix is **57 callable / 53 substantive / 4 governance fallback / 19 catalogues**, with zero blocked runtime profiles. Wave 5J does not alter this runtime: it deliberately keeps Bonded and Forced Labour on the governance fallback while specialist research and safeguarding gates remain open.
+The resulting runtime mix is **57 callable / 54 substantive / 3 governance fallback / 20 catalogues**, with zero blocked runtime profiles. Wave 5J remains a research-only Bonded and Forced Labour governance layer and does not add a substantive catalogue or product surface.
 
 ### Waves 1–4D
 
@@ -77,60 +78,49 @@ Wave 5F reviews a bounded Central/Maharashtra source route, Code/Central Rules/c
 
 ### Wave 5G — Industrial Relations standing-orders readiness
 
-Wave 5G promotes `feature.legal.industrial-relations` into a bounded organisation-level transition and standing-orders source-readiness review. It records Industrial Relations Code/Rules, commencement/transition, the 2026 amendment, Model Standing Orders, Maharashtra draft-rule reconciliation, standing-orders threshold/classification, adoption/certification, authority, legacy savings, escalation and controlled-reference statuses.
-
-Wave 5G does **not** decide Chapter IV applicability, worker-count thresholds, industrial-establishment or Model Standing Orders sector classification, certification/modification validity, territorial authority, saved rights, pending forums, dismissal/disciplinary merits, disputes, strikes/lock-outs, lay-off/retrenchment/closure, unfair labour practices, penalties, prosecution or remedies.
+Wave 5G records Industrial Relations Code/Rules, commencement/transition, the 2026 amendment, Model Standing Orders, Maharashtra draft-rule reconciliation, standing-orders threshold/classification, adoption/certification, authority, legacy savings, escalation and controlled-reference statuses. It does not decide Chapter IV applicability, thresholds, industrial-establishment/sector classification, certification validity, disciplinary/dispute outcomes, strikes/lock-outs, retrenchment/closure, penalties or remedies.
 
 ### Wave 5H — Apprentices source and classification readiness
 
-Wave 5H reviews current Apprentices Act/Rules/amendment status, current-Rules-versus-portal reconciliation, designated/optional trade and apprentice-category classification-source controls, establishment manpower/band, State variation, trade registers, portal/NAPS lifecycle, authority routing, training infrastructure, escalation and controlled references.
-
-Current official source surfaces are not assumed to be synchronized. The September 2025 amendment and current Gazette/India Code material must be reconciled against older base-rule or portal-summary wording; portal copy cannot calculate an establishment obligation or silently replace current statutory material.
-
-Wave 5H does **not** decide Apprentices Act applicability, mandatory engagement, worker strength, apprentice numbers, percentage bands, State-law effects, customer role trade classification, apprentice category, individual eligibility, age/education/fitness/reservation/disability treatment, contract validity, training period/completion, stipend/payment, examination/certification, NAPS eligibility/reimbursement/DBT, competent authority, enforcement, penalty, dispute or remedy.
+Wave 5H reviews current Apprentices Act/Rules/amendment status, current-Rules-versus-portal reconciliation, trade/category classification-source controls, establishment manpower/band, State variation, trade registers, portal/NAPS lifecycle, authority routing, training infrastructure, escalation and controlled references. It does not decide Act applicability, mandatory engagement, counts/bands, trade/person classification, individual eligibility, contract/stipend/certification, NAPS/DBT, enforcement or remedy.
 
 ### Wave 5I — Child and Adolescent Labour safeguarding source readiness
 
-Wave 5I promotes `feature.legal.child-adolescent-labour` into a safeguarding-first organisation-level review of:
-
-- the current central Child and Adolescent Labour Act source identity;
-- the 1988 principal Rules and 2017 Amendment Rules source identities;
-- S.O. 2823(E), which brought the 2016 amendment into force on 1 September 2016;
-- S.O. 2827(E), the 30 August 2017 hazardous Schedule amendment source identity;
-- current Act/Rules/Schedule reconciliation;
-- privacy-safe age-band and work-type/hazard classification-source controls;
-- family-enterprise and artist-participation exception-source controls;
-- education-protection, register/notice, State-variation, District-authority and immediate human safeguarding-escalation controls;
-- controlled source references only.
-
-Wave 5I is **not** case management, an emergency service, automated age inference or safeguarding risk scoring. It does not determine whether a person is a child/adolescent, whether work/employment exists, whether an occupation/process is hazardous, whether a Schedule branch or statutory exception applies, schooling impact, an age dispute, register/notice compliance, an offence, rescue/complaint requirement, authority jurisdiction, liability, penalty, prosecution, compounding, rehabilitation, fund/payment, State-law applicability or remedy. Any live safeguarding concern must leave the RAG route for an approved human safeguarding process.
-
-The governed Wave 5I catalogue contains five official `curated-source-identity-v1` / `source-identity-only` records and ten reason-code-scoped chunks. The active Drive Source Register does not yet contain exact controlled Child and Adolescent Labour files, so exact full-file mirrors and qualified current-law/State-variation review remain approval dependencies.
+Wave 5I reviews current Act/Rules/Schedule sources, privacy-safe classification-source and exception-source controls, State variation and human safeguarding escalation. It is not case management, an emergency service, age inference or safeguarding risk scoring. It does not determine a person's age/status, work, hazardous classification, exception, offence, rescue, prosecution, rehabilitation or remedy. Any live safeguarding concern must leave the RAG route for an approved human process.
 
 ### Wave 5J — Bonded and Forced Labour specialist research boundary
 
-Wave 5J follows the handoff requirement to complete specialist legal and safeguarding research **before assessment capture**. It does not create a substantive profile or catalogue. `feature.legal.bonded-forced-labour` remains on the conservative governance fallback.
+Wave 5J follows the handoff requirement to complete specialist legal and safeguarding research **before assessment capture**. `feature.legal.bonded-forced-labour` remains on governance fallback. The research packet records the constitutional, 1976 Act/Rules, criminal-law, jurisprudence, rehabilitation-transition and safeguarding source leads, while blocking runtime promotion until the May 2026 Ministry SOP, 2026–31 rehabilitation/welfare transition materials, qualified cross-framework mapping, human safeguarding, privacy/security and State/UT controls are resolved.
 
-The research packet records nine official/current source leads spanning Article 23, the Bonded Labour System (Abolition) Act and Rules, Bharatiya Nyaya Sanhita sections 143–146, current Supreme Court jurisprudence, the 2021 rehabilitation scheme, Parliament's 2026 scheme-merger evidence and NHRC safeguarding guidance.
+Wave 5J creates no assessment fact contract, case intake, browser panel, statutory RAG catalogue, provider narrative route or new server router. Coercion, debt, recruitment, movement and retaliation remain research topics rather than automated indicators.
 
-Runtime promotion is blocked because:
+### Wave 5K — Contract Workforce cross-family source readiness
 
-- the exact Ministry SOP for identification/rescue/prosecution referenced by NHRC as issued on 14 May 2026 has not yet been acquired and fingerprinted;
-- Parliament records the 2021 rehabilitation scheme as being merged into the Labour Welfare Scheme for 2026-27 to 2030-31, while a detailed post-merger operational plan is still required for controlled current workflow claims;
-- Article 23, the 1976 Act/Rules and BNS contain distinct constitutional, statutory and criminal tests that require qualified cross-framework mapping;
-- human safeguarding, privacy, access, retention, deletion, security and State/UT operational-variation controls remain unapproved.
+Wave 5K promotes `feature.legal.contract-workforce` into a bounded organisation-level review built on the existing OSHWC foundation. It records:
 
-Wave 5J therefore creates **no assessment fact contract, case intake, browser panel, statutory RAG catalogue, provider narrative route or new server router**. Coercion, debt, recruitment, movement and retaliation concepts remain research topics only and are not assessment indicators. Any live allegation or immediate safety concern must follow an approved human safeguarding/legal process outside RAG.
+- OSHWC Code, Central Rules and commencement source status;
+- Chapter XI Part I scope and threshold source controls;
+- principal-employer and contractor classification-source controls;
+- contractor licensing and work-order/portal-intimation source controls;
+- welfare and wage-responsibility source controls;
+- core-activity classification source control;
+- Maharashtra draft-versus-final reconciliation;
+- **separate** EPF contractor-control and ESI contractor-control dependency statuses;
+- OSHWC/EPF/ESI cross-family reconciliation, authority/escalation and controlled references.
+
+The governed Wave 5K catalogue contains eight sources and twelve reason-code-scoped chunks. Four OSHWC records remain `curated-source-identity-v1` / `source-identity-only`; four Social Security/EPF/ESI records reuse exact controlled files and fingerprints from the existing governed packs.
+
+The cross-family boundary is strict. An OSHWC Contract Workforce result cannot establish EPF membership/contributions or ESI insurance/contributions. EPF or ESI contractor results cannot establish OSHWC contract-labour applicability. Dependency status is orchestration metadata, not a substitute legal conclusion.
+
+Maharashtra's 2026 OSHWC Labour Rules remain draft-only. Wave 5K cannot decide OSHWC Chapter XI Part I applicability, thresholds, principal-employer/contractor classification, licence requirement/validity, fees/security, work-order validity, welfare breach, wage default/recovery, core-activity classification/prohibition, exemption, EPF/ESI substantive outcomes, State-law applicability, authority jurisdiction, inspection, penalty, prosecution, dispute or remedy.
 
 ## Legal and privacy status
 
-All Wave 1–5I catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Wave 5J has no substantive catalogue and remains `research-only-blocked`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
+All substantive Wave 1–5K catalogues remain `needs-legal-review`. Complete and reported-gap outcomes remain `specialist-review`; absent required facts return `more-information-needed`. Wave 5J remains `research-only-blocked`. Passing software tests is implementation evidence only and does not grant legal, privacy, safeguarding, RAG, source-file, security or release approval.
 
-The private-beta v3 page includes explicit in-memory panels for eighteen substantive waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after the user explicitly submits. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts. Wave 5J adds no browser panel.
+The private-beta v3 page includes explicit in-memory panels for substantive legal-review waves. They send only strict allow-listed organisation facts, routes, categories, statuses and controlled references after explicit submission. They do not save panel inputs/results and do not modify the stable report, PDF or email contracts. Wave 5J adds no browser panel.
 
-Wave 5I excludes child/adolescent identities, exact age/date of birth, parent/guardian/family identities, school or education records, medical/disability data, caste/community/religion, addresses/contact or precise child-linked location data, photographs/video, pay/payroll, schedules/attendance, allegation/abuse/trafficking/exploitation narratives, rescue/complaint/case/notice/order content, victim/witness data, police/CWC/District Magistrate case facts and evidence bodies. Evidence arrays are reduced to controlled references only.
-
-Wave 5J additionally prohibits person, family, recruiter/creditor/alleged-captor or accused identities; Aadhaar/ID, protected-characteristic, health, contact/location, image/audio/video, debt, wage/payroll/attendance/bank/DBT, confinement, violence/threat/retaliation/coercion/abuse, trafficking/sexual-exploitation, complaint/rescue/FIR/case/prosecution, victim/witness, release-certificate, rehabilitation-application and evidence-body data from the legal-RAG/provider route.
+Wave 5K excludes contractor/worker identities, contact/address data, PAN/GST/registration identifiers, contract or work-order bodies, worker rosters, UAN/IP numbers, payroll/wage/contribution rows, attendance/schedules, bank/payment/invoice data, licences/certificates, notices/orders/disputes, accident/medical information and evidence bodies. Evidence arrays are reduced to controlled reference identifiers only.
 
 ## What makes GrowWithHR different
 
@@ -144,11 +134,11 @@ See `docs/ARCHITECTURE.md` and `docs/testing/all-laws-rag-validation.md` for arc
 
 ## Production stack
 
-The deployed product is the root-level HTML, CSS and JavaScript application. `server.js` supplies the optional Gmail delivery API and legal explanation routes; `server-entry.js` is the CORS-aware production entrypoint used by Render. `apps/web/src` remains an archived experimental React/TypeScript UX layer and is not part of the deployed build.
+The deployed product is the root-level HTML, CSS and JavaScript application. `server.js` supplies optional delivery and explanation APIs; `server-entry.js` is the CORS-aware production entrypoint used by Render. `apps/web/src` remains an archived experimental React/TypeScript UX layer and is not part of the deployed build.
 
 ## Data and persistence boundary
 
-Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. Wave 1–5I legal-review panels are in-memory only. Wave 5J adds no assessment or persistence surface. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
+Assessment and workspace progress remain browser-local unless a user explicitly requests email delivery. Legal-review panels are in-memory only. Wave 5J adds no assessment or persistence surface. M6 durable-persistence contracts exist, but authentication, database connections, cloud evidence storage and cross-device resume remain disabled pending privacy, legal, security and release approval.
 
 ## Local validation
 
@@ -172,6 +162,7 @@ node tests/industrial-relations-wave5g-private-beta-checks.mjs
 node tests/apprentices-wave5h-private-beta-checks.mjs
 node tests/child-adolescent-labour-wave5i-private-beta-checks.mjs
 node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
+node tests/contract-workforce-wave5k-private-beta-checks.mjs
 npm run test:release
 npm run test:release:e2e
 npm start
