@@ -1,10 +1,10 @@
 # GrowWithHR shared Legal RAG platform architecture
 
-**Architecture version:** 1.0.0  
+**Architecture version:** 1.1.0  
 **Updated:** 11 August 2026  
-**Application baseline:** v0.20.2 Governed Legal RAG Private Beta  
+**Application baseline:** v0.20.3-prototype.1 Governed Compliance & Legal RAG Prototype  
 **Effective runtime:** 57 callable / 55 substantive / 2 governance fallback / 21 active catalogues  
-**Authority boundary:** deterministic rules decide; RAG retrieves permitted governed sources; the provider explains only
+**Authority boundary:** deterministic rules decide within the prototype contract; RAG retrieves permitted governed sources; the provider explains only
 
 ## 1. Purpose
 
@@ -12,10 +12,12 @@ GrowWithHR's legal-assurance architecture separates four activities that must no
 
 1. collecting/minimising assessment facts;
 2. creating a deterministic product decision;
-3. retrieving governed legal source material permitted by that decision; and
+3. retrieving governed legal research permitted by that decision; and
 4. explaining the already-fixed result.
 
 This design provides traceability while preventing retrieval similarity or model output from deciding legal applicability.
+
+The current release is a **research-grade prototype**. Structured secondary research with controlled provenance is an accepted source basis. Exact official-file assurance and qualified legal certification remain future production-hardening controls.
 
 ## 2. End-to-end architecture
 
@@ -74,13 +76,13 @@ The following activities are outside RAG/provider authority:
 - selecting the legally applicable jurisdiction or law;
 - changing deterministic status or reason code;
 - expanding the deterministic source scope;
-- treating a source upload as legal approval;
+- treating research provenance or a source upload as legal approval;
 - substituting one law-family result for another;
 - turning draft/research sources into operative law;
 - certifying compliance;
 - making individual entitlement, payroll, medical, injury-causation, immigration, tax, safeguarding, enforcement or remedy decisions unless a separately approved deterministic contract expressly permits a narrow outcome.
 
-Every active substantive legal catalogue remains `needs-legal-review` until qualified approvals are recorded.
+Every active substantive legal catalogue remains `needs-legal-review` for the prototype.
 
 ## 4. Effective runtime composition
 
@@ -136,7 +138,7 @@ Runtime truth must be checked from the cumulative Wave 5L registry composition a
 | Substantive profiles | 55 |
 | Governance fallback profiles | 2 |
 | Active catalogues | 21 |
-| Blocked callable profiles | 0 in the private-beta registry; governance fallbacks are callable only through conservative stop behaviour |
+| Blocked callable profiles | 0; governance fallbacks are callable only through conservative stop behaviour |
 
 The two governance fallbacks are:
 
@@ -156,7 +158,7 @@ Feature specifications contain:
 - legal/product limitations;
 - automated boundary scenarios.
 
-Rules remain the only product applicability/status authority. Complete or reported-gap source-readiness scenarios generally return `specialist-review`. Missing required facts return `more-information-needed`.
+Rules remain the only product applicability/status authority within the bounded prototype contract. Complete or reported-gap source-readiness scenarios generally return `specialist-review`. Missing required facts return `more-information-needed`.
 
 No retrieval adapter or provider may fill facts or override these outcomes.
 
@@ -173,7 +175,7 @@ The effective profile registry maps each feature to:
 - explanation availability;
 - fallback/governance mode where applicable.
 
-A profile is routing metadata. It does not grant source, legal or runtime approval by itself.
+A profile is routing metadata. It does not grant source or legal approval by itself.
 
 ## 7. Governed source catalogues
 
@@ -185,20 +187,21 @@ The platform currently has 21 active catalogues across the 55 substantive profil
 
 ## 8. Source-control architecture
 
-### 8.1 Four source states
+### 8.1 Source states
 
 GrowWithHR distinguishes:
 
-1. **curated source identity** — stable runtime/catalogue identity and its validated identity fingerprint;
-2. **exact official file** — raw official bytes stored in the controlled Drive source tree with SHA-256/byte length/page count;
-3. **official portal/register identity** — a controlled URL/register/snapshot identity that may not have one stable PDF;
-4. **draft/research material** — controlled for review but not treated as operative runtime authority.
+1. **runtime source identity** — stable runtime/catalogue identity and its validated identity fingerprint;
+2. **secondary-research provenance** — the accepted research basis for the current prototype;
+3. **exact-file evidence** — raw file bytes controlled with SHA-256/byte length/page count where available;
+4. **portal/register identity** — a controlled URL/register/snapshot identity that may not have one stable PDF;
+5. **draft/guidance/research material** — controlled for review but not promoted into operative authority by inference.
 
-These states must remain explicit.
+These states must remain explicit. Secondary-research provenance must not be described as official or counsel-approved provenance.
 
-### 8.2 Exact-file reconciliation — 11 August 2026
+### 8.2 Supplementary exact-file reconciliation — 11 August 2026
 
-The canonical Drive Source Register now contains an `Exact File Reconciliation` sheet mapping 31 acquired official PDFs to existing Source IDs using hashes and measurements from the real stored bytes.
+The canonical Drive Source Register contains an `Exact File Reconciliation` sheet mapping 31 acquired files to existing Source IDs using hashes and measurements from the stored bytes.
 
 Repository governance record:
 
@@ -213,13 +216,13 @@ runtimeMigrationApplied: false
 legalReviewStatus: needs-legal-review
 ```
 
-Exact-file fingerprints must not silently overwrite curated source-identity fingerprints. A separately reviewed source-manifest/catalogue migration is required.
+For `v0.20.3-prototype.1`, the exact-file evidence is **supplementary assurance**. Runtime migration to those file fingerprints is not a prototype release prerequisite. Exact-file fingerprints still must not silently overwrite runtime source-identity fingerprints.
 
 One duplicate Maharashtra Shops Rules-labelled file was quarantined because it was byte-identical to the Shops Act. The controlled Rules candidate is recorded separately in the Source Register.
 
 ### 8.3 Draft-state controls
 
-Current Maharashtra Shops 2025 amendment and 2026 OSHWC/Industrial Relations State instruments remain draft/non-operative until exact final instruments are acquired, fingerprinted and legally approved.
+Material classified as draft remains draft/non-operative until deliberately updated with evidence. Retrieval cannot upgrade draft/research material into operative law.
 
 ## 9. Retrieval architecture
 
@@ -234,7 +237,12 @@ The runtime receives an already-created decision and:
 5. returns governed chunks plus an immutable retrieval trace;
 6. verifies that the decision did not change.
 
-Every retrieval trace must record that it was not used for the decision.
+Every retrieval trace must record:
+
+```text
+usedForDecision: false
+applicabilityAuthority: none
+```
 
 Unknown/ambiguous profile/catalogue/source relationships fail closed.
 
@@ -295,17 +303,9 @@ This separation must be preserved in deterministic rules, retrieval scope and ex
 
 ### 13.1 Wave 5J — Bonded and Forced Labour
 
-Wave 5J remains outside substantive assessment/runtime.
+Wave 5J remains outside substantive assessment/runtime. Its #139/#140 programme is a future activation/hardening programme and does not block this prototype because the feature remains non-runtime.
 
-Required blockers:
-
-- exact 14 May 2026 Ministry SOP;
-- exact approved/notified 2026–31 rehabilitation/welfare operational material;
-- qualified Article 23 / Bonded Labour Act / BNS / Supreme Court mapping;
-- human-only safeguarding approval;
-- privacy/security and State/UT operational review.
-
-The architecture must not collapse trafficking, bonded labour, forced labour, criminal liability, rescue/release or rehabilitation into one automated classifier.
+The architecture must not collapse trafficking, bonded labour, forced labour, criminal liability, rescue/release or rehabilitation into one automated classifier. Live safeguarding concerns remain human-only.
 
 ### 13.2 Wave 5M — Multi-country Employment
 
@@ -317,9 +317,9 @@ The architecture must continue to contain zero substantive Wave 5M source chunks
 
 The manifest-driven builder verifies controlled source metadata and compiles governed catalogues, but it does not download/interpret law automatically.
 
-Publication/activation requires separately recorded approvals for applicable source files, legal/section mapping, RAG, tests, security and runtime activation.
+For the prototype, governed catalogue publication may use controlled secondary-research source identities where provenance and limitations are explicit. Exact-file verification remains available where a catalogue explicitly requires it and as future production-hardening assurance.
 
-The current 11 August exact-file reconciliation is **pre-migration evidence**, not an automatic publication event.
+Production-grade source/legal/RAG/security approval remains a separate future programme under #142/#143.
 
 See `legal-rag-source-pack-build-pipeline.md`.
 
@@ -329,10 +329,10 @@ A vector database is optional infrastructure, not legal authority.
 
 Any future vector/hybrid adapter must:
 
-- index only approved governed chunks;
+- index only governed chunks;
 - pre-filter by deterministic Source Register IDs before similarity ranking;
 - preserve exact source/chunk fingerprints and citation metadata;
-- produce no result when the approved scope has no match;
+- produce no result when the permitted scope has no match;
 - pass parity/boundary tests against the deterministic baseline;
 - remain replaceable without changing deterministic outcomes.
 
@@ -348,36 +348,33 @@ The architecture is fail-closed at key boundaries:
 - invalid provider citations/results are rejected;
 - Wave 5J/5M scope guards prevent accidental product activation.
 
-The M7 source lifecycle, operational-readiness and disaster-recovery controls remain part of release validation.
+The M7 source lifecycle, operational-readiness and disaster-recovery controls remain part of prototype release validation.
 
-## 17. Release architecture
+## 17. Prototype release architecture
 
-Software implementation and production certification are separate states.
+Software implementation, prototype publication and production legal certification are separate states.
 
-The release gate requires authorised evidence for:
+A clearly labelled prototype may be published when:
 
-- LEGAL;
-- PRIVACY;
-- RAG;
-- SOURCE-FILE;
-- SECURITY; and
-- RELEASE.
+- version/release metadata explicitly says prototype/prerelease;
+- active legal catalogues remain `needs-legal-review`;
+- secondary-research provenance is represented truthfully;
+- deterministic/RAG/privacy/safeguarding boundaries remain green;
+- the complete engineering regression passes on the exact candidate SHA;
+- Wave 5J and Wave 5M remain non-substantive.
 
-Programme issue: #142.
-
-Wave 5J additionally depends on #139/#140. Wave 5M has no release dependency because it is explicitly excluded under closed #141.
+GitHub #142 is the future production-grade Legal/Privacy/RAG/Source/Security/Release certification gate. #143 is the future exact-source hardening backlog. Neither blocks the clearly labelled prototype.
 
 ## 18. Definition of current architecture completion
 
-For the current release scope, architecture implementation is complete when:
+For the prototype scope, architecture implementation is complete when:
 
 - the 57/55/2/21 effective runtime invariant is preserved;
 - every substantive feature is deterministic-first and source-scoped;
 - Wave 5J remains governance/research-only;
 - Wave 5M remains excluded;
-- exact-file/source-identity state is auditable;
-- the approved source-manifest migration passes regression;
+- research/source provenance state is auditable;
 - browser/provider privacy boundaries remain intact;
-- final release evidence is tied to one approved main SHA.
+- the full prototype release regression is tied to one exact release SHA.
 
-Architecture implementation completion still does not grant legal or production approval; that remains an authorised human release decision.
+Architecture completion does not grant legal approval. It establishes a high-quality research prototype and preserves a documented path to future production-grade certification.
