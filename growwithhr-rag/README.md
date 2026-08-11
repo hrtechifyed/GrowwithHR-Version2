@@ -167,29 +167,15 @@ A retrieval trace records data such as:
 - `usedForDecision: false`;
 - `applicabilityAuthority: none`.
 
-Retrieval must not:
-
-- infer missing assessment facts;
-- select Central versus State/UT law;
-- add an unregistered source;
-- use one law family to replace another family's result;
-- upgrade draft/research material into operative source material;
-- change a deterministic outcome.
+Retrieval must not infer missing facts, select Central versus State/UT law, add an unregistered source, substitute one law family for another, upgrade draft/research material into operative law, or change a deterministic outcome.
 
 ## Explanation contract
 
 `growwithhr-rag/legal-explanation-contract.js` builds the protected provider request and validates accepted responses. This is the **provider-neutral explanation contract**: a provider **cannot change the deterministic decision**.
 
-A provider response is accepted only when it preserves the fixed decision and governed retrieval contract. Validation includes:
+A provider response is accepted only when it preserves the fixed decision and governed retrieval contract. Validation includes exact status/reason/fingerprint preservation, citation membership in the retrieval trace, mandatory limitations, no unapproved applicability claim and no certification/legal-advice claim.
 
-- exact status/reason/fingerprint preservation;
-- citation membership in the retrieval trace;
-- required limitations;
-- no unapproved applicability/decision claims;
-- no certification or legal-advice claim;
-- no provider authority to change the decision.
-
-Malformed, unsupported or decision-changing provider output fails closed.
+Malformed, unsupported or decision-changing provider output must **fail closed**.
 
 ## Provider implementation
 
@@ -204,11 +190,12 @@ Configured provider/model baseline:
 ```text
 Provider: Cloudflare Workers AI
 Model: @cf/meta/llama-3.1-8b-instruct-fast
-Structured output: JSON Mode
+Structured response: Cloudflare JSON Mode
+Response envelope: result.response
 Free-only deployment guard: true
 ```
 
-The adapter is an explanation provider only. Secrets remain server-side.
+The hosted provider uses **Cloudflare JSON Mode** and the validated structured response is read from `result.response`. The adapter is explanation-only and secrets remain server-side.
 
 Typical server-only values:
 
@@ -221,7 +208,7 @@ LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
 
 Optional controls include provider timeout, cache TTL, failure backoff, maximum concurrency and queue size.
 
-Provider failure has no alternate legal-decision path. It must fail closed rather than use another model to invent a result.
+There is **no second hosted provider** in the legal explanation path. Provider failure has no alternate legal-decision path and must **fail closed** rather than use another model to invent a result.
 
 ## Shared API
 
@@ -237,9 +224,15 @@ Status route:
 GET /api/legal-rag/status
 ```
 
-Compatibility routes may exist for earlier features, but the effective shared router is the Wave 5L router. Wave 5M intentionally has no router overlay.
+The original POSH compatibility route remains documented and tested:
 
-The status endpoint is the authoritative runtime smoke check for the effective profile/catalogue counts.
+```text
+POST /api/legal-explanation/posh
+```
+
+The endpoint concurrency contract proves that **50 simultaneous** identical POSH explanation requests share one provider request. This protects free-provider capacity and does not change the deterministic decision.
+
+Compatibility routes may exist for earlier features, but the effective shared router is the Wave 5L router. Wave 5M intentionally has no router overlay.
 
 ## Browser/privacy boundary
 
