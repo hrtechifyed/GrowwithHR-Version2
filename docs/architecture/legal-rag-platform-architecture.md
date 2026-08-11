@@ -1,206 +1,383 @@
-# GrowWithHR shared legal RAG platform architecture
+# GrowWithHR shared Legal RAG platform architecture
 
-**Version:** 0.1.0  
-**Prepared:** 4 August 2026  
-**Status:** Shared private-beta runtime released in v0.20.2; 57 profiles are runnable, with one statutory catalogue and 56 conservative governance fallbacks  
-**Authority boundary:** Deterministic rules decide. RAG retrieves approved sources. The provider explains only.
+**Architecture version:** 1.0.0  
+**Updated:** 11 August 2026  
+**Application baseline:** v0.20.2 Governed Legal RAG Private Beta  
+**Effective runtime:** 57 callable / 55 substantive / 2 governance fallback / 21 active catalogues  
+**Authority boundary:** deterministic rules decide; RAG retrieves permitted governed sources; the provider explains only
 
-## 1. Why this layer exists
+## 1. Purpose
 
-The first POSH implementation proved the end-to-end pattern, but its runtime is still feature-specific:
+GrowWithHR's legal-assurance architecture separates four activities that must not be collapsed into one AI step:
 
-- one hardcoded POSH chunk catalogue;
-- one hardcoded POSH endpoint;
-- one product-rule identifier;
-- POSH-specific fallback wording;
-- no architecture-wide mapping from legal feature to governed catalogue.
+1. collecting/minimising assessment facts;
+2. creating a deterministic product decision;
+3. retrieving governed legal source material permitted by that decision; and
+4. explaining the already-fixed result.
 
-The shared legal RAG platform removes that duplication without weakening the legal and privacy gates.
+This design provides traceability while preventing retrieval similarity or model output from deciding legal applicability.
 
-## 2. What the preceding four governance batches established
-
-1. **Phase 0 legal source governance** — Source Register v2 templates, an 18-feature review register, section-mapping controls and release gates.
-2. **POSH assessment fact contract** — 35 planned facts with value types, collection units, evidence handling and privacy restrictions.
-3. **POSH Rules page verification gate** — reproducible physical-PDF page observations plus an exact controlled-file hash verifier.
-4. **Remaining POSH legal-review packet** — blank qualified-review decisions, conditions and source-scope fields that cannot be mistaken for approval.
-
-Those changes are prerequisites for governed RAG onboarding. They did not themselves create a reusable runtime.
-
-## 3. Target architecture
+## 2. End-to-end architecture
 
 ```text
-Assessment answers
-  -> deterministic fact mapper
-  -> deterministic legal rule evaluator
-  -> immutable legal decision
-  -> shared legal RAG profile resolver
-  -> injected approved source-chunk catalogue
-  -> governed retrieval trace
-  -> provider-neutral explanation request
-  -> explanation provider
-  -> strict response validation
-  -> shared private-beta presentation
+Browser / assessment surface
+        |
+        v
+feature-specific client allow-list
+        |
+        v
+server-side input normalisation
+        |
+        v
+assessment fact contract
+        |
+        v
+versioned deterministic rule catalogue
+        |
+        v
+immutable decision
+(status + reason + missing facts + permitted source IDs + fingerprint)
+        |
+        v
+Legal RAG profile resolver
+        |
+        v
+governed catalogue loader
+        |
+        v
+source-scoped retrieval
+        |
+        v
+retrieval fingerprint + citations
+        |
+        v
+provider-neutral explanation contract
+        |
+        +--> deterministic explanation capability where explicitly invoked
+        |
+        +--> approved hosted provider adapter
+        |
+        v
+strict response validator
+        |
+        v
+minimized user-facing explanation
 ```
 
-The following paths remain outside RAG authority:
+The decision exists before retrieval. Retrieval and explanation remain downstream of deterministic authority.
 
-- assessment fact creation or inference;
-- legal applicability;
-- status or reason-code selection;
-- legal-review approval;
-- report, PDF or email mutation unless separately approved.
+## 3. Non-negotiable authority boundaries
 
-## 4. Architecture components
+The following activities are outside RAG/provider authority:
 
-### 4.1 Legal RAG profile registry
+- creating, inferring or repairing missing assessment facts;
+- selecting the legally applicable jurisdiction or law;
+- changing deterministic status or reason code;
+- expanding the deterministic source scope;
+- treating a source upload as legal approval;
+- substituting one law-family result for another;
+- turning draft/research sources into operative law;
+- certifying compliance;
+- making individual entitlement, payroll, medical, injury-causation, immigration, tax, safeguarding, enforcement or remedy decisions unless a separately approved deterministic contract expressly permits a narrow outcome.
 
-`growwithhr-rag/data/legal-rag-profiles.v1.json`
+Every active substantive legal catalogue remains `needs-legal-review` until qualified approvals are recorded.
 
-The registry contains exactly one routing profile for each legal feature in the Feature Coverage Registry. It records:
+## 4. Effective runtime composition
 
-- stable profile and feature IDs;
-- law-family ID;
-- activation status;
-- governed catalogue ID;
-- deterministic rule IDs and product-rule IDs;
-- governed query terms;
+### 4.1 Server entrypoint
+
+`server-entry.js` is the deployed server entrypoint. It delegates shared legal explanation handling to:
+
+```text
+server-legal-explanation-router-wave5l.js
+```
+
+The Wave 5L router is the cumulative substantive router. Wave 5M intentionally has no runtime router.
+
+### 4.2 Cumulative Wave overlay model
+
+The effective registry is built by the maintained cumulative modules:
+
+```text
+server-all-laws-private-beta.js
+  -> Wave 3A
+  -> Wave 3B
+  -> Wave 3C
+  -> Wave 4A
+  -> Wave 4B
+  -> Wave 4C
+  -> Wave 4D
+  -> Wave 5A
+  -> Wave 5B
+  -> Wave 5C
+  -> Wave 5D
+  -> Wave 5E
+  -> Wave 5F
+  -> Wave 5G
+  -> Wave 5H
+  -> Wave 5I
+  -> Wave 5K
+  -> Wave 5L
+```
+
+Each substantive overlay replaces the relevant conservative fallback profile with a law-family catalogue and deterministic feature specification while retaining the legal-review boundary.
+
+### 4.3 Base/static registry caveat
+
+`growwithhr-rag/data/legal-rag-profiles.v1.json` is an early architecture/base registry. It is useful as historical routing metadata but is **not sufficient to determine the current effective runtime**.
+
+Runtime truth must be checked from the cumulative Wave 5L registry composition and `GET /api/legal-rag/status`.
+
+### 4.4 Current invariant
+
+| Runtime control | Current state |
+|---|---:|
+| Callable profiles | 57 |
+| Substantive profiles | 55 |
+| Governance fallback profiles | 2 |
+| Active catalogues | 21 |
+| Blocked callable profiles | 0 in the private-beta registry; governance fallbacks are callable only through conservative stop behaviour |
+
+The two governance fallbacks are:
+
+- Wave 5J Bonded and Forced Labour;
+- Wave 5M Multi-country Employment.
+
+## 5. Deterministic rule layer
+
+Feature specifications contain:
+
+- required organisation-level facts;
+- normalisation logic;
+- deterministic match/missing behaviour;
+- fixed reason codes;
+- permitted result statuses;
+- permitted Source Register IDs;
+- legal/product limitations;
+- automated boundary scenarios.
+
+Rules remain the only product applicability/status authority. Complete or reported-gap source-readiness scenarios generally return `specialist-review`. Missing required facts return `more-information-needed`.
+
+No retrieval adapter or provider may fill facts or override these outcomes.
+
+## 6. Legal RAG profile registry
+
+The effective profile registry maps each feature to:
+
+- stable feature/profile/law-family IDs;
+- activation mode;
+- catalogue ID;
+- deterministic rule/product-rule IDs;
+- bounded query terms;
 - maximum chunk count;
-- compatibility routes;
-- blockers for every inactive profile.
+- explanation availability;
+- fallback/governance mode where applicable.
 
-A profile is routing metadata only. It does not make a source, rule or feature approved.
+A profile is routing metadata. It does not grant source, legal or runtime approval by itself.
 
-### 4.2 Shared runtime resolver
+## 7. Governed source catalogues
 
-`growwithhr-rag/legal-rag-runtime.js`
+`server-legal-rag-catalogs.js` loads only catalogues referenced by the effective profile registry.
 
-The runtime:
+A governed catalogue records controlled source identities and reason-code-scoped chunks. Substantive Wave 5 catalogues are intentionally bounded to explanation/source-readiness functions rather than broad legal interpretation.
 
-1. validates the architecture registry;
-2. receives an already-created deterministic decision;
-3. resolves exactly one active RAG profile by feature, rule ID or product-rule ID;
-4. refuses blocked, ambiguous or unknown profiles;
-5. requires the governed catalogue to be injected by the server layer;
-6. delegates retrieval to the existing deterministic source retriever;
-7. returns an immutable profile plus retrieval trace;
-8. verifies that the decision was not mutated.
+The platform currently has 21 active catalogues across the 55 substantive profiles plus governance-fallback handling.
 
-The runtime does not read files or call external services. This keeps catalogue loading, secrets and provider operations at the server boundary.
+## 8. Source-control architecture
 
-### 4.3 Governed source catalogues
+### 8.1 Four source states
 
-The existing `posh-source-chunks.v1.json` remains the first catalogue. Future catalogues should follow the same controlled-source principles but may be split by feature family or approved shared family.
+GrowWithHR distinguishes:
+
+1. **curated source identity** — stable runtime/catalogue identity and its validated identity fingerprint;
+2. **exact official file** — raw official bytes stored in the controlled Drive source tree with SHA-256/byte length/page count;
+3. **official portal/register identity** — a controlled URL/register/snapshot identity that may not have one stable PDF;
+4. **draft/research material** — controlled for review but not treated as operative runtime authority.
+
+These states must remain explicit.
+
+### 8.2 Exact-file reconciliation — 11 August 2026
+
+The canonical Drive Source Register now contains an `Exact File Reconciliation` sheet mapping 31 acquired official PDFs to existing Source IDs using hashes and measurements from the real stored bytes.
+
+Repository governance record:
+
+```text
+data/legal-source-governance/exact-source-file-reconciliation-2026-08-11.v1.json
+```
+
+That record deliberately states:
+
+```text
+runtimeMigrationApplied: false
+legalReviewStatus: needs-legal-review
+```
+
+Exact-file fingerprints must not silently overwrite curated source-identity fingerprints. A separately reviewed source-manifest/catalogue migration is required.
+
+One duplicate Maharashtra Shops Rules-labelled file was quarantined because it was byte-identical to the Shops Act. The controlled Rules candidate is recorded separately in the Source Register.
+
+### 8.3 Draft-state controls
+
+Current Maharashtra Shops 2025 amendment and 2026 OSHWC/Industrial Relations State instruments remain draft/non-operative until exact final instruments are acquired, fingerprinted and legally approved.
+
+## 9. Retrieval architecture
+
+The current baseline is deterministic lexical retrieval.
+
+The runtime receives an already-created decision and:
+
+1. resolves the feature's effective profile;
+2. resolves the profile's governed catalogue;
+3. filters candidates by the decision's permitted Source Register IDs;
+4. ranks only within that allowed scope;
+5. returns governed chunks plus an immutable retrieval trace;
+6. verifies that the decision did not change.
+
+Every retrieval trace must record that it was not used for the decision.
+
+Unknown/ambiguous profile/catalogue/source relationships fail closed.
+
+## 10. Explanation/provider architecture
+
+`growwithhr-rag/legal-explanation-contract.js` creates the protected explanation request and validates accepted output.
+
+The provider may receive:
+
+- the fixed deterministic decision fields required by the contract;
+- retrieval/chunk/citation identifiers and governed text;
+- mandatory limitations.
+
+It must not receive arbitrary assessment objects or prohibited person-level/case evidence.
+
+The maintained hosted adapter is Cloudflare Workers AI using the configured Llama JSON Mode model. Provider credentials remain server-only.
+
+A provider response is rejected when it:
+
+- changes status/reason/fingerprint;
+- cites outside the retrieval trace;
+- invents applicability authority;
+- makes prohibited certification/legal-advice claims;
+- violates required response shape/limits.
+
+Provider failure fails closed rather than creating a substitute legal answer.
+
+## 11. Browser and privacy architecture
+
+Feature-specific clients construct minimal allow-listed requests. Legal-review panels are explicit-submit and in-memory only.
+
+Prohibited provider content generally includes:
+
+- employee/person identities;
+- payroll/contribution bodies;
+- medical/claim/case narratives;
+- complaint/dispute bodies;
+- notices/orders;
+- evidence bodies;
+- protected/safeguarding material not separately approved.
+
+Stable report/PDF/email contracts remain outside the legal-review panels unless a separately reviewed release changes them.
+
+## 12. Cross-family architecture
+
+Dedicated law families remain non-substitutable.
 
 Examples:
 
-```text
-growwithhr-rag/data/maharashtra-shops-establishments-source-chunks.v1.json
-growwithhr-rag/data/apprentices-source-chunks.v1.json
-growwithhr-rag/data/child-adolescent-labour-source-chunks.v1.json
-growwithhr-rag/data/oshwc-source-chunks.v1.json
-growwithhr-rag/data/code-on-wages-source-chunks.v1.json
-growwithhr-rag/data/social-security-epf-source-chunks.v1.json
-```
+- Contract Workforce/OSHWC cannot decide EPF or ESI contractor coverage;
+- EPF/ESI cannot decide OSHWC applicability;
+- Generic Social Security Wave 5L cannot replace dedicated EPF/EPS/EDLI, ESI, Gratuity, Maternity Benefit or Employee's Compensation results;
+- BOCW Chapter VIII and unorganised/gig/platform-worker Chapter IX remain specialist-only in the generic router.
 
-A catalogue must not be registered as active until exact files, hashes, page ranges, sections, reason codes and legal-review scope are approved.
+This separation must be preserved in deterministic rules, retrieval scope and explanations.
 
-## 5. Current activation state
+## 13. Governance-only families
 
-| Feature set | Runtime status | Catalogue status |
-|---|---|---|
-| POSH Internal Committee threshold | Active private beta | Existing governed POSH catalogue |
-| Six remaining POSH duties | Routing profiles defined but blocked | POSH catalogue may be shared only after approved chunks and rules are added |
-| Other 11 legal feature families | Routing profiles defined but blocked | No approved catalogue |
+### 13.1 Wave 5J — Bonded and Forced Labour
 
-The six operational-advisory features remain outside the legal RAG path and continue to use their separate operational explanation contract.
+Wave 5J remains outside substantive assessment/runtime.
 
-## 6. Implementation sequence for the entire architecture
+Required blockers:
 
-### Batch A — Shared routing runtime
+- exact 14 May 2026 Ministry SOP;
+- exact approved/notified 2026–31 rehabilitation/welfare operational material;
+- qualified Article 23 / Bonded Labour Act / BNS / Supreme Court mapping;
+- human-only safeguarding approval;
+- privacy/security and State/UT operational review.
 
-- architecture-wide profile registry;
-- shared resolver and catalogue injection;
-- compatibility proof for the current POSH retrieval;
-- blocked-profile enforcement.
+The architecture must not collapse trafficking, bonded labour, forced labour, criminal liability, rescue/release or rehabilitation into one automated classifier.
 
-### Batch B — Generic explanation orchestration
+### 13.2 Wave 5M — Multi-country Employment
 
-- remove POSH-specific assumptions from the explanation contract and fallback wording;
-- add a generic law-family envelope;
-- build one shared server service;
-- preserve `/api/legal-explanation/posh` as a compatibility route;
-- support future `/api/legal-explanation/:featureId` or an approved equivalent.
+Wave 5M is explicitly outside the current release. #141 is closed `not planned`.
 
-### Batch C — Source-pack build pipeline
+The architecture must continue to contain zero substantive Wave 5M source chunks, assessment capture, cross-border data flow or provider route for this release.
 
-- manifest-driven source verification;
-- SHA-256, byte length and page-count checks;
-- curated section-to-chunk generation;
-- chunk content fingerprints;
-- schema and cross-reference validation;
-- no automatic legal interpretation or unreviewed raw-PDF ingestion.
+## 14. Source-pack build/publication architecture
 
-### Batch D — Retrieval adapters
+The manifest-driven builder verifies controlled source metadata and compiles governed catalogues, but it does not download/interpret law automatically.
 
-- keep the deterministic lexical retriever as the baseline;
-- define a provider-neutral retriever interface;
-- optionally add a vector/hybrid adapter after evaluation;
-- require identical source-ID filtering and decision isolation for every adapter;
-- prohibit vector similarity from expanding source scope or filling missing facts.
+Publication/activation requires separately recorded approvals for applicable source files, legal/section mapping, RAG, tests, security and runtime activation.
 
-### Batch E — Shared endpoint and UI
+The current 11 August exact-file reconciliation is **pre-migration evidence**, not an automatic publication event.
 
-- shared feature resolver;
-- common cache and concurrency controls;
-- provider-neutral request construction;
-- strict validated response envelope;
-- shared legal explanation panel;
-- no automatic provider request without the existing private-beta controls.
+See `legal-rag-source-pack-build-pipeline.md`.
 
-### Batch F — Feature onboarding
+## 15. Vector/hybrid retrieval position
 
-For each legal feature family:
+A vector database is optional infrastructure, not legal authority.
 
-1. approve source pack and exact hash scope;
-2. approve fact model and deterministic rule;
-3. add reason-code-specific chunks;
-4. activate its RAG profile;
-5. run retrieval, provider, endpoint, UI and regression tests;
-6. update the Feature Coverage Registry only after all gates pass.
+Any future vector/hybrid adapter must:
 
-## 7. Vector database position
+- index only approved governed chunks;
+- pre-filter by deterministic Source Register IDs before similarity ranking;
+- preserve exact source/chunk fingerprints and citation metadata;
+- produce no result when the approved scope has no match;
+- pass parity/boundary tests against the deterministic baseline;
+- remain replaceable without changing deterministic outcomes.
 
-The current governed POSH proof uses deterministic lexical metadata and does not require a vector database. A vector store is an optional retrieval implementation, not a legal decision engine or source of truth.
+No vector store is required for the current release.
 
-Any vector or hybrid adapter must:
+## 16. Operational/failure behaviour
 
-- index only approved chunk IDs and exact content fingerprints;
-- filter by the decision's approved Source Register IDs before ranking;
-- preserve section, page, source-hash and chunk-hash citations;
-- return no result when the approved source scope has no matching chunks;
-- remain replaceable without changing deterministic decisions;
-- pass parity and boundary tests against the baseline retriever.
+The architecture is fail-closed at key boundaries:
 
-## 8. Definition of architecture completion
+- missing facts do not trigger model inference;
+- unknown source/profile/catalogue IDs are rejected;
+- provider errors do not create fallback legal conclusions;
+- invalid provider citations/results are rejected;
+- Wave 5J/5M scope guards prevent accidental product activation.
 
-The architecture is complete when:
+The M7 source lifecycle, operational-readiness and disaster-recovery controls remain part of release validation.
 
-- all 18 legal features have stable routing profiles;
-- a shared server service and shared UI handle active profiles;
-- catalogue loading is manifest-driven and hash-gated;
-- lexical and optional vector retrieval use one interface and the same authority boundaries;
-- every active feature has approved sources, deterministic rules, chunks and tests;
-- adding a feature requires data and configuration, not copying a POSH-specific server or panel.
+## 17. Release architecture
 
-## 9. Runtime update — v0.20.2
+Software implementation and production certification are separate states.
 
-The shared architecture is now executable for every registered legal profile through `POST /api/legal-explanation/feature/:featureId`.
+The release gate requires authorised evidence for:
 
-- 57 profiles are active in private beta;
-- POSH Internal Committee threshold retains the statutory catalogue path;
-- 56 profiles use a governance-fallback catalogue while law-specific corpora are onboarded;
-- fallback outcomes are restricted to `more-information-needed` and `specialist-review`;
-- `GET /api/legal-rag/status` reports profile, catalogue and limitation metadata;
-- the authority boundary remains deterministic-only for applicability.
+- LEGAL;
+- PRIVACY;
+- RAG;
+- SOURCE-FILE;
+- SECURITY; and
+- RELEASE.
 
-Runtime availability is not equivalent to statutory-corpus completeness. Each fallback profile must still complete source fingerprinting, page and section review, fact and privacy approval, deterministic rule approval, chunk curation and release approval before it can issue a substantive applicability outcome.
+Programme issue: #142.
+
+Wave 5J additionally depends on #139/#140. Wave 5M has no release dependency because it is explicitly excluded under closed #141.
+
+## 18. Definition of current architecture completion
+
+For the current release scope, architecture implementation is complete when:
+
+- the 57/55/2/21 effective runtime invariant is preserved;
+- every substantive feature is deterministic-first and source-scoped;
+- Wave 5J remains governance/research-only;
+- Wave 5M remains excluded;
+- exact-file/source-identity state is auditable;
+- the approved source-manifest migration passes regression;
+- browser/provider privacy boundaries remain intact;
+- final release evidence is tied to one approved main SHA.
+
+Architecture implementation completion still does not grant legal or production approval; that remains an authorised human release decision.
