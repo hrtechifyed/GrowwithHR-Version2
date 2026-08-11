@@ -1,15 +1,16 @@
 # GrowWithHR complete feature coverage inventory
 
-**Inventory version:** 2.0.0  
+**Inventory version:** 2.1.0  
 **Updated:** 11 August 2026  
-**Runtime baseline:** current main-integrated Wave 5L substantive router with Wave 5J/5M governance guards  
-**Scope:** assessment/fact contracts, deterministic rules, governed source catalogues, retrieval, explanation, product surfaces and release boundaries
+**Release baseline:** v0.20.3-prototype.1 research-grade prototype  
+**Runtime baseline:** current Wave 5L substantive router with Wave 5J/5M governance guards  
+**Scope:** assessment/fact contracts, deterministic rules, governed source catalogues, retrieval, explanation, product surfaces and prototype/production boundaries
 
 ## 1. Purpose
 
-This inventory records the current effective private-beta Legal RAG coverage. It replaces the earlier 3 August snapshot that described the platform as essentially POSH-only.
+This inventory records the effective Legal RAG prototype coverage. It is an engineering/governance inventory and does not grant legal approval or certify any law-family result.
 
-It remains an engineering/governance inventory. It does not grant legal approval or certify any law-family result.
+The prototype source basis is structured secondary research with controlled provenance. Exact official-file assurance is supplementary and is tracked separately as future production hardening.
 
 ## 2. Authority boundary
 
@@ -21,7 +22,7 @@ Assessment input
 → governed retrieval
 → explanation-only provider
 → strict validation
-→ private-beta presentation
+→ prototype presentation
 ```
 
 Retrieval/provider output must not create facts, determine applicability, alter status/reason/source scope or certify compliance.
@@ -45,7 +46,7 @@ The effective registry is composed by the cumulative Wave server overlays. The e
 
 | Status | Meaning |
 |---|---|
-| **Substantive private-beta profile** | Feature-specific deterministic rules plus a governed catalogue are wired into the shared Legal RAG runtime. Legal approval may still be pending. |
+| **Substantive prototype profile** | Feature-specific deterministic rules plus a governed catalogue are wired into the shared Legal RAG runtime. Legal approval remains pending. |
 | **Governance fallback** | Callable only through conservative governance-stop behaviour. No substantive family assessment/result is activated. |
 | **Operational advisory** | Non-legal/legacy product guidance remains separate from legal applicability authority. |
 | **Out of current scope** | Feature is intentionally excluded from the release and must not acquire assessment/runtime/provider activation. |
@@ -59,15 +60,15 @@ The effective registry is composed by the cumulative Wave server overlays. The e
 | Waves 3A–3C — EPF/EPS/EDLI | 12 | Substantive | No contribution arithmetic, individual membership/exemption/certificate determination |
 | Waves 4A–4D — ESI | 15 | Substantive | No individual claim/medical/enforcement determination |
 | Wave 5A — Appropriate Government | 1 | Substantive source/jurisdiction readiness | Does not select Central vs State/UT Government, forum or applicable law |
-| Wave 5B — Maharashtra Shops | 1 | Substantive source readiness | Current 2025 amendment remains draft-only until final instrument is acquired/approved |
+| Wave 5B — Maharashtra Shops | 1 | Substantive source readiness | Draft amendments remain draft until separately established otherwise |
 | Wave 5C — Code on Wages | 1 | Substantive source readiness | No wage-rate/category/zone selection, payroll arithmetic or entitlement |
-| Wave 5D — Gratuity | 1 | Substantive Chapter V readiness | No eligibility, continuous-service, wage, amount, claim or remedy determination |
-| Wave 5E — Employee's Compensation | 1 | Substantive Chapter VII readiness | No causation, diagnosis, disablement, liability, compensation or remedy determination |
-| Wave 5F — OSHWC | 1 | Substantive Central/Maharashtra readiness | Maharashtra 2026 State rules remain draft/non-operative; no applicability/licensing/enforcement decision |
-| Wave 5G — Industrial Relations | 1 | Substantive transition/standing-orders readiness | Maharashtra 2026 State rules remain draft; no dispute/strike/retrenchment/closure/remedy determination |
+| Wave 5D — Gratuity | 1 | Substantive chapter readiness | No eligibility, continuous-service, wage, amount, claim or remedy determination |
+| Wave 5E — Employee's Compensation | 1 | Substantive chapter readiness | No causation, diagnosis, disablement, liability, compensation or remedy determination |
+| Wave 5F — OSHWC | 1 | Substantive Central/Maharashtra readiness | Draft State material remains draft/non-operative; no applicability/licensing/enforcement decision |
+| Wave 5G — Industrial Relations | 1 | Substantive transition/standing-orders readiness | Draft State material remains draft; no dispute/strike/retrenchment/closure/remedy determination |
 | Wave 5H — Apprentices | 1 | Substantive classification/source readiness | No individual eligibility, contract, stipend, certification or enforcement determination |
 | Wave 5I — Child and Adolescent Labour | 1 | Substantive safeguarding-first source readiness | No identifying case data, age/work/offence/rescue/rehabilitation determination; live safeguarding is human-only |
-| Wave 5J — Bonded and Forced Labour | 1 | **Governance fallback** | No assessment/runtime activation while #139/#140 are open |
+| Wave 5J — Bonded and Forced Labour | 1 | **Governance fallback** | No substantive assessment/runtime/provider activation; live safeguarding is human-only |
 | Wave 5K — Contract Workforce | 1 | Substantive cross-family readiness | OSHWC/EPF/ESI results remain separate and non-substitutable |
 | Wave 5L — Generic Social Security | 1 | Substantive family/chapter routing | Dedicated EPF/ESI/Gratuity/Maternity/Employee Compensation results remain separate; BOCW/Chapter IX specialist-only |
 | Wave 5M — Multi-country Employment | 1 | **Governance fallback / out of scope** | #141 closed `not planned`; no international assessment/catalogue/provider/data-transfer path in current release |
@@ -76,26 +77,41 @@ Total: **57 profiles = 55 substantive + 2 governance fallbacks**.
 
 ## 6. Current source catalogue inventory
 
-The effective runtime has **21 active catalogues**. Catalogues are loaded by the effective cumulative registry and remain retrieval/explanation assets rather than legal applicability authority.
+The effective runtime has **21 active catalogues**. Catalogues are retrieval/explanation assets rather than legal applicability authority.
 
 Key control rules:
 
 - source IDs must resolve to governed catalogue records;
 - retrieval is constrained by the deterministic decision's source scope;
 - law-family results cannot substitute for one another;
-- active catalogues remain `needs-legal-review` until qualified review evidence exists;
-- draft/research sources retain their status even if exact bytes are controlled.
+- active catalogues remain `needs-legal-review`;
+- source provenance and authority classification must be represented truthfully;
+- draft/research sources retain their status.
 
-## 7. Exact official-file coverage
+## 7. Prototype source standard
 
-The canonical Drive Source Register was upgraded on 11 August 2026 with an `Exact File Reconciliation` sheet.
+The prototype accepts **structured secondary research with controlled provenance** as its source basis.
 
-Current reconciliation:
+Required distinctions:
+
+1. **Runtime source identity** — stable identity used by validated catalogue contracts.
+2. **Secondary-research provenance** — accepted prototype research basis.
+3. **Exact-file evidence** — supplementary file-level assurance where available.
+4. **Portal/register identity** — controlled web/register source where no stable single PDF exists.
+5. **Draft/guidance/research-only status** — retained explicitly and never upgraded by inference.
+
+Secondary-research provenance must not be represented as official or counsel-approved provenance.
+
+## 8. Supplementary exact-file evidence
+
+The canonical Drive Source Register contains an `Exact File Reconciliation` sheet.
+
+Current supplementary evidence:
 
 | Control | State |
 |---|---:|
-| Exact PDFs mapped to existing Source IDs | 31 |
-| Official-byte SHA-256 recorded | Yes |
+| Acquired files mapped to existing Source IDs | 31 |
+| File-byte SHA-256 recorded | Yes |
 | Byte length recorded | Yes |
 | Physical PDF page count recorded | Yes |
 | Runtime source-identity hashes overwritten | No |
@@ -108,33 +124,25 @@ Repository record:
 data/legal-source-governance/exact-source-file-reconciliation-2026-08-11.v1.json
 ```
 
-The remaining #143 work is primarily classification/closure of portal/register/guidance identities and the reviewed runtime manifest/catalogue migration, rather than the broad 10 August exact-file backlog.
+For `v0.20.3-prototype.1`, this evidence is **supplementary and non-blocking**. A runtime migration to exact-file fingerprints is not required for the prototype. #143 now tracks future production hardening.
 
-## 8. Remaining source exceptions
+## 9. Source exceptions and safeguards
 
-### Maharashtra finality
+### Draft/finality controls
 
-Keep the following as draft/non-operative until exact final instruments are published, acquired and approved:
+Material classified as draft remains draft/non-operative in the prototype unless its status is deliberately updated with evidence. Retrieval must not upgrade draft/research material into operative law.
 
-- Maharashtra Shops 2025 draft amendment;
-- Maharashtra OSHWC Labour 2026 draft rules;
-- Maharashtra OSHWC Factories/Other Ports 2026 draft rules;
-- Maharashtra Industrial Relations 2026 draft rules.
+### Wave 5J
 
-### Wave 5J exact-source blockers
+Wave 5J remains non-substantive. Its source/legal/safeguarding work under #139/#140 is a future activation programme and does not block this prototype because the feature is not activated.
 
-Still missing/blocked under #139:
-
-1. exact Ministry SOP referenced as issued 14 May 2026;
-2. exact approved/notified 2026–31 Labour Welfare/bonded-labour rehabilitation operational material.
-
-No source-identity/secondary-text substitute may be treated as these exact files.
+Live coercion, trafficking, confinement, violence, retaliation, rescue or comparable case content remains outside normal RAG/provider handling.
 
 ### Wave 5M
 
 No two-country source pack is required because international/multi-country employment is excluded from the current release.
 
-## 9. Assessment/fact boundaries
+## 10. Assessment/fact boundaries
 
 GrowWithHR uses feature-specific fact contracts rather than sending a broad company object to the provider.
 
@@ -153,7 +161,7 @@ Commonly prohibited provider content includes:
 
 The existing broad company assessment fields remain useful for general advisory/product context but must not be silently reinterpreted as law-specific establishment/worker-category facts.
 
-## 10. Deterministic-rule coverage
+## 11. Deterministic-rule coverage
 
 The effective runtime has feature-specific deterministic specifications for all 55 substantive profiles.
 
@@ -164,7 +172,7 @@ Typical bounded outcomes are:
 
 Specific permitted statuses/reason codes remain defined by the relevant rule catalogue. The model/provider cannot create additional outcome authority.
 
-## 11. Retrieval/explanation coverage
+## 12. Retrieval/explanation coverage
 
 All substantive profiles use the shared deterministic-first RAG architecture.
 
@@ -175,51 +183,34 @@ usedForDecision: false
 applicabilityAuthority: none
 ```
 
-The explanation layer must preserve the deterministic decision fingerprint/status/reason and cite only chunks in the governed retrieval trace.
+The explanation layer must preserve the deterministic decision fingerprint/status/reason and cite only chunks in the governed retrieval trace. Provider failure or invalid output fails closed.
 
-Provider failure or invalid output fails closed.
+## 13. Product-surface coverage
 
-## 12. Product-surface coverage
-
-The private-beta legal review flows are explicit-submit and in-memory only. They do not automatically persist panel values/results into browser storage or change stable report/PDF/email contracts.
+The legal review flows are explicit-submit and in-memory only. They do not automatically persist panel values/results into browser storage or change stable report/PDF/email contracts.
 
 Wave 5J and Wave 5M have no substantive browser/provider surface.
 
 The deployed product remains the root HTML/CSS/JavaScript application. The React/TypeScript `apps/web/src` tree is not the deployed production build.
 
-## 13. Operational/non-legal features
+## 14. Founder compliance-engine objective
 
-The repository also contains older HR module readiness/advisory checks and M2 operational recommendations. Those remain separate from governed legal applicability.
+The underlying architecture supports a founder-oriented product goal:
 
-They must continue to use an explicit operational-advisory authority label and must not borrow legal statuses such as `applicable` unless a separately governed legal rule exists.
+- identify compliance families that need attention now from supplied organisation facts;
+- explain the deterministic result and research basis;
+- identify missing information;
+- recommend a controlled next action;
+- reassess when employee count, locations, worker categories or operating model changes;
+- surface future compliance **review triggers** as the company scales.
 
-## 14. State/UT knowledge records
+The current runtime provides the family-specific building blocks. A consolidated founder-facing "what applies now / what comes next" forecast remains product work after this release and must preserve law-family separation and the prototype no-certification boundary.
 
-The broader central/State/UT knowledge data remains useful as product/source context, but schema-valid knowledge records are not automatically governed deterministic rules or approved RAG source packs.
+## 15. State/UT knowledge records
 
-Any new State/UT substantive feature requires:
+The broader central/State/UT knowledge data remains useful as product/source context, but schema-valid knowledge records are not automatically governed deterministic rules or approved legal source packs.
 
-- explicit supported-jurisdiction scope;
-- exact source/control model;
-- section mapping;
-- assessment fact contract;
-- deterministic rule boundary;
-- State/UT legal review;
-- RAG/source/security/release approval.
-
-## 15. Special safeguards
-
-### Child and Adolescent Labour
-
-Wave 5I is safeguarding-first. Identifying/live case handling stays human-only.
-
-### Bonded and Forced Labour
-
-Wave 5J must not become an automated classifier for trafficking, bonded labour, forced labour, criminal liability, rescue/release or rehabilitation. It remains research/governance-only pending #139/#140.
-
-### Multi-country Employment
-
-Wave 5M is not a partially implemented international engine. It is a deliberate current-release exclusion. If international employment is later introduced, #141 must be reopened and a new country-pair/legal/privacy/security source programme started.
+Any new State/UT substantive feature requires explicit jurisdiction scope, source classification, assessment fact contract, deterministic rule boundary and appropriate safeguards before activation.
 
 ## 16. Validation coverage
 
@@ -240,18 +231,29 @@ The repository maintains dedicated suites for:
 
 See `docs/testing/all-laws-rag-validation.md`.
 
-## 17. Release gaps
+## 17. Prototype release gaps
 
-The remaining gap is no longer general architecture implementation. It is controlled certification work:
+The remaining work before `v0.20.3-prototype.1` is engineering/release control rather than production legal certification:
 
-1. review/approve exact-file reconciliation and complete #143 classifications;
-2. perform a separately reviewed source-manifest/catalogue migration where required;
-3. obtain named LEGAL, PRIVACY, RAG, SOURCE-FILE and SECURITY approvals under #142;
-4. keep Wave 5J blocked until #139/#140 close;
-5. run final regression on the approved release SHA;
-6. deploy the approved SHA and archive smoke evidence;
-7. record RELEASE approval under #142.
+1. align version metadata and prototype release notes;
+2. ensure release-facing wording represents the secondary-research source basis truthfully;
+3. keep `needs-legal-review` unchanged;
+4. keep Wave 5J and Wave 5M non-substantive;
+5. run the complete regression on the exact candidate SHA;
+6. publish the exact validated SHA as a GitHub prerelease.
+
+The following are **future production hardening**, not prototype blockers:
+
+- formal qualified legal approval/status promotion;
+- exact official-source assurance and portal/register classification under #143;
+- any reviewed migration to exact-file fingerprints;
+- formal Privacy/RAG/Source/Security certification;
+- production release certification under #142;
+- Wave 5J activation work;
+- future international Wave 5M work.
 
 ## 18. Current conclusion
 
-For the current non-international scope, the Legal RAG software architecture is substantively implemented through Wave 5L. The next programme phase is source/runtime reconciliation review, authorised governance approval and production release certification—not another broad "implement RAG for all laws" engineering wave.
+For the current non-international scope, the Legal RAG software architecture is substantively implemented through Wave 5L and is suitable for a clearly labelled research-grade prototype release after final engineering validation.
+
+The next product phase should focus on the consolidated founder experience — **what needs attention now, why, what to do next, and what compliance review triggers appear as the organisation scales** — while the exact-official-source and formal legal-certification programme remains the documented path from prototype to production-grade compliance software.
