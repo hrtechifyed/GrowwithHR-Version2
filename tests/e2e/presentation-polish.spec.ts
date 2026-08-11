@@ -49,41 +49,15 @@ test("keeps the original HRTechify logo inside the navigation capsule", async ({
 
     await expect(navigation).toBeVisible();
     await expect(brand).toBeVisible();
-    await expect(logo).toHaveAttribute(
-        "src",
-        /assets\/hrtechify-logo\.png$/
-    );
-
-    const presentation = await logo.evaluate((element) => {
-        const style = getComputedStyle(element);
-        return {
-            blendMode: style.mixBlendMode,
-            backgroundColor: style.backgroundColor
-        };
-    });
-
-    expect(presentation.blendMode).toBe("screen");
-    expect(presentation.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    await expect(logo).toHaveAttribute("src", /assets\/hrtechify-logo\.png$/);
 
     const boxes = await page.evaluate(() => {
         const nav = document.querySelector(".site-nav-glass")?.getBoundingClientRect();
-        const mark = document.querySelector(".site-nav-glass > .site-brand-logo")
-            ?.getBoundingClientRect();
-
+        const mark = document.querySelector(".site-nav-glass > .site-brand-logo")?.getBoundingClientRect();
         return nav && mark
             ? {
-                nav: {
-                    left: nav.left,
-                    right: nav.right,
-                    top: nav.top,
-                    bottom: nav.bottom
-                },
-                mark: {
-                    left: mark.left,
-                    right: mark.right,
-                    top: mark.top,
-                    bottom: mark.bottom
-                }
+                nav: { left: nav.left, right: nav.right, top: nav.top, bottom: nav.bottom },
+                mark: { left: mark.left, right: mark.right, top: mark.top, bottom: mark.bottom }
             }
             : null;
     });
@@ -95,7 +69,20 @@ test("keeps the original HRTechify logo inside the navigation capsule", async ({
     expect(boxes!.mark.bottom).toBeLessThanOrEqual(boxes!.nav.bottom);
 });
 
-test("balances the five executive snapshot cards and contains long values", async ({ page }) => {
+test("renders a clean single-column compliance report without scorecards or theme choices", async ({ page }) => {
+    await page.route("**/api/report-id", async (route) => {
+        await route.fulfill({
+            status: 201,
+            contentType: "application/json",
+            body: JSON.stringify({
+                ok: true,
+                reportId: "GWHR-2026-0811-AA01",
+                suffix: "AA01",
+                generatedAt: "2026-08-11T10:00:00.000Z",
+                durableStorageConfigured: true
+            })
+        });
+    });
     await page.addInitScript((report) => {
         localStorage.setItem("growwithhr-report", JSON.stringify(report));
     }, REPORT);
@@ -103,33 +90,28 @@ test("balances the five executive snapshot cards and contains long values", asyn
     await page.setViewportSize({ width: 1440, height: 1100 });
     await page.goto("/executive-advisory-report.html");
 
-    const cards = page.locator(".executive-profile-strip .executive-metric-card");
-    await expect(cards).toHaveCount(5);
-    await expect(page.locator("#companyIndustry")).toHaveText(
-        "Consulting & Professional Services"
-    );
+    await expect(page.locator("#founderReportRoot h1")).toHaveText("HR Compliance & Growth Report", { timeout: 15000 });
+    await expect(page.getByText("Your company information")).toBeVisible();
+    await expect(page.getByText("What GrowWithHR identified")).toBeVisible();
+    await expect(page.getByText("What this report does not assess")).toBeVisible();
+    await expect(page.getByText("Your founder action list")).toBeVisible();
+    await expect(page.getByText("Deterministic first, explanation second")).toBeVisible();
+    await expect(page.getByText("End of Report")).toBeVisible();
 
-    const layout = await cards.evaluateAll((elements) => elements.map((element) => {
+    await expect(page.locator(".executive-profile-strip")).toHaveCount(0);
+    await expect(page.locator(".executive-metric-card")).toHaveCount(0);
+    await expect(page.locator("input[name='advisoryReportTheme']")).toHaveCount(0);
+    await expect(page.locator("input[name='reportTheme']")).toHaveCount(0);
+    await expect(page.getByText("Dark Version", { exact: false })).toHaveCount(0);
+    await expect(page.getByText("compliance score", { exact: false })).toHaveCount(0);
+
+    const layout = await page.locator(".gwh-web-section").first().evaluate((element) => {
         const box = element.getBoundingClientRect();
-        const value = element.querySelector(".metric-value") as HTMLElement | null;
-        return {
-            left: box.left,
-            right: box.right,
-            top: box.top,
-            width: box.width,
-            valueFits: value
-                ? value.scrollWidth <= value.clientWidth + 1
-                : false
-        };
-    }));
-
-    expect(layout.slice(0, 3).every((card) => Math.abs(card.top - layout[0].top) < 2))
-        .toBe(true);
-    expect(Math.abs(layout[3].top - layout[4].top)).toBeLessThan(2);
-    expect(layout[3].top).toBeGreaterThan(layout[0].top);
-    expect(Math.abs(layout[3].left - layout[0].left)).toBeLessThan(4);
-    expect(Math.abs(layout[4].right - layout[2].right)).toBeLessThan(4);
-    expect(layout.every((card) => card.valueFits)).toBe(true);
+        return { width: box.width, left: box.left, right: box.right };
+    });
+    expect(layout.width).toBeGreaterThan(700);
+    expect(layout.left).toBeGreaterThan(100);
+    expect(layout.right).toBeLessThan(1340);
 });
 
 test("loads the all-running-text dual-theme PDF renderer on the public sample route", async ({ page }) => {
