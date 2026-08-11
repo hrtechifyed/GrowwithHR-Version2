@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const require = createRequire(import.meta.url);
 const registry = require("../data/legal-source-governance/all-laws-rag-onboarding.v1.json");
+const reconciliation = require("../data/legal-source-governance/exact-source-file-reconciliation-2026-08-11.v1.json");
 const onboarding = require("../growwithhr-rag/all-laws-onboarding.cjs");
 
 const validation = onboarding.validateAllLawsOnboardingRegistry(registry);
@@ -98,6 +99,29 @@ const unsafePathValidation = onboarding.validateAllLawsOnboardingRegistry(unsafe
 assert.equal(unsafePathValidation.valid, false);
 assert.ok(unsafePathValidation.issues.some((issue) => issue.includes("unsafe catalogue path")));
 
+// 11 Aug 2026 release-candidate source-governance bridge.
+// These assertions intentionally validate governance state only; they do not grant source/legal approval.
+assert.equal(reconciliation.schemaVersion, 1);
+assert.equal(reconciliation.reconciliationVersion, "2026-08-11");
+assert.equal(reconciliation.status, "source-file-acquired-review-gated");
+assert.equal(reconciliation.canonicalSourceRegister.sheet, "Exact File Reconciliation");
+assert.equal(reconciliation.canonicalSourceRegister.matchedExactFiles, 31);
+assert.equal(reconciliation.canonicalSourceRegister.duplicateQuarantineItems, 1);
+assert.equal(reconciliation.runtimeMigrationApplied, false);
+assert.equal(reconciliation.legalReviewStatus, "needs-legal-review");
+assert.equal(reconciliation.exactFileSourceIds.length, 31);
+assert.equal(new Set(reconciliation.exactFileSourceIds).size, 31);
+assert.equal(reconciliation.wave5J.status, "governance-research-only");
+assert.equal(reconciliation.wave5J.runtimeActivation, false);
+assert.equal(reconciliation.wave5J.hardSourceBlockers.length, 2);
+assert.ok(reconciliation.wave5J.hardSourceBlockers.includes("ministry-bonded-labour-sop-2026"));
+assert.ok(reconciliation.wave5J.hardSourceBlockers.includes("approved-notified-2026-31-bonded-labour-rehabilitation-operational-material"));
+assert.equal(reconciliation.wave5M.status, "out-of-scope-governance-only");
+assert.equal(reconciliation.wave5M.runtimeActivation, false);
+assert.equal(reconciliation.wave5M.countryPairSelected, false);
+assert.ok(reconciliation.rules.some((rule) => rule.includes("Do not overwrite curated source-identity fingerprints")));
+assert.ok(reconciliation.anomalies.some((item) => item.status === "quarantine-do-not-use"));
+
 const source = await readFile(new URL("../growwithhr-rag/all-laws-onboarding.cjs", import.meta.url), "utf8");
 assert.doesNotMatch(source, /\bfetch\s*\(/);
 assert.doesNotMatch(source, /XMLHttpRequest|axios|sendBeacon/);
@@ -109,5 +133,9 @@ console.log(JSON.stringify({
     familyCount: snapshot.familyCount,
     featureCount: snapshot.featureCount,
     activeFeatureCount: snapshot.activeFeatureCount,
-    blockedFeatureCount: snapshot.blockedFeatureCount
+    blockedFeatureCount: snapshot.blockedFeatureCount,
+    exactFilesReconciled: reconciliation.canonicalSourceRegister.matchedExactFiles,
+    exactFileRuntimeMigrationApplied: reconciliation.runtimeMigrationApplied,
+    wave5JRuntimeActivation: reconciliation.wave5J.runtimeActivation,
+    wave5MRuntimeActivation: reconciliation.wave5M.runtimeActivation
 }, null, 2));
