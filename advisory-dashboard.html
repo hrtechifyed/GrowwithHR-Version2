@@ -2,322 +2,94 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>
-
-         GrowWithHR | Executive Advisory Dashboard
-
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="styles.css">
-
-    
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrowWithHR | Executive Advisory Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <script src="data/state-expansion-data.js"></script>
-
 </head>
 
 <body>
-
-<!-- ==========================================
-NAVBAR
-========================================== -->
-
 <nav class="navbar">
-
     <div class="nav-container">
-
         <div class="brand">
-
-            <img
-                src="assets/hrtechify-logo.png"
-                class="nav-logo"
-                alt="HRTechify Logo">
-
+            <img src="assets/hrtechify-logo.png" class="nav-logo" alt="HRTechify Logo">
             <div>
-
-                <div class="brand-name">
-
-                    HRTechify
-
-                </div>
-
-               <div class="product-name" id="productVersion">
-                  GrowWithHR Public 0.20.3-prototype.1
-               </div>
-
+                <div class="brand-name">HRTechify</div>
+                <div class="product-name" id="productVersion">GrowWithHR Public 0.20.3-prototype.1</div>
             </div>
-
         </div>
-
     </div>
-
 </nav>
 
-<!-- ==========================================
-HERO
-========================================== -->
-
 <header class="hero">
-
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
     <div class="hero-orb hero-orb-3"></div>
-
     <div class="hero-particles"></div>
-
     <div class="container">
-
         <div class="hero-content">
-
-            <div class="hero-badge">
-
-                Executive Advisory Dashboard
-
-            </div>
-
-            <h1>
-
-                HR Compliance & Growth Readiness
-
-            </h1>
-
-            <p class="hero-description">
-
-                A unified view of statutory compliance,
-                HR governance,
-                organisational maturity,
-                and expansion readiness.
-
-            </p>
-
+            <div class="hero-badge">Executive Advisory Dashboard</div>
+            <h1>HR Compliance & Growth Readiness</h1>
+            <p class="hero-description">A unified view of statutory compliance, HR governance, organisational maturity, and expansion readiness.</p>
         </div>
-
     </div>
-
 </header>
 
-<!-- ==========================================
-MAIN CONTENT
-========================================== -->
-
 <section class="section">
-
     <div class="container">
-
         <div id="dashboardRoot">
-
             <div class="summary-card">
-
-                <h2>
-
-                    Loading Executive Dashboard...
-
-                </h2>
-
-                <p>
-
-                    Please wait while your advisory report is prepared.
-
-                </p>
-
+                <h2>Loading Executive Dashboard...</h2>
+                <p>Please wait while your advisory report is prepared.</p>
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- ==========================================
-STATE COMPARISON MODAL
-========================================== -->
-
-<div
-id="stateComparisonModal"
-class="pdf-modal">
-
+<div id="stateComparisonModal" class="pdf-modal">
     <div class="pdf-modal-content">
-
-        <h3>
-
-            Expansion Planner
-
-        </h3>
-
-        <p>
-
-            Current State:
-            <strong id="currentStateLabel"></strong>
-
-        </p>
-
-        <p>
-
-            Select up to four states for comparison.
-
-        </p>
-
-        <div
-            id="stateSelectionContainer"
-            class="state-selection-container">
-
-        </div>
-
+        <h3>Expansion Planner</h3>
+        <p>Current State: <strong id="currentStateLabel"></strong></p>
+        <p>Select up to four states for comparison.</p>
+        <div id="stateSelectionContainer" class="state-selection-container"></div>
         <div class="modal-actions">
-
-            <button
-                class="primary-btn"
-                id="compareStatesBtn">
-
-                Generate Comparison
-
-            </button>
-
-            <button
-                class="secondary-btn"
-                id="cancelComparisonBtn">
-
-                Cancel
-
-            </button>
-
+            <button class="primary-btn" id="compareStatesBtn">Generate Comparison</button>
+            <button class="secondary-btn" id="cancelComparisonBtn">Cancel</button>
         </div>
-
     </div>
-
 </div>
 
-<!-- ==========================================
-PDF MODAL
-========================================== -->
-
-<div
-id="pdfModal"
-class="pdf-modal">
-
+<div id="pdfModal" class="pdf-modal">
     <div class="pdf-modal-content">
-
-        <h3>
-
-            Download Advisory Report
-
-        </h3>
-
-        <p>
-
-            Choose the report style.
-
-        </p>
-
-        <label class="theme-option">
-
-            <input
-                type="radio"
-                name="reportTheme"
-                value="lite"
-                checked>
-
-            Lite Version
-
-        </label>
-
-        <label class="theme-option">
-
-            <input
-                type="radio"
-                name="reportTheme"
-                value="dark">
-
-            Dark Version
-
-        </label>
-
-        <label>
-
-            Email Address
-
-        </label>
-
-        <input
-            type="email"
-            id="userEmail"
-            placeholder="name@company.com">
-
+        <h3>Download HR Compliance & Growth Report</h3>
+        <p>Your report will be generated in the standard HRTechify format: clean, founder-readable and consistent across download and email.</p>
+        <label>Email Address</label>
+        <input type="email" id="userEmail" placeholder="name@company.com">
         <label class="consent">
-
-            <input
-                type="checkbox"
-                id="userConsent">
-
+            <input type="checkbox" id="userConsent">
             I agree to receive product updates from HRTechify.
-
         </label>
-
         <div class="modal-actions">
-
-            <button
-                class="primary-btn"
-                id="generateReportBtn">
-
-                Generate Report
-
-            </button>
-
-            <button
-                class="secondary-btn"
-                id="cancelReportBtn">
-
-                Cancel
-
-            </button>
-
+            <button class="primary-btn" id="generateReportBtn">Generate Report</button>
+            <button class="secondary-btn" id="cancelReportBtn">Cancel</button>
         </div>
-
     </div>
-
 </div>
-
-<!-- ==========================================
-FOOTER
-========================================== -->
 
 <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name" id="productVersion">GrowWithHR Public 0.20.3-prototype.1</div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
 
-<!-- ==========================================
-APPLICATION MODULES
-========================================== -->
-
 <script src="js/helpers.js"></script>
-
 <script src="js/renderer.js"></script>
-
 <script src="js/compliance.js"></script>
-
 <script src="js/people.js"></script>
-
 <script src="js/growth.js"></script>
-
 <script src="js/expansion.js"></script>
-
 <script src="js/pdf.js"></script>
-
 <script src="js/dashboard.js"></script>
-
 <script src="js/sticky-card-debug.js"></script>
 <script src="js/build-marker.js"></script>
 </body>
-
 </html>
