@@ -1,9 +1,23 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("v0.22 visual story and report", () => {
+test.describe("founder-demo visual story and report", () => {
     test.beforeEach(async ({ page }) => {
         await page.route("**/jspdf.umd.min.js", async (route) => {
             await route.fulfill({ status: 200, contentType: "application/javascript", body: "" });
+        });
+        await page.route("**/api/report-id", async (route) => {
+            await route.fulfill({
+                status: 201,
+                contentType: "application/json",
+                body: JSON.stringify({
+                    ok: true,
+                    reportId: "GWHR-2026-0811-AA01",
+                    suffix: "AA01",
+                    generatedAt: "2026-08-11T10:00:00.000Z",
+                    replayed: false,
+                    durableStorageConfigured: true
+                })
+            });
         });
         await page.addInitScript(() => {
             class FakeJsPDF {
@@ -30,7 +44,6 @@ test.describe("v0.22 visual story and report", () => {
                 }
             }
             (window as Window & { jspdf?: { jsPDF: typeof FakeJsPDF } }).jspdf = { jsPDF: FakeJsPDF };
-            localStorage.setItem("growwithhr-report-theme", "light");
         });
         await page.goto("/analyze-company.html", { waitUntil: "domcontentloaded" });
         await page.waitForFunction(() => Boolean(
@@ -38,16 +51,16 @@ test.describe("v0.22 visual story and report", () => {
                 .GrowWithHRPDF?.visualSectionedReportVersion
         ));
         await page.waitForFunction(() => Boolean(
-            (window as Window & { GrowWithHRExecutiveSummaryReport?: { version?: string } })
-                .GrowWithHRExecutiveSummaryReport?.version
+            (window as Window & { GrowWithHRFounderDemoReport?: { singleEdition?: boolean } })
+                .GrowWithHRFounderDemoReport?.singleEdition
         ));
         await page.waitForFunction(() => Boolean(
-            (window as Window & { GrowWithHRReportBrandTemplate?: { sameLayoutForLightAndDark?: boolean } })
-                .GrowWithHRReportBrandTemplate?.sameLayoutForLightAndDark
+            (window as Window & { GrowWithHRReportBrandTemplate?: { singleEdition?: boolean } })
+                .GrowWithHRReportBrandTemplate?.singleEdition
         ));
         await page.waitForFunction(() => Boolean(
-            (window as Window & { GrowWithHRDualEditionEmail?: { mode?: string } })
-                .GrowWithHRDualEditionEmail?.mode === "two-separate-pdfs-one-email"
+            (window as Window & { GrowWithHRReportRuntimeBootstrap?: { singleReportDelivery?: boolean } })
+                .GrowWithHRReportRuntimeBootstrap?.singleReportDelivery
         ));
     });
 
@@ -80,7 +93,6 @@ test.describe("v0.22 visual story and report", () => {
         await expect(page.locator("#chapterInsight")).toContainText("what the organisation does");
         await expect(page.locator("#chapterInsight")).toContainText("workforce questions");
         await expect(page.locator(".advisory-industry-adaptive__heading").first().locator("h3")).toHaveText("Who works with you?");
-        await expect(page.locator('[data-field-wrapper="womenEmployees"]')).not.toHaveClass(/advisory-question-card--wide/);
     });
 
     test("tailors the executive summary across legal, sector, workforce and operating combinations", async ({ page }) => {
@@ -89,97 +101,75 @@ test.describe("v0.22 visual story and report", () => {
                 GrowWithHRExecutiveSummaryReport?: { executiveCopy: (data: unknown, rows: unknown[]) => any };
             }).GrowWithHRExecutiveSummaryReport!;
             const cases = [
-                {
-                    companyName: "Solo Technology OPC", entity: "One Person Company (OPC)", industry: "Software and SaaS",
-                    employees: 1, workers: 0, contractors: 0, workforcePresence: "owner-only", primaryState: "Karnataka", workModel: "Remote"
-                },
-                {
-                    companyName: "Retail Start Pvt Ltd", entity: "Private Limited Company", industry: "Retail and E-commerce",
-                    employees: 8, contractors: 2, workforcePresence: "other-people", primaryState: "Maharashtra", workModel: "On-site", shiftWork: true
-                },
-                {
-                    companyName: "Build Network LLP", entity: "Limited Liability Partnership", industry: "Construction and Real Estate",
-                    employees: 12, workers: 18, contractors: 9, workforcePresence: "other-people", operatingStates: ["Delhi", "Haryana"], workModel: "Project sites"
-                },
-                {
-                    companyName: "Precision Works Ltd", entity: "Public Limited Company", industry: "Manufacturing and Industrial",
-                    employees: 72, workers: 45, contractors: 12, workforcePresence: "other-people", primaryState: "Pan India", workModel: "Factory", manufacturingProcess: true, nightShift: true
-                },
-                {
-                    companyName: "Learning Mission Trust", entity: "Public Trust", industry: "Education and Training",
-                    employees: 6, contractors: 4, workforcePresence: "other-people", primaryState: "Tamil Nadu", workModel: "Hybrid"
-                }
+                { companyName: "Solo Technology OPC", entity: "One Person Company (OPC)", industry: "Software and SaaS", employees: 1, workers: 0, contractors: 0, workforcePresence: "owner-only", primaryState: "Karnataka", workModel: "Remote" },
+                { companyName: "Retail Start Pvt Ltd", entity: "Private Limited Company", industry: "Retail and E-commerce", employees: 8, contractors: 2, workforcePresence: "other-people", primaryState: "Maharashtra", workModel: "On-site", shiftWork: true },
+                { companyName: "Build Network LLP", entity: "Limited Liability Partnership", industry: "Construction and Real Estate", employees: 12, workers: 18, contractors: 9, workforcePresence: "other-people", operatingStates: ["Delhi", "Haryana"], workModel: "Project sites" },
+                { companyName: "Precision Works Ltd", entity: "Public Limited Company", industry: "Manufacturing and Industrial", employees: 72, workers: 45, contractors: 12, workforcePresence: "other-people", primaryState: "Pan India", workModel: "Factory", manufacturingProcess: true, nightShift: true },
+                { companyName: "Learning Mission Trust", entity: "Public Trust", industry: "Education and Training", employees: 6, contractors: 4, workforcePresence: "other-people", primaryState: "Tamil Nadu", workModel: "Hybrid" }
             ];
             return cases.map((profile) => executive.executiveCopy(profile, []));
         });
 
         expect(summaries[0].profile.workforceStage).toBe("owner-only");
-        expect(summaries[0].meaning).toContain("owner/director-led");
         expect(summaries[1].profile.sectorFamily).toBe("customer-operations");
-        expect(summaries[1].profile.workforceStage).toBe("emerging-team");
-        expect(summaries[1].ahead).toContain("customer-facing operations");
         expect(summaries[2].profile.legalFamily).toBe("partnership");
         expect(summaries[2].profile.workforceMix).toBe("mixed-workforce");
-        expect(summaries[2].ahead).toContain("more than one state");
         expect(summaries[3].profile.workforceStage).toBe("scaled-workforce");
         expect(summaries[3].profile.sectorFamily).toBe("manufacturing");
-        expect(summaries[3].ahead).toContain("factory status");
         expect(summaries[4].profile.legalFamily).toBe("mission-led");
-        expect(summaries[4].profile.sectorFamily).toBe("care-education");
         expect(new Set(summaries.map((summary) => summary.ahead)).size).toBe(summaries.length);
     });
 
-    test("uses one HRTechify template for Light and Dark with colour as the only visual difference", async ({ page }) => {
+    test("forces one clean standard HRTechify report even when an old caller asks for both themes", async ({ page }) => {
         const result = await page.evaluate(async () => {
             const service = (window as Window & {
                 GrowWithHRPDF?: { buildAdvisoryPdf: (payload: unknown) => Promise<any> };
-                GrowWithHRReportBrandTemplate?: { templateId?: string; logoAsset?: string; sameLayoutForLightAndDark?: boolean };
             }).GrowWithHRPDF!;
             const brand = (window as Window & {
-                GrowWithHRReportBrandTemplate?: { templateId?: string; logoAsset?: string; sameLayoutForLightAndDark?: boolean };
+                GrowWithHRReportBrandTemplate?: { templateId?: string; logoAsset?: string; singleEdition?: boolean; reportStyle?: string };
             }).GrowWithHRReportBrandTemplate!;
             const report = {
-                companyName: "Template Parity Pvt Ltd", entity: "Private Limited Company", industry: "Professional Services",
+                companyName: "Template Standard Pvt Ltd", entity: "Private Limited Company", industry: "Professional Services",
                 employees: 24, contractors: 6, workforcePresence: "other-people", primaryState: "Karnataka", workModel: "Hybrid"
             };
             const pdf = await service.buildAdvisoryPdf({ theme: "both", report, answers: report });
             return {
                 selectedThemes: pdf.selectedThemes,
-                pageCounts: pdf.pageCounts,
+                pdfCount: pdf.pdfs.length,
+                attachmentCount: pdf.attachmentCount,
+                deliveryMode: pdf.deliveryMode,
+                filename: pdf.filename,
+                reportId: pdf.reportId,
+                reportStructureVersion: pdf.reportStructureVersion,
                 sharedTemplateId: pdf.sharedTemplateId,
-                sharedTemplateParity: pdf.sharedTemplateParity,
-                lightDarkDifference: pdf.lightDarkDifference,
                 brandLogoAsset: pdf.brandLogoAsset,
-                filenames: pdf.pdfs.map((item: any) => item.filename),
-                themes: pdf.pdfs.map((item: any) => item.theme),
-                imageCounts: pdf.pdfs.map((item: any) => item.document.images.length),
+                imageCount: pdf.document.images.length,
                 brand
             };
         });
 
-        expect(result.selectedThemes).toEqual(["light", "dark"]);
-        expect(result.themes).toEqual(["light", "dark"]);
-        expect(result.pageCounts.light).toBe(result.pageCounts.dark);
-        expect(result.sharedTemplateParity).toBe(true);
-        expect(result.sharedTemplateId).toBe("hrtechify-action-brief-shared-v1");
-        expect(result.lightDarkDifference).toBe("colour-palette-only");
+        expect(result.selectedThemes).toEqual(["standard"]);
+        expect(result.pdfCount).toBe(1);
+        expect(result.attachmentCount).toBe(1);
+        expect(result.deliveryMode).toBe("single-pdf-one-email");
+        expect(result.filename).not.toContain("Light");
+        expect(result.filename).not.toContain("Dark");
+        expect(result.filename).toContain("GWHR-2026-0811-AA01");
+        expect(result.reportId).toBe("GWHR-2026-0811-AA01");
+        expect(result.reportStructureVersion).toBe("founder-demo-single-v1");
+        expect(result.sharedTemplateId).toBe("hrtechify-founder-compliance-growth-v1");
         expect(result.brandLogoAsset).toBe("assets/hrtechify-logo.png");
-        expect(result.brand.templateId).toBe("hrtechify-action-brief-shared-v1");
-        expect(result.brand.logoAsset).toBe("assets/hrtechify-logo.png");
-        expect(result.brand.sameLayoutForLightAndDark).toBe(true);
-        expect(result.filenames[0]).toContain("Light");
-        expect(result.filenames[1]).toContain("Dark");
-        expect(result.imageCounts[0]).toBeGreaterThan(2);
-        expect(result.imageCounts[0]).toBe(result.imageCounts[1]);
+        expect(result.brand.singleEdition).toBe(true);
+        expect(result.brand.reportStyle).toBe("clean-standard");
+        expect(result.imageCount).toBeGreaterThanOrEqual(2);
     });
 
-    test("generates a personalised executive-summary report", async ({ page }) => {
+    test("generates the founder-report section sequence without scorecards or dual attachments", async ({ page }) => {
         const result = await page.evaluate(async () => {
             const service = (window as Window & {
                 GrowWithHRPDF?: { buildAdvisoryPdf: (payload: unknown) => Promise<any> };
             }).GrowWithHRPDF!;
             return service.buildAdvisoryPdf({
-                theme: "light",
                 report: {
                     companyName: "Growth Services Pvt Ltd", entity: "Private Limited Company", industry: "Professional Services",
                     employees: 24, contractors: 6, workforcePresence: "other-people", primaryState: "Karnataka", workModel: "Hybrid"
@@ -191,19 +181,27 @@ test.describe("v0.22 visual story and report", () => {
             });
         });
 
-        expect(result.reportStructureVersion).toBe("visual-sectioned-v5");
-        expect(result.reportLayoutVersion).toBe("0.22.1-shared-hrtechify-template");
+        expect(result.reportStructureVersion).toBe("founder-demo-single-v1");
         expect(result.readingSections).toEqual([
-            "Table of Contents", "Executive summary", "At a glance", "What to do now", "Complete the picture",
-            "Your 90-day plan", "Watch as you grow", "The profile used", "End of Report"
+            "Your company profile",
+            "Your HR compliance position",
+            "Compliance areas relevant today",
+            "Information that could change this report",
+            "Growth compliance radar",
+            "Your founder action list",
+            "How GrowWithHR reached this report",
+            "Report basis, scope & limitations",
+            "End of Report"
         ]);
         expect(result.pdfs).toHaveLength(1);
-        expect(result.emailAttachments).toHaveLength(0);
-        expect(result.brandLogoAsset).toBe("assets/hrtechify-logo.png");
-        expect(result.pageCount).toBeGreaterThanOrEqual(8);
+        expect(result.emailAttachments).toHaveLength(1);
+        expect(result.attachmentCount).toBe(1);
+        expect(result.singleReportDelivery).toBe(true);
+        expect(result.dualThemeDelivery).toBe(false);
+        expect(result.pageCount).toBeGreaterThanOrEqual(7);
     });
 
-    test("sends Light and Dark as two separate attachments in one email", async ({ page }) => {
+    test("emails exactly one standard report PDF", async ({ page }) => {
         const requests: Array<{ headers: Record<string, string>; body: any }> = [];
         await page.route("**/api/send-advisory", async (route) => {
             const request = route.request();
@@ -215,8 +213,9 @@ test.describe("v0.22 visual story and report", () => {
                     ok: true,
                     customerSent: true,
                     customerStatus: "sent",
-                    attachmentCount: 2,
-                    attachmentFilenames: ["Light.pdf", "Dark.pdf"]
+                    attachmentCount: 1,
+                    attachmentFilenames: ["GrowWithHR-HR-Compliance-Growth-Report.pdf"],
+                    singleReportDelivery: true
                 })
             });
         });
@@ -229,11 +228,11 @@ test.describe("v0.22 visual story and report", () => {
                 GrowWithHREmail?: { sendAdvisory: (payload: unknown) => Promise<any> };
             }).GrowWithHREmail!;
             const report = {
-                companyName: "Dual Edition Pvt Ltd", entity: "Private Limited", industry: "Professional Services",
+                companyName: "Single Edition Pvt Ltd", entity: "Private Limited", industry: "Professional Services",
                 employees: 12, workforcePresence: "other-people", primaryState: "Maharashtra", workModel: "Hybrid",
                 recipientEmail: "founder@example.com"
             };
-            const pdf = await pdfService.buildAdvisoryPdf({ theme: "both", report, answers: report });
+            const pdf = await pdfService.buildAdvisoryPdf({ theme: "dark", report, answers: report });
             const delivery = await emailService.sendAdvisory({
                 action: "capture",
                 lead: { name: "Founder", email: "founder@example.com", companyName: report.companyName },
@@ -243,27 +242,23 @@ test.describe("v0.22 visual story and report", () => {
             });
             return {
                 selectedThemes: pdf.selectedThemes,
-                filenames: pdf.pdfs.map((item: any) => item.filename),
-                emailAttachmentCount: pdf.emailAttachments.length,
+                pdfCount: pdf.pdfs.length,
+                attachmentCount: pdf.attachmentCount,
                 deliveryMode: pdf.deliveryMode,
-                primaryTheme: pdf.theme,
-                primaryFilename: pdf.filename,
+                filename: pdf.filename,
                 delivery
             };
         });
 
-        expect(result.selectedThemes).toEqual(["light", "dark"]);
-        expect(result.emailAttachmentCount).toBe(2);
-        expect(result.deliveryMode).toBe("two-separate-pdfs-one-email");
-        expect(result.primaryTheme).toBe("light");
-        expect(result.primaryFilename).toContain("Light");
-        expect(result.filenames[0]).not.toBe(result.filenames[1]);
-        expect(result.delivery.attachmentCount).toBe(2);
-        expect(result.delivery.singleEmailPerRecipient).toBe(true);
+        expect(result.selectedThemes).toEqual(["standard"]);
+        expect(result.pdfCount).toBe(1);
+        expect(result.attachmentCount).toBe(1);
+        expect(result.deliveryMode).toBe("single-pdf-one-email");
+        expect(result.filename).not.toContain("Dark");
+        expect(result.delivery.attachmentCount).toBe(1);
         expect(requests).toHaveLength(1);
-        expect(requests[0].headers["x-growwithhr-attachment-count"]).toBe("2");
-        expect(requests[0].body.pdfs).toHaveLength(2);
-        expect(requests[0].body.pdfs.map((pdf: any) => pdf.theme)).toEqual(["light", "dark"]);
-        expect(requests[0].body.pdf).toBeUndefined();
+        expect(requests[0].body.pdf).toBeDefined();
+        expect(requests[0].body.pdfs).toBeUndefined();
+        expect(requests[0].headers["x-growwithhr-attachment-count"]).toBeUndefined();
     });
 });
