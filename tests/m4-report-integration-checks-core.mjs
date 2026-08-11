@@ -9,7 +9,8 @@ const sequence = read("js/report-sequence-controller.js");
 const founderSummary = read("js/report-founder-summary-corrections.js");
 const runtime = read("js/report-runtime-corrections.js");
 const serverEntry = read("server-entry.js");
-const delivery = read("server-m4-delivery.js");
+const delivery = read("server-single-report-delivery.js");
+const registry = read("server-report-id-registry.js");
 
 new vm.Script(transparency, { filename: "js/pdf-law-transparency.js" });
 new vm.Script(adaptive, { filename: "js/industry-adaptive-assessment.js" });
@@ -17,7 +18,8 @@ new vm.Script(sequence, { filename: "js/report-sequence-controller.js" });
 new vm.Script(founderSummary, { filename: "js/report-founder-summary-corrections.js" });
 new vm.Script(runtime, { filename: "js/report-runtime-corrections.js" });
 new vm.Script(serverEntry, { filename: "server-entry.js" });
-new vm.Script(delivery, { filename: "server-m4-delivery.js" });
+new vm.Script(delivery, { filename: "server-single-report-delivery.js" });
+new vm.Script(registry, { filename: "server-report-id-registry.js" });
 
 const sandbox = {
     console,
@@ -139,17 +141,29 @@ assert(adaptive.includes("Manufacturing and plant operations"));
 assert(adaptive.includes("BPO, ITES and contact-centre operations"));
 assert(adaptive.includes("Software and technology operations"));
 
-assert(serverEntry.includes('require("./server-m4-delivery")'));
-assert(serverEntry.includes("handleM4DeliveryRequest(request, response)"));
-assert(delivery.includes('const ROUTE = "/api/send-advisory-v2"'));
-assert(delivery.includes("GMAIL_SAFE_RAW_ATTACHMENT_BYTES"));
-assert(delivery.includes("createZip(pdfs)"));
-assert(delivery.includes('contentType: "application/zip"'));
-assert(delivery.includes('"Report versions delivered"'));
-assert(delivery.includes("bundledAsZip"));
+assert(serverEntry.includes('require("./server-report-id-registry")'));
+assert(serverEntry.includes('require("./server-single-report-delivery")'));
+assert(serverEntry.includes("handleReportIdRequest(request, response)"));
+assert(serverEntry.includes("handleSingleReportDeliveryRequest(request, response)"));
+assert(!serverEntry.includes("handleM4DeliveryRequest(request, response)"));
+assert(!serverEntry.includes("handleDualEditionDeliveryRequest(request, response)"));
+
+assert(delivery.includes('new Set(["/api/send-advisory", "/api/send-advisory-v2"])'));
+assert(delivery.includes("Exactly one standard GrowWithHR report PDF is required."));
+assert(delivery.includes("Dark report variants are no longer supported."));
+assert(delivery.includes('"Delivery format": "One standard PDF report"'));
+assert(delivery.includes("attachmentCount: 1"));
+assert(delivery.includes('reportThemes: ["standard"]'));
+assert(!delivery.includes("createZip(pdfs)"));
+assert(!delivery.includes('contentType: "application/zip"'));
 assert(delivery.includes("bcc: recipients.slice(1)"));
 
-const founderHtmlPosition = delivery.indexOf("${escapeHtml(FOUNDER_NAME)}</span>");
+assert(registry.includes('REPORT_ID_ROUTE = "/api/report-id"'));
+assert(registry.includes("global-non-resetting-symmetric-alpha-numeric"));
+assert(registry.includes("REPORT_ID_REGISTRY_FILE"));
+assert(registry.includes("duplicate identifier"));
+
+const founderHtmlPosition = delivery.indexOf("${escapeHtml(FOUNDER_NAME)}<br>");
 assert(founderHtmlPosition >= 0, "the founder name must be plain text in the customer HTML signature");
 const founderContext = delivery.slice(Math.max(0, founderHtmlPosition - 80), founderHtmlPosition + 80);
 assert(!/<strong/i.test(founderContext), "Anurag Sinha must not be bold in the email body");
@@ -158,4 +172,4 @@ assert(!transparency.includes("confidencePercent"));
 assert(!transparency.includes("overallScore"));
 assert(!sequence.includes("sourceLabel:"), "selected/suggested labels must not be rendered as report blocks");
 
-console.log("Founder-first integrated report, summary cleanup, black theme and universal compliance-input checks passed.");
+console.log("Founder-first integrated report, single delivery and report-ID registry checks passed.");
