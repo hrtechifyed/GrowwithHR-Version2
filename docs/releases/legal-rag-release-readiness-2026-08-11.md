@@ -1,26 +1,46 @@
-# GrowWithHR Legal RAG release readiness
+# GrowWithHR prototype release readiness
 
 **Status date:** 11 August 2026  
-**Candidate baseline:** v0.20.2 Governed Legal RAG Private Beta  
+**Candidate baseline:** v0.20.3-prototype.1 Governed Compliance & Legal RAG Prototype  
 **Runtime baseline:** 57 callable / 55 substantive / 2 governance fallback / 21 catalogues  
-**Production certification:** **NOT YET GRANTED**  
-**Programme release gate:** GitHub #142
+**Release classification:** **RESEARCH-GRADE PROTOTYPE / PRERELEASE**  
+**Production legal certification:** **NOT CLAIMED**
 
 ## 1. Release decision in one sentence
 
-The software implementation is integrated and release-candidate documentation/source reconciliation is being prepared, but production release must not be certified until the applicable authorised LEGAL, PRIVACY, RAG, SOURCE-FILE, SECURITY and RELEASE gates have signed evidence and the final regression/deployment evidence is green.
+GrowWithHR may be released as a clearly labelled research-grade prototype once the exact candidate SHA passes the maintained engineering regression and preserves the prototype research, privacy, safeguarding and no-certification boundaries in this document.
 
-## 2. Current scope
+The future production-grade LEGAL / PRIVACY / RAG / SOURCE-FILE / SECURITY / RELEASE certification programme remains tracked under GitHub #142 and does **not** block this prototype release.
+
+## 2. Prototype research standard
+
+For this prototype release, the accepted legal/source basis is:
+
+**structured secondary research + controlled provenance + deterministic rules + governed retrieval + explicit limitations**.
+
+Required controls:
+
+- secondary research may be used as the source basis for the prototype;
+- secondary-research provenance must not be represented as official or counsel-approved provenance;
+- exact official-file verification is supplementary assurance, not a prototype release prerequisite;
+- exact-file evidence already collected may remain recorded without being migrated into runtime fingerprints;
+- all active catalogues remain `needs-legal-review`;
+- draft/research/guidance/portal classifications remain explicit;
+- no output may claim legal opinion, legal certification or proof of compliance;
+- RAG/provider output remains post-decision and explanation-only;
+- the deterministic engine remains the product decision authority within the bounded prototype contract.
+
+## 3. Current scope
 
 ### In scope
 
-The current substantive private-beta scope runs through Wave 5L:
+The substantive prototype scope runs through Wave 5L:
 
 - POSH;
 - Maternity Benefit;
 - EPF/EPS/EDLI;
 - ESI;
-- Appropriate Government source routing;
+- Appropriate Government source/jurisdiction readiness;
 - Maharashtra Shops and Establishments source readiness;
 - Code on Wages source readiness;
 - Gratuity source readiness;
@@ -34,97 +54,69 @@ The current substantive private-beta scope runs through Wave 5L:
 
 ### Explicitly not activated
 
-- **Wave 5J — Bonded and Forced Labour:** governance/research-only. No assessment/runtime activation until #139 and #140 plus programme gates are closed with authorised evidence.
-- **Wave 5M — Multi-country Employment:** excluded from the current release. #141 is closed `not planned`; no country pair, no assessment capture, no runtime catalogue, no provider/browser route and no cross-border data design are part of this release.
+- **Wave 5J — Bonded and Forced Labour:** governance/research-only. No substantive assessment/runtime/provider activation. Live safeguarding concerns remain human-only.
+- **Wave 5M — Multi-country Employment:** excluded from the current release. #141 is closed `not planned`; no country pair, assessment capture, runtime catalogue, provider/browser route or cross-border data design is part of this release.
 
-## 3. Completed release-candidate evidence
+## 4. Current prototype evidence
 
-| Area | Current evidence | Release effect |
+| Area | Current evidence | Prototype release effect |
 |---|---|---|
-| Runtime integration | Legal RAG stack integrated into `main`; `server-entry.js` delegates shared legal explanation to the Wave 5L router | Software baseline exists |
-| Runtime invariant | 57 callable / 55 substantive / 2 governance fallback / 21 active catalogues | Must remain unchanged unless separately approved |
-| Previous integration CI | All-Laws RAG, Executive Assessment, M4, M7 and GrowWithHR CI passed on the validated integration head | Software evidence only |
-| Live smoke | 10 August smoke evidence passed for deployed surfaces and Legal RAG status | Deployment evidence only |
-| Exact-file reconciliation | Canonical Drive Source Register now maps 31 exact official PDFs to existing Source IDs with official-byte SHA-256, byte length and physical page count | SOURCE-FILE evidence awaiting authorised review |
-| Duplicate control | Mislabelled Maharashtra Shops Rules duplicate was quarantined because it was byte-identical to the Shops Act | Prevents accidental source substitution |
-| Wave 5M scope | #141 closed `not planned` for current release | Removes international-country-pair work from this release |
-| Legal status | Active catalogues remain `needs-legal-review` | Correct; no approval inferred |
+| Runtime integration | Legal RAG stack integrated into `main`; shared legal explanation delegates to the Wave 5L router | Ready for candidate validation |
+| Runtime invariant | 57 callable / 55 substantive / 2 governance fallback / 21 active catalogues | Must remain unchanged unless intentionally versioned |
+| Legal status | Active catalogues remain `needs-legal-review` | Required prototype limitation |
+| Research provenance | Governed source identities and source-controlled research records | Accepted prototype source basis |
+| Exact-file reconciliation | 31 acquired files mapped to existing Source IDs with byte-level metadata | Supplementary assurance; non-blocking |
+| Runtime exact-file migration | Not applied | Acceptable for prototype; future production hardening |
+| Duplicate control | Mislabelled Maharashtra Shops Rules duplicate quarantined | Prevents accidental source substitution |
+| Wave 5M scope | #141 closed `not planned` | No international work required for this release |
+| Production hardening | #142 and #143 remain open | Explicitly non-blocking for prototype/prerelease |
 
-## 4. Gate matrix
+## 5. Prototype release gate
 
-| Gate | Current state | Required evidence before release |
+| Gate | Prototype requirement | Current disposition |
 |---|---|---|
-| LEGAL | OPEN | Named qualified reviewer decision for each active family: law/source mapping, deterministic boundary, limitations, jurisdiction assumptions, transition, State/UT and cross-family treatment |
-| PRIVACY | OPEN | Named reviewer approval of fact contracts, provider minimisation, access, logging, retention/deletion, vendor/provider controls and incident handling |
-| RAG | OPEN | Named reviewer approval of catalogue scope, chunks, reason-code retrieval constraints, fingerprints/citations, fallback/provider behaviour and publication controls |
-| SOURCE-FILE | OPEN | Review the 31-file reconciliation; resolve/classify remaining portal/register identities; approve any runtime source-manifest/catalogue migration |
-| SECURITY | OPEN | Named reviewer approval of secrets, CORS/network boundary, access, logging, retention, dependency/security scanning, incident response and recovery controls |
-| RELEASE | OPEN | All applicable upstream gates closed; final regression green; approved main SHA deployed; post-deploy smoke archived; release decision recorded |
-| Wave 5J source | OPEN (#139) | Exact 14 May 2026 Ministry SOP and approved/notified 2026-31 operational material acquired/fingerprinted |
-| Wave 5J human review | OPEN (#140) | Legal/safeguarding/privacy/security/State-UT decisions recorded |
-| Wave 5M | OUT OF SCOPE (#141 closed) | No action for this release |
+| RELEASE LABEL | Version/tag/release title clearly say prototype/prerelease | Required |
+| SOURCE PROVENANCE | Secondary-research basis represented truthfully; no official/counsel-approved overclaim | Required |
+| LEGAL STATUS | All active catalogues remain `needs-legal-review`; no certification claim | Required |
+| RAG AUTHORITY | Retrieval/provider remain post-decision, `usedForDecision: false`, `applicabilityAuthority: none` | Required |
+| PRIVACY | Existing allow-list/minimisation/prohibited-data boundaries remain green | Required |
+| SECURITY/RELIABILITY | Existing CORS/provider/secrets/fail-closed and maintained release checks remain green | Required |
+| WAVE 5J | Non-runtime; human safeguarding boundary retained | Required |
+| WAVE 5M | Out of scope/non-runtime | Required |
+| ENGINEERING REGRESSION | Complete maintained release suite green on exact candidate SHA | Required |
+| PRODUCTION CERTIFICATION | Formal #142/#143 closure | **Not required for prototype** |
 
-## 5. Exact next steps for the tool/release team
+## 6. Exact next steps to publish v0.20.3-prototype.1
 
-Perform these steps in order. Do not skip from source upload directly to release certification.
+### Step 1 — freeze prototype scope
 
-### Step 1 — review the source reconciliation PR
+Do not add new law families, international employment or Wave 5J case handling to this release.
 
-Review draft PR #144 and the canonical Drive `Source Register.xlsx` Exact File Reconciliation sheet.
+### Step 2 — version the candidate
 
-Required checks:
+Use:
 
-- 31 exact files map to the intended existing Source IDs;
-- SHA-256, byte length and physical page count come from the stored official bytes;
-- the quarantined Maharashtra Shops duplicate cannot be selected as the Rules file;
-- draft Maharashtra instruments remain draft/non-operative;
-- curated source-identity fingerprints are not overwritten by PDF hashes;
-- Wave 5J and Wave 5M remain non-runtime.
+```text
+Version: 0.20.3-prototype.1
+Tag: v0.20.3-prototype.1
+Release title: GrowWithHR v0.20.3-prototype.1 — Governed Compliance & Legal RAG Prototype
+GitHub release type: Pre-release
+```
 
-**Owner needed:** source-governance/RAG reviewer plus qualified legal reviewer for source identity/scope.
+Run the repository version synchronization/check procedure and ensure visible version references are aligned.
 
-### Step 2 — close or narrow the remaining #143 source-control backlog
+### Step 3 — verify source/research wording
 
-The exact-file acquisition backlog is no longer the broad 10 August state. The remaining identities are principally portal/register/guidance records such as jurisdiction/notification portals, DGT trade registers, standing-orders authority notifications and Apprenticeship India portal material.
+Confirm release-facing docs state:
 
-For each remaining identity, explicitly classify it as one of:
+- secondary research is accepted for the prototype;
+- exact official-file assurance is supplementary/future hardening;
+- `needs-legal-review` remains unchanged;
+- no legal certification is claimed.
 
-- exact file required;
-- official portal/register snapshot required;
-- guidance/context only;
-- research-only/not runtime;
-- intentionally out of scope.
+#142 and #143 may remain open because they now describe future production hardening.
 
-Do not invent a PDF hash for a portal page.
-
-### Step 3 — perform the reviewed source-manifest/catalogue migration
-
-Only after Step 1 approval, update the relevant source manifests/catalogue metadata so the runtime identity records can reference the approved exact-file evidence without changing legal meaning.
-
-Rules:
-
-- preserve stable Source IDs unless a reviewed migration explicitly changes them;
-- keep `legalReviewStatus: needs-legal-review` until the authorised legal decision exists;
-- preserve deterministic reason codes and source scope unless separately approved;
-- do not activate Wave 5J or Wave 5M;
-- do not turn draft State instruments into operative sources.
-
-### Step 4 — obtain authorised human approvals
-
-Nominate and record actual reviewers/approvers in #142 (and #140 for Wave 5J).
-
-Minimum roles:
-
-- qualified employment/labour legal reviewer(s);
-- privacy reviewer;
-- RAG/source-governance reviewer;
-- security reviewer;
-- release owner/approver;
-- safeguarding specialist for Wave 5J.
-
-Engineering, product ownership, AI/model review and green CI do not self-grant these roles.
-
-### Step 5 — run the release regression
+### Step 4 — run the release regression
 
 At minimum:
 
@@ -155,11 +147,10 @@ npm run test:complete-legal-rag-platform
 npm run test:m7
 npm run test:server-cors
 npm run test:release
+npm run test:release:e2e
 ```
 
-Run the maintained Chromium release/e2e suite required by the repository after the final approved code/data change.
-
-Required invariant after the source migration:
+Required runtime invariant:
 
 ```json
 {
@@ -172,85 +163,82 @@ Required invariant after the source migration:
 }
 ```
 
-Every retrieval path must continue to report `usedForDecision: false` and `applicabilityAuthority: none`.
+Every retrieval path must continue to report:
 
-### Step 6 — prepare the actual release commit/version only after approvals
+```text
+usedForDecision: false
+applicabilityAuthority: none
+```
 
-Do not bump the production release version merely because the documentation is ready.
+### Step 5 — prototype owner release review
 
-After the applicable gates are approved:
+Before tagging, the prototype release owner should confirm:
 
-1. select the release version;
-2. run the repository's version-sync/check procedure;
-3. generate/update release notes;
-4. identify the exact approved main SHA;
-5. attach CI evidence to the release decision;
-6. deploy that exact SHA.
+- the release is visibly labelled prototype/prerelease;
+- source claims match the secondary-research standard;
+- all active catalogues remain `needs-legal-review`;
+- no user-facing copy promises legal certification;
+- Wave 5J and Wave 5M boundaries are intact;
+- the exact candidate SHA has green engineering validation.
 
-### Step 7 — deploy and archive smoke evidence
+This is a product/release decision for a prototype; it is **not** a substitute for future production legal certification.
 
-Verify the approved deployment target against the approved main SHA, then archive post-deploy evidence for:
+### Step 6 — tag and publish
 
-- application homepage/assessment availability;
+Tag the exact validated candidate SHA:
+
+```text
+v0.20.3-prototype.1
+```
+
+Publish the GitHub release as **Pre-release**, not Latest/production legal certification.
+
+### Step 7 — optional deployment smoke
+
+If the prototype is deployed, archive smoke evidence for:
+
+- homepage/assessment availability;
 - `GET /api/legal-rag/status`;
 - expected 57/55/2/21 invariant;
-- one permitted substantive family path;
+- at least one permitted substantive family path;
 - Wave 5J non-activation;
 - Wave 5M non-activation;
-- CORS/provider-failure behaviour as applicable;
-- no stable report/PDF/email contract regression.
+- provider failure/fail-closed behaviour where applicable;
+- no report/PDF/email regression.
 
-### Step 8 — record formal release approval
+## 7. Prototype no-go conditions
 
-Close #142 only when named authorised reviewers have linked evidence for all applicable gates and the release owner records the production decision.
+Do **not** publish the prototype release if any of the following is true:
 
-## 6. No-go conditions
-
-Do **not** release if any of the following is true:
-
-- an active catalogue has been silently changed from `needs-legal-review` without authorised evidence;
-- a PDF hash has overwritten a curated source-identity fingerprint without reviewed migration;
-- a draft Maharashtra instrument is treated as final/operative;
-- Wave 5J acquires assessment/runtime/provider handling before #139/#140 are satisfied;
-- Wave 5M acquires a country-pair, catalogue, assessment or provider surface in the current release;
+- the release is presented as production legal certification rather than a prototype;
+- an active catalogue has been changed from `needs-legal-review` to an approval state without actual approval evidence;
+- secondary-research provenance is misrepresented as official/counsel-approved provenance;
+- a draft instrument is represented as final/operative;
+- Wave 5J gains substantive assessment/runtime/provider handling;
+- Wave 5M gains a country-pair, catalogue, assessment or provider surface;
 - retrieval can affect deterministic applicability/status/reason/source scope;
 - a provider can receive prohibited person-level/case/payroll/medical/evidence data;
-- final regression is not green on the approved release SHA;
-- the deployed SHA differs from the approved SHA;
-- #142 lacks named authorised approvals.
+- the final engineering regression is not green on the tagged SHA;
+- the deployed SHA, if deployed, differs from the validated/tagged SHA.
 
-## 7. Recommended ownership map
+## 8. Future production-hardening programme
 
-| Work item | Accountable owner to nominate |
-|---|---|
-| Exact official-file acquisition/reconciliation | Source/legal operations owner |
-| Section/law/rule/transition/State-UT review | Qualified labour/employment counsel |
-| Assessment/provider data boundary | Privacy reviewer |
-| Catalogue/chunk/retrieval/citation governance | RAG/source-governance reviewer |
-| API/provider/dependency/incident controls | Security reviewer |
-| Wave 5J live-risk handoff | Qualified safeguarding reviewer |
-| Final deploy/no-go decision | Release owner |
+The following are explicitly **after-prototype** work and do not block `v0.20.3-prototype.1`:
 
-## 8. Release evidence bundle
-
-The final release decision should point to:
-
-- exact approved main SHA;
-- PR(s) carrying the approved source/docs/runtime migration;
-- canonical Drive Project Status and Changelog;
-- canonical Drive Source Register and Exact File Reconciliation sheet;
-- legal/privacy/RAG/security decision records;
-- #139/#140 status for Wave 5J;
-- #141 closed/not-planned decision for Wave 5M;
-- #142 release approval record;
-- CI workflow/run identifiers;
-- deployment smoke artifact;
-- release notes/version record.
+- formal qualified legal review and status promotion where justified;
+- official-source/portal/register classification and exact-file assurance under #143;
+- any reviewed runtime migration from curated/secondary-research identities to exact-file fingerprints;
+- formal Privacy, RAG/Source and Security approval records;
+- production certification/release decision under #142;
+- any Wave 5J activation programme under #139/#140;
+- any future international Wave 5M programme.
 
 ## 9. Current release posture
 
-**Engineering posture:** release-candidate preparation can continue.  
-**Production posture:** no-go until authorised gate closure.  
+**Prototype engineering posture:** ready for version cut and final regression.  
+**Prototype source basis:** structured secondary research with controlled provenance.  
+**Exact-file assurance:** supplementary, non-blocking.  
+**Production certification:** deliberately not claimed.  
 **International/Wave 5M:** excluded.  
-**Bonded/Forced Labour/Wave 5J:** blocked.  
-**All active substantive catalogues:** remain `needs-legal-review` until qualified approval is recorded.
+**Bonded/Forced Labour/Wave 5J:** governance/research-only.  
+**All active substantive catalogues:** `needs-legal-review`.
