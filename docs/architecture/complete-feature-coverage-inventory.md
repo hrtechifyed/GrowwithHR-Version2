@@ -1,645 +1,257 @@
 # GrowWithHR complete feature coverage inventory
 
-**Inventory version:** 1.0.0  
-**Repository baseline:** `main` after merge commit `fb8fe128a1eed80607132a9adb39b930c4e9aa17`  
-**Prepared:** 2026-08-03  
-**Scope:** assessment facts, deterministic rules, legal knowledge records, source governance, retrieval, explanation, and private-beta presentation.
+**Inventory version:** 2.0.0  
+**Updated:** 11 August 2026  
+**Runtime baseline:** current main-integrated Wave 5L substantive router with Wave 5J/5M governance guards  
+**Scope:** assessment/fact contracts, deterministic rules, governed source catalogues, retrieval, explanation, product surfaces and release boundaries
 
-## 1. Purpose and safety boundary
+## 1. Purpose
 
-This document records what GrowWithHR currently contains and what is still required to extend the working POSH assurance pattern to the rest of the product.
+This inventory records the current effective private-beta Legal RAG coverage. It replaces the earlier 3 August snapshot that described the platform as essentially POSH-only.
 
-It is an architecture and product inventory only. It does **not**:
+It remains an engineering/governance inventory. It does not grant legal approval or certify any law-family result.
 
-- approve or verify any legal conclusion;
-- change a deterministic rule or assessment answer;
-- add a new source pack, retrieval corpus, endpoint, provider call, report field, PDF field, email field, or browser-storage key;
-- treat a knowledge-base record as an approved applicability rule;
-- treat a portal link or a schema-valid law record as section-mapped legal evidence.
-
-All legal statuses, effective dates, verification labels, thresholds, and supersession relationships mentioned below are **repository-recorded assertions**. They were not independently re-researched or legally approved during this inventory. Every future legal feature must retain `needs-legal-review` until its separate legal-governance process is complete.
-
-The required authority boundary remains:
+## 2. Authority boundary
 
 ```text
-Assessment answers
-→ deterministic fact mapping
-→ deterministic rule result
-→ approved source retrieval
-→ explanation-only language model
-→ strict response validation
+Assessment input
+→ feature-specific/privacy-safe fact mapping
+→ deterministic rule
+→ fixed decision + permitted source IDs
+→ governed retrieval
+→ explanation-only provider
+→ strict validation
 → private-beta presentation
 ```
 
-Retrieval and language models must never create, infer, select, change, or override applicability facts or decisions.
+Retrieval/provider output must not create facts, determine applicability, alter status/reason/source scope or certify compliance.
 
-## 2. Executive coverage snapshot
+## 3. Effective runtime snapshot
 
-| Layer | Current repository coverage | Current assurance level |
-|---|---:|---|
-| Confirmed assessment fields mapped to M2 facts | 24 | Deterministic fact mapping |
-| Derived M2 facts | 8 | Deterministic derivation |
-| Governed M2 advisory rules | 7 | Advisory-only, private-beta |
-| Governed legal applicability rules | 1 | Provisional, `needs-legal-review` |
-| Older HR module readiness checks | 42 | Operational placeholders, not governed legal rules |
-| Schema-valid law records | 51 | Knowledge records only |
-| Central law records | 15 | Mixed active/superseded repository status |
-| State and Union Territory records | 36 | Knowledge records only |
-| Governed source-chunk catalogues | 1 | POSH only |
-| Governed legal explanation HTTP endpoints | 1 | POSH only |
-| Private-beta source-grounded legal panels | 1 | POSH only |
-| End-to-end legal-assurance features | 1 | POSH Internal Committee threshold review |
+| Control | Current state |
+|---|---:|
+| Callable profiles | 57 |
+| Substantive profiles | 55 |
+| Governance fallback profiles | 2 |
+| Active catalogues | 21 |
+| Active catalogue legal-review state | `needs-legal-review` |
+| Main shared router | `server-legal-explanation-router-wave5l.js` |
+| Wave 5J | Governance/research-only |
+| Wave 5M | Out of current release scope |
 
-The key distinction is that GrowWithHR has broad **data coverage**, but only POSH currently has the complete controlled path from assessment facts through deterministic legal decision, governed source retrieval, explanation validation, and live private-beta display.
+The effective registry is composed by the cumulative Wave server overlays. The early static profile/onboarding registries should not be read as the current runtime by themselves.
 
-## 3. Coverage status model
-
-This inventory uses five statuses.
+## 4. Coverage status model
 
 | Status | Meaning |
 |---|---|
-| **Live governed legal assurance** | Deterministic legal rule, controlled official source chunks, governed retrieval, strict explanation contract, endpoint, tests, and private-beta UI are working. |
-| **Governed advisory** | Deterministic M2 recommendation exists, but it is not a law-specific applicability rule and does not have a law-specific source pack. |
-| **Knowledge record only** | A schema-valid central or state law record exists, but it is not wired to the governed legal-assurance path. |
-| **Legacy or readiness logic** | Older threshold, module, report, or recommendation logic exists but lacks the governed M2/legal contracts required for assurance. |
-| **Not captured** | The assessment does not collect the facts needed for a safe deterministic result. |
-
-## 4. Assessment fact coverage
-
-### 4.1 Confirmed facts available from the protected assessment
-
-The M2 fact mapper currently recognizes these 24 assessment answers.
-
-| Domain | Assessment field | Fact identifier | Current usefulness |
-|---|---|---|---|
-| Company | `companyName` | `fact.company.name` | Display/context only; must not be sent to a legal explanation provider. |
-| Company | `industry` | `fact.company.industry` | Broad industry classification. |
-| Company | `industryId` | `fact.company.industry-id` | Controlled industry identifier where available. |
-| Company | `customIndustry` | `fact.company.custom-industry` | Free-text industry context. |
-| Company | `nature` | `fact.company.business-nature` | Broad business description. |
-| Company | `founded` | `fact.company.founded-year` | Operational maturity context. |
-| Company | `foundedNotSure` | `fact.company.founded-year-unknown` | Missing-year indicator. |
-| Company | `entity` | `fact.company.entity-type` | Broad entity type. |
-| Company | `fundingStage` | `fact.company.funding-stage` | Operational/growth context. |
-| Workforce | `employees` | `fact.workforce.employee-count` | Total employee count only. |
-| Workforce | `contractWorkers` | `fact.workforce.contract-worker-count` | Total contract/outsourced worker count only. |
-| Workforce | `interns` | `fact.workforce.intern-count` | Total intern count only. |
-| Workforce | `apprentices` | `fact.workforce.apprentice-count` | Total apprentice count only. |
-| Workforce | `workModel` | `fact.workforce.work-model` | Office/hybrid/remote/field/mixed context. |
-| Workforce | `remoteBand` | `fact.workforce.remote-workforce-band` | Remote-work band. |
-| Workforce | `remoteExact` | `fact.workforce.remote-workforce-percentage` | Remote-work percentage. |
-| Footprint | `primaryState` | `fact.footprint.primary-state` | One primary state only. |
-| Footprint | `locations` | `fact.footprint.location-count` | Total permanent location count only. |
-| Footprint | `countries` | `fact.footprint.country-count` | Count only; no country list. |
-| Growth | `hiringPlans` | `fact.growth.hiring-plan` | Broad hiring direction. |
-| Growth | `expansionPlans` | `fact.growth.expansion-plans` | Selected expansion activities. |
-| Growth | `growthContext` | `fact.growth.context` | Free-text growth context. |
-| People | `peopleFunction` | `fact.people.people-function` | Current HR/People ownership model. |
-| People | `priorities` | `fact.people.priorities` | User-selected advisory priorities. |
-
-### 4.2 Deterministic derived facts
-
-| Derived fact | Source facts | Current use |
-|---|---|---|
-| `fact.workforce.total-reported-workforce` | Employee, contract worker, intern, apprentice counts | Aggregate advisory context; not automatically a statutory headcount. |
-| `fact.workforce.size-band` | Employee count | Product segmentation. |
-| `fact.footprint.multi-location` | Location count | M2 multi-location advisory rule. |
-| `fact.footprint.multi-country` | Country count | Operating-complexity context. |
-| `fact.workforce.distributed-workforce` | Work model and remote facts | Distributed-work advisory rule. |
-| `fact.growth.rapid-growth` | Hiring plan | Workforce-planning advisory rule. |
-| `fact.growth.expansion-activity` | Expansion plans | Workforce-planning advisory rule. |
-| `fact.people.formal-people-function` | People-function answer | People-governance ownership advisory rule. |
-
-### 4.3 Important fact limitations
-
-The current fact map is suitable for broad advisory triage, but it is insufficient for most legal applicability decisions because it does not distinguish facts by establishment, office, administrative unit, worker category, wage band, role, location, or effective period.
-
-The current employee count must not be silently reused as:
-
-- establishment headcount;
-- office or administrative-unit headcount;
-- statutory employee or worker count under a particular law;
-- covered employee count under a scheme;
-- wage-eligible employee count;
-- women-employee count;
-- contract-labour count for a particular principal employer, contractor, or site.
-
-## 5. Governed rule inventory
-
-### 5.1 Legal applicability rules
-
-| Feature | Rule | Required assessment facts | Sources | Retrieval | Explanation | UI | Status |
-|---|---|---|---|---|---|---|---|
-| POSH Internal Committee threshold review | `rule.legal.posh.internal-committee-threshold` | Employee count, primary state, location count | POSH Act, Rules, commencement source pack | Working | Working through Cloudflare Workers AI with strict validation | Working on V3 | **Live governed legal assurance; still `needs-legal-review`** |
-
-No other rule in `data/assessment/legal-applicability-rules.v1.json` currently exists.
-
-### 5.2 Governed M2 advisory rules
-
-These seven rules are deterministic and traceable, but they are explicitly advisory-only and private-beta-only. Their broad portal references do not make them law-specific applicability rules.
-
-| Rule | Domain | Current result type | Current source quality | Legal-assurance readiness |
-|---|---|---|---|---|
-| `rule.governance.primary-state.review` | Governance | Confirms whether one primary state was supplied | Ministry/India Code portal level | Not ready; needs per-location jurisdiction model and state-specific source packs. |
-| `rule.governance.employment-documentation.review` | Governance | Recommends documentation review when employees exist | Ministry/India Code portal level | Mixed legal/operational; must be decomposed into specific document obligations and general good practice. |
-| `rule.workplace.multi-location.review` | Workplace | Flags operating complexity | Ministry/India Code portal level | Advisory-ready; not a registration or filing applicability rule. |
-| `rule.workforce.distributed-workforce.review` | Workforce | Flags distributed-work practices | Ministry/India Code portal level | Advisory-ready; legal conclusions require actual worker locations and jurisdiction facts. |
-| `rule.growth.rapid-change.workforce-planning` | Growth | Recommends workforce planning | Ministry portal level | Operational feature; suitable for non-legal explanation after a separate operational contract is defined. |
-| `rule.people.ownership.formal-function-review` | People | Recommends a named People-governance owner | Ministry portal level | Operational feature; not legal applicability. |
-| `rule.people.priority.policies-compliance` | People | Responds to a selected user priority | Ministry/India Code portal level | Operational/mixed; selection does not establish a legal duty. |
-
-## 6. Older HR module readiness inventory
-
-The six older module repositories contain seven checks each, for 42 checks in total. They evaluate a different company object, return a simple `passed` flag, and do not use M2 fact identifiers, source records, evidence status, missing-fact handling, reason codes, temporal validity, or legal-review boundaries.
-
-They should be classified as operational readiness placeholders until migrated or retired.
-
-### 6.1 Hiring — 7 checks
-
-| ID | Feature |
-|---|---|
-| `HIR-001` | Growth stage defined |
-| `HIR-002` | Departments available |
-| `HIR-003` | Reporting structure |
-| `HIR-004` | Workforce planning |
-| `HIR-005` | Business units |
-| `HIR-006` | Office locations |
-| `HIR-007` | Hiring readiness/company profile |
-
-### 6.2 Policy — 7 checks
-
-| ID | Feature |
-|---|---|
-| `POL-001` | Company profile |
-| `POL-002` | Organisation structure |
-| `POL-003` | Business model |
-| `POL-004` | Growth stage |
-| `POL-005` | Reporting structure |
-| `POL-006` | Employee strength |
-| `POL-007` | Entity information |
-
-### 6.3 Talent — 7 checks
-
-| ID | Feature |
-|---|---|
-| `TAL-001` | Career framework |
-| `TAL-002` | Leadership pipeline |
-| `TAL-003` | Growth stage |
-| `TAL-004` | Department coverage |
-| `TAL-005` | Talent development |
-| `TAL-006` | Business units |
-| `TAL-007` | Company profile |
-
-### 6.4 Rewards — 7 checks
-
-| ID | Feature |
-|---|---|
-| `REW-001` | Employee strength |
-| `REW-002` | Growth stage |
-| `REW-003` | Reporting hierarchy |
-| `REW-004` | Department structure |
-| `REW-005` | Business model |
-| `REW-006` | Management readiness |
-| `REW-007` | Company profile |
-
-### 6.5 Learning — 7 checks
-
-| ID | Feature |
-|---|---|
-| `LRN-001` | Employee database |
-| `LRN-002` | Department structure |
-| `LRN-003` | Reporting hierarchy |
-| `LRN-004` | Growth stage |
-| `LRN-005` | Learning governance |
-| `LRN-006` | Department coverage |
-| `LRN-007` | Company profile |
-
-### 6.6 Culture — 7 checks
-
-| ID | Feature |
-|---|---|
-| `CUL-001` | Organisation structure |
-| `CUL-002` | Leadership structure |
-| `CUL-003` | Growth stage |
-| `CUL-004` | Department coverage |
-| `CUL-005` | Employee-experience readiness |
-| `CUL-006` | Business model |
-| `CUL-007` | Company profile |
-
-### 6.7 Migration guidance for module checks
-
-Operational checks that remain useful should be moved into a governed non-legal recommendation contract rather than copied into the legal applicability catalog. Each migrated operational feature should have:
-
-- stable fact identifiers;
-- deterministic missing-information handling;
-- outcome reason codes;
-- a clear distinction between a positive condition and a remediation recommendation;
-- evidence or guidance provenance where claims are made;
-- an explicit `operational-advisory` authority label;
-- no use of `applicable` where the meaning is merely recommended or ready.
-
-## 7. Legal knowledge-base inventory
-
-The compliance-data validator reports 51 schema-valid law records: 15 central records and 36 State/Union Territory records. Schema validity confirms structure, identifiers, internal source references, and temporal-field format. It does not independently confirm legal accuracy or product applicability.
-
-### 7.1 Central records
-
-| Record | Repository-recorded status | Loaded by current `app.js` central knowledge object | Governed legal rule | Governed source chunks | Explanation endpoint |
-|---|---|---:|---:|---:|---:|
-| Central Labour Framework (`central-laws.json`) | Active umbrella | Separate load | No | No | No |
-| Code on Wages (`code-on-wages.json`) | Active | Yes | No | No | No |
-| Industrial Relations Code (`industrial-relations-code.json`) | Active | **No** | No | No | No |
-| Social Security Code (`social-security-code.json`) | Active | **No** | No | No | No |
-| OSHWC Code (`oshwc-code.json`) | Active | Yes | No | No | No |
-| POSH (`posh.json`) | Active, draft governance | Yes | **One threshold rule** | **Yes** | **Yes** |
-| Apprentices (`apprentices.json`) | Active | Yes | No | No | No |
-| Child and Adolescent Labour (`child-labour.json`) | Active | Yes | No | No | No |
-| EPF legacy record (`epfo.json`) | Superseded/historical | Yes | No | No | No |
-| ESI legacy record (`esic.json`) | Superseded/historical | Yes | No | No | No |
-| Bonus legacy record (`bonus.json`) | Superseded/historical | Yes | No | No | No |
-| Gratuity legacy record (`gratuity.json`) | Superseded/historical | Yes | No | No | No |
-| Contract Labour legacy record (`contract-labour.json`) | Superseded/historical | Yes | No | No | No |
-| Maternity Benefit legacy record (`maternity-benefit.json`) | Superseded/historical | Yes | No | No | No |
-| Employees Compensation legacy record (`employees-compensation.json`) | Superseded/historical | Yes | No | No | No |
-
-The central umbrella also contains a bonded-labour feature, but no dedicated bonded-labour record was found in the central directory during this inventory.
-
-### 7.2 POSH feature depth
-
-The standalone POSH knowledge record contains six broad obligations:
-
-1. policy;
-2. Internal Committee where applicable;
-3. awareness programmes;
-4. statutory notices;
-5. complaint records;
-6. annual reporting where applicable.
-
-Only the Internal Committee threshold review has been migrated to the governed legal-assurance catalog. The other five POSH obligations remain knowledge-record entries and must not be displayed as governed applicability results yet.
-
-### 7.3 State and Union Territory records
-
-The application maps and loads 36 State/Union Territory files. These records cover state-specific categories such as Shops and Establishments, employment records, notices, leave/holiday, professional tax, labour welfare, and other local requirements depending on the record.
-
-Current limitations:
-
-- the assessment stores one `primaryState`, not the state for every location;
-- the location count has no state-by-location mapping;
-- state records generally contain broad or partially verified citations rather than governed section-level source chunks;
-- there is no state-specific legal applicability catalog;
-- there is no state-specific retrieval corpus;
-- there is no generic state explanation endpoint;
-- the central source-registry files have empty `states` sections.
-
-Therefore, the presence of 36 state files does not mean 36 state assurance features are ready.
-
-## 8. Legacy compliance and report-rule inventory
-
-### 8.1 `data/compliance-engine.json`
-
-This file contains legacy product mappings for:
-
-- employee thresholds;
-- entity-type recommendations;
-- five explicit state mappings;
-- industry recommendations;
-- future-readiness thresholds;
-- broad official portal links.
-
-It must not be treated as the governed legal source of truth. Key drift risks include:
-
-- references to legacy EPFO, ESIC, gratuity, bonus, maternity, and contract-labour rule identifiers whose corresponding knowledge records are now marked superseded/historical;
-- simple employee-count thresholds without the chapter-, establishment-, worker-, wage-, scheme-, notification-, or appropriate-government facts required by the newer knowledge records;
-- a POSH threshold mapping that references `POSH-001`, while the standalone POSH record uses `POSH-001` for policy and `POSH-002` for Internal Committee constitution;
-- state recommendations for only Karnataka, Maharashtra, Tamil Nadu, Delhi, and Telangana, despite 36 State/UT knowledge records.
-
-No legacy threshold or identifier should be copied into a new governed rule without a fresh fact model, source mapping, temporal review, and boundary tests.
-
-### 8.2 `data/compliance-rules.json`
-
-This file contains illustrative readiness content for:
-
-- Shops and Establishments review;
-- employment documentation;
-- payroll review;
-- POSH framework assessment;
-- employee handbook;
-- performance management;
-- manager capability;
-- workforce planning;
-- general risk alerts and future readiness.
-
-It is useful as a product-topic inventory, but it is not a governed legal applicability catalog.
-
-## 9. Source and retrieval coverage
-
-### 9.1 Current source registries
-
-Two parallel JSON registries currently exist:
-
-- `data/knowledge-base/source-registry.json`
-- `data/knowledge-base/sources/source-registry.json`
-
-They contain overlapping but different central authority lists, and both have empty state sections. This creates avoidable drift risk.
-
-A future governance phase should designate one canonical registry, migrate all source identifiers, and prevent duplicate authority definitions.
-
-### 9.2 Retrieval-ready coverage
-
-Only POSH currently has a governed source-chunk catalogue:
+| **Substantive private-beta profile** | Feature-specific deterministic rules plus a governed catalogue are wired into the shared Legal RAG runtime. Legal approval may still be pending. |
+| **Governance fallback** | Callable only through conservative governance-stop behaviour. No substantive family assessment/result is activated. |
+| **Operational advisory** | Non-legal/legacy product guidance remains separate from legal applicability authority. |
+| **Out of current scope** | Feature is intentionally excluded from the release and must not acquire assessment/runtime/provider activation. |
+
+## 5. Legal RAG family inventory
+
+| Wave/family | Profiles | Catalogue/runtime state | Deliberate boundary |
+|---|---:|---|---|
+| Wave 1 — POSH | 7 | Substantive | Case narratives/findings/person identities outside provider authority; no compliance certification |
+| Wave 2 — Maternity Benefit | 10 | Substantive | Individual entitlement, medical evidence/outcomes and ESI overlap conclusions remain specialist-only |
+| Waves 3A–3C — EPF/EPS/EDLI | 12 | Substantive | No contribution arithmetic, individual membership/exemption/certificate determination |
+| Waves 4A–4D — ESI | 15 | Substantive | No individual claim/medical/enforcement determination |
+| Wave 5A — Appropriate Government | 1 | Substantive source/jurisdiction readiness | Does not select Central vs State/UT Government, forum or applicable law |
+| Wave 5B — Maharashtra Shops | 1 | Substantive source readiness | Current 2025 amendment remains draft-only until final instrument is acquired/approved |
+| Wave 5C — Code on Wages | 1 | Substantive source readiness | No wage-rate/category/zone selection, payroll arithmetic or entitlement |
+| Wave 5D — Gratuity | 1 | Substantive Chapter V readiness | No eligibility, continuous-service, wage, amount, claim or remedy determination |
+| Wave 5E — Employee's Compensation | 1 | Substantive Chapter VII readiness | No causation, diagnosis, disablement, liability, compensation or remedy determination |
+| Wave 5F — OSHWC | 1 | Substantive Central/Maharashtra readiness | Maharashtra 2026 State rules remain draft/non-operative; no applicability/licensing/enforcement decision |
+| Wave 5G — Industrial Relations | 1 | Substantive transition/standing-orders readiness | Maharashtra 2026 State rules remain draft; no dispute/strike/retrenchment/closure/remedy determination |
+| Wave 5H — Apprentices | 1 | Substantive classification/source readiness | No individual eligibility, contract, stipend, certification or enforcement determination |
+| Wave 5I — Child and Adolescent Labour | 1 | Substantive safeguarding-first source readiness | No identifying case data, age/work/offence/rescue/rehabilitation determination; live safeguarding is human-only |
+| Wave 5J — Bonded and Forced Labour | 1 | **Governance fallback** | No assessment/runtime activation while #139/#140 are open |
+| Wave 5K — Contract Workforce | 1 | Substantive cross-family readiness | OSHWC/EPF/ESI results remain separate and non-substitutable |
+| Wave 5L — Generic Social Security | 1 | Substantive family/chapter routing | Dedicated EPF/ESI/Gratuity/Maternity/Employee Compensation results remain separate; BOCW/Chapter IX specialist-only |
+| Wave 5M — Multi-country Employment | 1 | **Governance fallback / out of scope** | #141 closed `not planned`; no international assessment/catalogue/provider/data-transfer path in current release |
+
+Total: **57 profiles = 55 substantive + 2 governance fallbacks**.
+
+## 6. Current source catalogue inventory
+
+The effective runtime has **21 active catalogues**. Catalogues are loaded by the effective cumulative registry and remain retrieval/explanation assets rather than legal applicability authority.
+
+Key control rules:
+
+- source IDs must resolve to governed catalogue records;
+- retrieval is constrained by the deterministic decision's source scope;
+- law-family results cannot substitute for one another;
+- active catalogues remain `needs-legal-review` until qualified review evidence exists;
+- draft/research sources retain their status even if exact bytes are controlled.
+
+## 7. Exact official-file coverage
+
+The canonical Drive Source Register was upgraded on 11 August 2026 with an `Exact File Reconciliation` sheet.
+
+Current reconciliation:
+
+| Control | State |
+|---|---:|
+| Exact PDFs mapped to existing Source IDs | 31 |
+| Official-byte SHA-256 recorded | Yes |
+| Byte length recorded | Yes |
+| Physical PDF page count recorded | Yes |
+| Runtime source-identity hashes overwritten | No |
+| Runtime migration applied | No |
+| Duplicate quarantine items | 1 |
+
+Repository record:
 
 ```text
-growwithhr-rag/data/posh-source-chunks.v1.json
+data/legal-source-governance/exact-source-file-reconciliation-2026-08-11.v1.json
 ```
 
-A schema-valid law record is not retrieval-ready merely because it includes portal URLs or citation labels. Retrieval readiness requires, at minimum:
+The remaining #143 work is primarily classification/closure of portal/register/guidance identities and the reviewed runtime manifest/catalogue migration, rather than the broad 10 August exact-file backlog.
 
-- approved registry source identifiers;
-- official document identity and status;
-- clean official URL;
-- effective-date metadata;
-- exact section/rule/notification mapping;
-- controlled chunk text;
-- page boundaries;
-- content hash;
-- source-pack verification;
-- a decision-to-source allowlist;
-- retrieval tests that reject unrelated or unregistered chunks.
+## 8. Remaining source exceptions
 
-### 9.3 Explanation coverage
+### Maharashtra finality
 
-The current server implementation is POSH-specific:
+Keep the following as draft/non-operative until exact final instruments are published, acquired and approved:
 
-- route: `/api/legal-explanation/posh`;
-- fixed POSH retrieval catalogue;
-- fixed three-field input allowlist;
-- fixed `lawId: posh` envelope;
-- fixed POSH decision filter;
-- fixed POSH query terms;
-- fixed POSH private-beta panel.
+- Maharashtra Shops 2025 draft amendment;
+- Maharashtra OSHWC Labour 2026 draft rules;
+- Maharashtra OSHWC Factories/Other Ports 2026 draft rules;
+- Maharashtra Industrial Relations 2026 draft rules.
 
-The provider and strict explanation contract are reusable in principle, but the endpoint, retrieval catalogue selection, input schema, and UI controller are not yet generic multi-feature components.
+### Wave 5J exact-source blockers
 
-## 10. Legal applicability fact-gap matrix
+Still missing/blocked under #139:
 
-| Legal feature family | Facts available now | Important missing facts | Current readiness |
-|---|---|---|---|
-| POSH Internal Committee threshold | Total employees, one primary state, location count | Employee count per office/administrative unit and legally relevant workplace facts | Live provisional rule; specialist review required |
-| Other POSH duties | Basic organisation/workforce/footprint context | Existing policy, awareness, notices, complaint mechanism, committee composition, records, reporting period, evidence | Knowledge record only |
-| Shops and Establishments | Primary state, total locations, entity, industry, employee count | State for each establishment, establishment type, opening date, registration status, local exemptions, per-location facts | Not ready |
-| Code on Wages | Employees, contract workers, state, industry | Employee/worker classification, wage components, wage period, wage rates, scheduled employment/notifications, bonus eligibility, appropriate government | Not ready |
-| Social Security — PF/ESI/gratuity/maternity/compensation | Employee and contract-worker counts, entity, industry, state | Scheme-specific covered headcount, wages, excluded categories, establishment notification, prior coverage, contribution data, women employees, service, injury/occupation facts, appropriate government | Not ready |
-| OSHWC | Employees, contract workers, locations, industry, work model | Establishment/factory/mine/plantation/site type, hazardous processes, contractor/site distribution, migrant-worker facts, registration/licence status, safety/welfare evidence, appropriate government | Not ready |
-| Industrial Relations | Employee count, industry, entity, growth context | Statutory worker categories, industrial establishment type, union presence, negotiating union/council, grievance committee facts, standing-order threshold facts, lay-off/retrenchment/closure facts | Not ready |
-| Apprentices | Apprentice count, industry, entity, state | Trade/category, designated/optional trade, establishment coverage, contracts, portal registration, quota/eligibility facts, training and stipend evidence | Partially fact-ready; legal rule and sources missing |
-| Child and adolescent labour | General workforce counts and industry | Worker ages, adolescent work, occupation/process hazard classification, age-verification evidence, exceptions | Not ready |
-| Bonded/forced labour | General workforce and contract-worker counts | Recruitment/debt/coercion indicators, contractor practices, worker complaints, evidence and escalation process | Not captured |
-| Contract workforce governance | Contract-worker count, locations, industry | Contractor count, principal employer, site allocation, worker category, establishment/site threshold facts, licences/registrations, wage/welfare evidence | Advisory context only |
-| Distributed/remote workforce | Work model, remote band/percentage, country count | Worker-by-location map, employing entity, tax residence, state/country jurisdiction, written arrangement, payroll location | Governed operational advisory only |
-| Multi-country employment | Country count | Country list, worker locations, employing entities, payroll/tax/social-security facts | Not ready |
+1. exact Ministry SOP referenced as issued 14 May 2026;
+2. exact approved/notified 2026–31 Labour Welfare/bonded-labour rehabilitation operational material.
 
-## 11. Cross-cutting architecture gaps
+No source-identity/secondary-text substitute may be treated as these exact files.
 
-### 11.1 No canonical feature registry
+### Wave 5M
 
-There is no single governed registry linking a product feature to:
+No two-country source pack is required because international/multi-country employment is excluded from the current release.
 
-- classification (`legal-assurance`, `operational-advisory`, `legacy`, `data-only`);
-- deterministic rule identifiers;
-- required assessment facts;
-- knowledge-base records;
-- approved source packs;
-- retrieval catalogues;
-- explanation routes;
-- UI surfaces;
-- legal-review status;
-- blockers and readiness.
+## 9. Assessment/fact boundaries
 
-### 11.2 Multiple rule systems
+GrowWithHR uses feature-specific fact contracts rather than sending a broad company object to the provider.
 
-The repository currently has at least four overlapping rule/content systems:
+Allowed facts vary by feature and are designed to be organisation-level where possible. Missing required facts remain missing.
 
-1. governed legal applicability rules;
-2. governed M2 advisory rules;
-3. older module readiness checks;
-4. legacy compliance-engine/report mappings.
+Commonly prohibited provider content includes:
 
-They use different identifiers, fact models, status words, source expectations, and output contracts. They should not be merged by copying records into one file. Each feature must first be classified as legal assurance or operational advisory.
+- names/person identities;
+- payroll/contribution record bodies;
+- medical/case narratives;
+- complaint/dispute bodies;
+- notices/orders;
+- evidence bodies;
+- live safeguarding case content;
+- international mobility/visa/tax data for the excluded Wave 5M flow.
 
-### 11.3 Knowledge-base/runtime mismatch
+The existing broad company assessment fields remain useful for general advisory/product context but must not be silently reinterpreted as law-specific establishment/worker-category facts.
 
-The current `app.js` central knowledge object loads 12 individual central records but omits the existing Industrial Relations Code and Social Security Code files. The umbrella central framework is loaded separately. This means data presence and runtime use are not identical.
+## 10. Deterministic-rule coverage
 
-### 11.4 Source-registry duplication
+The effective runtime has feature-specific deterministic specifications for all 55 substantive profiles.
 
-Two overlapping source registries and empty centralized state sections make source governance harder to enforce.
+Typical bounded outcomes are:
 
-### 11.5 Portal references are not source packs
+- `specialist-review` for complete/reported-gap source/readiness controls;
+- `more-information-needed` where required facts are absent.
 
-Many M2 and knowledge-base records reference a ministry or India Code portal without exact sections, pages, excerpts, document hashes, or decision allowlists. These references support further research but cannot be used as the governed retrieval corpus.
+Specific permitted statuses/reason codes remain defined by the relevant rule catalogue. The model/provider cannot create additional outcome authority.
 
-### 11.6 Legal temporal migration
+## 11. Retrieval/explanation coverage
 
-Several legacy records are marked superseded and retained for historical traceability. New current-period product logic must target the repository-recorded current Code records and applicable rules/notifications rather than reactivating old threshold IDs. Historical questions require a separate effective-date input and temporal decision path.
+All substantive profiles use the shared deterministic-first RAG architecture.
 
-### 11.7 UI and endpoint duplication risk
-
-Copying the POSH endpoint and panel for every feature would create many hard-coded routes, input allowlists, source catalogues, tests, and renderers. Multi-feature support should be implemented through a registry-driven server and a shared panel only after the registry contract is approved.
-
-## 12. Feature rollout plan
-
-### Phase 0 — governance and reusable architecture
-
-1. Approve one canonical feature classification and coverage registry.
-2. Design a generic server-side feature resolver that selects only approved deterministic rules, fact allowlists, source packs, and retrieval catalogues.
-3. Preserve one strict explanation contract with feature-specific protected constants.
-4. Build one shared private-beta explanation component that renders a validated generic envelope.
-5. Keep stable report, PDF, email, evidence, and assessment storage unchanged.
-
-### Phase 1 — complete the POSH feature family
-
-Use the already working POSH source pack and architecture as the first controlled extension. Evaluate each remaining POSH obligation separately rather than treating “POSH compliance” as one Boolean result.
-
-Candidate subfeatures:
-
-- policy review;
-- awareness/training review;
-- notice/display review;
-- complaint-mechanism and record review;
-- Internal Committee composition and per-unit facts;
-- annual reporting review.
-
-Most of these require new assessment/evidence facts before a deterministic result can be produced.
-
-### Phase 2 — active standalone central laws
-
-Prioritize active records that are outside the four-Code consolidation, but only after their required facts and source packs are defined:
-
-- Child and Adolescent Labour;
-- Apprentices;
-- bonded-labour/forced-labour prevention, after adding a dedicated governed record or an approved mapping.
-
-### Phase 3 — current Labour Code feature families
-
-Implement current-period features against the repository-recorded active Code records, not legacy Act thresholds:
-
-- Code on Wages;
-- Social Security Code;
-- OSHWC Code;
-- Industrial Relations Code.
-
-These are broad frameworks and must be decomposed into smaller deterministic feature decisions. They require substantial assessment-fact expansion and appropriate-government logic.
-
-### Phase 4 — State and Union Territory coverage
-
-Add per-location jurisdiction facts, canonical state source governance, and state-specific source packs before producing state applicability results. Start with the states represented most often in private-beta assessments rather than exposing all 36 records at once.
-
-### Phase 5 — operational HR advisory migration
-
-Migrate useful hiring, policy, talent, rewards, learning, culture, workforce-planning, People-ownership, and distributed-work features into a governed operational recommendation contract.
-
-Operational explanations must use labels such as:
+Required retrieval invariants:
 
 ```text
-recommendationAuthority: deterministic-operational
-providerRole: explanation-only
-legalAdvice: false
+usedForDecision: false
+applicabilityAuthority: none
 ```
 
-They must not reuse legal applicability labels merely to share a UI.
+The explanation layer must preserve the deterministic decision fingerprint/status/reason and cite only chunks in the governed retrieval trace.
 
-## 13. Definition of done for every legal feature
+Provider failure or invalid output fails closed.
 
-A legal feature is not complete until all of the following are present and tested:
+## 12. Product-surface coverage
 
-1. **Feature classification** — legal assurance, not a general operational recommendation.
-2. **Deterministic rule** — stable rule ID/version, required facts, operators, reason codes, permitted statuses, and no retrieval/LLM authority.
-3. **Missing-information path** — explicit `more-information-needed`; no guessing.
-4. **Temporal and jurisdiction model** — effective period and appropriate-government limitations.
-5. **Assessment fact coverage** — every required fact is collected or the feature remains blocked.
-6. **Legal-review status** — `needs-legal-review` until separately approved.
-7. **Canonical sources** — approved official documents in one source registry.
-8. **Section mapping** — exact provisions/rules/notifications linked to the deterministic decision.
-9. **Governed source chunks** — pages, hashes, clean official URLs, and allowlisted decision mappings.
-10. **Retrieval tests** — only approved chunks; retrieval cannot alter the decision.
-11. **Protected explanation request** — no raw answer object, personal data, or unapproved facts sent to the provider.
-12. **Strict provider validation** — status, reason code, fingerprints, citations, limitations, and authority flags cannot be changed.
-13. **Server endpoint** — minimized feature-specific input validated server-side and deterministic decision recomputed server-side.
-14. **Capacity controls** — free-only provider boundary, cache, in-flight sharing, concurrency, queue, and failure backoff.
-15. **Private-beta UI** — manual call only, missing/error/loading/completed states, sources and limitations visible.
-16. **No stable delivery mutation** — stable assessment, report, PDF, email, and evidence contracts remain unchanged unless separately approved.
-17. **Boundary and browser tests** — below/at/above threshold where relevant, missing facts, invalid input, source rejection, provider override rejection, no storage writes, and cache behavior.
-18. **Live controlled test** — one approved test case and cache confirmation after deployment.
+The private-beta legal review flows are explicit-submit and in-memory only. They do not automatically persist panel values/results into browser storage or change stable report/PDF/email contracts.
 
-## 14. Definition of done for every operational HR feature
+Wave 5J and Wave 5M have no substantive browser/provider surface.
 
-An operational feature requires a lighter but still governed path:
+The deployed product remains the root HTML/CSS/JavaScript application. The React/TypeScript `apps/web/src` tree is not the deployed production build.
 
-1. deterministic fact inputs;
-2. stable recommendation ID/version;
-3. clear outcome meaning (`recommended`, `not-triggered`, or `more-information-needed` rather than legal `applicable`);
-4. reason code and triggering facts;
-5. provenance for factual claims or guidance;
-6. no legal-status implication;
-7. explanation-only provider boundary where an LLM is used;
-8. tests for missing facts and recommendation consistency;
-9. no personal data in provider requests;
-10. no mutation of stable delivery contracts without separate approval.
+## 13. Operational/non-legal features
 
-## 15. Prioritized readiness matrix
+The repository also contains older HR module readiness/advisory checks and M2 operational recommendations. Those remain separate from governed legal applicability.
 
-| Priority | Feature group | Why | Main blockers |
-|---:|---|---|---|
-| 1 | Generic feature registry and resolver | Prevents copying POSH-specific code for every feature | Contract design and approval |
-| 2 | Remaining POSH duties | Existing record, source family, endpoint pattern, and UI pattern already exist | New facts, obligation-specific rule/source mapping, legal review |
-| 3 | Apprentices operational/legal review | Apprentice count already exists and record is active | Applicability details, official source pack, contract/training evidence |
-| 4 | State Shops and Establishments triage | Primary state and location count exist; high product relevance | Per-location state/establishment facts and state source governance |
-| 5 | Contract workforce/OSHWC triage | Contract-worker count and industry exist | Site, establishment, contractor, appropriate-government, safety facts |
-| 6 | Code on Wages feature family | Broad relevance | Wage, worker, notification, payroll, bonus and jurisdiction facts |
-| 7 | Social Security feature family | Broad relevance and existing current record | Scheme-specific headcount, wage, coverage and contribution facts |
-| 8 | Industrial Relations feature family | Existing current record | Worker definitions, establishment type, union/standing-order/change facts |
-| 9 | Child/adolescent labour | Active standalone record | Age and hazardous-occupation facts are not captured |
-| 10 | Operational hiring/policy/talent/rewards/learning/culture | 42 existing readiness checks provide topic inventory | Migration to M2 facts and operational contracts; deduplication |
+They must continue to use an explicit operational-advisory authority label and must not borrow legal statuses such as `applicable` unless a separately governed legal rule exists.
 
-This ordering reflects repository readiness, not legal importance.
+## 14. State/UT knowledge records
 
-## 16. Proposed next structured artifact — not created in this inventory
+The broader central/State/UT knowledge data remains useful as product/source context, but schema-valid knowledge records are not automatically governed deterministic rules or approved RAG source packs.
 
-A future phase should create a canonical coverage registry only after its location and schema are separately approved.
+Any new State/UT substantive feature requires:
 
-**Proposed location:**
+- explicit supported-jurisdiction scope;
+- exact source/control model;
+- section mapping;
+- assessment fact contract;
+- deterministic rule boundary;
+- State/UT legal review;
+- RAG/source/security/release approval.
 
-```text
-data/assessment/feature-coverage-registry.v1.json
-```
+## 15. Special safeguards
 
-**Proposed top-level schema:**
+### Child and Adolescent Labour
 
-```json
-{
-  "schemaVersion": 1,
-  "registryVersion": "1.0.0",
-  "legalReviewStatus": "needs-legal-review",
-  "features": [
-    {
-      "id": "feature.example",
-      "title": "Example feature",
-      "classification": "legal-assurance",
-      "domain": "legal",
-      "currentRuleRefs": [],
-      "assessmentFacts": {
-        "available": [],
-        "missing": []
-      },
-      "knowledgeBaseRecords": [],
-      "sourcePack": {
-        "status": "not-started",
-        "registrySourceIds": [],
-        "chunkCatalog": null
-      },
-      "explanation": {
-        "status": "not-started",
-        "route": null,
-        "uiSurface": null
-      },
-      "delivery": {
-        "stableReportMutation": false,
-        "stablePdfMutation": false,
-        "stableEmailMutation": false
-      },
-      "legalReviewStatus": "needs-legal-review",
-      "readiness": "blocked",
-      "blockers": [],
-      "nextAction": ""
-    }
-  ]
-}
-```
+Wave 5I is safeguarding-first. Identifying/live case handling stays human-only.
 
-This proposed registry would describe coverage and readiness. It must not itself evaluate applicability. Deterministic rules would remain in separately governed rule catalogues.
+### Bonded and Forced Labour
 
-## 17. Immediate next implementation decision
+Wave 5J must not become an automated classifier for trafficking, bonded labour, forced labour, criminal liability, rescue/release or rehabilitation. It remains research/governance-only pending #139/#140.
 
-The next development phase should be **generic multi-feature architecture design**, beginning with approval of the proposed feature coverage registry contract and a server-side feature resolver design.
+### Multi-country Employment
 
-No additional law should be exposed through Cloudflare or the V3 legal panel until it has:
+Wave 5M is not a partially implemented international engine. It is a deliberate current-release exclusion. If international employment is later introduced, #141 must be reopened and a new country-pair/legal/privacy/security source programme started.
 
-- a deterministic rule;
-- sufficient assessment facts;
-- an approved source pack;
-- governed chunks and retrieval tests;
-- a strict feature-specific explanation boundary;
-- `needs-legal-review` status;
-- a controlled live test.
+## 16. Validation coverage
 
-## 2026-08-06 runtime addendum
+The repository maintains dedicated suites for:
 
-The earlier inventory described the pre-onboarding state. GrowWithHR v0.20.2 adds a shared private-beta runtime for all 57 registered legal feature profiles.
+- POSH/Maternity baseline;
+- EPF Waves 3A–3C;
+- ESI Waves 4A–4D;
+- Waves 5A–5I;
+- Wave 5J research-only guard;
+- Wave 5K;
+- Wave 5L;
+- Wave 5M out-of-scope guard;
+- shared catalogue loader/retrieval/explanation contracts;
+- browser/privacy boundaries;
+- M7 source lifecycle/operational readiness/DR;
+- repository release/e2e checks.
 
-| Runtime category | Profiles | Current authority |
-|---|---:|---|
-| POSH Internal Committee threshold | 1 | Deterministic statutory rule plus governed statutory chunks |
-| Other registered legal features | 56 | Deterministic escalation-only rule plus governance-readiness retrieval |
-| Runtime-blocked profiles | 0 | Not applicable |
+See `docs/testing/all-laws-rag-validation.md`.
 
-This changes runtime coverage, not statutory assurance depth. The 56 fallback profiles remain unable to emit positive or negative applicability conclusions and require controlled law-specific source packs, facts, rules and approvals before being reclassified as substantive governed legal assurance.
+## 17. Release gaps
+
+The remaining gap is no longer general architecture implementation. It is controlled certification work:
+
+1. review/approve exact-file reconciliation and complete #143 classifications;
+2. perform a separately reviewed source-manifest/catalogue migration where required;
+3. obtain named LEGAL, PRIVACY, RAG, SOURCE-FILE and SECURITY approvals under #142;
+4. keep Wave 5J blocked until #139/#140 close;
+5. run final regression on the approved release SHA;
+6. deploy the approved SHA and archive smoke evidence;
+7. record RELEASE approval under #142.
+
+## 18. Current conclusion
+
+For the current non-international scope, the Legal RAG software architecture is substantively implemented through Wave 5L. The next programme phase is source/runtime reconciliation review, authorised governance approval and production release certification—not another broad "implement RAG for all laws" engineering wave.
