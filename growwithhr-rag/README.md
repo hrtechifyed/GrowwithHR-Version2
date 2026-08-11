@@ -178,7 +178,7 @@ Retrieval must not:
 
 ## Explanation contract
 
-`growwithhr-rag/legal-explanation-contract.js` builds the protected provider request and validates accepted responses.
+`growwithhr-rag/legal-explanation-contract.js` builds the protected provider request and validates accepted responses. This is the **provider-neutral explanation contract**: a provider **cannot change the deterministic decision**.
 
 A provider response is accepted only when it preserves the fixed decision and governed retrieval contract. Validation includes:
 
