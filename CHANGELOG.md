@@ -10,6 +10,55 @@ No unreleased product changes are currently recorded.
 
 ---
 
+## [v0.20.3-prototype.1] - Governed Compliance & Legal RAG Prototype
+
+**Release Date:** 2026-08-11
+
+### Release classification
+
+- Research-grade prototype / GitHub prerelease.
+- Not production legal certification.
+- All active legal catalogues remain `needs-legal-review`.
+
+### Added and consolidated
+
+- Consolidated the effective Legal RAG runtime at **57 callable profiles / 55 substantive profiles / 2 governance fallbacks / 21 active catalogues**.
+- Documented the current substantive coverage through Wave 5L and the Wave 5J/Wave 5M non-runtime guards.
+- Added release-facing product documentation explaining the deterministic-first architecture and a hypothetical founder/company workflow.
+- Added a founder-oriented product direction for "what needs attention now" and future compliance review triggers as the organisation scales.
+- Added a governed source-reconciliation audit bridge and retained supplementary exact-file evidence for 31 acquired files without silently replacing validated runtime source identities.
+
+### Prototype research standard
+
+- Adopted **structured secondary research with controlled provenance** as the accepted legal/source basis for this prototype.
+- Made exact official-file verification supplementary assurance rather than a prototype release prerequisite.
+- Required secondary-research provenance to remain distinct from official or counsel-approved provenance.
+- Preserved draft, guidance, portal and research-only classifications.
+- Kept production-grade exact-source assurance as future hardening under GitHub #143.
+- Reframed GitHub #142 as the future production-grade Legal/Privacy/RAG/Source/Security/Release certification programme rather than a blocker for the clearly labelled prototype.
+
+### RAG and authority safeguards
+
+- Deterministic rules remain the product decision authority within the bounded prototype contract.
+- Retrieval remains post-decision with `usedForDecision: false` and `applicabilityAuthority: none`.
+- Provider output remains explanation-only and cannot create facts, change status/reason/source scope or certify compliance.
+- Invalid or decision-changing provider output fails closed.
+- Active catalogues remain `needs-legal-review`.
+
+### Deliberate exclusions
+
+- **Wave 5J — Bonded and Forced Labour:** remains governance/research-only; no substantive assessment/runtime/provider handling; live safeguarding concerns remain human-only.
+- **Wave 5M — Multi-country Employment:** remains out of current release scope with no country pair, assessment contract, catalogue, provider route or cross-border data design.
+
+### Release requirements
+
+- Publish only as a clearly labelled prototype/prerelease.
+- Run the maintained complete Legal RAG, M7, CORS, repository release and Chromium E2E suites on the exact release SHA.
+- Preserve the 57/55/2/21 runtime invariant and the Wave 5J/Wave 5M non-activation guards.
+- Do not represent the prototype as legal advice, legal opinion, compliance certification or proof of compliance.
+
+---
+
 ## [v0.20.2] - Governed Legal RAG Private Beta
 
 **Release Date:** 2026-08-06
@@ -17,7 +66,7 @@ No unreleased product changes are currently recorded.
 ### Added
 
 - Added a shared legal explanation route for all 57 registered private-beta legal profiles.
-- Added one statutory POSH profile and 56 conservative governance-fallback profiles with zero runtime-blocked profiles.
+- Added one statutory POSH profile and 56 conservative governance-fallback profiles with zero runtime-blocked profiles at the original v0.20.2 cut.
 - Added a legal RAG status endpoint with explicit catalogue modes and limitations.
 - Added a homepage section explaining the decision-first compliance architecture and differentiation.
 - Added maintained all-laws runtime, retrieval and explanation validation plus a human-readable validation guide.
