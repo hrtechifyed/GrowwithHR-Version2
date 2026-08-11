@@ -1,10 +1,11 @@
-# Wave 5M preserves Multi-country Employment as an out-of-scope governance fallback until a country pair and cross-border data approval exist.
+# Wave 5M is excluded from the current release and must remain an out-of-scope governance fallback.
 name: All-Laws RAG Private Beta
 
 on:
   pull_request:
     paths:
       - "data/legal-source-governance/all-laws-rag-onboarding.v1.json"
+      - "data/legal-source-governance/exact-source-file-reconciliation-*.json"
       - "data/legal-source-governance/appropriate-government-*.json"
       - "data/legal-source-governance/shops-establishments-maharashtra-*.json"
       - "data/legal-source-governance/code-on-wages-*.json"
@@ -155,7 +156,7 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Validate all-laws onboarding registry
+      - name: Validate all-laws onboarding and exact-source reconciliation
         run: npm run test:all-laws-rag-onboarding
 
       - name: Validate Wave 1 and Wave 2 baseline profiles
