@@ -1,0 +1,373 @@
+"use strict";
+
+const crypto = require("crypto");
+const { google } = require("googleapis");
+
+const ROUTES = new Set(["/api/send-advisory", "/api/send-advisory-v2"]);
+const MAX_REQUEST_BYTES = 16 * 1024 * 1024;
+const MAX_PDF_BYTES = 12 * 1024 * 1024;
+const MAX_RECIPIENTS = 5;
+const FOUNDER_NAME = "Anurag Sinha";
+const FOUNDER_LINKEDIN_URL = "https://www.linkedin.com/in/anuragsinha1009/";
+
+function cleanText(value, fallback = "") {
+    return String(value ?? "").trim() || fallback;
+}
+
+function isValidEmail(value) {
+    return /^[^\s@;,]+@[^\s@;,]+\.[^\s@;,]+$/.test(cleanText(value));
+}
+
+function recipientList(lead = {}, report = {}) {
+    const supplied = [
+        ...(Array.isArray(lead.emails) ? lead.emails : []),
+        ...(Array.isArray(report.recipientEmails) ? report.recipientEmails : []),
+        ...cleanText(lead.email || report.recipientEmail).split(/[;,]/)
+    ];
+    const seen = new Set();
+    return supplied
+        .map((value) => cleanText(value).toLowerCase())
+        .filter(isValidEmail)
+        .filter((email) => {
+            if (seen.has(email)) return false;
+            seen.add(email);
+            return true;
+        })
+        .slice(0, MAX_RECIPIENTS);
+}
+
+function safeHeaderValue(value) {
+    return cleanText(value).replace(/[\r\n]+/g, " ");
+}
+
+function encodeMimeHeader(value) {
+    return `=?UTF-8?B?${Buffer.from(safeHeaderValue(value), "utf8").toString("base64")}?=`;
+}
+
+function wrapBase64(value) {
+    return String(value).match(/.{1,76}/g)?.join("\r\n") || "";
+}
+
+function encodeBase64Url(value) {
+    return Buffer.from(value, "utf8")
+        .toString("base64")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/g, "");
+}
+
+function escapeHtml(value) {
+    return cleanText(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function safeFilename(value) {
+    let filename = cleanText(value, "GrowWithHR-HR-Compliance-Growth-Report.pdf")
+        .replace(/[^a-zA-Z0-9._-]/g, "-")
+        .replace(/-+/g, "-")
+        .slice(0, 160);
+    if (!filename.toLowerCase().endsWith(".pdf")) filename += ".pdf";
+    return filename;
+}
+
+function decodePdf(pdf = {}) {
+    const raw = cleanText(pdf.base64 || pdf.dataUri || pdf.data)
+        .replace(/^data:application\/pdf;base64,/i, "")
+        .replace(/\s/g, "");
+    if (!raw || !/^[a-zA-Z0-9+/=]+$/.test(raw)) {
+        throw new Error("The generated report PDF is missing or invalid.");
+    }
+    const content = Buffer.from(raw, "base64");
+    if (!content.length || content.subarray(0, 5).toString("ascii") !== "%PDF-") {
+        throw new Error("The generated attachment is not a valid PDF document.");
+    }
+    if (content.length > MAX_PDF_BYTES) {
+        throw new Error("The generated report is larger than the supported delivery limit.");
+    }
+    return {
+        filename: safeFilename(pdf.filename),
+        content,
+        contentType: "application/pdf"
+    };
+}
+
+function extractSinglePdf(body = {}) {
+    const candidates = Array.isArray(body.pdfs)
+        ? body.pdfs
+        : body.pdf
+            ? [body.pdf]
+            : [];
+    if (candidates.length !== 1) {
+        throw Object.assign(new Error("Exactly one standard GrowWithHR report PDF is required."), { statusCode: 400 });
+    }
+    const suppliedTheme = cleanText(candidates[0]?.theme).toLowerCase();
+    if (suppliedTheme === "dark") {
+        throw Object.assign(new Error("Dark report variants are no longer supported."), { statusCode: 400 });
+    }
+    return decodePdf(candidates[0]);
+}
+
+function buildRawEmail({ from, to, bcc = [], replyTo, subject, text, html, attachment }) {
+    const mixedBoundary = `mixed_${crypto.randomUUID()}`;
+    const alternativeBoundary = `alternative_${crypto.randomUUID()}`;
+    const filename = safeFilename(attachment.filename);
+    const lines = [
+        `From: ${safeHeaderValue(from)}`,
+        `To: ${safeHeaderValue(to)}`,
+        ...(bcc.length ? [`Bcc: ${safeHeaderValue(bcc.join(", "))}`] : []),
+        ...(replyTo ? [`Reply-To: ${safeHeaderValue(replyTo)}`] : []),
+        `Subject: ${encodeMimeHeader(subject)}`,
+        `Date: ${new Date().toUTCString()}`,
+        "MIME-Version: 1.0",
+        `Content-Type: multipart/mixed; boundary="${mixedBoundary}"`,
+        "",
+        `--${mixedBoundary}`,
+        `Content-Type: multipart/alternative; boundary="${alternativeBoundary}"`,
+        "",
+        `--${alternativeBoundary}`,
+        'Content-Type: text/plain; charset="UTF-8"',
+        "Content-Transfer-Encoding: base64",
+        "",
+        wrapBase64(Buffer.from(cleanText(text), "utf8").toString("base64")),
+        "",
+        `--${alternativeBoundary}`,
+        'Content-Type: text/html; charset="UTF-8"',
+        "Content-Transfer-Encoding: base64",
+        "",
+        wrapBase64(Buffer.from(cleanText(html), "utf8").toString("base64")),
+        "",
+        `--${alternativeBoundary}--`,
+        "",
+        `--${mixedBoundary}`,
+        `Content-Type: application/pdf; name="${filename}"`,
+        `Content-Disposition: attachment; filename="${filename}"`,
+        "Content-Transfer-Encoding: base64",
+        "",
+        wrapBase64(attachment.content.toString("base64")),
+        "",
+        `--${mixedBoundary}--`,
+        ""
+    ];
+    return encodeBase64Url(lines.join("\r\n"));
+}
+
+function customerMessage(lead = {}, report = {}, filename) {
+    const recipientName = cleanText(lead.name, "there");
+    const companyName = cleanText(report.companyName || lead.companyName, "your organisation");
+    const subject = `Your GrowWithHR HR Compliance & Growth Report for ${companyName}`;
+    const text = [
+        `Hello ${recipientName},`,
+        "",
+        `Your GrowWithHR HR Compliance & Growth Report for ${companyName} is attached: ${filename}.`,
+        "",
+        "The report summarises the HR compliance areas identified from the company facts supplied, information that could change unresolved findings, growth-related reassessment triggers and practical founder next steps.",
+        "",
+        "GrowWithHR identifies applicability from deterministic rules. It does not certify whether each obligation has already been completed or whether the company is legally compliant or non-compliant.",
+        "",
+        "This is a research-prototype report and is not legal advice or a legal opinion.",
+        "",
+        "Warm Wishes,",
+        FOUNDER_NAME,
+        "Founder, HRTechify",
+        FOUNDER_LINKEDIN_URL
+    ].join("\n");
+    const html = `<!doctype html><html lang="en"><body style="margin:0;background:#f3f6fa;font-family:Inter,Segoe UI,Arial,sans-serif;color:#223347"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:32px 14px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;background:#fff;border:1px solid #e1e7ef"><tr><td style="padding:34px 38px;border-top:5px solid #d97706"><div style="color:#d97706;font-size:12px;font-weight:800;letter-spacing:.14em">HRTECHIFY · GROWWITHHR</div><h1 style="margin:10px 0 0;color:#0a2342;font-size:27px;line-height:1.2">Your HR Compliance & Growth Report</h1></td></tr><tr><td style="padding:10px 38px 38px"><p style="font-size:16px;line-height:1.7">Hello ${escapeHtml(recipientName)},</p><p style="font-size:16px;line-height:1.7;color:#334155">Your report for <strong>${escapeHtml(companyName)}</strong> is attached as one PDF.</p><div style="padding:18px 20px;background:#f8fafc;border-left:4px solid #d97706;color:#334155;line-height:1.65">It covers the compliance areas identified from the facts you supplied, missing information that could change findings, growth-related reassessment triggers and founder next steps.</div><p style="font-size:14px;line-height:1.7;color:#64748b">GrowWithHR identifies applicability from deterministic rules. It does not certify whether obligations have already been completed or whether the company is legally compliant or non-compliant.</p><p style="font-size:13px;line-height:1.7;color:#64748b">Research Prototype · Not legal advice or a legal opinion.</p><p style="font-size:16px;line-height:1.65">Warm Wishes,<br>${escapeHtml(FOUNDER_NAME)}<br>Founder, HRTechify<br><a href="${FOUNDER_LINKEDIN_URL}">${FOUNDER_LINKEDIN_URL}</a></p></td></tr></table></td></tr></table></body></html>`;
+    return { subject, text, html };
+}
+
+function internalMessage(lead = {}, report = {}, recipients = [], filename = "") {
+    const companyName = cleanText(report.companyName || lead.companyName, "Not provided");
+    const fields = {
+        Name: cleanText(lead.name, "Not provided"),
+        Recipients: recipients.join(", "),
+        Company: companyName,
+        "Delivery format": "One standard PDF report",
+        Attachment: filename,
+        Submitted: new Date().toISOString()
+    };
+    const text = ["A GrowWithHR report was delivered.", "", ...Object.entries(fields).map(([key, value]) => `${key}: ${value}`)].join("\n");
+    const rows = Object.entries(fields).map(([key, value]) => `<tr><th align="left" style="padding:8px">${escapeHtml(key)}</th><td style="padding:8px">${escapeHtml(value)}</td></tr>`).join("");
+    return {
+        subject: `GrowWithHR report delivered: ${companyName}`,
+        text,
+        html: `<!doctype html><html><body style="font-family:Arial,sans-serif;padding:24px;color:#1f2937"><h2>GrowWithHR report delivery</h2><table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table></body></html>`
+    };
+}
+
+function requiredEnvironmentVariables() {
+    return ["GMAIL_USER", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "GOOGLE_REFRESH_TOKEN"];
+}
+
+function missingEnvironmentVariables() {
+    return requiredEnvironmentVariables().filter((name) => !cleanText(process.env[name]));
+}
+
+function gmailClient() {
+    const oauth2Client = new google.auth.OAuth2(
+        cleanText(process.env.GOOGLE_CLIENT_ID),
+        cleanText(process.env.GOOGLE_CLIENT_SECRET)
+    );
+    oauth2Client.setCredentials({ refresh_token: cleanText(process.env.GOOGLE_REFRESH_TOKEN) });
+    return google.gmail({ version: "v1", auth: oauth2Client });
+}
+
+async function sendMessage(gmail, message) {
+    const result = await gmail.users.messages.send({
+        userId: "me",
+        requestBody: { raw: buildRawEmail(message) }
+    });
+    return result.data || {};
+}
+
+function readJsonBody(request) {
+    return new Promise((resolve, reject) => {
+        let size = 0;
+        const chunks = [];
+        request.on("data", (chunk) => {
+            size += chunk.length;
+            if (size > MAX_REQUEST_BYTES) {
+                reject(Object.assign(new Error("The report delivery request is too large."), { statusCode: 413 }));
+                request.destroy();
+                return;
+            }
+            chunks.push(chunk);
+        });
+        request.on("end", () => {
+            try {
+                resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"));
+            } catch (_error) {
+                reject(Object.assign(new Error("The report delivery request contains invalid JSON."), { statusCode: 400 }));
+            }
+        });
+        request.on("error", reject);
+    });
+}
+
+function writeJson(response, statusCode, payload) {
+    if (response.writableEnded) return;
+    response.statusCode = statusCode;
+    response.setHeader("Content-Type", "application/json; charset=utf-8");
+    response.end(JSON.stringify(payload));
+}
+
+async function processDelivery(request, response) {
+    try {
+        if (request.method === "OPTIONS") {
+            response.statusCode = 204;
+            response.end();
+            return;
+        }
+        if (request.method !== "POST") {
+            writeJson(response, 405, { error: "Method not allowed." });
+            return;
+        }
+        const missing = missingEnvironmentVariables();
+        if (missing.length) {
+            writeJson(response, 503, { error: "Gmail API is not configured on the server.", missingVariables: missing });
+            return;
+        }
+        const body = await readJsonBody(request);
+        const action = cleanText(body.action, "capture");
+        if (!["capture", "resend-customer"].includes(action)) {
+            writeJson(response, 400, { error: "The requested email action is invalid." });
+            return;
+        }
+        const lead = body.lead || {};
+        const report = body.report || {};
+        const recipients = recipientList(lead, report);
+        if (!recipients.length) {
+            writeJson(response, 400, { error: "At least one valid recipient email address is required." });
+            return;
+        }
+        const attachment = extractSinglePdf(body);
+        const sender = cleanText(process.env.GMAIL_USER).toLowerCase();
+        if (!isValidEmail(sender)) {
+            writeJson(response, 503, { error: "GMAIL_USER is not a valid email address." });
+            return;
+        }
+        const gmail = gmailClient();
+        const customer = customerMessage(lead, report, attachment.filename);
+        const customerResult = await sendMessage(gmail, {
+            from: `"GrowWithHR" <${sender}>`,
+            to: recipients[0],
+            bcc: recipients.slice(1),
+            replyTo: cleanText(process.env.REPLY_TO_EMAIL, sender),
+            subject: customer.subject,
+            text: customer.text,
+            html: customer.html,
+            attachment
+        });
+
+        let internalStatus = "not-configured";
+        let internalMessageId = "";
+        const internalRecipient = cleanText(process.env.INTERNAL_NOTIFICATION_EMAIL);
+        if (action !== "resend-customer" && internalRecipient) {
+            if (!isValidEmail(internalRecipient)) {
+                internalStatus = "invalid-address";
+            } else {
+                try {
+                    const notice = internalMessage(lead, report, recipients, attachment.filename);
+                    const result = await sendMessage(gmail, {
+                        from: `"GrowWithHR" <${sender}>`,
+                        to: internalRecipient,
+                        replyTo: recipients[0],
+                        subject: notice.subject,
+                        text: notice.text,
+                        html: notice.html,
+                        attachment: {
+                            filename: "GrowWithHR-delivery-record.pdf",
+                            content: Buffer.from("%PDF-1.4\n% internal notification intentionally has no customer report attachment\n", "utf8")
+                        }
+                    });
+                    internalStatus = "sent";
+                    internalMessageId = result.id || "";
+                } catch (error) {
+                    internalStatus = "failed";
+                    console.error("Internal single-report notification failed:", error?.response?.data || error);
+                }
+            }
+        }
+
+        writeJson(response, 200, {
+            ok: true,
+            mode: "gmail-api-single-report",
+            customerStatus: "sent",
+            customerSent: true,
+            customerMessageId: customerResult.id || "",
+            recipientCount: recipients.length,
+            attachmentCount: 1,
+            attachmentFilenames: [attachment.filename],
+            reportThemes: ["standard"],
+            singleReportDelivery: true,
+            internalStatus,
+            internalSent: internalStatus === "sent",
+            internalMessageId,
+            sentAt: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error("Single-report Gmail delivery failed:", error?.response?.data || error);
+        writeJson(response, Number(error.statusCode) || 502, {
+            error: error?.response?.data?.error?.message || error.message || "The report email could not be sent."
+        });
+    }
+}
+
+function handleSingleReportDeliveryRequest(request, response) {
+    const requestPath = cleanText(request.url).split("?")[0];
+    if (!ROUTES.has(requestPath)) return false;
+    processDelivery(request, response);
+    return true;
+}
+
+module.exports = {
+    ROUTES,
+    handleSingleReportDeliveryRequest,
+    extractSinglePdf,
+    decodePdf,
+    customerMessage,
+    recipientList
+};
