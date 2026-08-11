@@ -1,1 +1,85 @@
-__PLACEHOLDER__
+{
+  "schemaVersion": 1,
+  "reconciliationVersion": "2026-08-11",
+  "title": "GrowWithHR exact official source-file reconciliation",
+  "status": "source-file-acquired-review-gated",
+  "canonicalSourceRegister": {
+    "driveFileId": "1AHUxJdij96NNntt6-KWDLxm8EAmGlCBW",
+    "sheet": "Exact File Reconciliation",
+    "matchedExactFiles": 31,
+    "duplicateQuarantineItems": 1
+  },
+  "runtimeMigrationApplied": false,
+  "legalReviewStatus": "needs-legal-review",
+  "wave5M": {
+    "status": "out-of-scope-governance-only",
+    "runtimeActivation": false,
+    "countryPairSelected": false
+  },
+  "wave5J": {
+    "status": "governance-research-only",
+    "runtimeActivation": false,
+    "hardSourceBlockers": [
+      "ministry-bonded-labour-sop-2026",
+      "approved-notified-2026-31-bonded-labour-rehabilitation-operational-material"
+    ]
+  },
+  "rules": [
+    "Do not overwrite curated source-identity fingerprints with official-file hashes without separately reviewed catalogue/source-manifest migration.",
+    "Exact file acquisition does not grant legal, privacy, RAG, security or release approval.",
+    "Draft Maharashtra instruments remain draft/non-operative even when exact draft bytes are controlled."
+  ],
+  "exactFileSourceIds": [
+    "epfo-exemption-manual-2023",
+    "epfo-exemption-management-sop-2023",
+    "code-on-wages-2019",
+    "industrial-relations-code-2020",
+    "oshwc-code-2020",
+    "code-on-wages-central-rules-2026",
+    "industrial-relations-central-rules-2026",
+    "oshwc-central-rules-2026",
+    "maharashtra-shops-act-2017",
+    "maharashtra-shops-rules-2018",
+    "maharashtra-shops-draft-amendment-2025",
+    "code-on-wages-commencement-so-4604e-2020",
+    "code-on-wages-commencement-so-5322e-2025",
+    "code-on-wages-central-rules-corrigendum-2026",
+    "oshwc-commencement-so-5321e-2025",
+    "maharashtra-oshwc-labour-draft-rules-2026",
+    "maharashtra-oshwc-factories-ports-draft-rules-2026",
+    "industrial-relations-commencement-so-5320e-2025",
+    "industrial-relations-removal-difficulties-so-5683e-2025",
+    "industrial-relations-code-amendment-act-2026",
+    "industrial-relations-model-standing-orders-2026",
+    "maharashtra-industrial-relations-draft-rules-2026",
+    "apprentices-act-1961-current-2026",
+    "apprenticeship-rules-1992-base",
+    "apprenticeship-amendment-rules-2025-gsr-610e",
+    "naps2-guidelines-2023",
+    "child-adolescent-labour-act-1986-current-2026",
+    "child-labour-rules-1988-principal",
+    "child-adolescent-labour-amendment-rules-2017-gsr-543e",
+    "child-labour-amendment-commencement-so-2823e-2016",
+    "child-adolescent-labour-schedule-so-2827e-2017"
+  ],
+  "remainingPortalOrRegisterIdentities": [
+    "ministry-labour-jurisdiction-2026",
+    "maharashtra-labour-services-2026",
+    "maharashtra-labour-rts-services-2026",
+    "code-on-wages-central-notification-register-2026",
+    "industrial-relations-standing-orders-authority-notifications-2026",
+    "dgt-apprenticeship-training-overview-2026",
+    "dgt-designated-trades-register-2026",
+    "dgt-optional-trades-register-2026",
+    "apprenticeshipindia-portal-2026"
+  ],
+  "anomalies": [
+    {
+      "sourceId": "maharashtra-shops-rules-2018",
+      "fileName": "maharashtra-shops-rules-2018-official(1).pdf",
+      "status": "quarantine-do-not-use",
+      "reason": "Byte-identical to maharashtra-shops-act-2017-official.pdf. Use the 100-page maharashtra-shops-rules-2018-official.pdf candidate recorded in the canonical Source Register reconciliation sheet."
+    }
+  ],
+  "nextControlledAction": "Qualified source/RAG/legal review of the exact-file reconciliation, followed by a separately reviewed runtime source-manifest/catalogue migration and full RAG regression."
+}
