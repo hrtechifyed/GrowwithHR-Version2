@@ -26,7 +26,7 @@ Protected feature input
   -> minimized user-facing response
 ```
 
-The deterministic decision must exist before retrieval.
+**Retrieval happens only after a deterministic decision.** The deterministic decision must exist before retrieval.
 
 Every retrieval path must preserve:
 
@@ -151,7 +151,7 @@ One duplicate Maharashtra Shops Rules-labelled file was quarantined because its 
 
 ## Retrieval behaviour
 
-The baseline retrieval implementation is governed lexical retrieval. It ranks only within the source/chunk scope permitted by the fixed deterministic decision.
+The baseline retrieval implementation is governed lexical retrieval. **The current baseline does not use embeddings or a vector database.** It ranks only within the source/chunk scope permitted by the fixed deterministic decision.
 
 A retrieval trace records data such as:
 
