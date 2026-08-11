@@ -111,10 +111,9 @@ function extractSinglePdf(body = {}) {
     return decodePdf(candidates[0]);
 }
 
-function buildRawEmail({ from, to, bcc = [], replyTo, subject, text, html, attachment }) {
+function buildRawEmail({ from, to, bcc = [], replyTo, subject, text, html, attachment = null }) {
     const mixedBoundary = `mixed_${crypto.randomUUID()}`;
     const alternativeBoundary = `alternative_${crypto.randomUUID()}`;
-    const filename = safeFilename(attachment.filename);
     const lines = [
         `From: ${safeHeaderValue(from)}`,
         `To: ${safeHeaderValue(to)}`,
@@ -141,17 +140,21 @@ function buildRawEmail({ from, to, bcc = [], replyTo, subject, text, html, attac
         wrapBase64(Buffer.from(cleanText(html), "utf8").toString("base64")),
         "",
         `--${alternativeBoundary}--`,
-        "",
-        `--${mixedBoundary}`,
-        `Content-Type: application/pdf; name="${filename}"`,
-        `Content-Disposition: attachment; filename="${filename}"`,
-        "Content-Transfer-Encoding: base64",
-        "",
-        wrapBase64(attachment.content.toString("base64")),
-        "",
-        `--${mixedBoundary}--`,
         ""
     ];
+    if (attachment) {
+        const filename = safeFilename(attachment.filename);
+        lines.push(
+            `--${mixedBoundary}`,
+            `Content-Type: application/pdf; name="${filename}"`,
+            `Content-Disposition: attachment; filename="${filename}"`,
+            "Content-Transfer-Encoding: base64",
+            "",
+            wrapBase64(attachment.content.toString("base64")),
+            ""
+        );
+    }
+    lines.push(`--${mixedBoundary}--`, "");
     return encodeBase64Url(lines.join("\r\n"));
 }
 
@@ -317,11 +320,7 @@ async function processDelivery(request, response) {
                         replyTo: recipients[0],
                         subject: notice.subject,
                         text: notice.text,
-                        html: notice.html,
-                        attachment: {
-                            filename: "GrowWithHR-delivery-record.pdf",
-                            content: Buffer.from("%PDF-1.4\n% internal notification intentionally has no customer report attachment\n", "utf8")
-                        }
+                        html: notice.html
                     });
                     internalStatus = "sent";
                     internalMessageId = result.id || "";
@@ -369,5 +368,6 @@ module.exports = {
     extractSinglePdf,
     decodePdf,
     customerMessage,
-    recipientList
+    recipientList,
+    buildRawEmail
 };
