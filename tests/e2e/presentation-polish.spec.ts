@@ -100,10 +100,10 @@ test("renders a clean single-column compliance report without scorecards or them
 
     await expect(page.locator(".executive-profile-strip")).toHaveCount(0);
     await expect(page.locator(".executive-metric-card")).toHaveCount(0);
+    await expect(page.locator(".gwh-web-section [data-score], .gwh-web-section .score-card, .gwh-web-section .metric-card")).toHaveCount(0);
     await expect(page.locator("input[name='advisoryReportTheme']")).toHaveCount(0);
     await expect(page.locator("input[name='reportTheme']")).toHaveCount(0);
     await expect(page.getByText("Dark Version", { exact: false })).toHaveCount(0);
-    await expect(page.getByText("compliance score", { exact: false })).toHaveCount(0);
 
     const layout = await page.locator(".gwh-web-section").first().evaluate((element) => {
         const box = element.getBoundingClientRect();
