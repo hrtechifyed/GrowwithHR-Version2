@@ -1,13 +1,25 @@
 # GrowWithHR governed legal RAG runtime
 
 **Updated:** 11 August 2026  
-**Application baseline:** v0.20.2 Governed Legal RAG Private Beta  
+**Application baseline:** v0.20.3-prototype.1 Governed Compliance & Legal RAG Prototype  
 **Effective runtime:** 57 callable profiles / 55 substantive profiles / 2 governance fallbacks / 21 active catalogues  
 **Legal status:** all active legal catalogues remain `needs-legal-review`
 
 This directory contains the governed retrieval, citation and explanation layer used after GrowWithHR's deterministic legal-rule engine has already produced a fixed result.
 
 It is **not** a legal decision engine. Retrieval and provider output have no applicability authority.
+
+## Prototype source basis
+
+This release is a research-grade prototype. The accepted source basis is structured secondary research with controlled provenance. Exact official-file verification is supplementary assurance and is not a prototype release prerequisite.
+
+Prototype source rules:
+
+- secondary-research provenance must not be represented as official or counsel-approved provenance;
+- draft/research/guidance/portal classifications remain explicit;
+- all active catalogues remain `needs-legal-review`;
+- exact-file evidence may be retained separately without replacing validated runtime source identities;
+- no prototype output may claim legal opinion, legal certification or proof of compliance.
 
 ## Mandatory execution order
 
@@ -90,12 +102,9 @@ Most Wave 5 families are intentionally **source-readiness/routing controls**, no
 
 ### Wave 5J — Bonded and Forced Labour
 
-Wave 5J is a deliberate research/safeguarding stop. There is no approved assessment contract, substantive runtime rule, governed source-chunk catalogue, browser panel or provider route.
+Wave 5J is a deliberate research/safeguarding stop. There is no substantive assessment contract, runtime rule, governed source-chunk catalogue, browser panel or provider route.
 
-It remains blocked by:
-
-- #139 — exact Ministry SOP referenced as issued 14 May 2026 and exact approved/notified 2026–31 rehabilitation/welfare operational material;
-- #140 — qualified Article 23 / 1976 Act / BNS / Supreme Court mapping, human safeguarding design, privacy/security and State/UT review.
+#139 and #140 remain a future activation programme, not a blocker for the current prototype because Wave 5J is non-runtime.
 
 Live coercion, trafficking, confinement, violence, threat, retaliation, rescue or similar case narratives must not enter the normal RAG/provider path.
 
@@ -119,20 +128,21 @@ The current product must not attempt immigration, tax residence, permanent estab
 
 `server-legal-rag-catalogs.js` loads the catalogues selected by the effective profile registry. Each substantive catalogue is constrained by its feature profile and deterministic decision.
 
-A profile/catalogue relationship does not itself constitute legal approval. Catalogue records continue to carry `needs-legal-review` until authorised evidence is recorded.
+A profile/catalogue relationship does not itself constitute legal approval. Catalogue records continue to carry `needs-legal-review`.
 
 The loader/runtime must reject or fail closed on unknown catalogue/source relationships rather than broadening the source scope.
 
-## Source identity versus exact official files
+## Runtime source identity, secondary research and exact-file evidence
 
-GrowWithHR keeps two related but distinct fingerprints:
+GrowWithHR now distinguishes three related source-control concepts:
 
-1. **curated source-identity fingerprint** — the identifier/fingerprint already used by validated runtime source records;
-2. **official-file fingerprint** — SHA-256 from the exact raw official PDF/file bytes stored in the controlled Drive source tree.
+1. **runtime source identity** — the identifier/fingerprint already used by validated catalogue/source contracts;
+2. **secondary-research provenance** — the accepted research basis for the current prototype;
+3. **exact-file fingerprint** — supplementary SHA-256 evidence from stored file bytes where available.
 
-These must not be silently substituted for one another.
+These concepts must not be silently substituted for one another.
 
-As of 11 August 2026, the canonical Drive `Source Register.xlsx` contains an **Exact File Reconciliation** sheet mapping 31 acquired official PDFs to existing Source IDs with:
+As of 11 August 2026, the canonical Drive `Source Register.xlsx` contains an **Exact File Reconciliation** sheet mapping 31 acquired files to existing Source IDs with:
 
 - actual-file SHA-256;
 - byte length;
@@ -145,9 +155,11 @@ The repository governance record is:
 data/legal-source-governance/exact-source-file-reconciliation-2026-08-11.v1.json
 ```
 
-`runtimeMigrationApplied` remains `false`. The exact-file evidence must be reviewed before any source-manifest/catalogue migration changes runtime metadata.
+`runtimeMigrationApplied` remains `false`. That is acceptable for the prototype release. The exact-file evidence is supplementary audit assurance and does not need to replace the current validated runtime identities before `v0.20.3-prototype.1` can be published.
 
 One duplicate Maharashtra Shops Rules-labelled file was quarantined because its bytes were identical to the Shops Act. Draft Maharashtra instruments remain draft/non-operative even when exact draft bytes are controlled.
+
+Future exact official-source hardening remains tracked under #143 and future production certification under #142.
 
 ## Retrieval behaviour
 
@@ -162,7 +174,7 @@ A retrieval trace records data such as:
 - retrieved chunk IDs;
 - source/chunk fingerprints;
 - page/section references;
-- official URLs/citation metadata;
+- source URLs/citation metadata;
 - retrieval fingerprint;
 - `usedForDecision: false`;
 - `applicabilityAuthority: none`.
@@ -246,9 +258,9 @@ The legal-review panels do not automatically mutate stable report, PDF or email 
 
 `growwithhr-rag/source-pack-builder.js` and `scripts/build-legal-rag-catalog.mjs` implement manifest validation, exact-file verification where configured, catalogue compilation and publication gates.
 
-Publication is not equivalent to file upload. Exact file acquisition, legal review, section mapping, RAG approval and runtime activation are separate controls.
+For the prototype, publication may rely on governed secondary-research identities when their provenance and limitations are explicit. Exact file acquisition, legal review, official-source hardening and runtime fingerprint migration are separate future production controls unless a specific prototype catalogue explicitly requires exact-file verification.
 
-See `docs/architecture/legal-rag-source-pack-build-pipeline.md` for the current 11 August source-migration process.
+See `docs/architecture/legal-rag-source-pack-build-pipeline.md` for the source-migration model.
 
 ## Validation
 
@@ -261,6 +273,9 @@ npm run test:complete-legal-rag-platform
 node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
 node tests/multi-country-employment-wave5m-scope-guard-checks.mjs
 npm run test:m7
+npm run test:server-cors
+npm run test:release
+npm run test:release:e2e
 ```
 
 The release procedure and complete family regression list are maintained in:
@@ -283,8 +298,8 @@ Expected effective invariant:
 
 ## Release boundary
 
-The software stack is integrated, but green CI, source acquisition and live smoke are not legal/privacy/security/release approval.
+The research-grade prototype may be published as a GitHub prerelease when the exact candidate SHA is green, the source basis is represented truthfully, `needs-legal-review` is preserved, and Wave 5J/Wave 5M remain non-substantive.
 
-Programme gate #142 remains open. Active catalogues remain `needs-legal-review`. Wave 5J remains blocked under #139/#140. Wave 5M is outside the current release under closed #141.
+Programme issue #142 now tracks **future production-grade certification** and does not block the prototype. #143 tracks future exact official-source hardening and also does not block the prototype.
 
-The current release can be prepared and tested, but production certification must wait for named authorised reviewers and the final release decision.
+The prototype must still be represented as advisory research software, not professional legal advice or compliance certification.

@@ -1,17 +1,18 @@
 # GrowWithHR
 
-GrowWithHR is a deterministic, traceable HR compliance advisory engine. It records explicit organisation facts, applies versioned deterministic rules, retrieves governed source material only after the decision, and uses AI only to explain the fixed result.
+GrowWithHR is a deterministic, traceable HR compliance advisory prototype. It records explicit organisation facts, applies versioned deterministic rules, retrieves governed research material only after the decision, and uses AI only to explain the fixed result.
 
-> **Authority boundary:** deterministic rules decide the product result. RAG retrieves only the source scope selected by that decision. The provider explains only and cannot create facts, choose applicable law, change status/reason/source scope or certify compliance.
+> **Authority boundary:** deterministic rules decide the product result within the prototype contract. RAG retrieves only the source scope selected by that decision. The provider explains only and cannot create facts, choose applicable law, change status/reason/source scope or certify compliance.
 
-## Current release-candidate state
+## Current prototype release
 
 **Updated:** 11 August 2026  
-**Application baseline:** `0.20.2`  
-**Release line:** Governed Legal RAG Private Beta  
-**Production certification:** not yet granted; programme gate is GitHub #142
+**Application baseline:** `0.20.3-prototype.1`  
+**Release line:** Governed Compliance & Legal RAG Prototype  
+**Release classification:** research-grade prototype / GitHub prerelease  
+**Legal-review status:** every active legal catalogue remains `needs-legal-review`
 
-The effective private-beta Legal RAG runtime contains:
+The effective Legal RAG runtime contains:
 
 | Control | Current state |
 |---|---:|
@@ -23,18 +24,33 @@ The effective private-beta Legal RAG runtime contains:
 
 The two governance fallbacks are deliberately non-substantive:
 
-- **Wave 5J — Bonded and Forced Labour:** governance/research-only; no assessment/runtime activation while #139 and #140 remain open.
+- **Wave 5J — Bonded and Forced Labour:** governance/research-only; no assessment/runtime activation. Live safeguarding concerns remain human-only.
 - **Wave 5M — Multi-country Employment:** excluded from the current release. #141 is closed `not planned`; there is no country pair, assessment contract, runtime catalogue, browser/provider route or cross-border data design in this release.
+
+## Prototype source standard
+
+This release is intentionally a **high-quality research prototype**, not a production legal-certification system.
+
+For the prototype:
+
+- structured secondary research with controlled provenance is an accepted legal/source basis;
+- exact official-file verification is supplementary assurance, not a release prerequisite;
+- secondary-research provenance must not be presented as official or counsel-approved provenance;
+- draft, guidance, portal and research material retains its classification;
+- all active legal catalogues remain `needs-legal-review`;
+- outputs must not be represented as legal opinions, legal certification or proof of compliance.
+
+The 31-file Exact File Reconciliation already recorded in the Source Register remains useful supplementary audit evidence, but a runtime migration to official-file hashes is **not required for this prototype release**. Production-grade official-file assurance remains tracked as future hardening under #143. Production legal/privacy/RAG/source/security certification remains future work under #142.
 
 ## Start here
 
-- [ABOUT.md](ABOUT.md) — what the tool is, how it works, privacy/authority boundaries and a hypothetical end-to-end example.
+- [ABOUT.md](ABOUT.md) — what the prototype is, how it works, privacy/authority boundaries and a hypothetical end-to-end example.
 - [Legal RAG runtime README](growwithhr-rag/README.md) — runtime components, retrieval/provider behaviour and server configuration.
 - [Platform architecture](docs/architecture/legal-rag-platform-architecture.md) — current effective architecture and runtime composition.
-- [Source-pack pipeline](docs/architecture/legal-rag-source-pack-build-pipeline.md) — source identity, exact-file verification and publication controls.
+- [Source-pack pipeline](docs/architecture/legal-rag-source-pack-build-pipeline.md) — source identity, optional exact-file assurance and publication controls.
 - [Feature coverage inventory](docs/architecture/complete-feature-coverage-inventory.md) — current family/profile catalogue inventory.
 - [All-laws validation](docs/testing/all-laws-rag-validation.md) — regression and release validation procedure.
-- [Release readiness](docs/releases/legal-rag-release-readiness-2026-08-11.md) — gate matrix and exact next steps to production certification.
+- [Prototype release readiness](docs/releases/legal-rag-release-readiness-2026-08-11.md) — prototype release gate, validation and production-hardening boundary.
 
 ## Product routes
 
@@ -60,11 +76,11 @@ Assessment answers
 → user-facing explanation and next action
 ```
 
-Retrieval happens only after the deterministic decision. Complete/reported-gap substantive outcomes remain review-oriented (`specialist-review`); missing required facts remain `more-information-needed`. A language model cannot repair missing facts or turn implementation evidence into legal approval.
+Retrieval happens only after the deterministic decision. Complete/reported-gap substantive outcomes remain review-oriented (`specialist-review`); missing required facts remain `more-information-needed`. A language model cannot repair missing facts or turn research evidence into legal approval.
 
 ## Main-integrated substantive coverage
 
-Substantive private-beta coverage includes:
+Substantive prototype coverage includes:
 
 - POSH — 7 profiles;
 - Maternity Benefit — 10 profiles;
@@ -82,15 +98,18 @@ Substantive private-beta coverage includes:
 - Contract Workforce — Wave 5K; and
 - Generic Social Security family/chapter routing — Wave 5L.
 
-The tool does not turn these bounded source/readiness controls into individual entitlement, payroll, medical, injury-causation, enforcement, immigration, tax, safeguarding or legal-certification decisions.
+The tool does not turn these bounded controls into individual entitlement, payroll, medical, injury-causation, enforcement, immigration, tax, safeguarding or legal-certification decisions.
 
-## Source governance status
+## RAG authority boundary
 
-The canonical Google Drive Source Register remains the source-control record. On 11 August 2026 an Exact File Reconciliation sheet was added that maps **31 acquired official PDFs** to existing Source IDs with SHA-256, byte length and physical page count derived from the stored bytes.
+All substantive profiles use deterministic-first RAG. Retrieval/provider output must preserve:
 
-That reconciliation deliberately does **not** overwrite the validated curated source-identity fingerprints. One misleading duplicate Maharashtra Shops Rules file was quarantined because it was byte-identical to the Shops Act. Draft Maharashtra Shops/OSHWC/Industrial Relations instruments remain draft/non-operative until exact final instruments are separately acquired and approved.
+```text
+usedForDecision: false
+applicabilityAuthority: none
+```
 
-The remaining source-control work is tracked under #143; Wave 5J's two separate exact-source blockers remain #139.
+RAG is used for governed explanation and citation support, not applicability authority.
 
 ## Privacy and security boundary
 
@@ -98,11 +117,17 @@ Legal-review browser panels are explicit-submit and in-memory only. Feature clie
 
 Person-level identities, payroll/contribution bodies, medical/case data, complaint/dispute narratives, notices/orders, evidence bodies and other prohibited content remain outside the provider path unless a separately approved contract explicitly allows them. Wave 5J and Wave 5M have no substantive browser/provider surface.
 
-## Validation
+## Validation and prototype release gate
 
-The previous main-integration head passed All-Laws RAG, Executive Assessment, M4 Report Integration, M7 RAG-Ready Hardening and repository-wide GrowWithHR CI. That remains software evidence, not production certification.
+A prototype release may be published when:
 
-For the current release candidate, run the maintained all-laws and release regression documented in [docs/testing/all-laws-rag-validation.md](docs/testing/all-laws-rag-validation.md) and [docs/releases/legal-rag-release-readiness-2026-08-11.md](docs/releases/legal-rag-release-readiness-2026-08-11.md).
+1. the release is explicitly labelled prototype/prerelease;
+2. `needs-legal-review` remains intact;
+3. secondary-research provenance is represented truthfully;
+4. the complete maintained engineering regression is green on the exact release SHA;
+5. the runtime remains 57 callable / 55 substantive / 2 governance fallback / 21 catalogues;
+6. Wave 5J and Wave 5M remain non-substantive;
+7. the release notes retain the no-certification and professional-review limitations.
 
 Key smoke invariant:
 
@@ -115,12 +140,8 @@ Key smoke invariant:
 }
 ```
 
-Wave 5J and Wave 5M must remain non-substantive/non-activated.
+## Prototype versus production
 
-## Release boundary
+Issue #142 remains open as the **future production-hardening/certification gate**. It does not block this clearly labelled prototype release. Issue #143 remains open as future exact official-source hardening and is also non-blocking for the prototype.
 
-Main integration, source upload, successful tests, live smoke, product-owner review or AI/model review do not grant legal/privacy/RAG/security/release approval.
-
-Before production certification, named authorised reviewers must close the applicable LEGAL, PRIVACY, RAG, SOURCE-FILE and SECURITY gates and a release owner must record the RELEASE decision under #142. Wave 5J remains separately blocked by #139/#140. Wave 5M is not part of the current release.
-
-GrowWithHR provides advisory information, traceability and implementation starting points. It is not professional legal, tax, payroll, immigration, privacy, security or safeguarding advice.
+GrowWithHR provides research-backed advisory information, traceability and implementation starting points. It is not professional legal, tax, payroll, immigration, privacy, security or safeguarding advice.
