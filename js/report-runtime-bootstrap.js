@@ -71,6 +71,7 @@
         try {
             await Promise.resolve(pipeline);
             installTestAdapterCompatibility();
+            await import("./report-single-edition-ui-v1.js");
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
             const acceptanceReady = await waitFor(() => Boolean(
@@ -103,6 +104,7 @@
             await import("./report-visual-sections-v021.js");
 
             const visualReady = await waitFor(() => Boolean(
+                window.GrowWithHRSingleEditionReportUI?.darkOptionVisible === false &&
                 window.GrowWithHRStoryVisualSections?.version &&
                 window.GrowWithHRReportIdentity?.version &&
                 window.GrowWithHRFounderDemoReport?.singleEdition === true &&
@@ -123,6 +125,7 @@
                 compactStorySections: true,
                 founderDemoSingleReport: true,
                 singleReportDelivery: true,
+                singleEditionUi: true,
                 reportTemplateId: "hrtechify-founder-compliance-growth-v1",
                 reportLogoAsset: "assets/hrtechify-logo.png",
                 reportIdRequired: true,
