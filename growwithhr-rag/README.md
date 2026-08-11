@@ -1,246 +1,297 @@
-# GrowWithHR governed legal retrieval and explanation proof
+# GrowWithHR governed legal RAG runtime
 
-This directory contains the private-beta POSH legal-rule assurance, governed
-source retrieval, provider-neutral explanation contract, one server-only
-Cloudflare Workers AI adapter, and a disabled-by-default POSH explanation
-endpoint. It is not connected to the current public assessment UI, stable
-report, PDF generator, browser storage, email delivery, or customer-facing
-legal output.
+**Updated:** 11 August 2026  
+**Application baseline:** v0.20.2 Governed Legal RAG Private Beta  
+**Effective runtime:** 57 callable profiles / 55 substantive profiles / 2 governance fallbacks / 21 active catalogues  
+**Legal status:** all active legal catalogues remain `needs-legal-review`
+
+This directory contains the governed retrieval, citation and explanation layer used after GrowWithHR's deterministic legal-rule engine has already produced a fixed result.
+
+It is **not** a legal decision engine. Retrieval and provider output have no applicability authority.
 
 ## Mandatory execution order
 
-1. Protected assessment answers are mapped to deterministic facts.
-2. The governed legal-rule catalog produces a deterministic decision.
-3. The decision supplies its approved Source Register IDs and reason code.
-4. Retrieval runs only over governed chunks belonging to those source IDs.
-5. A retrieval trace returns approved citations.
-6. A provider-neutral explanation contract receives only the fixed decision
-   reference and governed retrieval trace.
-7. The Cloudflare adapter may send that protected request to the approved Llama
-   JSON Mode model.
-8. The explanation contract validates the provider output before acceptance.
-9. The endpoint returns a minimized response without raw assessment answers or
-   governed chunk text.
+```text
+Protected feature input
+  -> feature-specific normalisation / assessment fact contract
+  -> deterministic legal-rule catalogue
+  -> immutable decision
+  -> effective Legal RAG profile resolution
+  -> governed catalogue loading
+  -> source-scoped retrieval
+  -> retrieval fingerprint and citations
+  -> provider-neutral explanation request
+  -> optional approved provider
+  -> strict response validation
+  -> minimized user-facing response
+```
 
-Retrieval happens only after a deterministic decision. Explanation happens only
-after completed governed retrieval.
-Retrieval and explanation cannot change the deterministic decision, status, reason code, facts, or decision fingerprint.
+The deterministic decision must exist before retrieval.
 
-## Implemented components
-
-- `data/assessment/legal-applicability-rules.v1.json` — provisional POSH rule,
-  still marked `needs-legal-review`.
-- `js/assessment-v3/legal-rule-assurance.js` — deterministic legal-assurance
-  evaluation before retrieval.
-- `growwithhr-rag/data/posh-source-chunks.v1.json` — governed official-source
-  manifest and curated POSH chunks.
-- `growwithhr-rag/legal-source-retrieval.js` — deterministic post-decision
-  retrieval and citation trace.
-- `growwithhr-rag/legal-explanation-contract.js` — provider-neutral request,
-  response validation, deterministic capability, and injected-provider runner.
-- `growwithhr-rag/cloudflare-workers-ai-provider.cjs` — free-only Cloudflare
-  REST adapter fixed to `@cf/meta/llama-3.1-8b-instruct-fast`.
-- `server-legal-explanation.js` — disabled-by-default server endpoint,
-  deterministic orchestration, response minimization, request sharing, cache,
-  bounded concurrency, and provider-failure backoff.
-- `schemas/legal-explanation-response.schema.v1.json` — strict accepted-response
-  contract.
-- `tests/` — deterministic, retrieval, explanation, Cloudflare, endpoint,
-  privacy, concurrency, and fail-closed checks.
-
-The retrieval proof uses governed lexical metadata. It does not use embeddings or a vector database, Chroma, or PageIndex.
-
-## Retrieval boundary
-
-Each retrieval trace records the deterministic rule, version, status, reason
-code, decision fingerprint, approved Source Register IDs, retrieved chunk IDs,
-page ranges, official URLs, and source fingerprints. It also records:
+Every retrieval path must preserve:
 
 ```text
 usedForDecision: false
 applicabilityAuthority: none
-llmUsed: false
-legalReviewStatus: needs-legal-review
 ```
 
-Retrieval refuses unknown Source Register IDs and chunks that do not resolve to
-a registered official source.
+The provider cannot create facts, change the status/reason code, expand permitted source scope, select another legal family or certify compliance.
+
+## Current runtime composition
+
+The effective server runtime is built from the maintained Wave overlay modules, not from the original static profile JSON alone.
+
+`server-entry.js` delegates shared legal explanation requests to:
+
+```text
+server-legal-explanation-router-wave5l.js
+```
+
+The Wave 5L router composes the cumulative all-laws private-beta registry and feature specifications built by the earlier Wave overlays.
+
+Current invariant:
+
+| Control | Count/state |
+|---|---:|
+| Callable profiles | 57 |
+| Substantive profiles | 55 |
+| Governance fallback profiles | 2 |
+| Active catalogues | 21 |
+| Wave 5J | Governance/research-only |
+| Wave 5M | Out of current release scope |
+
+### Important registry note
+
+`growwithhr-rag/data/legal-rag-profiles.v1.json` is an early/base architecture registry and must not be used by itself to infer the effective 11 August runtime. The later `server-all-laws-private-beta-wave*.js` overlays progressively replace fallback profiles with substantive feature-specific catalogues. Repository/runtime claims should be made from the effective Wave 5L composition and `GET /api/legal-rag/status`.
+
+## Current substantive families
+
+The 55 substantive profiles cover:
+
+- POSH — 7;
+- Maternity Benefit — 10;
+- EPF/EPS/EDLI — 12;
+- ESI — 15;
+- Appropriate Government — 1;
+- Maharashtra Shops and Establishments — 1;
+- Code on Wages — 1;
+- Gratuity — 1;
+- Employee's Compensation — 1;
+- OSHWC — 1;
+- Industrial Relations — 1;
+- Apprentices — 1;
+- Child and Adolescent Labour — 1;
+- Contract Workforce — 1; and
+- Generic Social Security family routing — 1.
+
+Most Wave 5 families are intentionally **source-readiness/routing controls**, not automatic statutory applicability or individual-entitlement engines. Their complete/reported-gap outcomes remain `specialist-review`; missing required facts remain `more-information-needed`.
+
+## Governance fallbacks
+
+### Wave 5J — Bonded and Forced Labour
+
+Wave 5J is a deliberate research/safeguarding stop. There is no approved assessment contract, substantive runtime rule, governed source-chunk catalogue, browser panel or provider route.
+
+It remains blocked by:
+
+- #139 — exact Ministry SOP referenced as issued 14 May 2026 and exact approved/notified 2026–31 rehabilitation/welfare operational material;
+- #140 — qualified Article 23 / 1976 Act / BNS / Supreme Court mapping, human safeguarding design, privacy/security and State/UT review.
+
+Live coercion, trafficking, confinement, violence, threat, retaliation, rescue or similar case narratives must not enter the normal RAG/provider path.
+
+### Wave 5M — Multi-country Employment
+
+Wave 5M is excluded from the current release. #141 is closed `not planned`.
+
+Required current state:
+
+- no country pair;
+- no operating model;
+- no assessment fact contract/person-level mobility intake;
+- no substantive deterministic rule;
+- no runtime source catalogue/chunks;
+- no browser/provider route;
+- no cross-border data flow design.
+
+The current product must not attempt immigration, tax residence, permanent establishment, payroll withholding, social-security coverage, applicable foreign employment law or cross-border transfer determinations.
+
+## Governed catalogue loading
+
+`server-legal-rag-catalogs.js` loads the catalogues selected by the effective profile registry. Each substantive catalogue is constrained by its feature profile and deterministic decision.
+
+A profile/catalogue relationship does not itself constitute legal approval. Catalogue records continue to carry `needs-legal-review` until authorised evidence is recorded.
+
+The loader/runtime must reject or fail closed on unknown catalogue/source relationships rather than broadening the source scope.
+
+## Source identity versus exact official files
+
+GrowWithHR keeps two related but distinct fingerprints:
+
+1. **curated source-identity fingerprint** — the identifier/fingerprint already used by validated runtime source records;
+2. **official-file fingerprint** — SHA-256 from the exact raw official PDF/file bytes stored in the controlled Drive source tree.
+
+These must not be silently substituted for one another.
+
+As of 11 August 2026, the canonical Drive `Source Register.xlsx` contains an **Exact File Reconciliation** sheet mapping 31 acquired official PDFs to existing Source IDs with:
+
+- actual-file SHA-256;
+- byte length;
+- physical PDF page count;
+- Drive identity/path and controlled classification.
+
+The repository governance record is:
+
+```text
+data/legal-source-governance/exact-source-file-reconciliation-2026-08-11.v1.json
+```
+
+`runtimeMigrationApplied` remains `false`. The exact-file evidence must be reviewed before any source-manifest/catalogue migration changes runtime metadata.
+
+One duplicate Maharashtra Shops Rules-labelled file was quarantined because its bytes were identical to the Shops Act. Draft Maharashtra instruments remain draft/non-operative even when exact draft bytes are controlled.
+
+## Retrieval behaviour
+
+The baseline retrieval implementation is governed lexical retrieval. It ranks only within the source/chunk scope permitted by the fixed deterministic decision.
+
+A retrieval trace records data such as:
+
+- feature/profile/rule identifiers;
+- deterministic decision fingerprint;
+- status and reason code;
+- permitted Source Register IDs;
+- retrieved chunk IDs;
+- source/chunk fingerprints;
+- page/section references;
+- official URLs/citation metadata;
+- retrieval fingerprint;
+- `usedForDecision: false`;
+- `applicabilityAuthority: none`.
+
+Retrieval must not:
+
+- infer missing assessment facts;
+- select Central versus State/UT law;
+- add an unregistered source;
+- use one law family to replace another family's result;
+- upgrade draft/research material into operative source material;
+- change a deterministic outcome.
 
 ## Explanation contract
 
-The protected provider request contains the fixed deterministic status, reason
-code, decision fingerprint, completed retrieval fingerprint, governed chunks,
-and citation identifiers. It contains no raw assessment-answer object and gives
-no authority to fill facts or determine legal applicability.
+`growwithhr-rag/legal-explanation-contract.js` builds the protected provider request and validates accepted responses.
 
-A provider response is accepted only when:
+A provider response is accepted only when it preserves the fixed decision and governed retrieval contract. Validation includes:
 
-- status, reason code, and decision fingerprint match exactly;
-- every rationale item cites at least one governed retrieved chunk;
-- every citation belongs to the approved retrieval trace;
-- all required legal-review and evidence limitations are present;
-- `usedForDecision`, `mayChangeDecision`, and `legalAdvice` are `false`;
-- no unexpected applicability or decision properties are present;
-- definitive compliance, certification, or legal-approval language is absent.
+- exact status/reason/fingerprint preservation;
+- citation membership in the retrieval trace;
+- required limitations;
+- no unapproved applicability/decision claims;
+- no certification or legal-advice claim;
+- no provider authority to change the decision.
 
-The deterministic non-LLM explanation capability remains in the
-provider-neutral contract, but the Cloudflare adapter and live endpoint do not
-invoke it automatically. There is no second hosted provider, paid fallback, or
-automatic deterministic fallback. Provider failure must fail closed.
+Malformed, unsupported or decision-changing provider output fails closed.
 
-## Cloudflare Llama JSON Mode
+## Provider implementation
 
-Approved provider and model:
+The maintained server-only adapter is:
+
+```text
+growwithhr-rag/cloudflare-workers-ai-provider.cjs
+```
+
+Configured provider/model baseline:
 
 ```text
 Provider: Cloudflare Workers AI
 Model: @cf/meta/llama-3.1-8b-instruct-fast
-Mode: free-only
-Structured output: Cloudflare JSON Mode
+Structured output: JSON Mode
+Free-only deployment guard: true
 ```
 
-Cloudflare lists this model as supporting JSON Mode. The adapter sends:
+The adapter is an explanation provider only. Secrets remain server-side.
+
+Typical server-only values:
 
 ```text
-response_format.type = json_schema
-```
-
-The provider receives a compatibility schema that preserves the required object
-shape, required fields, enumerated protected values, arrays, and nested objects.
-Schema keywords that are unnecessary for generation are omitted from the
-provider request. The committed GrowWithHR explanation contract remains the
-strict final validator and still enforces exact fingerprints, exact decision
-status and reason code, required limitation statements, governed citations,
-length limits, prohibited claims, and all legal-review flags.
-
-Cloudflare JSON Mode returns the generated object under:
-
-```text
-result.response
-```
-
-The adapter accepts only a JSON object or a string containing one complete JSON
-object in that field. Arrays, markdown fences, fragments, malformed JSON, other
-response envelopes, and decision changes fail closed.
-
-## Private POSH explanation endpoint
-
-Route:
-
-```text
-POST /api/legal-explanation/posh
-```
-
-The endpoint is disabled unless:
-
-```text
-LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
-```
-
-Allowed request body:
-
-```json
-{
-  "answers": {
-    "employees": 10,
-    "primaryState": "Maharashtra",
-    "locations": 1
-  }
-}
-```
-
-Unknown fields are rejected. Names, email addresses, company information,
-evidence, wider assessment objects, browser-supplied decisions, citations, and
-explanations are not accepted.
-
-The server recomputes the POSH decision, runs governed retrieval, builds the
-protected request, calls Cloudflare, validates the response, and returns only
-the fixed decision, citation metadata, and accepted explanation envelope.
-
-### Free-capacity protection
-
-Identical decision and retrieval fingerprints share one in-flight Cloudflare request and one process-local success-cache entry.
-The automated test covers 50 simultaneous identical requests and expects one provider request, one cache miss, and 49 shared responses.
-Distinct outcomes may each require one provider request.
-
-The cache contains no assessment answers and is cleared when the server process
-restarts. Provider failures are not cached as successful responses. A short
-backoff prevents repeated failed calls from immediately consuming more free
-capacity.
-
-Optional controls:
-
-```text
-LEGAL_EXPLANATION_CACHE_TTL_MS=21600000
-LEGAL_EXPLANATION_FAILURE_BACKOFF_MS=60000
-LEGAL_EXPLANATION_MAX_CONCURRENCY=4
-LEGAL_EXPLANATION_MAX_QUEUE=100
-```
-
-## Server configuration
-
-Required server-only values:
-
-```text
-CLOUDFLARE_ACCOUNT_ID=<Cloudflare account ID>
-CLOUDFLARE_WORKERS_AI_API_TOKEN=<Workers AI API token>
+CLOUDFLARE_ACCOUNT_ID=<account ID>
+CLOUDFLARE_WORKERS_AI_API_TOKEN=<token>
 CLOUDFLARE_WORKERS_AI_FREE_ONLY=true
 LEGAL_EXPLANATION_ENDPOINT_ENABLED=true
 ```
 
-Optional provider timeout:
+Optional controls include provider timeout, cache TTL, failure backoff, maximum concurrency and queue size.
+
+Provider failure has no alternate legal-decision path. It must fail closed rather than use another model to invent a result.
+
+## Shared API
+
+Primary shared feature route:
 
 ```text
-CLOUDFLARE_WORKERS_AI_TIMEOUT_MS=12000
+POST /api/legal-explanation/feature/:featureId
 ```
 
-The adapter always uses the fixed Llama JSON Mode model, a maximum of 1,000
-output tokens, and one Cloudflare request. It does not log or return the API
-token. Keep the Cloudflare account on the Workers Free plan and do not enable
-paid overage. The `CLOUDFLARE_WORKERS_AI_FREE_ONLY=true` setting is an explicit
-deployment guard, but it cannot inspect the Cloudflare billing plan.
+Status route:
 
-When free allocation or rate capacity is unavailable, the adapter returns
-`cloudflare-free-quota-or-rate-limit` and makes no alternate-provider request.
-Timeout, authentication, network, JSON Mode, malformed-output, and
-contract-validation failures also fail closed.
+```text
+GET /api/legal-rag/status
+```
 
-## Optional source-pack verification
+Compatibility routes may exist for earlier features, but the effective shared router is the Wave 5L router. Wave 5M intentionally has no router overlay.
 
-The official source PDFs are not committed to this repository. Verify a local
-source-pack export with:
+The status endpoint is the authoritative runtime smoke check for the effective profile/catalogue counts.
+
+## Browser/privacy boundary
+
+Legal-review panels are explicit-submit and in-memory only. Feature clients build minimal allow-listed payloads.
+
+Prohibited provider content depends on the feature contract but generally includes person-level identities, payroll/contribution bodies, medical/case narratives, complaint/dispute bodies, notices/orders and evidence bodies.
+
+The legal-review panels do not automatically mutate stable report, PDF or email contracts.
+
+## Source-pack build/publication boundary
+
+`growwithhr-rag/source-pack-builder.js` and `scripts/build-legal-rag-catalog.mjs` implement manifest validation, exact-file verification where configured, catalogue compilation and publication gates.
+
+Publication is not equivalent to file upload. Exact file acquisition, legal review, section mapping, RAG approval and runtime activation are separate controls.
+
+See `docs/architecture/legal-rag-source-pack-build-pipeline.md` for the current 11 August source-migration process.
+
+## Validation
+
+Use:
 
 ```bash
-npm run verify:posh-source-pack -- /absolute/path/to/GrowWithHR-RAG
+npm install --no-audit --no-fund
+npm run verify:all-laws-rag
+npm run test:complete-legal-rag-platform
+node tests/bonded-forced-labour-wave5j-research-governance-checks.mjs
+node tests/multi-country-employment-wave5m-scope-guard-checks.mjs
+npm run test:m7
 ```
 
-The command verifies the three registered active POSH PDFs by byte length and
-SHA-256 and rejects extra PDFs in the active official POSH folders.
+The release procedure and complete family regression list are maintained in:
 
-## Safety boundaries
+```text
+docs/testing/all-laws-rag-validation.md
+docs/releases/legal-rag-release-readiness-2026-08-11.md
+```
 
-Retrieval, explanation, provider, and endpoint components must not:
+Expected effective invariant:
 
-- invent, infer, or fill assessment facts;
-- decide whether a law applies;
-- change deterministic status, reason code, or fingerprints;
-- trust browser-supplied decisions, sources, citations, or explanations;
-- retrieve or cite unapproved sources;
-- treat official-source status as legal approval;
-- claim evidence verification or professional legal review;
-- expose provider credentials to browser code;
-- return raw assessment answers or mapped facts;
-- mutate the protected report, PDF, storage, email, or delivery contracts.
+```json
+{
+  "profileCount": 57,
+  "substantiveProfiles": 55,
+  "governanceFallbackProfiles": 2,
+  "activeCatalogs": 21
+}
+```
 
-## Current limitations
+## Release boundary
 
-Not implemented:
+The software stack is integrated, but green CI, source acquisition and live smoke are not legal/privacy/security/release approval.
 
-- public assessment-page invocation;
-- stable report, UI, email, or PDF integration;
-- live Cloudflare credential calls in CI;
-- shared cache across multiple server instances;
-- a second hosted provider or paid fallback;
-- automatic PDF text extraction;
-- embeddings, vector search, Chroma, or PageIndex;
-- legal approval.
+Programme gate #142 remains open. Active catalogues remain `needs-legal-review`. Wave 5J remains blocked under #139/#140. Wave 5M is outside the current release under closed #141.
+
+The current release can be prepared and tested, but production certification must wait for named authorised reviewers and the final release decision.
