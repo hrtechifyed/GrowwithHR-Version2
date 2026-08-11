@@ -1,8 +1,8 @@
-/* GrowWithHR final PDF runtime bootstrap */
+/* GrowWithHR founder-demo report runtime bootstrap */
 (() => {
     "use strict";
 
-    const VERSION = "0.26.5-shared-hrtechify-parity-bootstrap";
+    const VERSION = "0.27.0-founder-demo-single-report-bootstrap";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -28,9 +28,7 @@
 
         if (typeof JsPDF.prototype.deletePage !== "function") {
             JsPDF.prototype.deletePage = function deletePageFallback() {
-                if (typeof this.pages === "number") {
-                    this.pages = Math.max(1, this.pages - 1);
-                }
+                if (typeof this.pages === "number") this.pages = Math.max(1, this.pages - 1);
                 return this;
             };
         }
@@ -91,9 +89,7 @@
 
             await import("./sector-context-intelligence-v020.js");
             await import("./sector-context-intelligence-v020-patch.js");
-            const sectorReady = await waitFor(() => Boolean(
-                window.GrowWithHRSectorContextIntelligence?.patchVersion
-            ));
+            const sectorReady = await waitFor(() => Boolean(window.GrowWithHRSectorContextIntelligence?.patchVersion));
             if (!sectorReady) throw new Error("The all-sector context layer did not become ready.");
 
             await import("./story-visual-sections-v021.js");
@@ -102,20 +98,20 @@
             await import("./report-visual-renderers-v021.js");
             await import("./report-executive-summary-v022.js");
             await import("./report-template-parity-v022.js");
+            await import("./report-identity-v1.js");
+            await import("./report-founder-demo-single-v1.js");
             await import("./report-visual-sections-v021.js");
-            await import("./dual-edition-email-v022.js");
+
             const visualReady = await waitFor(() => Boolean(
                 window.GrowWithHRStoryVisualSections?.version &&
-                window.GrowWithHRReportBrandTemplate?.sameLayoutForLightAndDark === true &&
+                window.GrowWithHRReportIdentity?.version &&
+                window.GrowWithHRFounderDemoReport?.singleEdition === true &&
+                window.GrowWithHRReportBrandTemplate?.singleEdition === true &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
-                window.GrowWithHRReportTemplateParity?.sameGeometry === true &&
-                window.GrowWithHRReportTemplateParity?.onlyPaletteChanges === true &&
-                window.GrowWithHRExecutiveSummaryReport?.version &&
-                window.GrowWithHRPDF?.visualSectionedReportVersion &&
-                window.GrowWithHRPDF?.reportStructureVersion === "visual-sectioned-v5" &&
-                window.GrowWithHRDualEditionEmail?.mode === "two-separate-pdfs-one-email"
+                window.GrowWithHRPDF?.singleReportDelivery === true &&
+                window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1"
             ));
-            if (!visualReady) throw new Error("The shared HRTechify report template and two-attachment delivery layer did not become ready.");
+            if (!visualReady) throw new Error("The single HRTechify founder report did not become ready.");
 
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
@@ -125,16 +121,13 @@
                 contextualQuestionUiFixes: true,
                 allSectorContextIntelligence: true,
                 compactStorySections: true,
-                visualSectionedReport: true,
-                executiveSummaryReport: true,
-                profileTailoredExecutiveSummary: true,
-                sharedLightDarkTemplate: true,
-                sameTemplateGeometry: true,
-                lightDarkDifference: "colour-palette-only",
-                reportTemplateId: "hrtechify-action-brief-shared-v1",
+                founderDemoSingleReport: true,
+                singleReportDelivery: true,
+                reportTemplateId: "hrtechify-founder-compliance-growth-v1",
                 reportLogoAsset: "assets/hrtechify-logo.png",
-                singleEmailDualEdition: true,
-                dualEditionDeliveryMode: "two-separate-pdfs-one-email"
+                reportIdRequired: true,
+                reportStructureVersion: "founder-demo-single-v1",
+                darkReportAvailable: false
             });
         } catch (error) {
             loading = false;
