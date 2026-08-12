@@ -46,62 +46,51 @@ test.describe("v0.20 contextual report intelligence", () => {
         ));
     });
 
-    test("generates only the selected light edition unless both is explicitly selected", async ({ page }) => {
+    test("forces one standard report even when a stale caller requests both editions", async ({ page }) => {
         const result = await page.evaluate(async () => {
             const input = document.createElement("input");
             input.type = "radio";
             input.name = "advisoryReportTheme";
-            input.value = "light";
+            input.value = "both";
             input.checked = true;
             document.body.appendChild(input);
 
             const service = (window as Window & {
                 GrowWithHRPDF?: { buildAdvisoryPdf: (payload: unknown) => Promise<any> };
             }).GrowWithHRPDF!;
-            const light = await service.buildAdvisoryPdf({
+            const built = await service.buildAdvisoryPdf({
+                theme: "both",
                 report: {
-                    companyName: "Owner Only Consulting OPC",
-                    entity: "One Person Company",
+                    companyName: "Single Edition Test",
+                    entity: "Private Limited",
                     industry: "Business consulting",
-                    employees: 1,
-                    workers: 0,
-                    contractWorkers: 0,
-                    workforcePresence: "owner-only",
-                    primaryState: "Karnataka",
-                    workModel: "Remote"
+                    employees: 25,
+                    primaryState: "Karnataka"
                 },
                 answers: {
-                    entity: "One Person Company",
+                    entity: "Private Limited",
                     industry: "Business consulting",
-                    employees: 1,
-                    workers: 0,
-                    contractWorkers: 0,
-                    workforcePresence: "owner-only",
-                    primaryState: "Karnataka",
-                    workModel: "Remote"
+                    employees: 25,
+                    primaryState: "Karnataka"
                 }
             });
 
-            input.value = "both";
-            const both = await service.buildAdvisoryPdf({
-                report: { companyName: "Two Edition Test", entity: "Private Limited", employees: 25 },
-                answers: { entity: "Private Limited", employees: 25 }
-            });
-
             return {
-                lightThemes: light.selectedThemes,
-                lightCount: light.pdfs.length,
-                lightTheme: light.pdfs[0]?.theme,
-                bothThemes: both.selectedThemes,
-                bothCount: both.pdfs.length
+                selectedThemes: built.selectedThemes,
+                count: built.pdfs.length,
+                firstTheme: built.pdfs[0]?.theme,
+                singleReportDelivery: service.singleReportDelivery,
+                darkOptionVisible: (window as Window & {
+                    GrowWithHRSingleEditionReportUI?: { darkOptionVisible?: boolean };
+                }).GrowWithHRSingleEditionReportUI?.darkOptionVisible
             };
         });
 
-        expect(result.lightThemes).toEqual(["light"]);
-        expect(result.lightCount).toBe(1);
-        expect(result.lightTheme).toBe("light");
-        expect(result.bothThemes).toEqual(["light", "dark"]);
-        expect(result.bothCount).toBe(2);
+        expect(result.selectedThemes).toEqual(["light"]);
+        expect(result.count).toBe(1);
+        expect(result.firstTheme).toBe("light");
+        expect(result.singleReportDelivery).toBe(true);
+        expect(result.darkOptionVisible).toBe(false);
     });
 
     test("removes factory and workforce questions from an owner-only non-manufacturing OPC report", async ({ page }) => {
