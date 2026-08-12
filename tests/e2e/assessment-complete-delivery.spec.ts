@@ -63,6 +63,28 @@ test.describe(
                 );
 
                 await page.route(
+                    "**/api/report-id",
+                    async (route) => {
+                        await route.fulfill({
+                            status: 201,
+                            contentType:
+                                "application/json",
+                            body: JSON.stringify({
+                                ok: true,
+                                reportId:
+                                    "GWHR-2026-0812-AA01",
+                                suffix:
+                                    "AA01",
+                                generatedAt:
+                                    "2026-08-12T03:51:00.000Z",
+                                durableStorageConfigured:
+                                    true
+                            })
+                        });
+                    }
+                );
+
+                await page.route(
                     "**/api/send-advisory",
                     async (route) => {
                         deliveryPayload =
