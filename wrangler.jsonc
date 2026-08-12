@@ -4,6 +4,11 @@
   "main": "cloudflare/report-id-worker/src/worker-entry.mjs",
   "compatibility_date": "2026-08-12",
   "workers_dev": true,
+  "secrets": {
+    "required": [
+      "REPORT_ID_ALLOCATOR_SECRET"
+    ]
+  },
   "durable_objects": {
     "bindings": [
       {
