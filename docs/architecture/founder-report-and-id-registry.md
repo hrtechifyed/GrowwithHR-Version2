@@ -75,50 +75,118 @@ GWHR-2027-0413-AAA002
 
 The date is the report-generation date in `Asia/Kolkata`. It is not part of the uniqueness counter.
 
-## Registry guarantees
+## Durable registry architecture
+
+GrowWithHR reuses its existing Cloudflare platform rather than adding a second database vendor or requiring a paid Render disk.
+
+```text
+Founder browser
+  -> Render Free: POST /api/report-id
+  -> authenticated server-to-server request
+  -> growwithhr-report-id Cloudflare Worker
+  -> one named ReportIdRegistry Durable Object
+  -> SQLite-backed Durable Object storage
+```
+
+The browser continues to call `/api/report-id`. It never receives the Cloudflare allocator secret and never writes directly to the durable registry.
 
 `server-report-id-registry.js`:
 
-- allocates the next global sequence;
-- persists every issued report ID;
-- never deliberately recycles an issued ID;
-- stores only SHA-256 hashes of user/company/assessment identifiers in the registry;
-- uses an idempotency request key so a retried allocation request can return the same reservation;
-- uses a filesystem lock plus atomic rename to protect concurrent allocations on a shared filesystem;
-- refuses allocation if it detects a duplicate ID.
+- keeps the current public `/api/report-id` and `/api/report-id/status` contracts;
+- hashes the request/user/company/assessment identifiers before sending them to Cloudflare;
+- sends only `requestKeyHash`, `userHash`, `companyHash`, and `assessmentHash` to the Worker;
+- requires HTTPS and an authenticated server-to-server secret;
+- fails closed when Cloudflare is configured but unavailable;
+- never silently falls back to Render's ephemeral filesystem in that state;
+- retains the filesystem allocator only for local development/testing when no Cloudflare allocator is configured.
 
-A report is rendered only after the browser receives a reserved ID from `/api/report-id`.
+`cloudflare/report-id-worker/src/index.js`:
 
-## Production persistence requirement
+- owns the global non-resetting sequence;
+- stores every issued report ID in SQLite-backed Durable Object storage;
+- uses `report_id` as the primary key;
+- uses a unique SHA-256 `request_key_hash` for idempotent retry behavior;
+- serializes sequence allocation through one named Durable Object;
+- performs sequence read + registry insert + sequence update inside a synchronous storage transaction;
+- never deliberately recycles an issued report ID.
 
-The registry must be stored on persistent server storage. Configure:
+## Runtime configuration
+
+### Cloudflare Worker
+
+Deploy the Worker under:
 
 ```text
-REPORT_ID_REGISTRY_FILE=/var/data/growwithhr/report-id-registry.json
+cloudflare/report-id-worker
 ```
 
-The exact path may differ by deployment, but it must point to a persistent disk/volume that survives process restarts and deployments.
+Set the Worker secret:
 
-If `REPORT_ID_REGISTRY_FILE` is not configured, the server falls back to:
+```text
+REPORT_ID_ALLOCATOR_SECRET=<long-random-secret>
+```
+
+The same secret is stored server-side in Render.
+
+### Render Free
+
+Configure only environment variables; no Render disk is required:
+
+```text
+REPORT_ID_ALLOCATOR_URL=https://growwithhr-report-id.<workers-subdomain>.workers.dev
+REPORT_ID_ALLOCATOR_SECRET=<same-secret>
+```
+
+Do not append `/allocate` or `/status` to `REPORT_ID_ALLOCATOR_URL`.
+
+The existing local file setting remains supported for local/test environments:
+
+```text
+REPORT_ID_REGISTRY_FILE=<persistent-or-test-file-path>
+```
+
+If neither Cloudflare nor a persistent file is configured, the local fallback is:
 
 ```text
 data/runtime/report-id-registry.json
 ```
 
-That fallback is suitable for local/prototype runtime testing but **does not provide a cross-deployment uniqueness guarantee on an ephemeral filesystem**.
+That fallback is intentionally reported as `storageBackend: filesystem-ephemeral` and is not accepted by live release smoke.
 
-The server returns `durableStorageConfigured` in `/api/report-id` and `/api/report-id/status` responses so deployment smoke tests can confirm the durable registry is configured.
+## Deployment verification
+
+`GET /api/report-id/status` must report:
+
+```json
+{
+  "ok": true,
+  "storageBackend": "cloudflare-durable-object",
+  "durableStorageConfigured": true,
+  "sequencePolicy": "global-non-resetting-symmetric-alpha-numeric"
+}
+```
+
+The Live Release Smoke workflow requires all four values before it archives release evidence.
 
 ## Report identity lifecycle
 
 1. The browser requests an ID from `POST /api/report-id`.
-2. The server acquires the registry lock.
-3. The next sequence is reserved and persisted.
-4. The server returns the report ID and generated timestamp.
-5. The PDF is rendered with that ID in the report body/footer and filename.
-6. The same generated PDF is used for download/email delivery.
+2. Render hashes all identifier fields and authenticates to the Cloudflare Worker.
+3. The Worker routes the request to the single named `ReportIdRegistry` Durable Object.
+4. The Durable Object checks the unique request-key hash for an existing reservation.
+5. If this is a new request, it reserves the next sequence and persists the registry row atomically.
+6. The Worker returns the reserved ID to Render.
+7. Render returns the ID and generated timestamp to the browser.
+8. The PDF is rendered with that ID in the report body/footer and filename.
+9. The same generated PDF is used for download/email delivery.
 
-If a report is regenerated, it receives a new report ID. An issued ID is not returned to the pool for another user/report.
+A retry using the same request key returns the same reservation. A genuinely regenerated report uses a new request key and receives a new report ID. An issued ID is not returned to the pool for another report.
+
+## Local development fallback
+
+The original filesystem allocator remains available when Cloudflare is not configured. It uses a filesystem lock, atomic rename, duplicate refusal, and the same sequence rules.
+
+This fallback exists to avoid unnecessary infrastructure during local development. It is not the accepted live backend for the free hosted prototype because Render Free storage is ephemeral.
 
 ## Report trust boundaries
 

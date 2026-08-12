@@ -92,15 +92,15 @@ jobs:
           url="https://growwithhr.onrender.com/api/report-id/status"
           for attempt in $(seq 1 30); do
             body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
-            if jq -e '.ok == true and .sequencePolicy == "global-non-resetting-symmetric-alpha-numeric" and .durableStorageConfigured == true' <<<"$body" >/dev/null 2>&1; then
+            if jq -e '.ok == true and .storageBackend == "cloudflare-durable-object" and .sequencePolicy == "global-non-resetting-symmetric-alpha-numeric" and .durableStorageConfigured == true' <<<"$body" >/dev/null 2>&1; then
               echo "$body" > /tmp/report-id-status.json
-              echo "Persistent report ID registry is configured."
+              echo "Cloudflare Durable Object report ID registry is configured."
               exit 0
             fi
-            echo "Report ID registry is not durably configured yet (attempt $attempt/30)."
+            echo "Cloudflare durable Report ID registry is not ready yet (attempt $attempt/30)."
             sleep 10
           done
-          echo "Render report ID registry did not report durableStorageConfigured=true." >&2
+          echo "Render report ID status did not confirm storageBackend=cloudflare-durable-object and durableStorageConfigured=true." >&2
           exit 1
 
       - name: Validate live legal RAG status
@@ -131,6 +131,7 @@ jobs:
           issued_count="$(jq -r '.issuedCount // 0' /tmp/report-id-status.json)"
           last_report_id="$(jq -r '.lastReportId // ""' /tmp/report-id-status.json)"
           last_suffix="$(jq -r '.lastSuffix // ""' /tmp/report-id-status.json)"
+          storage_backend="$(jq -r '.storageBackend // ""' /tmp/report-id-status.json)"
           cat > data/releases/v0.20.3-prototype.1-live-smoke.json <<EOF
           {
             "releaseVersion": "0.20.3-prototype.1",
@@ -158,6 +159,7 @@ jobs:
               },
               "reportIdRegistry": {
                 "url": "https://growwithhr.onrender.com/api/report-id/status",
+                "storageBackend": "$storage_backend",
                 "durableStorageConfigured": true,
                 "sequencePolicy": "global-non-resetting-symmetric-alpha-numeric",
                 "issuedCount": $issued_count,

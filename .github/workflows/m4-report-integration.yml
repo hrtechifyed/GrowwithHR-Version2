@@ -21,13 +21,17 @@ on:
       - "css/21-story-visual-sections.css"
       - "server-entry.js"
       - "server-m4-delivery.js"
+      - "server-report-id-registry.js"
+      - "cloudflare/report-id-worker/**"
       - "tests/m4-law-transparency-combination-checks.mjs"
       - "tests/m4-report-integration-checks.mjs"
+      - "tests/report-id-cloudflare-durable-object-checks.mjs"
       - "tests/industry-adaptive-assessment-checks.mjs"
       - "tests/report-runtime-corrections-checks.mjs"
       - "tests/report-sequence-controller-checks.mjs"
       - "tests/report-acceptance-corrections-checks.mjs"
       - "tests/visual-story-report-v021-checks.mjs"
+      - "docs/architecture/founder-report-and-id-registry.md"
       - "docs/releases/v0.20.0-integrated-report-industry-profiles.md"
       - "docs/releases/v0.23.0-founder-first-report.md"
       - ".github/workflows/m4-report-integration.yml"
@@ -63,7 +67,10 @@ jobs:
           node --check js/report-visual-sections-v021.js
           node --check server-entry.js
           node --check server-m4-delivery.js
+          node --check server-report-id-registry.js
+          node --check cloudflare/report-id-worker/src/index.mjs
           node --check tests/m4-report-integration-checks.mjs
+          node --check tests/report-id-cloudflare-durable-object-checks.mjs
           node --check tests/industry-adaptive-assessment-checks.mjs
           node --check tests/report-runtime-corrections-checks.mjs
           node --check tests/report-sequence-controller-checks.mjs
@@ -89,5 +96,7 @@ jobs:
         run: node tests/report-acceptance-corrections-checks.mjs
       - name: Run visual story and report contracts
         run: node tests/visual-story-report-v021-checks.mjs
+      - name: Run durable Report ID contracts
+        run: node tests/report-id-cloudflare-durable-object-checks.mjs
       - name: Run M4 visible report and delivery contracts
         run: node tests/m4-report-integration-checks.mjs
