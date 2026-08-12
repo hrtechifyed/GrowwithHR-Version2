@@ -92,7 +92,9 @@ async function installRuntime(page: any, report: Record<string, unknown>) {
             save(): this { return this; }
         }
         (window as Window & { jspdf?: { jsPDF: typeof FakeJsPDF } }).jspdf = { jsPDF: FakeJsPDF };
-        localStorage.setItem("growwithhr-report", JSON.stringify(savedReport));
+        if (!localStorage.getItem("growwithhr-report")) {
+            localStorage.setItem("growwithhr-report", JSON.stringify(savedReport));
+        }
         localStorage.setItem("growwithhr-report-theme", "light");
     }, report);
 }
