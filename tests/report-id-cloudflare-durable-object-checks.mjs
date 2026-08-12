@@ -5,7 +5,7 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const registry = require("../server-report-id-registry.js");
 
-const workerSource = fs.readFileSync("cloudflare/report-id-worker/src/index.js", "utf8");
+const workerSource = fs.readFileSync("cloudflare/report-id-worker/src/index.mjs", "utf8");
 const wranglerConfig = fs.readFileSync("cloudflare/report-id-worker/wrangler.jsonc", "utf8");
 
 assert.equal(registry.CLOUDFLARE_STORAGE_BACKEND, "cloudflare-durable-object");
@@ -143,6 +143,7 @@ try {
 
 const parsedWrangler = JSON.parse(wranglerConfig.replace(/^\s*\/\/.*$/gm, ""));
 assert.equal(parsedWrangler.name, "growwithhr-report-id");
+assert.equal(parsedWrangler.main, "src/index.mjs");
 assert.equal(parsedWrangler.durable_objects.bindings[0].name, "REPORT_ID_REGISTRY");
 assert.equal(parsedWrangler.durable_objects.bindings[0].class_name, "ReportIdRegistry");
 assert.equal(parsedWrangler.exports.ReportIdRegistry.type, "durable-object");
