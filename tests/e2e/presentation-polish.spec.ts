@@ -94,7 +94,7 @@ test("renders a clean single-column compliance report without scorecards or them
     await expect(page.getByRole("heading", { name: "Your company information", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "What GrowWithHR identified", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "What this report does not assess", exact: true })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Your founder action list", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "What to do next", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Deterministic first, explanation second", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "End of Report", exact: true })).toBeVisible();
 
