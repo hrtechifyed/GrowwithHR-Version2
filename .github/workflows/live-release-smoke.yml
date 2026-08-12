@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - data/releases/v0.20.2-live-smoke.json
+      - data/releases/*-live-smoke.json
   workflow_dispatch:
 
 permissions:
@@ -32,15 +32,28 @@ jobs:
           url="https://hrtechifyed.github.io/GrowwithHR-Version2/index.html"
           for attempt in $(seq 1 60); do
             body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url" 2>/dev/null || true)"
-            if grep -Fq "How GrowWithHR reaches a compliance answer" <<<"$body" && grep -Fq "GrowWithHR Public 0.20.2" <<<"$body"; then
-              echo "GitHub Pages v0.20.2 is live."
+            if grep -Fq "GrowWithHR Public 0.20.3-prototype.1" <<<"$body"; then
+              echo "GitHub Pages v0.20.3-prototype.1 is live."
               exit 0
             fi
             echo "GitHub Pages not updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "GitHub Pages did not expose v0.20.2 within the smoke window." >&2
+          echo "GitHub Pages did not expose v0.20.3-prototype.1 within the smoke window." >&2
           exit 1
+
+      - name: Validate GitHub Pages founder report route
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://hrtechifyed.github.io/GrowwithHR-Version2/executive-advisory-report.html"
+          body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url")"
+          grep -Fq "HR Compliance & Growth Report" <<<"$body"
+          grep -Fq 'id="founderReportRoot"' <<<"$body"
+          if grep -Fq "Dark Version" <<<"$body"; then
+            echo "Dark report option is still visible on the founder report route." >&2
+            exit 1
+          fi
 
       - name: Wait for Render homepage release
         shell: bash
@@ -49,14 +62,45 @@ jobs:
           url="https://growwithhr.onrender.com/index.html"
           for attempt in $(seq 1 60); do
             body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
-            if grep -Fq "How GrowWithHR reaches a compliance answer" <<<"$body" && grep -Fq "GrowWithHR Public 0.20.2" <<<"$body"; then
-              echo "Render homepage v0.20.2 is live."
+            if grep -Fq "GrowWithHR Public 0.20.3-prototype.1" <<<"$body"; then
+              echo "Render homepage v0.20.3-prototype.1 is live."
               exit 0
             fi
             echo "Render homepage not updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "Render homepage did not expose v0.20.2 within the smoke window." >&2
+          echo "Render homepage did not expose v0.20.3-prototype.1 within the smoke window." >&2
+          exit 1
+
+      - name: Validate Render founder report route
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/executive-advisory-report.html"
+          body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url")"
+          grep -Fq "HR Compliance & Growth Report" <<<"$body"
+          grep -Fq 'id="founderReportRoot"' <<<"$body"
+          if grep -Fq "Dark Version" <<<"$body"; then
+            echo "Dark report option is still visible on the Render founder report route." >&2
+            exit 1
+          fi
+
+      - name: Validate live report ID registry durability
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/api/report-id/status"
+          for attempt in $(seq 1 30); do
+            body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
+            if jq -e '.ok == true and .sequencePolicy == "global-non-resetting-symmetric-alpha-numeric" and .durableStorageConfigured == true' <<<"$body" >/dev/null 2>&1; then
+              echo "$body" > /tmp/report-id-status.json
+              echo "Persistent report ID registry is configured."
+              exit 0
+            fi
+            echo "Report ID registry is not durably configured yet (attempt $attempt/30)."
+            sleep 10
+          done
+          echo "Render report ID registry did not report durableStorageConfigured=true." >&2
           exit 1
 
       - name: Validate live legal RAG status
@@ -75,7 +119,7 @@ jobs:
             echo "Legal RAG status not ready yet (attempt $attempt/30)."
             sleep 10
           done
-          echo "Live legal RAG status did not meet the v0.20.2 contract." >&2
+          echo "Live legal RAG status did not meet the prototype contract." >&2
           exit 1
 
       - name: Archive successful smoke evidence
@@ -84,22 +128,41 @@ jobs:
           set -euo pipefail
           mkdir -p data/releases
           checked_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          cat > data/releases/v0.20.2-live-smoke.json <<EOF
+          issued_count="$(jq -r '.issuedCount // 0' /tmp/report-id-status.json)"
+          last_report_id="$(jq -r '.lastReportId // ""' /tmp/report-id-status.json)"
+          last_suffix="$(jq -r '.lastSuffix // ""' /tmp/report-id-status.json)"
+          cat > data/releases/v0.20.3-prototype.1-live-smoke.json <<EOF
           {
-            "releaseVersion": "0.20.2",
+            "releaseVersion": "0.20.3-prototype.1",
             "checkedAt": "$checked_at",
             "sourceCommitSha": "${GITHUB_SHA}",
             "status": "passed",
             "checks": {
               "githubPagesHomepage": {
                 "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/index.html",
-                "versionVisible": true,
-                "complianceEngineSectionVisible": true
+                "versionVisible": true
+              },
+              "githubPagesFounderReport": {
+                "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/executive-advisory-report.html",
+                "singleReportRouteVisible": true,
+                "darkReportOptionAbsent": true
               },
               "renderHomepage": {
                 "url": "https://growwithhr.onrender.com/index.html",
-                "versionVisible": true,
-                "complianceEngineSectionVisible": true
+                "versionVisible": true
+              },
+              "renderFounderReport": {
+                "url": "https://growwithhr.onrender.com/executive-advisory-report.html",
+                "singleReportRouteVisible": true,
+                "darkReportOptionAbsent": true
+              },
+              "reportIdRegistry": {
+                "url": "https://growwithhr.onrender.com/api/report-id/status",
+                "durableStorageConfigured": true,
+                "sequencePolicy": "global-non-resetting-symmetric-alpha-numeric",
+                "issuedCount": $issued_count,
+                "lastReportId": "$last_report_id",
+                "lastSuffix": "$last_suffix"
               },
               "legalRagStatus": {
                 "url": "https://growwithhr.onrender.com/api/legal-rag/status",
@@ -112,6 +175,6 @@ jobs:
           EOF
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/releases/v0.20.2-live-smoke.json
-          git commit -m "Archive v0.20.2 live smoke evidence"
+          git add data/releases/v0.20.3-prototype.1-live-smoke.json
+          git commit -m "Archive v0.20.3 prototype live smoke evidence"
           git push origin HEAD:main
