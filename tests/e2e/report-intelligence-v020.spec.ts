@@ -47,6 +47,15 @@ test.describe("v0.20 contextual report intelligence", () => {
     });
 
     test("forces one standard report even when a stale caller requests both editions", async ({ page }) => {
+        await page.waitForFunction(() => Boolean(
+            (window as Window & {
+                GrowWithHRReportRuntimeBootstrap?: { ready?: boolean };
+                GrowWithHRPDF?: { singleReportDelivery?: boolean; reportStructureVersion?: string };
+            }).GrowWithHRReportRuntimeBootstrap?.ready &&
+            (window as Window & { GrowWithHRPDF?: { singleReportDelivery?: boolean } })
+                .GrowWithHRPDF?.singleReportDelivery === true
+        ));
+
         const result = await page.evaluate(async () => {
             const input = document.createElement("input");
             input.type = "radio";
@@ -86,9 +95,9 @@ test.describe("v0.20 contextual report intelligence", () => {
             };
         });
 
-        expect(result.selectedThemes).toEqual(["light"]);
+        expect(result.selectedThemes).toEqual(["standard"]);
         expect(result.count).toBe(1);
-        expect(result.firstTheme).toBe("light");
+        expect(result.firstTheme).toBe("standard");
         expect(result.singleReportDelivery).toBe(true);
         expect(result.darkOptionVisible).toBe(false);
     });
