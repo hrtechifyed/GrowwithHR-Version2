@@ -24,9 +24,10 @@ vm.runInContext(orchestratorSource, sandbox);
 
 const api = sandbox.window.GrowWithHRCompanyApplicability;
 assert(api, "company-wide applicability orchestrator must be installed");
-assert.equal(api.version, "1.0.0-company-applicability-scale-trigger");
+assert.equal(api.version, "1.1.0-founder-intelligence");
 assert.equal(typeof sandbox.window.GrowWithHRPDF.buildCompanyApplicability, "function");
 assert.equal(typeof sandbox.window.GrowWithHRPDF.simulateCompanyApplicability, "function");
+assert.equal(typeof sandbox.window.GrowWithHRPDF.resolveCompanyMissingFacts, "function");
 
 const completeAnswers = {
     employees: 60,
@@ -52,6 +53,10 @@ assert.equal(assessment.decisionAuthority, "deterministic-engine");
 assert.equal(assessment.ragPolicy.usedForDecision, false);
 assert.equal(assessment.ragPolicy.applicabilityAuthority, "none");
 assert.equal(assessment.findings.length, 11, "orchestrator must evaluate the entire existing deterministic law catalogue");
+assert.equal(assessment.obligationObjects.length, assessment.findings.length, "every fixed finding must produce one obligation object");
+assert(Array.isArray(assessment.founderActions));
+assert(assessment.founderActions.every((item) => item.completionTracked === false));
+assert(assessment.founderActions.every((item) => item.decisionAuthority === "deterministic-engine"));
 
 const groupedCount = assessment.groups.relevantNow.length +
     assessment.groups.reviewNeeded.length +
@@ -70,6 +75,17 @@ assessment.findings.forEach((finding) => {
     assert.equal(finding.ragPolicy.applicabilityAuthority, "none");
 });
 
+assessment.obligationObjects.forEach((obligation) => {
+    const finding = assessment.findings.find((item) => item.id === obligation.findingId);
+    assert(finding, `obligation must trace to a deterministic finding: ${obligation.obligationId}`);
+    assert.equal(obligation.backendStatus, finding.backendStatus);
+    assert.equal(obligation.founderState, finding.founderState);
+    assert.equal(obligation.trigger.reassessmentPoint, finding.trigger.reassessmentPoint);
+    assert.equal(obligation.decisionAuthority, "deterministic-engine");
+    assert.equal(obligation.ragPolicy.usedForDecision, false);
+    assert.equal(obligation.ragPolicy.applicabilityAuthority, "none");
+});
+
 const rawRows = sandbox.window.GrowWithHRPDF.buildReportLawTransparency(payload, {});
 const rawById = new Map(rawRows.map((row) => [row.id, row]));
 assessment.scaleTriggerMatrix.forEach((trigger) => {
@@ -79,27 +95,59 @@ assessment.scaleTriggerMatrix.forEach((trigger) => {
     assert.equal(trigger.reassessmentPoint, raw.thresholdResult.triggerText, "orchestrator must not invent a trigger threshold");
     assert.equal(trigger.currentPosition, raw.thresholdResult.positionText, "orchestrator must reuse the deterministic current position");
 });
+for (let index = 1; index < assessment.scaleTriggerMatrix.length; index += 1) {
+    const previous = assessment.scaleTriggerMatrix[index - 1];
+    const current = assessment.scaleTriggerMatrix[index];
+    if (previous.triggerState === "below") {
+        assert.notEqual(current.triggerState, "near", "near trigger rows must be prioritised ahead of below rows");
+    }
+}
 
 const incompleteAnswers = { ...completeAnswers, esiWageEligibility: "not-sure", bonusWageEligibility: "not-sure" };
-const incomplete = api.assess({ answers: incompleteAnswers, report: incompleteAnswers }, {});
+const incompletePayload = { answers: incompleteAnswers, report: incompleteAnswers };
+const incomplete = api.assess(incompletePayload, {});
 const missingFields = new Map(incomplete.missingFacts.map((item) => [item.field, item]));
 assert(missingFields.has("esiWageEligibility"));
 assert(missingFields.has("bonusWageEligibility"));
 assert(missingFields.get("esiWageEligibility").affectedLawIds.includes("esi"));
 assert(missingFields.get("bonusWageEligibility").affectedLawIds.includes("bonus"));
 
+const resolution = api.resolveMissingFacts(incompletePayload, {}, { esiWageEligibility: "yes", unrelatedField: "ignored" });
+assert.deepEqual(Object.keys(resolution.acceptedAnswers), ["esiWageEligibility"], "only currently unresolved facts may be updated by the resolution loop");
+assert.equal(resolution.payload.answers.employees, incompleteAnswers.employees, "previously confirmed answers must be preserved");
+assert.equal(resolution.payload.answers.esiWageEligibility, "yes");
+assert.equal(resolution.payload.answers.unrelatedField, undefined, "unresolved-fact continuation must not accept unrelated writes");
+assert(!resolution.remainingMissingFacts.some((item) => item.field === "esiWageEligibility"));
+assert(resolution.remainingMissingFacts.some((item) => item.field === "bonusWageEligibility"));
+assert(resolution.changes.every((item) => item.decisionAuthority === "deterministic-engine"));
+
 const nineEmployees = { ...completeAnswers, employees: 9 };
 const scenario = api.simulate(
     { answers: nineEmployees, report: nineEmployees },
     {},
-    { employees: 10 }
+    { employees: 10, unsupportedFutureCountry: "US" }
 );
 const poshChange = scenario.changes.find((item) => item.lawId === "posh");
 assert(poshChange, "scenario simulation must surface the existing POSH state change at the existing trigger");
 assert.equal(poshChange.before.backendStatus, "Review required");
 assert.equal(poshChange.after.backendStatus, "Applicable");
+assert.equal(scenario.overrides.employees, 10);
+assert.equal(scenario.overrides.unsupportedFutureCountry, undefined, "scenario UI/API must discard unsupported fact overrides");
+assert.equal(scenario.changedFacts.employees, 10);
+assert.equal(scenario.planningView, true);
 assert.equal(scenario.decisionAuthority, "deterministic-engine");
 assert.equal(scenario.ragPolicy.usedForDecision, false);
 assert.equal(scenario.ragPolicy.applicabilityAuthority, "none");
+assert(scenario.unchangedLawIds.length > 0, "scenario diff must preserve unchanged findings instead of manufacturing changes");
 
-console.log("Company-wide applicability orchestrator and Scale Trigger Matrix checks passed.");
+const presentationCopy = JSON.parse(JSON.stringify(assessment.obligationObjects[0]));
+presentationCopy.title = "Presentation-only title change";
+assert.equal(assessment.findings[0].backendStatus, rawById.get(assessment.findings[0].id).status, "presentation changes cannot mutate deterministic status");
+assert.equal(assessment.findings[0].trigger.reassessmentPoint, rawById.get(assessment.findings[0].id).thresholdResult.triggerText, "presentation changes cannot mutate deterministic triggers");
+
+const forbiddenText = JSON.stringify({ obligations: assessment.obligationObjects, actions: assessment.founderActions }).toLowerCase();
+assert(!forbiddenText.includes("% compliant"));
+assert(!forbiddenText.includes("completion percentage"));
+assert(!forbiddenText.includes("evidence upload"));
+
+console.log("Company-wide applicability, obligation objects, founder actions, missing-fact resolution, scenario diff and Scale Trigger Matrix checks passed.");

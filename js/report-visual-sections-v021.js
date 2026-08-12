@@ -23,13 +23,16 @@
 
         async function buildAdvisoryPdf(payload = {}) {
             const identityRecord = await identity.allocate(payload);
+            const previousReportId = core.clean(identityRecord.previousReportId || payload.previousReportId || payload.report?.previousReportId);
             const enrichedPayload = {
                 ...payload,
                 reportId: identityRecord.reportId,
+                previousReportId,
                 generatedAt: identityRecord.generatedAt,
                 report: {
                     ...(payload.report || {}),
                     reportId: identityRecord.reportId,
+                    previousReportId,
                     generatedAt: identityRecord.generatedAt
                 }
             };
@@ -48,7 +51,8 @@
                 totalSizeBytes: Number(report.sizeBytes || 0),
                 generatedAt: identityRecord.generatedAt,
                 reportId: identityRecord.reportId,
-                reportIdentity: identityRecord,
+                previousReportId,
+                reportIdentity: { ...identityRecord, previousReportId },
                 companyName: core.clean(data.companyName, "Your Organisation"),
                 selectedThemes: ["standard"],
                 singleReportDelivery: true,
@@ -83,6 +87,8 @@
             brandLogoAsset: BRAND_LOGO_ASSET,
             supportsDualTheme: false,
             singleReportDelivery: true,
+            reportLineage: true,
+            founderIntelligencePdfParity: Boolean(window.GrowWithHRFounderIntelligenceParity?.installed),
             buildAdvisoryPdf
         });
         window.GrowWithHRPDF = enhanced;
@@ -94,6 +100,7 @@
             brandLogoAsset: BRAND_LOGO_ASSET,
             singleEdition: true,
             installed: true,
+            reportLineage: true,
             selectedThemes: () => ["standard"],
             compact: core.compact
         });

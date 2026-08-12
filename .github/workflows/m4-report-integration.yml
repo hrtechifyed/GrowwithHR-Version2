@@ -19,7 +19,9 @@ on:
       - "js/story-visual-sections-v021.js"
       - "js/report-visual-core-v021.js"
       - "js/report-visual-renderers-v021.js"
+      - "js/report-founder-intelligence-parity-v1.js"
       - "js/report-visual-sections-v021.js"
+      - "js/report-identity-v1.js"
       - "css/21-story-visual-sections.css"
       - "server-entry.js"
       - "server-m4-delivery.js"
@@ -29,6 +31,7 @@ on:
       - "tests/m4-law-transparency-combination-checks.mjs"
       - "tests/m4-report-integration-checks.mjs"
       - "tests/company-applicability-orchestrator-checks.mjs"
+      - "tests/founder-intelligence-golden-scenarios.mjs"
       - "tests/report-id-cloudflare-durable-object-checks.mjs"
       - "tests/industry-adaptive-assessment-checks.mjs"
       - "tests/report-runtime-corrections-checks.mjs"
@@ -71,13 +74,16 @@ jobs:
           node --check js/story-visual-sections-v021.js
           node --check js/report-visual-core-v021.js
           node --check js/report-visual-renderers-v021.js
+          node --check js/report-founder-intelligence-parity-v1.js
           node --check js/report-visual-sections-v021.js
+          node --check js/report-identity-v1.js
           node --check server-entry.js
           node --check server-m4-delivery.js
           node --check server-report-id-registry.js
           node --check cloudflare/report-id-worker/src/index.mjs
           node --check tests/m4-report-integration-checks.mjs
           node --check tests/company-applicability-orchestrator-checks.mjs
+          node --check tests/founder-intelligence-golden-scenarios.mjs
           node --check tests/report-id-cloudflare-durable-object-checks.mjs
           node --check tests/industry-adaptive-assessment-checks.mjs
           node --check tests/report-runtime-corrections-checks.mjs
@@ -96,6 +102,8 @@ jobs:
         run: node tests/m4-law-transparency-combination-checks.mjs
       - name: Run company-wide applicability and Scale Trigger Matrix contracts
         run: node tests/company-applicability-orchestrator-checks.mjs
+      - name: Run founder intelligence golden scenarios
+        run: node tests/founder-intelligence-golden-scenarios.mjs
       - name: Run industry-adaptive assessment contracts
         run: node tests/industry-adaptive-assessment-checks.mjs
       - name: Run report runtime correction contracts
@@ -106,7 +114,7 @@ jobs:
         run: node tests/report-acceptance-corrections-checks.mjs
       - name: Run visual story and report contracts
         run: node tests/visual-story-report-v021-checks.mjs
-      - name: Run durable Report ID contracts
+      - name: Run durable Report ID and lineage contracts
         run: node tests/report-id-cloudflare-durable-object-checks.mjs
       - name: Run M4 visible report and delivery contracts
         run: node tests/m4-report-integration-checks.mjs
