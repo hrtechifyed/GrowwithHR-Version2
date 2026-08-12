@@ -5,6 +5,8 @@ on:
     paths:
       - "js/pdf-law-transparency.js"
       - "js/industry-adaptive-assessment.js"
+      - "js/company-applicability-orchestrator-v1.js"
+      - "js/founder-web-report-v2.js"
       - "js/report-runtime-bootstrap.js"
       - "js/report-runtime-corrections.js"
       - "js/report-acceptance-corrections.js"
@@ -26,6 +28,7 @@ on:
       - "wrangler.jsonc"
       - "tests/m4-law-transparency-combination-checks.mjs"
       - "tests/m4-report-integration-checks.mjs"
+      - "tests/company-applicability-orchestrator-checks.mjs"
       - "tests/report-id-cloudflare-durable-object-checks.mjs"
       - "tests/report-id-worker-health-entry-checks.mjs"
       - "tests/industry-adaptive-assessment-checks.mjs"
@@ -33,6 +36,7 @@ on:
       - "tests/report-sequence-controller-checks.mjs"
       - "tests/report-acceptance-corrections-checks.mjs"
       - "tests/visual-story-report-v021-checks.mjs"
+      - "docs/architecture/company-applicability-and-scale-triggers.md"
       - "docs/architecture/founder-report-and-id-registry.md"
       - "docs/releases/v0.20.0-integrated-report-industry-profiles.md"
       - "docs/releases/v0.23.0-founder-first-report.md"
@@ -58,6 +62,8 @@ jobs:
         run: |
           node --check js/pdf-law-transparency.js
           node --check js/industry-adaptive-assessment.js
+          node --check js/company-applicability-orchestrator-v1.js
+          node --check js/founder-web-report-v2.js
           node --check js/report-runtime-bootstrap.js
           node --check js/report-runtime-corrections.js
           node --check js/report-acceptance-corrections.js
@@ -73,6 +79,7 @@ jobs:
           node --check cloudflare/report-id-worker/src/index.mjs
           node --check cloudflare/report-id-worker/src/worker-entry.mjs
           node --check tests/m4-report-integration-checks.mjs
+          node --check tests/company-applicability-orchestrator-checks.mjs
           node --check tests/report-id-cloudflare-durable-object-checks.mjs
           node --check tests/report-id-worker-health-entry-checks.mjs
           node --check tests/industry-adaptive-assessment-checks.mjs
@@ -90,6 +97,8 @@ jobs:
         run: npm run test:footprint-priorities
       - name: Run exhaustive law transparency combinations
         run: node tests/m4-law-transparency-combination-checks.mjs
+      - name: Run company-wide applicability and Scale Trigger Matrix contracts
+        run: node tests/company-applicability-orchestrator-checks.mjs
       - name: Run industry-adaptive assessment contracts
         run: node tests/industry-adaptive-assessment-checks.mjs
       - name: Run report runtime correction contracts
