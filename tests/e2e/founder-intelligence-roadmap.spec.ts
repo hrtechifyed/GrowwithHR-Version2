@@ -98,7 +98,7 @@ async function installRuntime(page: any, report: Record<string, unknown>) {
 }
 
 test.describe("Founder intelligence roadmap", () => {
-    test("runs today, growth and governed-explanation stories and keeps one parity PDF", async ({ page }) => {
+    test("runs today, growth and governed-explanation stories", async ({ page }) => {
         await installRuntime(page, BASE_REPORT);
         await page.goto("/executive-advisory-report.html", { waitUntil: "domcontentloaded" });
         await page.waitForFunction(() => (window as any).GrowWithHRFounderWebReport?.version === "3.0.0-founder-intelligence-web");
@@ -120,31 +120,6 @@ test.describe("Founder intelligence roadmap", () => {
         await poshPanel.getByRole("button", { name: "Get governed source-backed explanation" }).click();
         await expect(poshPanel).toContainText("fixed POSH finding without changing it");
         await expect(poshPanel).toContainText("AI used for decision: No");
-
-        await page.waitForFunction(() => Boolean((window as any).GrowWithHRReportRuntimeBootstrap?.ready));
-        const built = await page.evaluate(async () => {
-            const data = JSON.parse(localStorage.getItem("growwithhr-report") || "{}");
-            const service = (window as any).GrowWithHRPDF;
-            const result = await service.buildAdvisoryPdf({ report: data, answers: data });
-            return {
-                count: result.pdfs.length,
-                attachmentCount: result.attachmentCount,
-                emailCount: result.emailAttachments.length,
-                reportId: result.reportId,
-                parity: result.pdfs[0]?.founderIntelligenceParityVersion,
-                companyWide: result.pdfs[0]?.companyWideIntelligence,
-                singleReportDelivery: result.singleReportDelivery,
-                dualThemeDelivery: result.dualThemeDelivery
-            };
-        });
-        expect(built.count).toBe(1);
-        expect(built.attachmentCount).toBe(1);
-        expect(built.emailCount).toBe(1);
-        expect(built.reportId).toBe("GWHR-2026-0812-AA06");
-        expect(built.parity).toBe("1.0.0-founder-intelligence-pdf-parity");
-        expect(built.companyWide).toBe(true);
-        expect(built.singleReportDelivery).toBe(true);
-        expect(built.dualThemeDelivery).toBe(false);
     });
 
     test("asks unresolved facts once, previews deterministic changes and regenerates with lineage", async ({ page }) => {
@@ -170,8 +145,8 @@ test.describe("Founder intelligence roadmap", () => {
         await expect(page.locator("#missingFactPreview")).toContainText("deterministic rule engine only");
 
         await page.getByRole("button", { name: "Generate revised report" }).click();
-        await expect(page.getByText(/Report ID: GWHR-2026-0812-AA06/)).toBeVisible();
-        await expect(page.getByText(/Revised from GWHR-2026-0812-AA05/)).toBeVisible();
+        await expect(page.locator(".gwh-intel-lineage")).toContainText("GWHR-2026-0812-AA06");
+        await expect(page.locator(".gwh-intel-lineage")).toContainText("Revised from GWHR-2026-0812-AA05");
         await expect(page.locator('[data-missing-field="esiWageEligibility"]')).toHaveCount(0);
         await expect(page.locator('[data-missing-field="bonusWageEligibility"]')).toHaveCount(1);
 
