@@ -145,6 +145,7 @@ test.describe("Founder intelligence roadmap", () => {
         await expect(page.locator("#missingFactPreview")).toContainText("deterministic rule engine only");
 
         await page.getByRole("button", { name: "Generate revised report" }).click();
+        await expect(page.locator("#missingFactPreview")).toContainText("Revised snapshot created.");
         await expect(page.locator(".gwh-intel-lineage")).toContainText("GWHR-2026-0812-AA06");
         await expect(page.locator(".gwh-intel-lineage")).toContainText("Revised from GWHR-2026-0812-AA05");
         await expect(page.locator('[data-missing-field="esiWageEligibility"]')).toHaveCount(0);
