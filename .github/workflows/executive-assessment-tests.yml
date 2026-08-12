@@ -32,6 +32,8 @@ on:
       - "js/pdf-polish.js"
       - "js/pdf-law-transparency.js"
       - "js/industry-adaptive-assessment.js"
+      - "js/company-applicability-orchestrator-v1.js"
+      - "js/founder-web-report-v2.js"
       - "js/report-runtime-bootstrap.js"
       - "js/report-runtime-corrections.js"
       - "js/report-sequence-controller.js"
@@ -44,7 +46,9 @@ on:
       - "js/story-visual-sections-v021.js"
       - "js/report-visual-core-v021.js"
       - "js/report-visual-renderers-v021.js"
+      - "js/report-founder-intelligence-parity-v1.js"
       - "js/report-visual-sections-v021.js"
+      - "js/report-identity-v1.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
       - "playwright.config.ts"
@@ -80,6 +84,8 @@ on:
       - "js/pdf-polish.js"
       - "js/pdf-law-transparency.js"
       - "js/industry-adaptive-assessment.js"
+      - "js/company-applicability-orchestrator-v1.js"
+      - "js/founder-web-report-v2.js"
       - "js/report-runtime-bootstrap.js"
       - "js/report-runtime-corrections.js"
       - "js/report-sequence-controller.js"
@@ -92,7 +98,9 @@ on:
       - "js/story-visual-sections-v021.js"
       - "js/report-visual-core-v021.js"
       - "js/report-visual-renderers-v021.js"
+      - "js/report-founder-intelligence-parity-v1.js"
       - "js/report-visual-sections-v021.js"
+      - "js/report-identity-v1.js"
       - "js/gmail-service.js"
       - "tests/e2e/**"
       - "playwright.config.ts"
@@ -170,6 +178,7 @@ jobs:
           tests/e2e/m5-compliance-workspace.spec.ts
           tests/e2e/report-intelligence-v020.spec.ts
           tests/e2e/visual-story-report-v021.spec.ts
+          tests/e2e/founder-intelligence-roadmap.spec.ts
           --project=chromium
 
       - name: Upload Playwright report
