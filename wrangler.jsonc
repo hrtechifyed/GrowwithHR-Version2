@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "growwithhr-report-id",
+  "main": "cloudflare/report-id-worker/src/index.mjs",
+  "compatibility_date": "2026-08-12",
+  "workers_dev": true,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "REPORT_ID_REGISTRY",
+        "class_name": "ReportIdRegistry"
+      }
+    ]
+  },
+  "exports": {
+    "ReportIdRegistry": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  }
+}
