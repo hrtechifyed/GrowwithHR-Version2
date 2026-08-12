@@ -101,8 +101,8 @@ test.describe("Complete assessment and advisory delivery", () => {
         await page.locator("#employees").fill("25");
         await page.locator("#nextButton").click();
 
-        await page.getByRole("radio", { name: /^Hybrid\b/ }).click();
-        await page.getByRole("radio", { name: "25–50%", exact: true }).click();
+        await page.getByText("Hybrid", { exact: true }).click();
+        await page.getByText("25–50%", { exact: true }).click();
         await page.locator("#nextButton").click();
 
         await page.locator("#primaryState").fill("Maharashtra");
@@ -114,9 +114,9 @@ test.describe("Complete assessment and advisory delivery", () => {
         await page.locator('input[name="expansionPlans"][value="scale-operations"]').click({ force: true });
         await page.locator("#nextButton").click();
 
-        await page.getByRole("radio", { name: /^Founder-led\b/ }).click();
-        await page.getByRole("checkbox", { name: "Hiring and onboarding", exact: true }).click();
-        await page.getByRole("checkbox", { name: "Policies and compliance", exact: true }).click();
+        await page.getByText("Founder-led", { exact: true }).click();
+        await page.getByText("Hiring and onboarding", { exact: true }).click();
+        await page.getByText("Policies and compliance", { exact: true }).click();
         await page.locator("#nextButton").click();
 
         await expect(page.locator("#reviewScreen")).toBeVisible();
