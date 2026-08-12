@@ -68,7 +68,7 @@ jobs:
           node --check server-entry.js
           node --check server-m4-delivery.js
           node --check server-report-id-registry.js
-          node --check cloudflare/report-id-worker/src/index.js
+          node --check cloudflare/report-id-worker/src/index.mjs
           node --check tests/m4-report-integration-checks.mjs
           node --check tests/report-id-cloudflare-durable-object-checks.mjs
           node --check tests/industry-adaptive-assessment-checks.mjs
