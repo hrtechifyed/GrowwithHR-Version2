@@ -1,0 +1,41 @@
+{
+  "releaseVersion": "0.20.4-prototype.1",
+  "checkedAt": "2026-08-12T16:23:40Z",
+  "sourceCommitSha": "1cd3acd908c23dae70c48125f76e37ff3b052ff7",
+  "status": "passed",
+  "checks": {
+    "githubPagesHomepage": {
+      "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/index.html",
+      "versionVisible": true
+    },
+    "githubPagesFounderReport": {
+      "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/executive-advisory-report.html",
+      "singleReportRouteVisible": true,
+      "darkReportOptionAbsent": true
+    },
+    "renderHomepage": {
+      "url": "https://growwithhr.onrender.com/index.html",
+      "versionVisible": true
+    },
+    "renderFounderReport": {
+      "url": "https://growwithhr.onrender.com/executive-advisory-report.html",
+      "singleReportRouteVisible": true,
+      "darkReportOptionAbsent": true
+    },
+    "reportIdRegistry": {
+      "url": "https://growwithhr.onrender.com/api/report-id/status",
+      "storageBackend": "cloudflare-durable-object",
+      "durableStorageConfigured": true,
+      "sequencePolicy": "global-non-resetting-symmetric-alpha-numeric",
+      "issuedCount": 0,
+      "lastReportId": "",
+      "lastSuffix": ""
+    },
+    "legalRagStatus": {
+      "url": "https://growwithhr.onrender.com/api/legal-rag/status",
+      "platformStatus": "all-laws-runnable-private-beta",
+      "activeProfileCount": 57,
+      "blockedProfileCount": 0
+    }
+  }
+}
