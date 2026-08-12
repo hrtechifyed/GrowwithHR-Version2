@@ -32,14 +32,14 @@ jobs:
           url="https://hrtechifyed.github.io/GrowwithHR-Version2/index.html"
           for attempt in $(seq 1 60); do
             body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url" 2>/dev/null || true)"
-            if grep -Fq "GrowWithHR Public 0.20.3-prototype.1" <<<"$body"; then
-              echo "GitHub Pages v0.20.3-prototype.1 is live."
+            if grep -Fq "GrowWithHR Public 0.20.4-prototype.1" <<<"$body"; then
+              echo "GitHub Pages v0.20.4-prototype.1 is live."
               exit 0
             fi
             echo "GitHub Pages not updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "GitHub Pages did not expose v0.20.3-prototype.1 within the smoke window." >&2
+          echo "GitHub Pages did not expose v0.20.4-prototype.1 within the smoke window." >&2
           exit 1
 
       - name: Validate GitHub Pages founder report route
@@ -62,14 +62,14 @@ jobs:
           url="https://growwithhr.onrender.com/index.html"
           for attempt in $(seq 1 60); do
             body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
-            if grep -Fq "GrowWithHR Public 0.20.3-prototype.1" <<<"$body"; then
-              echo "Render homepage v0.20.3-prototype.1 is live."
+            if grep -Fq "GrowWithHR Public 0.20.4-prototype.1" <<<"$body"; then
+              echo "Render homepage v0.20.4-prototype.1 is live."
               exit 0
             fi
             echo "Render homepage not updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "Render homepage did not expose v0.20.3-prototype.1 within the smoke window." >&2
+          echo "Render homepage did not expose v0.20.4-prototype.1 within the smoke window." >&2
           exit 1
 
       - name: Validate Render founder report route
@@ -132,9 +132,9 @@ jobs:
           last_report_id="$(jq -r '.lastReportId // ""' /tmp/report-id-status.json)"
           last_suffix="$(jq -r '.lastSuffix // ""' /tmp/report-id-status.json)"
           storage_backend="$(jq -r '.storageBackend // ""' /tmp/report-id-status.json)"
-          cat > data/releases/v0.20.3-prototype.1-live-smoke.json <<EOF
+          cat > data/releases/v0.20.4-prototype.1-live-smoke.json <<EOF
           {
-            "releaseVersion": "0.20.3-prototype.1",
+            "releaseVersion": "0.20.4-prototype.1",
             "checkedAt": "$checked_at",
             "sourceCommitSha": "${GITHUB_SHA}",
             "status": "passed",
@@ -177,6 +177,6 @@ jobs:
           EOF
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/releases/v0.20.3-prototype.1-live-smoke.json
-          git commit -m "Archive v0.20.3 prototype live smoke evidence"
+          git add data/releases/v0.20.4-prototype.1-live-smoke.json
+          git commit -m "Archive v0.20.4 prototype live smoke evidence"
           git push origin HEAD:main
