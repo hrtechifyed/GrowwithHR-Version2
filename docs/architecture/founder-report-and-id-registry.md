@@ -83,7 +83,7 @@ GrowWithHR reuses its existing Cloudflare platform rather than adding a second d
 Founder browser
   -> Render Free: POST /api/report-id
   -> authenticated server-to-server request
-  -> growwithhr-report-id Cloudflare Worker
+  -> growwithhr-version2 Cloudflare Worker
   -> one named ReportIdRegistry Durable Object
   -> SQLite-backed Durable Object storage
 ```
@@ -100,7 +100,7 @@ The browser continues to call `/api/report-id`. It never receives the Cloudflare
 - never silently falls back to Render's ephemeral filesystem in that state;
 - retains the filesystem allocator only for local development/testing when no Cloudflare allocator is configured.
 
-`cloudflare/report-id-worker/src/index.js`:
+`cloudflare/report-id-worker/src/index.mjs`:
 
 - owns the global non-resetting sequence;
 - stores every issued report ID in SQLite-backed Durable Object storage;
@@ -114,11 +114,13 @@ The browser continues to call `/api/report-id`. It never receives the Cloudflare
 
 ### Cloudflare Worker
 
-Deploy the Worker under:
+The connected Cloudflare Worker is:
 
 ```text
-cloudflare/report-id-worker
+growwithhr-version2
 ```
+
+Its root `wrangler.jsonc` points to the Report ID Worker entry point and declares the SQLite-backed `ReportIdRegistry` Durable Object.
 
 Set the Worker secret:
 
@@ -133,7 +135,7 @@ The same secret is stored server-side in Render.
 Configure only environment variables; no Render disk is required:
 
 ```text
-REPORT_ID_ALLOCATOR_URL=https://growwithhr-report-id.<workers-subdomain>.workers.dev
+REPORT_ID_ALLOCATOR_URL=https://growwithhr-version2.<workers-subdomain>.workers.dev
 REPORT_ID_ALLOCATOR_SECRET=<same-secret>
 ```
 
