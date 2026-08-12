@@ -7,6 +7,19 @@ test.describe("v0.20 contextual report intelligence", () => {
         await page.route("**/jspdf.umd.min.js", async (route) => {
             await route.fulfill({ status: 200, contentType: "application/javascript", body: "" });
         });
+        await page.route("**/api/report-id", async (route) => {
+            await route.fulfill({
+                status: 201,
+                contentType: "application/json",
+                body: JSON.stringify({
+                    ok: true,
+                    reportId: "GWHR-2026-0812-AA02",
+                    suffix: "AA02",
+                    generatedAt: "2026-08-12T04:15:00.000Z",
+                    durableStorageConfigured: true
+                })
+            });
+        });
         await page.addInitScript(() => {
             class FakeJsPDF {
                 pages = 1;
