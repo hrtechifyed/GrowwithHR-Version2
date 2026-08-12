@@ -2,50 +2,32 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.28.0-company-applicability-scale-trigger-bootstrap";
+    const VERSION = "0.29.0-founder-intelligence-bootstrap";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
     let loading = false;
 
-    function resolveJsPDF() {
-        return window.jspdf?.jsPDF || window.jsPDF;
-    }
+    function resolveJsPDF() { return window.jspdf?.jsPDF || window.jsPDF; }
 
     function isLightweightAdapter(JsPDF) {
-        return Boolean(
-            JsPDF?.prototype &&
-            !JsPDF.API &&
-            typeof JsPDF.prototype.addPage === "function" &&
-            typeof JsPDF.prototype.getNumberOfPages === "function" &&
-            typeof JsPDF.prototype.output === "function"
-        );
+        return Boolean(JsPDF?.prototype && !JsPDF.API && typeof JsPDF.prototype.addPage === "function" && typeof JsPDF.prototype.getNumberOfPages === "function" && typeof JsPDF.prototype.output === "function");
     }
 
     function installTestAdapterCompatibility() {
         const JsPDF = resolveJsPDF();
         if (!isLightweightAdapter(JsPDF)) return;
-
         if (typeof JsPDF.prototype.deletePage !== "function") {
             JsPDF.prototype.deletePage = function deletePageFallback() {
                 if (typeof this.pages === "number") this.pages = Math.max(1, this.pages - 1);
                 return this;
             };
         }
-
         if (typeof JsPDF.prototype.getTextWidth !== "function") {
-            JsPDF.prototype.getTextWidth = function getTextWidthFallback(value) {
-                return Math.max(1, String(value ?? "").length * 1.8);
-            };
+            JsPDF.prototype.getTextWidth = function getTextWidthFallback(value) { return Math.max(1, String(value ?? "").length * 1.8); };
         }
-
         if (typeof JsPDF.prototype[Symbol.toPrimitive] !== "function") {
-            Object.defineProperty(JsPDF.prototype, Symbol.toPrimitive, {
-                configurable: true,
-                value(hint) {
-                    return hint === "string" ? "[GrowWithHR test PDF adapter]" : 0;
-                }
-            });
+            Object.defineProperty(JsPDF.prototype, Symbol.toPrimitive, { configurable: true, value(hint) { return hint === "string" ? "[GrowWithHR test PDF adapter]" : 0; } });
         }
     }
 
@@ -60,7 +42,6 @@
     async function load() {
         if (loading || window.GrowWithHRReportRuntimeBootstrap?.ready) return;
         attempts += 1;
-
         const pipeline = window.GrowWithHRPDFPolishReady;
         if (!pipeline) {
             if (attempts < MAX_ATTEMPTS) window.setTimeout(load, 25);
@@ -74,18 +55,12 @@
             await import("./report-single-edition-ui-v1.js");
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
-            const acceptanceReady = await waitFor(() => Boolean(
-                window.GrowWithHRPDF?.acceptanceReportVersion &&
-                window.GrowWithHRPDF?.reportStructureVersion === "single-tier-v1"
-            ));
+            const acceptanceReady = await waitFor(() => Boolean(window.GrowWithHRPDF?.acceptanceReportVersion && window.GrowWithHRPDF?.reportStructureVersion === "single-tier-v1"));
             if (!acceptanceReady) throw new Error("The single-tier report assembler did not become ready.");
 
             await import("./report-intelligence-v020-fixes.js");
             await import("./report-context-question-ui-fixes.js");
-            const intelligenceReady = await waitFor(() => Boolean(
-                window.GrowWithHRPDF?.reportIntelligenceFixVersion &&
-                window.GrowWithHRPDF?.reportStructureVersion === "contextual-single-tier-v2"
-            ));
+            const intelligenceReady = await waitFor(() => Boolean(window.GrowWithHRPDF?.reportIntelligenceFixVersion && window.GrowWithHRPDF?.reportStructureVersion === "contextual-single-tier-v2"));
             if (!intelligenceReady) throw new Error("The contextual report assembler did not become ready.");
 
             await import("./sector-context-intelligence-v020.js");
@@ -97,9 +72,10 @@
             const applicabilityReady = await waitFor(() => Boolean(
                 window.GrowWithHRCompanyApplicability?.version &&
                 typeof window.GrowWithHRPDF?.buildCompanyApplicability === "function" &&
-                typeof window.GrowWithHRPDF?.simulateCompanyApplicability === "function"
+                typeof window.GrowWithHRPDF?.simulateCompanyApplicability === "function" &&
+                typeof window.GrowWithHRPDF?.resolveCompanyMissingFacts === "function"
             ));
-            if (!applicabilityReady) throw new Error("The company-wide applicability orchestrator did not become ready.");
+            if (!applicabilityReady) throw new Error("The company-wide founder intelligence orchestrator did not become ready.");
 
             await import("./story-visual-sections-v021.js");
             await import("./report-visual-core-v021.js");
@@ -109,6 +85,7 @@
             await import("./report-template-parity-v022.js");
             await import("./report-identity-v1.js");
             await import("./report-founder-demo-single-v1.js");
+            await import("./report-founder-intelligence-parity-v1.js");
             await import("./report-visual-sections-v021.js");
 
             const visualReady = await waitFor(() => Boolean(
@@ -116,12 +93,13 @@
                 window.GrowWithHRStoryVisualSections?.version &&
                 window.GrowWithHRReportIdentity?.version &&
                 window.GrowWithHRFounderDemoReport?.singleEdition === true &&
+                window.GrowWithHRFounderIntelligenceParity?.installed === true &&
                 window.GrowWithHRReportBrandTemplate?.singleEdition === true &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
                 window.GrowWithHRPDF?.singleReportDelivery === true &&
                 window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1"
             ));
-            if (!visualReady) throw new Error("The single HRTechify founder report did not become ready.");
+            if (!visualReady) throw new Error("The single HRTechify founder intelligence report did not become ready.");
 
             window.GrowWithHRReportRuntimeBootstrap = Object.freeze({
                 version: VERSION,
@@ -131,8 +109,15 @@
                 contextualQuestionUiFixes: true,
                 allSectorContextIntelligence: true,
                 companyWideApplicability: true,
+                obligationObjects: true,
+                founderNextActions: true,
+                missingFactResolution: true,
                 scaleTriggerMatrix: true,
                 scenarioSimulation: true,
+                scenarioDiff: true,
+                founderIntelligencePdfParity: true,
+                reportLineage: true,
+                governedFounderExplanation: true,
                 compactStorySections: true,
                 founderDemoSingleReport: true,
                 singleReportDelivery: true,
@@ -145,11 +130,8 @@
             });
         } catch (error) {
             loading = false;
-            if (attempts < MAX_ATTEMPTS) {
-                window.setTimeout(load, 50);
-            } else {
-                console.error("GrowWithHR report runtime bootstrap could not complete.", error);
-            }
+            if (attempts < MAX_ATTEMPTS) window.setTimeout(load, 50);
+            else console.error("GrowWithHR report runtime bootstrap could not complete.", error);
         }
     }
 
