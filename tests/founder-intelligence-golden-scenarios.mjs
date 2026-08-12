@@ -69,7 +69,7 @@ const incompleteFacts = { ...completeFacts, esiWageEligibility: "not-sure", bonu
 const incompletePayload = { report: incompleteFacts, answers: incompleteFacts };
 const incomplete = api.assess(incompletePayload, {});
 assert.deepEqual(
-    incomplete.missingFacts.map((item) => item.field).sort(),
+    Array.from(incomplete.missingFacts, (item) => item.field).sort(),
     ["bonusWageEligibility", "esiWageEligibility"],
     "missing facts must be deduplicated by company fact"
 );
