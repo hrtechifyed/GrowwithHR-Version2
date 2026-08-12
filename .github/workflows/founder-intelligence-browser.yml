@@ -3,8 +3,10 @@ name: Founder Intelligence Browser
 on:
   pull_request:
     paths:
+      - "executive-advisory-report.html"
       - "js/company-applicability-orchestrator-v1.js"
       - "js/founder-web-report-v2.js"
+      - "js/founder-report-snapshot-navigation-v1.js"
       - "js/report-runtime-bootstrap.js"
       - "js/report-founder-intelligence-parity-v1.js"
       - "js/report-visual-sections-v021.js"
