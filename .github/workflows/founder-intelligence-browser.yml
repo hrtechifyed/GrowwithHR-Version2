@@ -1,0 +1,38 @@
+name: Founder Intelligence Browser
+
+on:
+  pull_request:
+    paths:
+      - "js/company-applicability-orchestrator-v1.js"
+      - "js/founder-web-report-v2.js"
+      - "js/report-runtime-bootstrap.js"
+      - "js/report-founder-intelligence-parity-v1.js"
+      - "js/report-visual-sections-v021.js"
+      - "js/report-identity-v1.js"
+      - "tests/e2e/founder-intelligence-roadmap.spec.ts"
+      - ".github/workflows/founder-intelligence-browser.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: npm install --no-audit --no-fund
+      - run: npm install --no-save --no-audit --no-fund @playwright/test
+      - run: npx playwright install --with-deps chromium
+      - name: Run founder/report browser acceptance with GitHub annotations
+        run: >
+          npx playwright test
+          tests/e2e/report-intelligence-v020.spec.ts
+          tests/e2e/visual-story-report-v021.spec.ts
+          tests/e2e/founder-intelligence-roadmap.spec.ts
+          --project=chromium
+          --reporter=github
