@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.27.0-founder-demo-single-report-bootstrap";
+    const VERSION = "0.28.0-company-applicability-scale-trigger-bootstrap";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -93,6 +93,14 @@
             const sectorReady = await waitFor(() => Boolean(window.GrowWithHRSectorContextIntelligence?.patchVersion));
             if (!sectorReady) throw new Error("The all-sector context layer did not become ready.");
 
+            await import("./company-applicability-orchestrator-v1.js");
+            const applicabilityReady = await waitFor(() => Boolean(
+                window.GrowWithHRCompanyApplicability?.version &&
+                typeof window.GrowWithHRPDF?.buildCompanyApplicability === "function" &&
+                typeof window.GrowWithHRPDF?.simulateCompanyApplicability === "function"
+            ));
+            if (!applicabilityReady) throw new Error("The company-wide applicability orchestrator did not become ready.");
+
             await import("./story-visual-sections-v021.js");
             await import("./report-visual-core-v021.js");
             await import("./report-brand-template-v022.js");
@@ -122,6 +130,9 @@
                 reportIntelligenceFixes: true,
                 contextualQuestionUiFixes: true,
                 allSectorContextIntelligence: true,
+                companyWideApplicability: true,
+                scaleTriggerMatrix: true,
+                scenarioSimulation: true,
                 compactStorySections: true,
                 founderDemoSingleReport: true,
                 singleReportDelivery: true,
