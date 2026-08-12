@@ -1,28 +1,75 @@
 "use strict";
 
 const crypto = require("crypto");
-const fs = require("fs");
 const fsp = require("fs/promises");
 const path = require("path");
 
 const REPORT_ID_ROUTE = "/api/report-id";
 const REPORT_ID_STATUS_ROUTE = "/api/report-id/status";
+const SEQUENCE_POLICY = "global-non-resetting-symmetric-alpha-numeric";
+const CLOUDFLARE_STORAGE_BACKEND = "cloudflare-durable-object";
 const MAX_REQUEST_BYTES = 64 * 1024;
 const LOCK_RETRY_MS = 25;
 const LOCK_MAX_ATTEMPTS = 240;
 const STALE_LOCK_MS = 30 * 1000;
+const DEFAULT_ALLOCATOR_TIMEOUT_MS = 8000;
 const DEFAULT_REGISTRY_FILE = path.join(__dirname, "data", "runtime", "report-id-registry.json");
 
 function cleanText(value, fallback = "") {
     return String(value ?? "").trim() || fallback;
 }
 
+function configurationError(message) {
+    return Object.assign(new Error(message), { statusCode: 503 });
+}
+
 function registryFilePath() {
     return path.resolve(cleanText(process.env.REPORT_ID_REGISTRY_FILE, DEFAULT_REGISTRY_FILE));
 }
 
-function durableStorageConfigured() {
-    return Boolean(cleanText(process.env.REPORT_ID_REGISTRY_FILE));
+function allocatorTimeoutMs(environment = process.env) {
+    const parsed = Number.parseInt(cleanText(environment.REPORT_ID_ALLOCATOR_TIMEOUT_MS), 10);
+    if (!Number.isInteger(parsed)) return DEFAULT_ALLOCATOR_TIMEOUT_MS;
+    return Math.min(30000, Math.max(1000, parsed));
+}
+
+function cloudflareAllocatorConfigFromEnvironment(environment = process.env) {
+    const baseUrl = cleanText(environment.REPORT_ID_ALLOCATOR_URL).replace(/\/+$/, "");
+    const secret = cleanText(environment.REPORT_ID_ALLOCATOR_SECRET);
+
+    if (!baseUrl && !secret) return null;
+    if (!baseUrl || !secret) {
+        throw configurationError(
+            "Cloudflare Report ID allocation is partially configured. Set both REPORT_ID_ALLOCATOR_URL and REPORT_ID_ALLOCATOR_SECRET."
+        );
+    }
+
+    let parsed;
+    try {
+        parsed = new URL(baseUrl);
+    } catch (_error) {
+        throw configurationError("REPORT_ID_ALLOCATOR_URL must be a valid HTTPS URL.");
+    }
+    if (parsed.protocol !== "https:") {
+        throw configurationError("REPORT_ID_ALLOCATOR_URL must use HTTPS.");
+    }
+
+    return Object.freeze({
+        baseUrl,
+        secret,
+        timeoutMs: allocatorTimeoutMs(environment),
+        storageBackend: CLOUDFLARE_STORAGE_BACKEND
+    });
+}
+
+function reportIdStorageBackend(environment = process.env) {
+    if (cloudflareAllocatorConfigFromEnvironment(environment)) return CLOUDFLARE_STORAGE_BACKEND;
+    if (cleanText(environment.REPORT_ID_REGISTRY_FILE)) return "filesystem-persistent";
+    return "filesystem-ephemeral";
+}
+
+function durableStorageConfigured(environment = process.env) {
+    return reportIdStorageBackend(environment) !== "filesystem-ephemeral";
 }
 
 function hashIdentifier(value) {
@@ -93,7 +140,7 @@ function reportIdFor(sequence, date = new Date()) {
 function emptyRegistry() {
     return {
         schemaVersion: 1,
-        sequencePolicy: "global-non-resetting-symmetric-alpha-numeric",
+        sequencePolicy: SEQUENCE_POLICY,
         lastSequence: { width: 2, letters: "AA", number: 0 },
         issuedCount: 0,
         records: [],
@@ -160,18 +207,25 @@ async function acquireLock(filePath = registryFilePath()) {
     throw new Error("The report ID registry is busy. Please retry report generation.");
 }
 
-async function allocateReportId(input = {}, now = new Date()) {
+async function allocateLocalReportId(input = {}, now = new Date()) {
     const filePath = registryFilePath();
     const release = await acquireLock(filePath);
     try {
         const registry = await readRegistry(filePath);
         const requestKey = cleanText(input.requestKey);
-        if (!requestKey) throw new Error("A report allocation request key is required.");
+        if (!requestKey) throw Object.assign(new Error("A report allocation request key is required."), { statusCode: 400 });
 
         const existingReportId = cleanText(registry.requests[requestKey]);
         if (existingReportId) {
             const existing = registry.records.find((record) => record.reportId === existingReportId);
-            if (existing) return { ...existing, replayed: true, durableStorageConfigured: durableStorageConfigured() };
+            if (existing) {
+                return {
+                    ...existing,
+                    replayed: true,
+                    durableStorageConfigured: durableStorageConfigured(),
+                    storageBackend: reportIdStorageBackend()
+                };
+            }
         }
 
         const next = nextSequence(registry.lastSequence);
@@ -198,10 +252,90 @@ async function allocateReportId(input = {}, now = new Date()) {
         registry.requests[requestKey] = reportId;
         await writeRegistryAtomic(registry, filePath);
 
-        return { ...record, replayed: false, durableStorageConfigured: durableStorageConfigured() };
+        return {
+            ...record,
+            replayed: false,
+            durableStorageConfigured: durableStorageConfigured(),
+            storageBackend: reportIdStorageBackend()
+        };
     } finally {
         await release();
     }
+}
+
+function cloudflareAllocationPayload(input = {}) {
+    const requestKey = cleanText(input.requestKey);
+    if (!requestKey) {
+        throw Object.assign(new Error("A report allocation request key is required."), { statusCode: 400 });
+    }
+    return Object.freeze({
+        requestKeyHash: hashIdentifier(requestKey),
+        userHash: hashIdentifier(input.userKey || input.email || input.userId),
+        companyHash: hashIdentifier(input.companyKey || input.companyName || input.companyId),
+        assessmentHash: hashIdentifier(input.assessmentId || input.assessmentKey)
+    });
+}
+
+async function fetchCloudflareAllocator(pathname, options = {}, config = cloudflareAllocatorConfigFromEnvironment()) {
+    if (!config) throw configurationError("Cloudflare Report ID allocation is not configured.");
+    if (typeof globalThis.fetch !== "function") throw configurationError("Server-side Fetch is unavailable.");
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
+    try {
+        const response = await globalThis.fetch(`${config.baseUrl}${pathname}`, {
+            ...options,
+            headers: {
+                Authorization: `Bearer ${config.secret}`,
+                "Content-Type": "application/json",
+                ...(options.headers || {})
+            },
+            signal: controller.signal
+        });
+        let payload = null;
+        try {
+            payload = await response.json();
+        } catch (_error) {
+            throw Object.assign(new Error("Cloudflare Report ID allocator returned a non-JSON response."), { statusCode: 502 });
+        }
+        if (!response.ok || payload?.ok !== true) {
+            throw Object.assign(
+                new Error(cleanText(payload?.error, "Cloudflare Report ID allocator rejected the request.")),
+                { statusCode: response.status >= 500 ? 503 : 502 }
+            );
+        }
+        if (payload.storageBackend !== CLOUDFLARE_STORAGE_BACKEND || payload.durableStorageConfigured !== true) {
+            throw Object.assign(new Error("Cloudflare Report ID allocator did not confirm durable storage."), { statusCode: 503 });
+        }
+        return payload;
+    } catch (error) {
+        if (error?.name === "AbortError") {
+            throw Object.assign(new Error("Cloudflare Report ID allocator timed out."), { statusCode: 503 });
+        }
+        throw error;
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+async function allocateCloudflareReportId(input = {}) {
+    const payload = await fetchCloudflareAllocator("/allocate", {
+        method: "POST",
+        body: JSON.stringify(cloudflareAllocationPayload(input))
+    });
+    if (!/^GWHR-\d{4}-\d{4}-[A-Z]{2,}\d{2,}$/.test(cleanText(payload.reportId))) {
+        throw Object.assign(new Error("Cloudflare Report ID allocator returned an invalid identifier."), { statusCode: 502 });
+    }
+    return payload;
+}
+
+async function allocateReportId(input = {}, now = new Date()) {
+    const config = cloudflareAllocatorConfigFromEnvironment();
+    if (config) {
+        // Fail closed: once Cloudflare is configured, never fall back to Render's ephemeral filesystem.
+        return allocateCloudflareReportId(input);
+    }
+    return allocateLocalReportId(input, now);
 }
 
 function readJsonBody(request) {
@@ -249,16 +383,17 @@ async function handleAllocation(request, response) {
         }
         const input = await readJsonBody(request);
         const record = await allocateReportId(input);
-        writeJson(response, 201, {
+        writeJson(response, record.replayed ? 200 : 201, {
             ok: true,
             reportId: record.reportId,
             suffix: record.suffix,
             generatedAt: record.generatedAt,
             replayed: record.replayed,
-            durableStorageConfigured: record.durableStorageConfigured,
-            persistenceRequirement: record.durableStorageConfigured
+            storageBackend: record.storageBackend || reportIdStorageBackend(),
+            durableStorageConfigured: record.durableStorageConfigured === true,
+            persistenceRequirement: record.durableStorageConfigured === true
                 ? "persistent-storage-configured"
-                : "set-REPORT_ID_REGISTRY_FILE-to-a-persistent-disk-before-production"
+                : "configure-Cloudflare-Durable-Object-for-free-durable-report-ids"
         });
     } catch (error) {
         writeJson(response, Number(error.statusCode) || 503, {
@@ -269,6 +404,13 @@ async function handleAllocation(request, response) {
 
 async function handleStatus(_request, response) {
     try {
+        const config = cloudflareAllocatorConfigFromEnvironment();
+        if (config) {
+            const status = await fetchCloudflareAllocator("/status", { method: "GET" }, config);
+            writeJson(response, 200, status);
+            return;
+        }
+
         const registry = await readRegistry();
         const last = registry.records[registry.records.length - 1] || null;
         writeJson(response, 200, {
@@ -277,10 +419,13 @@ async function handleStatus(_request, response) {
             lastReportId: last?.reportId || null,
             lastSuffix: last?.suffix || null,
             sequencePolicy: registry.sequencePolicy,
+            storageBackend: reportIdStorageBackend(),
             durableStorageConfigured: durableStorageConfigured()
         });
     } catch (error) {
-        writeJson(response, 503, { error: error.message || "The report ID registry could not be read." });
+        writeJson(response, Number(error.statusCode) || 503, {
+            error: error.message || "The report ID registry could not be read."
+        });
     }
 }
 
@@ -300,13 +445,21 @@ function handleReportIdRequest(request, response) {
 module.exports = {
     REPORT_ID_ROUTE,
     REPORT_ID_STATUS_ROUTE,
+    SEQUENCE_POLICY,
+    CLOUDFLARE_STORAGE_BACKEND,
     handleReportIdRequest,
     allocateReportId,
+    allocateLocalReportId,
+    allocateCloudflareReportId,
+    cloudflareAllocationPayload,
+    cloudflareAllocatorConfigFromEnvironment,
+    fetchCloudflareAllocator,
     nextSequence,
     sequenceSuffix,
     reportIdFor,
     indiaDateParts,
     registryFilePath,
+    reportIdStorageBackend,
     durableStorageConfigured,
     emptyRegistry,
     readRegistry
