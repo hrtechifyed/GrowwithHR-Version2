@@ -91,12 +91,12 @@ test("renders a clean single-column compliance report without scorecards or them
     await page.goto("/executive-advisory-report.html");
 
     await expect(page.locator("#founderReportRoot h1")).toHaveText("HR Compliance & Growth Report", { timeout: 15000 });
-    await expect(page.getByText("Your company information")).toBeVisible();
-    await expect(page.getByText("What GrowWithHR identified")).toBeVisible();
-    await expect(page.getByText("What this report does not assess")).toBeVisible();
-    await expect(page.getByText("Your founder action list")).toBeVisible();
-    await expect(page.getByText("Deterministic first, explanation second")).toBeVisible();
-    await expect(page.getByText("End of Report")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Your company information", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "What GrowWithHR identified", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "What this report does not assess", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Your founder action list", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Deterministic first, explanation second", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "End of Report", exact: true })).toBeVisible();
 
     await expect(page.locator(".executive-profile-strip")).toHaveCount(0);
     await expect(page.locator(".executive-metric-card")).toHaveCount(0);
