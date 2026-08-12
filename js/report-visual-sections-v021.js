@@ -72,7 +72,6 @@
                     "Your founder action list",
                     "How GrowWithHR reached this report",
                     "Report basis, scope & limitations",
-                    "Founder intelligence summary",
                     "End of Report"
                 ]
             };
