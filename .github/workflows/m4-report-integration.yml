@@ -23,9 +23,11 @@ on:
       - "server-m4-delivery.js"
       - "server-report-id-registry.js"
       - "cloudflare/report-id-worker/**"
+      - "wrangler.jsonc"
       - "tests/m4-law-transparency-combination-checks.mjs"
       - "tests/m4-report-integration-checks.mjs"
       - "tests/report-id-cloudflare-durable-object-checks.mjs"
+      - "tests/report-id-worker-health-entry-checks.mjs"
       - "tests/industry-adaptive-assessment-checks.mjs"
       - "tests/report-runtime-corrections-checks.mjs"
       - "tests/report-sequence-controller-checks.mjs"
@@ -69,8 +71,10 @@ jobs:
           node --check server-m4-delivery.js
           node --check server-report-id-registry.js
           node --check cloudflare/report-id-worker/src/index.mjs
+          node --check cloudflare/report-id-worker/src/worker-entry.mjs
           node --check tests/m4-report-integration-checks.mjs
           node --check tests/report-id-cloudflare-durable-object-checks.mjs
+          node --check tests/report-id-worker-health-entry-checks.mjs
           node --check tests/industry-adaptive-assessment-checks.mjs
           node --check tests/report-runtime-corrections-checks.mjs
           node --check tests/report-sequence-controller-checks.mjs
@@ -98,5 +102,7 @@ jobs:
         run: node tests/visual-story-report-v021-checks.mjs
       - name: Run durable Report ID contracts
         run: node tests/report-id-cloudflare-durable-object-checks.mjs
+      - name: Run Report ID Worker health entry contracts
+        run: node tests/report-id-worker-health-entry-checks.mjs
       - name: Run M4 visible report and delivery contracts
         run: node tests/m4-report-integration-checks.mjs
