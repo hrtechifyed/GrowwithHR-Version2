@@ -6,6 +6,24 @@ import {
 const STORAGE_KEY =
     "growwithhr-advisory-briefing-v2";
 
+const REPORT = {
+    companyName: "Width Test Company",
+    industry: "Consulting & Professional Services",
+    employees: 9,
+    peopleFunction: "Founder Led",
+    primaryState: "Karnataka",
+    entity: "Private Limited",
+    fundingStage: "Bootstrapped",
+    hiringPlans: "Moderate Growth",
+    nature: "HR Consulting",
+    founded: "2024",
+    workModel: "Hybrid",
+    remoteWorkforce: "25–50%",
+    locations: 1,
+    countries: 1,
+    priorities: []
+};
+
 test.describe(
     "Assessment first-scene transition",
     () => {
@@ -199,9 +217,9 @@ test.describe(
                     app?.showMoment?.(6);
                 });
 
-                await expect(page.locator("input[name='peopleFunction']").first()).toBeVisible();
+                await expect(page.getByText("Founder-led", { exact: true })).toBeVisible();
                 await expect(page.locator('[data-field-wrapper="priorities"]')).toHaveCount(0);
-                await page.locator("input[name='peopleFunction']").first().check();
+                await page.getByText("Founder-led", { exact: true }).click();
 
                 const validation = await page.evaluate(() => {
                     const app = (window as Window & { executiveAssessment?: any }).executiveAssessment;
@@ -219,14 +237,26 @@ test.describe(
         test(
             "uses the full report container and full A4 content width",
             async ({ page }) => {
+                await page.addInitScript((report) => {
+                    localStorage.setItem("growwithhr-report", JSON.stringify(report));
+                }, REPORT);
                 await page.setViewportSize({ width: 1440, height: 1000 });
                 await page.goto("/executive-advisory-report.html");
 
                 const shell = page.locator("#founderReportRoot");
                 await expect(shell).toBeVisible();
+                await expect(shell.locator("h1")).toHaveText("HR Compliance & Growth Report", { timeout: 15000 });
 
-                const shellWidth = await shell.evaluate((element) => element.getBoundingClientRect().width);
-                expect(shellWidth).toBeGreaterThan(1200);
+                const shellBox = await shell.evaluate((element) => {
+                    const box = element.getBoundingClientRect();
+                    return {
+                        width: box.width,
+                        left: box.left,
+                        right: window.innerWidth - box.right
+                    };
+                });
+                expect(shellBox.width).toBeGreaterThan(1200);
+                expect(Math.abs(shellBox.left - shellBox.right)).toBeLessThan(5);
 
                 await page.waitForFunction(() => {
                     const browserWindow = window as Window & {
