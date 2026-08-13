@@ -115,8 +115,7 @@ test.describe("Complete assessment and advisory delivery", () => {
         await page.locator("#nextButton").click();
 
         await page.getByText("Founder-led", { exact: true }).click();
-        await page.getByText("Hiring and onboarding", { exact: true }).click();
-        await page.getByText("Policies and compliance", { exact: true }).click();
+        await expect(page.locator('input[name="priorities"]')).toHaveCount(0);
         await page.locator("#nextButton").click();
 
         await expect(page.locator("#reviewScreen")).toBeVisible();
