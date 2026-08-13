@@ -107,11 +107,18 @@ test("renders a clean single-column compliance report without scorecards or them
 
     const layout = await page.locator(".gwh-web-section").first().evaluate((element) => {
         const box = element.getBoundingClientRect();
-        return { width: box.width, left: box.left, right: box.right };
+        return {
+            width: box.width,
+            left: box.left,
+            right: window.innerWidth - box.right
+        };
     });
-    expect(layout.width).toBeGreaterThan(700);
-    expect(layout.left).toBeGreaterThan(100);
-    expect(layout.right).toBeLessThan(1340);
+    expect(layout.width).toBeGreaterThan(1200);
+    expect(layout.left).toBeGreaterThanOrEqual(20);
+    expect(layout.left).toBeLessThan(100);
+    expect(layout.right).toBeGreaterThanOrEqual(20);
+    expect(layout.right).toBeLessThan(100);
+    expect(Math.abs(layout.left - layout.right)).toBeLessThan(5);
 });
 
 test("loads the all-running-text dual-theme PDF renderer on the public sample route", async ({ page }) => {
