@@ -11,6 +11,7 @@ const { handleLegalExplanationRequest } = require("./server-legal-explanation");
 const { handleOperationalExplanationRequest } = require("./server-operational-explanation");
 const { handleReportIdRequest } = require("./server-report-id-registry");
 const { handleSingleReportDeliveryRequest } = require("./server-single-report-delivery");
+const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
     "https://hrtechifyed.github.io"
@@ -98,6 +99,7 @@ function installApiCors() {
                 if (handleLegalExplanationRequest(request, response)) return;
                 if (handleOperationalExplanationRequest(request, response)) return;
                 if (handleReportIdRequest(request, response)) return;
+                if (handleCompanyWorkspaceRequest(request, response)) return;
                 if (handleSingleReportDeliveryRequest(request, response)) return;
                 listener(request, response);
             }
@@ -111,4 +113,5 @@ function installApiCors() {
 }
 
 installApiCors();
+startCompanyWorkspaceRetentionScheduler();
 require("./server");
