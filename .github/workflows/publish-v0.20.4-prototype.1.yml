@@ -1,0 +1,60 @@
+name: Publish v0.20.4 Prototype Prerelease
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/publish-v0.20.4-prototype.1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Publish exact validated prototype prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v0.20.4-prototype.1
+          TARGET_SHA: 3c888ec377f0608667474ea1557a806cbf7fc646
+          RELEASE_TITLE: GrowWithHR v0.20.4-prototype.1 — Founder Intelligence UX & Full-Width Report Prototype
+          NOTES_FILE: docs/releases/v0.20.4-prototype.1-founder-intelligence-ux-report.md
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          existing_tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG}" --jq '.object.sha' 2>/dev/null || true)"
+          if [[ -n "$existing_tag_sha" && "$existing_tag_sha" != "$TARGET_SHA" ]]; then
+            echo "Tag $TAG already exists at $existing_tag_sha, expected $TARGET_SHA." >&2
+            exit 1
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; verifying it is a prerelease."
+          else
+            gh release create "$TAG" \
+              --target "$TARGET_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes-file "$NOTES_FILE" \
+              --prerelease
+          fi
+
+          tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG}" --jq '.object.sha')"
+          if [[ "$tag_sha" != "$TARGET_SHA" ]]; then
+            echo "Tag $TAG resolved to $tag_sha, expected $TARGET_SHA." >&2
+            exit 1
+          fi
+
+          is_prerelease="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}" --jq '.prerelease')"
+          if [[ "$is_prerelease" != "true" ]]; then
+            echo "Release $TAG is not marked as a prerelease." >&2
+            exit 1
+          fi
+
+          echo "Published $TAG at $TARGET_SHA as a GitHub prerelease."
