@@ -240,23 +240,11 @@ test.describe(
                     founderLed
                 ).toBeChecked();
 
-                const hiringPriority =
+                await expect(
                     page.locator(
-                        'input[name="priorities"]' +
-                            '[value="hiring-onboarding"]'
-                    );
-
-                await expect(
-                    hiringPriority
-                ).toBeVisible();
-
-                await hiringPriority.check({
-                    force: true
-                });
-
-                await expect(
-                    hiringPriority
-                ).toBeChecked();
+                        'input[name="priorities"]'
+                    )
+                ).toHaveCount(0);
 
                 await page
                     .locator(
