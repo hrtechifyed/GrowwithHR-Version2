@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Intelligence | GrowWithHR</title>
+  <link rel="stylesheet" href="css/01-variables.css"><link rel="stylesheet" href="css/02-base.css"><link rel="stylesheet" href="css/03-typography.css"><link rel="stylesheet" href="css/04-layout.css"><link rel="stylesheet" href="css/18-site-shell.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <style>
+    .org{padding:48px 24px 72px;background:#f8fafc;min-height:100vh;color:#0a2342}.org__inner{max-width:1040px;margin:0 auto}.org__eyebrow{color:#d97706;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}.org h1{font-size:clamp(2.1rem,5vw,3.8rem);margin:10px 0 14px}.org__intro{max-width:780px;color:#526173;line-height:1.7}.org__notice{margin:24px 0;padding:16px 18px;background:#fff7ed;border-left:4px solid #d97706;color:#7c2d12;line-height:1.55}.org-form{margin-top:28px;padding:28px;background:#fff;border:1px solid #d8dfe8}.org-form h2{margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.field{display:grid;gap:7px}.field label{font-weight:750;color:#334155}.field input,.field select,.field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:9px;padding:12px 13px;font:inherit;background:#fff}.field textarea{min-height:92px;resize:vertical}.wide{grid-column:1/-1}.actions{display:flex;gap:12px;margin-top:24px}.primary,.secondary{border:0;border-radius:9px;padding:13px 18px;font:inherit;font-weight:800;cursor:pointer}.primary{background:#0a2342;color:#fff}.secondary{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.results{margin-top:26px;padding:28px;background:#fff;border:1px solid #d8dfe8}.finding{padding:16px 0;border-bottom:1px solid #e2e8f0}.finding:last-child{border-bottom:0}.meta{margin-top:20px;padding:18px;background:#f8fafc}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800}.hidden{display:none!important}@media(max-width:760px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+  </style>
+</head>
+<body data-active-nav="analyze">
+<main class="org"><div class="org__inner">
+  <div class="org__eyebrow">GrowWithHR Intelligence</div><h1>Organization Intelligence</h1>
+  <p class="org__intro">Understand whether your current structure, reporting layers and decision ownership are suitable for the company you are building. GrowWithHR reuses valid facts from a recovered Company Workspace and asks only for additional organization information needed here.</p>
+  <div id="reuseNotice" class="org__notice">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR intelligence engines during the six-month workspace period.</div>
+
+  <form id="organizationForm" class="org-form">
+    <h2>Tell us how your company is organized today</h2>
+    <div class="grid">
+      <div class="field"><label for="companyName">Company name</label><input id="companyName" required></div>
+      <div class="field"><label for="email">Work email</label><input id="email" type="email" required></div>
+      <div class="field"><label for="industry">Industry</label><input id="industry" required></div>
+      <div class="field"><label for="employees">Current employees</label><input id="employees" type="number" min="1" required></div>
+      <div class="field"><label for="growthStage">Growth stage</label><select id="growthStage" required><option value="">Select</option><option>Startup</option><option>Growth</option><option>Scaling</option><option>Enterprise</option></select></div>
+      <div class="field"><label for="expectedEmployees">Expected employees in 12 months</label><input id="expectedEmployees" type="number" min="1" required></div>
+      <div class="field"><label for="managerCount">People managers</label><input id="managerCount" type="number" min="0" required></div>
+      <div class="field"><label for="reportingLevels">Reporting layers between employee and CEO</label><input id="reportingLevels" type="number" min="0" required></div>
+      <div class="field"><label for="founderDirectReports">Founder/CEO direct reports</label><input id="founderDirectReports" type="number" min="0" required></div>
+      <div class="field"><label for="locations">Operating locations</label><input id="locations" type="number" min="1" value="1" required></div>
+      <div class="field wide"><label for="departments">Functions or departments (comma separated)</label><input id="departments" placeholder="Sales, Product, Engineering, Finance, People" required></div>
+      <div class="field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval?</label><textarea id="founderDecisions" placeholder="Hiring approvals, pricing, customer exceptions, compensation, major spend…"></textarea></div>
+      <div class="field wide"><label for="expansion">Planned expansion in the next 12 months</label><textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea></div>
+    </div>
+    <div class="actions"><button class="primary" type="submit">Generate Organization Intelligence</button><a class="secondary" href="intelligence-hub.html">Back to intelligence hub</a></div>
+  </form>
+
+  <section id="organizationResults" class="results hidden" aria-live="polite"><h2>Your Organization Intelligence</h2><div id="findings"></div><div id="workspaceMeta" class="meta"></div></section>
+</div></main>
+<script src="js/site-shell.js"></script><script src="js/company-workspace-client.js"></script>
+<script>
+(() => {
+  const form = document.getElementById('organizationForm');
+  const results = document.getElementById('organizationResults');
+  const findingsEl = document.getElementById('findings');
+  const metaEl = document.getElementById('workspaceMeta');
+  let recovered = null;
+  try { recovered = JSON.parse(sessionStorage.getItem('growwithhr.workspace') || 'null'); } catch (_) {}
+  if (recovered) {
+    document.getElementById('reuseNotice').textContent = `Welcome back${recovered.companyName ? ` to ${recovered.companyName}` : ''}. We recovered your temporary Company Workspace. Existing company facts have been reused where available; update anything that has changed.`;
+    const data = recovered.companyData || {};
+    const shared = data.shared || data;
+    const map = {companyName:recovered.companyName || shared.companyName,email:recovered.email || shared.email,industry:shared.industry,employees:shared.employees,growthStage:shared.growthStage,expectedEmployees:shared.expectedEmployees};
+    Object.entries(map).forEach(([id,value]) => { if (value !== undefined && value !== null && document.getElementById(id)) document.getElementById(id).value = value; });
+  }
+  function number(id){ return Number(document.getElementById(id).value || 0); }
+  function text(id){ return document.getElementById(id).value.trim(); }
+  function buildFacts(){
+    return {shared:{companyName:text('companyName'),email:text('email'),industry:text('industry'),employees:number('employees'),growthStage:text('growthStage'),expectedEmployees:number('expectedEmployees')},organization:{managerCount:number('managerCount'),reportingLevels:number('reportingLevels'),founderDirectReports:number('founderDirectReports'),locations:number('locations'),departments:text('departments').split(',').map(v=>v.trim()).filter(Boolean),founderDecisions:text('founderDecisions'),expansion:text('expansion')}};
+  }
+  function analyze(data){
+    const findings=[]; const e=data.shared.employees; const m=data.organization.managerCount; const layers=data.organization.reportingLevels; const direct=data.organization.founderDirectReports; const depts=data.organization.departments.length; const future=data.shared.expectedEmployees;
+    if (!m) findings.push(['Management structure needs definition','No people managers were recorded. As headcount grows, founder-led supervision can become an operating bottleneck.','Define clear people-management ownership before the next hiring wave.']);
+    else { const span=e/m; if(span>10) findings.push(['Wide management span',`The current employee-to-manager ratio is approximately ${span.toFixed(1)}:1.`,'Review whether managers have enough capacity for coaching, decisions and coordination.']); else findings.push(['Management span','Current management density does not show an obvious span-of-control warning from the supplied facts.','Keep manager count and team design current as headcount changes.']); }
+    if(direct>8) findings.push(['Founder dependency',`The founder/CEO has ${direct} direct reports, indicating a concentrated decision and coordination path.`,'Clarify functional ownership and reduce decisions that require founder escalation.']);
+    if(layers===0 && e>20) findings.push(['Reporting hierarchy needs clarification','No formal reporting layers were recorded for a company above 20 employees.','Document reporting relationships and accountable functional owners.']);
+    if(depts<3 && e>30) findings.push(['Functional coverage may be thin',`Only ${depts} functions/departments were recorded for ${e} employees.`,'Check whether critical business responsibilities have explicit organizational ownership.']);
+    if(future>e*1.3) findings.push(['Growth trigger',`Headcount is expected to grow from ${e} to ${future} within 12 months.`,'Reassess structure, manager capacity and decision rights before the majority of that growth occurs.']);
+    if(!findings.length) findings.push(['No immediate structural trigger identified','The supplied facts do not trigger one of the current Organization Intelligence prototype checks.','Continue to reassess as headcount, locations and operating complexity change.']);
+    return findings;
+  }
+  function apiBase(){ return location.origin==='https://hrtechifyed.github.io' ? 'https://growwithhr.onrender.com' : ''; }
+  async function allocateReportId(data, previousReportId=''){
+    const response=await fetch(`${apiBase()}/api/report-id`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requestKey:`organization:${crypto.randomUUID()}`,email:data.shared.email,companyName:data.shared.companyName,assessmentId:`organization-${Date.now()}`,previousReportId})});
+    const body=await response.json(); if(!response.ok||!body.ok) throw new Error(body.error||'Could not issue a Report ID.'); return body.reportId;
+  }
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button=form.querySelector('button[type="submit"]'); button.disabled=true; button.textContent='Generating…';
+    try{
+      const data=buildFacts(); const prior=recovered?.reportId||''; const reportId=await allocateReportId(data,prior); let workspace;
+      if(recovered){ workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:data,completedEngine:'organization'})).workspace; recovered={...recovered,reportId,companyData:data,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines}; sessionStorage.setItem('growwithhr.workspace',JSON.stringify(recovered)); }
+      else { const created=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:data,completedEngine:'organization'})).workspace; workspace=created; recovered={reportId,reportIds:created.reportIds,accessKey:created.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:data,completedEngines:created.completedEngines,expiresAt:created.expiresAt}; sessionStorage.setItem('growwithhr.workspace',JSON.stringify(recovered)); }
+      findingsEl.innerHTML=analyze(data).map(([title,why,action])=>`<article class="finding"><h3>${title}</h3><p>${why}</p><p><strong>What to do next:</strong> ${action}</p></article>`).join('');
+      metaEl.innerHTML=`<strong>Report ID:</strong> <span class="code">${reportId}</span><br>${workspace.accessKey?`<strong>Workspace Recovery Code:</strong> <span class="code">${workspace.accessKey}</span><br><small>Save this code now. GrowWithHR does not display it again.</small><br>`:''}<strong>Reusable company data scheduled for deletion:</strong> ${new Date(workspace.expiresAt).toLocaleDateString()}<br><small>GrowWithHR will email you seven days before deletion and again after the reusable company data has been deleted.</small>`;
+      results.classList.remove('hidden'); results.scrollIntoView({behavior:'smooth'});
+    } catch(error){ alert(error.message||'Organization Intelligence could not be generated.'); }
+    finally{ button.disabled=false; button.textContent='Generate Organization Intelligence'; }
+  });
+})();
+</script><script src="js/build-marker.js"></script>
+</body>
+</html>
