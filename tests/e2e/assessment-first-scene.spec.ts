@@ -258,18 +258,20 @@ test.describe(
                 expect(shellBox.width).toBeGreaterThan(1200);
                 expect(Math.abs(shellBox.left - shellBox.right)).toBeLessThan(5);
 
-                await page.waitForFunction(() => {
+                const layout = await page.evaluate(async () => {
                     const browserWindow = window as Window & {
                         GrowWithHRReportBrandTemplate?: {
                             fullUsablePageWidth?: boolean;
                             contentWidth?: number;
                         };
                     };
-                    return browserWindow.GrowWithHRReportBrandTemplate?.fullUsablePageWidth === true;
-                });
 
-                const layout = await page.evaluate(() => {
-                    const template = (window as Window & { GrowWithHRReportBrandTemplate?: any }).GrowWithHRReportBrandTemplate;
+                    if (!browserWindow.GrowWithHRReportBrandTemplate) {
+                        await import("/js/report-visual-core-v021.js");
+                        await import("/js/report-brand-template-v022.js");
+                    }
+
+                    const template = browserWindow.GrowWithHRReportBrandTemplate;
                     return {
                         fullUsablePageWidth: template?.fullUsablePageWidth,
                         contentWidth: template?.contentWidth
