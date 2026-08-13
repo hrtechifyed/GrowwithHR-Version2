@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.29.0-founder-intelligence-bootstrap";
+    const VERSION = "0.30.0-company-workspace-continuity";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -52,6 +52,12 @@
         try {
             await Promise.resolve(pipeline);
             installTestAdapterCompatibility();
+
+            if (document.body?.classList.contains("analyze-company-page")) {
+                await import("./company-workspace-client.js");
+                await import("./company-workspace-continuity.js");
+            }
+
             await import("./report-single-edition-ui-v1.js");
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
@@ -122,6 +128,7 @@
                 founderDemoSingleReport: true,
                 singleReportDelivery: true,
                 singleEditionUi: true,
+                companyWorkspaceContinuity: Boolean(window.GrowWithHRCompanyWorkspaceContinuity?.version),
                 reportTemplateId: "hrtechify-founder-compliance-growth-v1",
                 reportLogoAsset: "assets/hrtechify-logo.png",
                 reportIdRequired: true,
