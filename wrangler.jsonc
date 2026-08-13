@@ -1,9 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "growwithhr-version2",
-  "main": "cloudflare/report-id-worker/src/index.mjs",
+  "main": "cloudflare/report-id-worker/src/entry-v2.mjs",
   "compatibility_date": "2026-08-12",
   "workers_dev": true,
+  "triggers": {
+    "crons": [
+      "0 * * * *"
+    ]
+  },
   "secrets": {
     "required": [
       "REPORT_ID_ALLOCATOR_SECRET"
