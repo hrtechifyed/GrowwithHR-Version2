@@ -29,14 +29,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          existing_tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG}" --jq '.object.sha' 2>/dev/null || true)"
+          existing_tag_sha="$(git ls-remote --tags origin "refs/tags/${TAG}" | awk '{print $1}')"
           if [[ -n "$existing_tag_sha" && "$existing_tag_sha" != "$TARGET_SHA" ]]; then
             echo "Tag $TAG already exists at $existing_tag_sha, expected $TARGET_SHA." >&2
             exit 1
           fi
 
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release $TAG already exists; verifying it is a prerelease."
+            echo "Release $TAG already exists; verifying it."
           else
             gh release create "$TAG" \
               --target "$TARGET_SHA" \
@@ -45,7 +45,7 @@ jobs:
               --prerelease
           fi
 
-          tag_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG}" --jq '.object.sha')"
+          tag_sha="$(git ls-remote --tags origin "refs/tags/${TAG}" | awk '{print $1}')"
           if [[ "$tag_sha" != "$TARGET_SHA" ]]; then
             echo "Tag $TAG resolved to $tag_sha, expected $TARGET_SHA." >&2
             exit 1
