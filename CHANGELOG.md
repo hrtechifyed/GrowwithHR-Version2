@@ -10,6 +10,45 @@ No unreleased product changes are currently recorded.
 
 ---
 
+## [v0.20.4-prototype.1] - Founder Intelligence, Guided Assessment and Report Parity
+
+**Release Date:** 2026-08-13
+
+### Release classification
+
+- Research-grade prototype / GitHub prerelease.
+- Not production legal certification.
+- Deterministic applicability remains the sole decision authority.
+
+### Added and improved
+
+- Added stable founder obligation objects, deterministic next-action ordering, missing-fact resolution, scenario comparison and scale-trigger framing.
+- Added durable server-issued Report ID lineage for revised reports.
+- Added founder web/PDF parity for obligation states, next actions, unresolved facts and growth triggers.
+- Added a guided searchable industry combobox with progressive narrowing and keyboard navigation.
+- Added `HR Consulting` and related HR/People consulting aliases mapped to the existing deterministic `Consulting & Professional Services` profile.
+- Removed the required “Where would guidance be most useful right now?” priority-selection gate while retaining the People/HR support context required by the assessment.
+- Expanded the founder web report to the full responsive container width with symmetric padding and print/A4 width rules.
+- Expanded the branded jsPDF writer to the full **178 mm** usable A4 content width with 16 mm side margins.
+
+### Validation
+
+- Executive Assessment Tests passed on exact founder UX/report head `c2bb6fcdd9ff5efc2426ec04e22208135fcd4945`.
+- GrowWithHR CI passed on the same exact head.
+- PR #158 merged as `508aa560734808c6d3f3b4e60f30812a1ec1a103`.
+- Live Release Smoke run `31672944677` passed against that merge commit.
+- Live Report ID registry evidence records at least one issued ID (`GWHR-2026-0813-AA01`).
+
+### Safety and boundaries
+
+- Legal RAG remains post-decision and explanation-only.
+- No scoring, compliance certification or evidence upload was added.
+- Active legal catalogues remain `needs-legal-review`.
+- Production certification remains future hardening under #142.
+- Exact official-source assurance remains future hardening under #143.
+
+---
+
 ## [v0.20.3-prototype.1] - Governed Compliance & Legal RAG Prototype
 
 **Release Date:** 2026-08-11
