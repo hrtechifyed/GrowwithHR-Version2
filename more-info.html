@@ -2,91 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>About GrowWithHR | HRTechify</title>
-
-  <meta
-    name="description"
-    content="About, privacy and contact information for GrowWithHR."
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About and Privacy | GrowWithHR</title>
+  <meta name="description" content="About, privacy and contact information for GrowWithHR by HRTechify.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="css/18-site-shell.css">
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  >
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
-
 <body class="more-info-page" data-active-nav="more">
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html#home" class="brand">
-        <img
-          src="assets/hrtechify-logo.png"
-          class="nav-logo"
-          alt="HRTechify Logo"
-        >
-
-        <div>
-          <div class="brand-name">HRTechify</div>
-          <div class="product-name">GrowWithHR</div>
-        </div>
-      </a>
-
-      <button
-        class="hamburger"
-        id="hamburger"
-        type="button"
-        aria-label="Open Navigation"
-      >
-        ☰
-      </button>
-
-      <div class="nav-links" id="navLinks">
-        <a href="index.html#platform">Platform</a>
-        <a href="analyze-company.html">Analyze My Company</a>
-        <a href="official-resources.html">Official Sources</a>
-        <a href="sample-advisory-report.html">Advisory</a>
-
-        <div class="nav-dropdown">
-          <button
-            class="dropdown-toggle"
-            type="button"
-            id="moreMenuButton"
-          >
-            More
-            <i
-              class="fa-solid fa-chevron-down"
-              aria-hidden="true"
-            ></i>
-          </button>
-
-          <div class="dropdown-menu">
-            <a href="#about">About</a>
-            <a href="#privacy">Privacy</a>
-            <a href="#contact">Contact</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-
   <header class="hero compact-hero">
     <div class="container">
       <div class="hero-content">
         <h1>Practical HR intelligence.</h1>
-
-        <p class="hero-description">
-          A dedicated overview of the product, privacy principles and contact
-          details.
-        </p>
+        <p class="hero-description">How GrowWithHR works, how reusable company information is handled, and how to contact HRTechify.</p>
       </div>
     </div>
   </header>
@@ -94,203 +22,58 @@
   <main>
     <section class="trust-section compact-section">
       <div class="container">
-        <div
-          class="trust-grid gwhr-peel-stack rolling-card-group"
-          data-testid="more-info-stack"
-        >
-          <article
-            id="about"
-            class="trust-card gwhr-peel-card rolling-card"
-          >
+        <div class="trust-grid gwhr-peel-stack rolling-card-group" data-testid="more-info-stack">
+          <article id="about" class="trust-card gwhr-peel-card rolling-card">
             <div class="trust-icon" aria-hidden="true">✨</div>
-
             <div class="trust-card-body">
               <h2>About</h2>
-
-              <p>
-                GrowWithHR helps founders, CXOs and HR leaders convert people,
-                compliance and growth questions into a practical Executive
-                Advisory.
-              </p>
-
-              <p>
-                The current release is a research-grade prototype using
-                deterministic rules and governed research, including structured
-                secondary research. Legal catalogue outputs remain subject to
-                legal review and are not legal certification or proof of
-                compliance.
-              </p>
-
-              <div class="trust-features">
-                <span>🏢 Company DNA</span>
-                <span>🛡 Compliance</span>
-                <span>📈 Growth</span>
-              </div>
+              <p>GrowWithHR helps founders, CXOs and HR leaders turn company, people, compliance and growth questions into practical intelligence and next actions.</p>
+              <p>The current release is a research-grade prototype using deterministic rules and governed research. Legal catalogue outputs remain subject to legal review and are not legal certification or proof of compliance.</p>
+              <div class="trust-features"><span>🏢 Company Intelligence</span><span>🛡 Compliance</span><span>📈 Growth</span></div>
             </div>
           </article>
 
-          <article
-            id="privacy"
-            class="trust-card gwhr-peel-card rolling-card"
-          >
+          <article id="privacy" class="trust-card gwhr-peel-card rolling-card">
             <div class="trust-icon" aria-hidden="true">🔒</div>
-
             <div class="trust-card-body">
               <h2>Privacy and data handling</h2>
+              <p>GrowWithHR uses the company and workforce information you provide to prepare the intelligence analysis you request. Limited in-progress assessment data may also be stored in your browser so you can continue on the same device and browser.</p>
 
-              <p>
-                GrowWithHR uses company and workforce information to prepare a
-                personalised advisory. Limited assessment progress may be
-                stored in your browser so that you can resume the experience on
-                the same device and browser.
-              </p>
+              <h3>Temporary Company Workspace</h3>
+              <p>When you complete a GrowWithHR intelligence analysis, reusable company information is stored in the GrowWithHR database for <strong>six months from your latest completed intelligence analysis</strong>. This lets you return with your Report ID and Workspace Recovery Code and use another GrowWithHR intelligence engine without entering the same company information again.</p>
+              <p>GrowWithHR emails the workspace email address approximately <strong>seven days before the scheduled deletion date</strong>. On the scheduled deletion date, the reusable company information is deleted and GrowWithHR sends a deletion-confirmation email. You can also request earlier deletion from a recovered Company Workspace.</p>
+              <p>The six-month period is a GrowWithHR product retention policy. It is not presented as a statutory retention requirement.</p>
 
-              <p>
-                When you request email delivery, the recipient details,
-                assessment information required for the advisory, prepared
-                report data and generated PDF are sent to the GrowWithHR
-                backend. The backend validates the request and sends the
-                advisory using the Gmail API.
-              </p>
+              <h3>What may remain after Company Workspace deletion</h3>
+              <p>Downloaded reports remain with you. GrowWithHR may retain minimal non-content Report ID and operational records where needed for report identity, security, fraud prevention, system integrity or legal obligations. Those records are separate from the reusable Company Workspace and are not intended to reconstruct the deleted company-data payload.</p>
+
+              <h3>Email and report delivery</h3>
+              <p>When you request email delivery, recipient details, the information needed to prepare the report, report data and the generated PDF are processed by the GrowWithHR backend and Gmail API. Sent emails and attachments may remain in the connected Gmail account according to that account's retention settings.</p>
 
               <ul>
-                <li>
-                  We collect only information needed to prepare and deliver the
-                  advisory.
-                </li>
-
-                <li>
-                  GrowWithHR does not currently maintain a dedicated assessment
-                  database, customer account or cloud-save service.
-                </li>
-
-                <li>
-                  Saved browser progress remains in the same browser until it is
-                  cleared, replaced or invalidated.
-                </li>
-
-                <li>
-                  Sent emails and PDF attachments may remain in the connected
-                  Gmail account according to that account's retention settings.
-                </li>
-
-                <li>
-                  We do not sell company assessment information.
-                </li>
-
-                <li>
-                  Do not enter confidential employee-level personal, medical,
-                  payroll, disciplinary or performance information.
-                </li>
-
-                <li>
-                  Any future database, CRM, document-storage, account,
-                  compliance-workspace or RAG-history feature will require
-                  updated privacy information and appropriate controls before
-                  release.
-                </li>
+                <li>We collect and process information needed to provide the requested GrowWithHR intelligence and continuity experience.</li>
+                <li>Reusable Company Workspace data is encrypted before database storage and is not intended to be directly accessible from the browser database client.</li>
+                <li>Keep your Workspace Recovery Code private. A Report ID by itself is not intended to unlock reusable company information.</li>
+                <li>We do not sell company assessment information.</li>
+                <li>Do not enter confidential employee-level medical, payroll, disciplinary, performance or other sensitive personal information into GrowWithHR.</li>
+                <li>If a future feature stores uploaded documents or private Company RAG content, its retention and deletion controls must follow the same disclosed Company Workspace lifecycle before release.</li>
               </ul>
-
-              <p>
-                The product is designed around data minimisation, purpose
-                limitation and transparency principles aligned to
-                <a
-                  href="https://gdpr.eu/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GDPR guidance
-                </a>
-                and the
-                <a
-                  href="https://commission.europa.eu/law/law-topic/data-protection_en"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  European Commission data-protection framework
-                </a>.
-              </p>
             </div>
           </article>
 
-          <article
-            id="contact"
-            class="trust-card gwhr-peel-card rolling-card"
-          >
+          <article id="contact" class="trust-card gwhr-peel-card rolling-card">
             <div class="trust-icon" aria-hidden="true">✉</div>
-
             <div class="trust-card-body">
               <h2>Contact</h2>
-
-              <p>
-                Questions, partnerships or suggestions to improve GrowWithHR?
-              </p>
-
-              <a
-                href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20Early%20Access"
-                class="primary-btn"
-              >
-                Write to me
-              </a>
-
-              <div class="contact-email">
-                hrtechifyed@gmail.com
-              </div>
+              <p>Questions, privacy requests, partnerships or suggestions to improve GrowWithHR?</p>
+              <a href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20Question" class="primary-btn">Write to HRTechify</a>
+              <div class="contact-email">hrtechifyed@gmail.com</div>
             </div>
           </article>
         </div>
       </div>
     </section>
   </main>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <img
-            src="assets/hrtechify-logo.png"
-            alt="HRTechify Logo"
-            class="footer-logo"
-          >
-
-          <div>
-            <div class="brand-name">HRTechify</div>
-
-           <div class="product-name" id="productVersion">
-            GrowWithHR Public 0.20.4-prototype.1
-          </div>
-          </div>
-        </div>
-
-        <p>© 2026 HRTechify - People • Technology • Growth</p>
-        <p>All Rights Reserved</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const navLinks = document.getElementById("navLinks");
-    const moreMenuButton = document.getElementById("moreMenuButton");
-
-    if (hamburger && navLinks) {
-      hamburger.addEventListener("click", () => {
-        navLinks.classList.toggle("active");
-      });
-
-      document.querySelectorAll("#navLinks a").forEach((link) => {
-        link.addEventListener("click", () => {
-          navLinks.classList.remove("active");
-        });
-      });
-    }
-
-    if (moreMenuButton) {
-      moreMenuButton.addEventListener("click", () => {
-        window.location.href = "more-info.html";
-      });
-    }
-  </script>
 
   <script src="js/sticky-card-debug.js"></script>
   <script src="js/build-marker.js"></script>
