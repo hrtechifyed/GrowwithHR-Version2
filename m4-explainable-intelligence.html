@@ -12,6 +12,7 @@
     <style>
         body{background:#f4f7fb;color:#14213d}.m4-shell{max-width:1180px;margin:0 auto;padding:calc(var(--site-shell-header-height,112px) + 42px) 24px 64px}.m4-hero,.m4-panel{background:#fff;border:1px solid #d8e1ec;border-radius:20px;box-shadow:0 18px 50px rgba(15,23,42,.08)}.m4-hero{padding:32px;margin-bottom:24px}.m4-kicker{color:#e8751a;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.m4-title{margin:.35rem 0 .75rem;color:#1d3557}.m4-note{max-width:850px;line-height:1.7}.m4-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.m4-panel{padding:24px}.m4-metric-value{font-size:2.5rem;font-weight:800;color:#1f6f6c}.m4-basis{line-height:1.6;color:#475569}.m4-questions{margin-top:24px}.m4-question{padding:18px 0;border-top:1px solid #e2e8f0}.m4-question:first-child{border-top:0}.m4-badge{display:inline-block;padding:5px 10px;border-radius:999px;background:#fff0e6;color:#9a4a00;font-size:.8rem;font-weight:800}.m4-empty{padding:18px;background:#fff8e7;border-left:4px solid #d89b00}.m4-trace{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem;white-space:pre-wrap;background:#0f172a;color:#e2e8f0;padding:18px;border-radius:14px;overflow:auto}@media(max-width:800px){.m4-grid{grid-template-columns:1fr}}
     </style>
+  <script src="js/site-shell.js" defer></script>
 </head>
 <body data-active-nav="analyze">
     <main class="m4-shell">
@@ -36,7 +37,7 @@
             <pre id="decisionTrace" class="m4-trace"></pre>
         </section>
     </main>
-    <script src="js/site-shell.js" defer></script>
+    
     <script type="module">
         import { buildExplainableIntelligence } from "./js/assessment-v3/explainable-intelligence-model.js";
         const read = (key) => { try { return JSON.parse(localStorage.getItem(key) || "null") || {}; } catch { return {}; } };

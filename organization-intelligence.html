@@ -44,6 +44,7 @@
     @media(max-width:900px){.summary-grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:760px){.grid{grid-template-columns:1fr}.wide,.section-title{grid-column:auto}.summary-grid,.metric-grid{grid-template-columns:1fr}.finding__top{display:block}.status{margin-bottom:10px}}
   </style>
+  <script src="js/site-shell.js" defer></script>
 </head>
 <body data-active-nav="analyze">
 <main class="org">
@@ -163,7 +164,7 @@
     </section>
   </div>
 </main>
-<script src="js/site-shell.js"></script>
+
 <script src="js/company-workspace-client.js"></script>
 <script type="module">
 import { analyzeOrganizationStructure } from "./js/modules/organization/organization-structure-engine.mjs";
