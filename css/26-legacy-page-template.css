@@ -1,0 +1,236 @@
+/* ==========================================================
+   GrowWithHR legacy/private page template compatibility
+   ----------------------------------------------------------
+   Brings older prototype views into the shared dark/glass/orange
+   presentation without taking navbar authority away from
+   18-site-shell.css. Loaded through 01-variables.css so every
+   page that consumes the design system receives the same frame.
+========================================================== */
+
+/* -------------------------- Roadmap stubs -------------------------- */
+
+body.has-site-shell .roadmap-stub {
+    min-height: calc(100vh - var(--site-shell-header-height, 112px));
+    display: grid;
+    place-items: center;
+    padding: calc(var(--site-shell-header-height, 112px) + clamp(44px, 7vw, 76px)) var(--public-template-gutter, clamp(18px, 4vw, 48px)) clamp(64px, 8vw, 96px);
+    background:
+        radial-gradient(circle at 18% 14%, rgba(255,176,0,.11), transparent 30%),
+        radial-gradient(circle at 82% 76%, rgba(37,99,235,.09), transparent 34%),
+        var(--bg-primary);
+    color: var(--text-primary);
+}
+
+body.has-site-shell .roadmap-stub__card {
+    width: min(100%, 820px);
+    padding: clamp(28px, 5vw, 52px);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(20px);
+}
+
+body.has-site-shell .roadmap-stub__eyebrow {
+    margin: 0 0 12px;
+    color: var(--brand-gold);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+}
+
+body.has-site-shell .roadmap-stub h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(2.35rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+}
+
+body.has-site-shell .roadmap-stub__status {
+    margin: 18px 0 0;
+    color: var(--text-secondary);
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.7;
+}
+
+body.has-site-shell .roadmap-stub__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+/* -------------------------- M4 Explainable Intelligence -------------------------- */
+
+body.has-site-shell .m4-shell {
+    max-width: var(--public-template-width, 1180px) !important;
+    padding: calc(var(--site-shell-header-height, 112px) + clamp(44px, 6vw, 68px)) var(--public-template-gutter, 24px) clamp(64px, 8vw, 96px) !important;
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell .m4-hero,
+body.has-site-shell .m4-panel {
+    border: 1px solid rgba(255,255,255,.09) !important;
+    border-radius: var(--radius-lg) !important;
+    background: linear-gradient(180deg, rgba(24,34,53,.96), rgba(10,16,32,.94)) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell .m4-hero {
+    padding: clamp(26px, 4vw, 40px) !important;
+}
+
+body.has-site-shell .m4-kicker {
+    color: var(--brand-gold) !important;
+}
+
+body.has-site-shell .m4-title,
+body.has-site-shell .m4-panel h2,
+body.has-site-shell .m4-panel h3 {
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell .m4-title {
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    line-height: 1.04;
+    letter-spacing: -.035em;
+}
+
+body.has-site-shell .m4-note,
+body.has-site-shell .m4-basis,
+body.has-site-shell .m4-question p {
+    color: var(--text-secondary) !important;
+}
+
+body.has-site-shell .m4-metric-value {
+    color: var(--brand-gold) !important;
+}
+
+body.has-site-shell .m4-question {
+    border-top-color: rgba(148,163,184,.18) !important;
+}
+
+body.has-site-shell .m4-badge {
+    background: rgba(255,176,0,.12) !important;
+    color: var(--brand-gold) !important;
+}
+
+body.has-site-shell .m4-empty {
+    border-left-color: var(--brand-gold) !important;
+    background: rgba(255,176,0,.08) !important;
+    color: var(--text-secondary) !important;
+}
+
+body.has-site-shell .m4-trace {
+    border: 1px solid rgba(148,163,184,.18);
+    background: rgba(2,6,23,.78) !important;
+    color: #e2e8f0 !important;
+}
+
+/* -------------------------- M5 Compliance Workspace -------------------------- */
+
+body.has-site-shell.m5-workspace-page {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-shell {
+    max-width: var(--public-template-width, 1180px) !important;
+    padding: calc(var(--site-shell-header-height, 112px) + clamp(44px, 6vw, 68px)) var(--public-template-gutter, 20px) clamp(64px, 8vw, 96px) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-hero,
+body.has-site-shell.m5-workspace-page .workspace-panel {
+    border: 1px solid rgba(255,255,255,.09) !important;
+    border-radius: var(--radius-lg) !important;
+    background: linear-gradient(180deg, rgba(24,34,53,.96), rgba(10,16,32,.94)) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-hero h1,
+body.has-site-shell.m5-workspace-page .workspace-panel h2,
+body.has-site-shell.m5-workspace-page .workspace-panel h3,
+body.has-site-shell.m5-workspace-page .workspace-task h3,
+body.has-site-shell.m5-workspace-page .workspace-record h3 {
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-hero h1 {
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    line-height: 1.04;
+    letter-spacing: -.035em;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-eyebrow {
+    color: var(--brand-gold) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-hero p,
+body.has-site-shell.m5-workspace-page .workspace-panel p,
+body.has-site-shell.m5-workspace-page .workspace-task p,
+body.has-site-shell.m5-workspace-page .workspace-record p,
+body.has-site-shell.m5-workspace-page .workspace-form label {
+    color: var(--text-secondary) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-note {
+    border-left-color: var(--brand-gold) !important;
+    background: rgba(255,176,0,.08) !important;
+    color: var(--text-secondary) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-task,
+body.has-site-shell.m5-workspace-page .workspace-record {
+    border-bottom-color: rgba(148,163,184,.18) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-actions button,
+body.has-site-shell.m5-workspace-page .workspace-actions label,
+body.has-site-shell.m5-workspace-page .workspace-form button {
+    min-height: 46px;
+    border: 0 !important;
+    border-radius: var(--radius-pill) !important;
+    background: var(--gradient-brand) !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-task select,
+body.has-site-shell.m5-workspace-page .workspace-form input,
+body.has-site-shell.m5-workspace-page .workspace-form textarea,
+body.has-site-shell.m5-workspace-page .workspace-form select {
+    min-height: 46px;
+    border: 1px solid rgba(255,255,255,.13) !important;
+    border-radius: var(--radius-sm) !important;
+    background: rgba(255,255,255,.05) !important;
+    color: var(--text-primary) !important;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-task select:focus,
+body.has-site-shell.m5-workspace-page .workspace-form input:focus,
+body.has-site-shell.m5-workspace-page .workspace-form textarea:focus,
+body.has-site-shell.m5-workspace-page .workspace-form select:focus {
+    border-color: rgba(255,176,0,.58) !important;
+    box-shadow: 0 0 0 3px rgba(255,176,0,.10);
+    outline: none;
+}
+
+body.has-site-shell.m5-workspace-page .workspace-notice[data-state="error"] {
+    color: #fca5a5 !important;
+}
+
+@media (max-width: 760px) {
+    body.has-site-shell .roadmap-stub {
+        padding-inline: 16px;
+    }
+
+    body.has-site-shell .m4-shell,
+    body.has-site-shell.m5-workspace-page .workspace-shell {
+        padding-inline: 16px !important;
+    }
+}
