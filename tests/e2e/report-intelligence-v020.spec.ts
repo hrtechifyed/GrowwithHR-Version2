@@ -48,7 +48,7 @@ test.describe("v0.20 contextual report intelligence", () => {
             (window as Window & { jspdf?: { jsPDF: typeof FakeJsPDF } }).jspdf = { jsPDF: FakeJsPDF };
             localStorage.setItem("growwithhr-report-theme", "light");
         });
-        await page.goto("/analyze-company.html", { waitUntil: "domcontentloaded" });
+        await page.goto("/analyze-company.html?engine=compliance", { waitUntil: "domcontentloaded" });
         await page.waitForFunction(() => Boolean(
             (window as Window & { GrowWithHRPDF?: { reportIntelligenceFixVersion?: string } })
                 .GrowWithHRPDF?.reportIntelligenceFixVersion
