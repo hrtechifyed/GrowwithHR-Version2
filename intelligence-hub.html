@@ -4,48 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analyze My Company | GrowWithHR</title>
-  <meta name="description" content="Choose a GrowWithHR intelligence analysis or continue a previous temporary company workspace.">
-  <link rel="stylesheet" href="css/01-variables.css">
-  <link rel="stylesheet" href="css/02-base.css">
-  <link rel="stylesheet" href="css/03-typography.css">
-  <link rel="stylesheet" href="css/04-layout.css">
-  <link rel="stylesheet" href="css/18-site-shell.css">
+  <meta name="description" content="Choose a GrowWithHR intelligence analysis or recover a saved Company Workspace.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <style>
-    .hub{min-height:calc(100vh - 140px);padding:56px 24px 72px;background:linear-gradient(180deg,#f8fafc,#fff);color:#0a2342}.hub__inner{width:100%;max-width:1180px;margin:0 auto}.eyebrow{font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#d97706;font-size:.8rem}.hub h1{font-size:clamp(2.2rem,5vw,4.2rem);line-height:1.02;margin:10px 0 16px}.intro{max-width:790px;font-size:1.08rem;line-height:1.7;color:#475569}.returning{margin:30px 0 34px;padding:24px;border:1px solid #d8dfe8;background:#fff;box-shadow:0 14px 35px rgba(10,35,66,.08)}.returning h2{margin:0 0 8px}.returning p{color:#64748b}.recover-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.recover-form label{display:grid;gap:7px;font-weight:700;color:#334155}.recover-form input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;padding:13px 14px;font:inherit}.recover-form button,.card a,.workspace-actions button{border:0;border-radius:10px;padding:13px 18px;font:inherit;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.recover-form button{background:#0a2342;color:#fff}.workspace-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.workspace-actions button{padding:10px 14px}.workspace-actions .fresh{background:#fff;color:#0a2342;border:1px solid #cbd5e1}.workspace-actions .delete{background:#fff;color:#991b1b;border:1px solid #fecaca}.status{margin-top:12px;color:#475569}.privacy{margin-top:12px;font-size:.91rem;color:#64748b;line-height:1.55}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.card{display:flex;flex-direction:column;min-height:290px;padding:28px;border:1px solid #d8dfe8;background:#fff;box-shadow:0 16px 36px rgba(10,35,66,.07)}.card__tag{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#d97706}.card h2{margin:10px 0 12px;font-size:1.7rem}.card p,.card li{line-height:1.65;color:#526173}.card a{margin-top:auto;background:#d97706;color:#fff;align-self:flex-start}.card a.secondary{background:#0a2342}.retention{margin-top:34px;padding:20px 22px;border-left:4px solid #d97706;background:#fff7ed;color:#7c2d12;line-height:1.6}@media(max-width:780px){.recover-form,.grid{grid-template-columns:1fr}.recover-form button{width:100%}}
-  </style>
   <script src="js/site-shell.js" defer></script>
 </head>
-<body data-active-nav="analyze">
-  <main class="hub"><div class="hub__inner">
-    <div class="eyebrow">GrowWithHR Intelligence</div>
-    <h1>Analyze My Company</h1>
-    <p class="intro">Choose the intelligence you need today. Each engine can be used independently. If you have used GrowWithHR before, recover your temporary Company Workspace first so we can reuse information you already supplied and avoid asking the same questions again.</p>
-
-    <section class="returning">
-      <h2>Have you used GrowWithHR before?</h2>
-      <p>Enter a previous Report ID and the Workspace Recovery Code issued with that workspace.</p>
-      <form id="workspaceRecoverForm" class="recover-form">
-        <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
-        <label>Workspace Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
-        <button type="submit">Continue</button>
-      </form>
-      <div id="workspaceRecoverStatus" class="status" aria-live="polite"></div>
-      <div id="workspaceActions" class="workspace-actions" hidden>
-        <button id="workspaceStartFresh" class="fresh" type="button">Start fresh in this browser</button>
-        <button id="workspaceDeleteData" class="delete" type="button">Delete my reusable company data now</button>
+<body class="intelligence-hub-page" data-active-nav="analyze">
+  <main>
+    <section class="hero intelligence-hub-hero" aria-labelledby="hubTitle">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-content intelligence-hub-hero__content">
+          <div class="hero-badge">GrowWithHR Intelligence</div>
+          <h1 id="hubTitle">Analyze <span>My Company</span></h1>
+          <p class="hero-description">Choose what you want to understand. Recover a workspace only if you want to reuse saved Company DNA.</p>
+        </div>
       </div>
-      <div class="privacy">First time using GrowWithHR? Start fresh below. Reusable company information is stored in our database for six months from the latest completed intelligence analysis. We email you seven days before scheduled deletion and again after deletion is completed. <a href="more-info.html#privacy">Read the privacy information.</a></div>
     </section>
 
-    <section class="grid" aria-label="Available intelligence engines">
-      <article class="card"><div class="card__tag">Available</div><h2>Compliance Intelligence</h2><p>Understand employment-compliance areas relevant to the company facts you provide, unresolved information, growth triggers and practical next actions.</p><ul><li>Deterministic applicability rules</li><li>Governed legal-source explanation</li><li>Founder actions and report</li></ul><a href="analyze-company.html?engine=compliance">Analyze Compliance</a></article>
-      <article class="card"><div class="card__tag">Available</div><h2>Organization Intelligence</h2><p>Understand how the company is structured today, where reporting and decision ownership may create friction, and what may need to change as the company grows.</p><ul><li>Structure and reporting</li><li>Founder dependency and decision rights</li><li>Growth-stage organization actions</li></ul><a class="secondary" href="organization-intelligence.html">Analyze Organization</a></article>
+    <section class="hub-workspace-section" aria-labelledby="returningTitle">
+      <div class="container">
+        <div class="hub-workspace-card">
+          <div class="hub-workspace-copy">
+            <div class="hub-eyebrow"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Returning?</div>
+            <h2 id="returningTitle">Reuse your Company DNA</h2>
+            <p>Use a previous Report ID and Workspace Recovery Code.</p>
+          </div>
+
+          <div>
+            <form id="workspaceRecoverForm" class="hub-recover-form">
+              <label>
+                Report ID
+                <input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required>
+              </label>
+              <label>
+                Recovery Code
+                <input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required>
+              </label>
+              <button type="submit">Continue</button>
+            </form>
+            <div id="workspaceRecoverStatus" class="hub-workspace-status" aria-live="polite"></div>
+            <div id="workspaceActions" class="hub-workspace-actions" hidden>
+              <button id="workspaceStartFresh" class="fresh" type="button">Start fresh</button>
+              <button id="workspaceDeleteData" class="delete" type="button">Delete my reusable company data now</button>
+            </div>
+          </div>
+        </div>
+        <p class="hub-privacy-note">Saved Company Data is kept for six months from your latest completed analysis. We email you seven days before scheduled deletion. <a href="more-info.html#privacy">Privacy details</a>.</p>
+      </div>
     </section>
 
-    <div class="retention"><strong>Temporary data retention:</strong> company information saved for reuse is held in the GrowWithHR database for six months from the latest completed intelligence analysis. A deletion reminder is sent seven days before expiry. On the deletion date the reusable company data is deleted and a confirmation email is sent. You can also delete the reusable data earlier after recovering the workspace.</div>
-  </div></main>
-  
+    <section class="hub-engine-section" aria-labelledby="engineTitle">
+      <div class="container">
+        <div class="hub-engine-heading">
+          <div class="hub-eyebrow">Choose an analysis</div>
+          <h2 id="engineTitle">What do you want to understand?</h2>
+        </div>
+
+        <div class="hub-engine-grid" aria-label="Available intelligence engines">
+          <article class="hub-engine-card">
+            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="hub-engine-tag">Available</div>
+            <h3>Compliance Intelligence</h3>
+            <p>See what may apply, what information is missing and what to do next.</p>
+            <a class="hub-engine-card__action" href="analyze-company.html?engine=compliance">Analyze Compliance <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
+
+          <article class="hub-engine-card">
+            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
+            <div class="hub-engine-tag">Available</div>
+            <h3>Organization Intelligence</h3>
+            <p>See where structure, reporting and decisions may create friction as you grow.</p>
+            <a class="hub-engine-card__action is-secondary" href="organization-intelligence.html">Analyze Organization <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <script src="js/company-workspace-client.js"></script>
   <script>
     (() => {
@@ -62,20 +99,20 @@
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        status.textContent = 'Recovering your Company Workspace…';
+        status.textContent = 'Recovering workspace…';
         try {
           const reportId = document.getElementById('workspaceReportId').value.trim();
           const accessKey = document.getElementById('workspaceRecoveryCode').value.trim();
           const result = await window.GrowWithHRCompanyWorkspace.recover(reportId, accessKey);
           sessionStorage.setItem(SESSION_KEY, JSON.stringify({reportId:result.workspace.reportId,reportIds:result.workspace.reportIds,accessKey,email:result.workspace.email,companyName:result.workspace.companyName,completedEngines:result.workspace.completedEngines,expiresAt:result.workspace.expiresAt,companyData:result.workspace.companyData}));
-          status.textContent = `Workspace recovered for ${result.workspace.companyName || 'your company'}. Company data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}. Choose an intelligence engine below.`;
+          status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Saved data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}.`;
           refreshActions();
         } catch (error) { status.textContent = error.message || 'We could not recover that workspace.'; }
       });
 
       freshButton.addEventListener('click', () => {
         clearWorkspace();
-        status.textContent = 'This browser will start fresh. The previously stored Company Workspace remains on its existing deletion schedule unless you recover it again and delete it.';
+        status.textContent = 'Starting fresh in this browser.';
       });
 
       deleteButton.addEventListener('click', async () => {
@@ -83,11 +120,11 @@
         if (!workspace?.reportId || !workspace?.accessKey) return;
         if (!confirm('Permanently delete the reusable company information for this GrowWithHR workspace now? This cannot be undone. Downloaded reports are not affected.')) return;
         deleteButton.disabled = true;
-        status.textContent = 'Deleting reusable company data…';
+        status.textContent = 'Deleting saved company data…';
         try {
           await window.GrowWithHRCompanyWorkspace.erase(workspace.reportId, workspace.accessKey);
           clearWorkspace();
-          status.textContent = 'Your reusable company data has been deleted. GrowWithHR will send a deletion-confirmation email to the workspace email address.';
+          status.textContent = 'Reusable company data deleted. A confirmation email will be sent.';
         } catch (error) {
           status.textContent = error.message || 'We could not delete that workspace just yet.';
         } finally {
