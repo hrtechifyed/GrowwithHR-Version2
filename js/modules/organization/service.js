@@ -1,91 +1,64 @@
 /**
- * =============================================================================
- * GrowWithHR Intelligence Platform
- * Organization Intelligence Service
- * -----------------------------------------------------------------------------
- * File      : js/modules/organization/service.js
- * Version   : 1.0.0
- * =============================================================================
+ * GrowWithHR Organization Intelligence Service
  */
 
 import companyDNA from "../../core/company-dna.js";
 import organizationEngine from "./engine.js";
-import organizationRules from "./rules.js";
 
 class OrganizationService {
-
     analyze(context = {}) {
-
-        const company = companyDNA.get();
-
         return organizationEngine.analyze({
-
-            company,
-
-            rules: organizationRules.evaluate(company),
-
+            company: companyDNA.get(),
             context
-
         });
-
     }
 
-    score() {
-
-        return this.analyze().score;
-
+    findings(context = {}) {
+        return this.analyze(context).findings;
     }
 
-    findings() {
-
-        return this.analyze().findings;
-
+    actionFindings(context = {}) {
+        return this.findings(context).filter(item => item.status === "action");
     }
 
-    risks() {
-
-        return this.analyze().risks;
-
+    watchFindings(context = {}) {
+        return this.findings(context).filter(item => item.status === "watch");
     }
 
-    recommendations() {
-
-        return this.analyze().recommendations;
-
+    recommendations(context = {}) {
+        return this.findings(context)
+            .filter(item => item.status === "action" || item.status === "watch")
+            .map(item => ({
+                id: item.id,
+                area: item.area,
+                status: item.status,
+                title: item.title,
+                action: item.action,
+                growthTrigger: item.growthTrigger
+            }));
     }
 
-    references() {
-
-        return this.analyze().references;
-
-    }
-
-    summary() {
-
-        const analysis = this.analyze();
-
+    references(context = {}) {
+        const analysis = this.analyze(context);
         return {
-
-            module: "organization",
-
-            score: analysis.score,
-
-            findings: analysis.findings.length,
-
-            risks: analysis.risks.length,
-
-            recommendations:
-                analysis.recommendations.length
-
+            authority: analysis.authority,
+            boundaries: analysis.boundaries
         };
-
     }
 
+    summary(context = {}) {
+        const analysis = this.analyze(context);
+        return {
+            module: "organization",
+            statusSummary: analysis.statusSummary,
+            missingFacts: analysis.missingFacts,
+            findingCount: analysis.findings.length,
+            scenarioAvailable: analysis.scenario.available
+        };
+    }
 }
 
-const organizationService =
-    new OrganizationService();
+const organizationService = new OrganizationService();
 
 export { OrganizationService };
-
 export default organizationService;
