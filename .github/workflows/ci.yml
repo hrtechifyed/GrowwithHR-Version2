@@ -47,6 +47,9 @@ jobs:
       - name: Run baseline contracts
         run: npm run test:baseline
 
+      - name: Run Organization Intelligence v1 structured checks
+        run: node tests/organization-intelligence-v1-checks.mjs
+
       - name: Run M1 architecture contracts
         run: npm run test:m1
 
