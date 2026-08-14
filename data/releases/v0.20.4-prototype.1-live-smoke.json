@@ -1,7 +1,7 @@
 {
   "releaseVersion": "0.20.4-prototype.1",
-  "checkedAt": "2026-08-14T10:29:07Z",
-  "sourceCommitSha": "9d72602eb9cb0ae72d387f0148f431678c2087a0",
+  "checkedAt": "2026-08-14T10:57:49Z",
+  "sourceCommitSha": "588fa64cacb6d0517139194ac0dff60345bcdae7",
   "status": "passed",
   "checks": {
     "githubPagesHomepage": {
