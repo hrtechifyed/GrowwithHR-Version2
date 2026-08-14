@@ -222,7 +222,7 @@ test("keeps every guidance area when all priorities are selected", async ({ page
 });
 
 test("applies remote and onsite workforce defaults", async ({ page }) => {
-    await page.goto("/analyze-company.html");
+    await page.goto("/analyze-company.html?engine=compliance");
     await page.waitForFunction(() => Boolean(window.GrowWithHRReportExperience));
 
     const defaults = await page.evaluate(() => {
