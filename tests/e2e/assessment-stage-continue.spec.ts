@@ -73,7 +73,7 @@ test.describe(
                     pageErrors.push(error.message);
                 });
 
-                await page.goto("/analyze-company.html");
+                await page.goto("/analyze-company.html?engine=compliance");
                 await waitForAssessmentGuard(page);
 
                 await page.getByRole(
@@ -135,7 +135,7 @@ test.describe(
         test(
             "unlocks Continue immediately after a validation error",
             async ({ page }) => {
-                await page.goto("/analyze-company.html");
+                await page.goto("/analyze-company.html?engine=compliance");
                 await waitForAssessmentGuard(page);
 
                 await page.getByRole(

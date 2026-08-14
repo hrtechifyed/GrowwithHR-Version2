@@ -57,7 +57,7 @@
   function number(id){ return Number(document.getElementById(id).value || 0); }
   function text(id){ return document.getElementById(id).value.trim(); }
   function buildFacts(){
-    return {shared:{companyName:text('companyName'),email:text('email'),industry:text('industry'),employees:number('employees'),growthStage:text('growthStage'),expectedEmployees:number('expectedEmployees')},organization:{managerCount:number('managerCount'),reportingLevels:number('reportingLevels'),founderDirectReports:number('founderDirectReports'),locations:number('locations'),departments:text('departments').split(',').map(v=>v.trim()).filter(Boolean),founderDecisions:text('founderDecisions'),expansion:text('expansion')}};
+    return {shared:{companyName:text('companyName'),email:text('email'),industry:text('industry'),employees:number('employees'),growthStage:text('growthStage'),expectedEmployees:number('expectedEmployees')},organization:{managerCount:number('managerCount'),reportingLevels:number('reportingLevels'),founderDirectReports:number('founderDirectReports'),locations:number('locations'),departments:text('departments').split(',').map(v=>v.trim()).filter(Boolean),founderDecisions:text('founderDecisions'),expansion:text('expansion'),confirmedAt:new Date().toISOString()}};
   }
   function analyze(data){
     const findings=[]; const e=data.shared.employees; const m=data.organization.managerCount; const layers=data.organization.reportingLevels; const direct=data.organization.founderDirectReports; const depts=data.organization.departments.length; const future=data.shared.expectedEmployees;
@@ -80,8 +80,16 @@
     const button=form.querySelector('button[type="submit"]'); button.disabled=true; button.textContent='Generating…';
     try{
       const data=buildFacts(); const prior=recovered?.reportId||''; const reportId=await allocateReportId(data,prior); let workspace;
-      if(recovered){ workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:data,completedEngine:'organization'})).workspace; recovered={...recovered,reportId,companyData:data,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines}; sessionStorage.setItem('growwithhr.workspace',JSON.stringify(recovered)); }
-      else { const created=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:data,completedEngine:'organization'})).workspace; workspace=created; recovered={reportId,reportIds:created.reportIds,accessKey:created.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:data,completedEngines:created.completedEngines,expiresAt:created.expiresAt}; sessionStorage.setItem('growwithhr.workspace',JSON.stringify(recovered)); }
+      if(recovered){
+        workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:data,completedEngine:'organization'})).workspace;
+        recovered={...recovered,reportId,reportIds:workspace.reportIds||recovered.reportIds,companyData:workspace.companyData||data,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines};
+        sessionStorage.setItem('growwithhr.workspace',JSON.stringify(recovered));
+      } else {
+        const created=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:data,completedEngine:'organization'})).workspace;
+        workspace=created;
+        recovered={reportId,reportIds:created.reportIds,accessKey:created.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:data,completedEngines:created.completedEngines,expiresAt:created.expiresAt};
+        sessionStorage.setItem('growwithhr.workspace',JSON.stringify(recovered));
+      }
       findingsEl.innerHTML=analyze(data).map(([title,why,action])=>`<article class="finding"><h3>${title}</h3><p>${why}</p><p><strong>What to do next:</strong> ${action}</p></article>`).join('');
       metaEl.innerHTML=`<strong>Report ID:</strong> <span class="code">${reportId}</span><br>${workspace.accessKey?`<strong>Workspace Recovery Code:</strong> <span class="code">${workspace.accessKey}</span><br><small>Save this code now. GrowWithHR does not display it again.</small><br>`:''}<strong>Reusable company data scheduled for deletion:</strong> ${new Date(workspace.expiresAt).toLocaleDateString()}<br><small>GrowWithHR will email you seven days before deletion and again after the reusable company data has been deleted.</small>`;
       results.classList.remove('hidden'); results.scrollIntoView({behavior:'smooth'});

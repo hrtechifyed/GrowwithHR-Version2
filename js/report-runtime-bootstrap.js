@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.29.0-founder-intelligence-bootstrap";
+    const VERSION = "0.30.1-company-workspace-continuity";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -39,6 +39,15 @@
         return false;
     }
 
+    function loadCompanyWorkspaceContinuity() {
+        if (!document.body?.classList.contains("analyze-company-page")) return;
+        void import("./company-workspace-client.js")
+            .then(() => import("./company-workspace-continuity.js"))
+            .catch((error) => {
+                console.error("GrowWithHR Company Workspace continuity could not load.", error);
+            });
+    }
+
     async function load() {
         if (loading || window.GrowWithHRReportRuntimeBootstrap?.ready) return;
         attempts += 1;
@@ -52,6 +61,7 @@
         try {
             await Promise.resolve(pipeline);
             installTestAdapterCompatibility();
+
             await import("./report-single-edition-ui-v1.js");
             await import("./report-runtime-corrections.js");
             await import("./report-acceptance-corrections.js");
@@ -128,6 +138,8 @@
                 reportStructureVersion: "founder-demo-single-v1",
                 darkReportAvailable: false
             });
+
+            loadCompanyWorkspaceContinuity();
         } catch (error) {
             loading = false;
             if (attempts < MAX_ATTEMPTS) window.setTimeout(load, 50);

@@ -64,7 +64,7 @@
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
+            .replace(/\"/g, "&quot;")
             .replace(/'/g, "&#039;");
     }
 
@@ -238,10 +238,6 @@
     function renderSiteShell() {
         if (!document.body) return;
         const prefix = inferRootPrefix();
-        if (currentFileName() === "analyze-company.html" && !new URLSearchParams(window.location.search).get("engine")) {
-            window.location.replace(withRoot(prefix, "intelligence-hub.html"));
-            return;
-        }
         const activeKey = inferActiveNav();
         const header = buildHeader(prefix, activeKey);
         const footer = buildFooter();

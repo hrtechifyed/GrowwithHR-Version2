@@ -45,7 +45,7 @@ test.describe("founder-demo visual story and report", () => {
             }
             (window as Window & { jspdf?: { jsPDF: typeof FakeJsPDF } }).jspdf = { jsPDF: FakeJsPDF };
         });
-        await page.goto("/analyze-company.html", { waitUntil: "domcontentloaded" });
+        await page.goto("/analyze-company.html?engine=compliance", { waitUntil: "domcontentloaded" });
         await page.waitForFunction(() => Boolean(
             (window as Window & { GrowWithHRPDF?: { visualSectionedReportVersion?: string } })
                 .GrowWithHRPDF?.visualSectionedReportVersion
