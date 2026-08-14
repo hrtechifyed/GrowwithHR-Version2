@@ -43,4 +43,16 @@ assert.match(shellSource, /document\.getElementById\(["']dnaCoreCanvas["']\)/,
 assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,
     "The homepage intelligence graph must have an independent module bootstrap fallback.");
 
-console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap.`);
+const stylesSource = fs.readFileSync(path.join(root, "styles.css"), "utf8");
+const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)].map((match) => match[1]);
+assert.equal(
+    styleImports.at(-1),
+    "css/18-site-shell.css",
+    "The shared site shell must load last in styles.css so page-specific presentation CSS cannot change the navbar contract."
+);
+assert.ok(
+    styleImports.indexOf("css/24-intelligence-hub.css") < styleImports.indexOf("css/18-site-shell.css"),
+    "Analyze My Company styles must load before the shared site shell."
+);
+
+console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap and navbar style authority.`);
