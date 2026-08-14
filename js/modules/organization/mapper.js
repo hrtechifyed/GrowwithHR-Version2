@@ -1,148 +1,86 @@
 /**
- * =============================================================================
- * GrowWithHR Intelligence Platform
- * Organization Intelligence Mapper
- * -----------------------------------------------------------------------------
- * File      : js/modules/organization/mapper.js
- * Version   : 1.0.0
- * =============================================================================
+ * GrowWithHR Organization Intelligence Mapper
+ * Keeps structural facts and interpretations explicit; no maturity score.
  */
 
 class OrganizationMapper {
-
     toDashboard(result = {}) {
-
         return {
-
             module: "Organization Intelligence",
-
-            score: result.score || 0,
-
+            statusSummary: result.statusSummary || {},
             findings: result.findings || [],
-
-            risks: result.risks || [],
-
-            recommendations: result.recommendations || [],
-
-            references: result.references || {}
-
+            derivedMetrics: result.derivedMetrics || {},
+            scenario: result.scenario || null,
+            missingFacts: result.missingFacts || []
         };
-
     }
 
     toPeopleIntelligence(result = {}) {
-
         return {
-
             module: "Organization",
-
-            overallScore: result.score || 0,
-
             findings: (result.findings || []).map(item => ({
-
-                title: item.rule,
-
-                status: item.result?.passed
-                    ? "Pass"
-                    : "Fail",
-
-                details: item.result?.message || ""
-
+                id: item.id,
+                area: item.area,
+                status: item.status,
+                title: item.title,
+                whyItMatters: item.whyItMatters,
+                action: item.action,
+                confidence: item.confidence
             })),
-
-            risks: result.risks || [],
-
-            recommendations: result.recommendations || []
-
+            statusSummary: result.statusSummary || {},
+            missingFacts: result.missingFacts || []
         };
-
     }
 
     toAIContext(result = {}) {
-
         return {
-
             module: "Organization",
-
-            score: result.score || 0,
-
-            riskCount:
-                (result.risks || []).length,
-
-            recommendationCount:
-                (result.recommendations || []).length,
-
-            summary:
-                `Organization Score: ${result.score || 0}`,
-
-            findings:
-                result.findings || []
-
+            authority: result.authority,
+            deterministicFindings: result.findings || [],
+            facts: result.facts || {},
+            derivedMetrics: result.derivedMetrics || {},
+            scenario: result.scenario || null,
+            boundaries: result.boundaries || {},
+            instruction:
+                "Explain fixed Organization Intelligence findings and trade-offs only. Do not alter deterministic statuses or infer facts that were not supplied."
         };
-
     }
 
     toAPI(result = {}) {
-
         return {
-
             success: true,
-
             timestamp: new Date().toISOString(),
-
             data: {
-
-                score: result.score || 0,
-
-                findings:
-                    result.findings || [],
-
-                risks:
-                    result.risks || [],
-
-                recommendations:
-                    result.recommendations || [],
-
-                references:
-                    result.references || {}
-
+                authority: result.authority,
+                facts: result.facts || {},
+                factRegistry: result.factRegistry || {},
+                derivedMetrics: result.derivedMetrics || {},
+                findings: result.findings || [],
+                statusSummary: result.statusSummary || {},
+                missingFacts: result.missingFacts || [],
+                scenario: result.scenario || null,
+                boundaries: result.boundaries || {}
             }
-
         };
-
     }
 
     toExport(result = {}) {
-
         return {
-
-            exportedAt:
-                new Date().toISOString(),
-
-            organizationScore:
-                result.score || 0,
-
-            findings:
-                result.findings || [],
-
-            risks:
-                result.risks || [],
-
-            recommendations:
-                result.recommendations || [],
-
-            references:
-                result.references || {}
-
+            exportedAt: new Date().toISOString(),
+            module: "organization",
+            authority: result.authority,
+            facts: result.facts || {},
+            derivedMetrics: result.derivedMetrics || {},
+            findings: result.findings || [],
+            statusSummary: result.statusSummary || {},
+            missingFacts: result.missingFacts || [],
+            scenario: result.scenario || null,
+            boundaries: result.boundaries || {}
         };
-
     }
-
 }
 
-const organizationMapper =
-    new OrganizationMapper();
+const organizationMapper = new OrganizationMapper();
 
 export { OrganizationMapper };
-
 export default organizationMapper;
