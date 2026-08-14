@@ -235,6 +235,18 @@
         document.documentElement.style.setProperty("--site-shell-header-height", `${height}px`);
     }
 
+    function bootstrapHomepageIntelligenceGraph() {
+        if (!document.getElementById("dnaCoreCanvas")) return;
+        if (window.GrowWithHRIntelligenceCore?.ready) return;
+
+        // Keep the homepage graph independent from the much larger app.js module
+        // graph. If another advisory module or CDN dependency fails, the visual
+        // intelligence core should still initialize on its own.
+        import("./intelligence-core.js").catch((error) => {
+            console.error("GrowWithHR homepage intelligence graph failed to initialize", error);
+        });
+    }
+
     function renderSiteShell() {
         if (!document.body) return;
         const prefix = inferRootPrefix();
@@ -247,6 +259,7 @@
         updatePageOffsets();
         document.body.classList.add("has-site-shell");
         document.documentElement.classList.add("site-shell-ready");
+        bootstrapHomepageIntelligenceGraph();
         window.requestAnimationFrame(updatePageOffsets);
         window.addEventListener("load", updatePageOffsets, { once: true });
         window.addEventListener("resize", updatePageOffsets);

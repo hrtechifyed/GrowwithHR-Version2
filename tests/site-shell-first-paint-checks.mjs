@@ -38,5 +38,9 @@ assert.match(shellSource, /if \(document\.body\)\s*\{\s*renderSiteShell\(\)/,
     "The shared shell must render immediately when a deferred head script finds body available.");
 assert.doesNotMatch(shellSource, /if \(document\.readyState === ["']loading["']\) document\.addEventListener\(["']DOMContentLoaded["'], renderSiteShell/,
     "The shell must not always wait for DOMContentLoaded after body parsing has completed.");
+assert.match(shellSource, /document\.getElementById\(["']dnaCoreCanvas["']\)/,
+    "The shared shell must detect the homepage intelligence graph container.");
+assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,
+    "The homepage intelligence graph must have an independent module bootstrap fallback.");
 
-console.log(`Site shell first-paint checks passed for ${shellPages.length} pages.`);
+console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap.`);
