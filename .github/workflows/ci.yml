@@ -50,6 +50,9 @@ jobs:
       - name: Run Organization Intelligence v1 structured checks
         run: node tests/organization-intelligence-v1-checks.mjs
 
+      - name: Run site shell first-paint checks
+        run: node tests/site-shell-first-paint-checks.mjs
+
       - name: Run M1 architecture contracts
         run: npm run test:m1
 
