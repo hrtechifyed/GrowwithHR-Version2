@@ -38,7 +38,7 @@ const workspaceShape = analyzeOrganizationStructure({
     }
 });
 
-assert.equal(workspaceShape.facts.workforce.totalEmployees, 42);
+assert.equal(workspaceShape.facts.employees, 42);
 assert.equal(workspaceShape.derivedMetrics.currentEmployeeToManagerRatio, 7);
 assert.equal(workspaceShape.derivedMetrics.expectedHeadcountGrowthPercent, 42.9);
 
