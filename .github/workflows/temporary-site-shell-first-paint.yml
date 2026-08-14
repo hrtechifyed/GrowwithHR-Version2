@@ -1,0 +1,63 @@
+name: Temporary Site Shell First Paint
+
+on:
+  push:
+    branches:
+      - fix/site-shell-first-paint-and-org-headcount
+
+permissions:
+  contents: write
+
+jobs:
+  rewrite-shell-loaders:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/site-shell-first-paint-and-org-headcount
+      - name: Move shared shell loader into head with defer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          script_pattern = re.compile(
+              r'<script\b(?=[^>]*\bsrc=["\'](?P<src>[^"\']*js/site-shell\.js(?:[?#][^"\']*)?)["\'])[^>]*>\s*</script>',
+              re.IGNORECASE,
+          )
+
+          changed = []
+          for path in Path('.').rglob('*.html'):
+              if any(part in {'.git', 'node_modules', 'archive', 'archives'} for part in path.parts):
+                  continue
+              text = path.read_text(encoding='utf-8')
+              matches = list(script_pattern.finditer(text))
+              if not matches:
+                  continue
+              if '</head>' not in text.lower():
+                  raise SystemExit(f'{path}: site shell page has no closing head tag')
+
+              src = matches[0].group('src')
+              text = script_pattern.sub('', text)
+              loader = f'  <script src="{src}" defer></script>\n'
+              text, count = re.subn(r'</head>', loader + '</head>', text, count=1, flags=re.IGNORECASE)
+              if count != 1:
+                  raise SystemExit(f'{path}: could not insert early site shell loader')
+              path.write_text(text, encoding='utf-8')
+              changed.append(str(path))
+
+          if not changed:
+              raise SystemExit('No site-shell HTML pages were found to rewrite.')
+          print('Rewrote site shell loaders in:')
+          print('\n'.join(changed))
+          PY
+
+          git rm .github/workflows/temporary-site-shell-first-paint.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*.html' 'pages/*.html' ':!archive/**' ':!archives/**' || true
+          git commit -m "Load shared navigation before first paint"
+          git push origin HEAD:fix/site-shell-first-paint-and-org-headcount
