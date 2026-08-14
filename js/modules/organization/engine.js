@@ -1,203 +1,115 @@
 /**
- * =============================================================================
- * GrowWithHR Intelligence Platform
- * Organization Intelligence Engine
- * -----------------------------------------------------------------------------
- * File      : js/modules/organization/engine.js
- * Version   : 1.0.0
- * =============================================================================
+ * GrowWithHR Organization Intelligence Engine
+ * Structured deterministic wrapper for the shared Intelligence Platform.
  */
 
-import recommendationEngine from "../../core/recommendation-engine.js";
-import knowledgeLibrary from "../../core/knowledge-library.js";
+import { analyzeOrganizationStructure } from "./organization-structure-engine.mjs";
 
-class OrganizationEngine {
+function companyToOrganizationInput(company = {}, context = {}) {
+    const organizationContext = context.organization || {};
+    const sharedContext = context.shared || {};
+    const workforceContext = context.workforce || {};
+    const geographyContext = context.geography || {};
 
-    analyze({
-        company,
-        rules,
-        context = {}
-    }) {
-
-        const findings = [];
-        const recommendations = [];
-        const risks = [];
-
-        let score = 100;
-
-        /*
-        |--------------------------------------------------------------------------
-        | Rule Evaluation
-        |--------------------------------------------------------------------------
-        */
-
-        rules.forEach(rule => {
-
-            findings.push({
-                rule: rule.rule,
-                result: rule.result
-            });
-
-            if (
-                rule.result &&
-                rule.result.passed === false
-            ) {
-
-                score -= 10;
-
-                risks.push({
-                    rule: rule.rule,
-                    message: rule.result.message
-                });
-
-            }
-
-        });
-
-        /*
-        |--------------------------------------------------------------------------
-        | Departments
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            company.organization.departments.length === 0
-        ) {
-
-            score -= 20;
-
-            recommendations.push(
-
-                recommendationEngine.create({
-
-                    module: "organization",
-
-                    category: "Structure",
-
-                    title: "Create Departments",
-
-                    description:
-                        "Define functional departments for the organization.",
-
-                    priority: "High",
-
-                    type: "Improvement"
-
-                })
-
-            );
-
+    return {
+        shared: {
+            companyName:
+                sharedContext.companyName ||
+                company.company?.displayName ||
+                company.company?.legalName ||
+                "",
+            industry:
+                sharedContext.industry ||
+                company.industry?.sector ||
+                "",
+            growthStage:
+                sharedContext.growthStage ||
+                company.business?.growthStage ||
+                "",
+            employees:
+                workforceContext.totalEmployees ??
+                sharedContext.employees ??
+                company.workforce?.totalEmployees ??
+                null,
+            expectedEmployees:
+                workforceContext.expectedEmployees12Months ??
+                sharedContext.expectedEmployees ??
+                null
+        },
+        workforce: {
+            totalEmployees:
+                workforceContext.totalEmployees ??
+                company.workforce?.totalEmployees ??
+                null,
+            expectedEmployees12Months:
+                workforceContext.expectedEmployees12Months ??
+                sharedContext.expectedEmployees ??
+                null
+        },
+        geography: {
+            operatingLocationCount:
+                geographyContext.operatingLocationCount ??
+                organizationContext.locations ??
+                null
+        },
+        organization: {
+            departments:
+                organizationContext.departments ??
+                company.organization?.departments ??
+                [],
+            reportingLevels:
+                organizationContext.reportingLevels ??
+                company.organization?.reportingLevels ??
+                null,
+            peopleManagerCount:
+                organizationContext.peopleManagerCount ??
+                organizationContext.managerCount ??
+                null,
+            founderDirectReports:
+                organizationContext.founderDirectReports ??
+                null,
+            founderDecisions:
+                organizationContext.founderDecisions ??
+                "",
+            expansion:
+                organizationContext.expansion ??
+                "",
+            roleClarity:
+                organizationContext.roleClarity ??
+                "",
+            decisionRights:
+                organizationContext.decisionRights ??
+                "",
+            governanceCadence:
+                organizationContext.governanceCadence ??
+                "",
+            coordinationFriction:
+                organizationContext.coordinationFriction ??
+                "",
+            locations:
+                organizationContext.locations ??
+                geographyContext.operatingLocationCount ??
+                null,
+            confirmedAt:
+                organizationContext.confirmedAt ??
+                context.confirmedAt
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Reporting Levels
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            company.organization.reportingLevels === 0
-        ) {
-
-            score -= 15;
-
-            recommendations.push(
-
-                recommendationEngine.create({
-
-                    module: "organization",
-
-                    category: "Hierarchy",
-
-                    title: "Define Reporting Levels",
-
-                    description:
-                        "Create a formal reporting hierarchy.",
-
-                    priority: "High",
-
-                    type: "Improvement"
-
-                })
-
-            );
-
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Business Units
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            company.workforce.totalEmployees >= 250 &&
-            company.organization.businessUnits.length === 0
-        ) {
-
-            score -= 10;
-
-            recommendations.push(
-
-                recommendationEngine.create({
-
-                    module: "organization",
-
-                    category: "Business Units",
-
-                    title: "Introduce Business Units",
-
-                    description:
-                        "Large organizations should consider business unit structures.",
-
-                    priority: "Medium",
-
-                    type: "Improvement"
-
-                })
-
-            );
-
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | References
-        |--------------------------------------------------------------------------
-        */
-
-        const frameworks =
-            knowledgeLibrary.getCategory("frameworks");
-
-        return {
-
-            module: "organization",
-
-            score: Math.max(score, 0),
-
-            findings,
-
-            risks,
-
-            recommendations,
-
-            references: {
-
-                frameworks,
-
-                context
-
-            }
-
-        };
-
-    }
-
+    };
 }
 
-const organizationEngine =
-    new OrganizationEngine();
+class OrganizationEngine {
+    analyze({ company = {}, context = {} } = {}) {
+        return analyzeOrganizationStructure(
+            companyToOrganizationInput(company, context)
+        );
+    }
+}
 
-export { OrganizationEngine };
+const organizationEngine = new OrganizationEngine();
+
+export {
+    OrganizationEngine,
+    companyToOrganizationInput
+};
 
 export default organizationEngine;
