@@ -39,6 +39,7 @@ function companyToOrganizationInput(company = {}, context = {}) {
         workforce: {
             totalEmployees:
                 workforceContext.totalEmployees ??
+                sharedContext.employees ??
                 company.workforce?.totalEmployees ??
                 null,
             expectedEmployees12Months:

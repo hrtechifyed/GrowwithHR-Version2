@@ -253,7 +253,17 @@
         window.dispatchEvent(new CustomEvent("growwithhr:site-shell-ready", { detail: { activeNav: activeKey, rootPrefix: prefix } }));
     }
 
+    function startSiteShell() {
+        // A deferred head script runs after parsing but before DOMContentLoaded. Render
+        // immediately in that window so the navigation is present for first paint
+        // instead of waiting behind unrelated DOMContentLoaded work.
+        if (document.body) {
+            renderSiteShell();
+            return;
+        }
+        document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
+    }
+
     window.GrowWithHRSiteShell = Object.freeze({ render: renderSiteShell, footerText: `${FOOTER_LINE_ONE}\n${FOOTER_LINE_TWO}` });
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
-    else renderSiteShell();
+    startSiteShell();
 })(window, document);
