@@ -2,55 +2,19 @@
  * GrowWithHR shared site shell
  * ------------------------------------------------------------
  * Renders one consistent header and footer across every page.
- *
- * Header layout:
- *   [ LARGE HRTECHIFY LOGO ] [ GLASS NAVIGATION CAPSULE ]
- *
- *  Footer copy:
- *  HRTechify - People • Technology • Growth
- *  © 2026 All Rights Reserved.
- *
- * Usage on root-level pages:
- *   <script src="js/site-shell.js" defer></script>
- *
- * Usage on pages inside /pages:
- *   <script src="../js/site-shell.js" defer></script>
- *
- * Optional body attributes:
- *   data-active-nav="platform|analyze|resources|sample|more"
- *   data-site-root="../"
  */
-
 (function siteShellBootstrap(window, document) {
     "use strict";
 
-   const FOOTER_LINE_ONE =
-    "HRTechify - People • Technology • Growth";
-
-   const FOOTER_LINE_TWO =
-    "© 2026 All Rights Reserved.";
+    const HRTECHIFY_URL = "https://hrtechifyed.github.io/HRTECHIFY/";
+    const FOOTER_LINE_ONE = "HRTechify - People • Technology • Growth";
+    const FOOTER_LINE_TWO = "© 2026 All Rights Reserved.";
 
     const NAV_ITEMS = Object.freeze([
-        {
-            key: "platform",
-            label: "Home",
-            href: "index.html#platform"
-        },
-        {
-            key: "analyze",
-            label: "Analyze My Company",
-            href: "intelligence-hub.html"
-        },
-        {
-            key: "resources",
-            label: "Official Sources",
-            href: "official-resources.html"
-        },
-        {
-            key: "sample",
-            label: "Sample Advisory",
-            href: "sample-advisory-report.html"
-        }
+        { key: "platform", label: "Home", href: "index.html#platform" },
+        { key: "analyze", label: "Analyze My Company", href: "intelligence-hub.html" },
+        { key: "resources", label: "Official Sources", href: "official-resources.html" },
+        { key: "sample", label: "Sample Advisory", href: "sample-advisory-report.html" }
     ]);
 
     const MORE_ITEMS = Object.freeze([
@@ -75,9 +39,7 @@
     }
 
     function inferRootPrefix() {
-        const bodyPrefix = document.body && document.body.dataset
-            ? document.body.dataset.siteRoot
-            : "";
+        const bodyPrefix = document.body && document.body.dataset ? document.body.dataset.siteRoot : "";
         if (bodyPrefix) return normalizePrefix(bodyPrefix);
         const script = document.currentScript || Array.from(document.scripts).find((item) => {
             const source = item.getAttribute("src") || "";
@@ -102,9 +64,7 @@
     }
 
     function inferActiveNav() {
-        const explicit = document.body && document.body.dataset
-            ? document.body.dataset.activeNav
-            : "";
+        const explicit = document.body && document.body.dataset ? document.body.dataset.activeNav : "";
         if (explicit) return explicit.trim().toLowerCase();
         const activeByFile = {
             "index.html": "platform",
@@ -125,21 +85,11 @@
 
     function navLinkMarkup(item, prefix, activeKey) {
         const isActive = item.key === activeKey;
-        return `
-            <a
-                class="site-nav-link${isActive ? " is-active" : ""}"
-                href="${escapeHtml(withRoot(prefix, item.href))}"
-                data-nav-key="${escapeHtml(item.key)}"
-                ${isActive ? 'aria-current="page"' : ""}>
-                ${escapeHtml(item.label)}
-            </a>`;
+        return `<a class="site-nav-link${isActive ? " is-active" : ""}" href="${escapeHtml(withRoot(prefix, item.href))}" data-nav-key="${escapeHtml(item.key)}" ${isActive ? 'aria-current="page"' : ""}>${escapeHtml(item.label)}</a>`;
     }
 
     function moreItemMarkup(item, prefix) {
-        return `
-            <a href="${escapeHtml(withRoot(prefix, item.href))}">
-                ${escapeHtml(item.label)}
-            </a>`;
+        return `<a href="${escapeHtml(withRoot(prefix, item.href))}">${escapeHtml(item.label)}</a>`;
     }
 
     function buildHeader(prefix, activeKey) {
@@ -151,19 +101,17 @@
 
         header.innerHTML = `
             <div class="site-header-shell__inner">
-                <a class="site-brand-logo" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="HRTechify GrowWithHR home">
+                <a class="site-brand-logo" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="GrowWithHR home">
                     <img src="${escapeHtml(withRoot(prefix, "assets/hrtechify-logo.png"))}" alt="HRTechify">
                 </a>
                 <nav class="site-nav-glass" aria-label="Primary navigation">
-                    <a href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="HRTechify home" style="position:relative;z-index:2;flex:0 0 auto;margin-right:auto;padding:0 8px 0 18px;color:var(--site-shell-orange-bright);font-size:clamp(0.82rem,3.4vw,1rem);font-weight:800;line-height:1;letter-spacing:.04em;white-space:nowrap;text-decoration:none;pointer-events:auto">HRTechify</a>
+                    <a href="${HRTECHIFY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Visit HRTechify website" style="position:relative;z-index:2;flex:0 0 auto;margin-right:auto;padding:0 8px 0 18px;color:var(--site-shell-orange-bright);font-size:clamp(0.82rem,3.4vw,1rem);font-weight:800;line-height:1;letter-spacing:.04em;white-space:nowrap;text-decoration:none;pointer-events:auto">HRTechify ↗</a>
                     <button class="site-nav-toggle" type="button" aria-label="Open navigation" aria-controls="siteNavLinks" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
                     <div class="site-nav-links" id="siteNavLinks">
                         ${primaryLinks}
                         <div class="site-nav-more${activeKey === "more" ? " is-active" : ""}">
-                            <button class="site-nav-more__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}>
-                                <span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span>
-                            </button>
-                            <div class="site-nav-more__menu" id="siteMoreMenu" role="menu">${moreLinks}</div>
+                            <button class="site-nav-more__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}><span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span></button>
+                            <div class="site-nav-more__menu" id="siteMoreMenu" role="menu">${moreLinks}<a href="${HRTECHIFY_URL}" target="_blank" rel="noopener noreferrer">Visit HRTechify ↗</a></div>
                         </div>
                     </div>
                 </nav>
@@ -175,11 +123,7 @@
         const footer = document.createElement("footer");
         footer.className = "site-footer";
         footer.dataset.siteShellFooter = "";
-        footer.innerHTML = `
-            <div class="site-footer__inner">
-                <p class="site-footer__brand-line">${escapeHtml(FOOTER_LINE_ONE)}</p>
-                <p class="site-footer__rights-line">${escapeHtml(FOOTER_LINE_TWO)}</p>
-            </div>`;
+        footer.innerHTML = `<div class="site-footer__inner"><p class="site-footer__brand-line"><a href="${HRTECHIFY_URL}" target="_blank" rel="noopener noreferrer">${escapeHtml(FOOTER_LINE_ONE)}</a></p><p class="site-footer__rights-line">${escapeHtml(FOOTER_LINE_TWO)}</p></div>`;
         return footer;
     }
 
@@ -187,96 +131,43 @@
         const oldHeaders = Array.from(document.querySelector("body")?.querySelectorAll("[data-site-shell-header], nav.navbar, header.site-header-shell") || []);
         let anchor = null;
         oldHeaders.forEach((item) => { if (!anchor && item.parentNode) anchor = item; });
-        if (anchor && anchor.parentNode) {
-            anchor.parentNode.insertBefore(header, anchor);
-        } else {
-            const skipLink = document.querySelector(".skip-link, [data-skip-link]");
-            if (skipLink && skipLink.parentNode === document.body) skipLink.insertAdjacentElement("afterend", header);
-            else document.body.insertBefore(header, document.body.firstChild);
-        }
+        if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(header, anchor);
+        else { const skipLink = document.querySelector(".skip-link, [data-skip-link]"); if (skipLink && skipLink.parentNode === document.body) skipLink.insertAdjacentElement("afterend", header); else document.body.insertBefore(header, document.body.firstChild); }
         oldHeaders.forEach((item) => { if (item !== header && item.parentNode) item.remove(); });
     }
 
     function placeFooter(footer) {
         const oldFooters = Array.from(document.querySelectorAll("[data-site-shell-footer], footer.footer, footer.site-footer"));
         const lastFooter = oldFooters.length ? oldFooters[oldFooters.length - 1] : null;
-        if (lastFooter && lastFooter.parentNode) lastFooter.parentNode.insertBefore(footer, lastFooter);
-        else document.body.appendChild(footer);
+        if (lastFooter && lastFooter.parentNode) lastFooter.parentNode.insertBefore(footer, lastFooter); else document.body.appendChild(footer);
         oldFooters.forEach((item) => { if (item !== footer && item.parentNode) item.remove(); });
     }
 
-    function lockBodyScroll(locked) {
-        document.documentElement.classList.toggle("site-nav-open", locked);
-        document.body.classList.toggle("site-nav-open", locked);
-    }
+    function lockBodyScroll(locked) { document.documentElement.classList.toggle("site-nav-open", locked); document.body.classList.toggle("site-nav-open", locked); }
 
     function bindHeaderInteractions(header) {
-        const nav = header.querySelector(".site-nav-glass");
-        const toggle = header.querySelector(".site-nav-toggle");
-        const links = header.querySelector(".site-nav-links");
-        const more = header.querySelector(".site-nav-more");
-        const moreToggle = header.querySelector(".site-nav-more__toggle");
+        const nav = header.querySelector(".site-nav-glass"); const toggle = header.querySelector(".site-nav-toggle"); const links = header.querySelector(".site-nav-links"); const more = header.querySelector(".site-nav-more"); const moreToggle = header.querySelector(".site-nav-more__toggle");
         if (!nav || !toggle || !links || !more || !moreToggle) return;
         const closeMore = () => { more.classList.remove("is-open"); moreToggle.setAttribute("aria-expanded", "false"); };
         const closeMobileNav = () => { nav.classList.remove("is-open"); toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "Open navigation"); lockBodyScroll(false); closeMore(); };
-        const openMobileNav = () => { nav.classList.add("is-open"); toggle.setAttribute("aria-expanded", "true"); toggle.setAttribute("aria-label", "Close navigation"); lockBodyScroll(true); };
-        toggle.addEventListener("click", () => { if (nav.classList.contains("is-open")) closeMobileNav(); else openMobileNav(); });
+        toggle.addEventListener("click", () => { if (nav.classList.contains("is-open")) closeMobileNav(); else { nav.classList.add("is-open"); toggle.setAttribute("aria-expanded", "true"); toggle.setAttribute("aria-label", "Close navigation"); lockBodyScroll(true); } });
         moreToggle.addEventListener("click", (event) => { event.stopPropagation(); const willOpen = !more.classList.contains("is-open"); more.classList.toggle("is-open", willOpen); moreToggle.setAttribute("aria-expanded", String(willOpen)); });
         links.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMobileNav));
         document.addEventListener("click", (event) => { if (!more.contains(event.target)) closeMore(); });
-        document.addEventListener("keydown", (event) => { if (event.key === "Escape") { const wasOpen = nav.classList.contains("is-open"); closeMobileNav(); if (wasOpen) toggle.focus(); } });
+        document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMobileNav(); });
         window.addEventListener("resize", () => { if (window.matchMedia("(min-width: 901px)").matches) closeMobileNav(); });
     }
 
-    function updatePageOffsets() {
-        const header = document.querySelector("[data-site-shell-header]");
-        if (!header) return;
-        const height = Math.ceil(header.getBoundingClientRect().height);
-        document.documentElement.style.setProperty("--site-shell-header-height", `${height}px`);
-    }
+    function updatePageOffsets() { const header = document.querySelector("[data-site-shell-header]"); if (!header) return; document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`); }
 
-    function bootstrapHomepageIntelligenceGraph() {
-        if (!document.getElementById("dnaCoreCanvas")) return;
-        if (window.GrowWithHRIntelligenceCore?.ready) return;
-
-        // Keep the homepage graph independent from the much larger app.js module
-        // graph. If another advisory module or CDN dependency fails, the visual
-        // intelligence core should still initialize on its own.
-        import("./intelligence-core.js").catch((error) => {
-            console.error("GrowWithHR homepage intelligence graph failed to initialize", error);
-        });
-    }
+    function bootstrapHomepageIntelligenceGraph() { if (!document.getElementById("dnaCoreCanvas") || window.GrowWithHRIntelligenceCore?.ready) return; import("./intelligence-core.js").catch((error) => console.error("GrowWithHR homepage intelligence graph failed to initialize", error)); }
 
     function renderSiteShell() {
         if (!document.body) return;
-        const prefix = inferRootPrefix();
-        const activeKey = inferActiveNav();
-        const header = buildHeader(prefix, activeKey);
-        const footer = buildFooter();
-        placeHeader(header);
-        placeFooter(footer);
-        bindHeaderInteractions(header);
-        updatePageOffsets();
-        document.body.classList.add("has-site-shell");
-        document.documentElement.classList.add("site-shell-ready");
-        bootstrapHomepageIntelligenceGraph();
-        window.requestAnimationFrame(updatePageOffsets);
-        window.addEventListener("load", updatePageOffsets, { once: true });
-        window.addEventListener("resize", updatePageOffsets);
-        window.dispatchEvent(new CustomEvent("growwithhr:site-shell-ready", { detail: { activeNav: activeKey, rootPrefix: prefix } }));
+        const prefix = inferRootPrefix(); const activeKey = inferActiveNav(); const header = buildHeader(prefix, activeKey); const footer = buildFooter();
+        placeHeader(header); placeFooter(footer); bindHeaderInteractions(header); updatePageOffsets(); document.body.classList.add("has-site-shell"); document.documentElement.classList.add("site-shell-ready"); bootstrapHomepageIntelligenceGraph(); window.requestAnimationFrame(updatePageOffsets); window.addEventListener("load", updatePageOffsets, { once: true }); window.addEventListener("resize", updatePageOffsets); window.dispatchEvent(new CustomEvent("growwithhr:site-shell-ready", { detail: { activeNav: activeKey, rootPrefix: prefix } }));
     }
 
-    function startSiteShell() {
-        // A deferred head script runs after parsing but before DOMContentLoaded. Render
-        // immediately in that window so the navigation is present for first paint
-        // instead of waiting behind unrelated DOMContentLoaded work.
-        if (document.body) {
-            renderSiteShell();
-            return;
-        }
-        document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
-    }
-
+    if (document.body) renderSiteShell(); else document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
     window.GrowWithHRSiteShell = Object.freeze({ render: renderSiteShell, footerText: `${FOOTER_LINE_ONE}\n${FOOTER_LINE_TWO}` });
-    startSiteShell();
 })(window, document);
