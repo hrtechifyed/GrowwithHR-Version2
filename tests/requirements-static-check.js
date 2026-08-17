@@ -50,14 +50,16 @@ includes(siteShell, "setBackgroundInert", "The mobile navigation must prevent in
 
 const home = read("index.html");
 includes(home, 'id="home"', "The homepage hero must remain available.");
-includes(home, 'href="intelligence-hub.html"', "The primary Analyze My Company CTA must route through the intelligence hub.");
-includes(home, "Analyze My Company", "The primary analysis CTA must remain visible.");
-includes(home, 'href="sample-advisory-report.html"', "The sample advisory CTA must retain its destination.");
-includes(home, "View Sample Advisory", "The sample advisory CTA must remain visible.");
+includes(home, 'href="intelligence-hub.html"', "The primary Understand My Company CTA must route through the intelligence hub.");
+includes(home, "Understand My Company", "The primary company-insights CTA must remain visible.");
+includes(home, 'href="sample-reports.html"', "The sample reports CTA must route through the sample-report hub.");
+includes(home, "Explore Sample Reports", "The sample reports CTA must remain visible.");
 includes(home, "Executive Intelligence", "The executive-intelligence preview must remain visible.");
-assert(home.indexOf("Analyze My Company") < home.indexOf("Executive Intelligence"), "The primary analysis CTA must appear before the executive-intelligence preview.");
+assert(home.indexOf("Understand My Company") < home.indexOf("Executive Intelligence"), "The primary company-insights CTA must appear before the executive-intelligence preview.");
 includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence-stack test hook is required.");
-includes(home, "Organization Intelligence (Available)", "Organization Intelligence status must match the live intelligence hub.");
+includes(home, "Organization Structure (Available)", "Organization Structure status must match the live intelligence hub.");
+assert(!home.includes(">Analyze My Company<"), "The retired homepage CTA label must not reappear.");
+assert(!home.includes(">View Sample Advisory<"), "The retired single-sample CTA label must not reappear.");
 assert(!home.includes("backupstyles.css"), "The obsolete backup stylesheet must not be loaded.");
 assert(!home.includes("es-module-shims"), "The homepage must not load the retired module shim.");
 assert(!home.includes("three@"), "The Canvas 2D homepage graph must not load unused Three.js.");

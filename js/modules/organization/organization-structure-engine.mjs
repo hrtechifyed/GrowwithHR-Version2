@@ -1,17 +1,13 @@
 import { FRAMEWORK, sourcesForRule } from "./organization-source-registry.mjs";
 
 /**
- * GrowWithHR Organization Structure v1
+ * GrowWithHR Organization Structure
+ * Deterministic structural analysis only.
  *
- * Deterministic structural analysis only. This module does not assess
- * individuals, legal applicability, compensation, leadership capability,
- * or talent capability.
- *
- * Source transparency rule:
- * Every finding exposes the public sources that support the underlying
- * organization-design principle and separately exposes the GrowWithHR rule
- * used to interpret supplied company facts. Numeric prototype triggers are
- * never presented as source-published or industry benchmarks.
+ * Public sources support the underlying organization-design principle.
+ * GrowWithHR remains responsible for the disclosed deterministic rule that
+ * interprets company facts. No source is represented as prescribing a
+ * GrowWithHR prototype threshold unless it actually does so.
  */
 
 const STATUS = Object.freeze({
@@ -25,6 +21,13 @@ const CONFIDENCE = Object.freeze({
     HIGH: "high",
     MEDIUM: "medium",
     LOW: "low"
+});
+
+const STATUS_RANK = Object.freeze({
+    [STATUS.ACTION]: 0,
+    [STATUS.WATCH]: 1,
+    [STATUS.NEEDS_INFORMATION]: 2,
+    [STATUS.STABLE]: 3
 });
 
 function text(value, fallback = "") {
@@ -68,6 +71,7 @@ function normalizeOrganizationInput(input = {}) {
 
     return {
         companyName: text(shared.companyName ?? input.companyName),
+        email: text(shared.email ?? input.email),
         industry: text(shared.industry ?? input.industry),
         growthStage: text(shared.growthStage ?? input.growthStage),
         employees,
@@ -81,6 +85,26 @@ function normalizeOrganizationInput(input = {}) {
         departments: stringArray(organization.departments ?? input.departments),
         founderDecisions: text(organization.founderDecisions ?? input.founderDecisions),
         expansion: text(organization.expansion ?? input.expansion),
+        managerRole: choice(
+            organization.managerRole ?? input.managerRole,
+            ["manager-only", "player-coach", "hands-on-specialist", "dont-know"]
+        ),
+        workComplexity: choice(
+            organization.workComplexity ?? input.workComplexity,
+            ["routine", "mixed", "complex", "dont-know"]
+        ),
+        workStandardization: choice(
+            organization.workStandardization ?? input.workStandardization,
+            ["high", "mixed", "low", "dont-know"]
+        ),
+        teamIndependence: choice(
+            organization.teamIndependence ?? input.teamIndependence,
+            ["high", "mixed", "low", "dont-know"]
+        ),
+        coachingIntensity: choice(
+            organization.coachingIntensity ?? input.coachingIntensity,
+            ["low", "medium", "high", "dont-know"]
+        ),
         roleClarity: choice(
             organization.roleClarity ?? input.roleClarity,
             ["clear", "mixed", "unclear", "dont-know"]
@@ -101,6 +125,115 @@ function normalizeOrganizationInput(input = {}) {
     };
 }
 
+function keywordCategories(value, categoryPatterns) {
+    const source = text(value).toLowerCase();
+    if (!source || /^(none|no|n\/a|not applicable|nothing planned)[.! ]*$/.test(source)) return [];
+    const categories = Object.entries(categoryPatterns)
+        .filter(([, patterns]) => patterns.some(pattern => pattern.test(source)))
+        .map(([category]) => category);
+    return categories.length ? categories : ["other"];
+}
+
+function founderDecisionCategories(facts) {
+    return keywordCategories(facts.founderDecisions, {
+        people: [/hir(e|ing)/, /compensation/, /salary/, /pay /, /promotion/, /people/],
+        commercial: [/pricing/, /price/, /customer/, /sales/, /contract/, /deal/],
+        financial: [/spend/, /budget/, /investment/, /purchase/, /capex/, /financial/],
+        operating: [/product/, /vendor/, /operation/, /delivery/, /roadmap/, /process/],
+        strategic: [/strategy/, /market/, /partnership/, /acquisition/, /merger/, /business line/]
+    });
+}
+
+function expansionSignals(facts) {
+    return keywordCategories(facts.expansion, {
+        geography: [/location/, /office/, /state/, /country/, /region/, /geograph/, /international/],
+        workforce: [/hir(e|ing)/, /headcount/, /employee/, /workforce/, /team growth/],
+        offering: [/product/, /service/, /business line/, /new line/, /market/],
+        transaction: [/acquisition/, /acquire/, /merger/, /joint venture/]
+    });
+}
+
+function managementContext(facts) {
+    let points = 0;
+    let knownFactors = 0;
+    const factors = [];
+
+    const add = (key, value, map, label) => {
+        if (!value || value === "dont-know") return;
+        knownFactors += 1;
+        const amount = map[value] ?? 0;
+        points += amount;
+        factors.push({ key, value, label, pressure: amount });
+    };
+
+    add("organization.managerRole", facts.managerRole, {
+        "manager-only": 0,
+        "player-coach": 1,
+        "hands-on-specialist": 2
+    }, "manager role");
+    add("organization.workComplexity", facts.workComplexity, {
+        routine: 0,
+        mixed: 1,
+        complex: 2
+    }, "work complexity");
+    add("organization.workStandardization", facts.workStandardization, {
+        high: 0,
+        mixed: 1,
+        low: 2
+    }, "work standardization");
+    add("organization.teamIndependence", facts.teamIndependence, {
+        high: 0,
+        mixed: 1,
+        low: 2
+    }, "team independence");
+    add("organization.coachingIntensity", facts.coachingIntensity, {
+        low: 0,
+        medium: 1,
+        high: 2
+    }, "manager interaction/coaching intensity");
+
+    if (facts.operatingLocationCount !== null) {
+        const locationPressure = facts.operatingLocationCount >= 4 ? 2 : facts.operatingLocationCount >= 2 ? 1 : 0;
+        points += locationPressure;
+        factors.push({
+            key: "geography.operatingLocationCount",
+            value: facts.operatingLocationCount,
+            label: "worker-location complexity",
+            pressure: locationPressure
+        });
+    }
+
+    const band = knownFactors < 3
+        ? "insufficient-context"
+        : points >= 7
+            ? "high-support-load"
+            : points >= 4
+                ? "moderate-support-load"
+                : "lower-support-load";
+
+    return {
+        knownFactors,
+        points,
+        band,
+        factors
+    };
+}
+
+function contextualSpanStatus(ratio, context) {
+    if (ratio === null) return STATUS.NEEDS_INFORMATION;
+    if (ratio <= 8) return STATUS.STABLE;
+    if (ratio > 16) return STATUS.ACTION;
+    if (context.knownFactors < 3) return STATUS.NEEDS_INFORMATION;
+
+    if (context.band === "high-support-load") {
+        return ratio > 10 ? STATUS.ACTION : ratio > 6 ? STATUS.WATCH : STATUS.STABLE;
+    }
+    if (context.band === "moderate-support-load") {
+        return ratio > 13 ? STATUS.ACTION : ratio > 9 ? STATUS.WATCH : STATUS.STABLE;
+    }
+    return ratio > 16 ? STATUS.ACTION : ratio > 12 ? STATUS.WATCH : STATUS.STABLE;
+}
+
 function derivedMetrics(facts) {
     const managerCount = facts.peopleManagerCount;
     const currentSpan = facts.employees !== null && managerCount !== null && managerCount > 0
@@ -112,6 +245,7 @@ function derivedMetrics(facts) {
     const projectedSpan = facts.expectedEmployees12Months !== null && managerCount !== null && managerCount > 0
         ? facts.expectedEmployees12Months / managerCount
         : null;
+    const context = managementContext(facts);
 
     return {
         currentEmployeeToManagerRatio: currentSpan === null ? null : Number(currentSpan.toFixed(1)),
@@ -119,7 +253,13 @@ function derivedMetrics(facts) {
         projectedEmployeeToManagerRatioIfManagerCountUnchanged:
             projectedSpan === null ? null : Number(projectedSpan.toFixed(1)),
         departmentCount: facts.departments.length,
-        operatingLocationCount: facts.operatingLocationCount
+        operatingLocationCount: facts.operatingLocationCount,
+        managementContextKnownFactors: context.knownFactors,
+        managementContextPressurePoints: context.points,
+        managementContextBand: context.band,
+        managementContextFactors: context.factors,
+        founderDecisionCategories: founderDecisionCategories(facts),
+        expansionSignals: expansionSignals(facts)
     };
 }
 
@@ -153,6 +293,7 @@ function factMetadata(facts, metrics) {
     };
 
     confirmed("company.displayName", Boolean(facts.companyName));
+    confirmed("company.email", Boolean(facts.email));
     confirmed("industry.sector", Boolean(facts.industry));
     confirmed("business.growthStage", Boolean(facts.growthStage));
     confirmed("workforce.totalEmployees", facts.employees !== null);
@@ -161,6 +302,11 @@ function factMetadata(facts, metrics) {
     confirmed("organization.reportingLevels", facts.reportingLevels !== null);
     confirmed("organization.founderDirectReports", facts.founderDirectReports !== null);
     confirmed("organization.departments", facts.departments.length > 0);
+    confirmed("organization.managerRole", Boolean(facts.managerRole) && facts.managerRole !== "dont-know");
+    confirmed("organization.workComplexity", Boolean(facts.workComplexity) && facts.workComplexity !== "dont-know");
+    confirmed("organization.workStandardization", Boolean(facts.workStandardization) && facts.workStandardization !== "dont-know");
+    confirmed("organization.teamIndependence", Boolean(facts.teamIndependence) && facts.teamIndependence !== "dont-know");
+    confirmed("organization.coachingIntensity", Boolean(facts.coachingIntensity) && facts.coachingIntensity !== "dont-know");
     confirmed("organization.roleClarity", Boolean(facts.roleClarity) && facts.roleClarity !== "dont-know");
     confirmed("organization.decisionRights", Boolean(facts.decisionRights) && facts.decisionRights !== "dont-know");
     confirmed("organization.governanceCadence", Boolean(facts.governanceCadence) && facts.governanceCadence !== "dont-know");
@@ -169,29 +315,22 @@ function factMetadata(facts, metrics) {
     confirmed("organization.expansion", Boolean(facts.expansion), CONFIDENCE.MEDIUM);
     confirmed("geography.operatingLocationCount", facts.operatingLocationCount !== null);
 
-    derived(
-        "organization.currentEmployeeToManagerRatio",
-        metrics.currentEmployeeToManagerRatio !== null,
-        ["workforce.totalEmployees", "organization.peopleManagerCount"]
-    );
-    derived(
-        "workforce.expectedHeadcountGrowthPercent",
-        metrics.expectedHeadcountGrowthPercent !== null,
-        ["workforce.totalEmployees", "workforce.expectedEmployees12Months"]
-    );
-    derived(
-        "organization.projectedEmployeeToManagerRatioIfManagerCountUnchanged",
-        metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged !== null,
-        ["workforce.expectedEmployees12Months", "organization.peopleManagerCount"]
-    );
+    derived("organization.currentEmployeeToManagerRatio", metrics.currentEmployeeToManagerRatio !== null, ["workforce.totalEmployees", "organization.peopleManagerCount"]);
+    derived("workforce.expectedHeadcountGrowthPercent", metrics.expectedHeadcountGrowthPercent !== null, ["workforce.totalEmployees", "workforce.expectedEmployees12Months"]);
+    derived("organization.projectedEmployeeToManagerRatioIfManagerCountUnchanged", metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged !== null, ["workforce.expectedEmployees12Months", "organization.peopleManagerCount"]);
+    derived("organization.managementContextBand", metrics.managementContextKnownFactors >= 3, ["organization.managerRole", "organization.workComplexity", "organization.workStandardization", "organization.teamIndependence", "organization.coachingIntensity", "geography.operatingLocationCount"]);
+    derived("organization.founderDecisionCategories", metrics.founderDecisionCategories.length > 0, ["organization.founderDecisions"]);
+    derived("organization.expansionSignals", metrics.expansionSignals.length > 0, ["organization.expansion"]);
 
     return metadata;
 }
 
-function finding({ id, area, status, title, factsUsed, whyItMatters, action, growthTrigger, confidence = CONFIDENCE.HIGH, missingFacts = [] }) {
+function finding({ id, area, status, title, factsUsed, whyItMatters, action, growthTrigger, confidence = CONFIDENCE.HIGH, missingFacts = [], context = null }) {
     const evidence = sourcesForRule(id);
     return {
         id,
+        ruleId: evidence.ruleId,
+        ruleVersion: evidence.ruleVersion,
         area,
         status,
         title,
@@ -200,9 +339,13 @@ function finding({ id, area, status, title, factsUsed, whyItMatters, action, gro
         action,
         growthTrigger,
         confidence,
+        confidenceMeaning: "Confidence reflects the completeness of supplied facts and deterministic rule path; it is not statistical confidence.",
         missingFacts,
+        context,
         framework: FRAMEWORK,
         ruleBasis: evidence.ruleBasis,
+        ruleLastReviewed: evidence.lastReviewed,
+        ruleReviewOwner: evidence.reviewOwner,
         sources: evidence.sources
     };
 }
@@ -212,7 +355,7 @@ function managementCapacity(facts, metrics) {
         return finding({
             id: "ORG-CAPACITY-001", area: "management-capacity", status: STATUS.NEEDS_INFORMATION,
             title: "Management capacity needs more information", factsUsed: [],
-            whyItMatters: "Headcount is needed to compare management capacity with the size of the organization.",
+            whyItMatters: "Headcount is needed to compare management capacity with the size and operating context of the organization.",
             action: "Confirm current employee headcount.",
             growthTrigger: "Reassess whenever headcount or manager count changes materially.",
             confidence: CONFIDENCE.LOW, missingFacts: ["workforce.totalEmployees"]
@@ -235,47 +378,95 @@ function managementCapacity(facts, metrics) {
             title: status === STATUS.STABLE ? "Founder-led management remains proportionate to current size" : "People-management capacity is concentrated",
             factsUsed: ["workforce.totalEmployees", "organization.peopleManagerCount"],
             whyItMatters: `The organization has ${facts.employees} employees and no recorded people managers. Coordination and people-management load can concentrate quickly as headcount rises.`,
-            action: status === STATUS.STABLE
-                ? "Keep manager ownership explicit and reassess before adding significant headcount."
-                : "Define the next layer of people-management ownership before growth increases the coordination load.",
+            action: status === STATUS.STABLE ? "Keep manager ownership explicit and reassess before adding significant headcount." : "Define the next layer of people-management ownership before growth increases the coordination load.",
             growthTrigger: "Reassess when the organization adds another team or approaches the next hiring wave.",
             confidence: CONFIDENCE.HIGH
         });
     }
+
     const ratio = metrics.currentEmployeeToManagerRatio;
-    const status = ratio > 12 ? STATUS.ACTION : ratio > 8 ? STATUS.WATCH : STATUS.STABLE;
+    const context = {
+        band: metrics.managementContextBand,
+        knownFactors: metrics.managementContextKnownFactors,
+        factors: metrics.managementContextFactors
+    };
+    const status = contextualSpanStatus(ratio, {
+        band: metrics.managementContextBand,
+        knownFactors: metrics.managementContextKnownFactors
+    });
+    const contextFacts = metrics.managementContextFactors.map(item => item.key);
+    const missingContext = [
+        [facts.managerRole, "organization.managerRole"],
+        [facts.workComplexity, "organization.workComplexity"],
+        [facts.workStandardization, "organization.workStandardization"],
+        [facts.teamIndependence, "organization.teamIndependence"],
+        [facts.coachingIntensity, "organization.coachingIntensity"]
+    ].filter(([value]) => !value || value === "dont-know").map(([, key]) => key);
+
+    if (status === STATUS.NEEDS_INFORMATION) {
+        return finding({
+            id: "ORG-CAPACITY-001", area: "management-capacity", status,
+            title: "Management span needs operating-context information",
+            factsUsed: ["workforce.totalEmployees", "organization.peopleManagerCount", "organization.currentEmployeeToManagerRatio", ...contextFacts],
+            whyItMatters: `The current employee-to-manager ratio is approximately ${ratio}:1. A ratio alone does not establish an appropriate span; the work, manager role, required interaction and team independence change how much management capacity is needed.`,
+            action: "Complete at least three management-context questions so GrowWithHR can interpret the span contextually rather than apply one universal ratio.",
+            growthTrigger: "Reassess when team work, manager responsibilities, location mix or headcount changes.",
+            confidence: CONFIDENCE.LOW,
+            missingFacts: missingContext,
+            context
+        });
+    }
+
+    const title = status === STATUS.ACTION
+        ? "Management capacity is under contextual pressure"
+        : status === STATUS.WATCH
+            ? "Management span should be watched in this operating context"
+            : "Current management span is workable in the supplied operating context";
+    const contextLabel = metrics.managementContextBand.replaceAll("-", " ");
     return finding({
-        id: "ORG-CAPACITY-001", area: "management-capacity", status,
-        title: status === STATUS.ACTION ? "Management span may constrain capacity" : status === STATUS.WATCH ? "Management span should be watched as the company grows" : "Current management span is structurally manageable",
-        factsUsed: ["workforce.totalEmployees", "organization.peopleManagerCount", "organization.currentEmployeeToManagerRatio"],
-        whyItMatters: `The current employee-to-manager ratio is approximately ${ratio}:1. This is a structural capacity signal, not a judgment of any manager's capability.`,
-        action: status === STATUS.STABLE ? "Keep spans visible and reassess when teams or operating complexity change." : "Review team boundaries, manager capacity, and where day-to-day ownership should sit.",
-        growthTrigger: "Reassess after material hiring, a new function, or a new operating location.",
-        confidence: CONFIDENCE.HIGH
+        id: "ORG-CAPACITY-001", area: "management-capacity", status, title,
+        factsUsed: ["workforce.totalEmployees", "organization.peopleManagerCount", "organization.currentEmployeeToManagerRatio", ...contextFacts],
+        whyItMatters: `The current employee-to-manager ratio is approximately ${ratio}:1 and the supplied management context is classified as ${contextLabel}. GrowWithHR considers the ratio together with work complexity, standardization, manager role, team independence, coaching intensity and location context; this is not a judgment of manager capability.`,
+        action: status === STATUS.STABLE ? "Keep the contextual span factors visible and reassess when the work or operating model changes." : "Review team boundaries, manager time allocation, delegation, work standardization and required coaching before adding further coordination load.",
+        growthTrigger: "Reassess after material hiring, a new function, a change in manager role, or a new operating location.",
+        confidence: metrics.managementContextKnownFactors >= 4 ? CONFIDENCE.HIGH : CONFIDENCE.MEDIUM,
+        context
     });
 }
 
-function founderSpan(facts) {
+function founderSpan(facts, metrics) {
     if (facts.founderDirectReports === null) {
         return finding({
             id: "ORG-FOUNDER-001", area: "founder-dependency", status: STATUS.NEEDS_INFORMATION,
-            title: "Founder coordination load needs more information", factsUsed: [],
-            whyItMatters: "Founder/CEO direct-report count helps show how concentrated cross-company coordination is.",
+            title: "Founder coordination load needs more information",
+            factsUsed: facts.founderDecisions ? ["organization.founderDecisions", "organization.founderDecisionCategories"] : [],
+            whyItMatters: facts.founderDecisions
+                ? "Important founder-dependent decisions were recorded, but direct-report count is still needed to understand how concentrated cross-company coordination is."
+                : "Founder/CEO direct-report count and decision concentration help show how centralized cross-company coordination is.",
             action: "Confirm the number of direct reports to the founder/CEO.",
             growthTrigger: "Reassess before adding another function or leadership layer.",
-            confidence: CONFIDENCE.LOW, missingFacts: ["organization.founderDirectReports"]
+            confidence: CONFIDENCE.LOW,
+            missingFacts: ["organization.founderDirectReports"]
         });
     }
+
     const direct = facts.founderDirectReports;
-    const status = direct > 10 ? STATUS.ACTION : direct > 7 ? STATUS.WATCH : STATUS.STABLE;
+    const decisionCount = metrics.founderDecisionCategories.length;
+    let status = direct > 10 ? STATUS.ACTION : direct > 7 ? STATUS.WATCH : STATUS.STABLE;
+    if (decisionCount >= 3) status = STATUS.ACTION;
+    else if (decisionCount >= 1 && status === STATUS.STABLE) status = STATUS.WATCH;
+
+    const factsUsed = ["organization.founderDirectReports"];
+    if (facts.founderDecisions) factsUsed.push("organization.founderDecisions", "organization.founderDecisionCategories");
     return finding({
         id: "ORG-FOUNDER-001", area: "founder-dependency", status,
-        title: status === STATUS.ACTION ? "Founder coordination path is highly concentrated" : status === STATUS.WATCH ? "Founder direct-report load is becoming a scaling watchpoint" : "Founder direct-report load is not an immediate structural trigger",
-        factsUsed: ["organization.founderDirectReports"],
-        whyItMatters: `The founder/CEO has ${direct} recorded direct reports. A larger direct-report span can centralize coordination and slow decisions as the organization becomes more complex.`,
-        action: status === STATUS.STABLE ? "Keep functional ownership explicit as new teams are added." : "Review which functional owners can hold clear end-to-end accountability without routine founder escalation.",
-        growthTrigger: "Reassess when another function, location, or senior owner is added.",
-        confidence: CONFIDENCE.HIGH
+        title: status === STATUS.ACTION ? "Founder coordination and decision paths are highly concentrated" : status === STATUS.WATCH ? "Founder dependency is becoming a scaling watchpoint" : "Founder dependency is not an immediate structural trigger",
+        factsUsed,
+        whyItMatters: `${direct} founder/CEO direct reports are recorded${decisionCount ? `, and founder approval still appears in ${decisionCount} important decision categor${decisionCount === 1 ? "y" : "ies"}` : ""}. Direct-report load and decision concentration can combine to centralize escalation as complexity rises.`,
+        action: status === STATUS.STABLE ? "Keep functional ownership explicit as new teams are added." : "Identify which recurring founder-dependent decisions can move to clearly accountable functional owners with defined boundaries and escalation criteria.",
+        growthTrigger: "Reassess when another function, location, senior owner, or founder approval category is added.",
+        confidence: facts.founderDecisions ? CONFIDENCE.HIGH : CONFIDENCE.MEDIUM,
+        context: { founderDecisionCategories: metrics.founderDecisionCategories }
     });
 }
 
@@ -323,7 +514,7 @@ function functionalOwnership(facts) {
             status: facts.employees !== null && facts.employees > 20 ? STATUS.ACTION : STATUS.NEEDS_INFORMATION,
             title: facts.employees !== null && facts.employees > 20 ? "Functional ownership needs to be made explicit" : "Functional ownership needs more information",
             factsUsed: facts.employees !== null ? ["workforce.totalEmployees"] : [],
-            whyItMatters: "Named functions or departments make responsibility boundaries visible and reduce ambiguity as work becomes more specialized.",
+            whyItMatters: "Named functions or responsibility domains make ownership boundaries visible and reduce ambiguity as work becomes more specialized.",
             action: "List the main functions and identify who owns each function's outcomes and recurring decisions.",
             growthTrigger: "Reassess whenever a new function or business line is introduced.",
             confidence: facts.employees !== null ? CONFIDENCE.MEDIUM : CONFIDENCE.LOW,
@@ -375,23 +566,41 @@ function roleClarityFinding(facts) {
     });
 }
 
-function decisionRightsFinding(facts) {
-    return qualitativeFinding({
-        id: "ORG-DECISIONS-001", area: "decision-rights", value: facts.decisionRights,
-        factKey: "organization.decisionRights", missingTitle: "Decision rights need more information",
-        why: "Explicit decision rights help routine choices happen at the right level and reduce avoidable escalation.",
-        labels: {
-            clear: { status: STATUS.STABLE, title: "Decision ownership is reported as clear" },
-            mixed: { status: STATUS.WATCH, title: "Decision ownership is inconsistent" },
-            unclear: { status: STATUS.ACTION, title: "Decision ownership is a structural bottleneck" }
-        },
-        actions: {
-            clear: "Keep major recurring decisions mapped to accountable roles.",
-            mixed: "Identify the recurring decisions that still bounce between roles and assign a clear owner.",
-            unclear: "Create a simple decision-rights map for recurring commercial, people, operating, and spending decisions.",
-            missing: "Confirm whether recurring decision ownership is generally clear, mixed, or unclear."
-        },
-        trigger: "Reassess when new leaders, functions, or approval thresholds are introduced."
+function decisionRightsFinding(facts, metrics) {
+    if (!facts.decisionRights || facts.decisionRights === "dont-know") {
+        return finding({
+            id: "ORG-DECISIONS-001", area: "decision-rights", status: STATUS.NEEDS_INFORMATION,
+            title: "Decision rights need more information",
+            factsUsed: facts.founderDecisions ? ["organization.founderDecisions", "organization.founderDecisionCategories"] : [],
+            whyItMatters: "Explicit decision rights help routine choices happen at the right level and reduce avoidable escalation.",
+            action: "Confirm whether recurring decision ownership is generally clear, mixed, or unclear.",
+            growthTrigger: "Reassess when new leaders, functions, or approval thresholds are introduced.",
+            confidence: CONFIDENCE.LOW,
+            missingFacts: ["organization.decisionRights"]
+        });
+    }
+
+    const founderDecisionCount = metrics.founderDecisionCategories.length;
+    let status = facts.decisionRights === "unclear" ? STATUS.ACTION : facts.decisionRights === "mixed" ? STATUS.WATCH : STATUS.STABLE;
+    if (founderDecisionCount >= 3) status = STATUS.ACTION;
+    else if (founderDecisionCount >= 1 && status === STATUS.STABLE) status = STATUS.WATCH;
+
+    const title = status === STATUS.ACTION
+        ? "Decision ownership is a structural bottleneck"
+        : status === STATUS.WATCH
+            ? "Decision ownership or founder escalation should be clarified"
+            : "Decision ownership is reported as clear";
+    const factsUsed = ["organization.decisionRights"];
+    if (facts.founderDecisions) factsUsed.push("organization.founderDecisions", "organization.founderDecisionCategories");
+    return finding({
+        id: "ORG-DECISIONS-001", area: "decision-rights", status, title, factsUsed,
+        whyItMatters: founderDecisionCount
+            ? `The company reports decision ownership as ${facts.decisionRights}, while ${founderDecisionCount} important decision categor${founderDecisionCount === 1 ? "y still appears" : "ies still appear"} to require founder approval. That combination is a centralization signal.`
+            : "Explicit decision rights help routine choices happen at the right level and reduce avoidable escalation.",
+        action: status === STATUS.STABLE ? "Keep major recurring decisions mapped to accountable roles." : "Map recurring commercial, people, operating and spending decisions to a clear accountable owner, with explicit founder escalation criteria only where needed.",
+        growthTrigger: "Reassess when new leaders, functions, approval thresholds, or founder-dependent decision categories are introduced.",
+        confidence: facts.founderDecisions ? CONFIDENCE.HIGH : CONFIDENCE.MEDIUM,
+        context: { founderDecisionCategories: metrics.founderDecisionCategories }
     });
 }
 
@@ -414,7 +623,7 @@ function governanceFinding(facts) {
         factsUsed: ["organization.governanceCadence"],
         whyItMatters: "A predictable operating cadence helps surface dependencies, ownership conflicts, and decisions before they become founder-level escalations.",
         action: status === STATUS.STABLE ? "Keep the cadence focused on decisions, dependencies, and accountability." : "Establish a recurring cross-functional operating review with clear decision and follow-up ownership.",
-        growthTrigger: "Increase the cadence when the number of teams, locations, or interdependencies rises.", confidence: CONFIDENCE.MEDIUM
+        growthTrigger: "Increase or redesign the cadence when the number of teams, locations, or interdependencies rises.", confidence: CONFIDENCE.MEDIUM
     });
 }
 
@@ -445,77 +654,126 @@ function growthReadiness(facts, metrics) {
         if (facts.expectedEmployees12Months === null) missingFacts.push("workforce.expectedEmployees12Months");
         return finding({
             id: "ORG-GROWTH-001", area: "growth-readiness", status: STATUS.NEEDS_INFORMATION,
-            title: "Growth-readiness scenario needs more information", factsUsed: [],
-            whyItMatters: "A 12-month headcount assumption helps test whether the current structure is likely to face predictable capacity pressure.",
+            title: "Growth-readiness scenario needs more information",
+            factsUsed: facts.expansion ? ["organization.expansion", "organization.expansionSignals"] : [],
+            whyItMatters: facts.expansion
+                ? "A planned expansion was recorded, but a 12-month headcount assumption is still needed to test the current structure against workforce growth."
+                : "A 12-month headcount assumption helps test whether the current structure is likely to face predictable capacity pressure.",
             action: "Confirm current headcount and a reasonable 12-month headcount assumption.",
-            growthTrigger: "Reassess when the hiring plan changes materially.", confidence: CONFIDENCE.LOW, missingFacts
+            growthTrigger: "Reassess when the hiring or expansion plan changes materially.", confidence: CONFIDENCE.LOW, missingFacts
         });
     }
+
     const growth = metrics.expectedHeadcountGrowthPercent;
     const projectedSpan = metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged;
+    const projectedSpanStatus = projectedSpan === null ? STATUS.STABLE : contextualSpanStatus(projectedSpan, {
+        band: metrics.managementContextBand,
+        knownFactors: metrics.managementContextKnownFactors
+    });
     let status = STATUS.STABLE;
     let title = "Planned headcount does not create an immediate structural trigger";
-    let action = "Keep structure and management capacity aligned with the hiring plan.";
-    if (growth > 50 || (projectedSpan !== null && projectedSpan > 12)) {
-        status = STATUS.ACTION; title = "The current structure needs a growth-readiness plan";
-        action = "Sequence management capacity, role ownership, and decision-right changes before most of the planned hiring lands.";
-    } else if (growth > 30 || (projectedSpan !== null && projectedSpan > 8)) {
-        status = STATUS.WATCH; title = "Planned growth creates a near-term structural watchpoint";
+    let action = "Keep structure and management capacity aligned with the hiring and expansion plan.";
+
+    if (growth > 50 || projectedSpanStatus === STATUS.ACTION) {
+        status = STATUS.ACTION;
+        title = "The current structure needs a growth-readiness plan";
+        action = "Sequence management capacity, role ownership, decision-right and governance changes before most of the planned growth lands.";
+    } else if (growth > 30 || projectedSpanStatus === STATUS.WATCH || projectedSpanStatus === STATUS.NEEDS_INFORMATION) {
+        status = STATUS.WATCH;
+        title = "Planned growth creates a near-term structural watchpoint";
         action = "Set explicit triggers for when new ownership, manager capacity, or governance changes will be introduced.";
     }
+
+    if (metrics.expansionSignals.length >= 2) {
+        status = facts.coordinationFriction === "high" || facts.decisionRights === "unclear" ? STATUS.ACTION : status === STATUS.STABLE ? STATUS.WATCH : status;
+        if (status === STATUS.ACTION) title = "Growth and expansion increase current structural pressure";
+        else if (status === STATUS.WATCH) title = "Planned growth or expansion creates a structural watchpoint";
+    } else if (metrics.expansionSignals.length === 1 && status === STATUS.STABLE) {
+        status = STATUS.WATCH;
+        title = "Planned expansion should be reflected in the operating model";
+    }
+
+    const factsUsed = ["workforce.totalEmployees", "workforce.expectedEmployees12Months", "workforce.expectedHeadcountGrowthPercent"];
+    if (projectedSpan !== null) factsUsed.push("organization.peopleManagerCount", "organization.projectedEmployeeToManagerRatioIfManagerCountUnchanged", "organization.managementContextBand");
+    if (facts.expansion) factsUsed.push("organization.expansion", "organization.expansionSignals");
+
     return finding({
-        id: "ORG-GROWTH-001", area: "growth-readiness", status, title,
-        factsUsed: [
-            "workforce.totalEmployees", "workforce.expectedEmployees12Months", "workforce.expectedHeadcountGrowthPercent",
-            ...(projectedSpan !== null ? ["organization.peopleManagerCount", "organization.projectedEmployeeToManagerRatioIfManagerCountUnchanged"] : [])
-        ],
-        whyItMatters: `The current input assumes headcount changes from ${facts.employees} to ${facts.expectedEmployees12Months} in 12 months (${growth >= 0 ? "+" : ""}${growth}%). This is a scenario assumption, not a prediction.`,
-        action, growthTrigger: "Reassess whenever the 12-month hiring plan or management structure changes materially.", confidence: CONFIDENCE.HIGH
+        id: "ORG-GROWTH-001", area: "growth-readiness", status, title, factsUsed,
+        whyItMatters: `The current input assumes headcount changes from ${facts.employees} to ${facts.expectedEmployees12Months} in 12 months (${growth >= 0 ? "+" : ""}${growth}%).${metrics.expansionSignals.length ? ` The expansion plan also contains ${metrics.expansionSignals.join(", ")} signal${metrics.expansionSignals.length === 1 ? "" : "s"}.` : ""} This is a scenario assumption, not a prediction.`,
+        action,
+        growthTrigger: "Reassess whenever the 12-month hiring plan, expansion plan or management structure changes materially.",
+        confidence: projectedSpanStatus === STATUS.NEEDS_INFORMATION ? CONFIDENCE.MEDIUM : CONFIDENCE.HIGH,
+        context: { expansionSignals: metrics.expansionSignals, projectedSpanStatus }
     });
 }
 
-function locationComplexity(facts) {
+function locationComplexity(facts, metrics) {
     if (facts.operatingLocationCount === null) {
         return finding({
             id: "ORG-LOCATION-001", area: "operating-model", status: STATUS.NEEDS_INFORMATION,
-            title: "Operating-location complexity needs more information", factsUsed: [],
-            whyItMatters: "Multiple operating locations usually increase coordination, ownership, and governance requirements.",
+            title: "Operating-location complexity needs more information",
+            factsUsed: facts.expansion ? ["organization.expansion", "organization.expansionSignals"] : [],
+            whyItMatters: "Multiple current or planned operating locations can increase coordination, ownership, and governance requirements.",
             action: "Confirm the number of operating locations.", growthTrigger: "Reassess before opening another location.",
             confidence: CONFIDENCE.LOW, missingFacts: ["geography.operatingLocationCount"]
         });
     }
     const locations = facts.operatingLocationCount;
-    const status = locations >= 4 ? STATUS.WATCH : STATUS.STABLE;
+    const geographicExpansion = metrics.expansionSignals.includes("geography");
+    const status = locations >= 4 && geographicExpansion ? STATUS.ACTION : locations >= 4 || geographicExpansion ? STATUS.WATCH : STATUS.STABLE;
+    const factsUsed = ["geography.operatingLocationCount"];
+    if (facts.expansion) factsUsed.push("organization.expansion", "organization.expansionSignals");
     return finding({
         id: "ORG-LOCATION-001", area: "operating-model", status,
-        title: status === STATUS.WATCH ? "Multi-location operations increase coordination complexity" : "Operating-location count is not an immediate structural trigger",
-        factsUsed: ["geography.operatingLocationCount"],
-        whyItMatters: `${locations} operating location${locations === 1 ? "" : "s"} were recorded. Location growth can create duplicated decisions and unclear local-versus-central ownership if the operating model is not explicit.`,
-        action: status === STATUS.STABLE ? "Keep local-versus-central ownership clear as the footprint changes." : "Clarify which decisions are local, which are centralized, and how cross-location issues are escalated.",
-        growthTrigger: "Reassess before adding another location or materially decentralizing operations.", confidence: CONFIDENCE.HIGH
+        title: status === STATUS.ACTION ? "Multi-location growth needs explicit local-versus-central design" : status === STATUS.WATCH ? "Location footprint increases coordination complexity" : "Operating-location count is not an immediate structural trigger",
+        factsUsed,
+        whyItMatters: `${locations} operating location${locations === 1 ? "" : "s"} ${locations === 1 ? "is" : "are"} recorded${geographicExpansion ? ", with further geographic expansion indicated" : ""}. Location growth can create duplicated decisions and unclear local-versus-central ownership if the operating model is not explicit.`,
+        action: status === STATUS.STABLE ? "Keep local-versus-central ownership clear as the footprint changes." : "Clarify which decisions are local, which are centralized, who owns cross-location outcomes, and how issues are escalated.",
+        growthTrigger: "Reassess before adding another location or materially decentralizing operations.", confidence: CONFIDENCE.HIGH,
+        context: { geographicExpansion }
     });
 }
 
 function scenarioFor(facts, metrics) {
     const available = facts.expectedEmployees12Months !== null && facts.peopleManagerCount !== null && facts.peopleManagerCount > 0;
     const evidence = sourcesForRule("ORG-SCENARIO-HEADCOUNT-001");
+    const projectedRatio = metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged;
+    const projectedStatus = available ? contextualSpanStatus(projectedRatio, {
+        band: metrics.managementContextBand,
+        knownFactors: metrics.managementContextKnownFactors
+    }) : STATUS.NEEDS_INFORMATION;
+    const assumptions = available ? [
+        `Expected headcount: ${facts.expectedEmployees12Months}`,
+        `People manager count remains: ${facts.peopleManagerCount}`,
+        `Management-context band remains: ${metrics.managementContextBand}`,
+        ...(facts.expansion ? [`Expansion assumption: ${facts.expansion}`] : [])
+    ] : [];
+
+    const interpretation = !available
+        ? "Provide expected 12-month headcount and current manager count to run this structural scenario."
+        : projectedStatus === STATUS.ACTION
+            ? "Under the supplied assumptions, management capacity moves into a GrowWithHR structural action state for this operating context."
+            : projectedStatus === STATUS.WATCH
+                ? "Under the supplied assumptions, management capacity becomes a GrowWithHR structural watchpoint for this operating context."
+                : projectedStatus === STATUS.NEEDS_INFORMATION
+                    ? "The projected span can be calculated, but more management-context information is needed before GrowWithHR classifies the structural pressure."
+                    : "Under the supplied assumptions, projected management span does not create a current GrowWithHR structural trigger for this operating context.";
+
     return {
         id: "ORG-SCENARIO-HEADCOUNT-001",
+        ruleId: evidence.ruleId,
+        ruleVersion: evidence.ruleVersion,
         name: "12-month headcount with current manager count unchanged",
         type: "conditional-scenario",
         available,
-        assumptions: available ? [`Expected headcount: ${facts.expectedEmployees12Months}`, `People manager count remains: ${facts.peopleManagerCount}`] : [],
-        projectedEmployeeToManagerRatio: metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged,
-        interpretation: !available
-            ? "Provide expected 12-month headcount and current manager count to run this structural scenario."
-            : metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged > 12
-                ? "Under this assumption, management span becomes a GrowWithHR structural action trigger."
-                : metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged > 8
-                    ? "Under this assumption, management span becomes a GrowWithHR structural watchpoint."
-                    : "Under this assumption, management span does not trigger the current GrowWithHR prototype thresholds.",
-        disclaimer: "This scenario is a deterministic comparison of supplied facts. It is not a forecast, prediction, or recommendation about any individual. The numeric trigger is a GrowWithHR prototype rule, not a published source benchmark.",
+        assumptions,
+        projectedEmployeeToManagerRatio: projectedRatio,
+        projectedStatus,
+        interpretation,
+        disclaimer: "This scenario is a deterministic comparison of supplied facts and assumptions. It is not a forecast, prediction, or recommendation about any individual. GrowWithHR prototype guardrails are not published source benchmarks.",
         framework: FRAMEWORK,
         ruleBasis: evidence.ruleBasis,
+        ruleLastReviewed: evidence.lastReviewed,
         sources: evidence.sources
     };
 }
@@ -528,34 +786,137 @@ function statusSummary(findings) {
     return summary;
 }
 
+function priorityFindings(findings, limit = 3) {
+    return [...findings]
+        .sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status])
+        .slice(0, limit);
+}
+
+function executiveSummary(findings, summary) {
+    const primary = priorityFindings(findings, 1)[0];
+    if (!primary) return "No structural finding is available yet.";
+    if (summary[STATUS.ACTION] > 0) {
+        return `Your structure has ${summary[STATUS.ACTION]} area${summary[STATUS.ACTION] === 1 ? "" : "s"} requiring action and ${summary[STATUS.WATCH]} watchpoint${summary[STATUS.WATCH] === 1 ? "" : "s"}. The clearest current constraint is ${primary.title.toLowerCase()}.`;
+    }
+    if (summary[STATUS.WATCH] > 0) {
+        return `Your current structure is broadly workable, with ${summary[STATUS.WATCH]} scaling watchpoint${summary[STATUS.WATCH] === 1 ? "" : "s"}. The main area to monitor is ${primary.title.toLowerCase()}.`;
+    }
+    if (summary[STATUS.NEEDS_INFORMATION] > 0) {
+        return `No immediate action trigger is visible from the confirmed facts, but ${summary[STATUS.NEEDS_INFORMATION]} area${summary[STATUS.NEEDS_INFORMATION] === 1 ? " needs" : "s need"} more information before GrowWithHR can classify the structure fully.`;
+    }
+    return "Your supplied structural facts do not create an immediate GrowWithHR action or watch trigger. Reassess when headcount, reporting lines, locations, work design or decision ownership change materially.";
+}
+
+function reportModel(facts, metrics, findings, scenario, missingFacts) {
+    const summary = statusSummary(findings);
+    const priorities = priorityFindings(findings, 3);
+    const primary = priorities[0] || null;
+    const uniqueSources = [];
+    const seenSources = new Set();
+    [...findings, scenario].forEach(item => {
+        (item.sources || []).forEach(source => {
+            if (seenSources.has(source.id)) return;
+            seenSources.add(source.id);
+            uniqueSources.push(source);
+        });
+    });
+
+    return {
+        schemaVersion: "1.0",
+        reportType: "organization-structure",
+        title: "GrowWithHR Organization Structure Report",
+        generatedAt: new Date().toISOString(),
+        framework: FRAMEWORK,
+        company: {
+            name: facts.companyName,
+            email: facts.email,
+            industry: facts.industry,
+            growthStage: facts.growthStage
+        },
+        executiveSummary: executiveSummary(findings, summary),
+        statusSummary: summary,
+        primaryConstraint: primary ? {
+            id: primary.id,
+            title: primary.title,
+            status: primary.status,
+            whyItMatters: primary.whyItMatters,
+            action: primary.action,
+            ruleVersion: primary.ruleVersion,
+            sourceIds: primary.sources.map(source => source.id)
+        } : null,
+        priorities: priorities.map(item => ({
+            id: item.id,
+            title: item.title,
+            status: item.status,
+            action: item.action,
+            growthTrigger: item.growthTrigger,
+            ruleVersion: item.ruleVersion,
+            sourceIds: item.sources.map(source => source.id)
+        })),
+        metrics: {
+            employees: facts.employees,
+            peopleManagers: facts.peopleManagerCount,
+            currentEmployeeToManagerRatio: metrics.currentEmployeeToManagerRatio,
+            expectedEmployees12Months: facts.expectedEmployees12Months,
+            expectedHeadcountGrowthPercent: metrics.expectedHeadcountGrowthPercent,
+            projectedEmployeeToManagerRatioIfManagerCountUnchanged: metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged,
+            managementContextBand: metrics.managementContextBand,
+            founderDecisionCategories: metrics.founderDecisionCategories,
+            expansionSignals: metrics.expansionSignals
+        },
+        findingIds: findings.map(item => item.id),
+        scenario,
+        missingFacts,
+        assumptions: [
+            "Company facts are treated as current as of the assessment submission time.",
+            "The 12-month scenario uses the user's headcount and expansion assumptions and is not a forecast.",
+            "Public sources support organization-design principles; GrowWithHR remains responsible for its disclosed deterministic interpretation."
+        ],
+        confidenceMeaning: "Finding confidence describes fact completeness and the deterministic rule path, not statistical certainty.",
+        sources: uniqueSources,
+        ruleVersions: Object.fromEntries(findings.map(item => [item.id, item.ruleVersion]))
+    };
+}
+
 function analyzeOrganizationStructure(input = {}) {
     const facts = normalizeOrganizationInput(input);
     const metrics = derivedMetrics(facts);
     const findings = [
-        managementCapacity(facts, metrics), founderSpan(facts), reportingArchitecture(facts), functionalOwnership(facts),
-        roleClarityFinding(facts), decisionRightsFinding(facts), governanceFinding(facts), coordinationFinding(facts),
-        growthReadiness(facts, metrics), locationComplexity(facts)
+        managementCapacity(facts, metrics),
+        founderSpan(facts, metrics),
+        reportingArchitecture(facts),
+        functionalOwnership(facts),
+        roleClarityFinding(facts),
+        decisionRightsFinding(facts, metrics),
+        governanceFinding(facts),
+        coordinationFinding(facts),
+        growthReadiness(facts, metrics),
+        locationComplexity(facts, metrics)
     ];
     const missingFacts = Array.from(new Set(findings.flatMap(item => item.missingFacts || [])));
+    const scenario = scenarioFor(facts, metrics);
+    const summary = statusSummary(findings);
 
     return {
         module: "organization",
-        version: "1.1.0-source-traceability",
+        version: "1.2.0-contextual-structure",
         generatedAt: new Date().toISOString(),
         authority: "deterministic-structural-prototype",
         methodology: FRAMEWORK,
         sourceTransparency: {
             publicSourcesVisible: true,
             ruleAndSourceSeparated: true,
-            numericPrototypeTriggersDisclosed: true
+            numericPrototypeTriggersDisclosed: true,
+            contextualManagementCapacity: true
         },
         facts,
         factRegistry: factMetadata(facts, metrics),
         derivedMetrics: metrics,
         findings,
-        statusSummary: statusSummary(findings),
+        statusSummary: summary,
         missingFacts,
-        scenario: scenarioFor(facts, metrics),
+        scenario,
+        reportModel: reportModel(facts, metrics, findings, scenario, missingFacts),
         boundaries: {
             assessesIndividuals: false,
             legalApplicabilityAuthority: false,
@@ -567,5 +928,15 @@ function analyzeOrganizationStructure(input = {}) {
     };
 }
 
-export { STATUS, CONFIDENCE, normalizeOrganizationInput, derivedMetrics, analyzeOrganizationStructure };
+export {
+    STATUS,
+    CONFIDENCE,
+    normalizeOrganizationInput,
+    derivedMetrics,
+    analyzeOrganizationStructure,
+    managementContext,
+    contextualSpanStatus,
+    founderDecisionCategories,
+    expansionSignals
+};
 export default analyzeOrganizationStructure;

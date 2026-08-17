@@ -50,7 +50,8 @@ jobs:
       - name: Run Organization Intelligence structured checks
         run: >
           node tests/organization-intelligence-v1-checks.mjs &&
-          node tests/organization-workspace-headcount-bridge-checks.mjs
+          node tests/organization-workspace-headcount-bridge-checks.mjs &&
+          node tests/organization-structure-completion-checks.mjs
 
       - name: Run site shell and UI polish checks
         run: >

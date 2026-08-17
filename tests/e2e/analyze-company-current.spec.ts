@@ -49,6 +49,63 @@ async function seedSavedBriefing(
 }
 
 test.describe(
+    "Company Insights entry",
+    () => {
+        test(
+            "routes the homepage through Company Insights before an analysis",
+            async ({ page }) => {
+                await page.goto("/index.html");
+
+                const primaryCta = page.locator(
+                    ".hero-actions a.primary-btn"
+                );
+                await expect(primaryCta).toHaveText(
+                    "Understand My Company"
+                );
+                await expect(primaryCta).toHaveAttribute(
+                    "href",
+                    "intelligence-hub.html"
+                );
+
+                await primaryCta.click();
+                await expect(page).toHaveURL(
+                    /intelligence-hub\.html$/
+                );
+                await expect(
+                    page.getByRole("heading", {
+                        name: /Understand Your Company/i
+                    })
+                ).toBeVisible();
+
+                await expect(
+                    page.getByRole("link", {
+                        name: /Identify My Company’s Compliance Needs/i
+                    })
+                ).toHaveAttribute(
+                    "href",
+                    "analyze-company.html?engine=compliance"
+                );
+
+                const organizationLink = page.getByRole(
+                    "link",
+                    {
+                        name: /Understand My Organization Structure/i
+                    }
+                );
+                await expect(organizationLink).toHaveAttribute(
+                    "href",
+                    "organization-intelligence.html"
+                );
+                await expect(organizationLink).toHaveAttribute(
+                    "target",
+                    "_blank"
+                );
+            }
+        );
+    }
+);
+
+test.describe(
     "Analyze My Company",
     () => {
         test.beforeEach(
@@ -405,7 +462,7 @@ test.describe(
                         "link",
                         {
                             name:
-                                "Analyze My Company",
+                                "Company Insights",
                             exact:
                                 true
                         }
@@ -417,7 +474,7 @@ test.describe(
                         "link",
                         {
                             name:
-                                "Official Sources",
+                                "Evidence & Sources",
                             exact:
                                 true
                         }
@@ -429,7 +486,7 @@ test.describe(
                         "link",
                         {
                             name:
-                                "Sample Advisory",
+                                "Sample Reports",
                             exact:
                                 true
                         }

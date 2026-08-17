@@ -11,6 +11,8 @@ const { handleLegalExplanationRequest } = require("./server-legal-explanation");
 const { handleOperationalExplanationRequest } = require("./server-operational-explanation");
 const { handleReportIdRequest } = require("./server-report-id-registry");
 const { handleSingleReportDeliveryRequest } = require("./server-single-report-delivery");
+const { handleOrganizationReportRequest } = require("./server-organization-report-delivery");
+const { handleWorkspaceHandoffRequest } = require("./server-workspace-handoff");
 const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
@@ -99,7 +101,9 @@ function installApiCors() {
                 if (handleLegalExplanationRequest(request, response)) return;
                 if (handleOperationalExplanationRequest(request, response)) return;
                 if (handleReportIdRequest(request, response)) return;
+                if (handleWorkspaceHandoffRequest(request, response)) return;
                 if (handleCompanyWorkspaceRequest(request, response)) return;
+                if (handleOrganizationReportRequest(request, response)) return;
                 if (handleSingleReportDeliveryRequest(request, response)) return;
                 listener(request, response);
             }

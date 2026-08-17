@@ -19,9 +19,12 @@
     </div>
     <div class="org-report-actions">
       <a class="org-secondary" href="organization-structure-methodology.html" target="_blank" rel="noopener">Methodology & Sources ↗</a>
-      <button class="org-primary" id="printReport" type="button">Print / Save PDF</button>
+      <button class="org-secondary" id="printReport" type="button">Print</button>
+      <button class="org-secondary" id="emailReport" type="button">Email Report</button>
+      <button class="org-primary" id="downloadReport" type="button">Download PDF</button>
     </div>
   </div>
+  <p id="reportDeliveryStatus" class="org-delivery-status" role="status" aria-live="polite" hidden></p>
 
   <nav class="org-stepper" aria-label="Organization Structure report sections">
     <button class="org-step is-active" type="button" data-step="overview">1 · Executive Overview</button>
@@ -33,6 +36,7 @@
   <section class="org-report-screen" id="screen-findings" data-screen="findings" hidden></section>
   <section class="org-report-screen" id="screen-scenario" data-screen="scenario" hidden></section>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script type="module" src="js/organization-structure-report.mjs"></script>
 <script src="js/build-marker.js"></script>
 </body>

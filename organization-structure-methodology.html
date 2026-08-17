@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organization Structure Methodology | GrowWithHR</title>
-  <meta name="description" content="See the public sources and GrowWithHR rules used to generate Organization Structure findings.">
+  <meta name="description" content="See the free public sources and versioned GrowWithHR rules used to generate Organization Structure findings.">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script src="js/site-shell.js" defer></script>
@@ -13,51 +13,93 @@
 <main class="org-shell">
   <div class="org-kicker">GrowWithHR · Evidence & Sources</div>
   <h1 class="org-title">How Organization Structure recommendations are <span>grounded</span></h1>
-  <p class="org-lead">Every Organization Structure finding separates two things: the public source that supports the organization-design principle, and the GrowWithHR rule that interprets your company facts. This is designed so you can see exactly where a recommendation came from.</p>
+  <p class="org-lead">Every Organization Structure finding separates two things: the free/public source that supports the organization-design principle, and the versioned GrowWithHR rule that interprets your company facts. This lets a user see what is recommending an action and what GrowWithHR itself inferred.</p>
 
   <section class="org-methodology-intro">
     <article class="org-panel">
-      <h2>GrowWithHR Organization Structure Assessment Framework v1.0</h2>
+      <h2 id="frameworkTitle">GrowWithHR Organization Structure Assessment Framework</h2>
       <p>The framework is a free public methodology. GrowWithHR uses deterministic rules rather than an AI model to decide the structural status shown in a finding.</p>
-      <p class="org-subtle">Public sources do not endorse GrowWithHR. They support the underlying principles used in the analysis.</p>
+      <p id="frameworkMeta" class="org-subtle"></p>
+      <p class="org-subtle">Public sources do not endorse GrowWithHR. They support underlying organization-design principles; GrowWithHR remains responsible for its disclosed interpretation.</p>
     </article>
     <article class="org-panel">
-      <h2>Important threshold disclosure</h2>
-      <p>Where a finding uses a numeric watch or action trigger, the report tells you whether that number is a GrowWithHR prototype trigger. We do not present those values as an industry benchmark unless a source actually publishes that benchmark.</p>
+      <h2>Important guardrail disclosure</h2>
+      <p>Where a finding uses a numeric watch or action guardrail, the report identifies it as a GrowWithHR prototype rule unless a public source actually publishes that value. A ratio is never presented as a universal industry benchmark merely because it is convenient.</p>
     </article>
   </section>
 
-  <div class="org-warning"><strong>How to read a finding:</strong> “Source basis” tells you what public guidance supports the principle. “GrowWithHR rule” tells you how GrowWithHR converted the facts you supplied into Stable, Watch, Action, or Needs information.</div>
+  <div class="org-warning"><strong>How to read a finding:</strong> “Basis & Sources” shows the exact rule ID/version, how GrowWithHR applied it, and the free/public source that supports the underlying principle. The source and GrowWithHR interpretation are intentionally separate.</div>
 
-  <section style="margin-top:28px">
-    <div class="org-kicker">Primary public evidence</div>
-    <h2 style="margin:12px 0 8px">Sources used by the Organization Structure engine</h2>
-    <p class="org-subtle">The primary government sources below are publicly accessible and made available under the UK Open Government Licence v3.0. CIPD is linked as a free public professional reference; its copyright remains with CIPD.</p>
-    <div id="sourceGrid" class="org-source-grid" style="margin-top:18px"></div>
+  <section id="management-capacity" class="org-methodology-section">
+    <div class="org-kicker">Management capacity</div>
+    <h2>Why GrowWithHR asks about the work — not only the ratio</h2>
+    <p class="org-subtle">The contextual management-capacity rule uses employee/manager span together with manager role, work complexity, work standardization, team independence, required interaction/coaching and location context. This direction is grounded in free OpenStax material describing span-of-control factors such as task complexity, worker location, delegation, interaction and workforce capability. The resulting Stable/Watch/Action guardrails remain GrowWithHR prototype rules.</p>
   </section>
 
-  <section style="margin-top:34px">
+  <section class="org-methodology-section">
+    <div class="org-kicker">Primary public evidence</div>
+    <h2>Sources used by the Organization Structure engine</h2>
+    <p class="org-subtle">The source library uses publicly accessible material. OpenStax sources are available under CC BY 4.0; the UK Government sources use the Open Government Licence v3.0; CIPD is linked as a free public professional reference with copyright retained by CIPD.</p>
+    <div id="sourceGrid" class="org-source-grid"></div>
+  </section>
+
+  <section class="org-methodology-section">
+    <div class="org-kicker">Rule register</div>
+    <h2>Versioned GrowWithHR Organization Structure rules</h2>
+    <p class="org-subtle">This register shows which rule generated a finding, which sources are connected to it, when it was reviewed and who owns methodology review.</p>
+    <div id="ruleGrid" class="org-rule-grid"></div>
+  </section>
+
+  <section class="org-methodology-section">
+    <div class="org-kicker">Version history</div>
+    <h2>Framework change history</h2>
+    <div id="frameworkHistory" class="org-history-grid"></div>
+  </section>
+
+  <section class="org-methodology-section">
     <article class="org-panel">
       <h2>What GrowWithHR does not claim</h2>
-      <p>Organization Structure does not score people, judge individual manager capability, recommend dismissals, determine compensation, or claim that a public source prescribed GrowWithHR's prototype thresholds. The result is structural guidance based on the facts supplied and the disclosed rule set.</p>
+      <p>Organization Structure does not score people, judge individual manager capability, recommend dismissals, determine compensation, decide legal applicability, or claim that a public source prescribed GrowWithHR's prototype guardrails. The result is structural guidance based on the facts supplied and the disclosed versioned rule set.</p>
       <p><a class="org-link" href="organization-intelligence.html">Start an Organization Structure assessment →</a></p>
     </article>
   </section>
 </main>
 
 <script type="module">
-import { SOURCES } from "./js/modules/organization/organization-source-registry.mjs";
+import { FRAMEWORK, SOURCES, RULE_SOURCE_MAP, sourceRuleIds } from "./js/modules/organization/organization-source-registry.mjs";
 
-const grid = document.getElementById("sourceGrid");
 function escapeHtml(value){return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");}
 
-grid.innerHTML = Object.values(SOURCES).map((source) => `
-  <article class="org-source-card">
-    <div class="org-kicker" style="font-size:.65rem">${escapeHtml(source.access)}</div>
-    <h3>${escapeHtml(source.title)}</h3>
-    <p>${escapeHtml(source.supports)}</p>
-    <p class="org-source-meta">${escapeHtml(source.publisher)} · ${escapeHtml(source.section)}<br>${escapeHtml(source.license)}</p>
-    <a class="org-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">Open source ↗</a>
+document.getElementById("frameworkTitle").textContent = `${FRAMEWORK.name} v${FRAMEWORK.version}`;
+document.getElementById("frameworkMeta").textContent = `${FRAMEWORK.access} · Last reviewed ${FRAMEWORK.lastReviewed} · Review owner: ${FRAMEWORK.reviewOwner}`;
+
+document.getElementById("sourceGrid").innerHTML = Object.values(SOURCES).map((source) => {
+  const ruleIds = sourceRuleIds(source.id);
+  return `
+    <article class="org-source-card">
+      <div class="org-kicker org-kicker--small">${escapeHtml(source.access)}</div>
+      <h3>${escapeHtml(source.title)}</h3>
+      <p>${escapeHtml(source.supports)}</p>
+      <p class="org-source-meta">${escapeHtml(source.publisher)} · ${escapeHtml(source.section)}<br>${escapeHtml(source.license)}<br>Last reviewed: ${escapeHtml(source.lastReviewed || "Not recorded")}</p>
+      <p class="org-source-meta"><strong>Connected GrowWithHR rules:</strong> ${ruleIds.map(escapeHtml).join(", ") || "None"}</p>
+      <a class="org-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">Open source ↗</a>
+    </article>
+  `;
+}).join("");
+
+document.getElementById("ruleGrid").innerHTML = Object.entries(RULE_SOURCE_MAP).map(([ruleId, rule]) => `
+  <article class="org-source-card org-rule-card">
+    <div class="org-kicker org-kicker--small">${escapeHtml(ruleId)} · v${escapeHtml(rule.version)}</div>
+    <p>${escapeHtml(rule.ruleBasis)}</p>
+    <p class="org-source-meta"><strong>Sources:</strong> ${rule.sourceIds.map(escapeHtml).join(", ")}</p>
+    <p class="org-source-meta"><strong>Last reviewed:</strong> ${escapeHtml(rule.lastReviewed)}<br><strong>Review owner:</strong> ${escapeHtml(rule.reviewOwner)}</p>
+  </article>
+`).join("");
+
+document.getElementById("frameworkHistory").innerHTML = (FRAMEWORK.changeLog || []).map((entry) => `
+  <article class="org-panel">
+    <div class="org-kicker org-kicker--small">v${escapeHtml(entry.version)} · ${escapeHtml(entry.date)}</div>
+    <p>${escapeHtml(entry.note)}</p>
   </article>
 `).join("");
 </script>

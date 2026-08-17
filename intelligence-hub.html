@@ -19,7 +19,7 @@
         <div class="hero-content intelligence-hub-hero__content">
           <div class="hero-badge">GrowWithHR Intelligence</div>
           <h1 id="hubTitle">Understand <span>Your Company</span></h1>
-          <p class="hero-description">Choose what you want to understand first. If you have used GrowWithHR before, you can recover saved Company DNA below.</p>
+          <p class="hero-description">Choose what you want to understand first. If you have used GrowWithHR before, recover saved Company DNA below and it can be handed securely into another analysis.</p>
         </div>
       </div>
     </section>
@@ -40,7 +40,7 @@
             <div class="hub-engine-tag">Available</div>
             <h3>Organization Structure</h3>
             <p>Understand whether your management capacity, reporting lines and decision-making setup can support growth.</p>
-            <a class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
             <p style="margin-top:12px"><a href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
           </article>
         </div>
@@ -69,7 +69,7 @@
             </div>
           </div>
         </div>
-        <p class="hub-privacy-note">Saved Company Data is kept for six months from your latest completed analysis. We email you seven days before scheduled deletion. <a href="more-info.html#privacy">Privacy details</a>.</p>
+        <p class="hub-privacy-note">Saved Company Data is kept for six months from your latest completed analysis. We email you seven days before scheduled deletion. When you open Organization Structure in a new tab, a short-lived one-time handoff token can transfer the recovered workspace without putting the Recovery Code in the URL. <a href="more-info.html#privacy">Privacy details</a>.</p>
       </div>
     </section>
   </main>
@@ -83,6 +83,7 @@
       const actions = document.getElementById('workspaceActions');
       const deleteButton = document.getElementById('workspaceDeleteData');
       const freshButton = document.getElementById('workspaceStartFresh');
+      const organizationLink = document.getElementById('organizationStructureLink');
 
       function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');}catch(_){return null;} }
       function clearWorkspace(){ try{sessionStorage.removeItem(SESSION_KEY);}catch(_){} refreshActions(); }
@@ -99,6 +100,31 @@
           status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Saved data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}.`;
           refreshActions();
         } catch (error) { status.textContent = error.message || 'We could not recover that workspace.'; }
+      });
+
+      organizationLink.addEventListener('click', async (event) => {
+        const workspace = readWorkspace();
+        if (!workspace?.reportId || !workspace?.accessKey) return;
+        event.preventDefault();
+
+        const newTab = window.open('about:blank', '_blank');
+        if (newTab) newTab.opener = null;
+        status.textContent = 'Preparing a secure one-time Company DNA handoff…';
+
+        try {
+          const result = await window.GrowWithHRCompanyWorkspace.createHandoff(workspace.reportId, workspace.accessKey, 'organization-structure');
+          const token = result?.handoff?.token;
+          if (!token) throw new Error('No handoff token was issued.');
+          const target = `organization-intelligence.html?handoff=${encodeURIComponent(token)}`;
+          if (newTab) newTab.location.replace(target);
+          else window.open(target, '_blank', 'noopener');
+          status.textContent = 'Organization Structure opened with a one-time workspace handoff. Your Recovery Code was not placed in the URL.';
+        } catch (error) {
+          const target = 'organization-intelligence.html';
+          if (newTab) newTab.location.replace(target);
+          else window.open(target, '_blank', 'noopener');
+          status.textContent = 'The secure workspace handoff was unavailable, so Organization Structure opened without reused Company DNA. You can continue by entering the current company facts.';
+        }
       });
 
       freshButton.addEventListener('click', () => {
