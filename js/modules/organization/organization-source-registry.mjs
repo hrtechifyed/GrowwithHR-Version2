@@ -105,7 +105,7 @@ const SOURCES = Object.freeze({
 const RULE_SOURCE_MAP = Object.freeze({
     "ORG-CAPACITY-001": Object.freeze({
         sourceIds: ["GOVUK-SPANS-LAYERS", "GOVS003-WORKFORCE", "GOVS003-ORG-DESIGN"],
-        ruleBasis: "GrowWithHR compares supplied headcount and people-manager capacity as a structural signal. The >8 watch and >12 action triggers are GrowWithHR prototype triggers, not published government or industry benchmarks."
+        ruleBasis: "GrowWithHR compares supplied headcount and people-manager capacity as a structural signal. The >8 watch and >12 action triggers are GrowWithHR prototype triggers, not published external benchmarks."
     }),
     "ORG-FOUNDER-001": Object.freeze({
         sourceIds: ["GOVS003-GOVERNANCE", "GOVS003-ACCOUNTABILITY", "GOVS003-DECISIONS"],
