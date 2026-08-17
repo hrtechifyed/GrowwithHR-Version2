@@ -1,4 +1,9 @@
 import { analyzeOrganizationStructure } from "./modules/organization/organization-structure-engine.mjs";
+import {
+    downloadOrganizationStructurePdf,
+    emailOrganizationStructureReport,
+    notifyReportEvent
+} from "./organization-structure-delivery.mjs";
 
 const REPORT_KEY = "growwithhr.organization.report";
 const STATUS_ORDER = ["action", "watch", "stable", "needs-information"];
@@ -48,11 +53,16 @@ function samplePayload() {
             reportingLevels: 2,
             founderDirectReports: 9,
             departments: ["Product", "Engineering", "Sales", "Customer Success", "Finance", "People"],
+            taskComplexity: "complex",
+            delegationAbility: "mixed",
+            managerInteraction: "high",
+            teamExperience: "mixed",
             roleClarity: "mixed",
             decisionRights: "mixed",
             governanceCadence: "ad-hoc",
             coordinationFriction: "some",
-            founderDecisions: "Senior hiring, pricing exceptions, major spend and selected customer commitments",
+            founderDecisions: "Senior hiring, pricing exceptions, major spend, selected customer commitments",
+            expansionType: "hiring",
             expansion: "Planned hiring to 110 employees and expansion of customer operations",
             confirmedAt: new Date().toISOString()
         }
@@ -60,6 +70,7 @@ function samplePayload() {
     return {
         sample: true,
         reportId: "SAMPLE-GWHR-ORG-001",
+        generatedAt: new Date().toISOString(),
         data,
         analysis: analyzeOrganizationStructure(data)
     };
@@ -71,29 +82,20 @@ function payloadFromPage() {
     return readStoredReport();
 }
 
-function priorityFindings(analysis, limit = 3) {
-    const rank = { action: 0, watch: 1, "needs-information": 2, stable: 3 };
-    return [...analysis.findings]
-        .sort((a, b) => rank[a.status] - rank[b.status])
-        .slice(0, limit);
+function findingById(analysis, id) {
+    return analysis.findings.find((item) => item.id === id) || null;
 }
 
 function primaryConstraint(analysis) {
-    return priorityFindings(analysis, 1)[0] || null;
+    const id = analysis.report?.primaryConstraintId;
+    if (id) return findingById(analysis, id);
+    return analysis.findings[0] || null;
 }
 
-function executiveSummary(analysis) {
-    const primary = primaryConstraint(analysis);
-    const actionCount = analysis.statusSummary.action || 0;
-    const watchCount = analysis.statusSummary.watch || 0;
-    if (!primary) return "No structural finding is available yet.";
-    if (actionCount > 0) {
-        return `Your structure has ${actionCount} area${actionCount === 1 ? "" : "s"} requiring action and ${watchCount} watchpoint${watchCount === 1 ? "" : "s"}. The clearest current constraint is ${primary.title.toLowerCase()}.`;
-    }
-    if (watchCount > 0) {
-        return `Your current structure is broadly workable, with ${watchCount} scaling watchpoint${watchCount === 1 ? "" : "s"}. The main area to monitor is ${primary.title.toLowerCase()}.`;
-    }
-    return "Your supplied structural facts do not create an immediate GrowWithHR action or watch trigger. Reassess when headcount, reporting lines, locations or decision ownership change materially.";
+function priorityFindings(analysis) {
+    const ids = analysis.report?.priorityFindingIds || [];
+    if (ids.length) return ids.map((id) => findingById(analysis, id)).filter(Boolean);
+    return analysis.findings.slice(0, 3);
 }
 
 function statusCards(analysis) {
@@ -105,15 +107,18 @@ function statusCards(analysis) {
     `).join("");
 }
 
-function metric(label, value) {
-    return `<article class="org-panel org-metric"><strong>${escapeHtml(value)}</strong><span>${escapeHtml(label)}</span></article>`;
+function metric(label, value, note = "") {
+    return `<article class="org-panel org-metric"><strong>${escapeHtml(value)}</strong><span>${escapeHtml(label)}</span>${note ? `<small>${escapeHtml(note)}</small>` : ""}</article>`;
 }
 
 function sourceBlock(item) {
     const sources = Array.isArray(item.sources) ? item.sources : [];
     return `
         <div class="org-source-block">
-            <h4>Source basis</h4>
+            <div class="org-source-heading-row">
+                <h4>Basis & Sources</h4>
+                ${item.id ? `<span class="org-rule-id">${escapeHtml(item.id)}</span>` : ""}
+            </div>
             <p class="org-rule-basis"><strong>GrowWithHR rule:</strong> ${escapeHtml(item.ruleBasis || "No rule basis recorded.")}</p>
             <ul class="org-source-list">
                 ${sources.map((source) => `
@@ -121,6 +126,7 @@ function sourceBlock(item) {
                         <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)} ↗</a>
                         <small>${escapeHtml(source.publisher)} · ${escapeHtml(source.section)} · ${escapeHtml(source.access)}</small>
                         <small>${escapeHtml(source.supports)}</small>
+                        <small>Source reviewed by GrowWithHR: ${escapeHtml(source.reviewedAt || item.framework?.reviewedAt || "Not recorded")}</small>
                     </li>
                 `).join("") || "<li><small>No public source is currently attached to this rule.</small></li>"}
             </ul>
@@ -132,20 +138,22 @@ function renderOverview(payload) {
     const { analysis, data, reportId, sample, persistenceWarning } = payload;
     const facts = analysis.facts;
     const metrics = analysis.derivedMetrics;
+    const report = analysis.report || {};
     const primary = primaryConstraint(analysis);
-    const priorities = priorityFindings(analysis, 3);
+    const priorities = priorityFindings(analysis);
     const expected = facts.expectedEmployees12Months === null ? "Not provided" : facts.expectedEmployees12Months;
     const managers = facts.peopleManagerCount === null ? "Not provided" : facts.peopleManagerCount;
     const ratio = metrics.currentEmployeeToManagerRatio === null ? "Not available" : `${metrics.currentEmployeeToManagerRatio}:1`;
+    const spanRange = `${metrics.contextualSpanWatchTrigger}:1 / ${metrics.contextualSpanActionTrigger}:1`;
 
     document.getElementById("screen-overview").innerHTML = `
-        ${sample ? '<div class="org-banner"><strong>Illustrative sample:</strong> fictional company data is being used to demonstrate the Organization Structure report.</div>' : ""}
+        ${sample ? '<div class="org-banner"><strong>Illustrative sample:</strong> fictional company data is being used to demonstrate the same Organization Structure report renderer used for live analyses.</div>' : ""}
         ${persistenceWarning ? `<div class="org-banner"><strong>Save warning:</strong> ${escapeHtml(persistenceWarning)} Your analysis is still available in this browser.</div>` : ""}
         <article class="org-panel">
             <div class="org-kicker">Executive Summary</div>
-            <h2 style="margin:13px 0 8px">${escapeHtml(executiveSummary(analysis))}</h2>
-            <p class="org-subtle">Company: ${escapeHtml(facts.companyName || data?.shared?.companyName || "Not provided")} · Report ID: ${escapeHtml(reportId || "Local analysis")}</p>
-            <div class="org-evidence-note"><strong>How this was decided:</strong> GrowWithHR applied deterministic structural rules to the facts you supplied. Each detailed finding shows the exact public source supporting the principle and separately shows the GrowWithHR rule used to interpret your facts. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">Read the methodology ↗</a></div>
+            <h2 style="margin:13px 0 8px">${escapeHtml(report.executiveSummary || "No executive summary is available.")}</h2>
+            <p class="org-subtle">Company: ${escapeHtml(facts.companyName || data?.shared?.companyName || "Not provided")} · Report ID: ${escapeHtml(reportId || "Local analysis")} · Framework: ${escapeHtml(analysis.methodology?.name || "GrowWithHR Organization Structure Assessment Framework")} v${escapeHtml(analysis.methodology?.version || "")}</p>
+            <div class="org-evidence-note"><strong>How this was decided:</strong> the engine applied deterministic structural rules to the facts you supplied. Every finding separates the <strong>public source</strong> supporting the organization-design principle from the <strong>GrowWithHR rule</strong> used to interpret your facts. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">Read the free methodology ↗</a></div>
         </article>
 
         <div class="org-summary-grid">${statusCards(analysis)}</div>
@@ -156,6 +164,11 @@ function renderOverview(payload) {
             ${metric("People managers", managers)}
             ${metric("Current employees per manager", ratio)}
             ${metric("12-month planned headcount", expected)}
+        </div>
+        <div class="org-panel org-context-strip">
+            <strong>Contextual management-span review range</strong>
+            <span>Watch / Action: ${escapeHtml(spanRange)}</span>
+            <small>These are GrowWithHR prototype triggers adjusted from the management context you supplied; they are not published universal benchmarks. Context completeness: ${escapeHtml(Math.round((metrics.spanContextCompleteness || 0) * 100))}%.</small>
         </div>
 
         <div class="org-overview-grid">
@@ -185,7 +198,7 @@ function renderFindings(payload) {
     document.getElementById("screen-findings").innerHTML = `
         <div class="org-kicker">Detailed Structural Findings</div>
         <h2 style="margin:12px 0 8px">See what is working, what needs attention, and what supports each recommendation.</h2>
-        <p class="org-subtle">A public source supports the organization-design principle. The GrowWithHR rule explains how that principle was applied to your facts. Where a numeric trigger is proprietary to this prototype, it is disclosed as such.</p>
+        <p class="org-subtle">A public source supports the organization-design principle. The GrowWithHR rule explains how that principle was applied to your facts. When GrowWithHR uses its own numeric trigger, the finding says so explicitly.</p>
         <div class="org-findings-list" style="margin-top:18px">
             ${analysis.findings.map((item) => `
                 <article class="org-finding">
@@ -201,8 +214,10 @@ function renderFindings(payload) {
                     <p><strong>Reassess when:</strong> ${escapeHtml(item.growthTrigger)}</p>
                     ${sourceBlock(item)}
                     <details class="org-facts">
-                        <summary>Facts used and missing information</summary>
+                        <summary>Facts, assumptions and missing information</summary>
+                        <p><strong>Facts used</strong></p>
                         <ul>${(item.factsUsed || []).map((fact) => `<li>${escapeHtml(fact)}</li>`).join("") || "<li>No confirmed fact used yet.</li>"}</ul>
+                        ${(item.assumptions || []).length ? `<p><strong>Assumptions:</strong> ${item.assumptions.map(escapeHtml).join(" · ")}</p>` : ""}
                         ${(item.missingFacts || []).length ? `<p><strong>Missing:</strong> ${item.missingFacts.map(escapeHtml).join(", ")}</p>` : ""}
                     </details>
                 </article>
@@ -221,7 +236,7 @@ function renderScenario(payload) {
     const scenario = analysis.scenario;
     const currentRatio = analysis.derivedMetrics.currentEmployeeToManagerRatio;
     const projectedRatio = scenario.projectedEmployeeToManagerRatio;
-    const priorities = priorityFindings(analysis, 3);
+    const priorities = priorityFindings(analysis);
 
     document.getElementById("screen-scenario").innerHTML = `
         <div class="org-kicker">12-Month Growth Scenario</div>
@@ -247,6 +262,7 @@ function renderScenario(payload) {
             <div class="org-kicker">What This Means</div>
             <h2 style="margin:12px 0 8px">${escapeHtml(scenario.interpretation)}</h2>
             <p>${escapeHtml(scenario.disclaimer)}</p>
+            ${(scenario.assumptions || []).length ? `<div class="org-assumptions"><strong>Assumptions</strong><ul>${scenario.assumptions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>` : ""}
             ${sourceBlock(scenario)}
         </article>
 
@@ -263,31 +279,72 @@ function renderScenario(payload) {
 
         <div class="org-actions">
             <button class="org-secondary" type="button" data-next="findings">← Detailed Findings</button>
-            <button class="org-primary" type="button" id="printReportBottom">Print / Save Full Report</button>
+            <button class="org-primary" type="button" id="downloadReportBottom">Download Full Report</button>
         </div>
     `;
 }
 
 function setStep(step) {
+    const safeStep = ["overview", "findings", "scenario"].includes(step) ? step : "overview";
     document.querySelectorAll("[data-screen]").forEach((screen) => {
-        screen.hidden = screen.dataset.screen !== step;
+        screen.hidden = screen.dataset.screen !== safeStep;
     });
     document.querySelectorAll(".org-step").forEach((button) => {
-        button.classList.toggle("is-active", button.dataset.step === step);
-        button.setAttribute("aria-current", button.dataset.step === step ? "step" : "false");
+        button.classList.toggle("is-active", button.dataset.step === safeStep);
+        button.setAttribute("aria-current", button.dataset.step === safeStep ? "step" : "false");
     });
-    history.replaceState(null, "", `#${step}`);
+    history.replaceState(null, "", `#${safeStep}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function bindNavigation() {
+function setDeliveryStatus(message, state = "") {
+    const element = document.getElementById("deliveryStatus");
+    if (!element) return;
+    element.textContent = message || "";
+    element.dataset.state = state;
+    element.hidden = !message;
+}
+
+async function handleDownload(payload) {
+    const buttons = [document.getElementById("downloadReport"), document.getElementById("downloadReportBottom")].filter(Boolean);
+    buttons.forEach((button) => { button.disabled = true; });
+    setDeliveryStatus("Preparing your branded Organization Structure PDF…", "working");
+    try {
+        const result = await downloadOrganizationStructurePdf(payload);
+        setDeliveryStatus(`Downloaded ${result.filename}. HRTechify receives only basic report-download metadata for live reports, not your structural findings.`, "success");
+    } catch (error) {
+        setDeliveryStatus(error.message || "We could not prepare the PDF.", "error");
+    } finally {
+        buttons.forEach((button) => { button.disabled = false; });
+    }
+}
+
+async function handleEmail(payload) {
+    const button = document.getElementById("emailReport");
+    if (!button) return;
+    button.disabled = true;
+    setDeliveryStatus("Preparing and emailing your Organization Structure Report…", "working");
+    try {
+        const result = await emailOrganizationStructureReport(payload);
+        setDeliveryStatus(`Report emailed successfully to ${payload.analysis.facts.email || payload.data?.shared?.email}. Attachment: ${result.attachmentFilename || result.generated?.filename || "Organization Structure Report"}.`, "success");
+        void notifyReportEvent(payload, "report-emailed", result.attachmentFilename || result.generated?.filename || "");
+    } catch (error) {
+        setDeliveryStatus(error.message || "The report could not be emailed.", "error");
+    } finally {
+        button.disabled = false;
+    }
+}
+
+function bindNavigation(payload) {
     document.querySelectorAll(".org-step").forEach((button) => button.addEventListener("click", () => setStep(button.dataset.step)));
     document.addEventListener("click", (event) => {
         const next = event.target.closest("[data-next]");
         if (next) setStep(next.dataset.next);
-        if (event.target.closest("#printReportBottom")) window.print();
+        if (event.target.closest("#downloadReportBottom")) void handleDownload(payload);
     });
     document.getElementById("printReport")?.addEventListener("click", () => window.print());
+    document.getElementById("downloadReport")?.addEventListener("click", () => void handleDownload(payload));
+    document.getElementById("emailReport")?.addEventListener("click", () => void handleEmail(payload));
 }
 
 function renderFailure() {
@@ -303,6 +360,7 @@ function renderFailure() {
         </article>
     `;
     document.querySelector(".org-stepper").hidden = true;
+    document.querySelector(".org-report-actions").hidden = true;
 }
 
 const payload = payloadFromPage();
@@ -314,7 +372,17 @@ if (!payload?.analysis) {
     renderOverview(payload);
     renderFindings(payload);
     renderScenario(payload);
-    bindNavigation();
-    const initial = ["overview", "findings", "scenario"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "overview";
-    setStep(initial);
+    bindNavigation(payload);
+    const initialStep = location.hash.replace(/^#/, "");
+    setStep(["overview", "findings", "scenario"].includes(initialStep) ? initialStep : "overview");
+    if (payload.sample) {
+        const emailButton = document.getElementById("emailReport");
+        if (emailButton) {
+            emailButton.disabled = true;
+            emailButton.title = "Sample reports are not emailed.";
+        }
+        setDeliveryStatus("Illustrative sample using fictional company data. You can download the sample PDF; email delivery and internal activity notifications are disabled for samples.", "sample");
+    } else {
+        void notifyReportEvent(payload, "report-viewed");
+    }
 }
