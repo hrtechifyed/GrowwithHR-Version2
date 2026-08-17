@@ -40,8 +40,7 @@
             <div class="hub-engine-tag">Available</div>
             <h3>Organization Structure</h3>
             <p>Understand whether your management capacity, reporting lines and decision-making setup can support growth.</p>
-            <a class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-            <p style="margin-top:12px"><a href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
+            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </article>
         </div>
       </div>
@@ -53,7 +52,7 @@
           <div class="hub-workspace-copy">
             <div class="hub-eyebrow"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Returning?</div>
             <h2 id="returningTitle">Reuse your Company DNA</h2>
-            <p>Use a previous Report ID and Workspace Recovery Code.</p>
+            <p>Use a previous Report ID and Workspace Recovery Code. When you open Organization Structure in a new tab, GrowWithHR uses a short-lived one-time handoff so the recovery code is never placed in the URL.</p>
           </div>
 
           <div>
@@ -83,6 +82,7 @@
       const actions = document.getElementById('workspaceActions');
       const deleteButton = document.getElementById('workspaceDeleteData');
       const freshButton = document.getElementById('workspaceStartFresh');
+      const organizationLink = document.getElementById('organizationStructureLink');
 
       function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');}catch(_){return null;} }
       function clearWorkspace(){ try{sessionStorage.removeItem(SESSION_KEY);}catch(_){} refreshActions(); }
@@ -99,6 +99,25 @@
           status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Saved data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}.`;
           refreshActions();
         } catch (error) { status.textContent = error.message || 'We could not recover that workspace.'; }
+      });
+
+      organizationLink.addEventListener('click', async (event) => {
+        const workspace = readWorkspace();
+        if (!workspace?.reportId || !workspace?.accessKey) return;
+        event.preventDefault();
+        const tab = window.open('organization-intelligence.html?handoff=loading', '_blank');
+        if (tab) tab.opener = null;
+        status.textContent = 'Preparing a secure one-time Company DNA handoff…';
+        try {
+          const handoff = await window.GrowWithHRCompanyWorkspace.createHandoff(workspace.reportId, workspace.accessKey);
+          const target = `organization-intelligence.html?handoff=${encodeURIComponent(handoff.token)}`;
+          if (tab) tab.location.replace(target);
+          else window.location.href = target;
+          status.textContent = 'Secure handoff created. Organization Structure is opening in a new tab.';
+        } catch (error) {
+          if (tab) tab.location.replace('organization-intelligence.html');
+          status.textContent = `${error.message || 'Secure handoff could not be created.'} You can still continue by entering or recovering the company facts in the Organization Structure tab.`;
+        }
       });
 
       freshButton.addEventListener('click', () => {
