@@ -3,166 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Organization Intelligence | GrowWithHR</title>
-  <link rel="stylesheet" href="css/01-variables.css">
-  <link rel="stylesheet" href="css/02-base.css">
-  <link rel="stylesheet" href="css/03-typography.css">
-  <link rel="stylesheet" href="css/04-layout.css">
-  <link rel="stylesheet" href="css/18-site-shell.css">
+  <title>Understand My Organization Structure | GrowWithHR</title>
+  <meta name="description" content="Assess reporting structure, management capacity, decision ownership and growth readiness with transparent public sources.">
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <style>
-    .org{padding:48px 24px 72px;background:#f8fafc;min-height:100vh;color:#0a2342}
-    .org__inner{max-width:1160px;margin:0 auto}
-    .org__eyebrow{color:#d97706;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
-    .org h1{font-size:clamp(2.1rem,5vw,3.8rem);margin:10px 0 14px}
-    .org__intro{max-width:850px;color:#526173;line-height:1.7}
-    .org__notice{margin:24px 0;padding:16px 18px;background:#fff7ed;border-left:4px solid #d97706;color:#7c2d12;line-height:1.55}
-    .org__boundary{margin:20px 0;padding:16px 18px;background:#edf3fa;border-left:4px solid #0a2342;color:#334155;line-height:1.55}
-    .org-form{margin-top:28px;padding:28px;background:#fff;border:1px solid #d8dfe8}
-    .org-form h2{margin-top:0}.section-title{grid-column:1/-1;margin:18px 0 0;padding-top:18px;border-top:1px solid #e2e8f0;color:#0a2342}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-    .field{display:grid;gap:7px}.field label{font-weight:750;color:#334155}.field small{color:#64748b;line-height:1.4}
-    .field input,.field select,.field textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:9px;padding:12px 13px;font:inherit;background:#fff}
-    .field textarea{min-height:92px;resize:vertical}.wide{grid-column:1/-1}
-    .actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
-    .primary,.secondary{border:0;border-radius:9px;padding:13px 18px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
-    .primary{background:#0a2342;color:#fff}.primary:disabled{opacity:.6;cursor:wait}
-    .secondary{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
-    .results{margin-top:26px;padding:28px;background:#fff;border:1px solid #d8dfe8}
-    .summary-grid,.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 24px}
-    .summary-card,.metric-card{padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px}
-    .summary-card strong,.metric-card strong{display:block;font-size:1.35rem;margin-bottom:3px}
-    .summary-card span,.metric-card span{color:#64748b;font-size:.9rem}
-    .finding{padding:20px 0;border-bottom:1px solid #e2e8f0}.finding:last-child{border-bottom:0}
-    .finding__top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-    .finding h3{margin:0 0 8px}.finding p{line-height:1.6;color:#475569}.finding ul{color:#64748b;line-height:1.55}
-    .status{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:850;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-    .status--stable{background:#ecfdf5;color:#166534}.status--watch{background:#fff7ed;color:#9a3412}.status--action{background:#fef2f2;color:#991b1b}.status--needs-information{background:#eff6ff;color:#1e40af}
-    .scenario{margin-top:24px;padding:20px;background:#edf3fa;border:1px solid #cbd8e8}.scenario h3{margin-top:0}
-    .meta{margin-top:24px;padding:18px;background:#f8fafc;line-height:1.6}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800}
-    .hidden{display:none!important}
-    @media(max-width:900px){.summary-grid,.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:760px){.grid{grid-template-columns:1fr}.wide,.section-title{grid-column:auto}.summary-grid,.metric-grid{grid-template-columns:1fr}.finding__top{display:block}.status{margin-bottom:10px}}
-  </style>
   <script src="js/site-shell.js" defer></script>
 </head>
-<body data-active-nav="analyze">
-<main class="org">
-  <div class="org__inner">
-    <div class="org__eyebrow">GrowWithHR Intelligence</div>
-    <h1>Organization Intelligence</h1>
-    <p class="org__intro">Assess whether your current reporting structure, management capacity, ownership and operating cadence fit the company today — and identify the structural triggers to watch as you grow.</p>
+<body class="org-structure-page" data-active-nav="analyze">
+<main class="org-shell">
+  <div class="org-kicker">GrowWithHR Intelligence</div>
+  <h1 class="org-title">Understand My <span>Organization Structure</span></h1>
+  <p class="org-lead">See whether your current management capacity, reporting lines, ownership and operating cadence fit the company today — and what may create friction as you grow.</p>
 
-    <div id="reuseNotice" class="org__notice">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR intelligence engines during the six-month workspace period.</div>
-    <div class="org__boundary"><strong>Prototype boundary:</strong> Organization Intelligence evaluates structural facts and operating patterns. It does not score people, assess individual capability, recommend dismissals, determine compensation, or decide legal applicability. “I don’t know” is a valid answer; missing facts are shown explicitly rather than guessed.</div>
+  <div id="reuseNotice" class="org-banner">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR analyses during the workspace period.</div>
+  <div class="org-boundary"><strong>What this does:</strong> Organization Structure evaluates structural facts and operating patterns. It does not score people, assess individual capability, recommend dismissals, determine compensation, or decide legal applicability. “I don’t know” is a valid answer.</div>
+  <div class="org-evidence-note"><strong>Source transparency:</strong> every finding in your report shows the public source supporting the organization-design principle and the separate GrowWithHR rule that interpreted your facts. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">See methodology & sources ↗</a></div>
 
-    <form id="organizationForm" class="org-form">
-      <h2>Tell us how your company is organized today</h2>
-      <div class="grid">
-        <h3 class="section-title">Shared Company DNA</h3>
-        <div class="field"><label for="companyName">Company name</label><input id="companyName" required></div>
-        <div class="field"><label for="email">Work email</label><input id="email" type="email" required></div>
-        <div class="field"><label for="industry">Industry</label><input id="industry" required></div>
-        <div class="field"><label for="employees">Current employees</label><input id="employees" type="number" min="1" required></div>
-        <div class="field">
-          <label for="growthStage">Growth stage</label>
-          <select id="growthStage">
-            <option value="">I don’t know / not set</option>
-            <option>Startup</option><option>Growth</option><option>Scaling</option><option>Enterprise</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="expectedEmployees">Expected employees in 12 months</label>
-          <input id="expectedEmployees" type="number" min="1" placeholder="Leave blank if unknown">
-          <small>This is a planning assumption for a scenario, not a forecast.</small>
-        </div>
-
-        <h3 class="section-title">Organization structure</h3>
-        <div class="field">
-          <label for="managerCount">People managers</label>
-          <input id="managerCount" type="number" min="0" placeholder="Leave blank if unknown">
-          <small>Count roles with direct people-management responsibility.</small>
-        </div>
-        <div class="field">
-          <label for="reportingLevels">Reporting layers between employee and CEO</label>
-          <input id="reportingLevels" type="number" min="0" placeholder="Leave blank if unknown">
-        </div>
-        <div class="field">
-          <label for="founderDirectReports">Founder/CEO direct reports</label>
-          <input id="founderDirectReports" type="number" min="0" placeholder="Leave blank if unknown">
-        </div>
-        <div class="field"><label for="locations">Operating locations</label><input id="locations" type="number" min="1" value="1" required></div>
-        <div class="field wide">
-          <label for="departments">Functions or departments</label>
-          <input id="departments" placeholder="Sales, Product, Engineering, Finance, People">
-          <small>Use the functions you actually operate; formal department names are not required.</small>
-        </div>
-
-        <h3 class="section-title">Ownership and operating model</h3>
-        <div class="field">
-          <label for="roleClarity">How clear are role responsibilities?</label>
-          <select id="roleClarity">
-            <option value="dont-know">I don’t know</option>
-            <option value="clear">Generally clear</option>
-            <option value="mixed">Clear in some areas, overlapping in others</option>
-            <option value="unclear">Often unclear or duplicated</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="decisionRights">How clear is ownership of recurring decisions?</label>
-          <select id="decisionRights">
-            <option value="dont-know">I don’t know</option>
-            <option value="clear">Generally clear</option>
-            <option value="mixed">Mixed — some decisions bounce between roles</option>
-            <option value="unclear">Often unclear or founder-dependent</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="governanceCadence">Main cross-functional operating review</label>
-          <select id="governanceCadence">
-            <option value="dont-know">I don’t know</option>
-            <option value="weekly">Weekly</option>
-            <option value="biweekly">Every two weeks</option>
-            <option value="monthly">Monthly</option>
-            <option value="ad-hoc">Ad hoc / when issues arise</option>
-            <option value="none">No recurring review</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="coordinationFriction">Cross-functional coordination friction</label>
-          <select id="coordinationFriction">
-            <option value="dont-know">I don’t know</option>
-            <option value="low">Low — handoffs usually work</option>
-            <option value="some">Some recurring friction</option>
-            <option value="high">High — handoffs or decisions regularly stall</option>
-          </select>
-        </div>
-        <div class="field wide">
-          <label for="founderDecisions">Which important decisions still require founder/CEO approval?</label>
-          <textarea id="founderDecisions" placeholder="For example: hiring approvals, pricing, customer exceptions, compensation, major spend — or leave blank if unknown"></textarea>
-        </div>
-        <div class="field wide">
-          <label for="expansion">Planned expansion in the next 12 months</label>
-          <textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea>
-        </div>
+  <form id="organizationForm" class="org-form-card">
+    <h2>Tell us how your company is organized today</h2>
+    <p class="org-subtle">Use what you know. Missing information is shown rather than guessed.</p>
+    <div class="org-grid">
+      <h3 class="org-section-title">Company context</h3>
+      <div class="org-field"><label for="companyName">Company name</label><input id="companyName" required></div>
+      <div class="org-field"><label for="email">Work email</label><input id="email" type="email" required></div>
+      <div class="org-field"><label for="industry">Industry</label><input id="industry" required></div>
+      <div class="org-field"><label for="employees">Current employees</label><input id="employees" type="number" min="1" required></div>
+      <div class="org-field">
+        <label for="growthStage">Growth stage</label>
+        <select id="growthStage"><option value="">I don’t know / not set</option><option>Startup</option><option>Growth</option><option>Scaling</option><option>Enterprise</option></select>
       </div>
-      <div class="actions">
-        <button class="primary" type="submit">Generate Organization Intelligence</button>
-        <a class="secondary" href="intelligence-hub.html">Back to intelligence hub</a>
+      <div class="org-field">
+        <label for="expectedEmployees">Expected employees in 12 months</label>
+        <input id="expectedEmployees" type="number" min="1" placeholder="Leave blank if unknown">
+        <small>This is a planning assumption for the 12-month scenario, not a forecast.</small>
       </div>
-    </form>
 
-    <section id="organizationResults" class="results hidden" aria-live="polite">
-      <h2>Your Organization Intelligence</h2>
-      <p>This result is generated from the facts supplied or recovered in your Company Workspace. Structural statuses are deterministic prototype checks; unknown facts remain visible as missing information.</p>
-      <div id="statusSummary" class="summary-grid"></div>
-      <h3>Derived structural metrics</h3>
-      <div id="metrics" class="metric-grid"></div>
-      <div id="findings"></div>
-      <div id="scenario" class="scenario"></div>
-      <div id="workspaceMeta" class="meta"></div>
-    </section>
-  </div>
+      <h3 class="org-section-title">Organization structure</h3>
+      <div class="org-field"><label for="managerCount">People managers</label><input id="managerCount" type="number" min="0" placeholder="Leave blank if unknown"><small>Count roles with direct people-management responsibility.</small></div>
+      <div class="org-field"><label for="reportingLevels">Reporting layers between employee and CEO</label><input id="reportingLevels" type="number" min="0" placeholder="Leave blank if unknown"></div>
+      <div class="org-field"><label for="founderDirectReports">Founder/CEO direct reports</label><input id="founderDirectReports" type="number" min="0" placeholder="Leave blank if unknown"></div>
+      <div class="org-field"><label for="locations">Operating locations</label><input id="locations" type="number" min="1" value="1" required></div>
+      <div class="org-field wide"><label for="departments">Functions or departments</label><input id="departments" placeholder="Sales, Product, Engineering, Finance, People"><small>Use the functions you actually operate; formal department names are not required.</small></div>
+
+      <h3 class="org-section-title">Ownership and operating model</h3>
+      <div class="org-field">
+        <label for="roleClarity">How clear are role responsibilities?</label>
+        <select id="roleClarity"><option value="dont-know">I don’t know</option><option value="clear">Generally clear</option><option value="mixed">Clear in some areas, overlapping in others</option><option value="unclear">Often unclear or duplicated</option></select>
+      </div>
+      <div class="org-field">
+        <label for="decisionRights">How clear is ownership of recurring decisions?</label>
+        <select id="decisionRights"><option value="dont-know">I don’t know</option><option value="clear">Generally clear</option><option value="mixed">Mixed — some decisions bounce between roles</option><option value="unclear">Often unclear or founder-dependent</option></select>
+      </div>
+      <div class="org-field">
+        <label for="governanceCadence">Main cross-functional operating review</label>
+        <select id="governanceCadence"><option value="dont-know">I don’t know</option><option value="weekly">Weekly</option><option value="biweekly">Every two weeks</option><option value="monthly">Monthly</option><option value="ad-hoc">Ad hoc / when issues arise</option><option value="none">No recurring review</option></select>
+      </div>
+      <div class="org-field">
+        <label for="coordinationFriction">Cross-functional coordination friction</label>
+        <select id="coordinationFriction"><option value="dont-know">I don’t know</option><option value="low">Low — handoffs usually work</option><option value="some">Some recurring friction</option><option value="high">High — handoffs or decisions regularly stall</option></select>
+      </div>
+      <div class="org-field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval?</label><textarea id="founderDecisions" placeholder="For example: hiring approvals, pricing, customer exceptions, compensation, major spend — or leave blank if unknown"></textarea></div>
+      <div class="org-field wide"><label for="expansion">Planned expansion in the next 12 months</label><textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea></div>
+    </div>
+    <div class="org-actions">
+      <button class="org-primary" type="submit">Generate Organization Structure Report →</button>
+      <a class="org-secondary" href="intelligence-hub.html">Back to Company Insights</a>
+      <a class="org-secondary" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View Sample Report</a>
+    </div>
+  </form>
 </main>
 
 <script src="js/company-workspace-client.js"></script>
@@ -170,223 +78,65 @@
 import { analyzeOrganizationStructure } from "./js/modules/organization/organization-structure-engine.mjs";
 
 (() => {
+  const SESSION_KEY = "growwithhr.workspace";
+  const REPORT_KEY = "growwithhr.organization.report";
   const form = document.getElementById("organizationForm");
-  const results = document.getElementById("organizationResults");
-  const findingsEl = document.getElementById("findings");
-  const metaEl = document.getElementById("workspaceMeta");
-  const summaryEl = document.getElementById("statusSummary");
-  const metricsEl = document.getElementById("metrics");
-  const scenarioEl = document.getElementById("scenario");
-  let recovered = null;
+  let recovered = readWorkspace();
 
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+  function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");}catch(_){return null;} }
+  function setValue(id,value){const el=document.getElementById(id);if(!el||value===undefined||value===null||value==="")return;el.value=String(value);}
+  function text(id){return document.getElementById(id).value.trim();}
+  function numberOrNull(id){const raw=text(id);if(raw==="")return null;const value=Number(raw);return Number.isFinite(value)?value:null;}
+  function apiBase(){return location.origin==="https://hrtechifyed.github.io"?"https://growwithhr.onrender.com":"";}
+
+  if(recovered){
+    document.getElementById("reuseNotice").textContent=`Welcome back${recovered.companyName?` to ${recovered.companyName}`:""}. We recovered your temporary Company Workspace. Existing company facts have been reused where available; update anything that has changed.`;
+    const data=recovered.companyData||{};const shared=data.shared||data;const workforce=data.workforce||{};const organization=data.organization||{};const geography=data.geography||{};
+    setValue("companyName",recovered.companyName||shared.companyName);setValue("email",recovered.email||shared.email);setValue("industry",shared.industry);setValue("employees",workforce.totalEmployees??shared.employees);setValue("growthStage",shared.growthStage);setValue("expectedEmployees",workforce.expectedEmployees12Months??shared.expectedEmployees);setValue("managerCount",organization.peopleManagerCount??organization.managerCount);setValue("reportingLevels",organization.reportingLevels);setValue("founderDirectReports",organization.founderDirectReports);setValue("locations",geography.operatingLocationCount??organization.locations);if(Array.isArray(organization.departments))setValue("departments",organization.departments.join(", "));setValue("roleClarity",organization.roleClarity);setValue("decisionRights",organization.decisionRights);setValue("governanceCadence",organization.governanceCadence);setValue("coordinationFriction",organization.coordinationFriction);setValue("founderDecisions",organization.founderDecisions);setValue("expansion",organization.expansion);
   }
 
-  function readWorkspace() {
-    try { return JSON.parse(sessionStorage.getItem("growwithhr.workspace") || "null"); }
-    catch (_error) { return null; }
+  function buildFacts(){
+    const employees=numberOrNull("employees");const expectedEmployees=numberOrNull("expectedEmployees");const locations=numberOrNull("locations");
+    return {shared:{companyName:text("companyName"),email:text("email"),industry:text("industry"),employees,growthStage:text("growthStage"),expectedEmployees},workforce:{totalEmployees:employees,expectedEmployees12Months:expectedEmployees},geography:{operatingLocationCount:locations},organization:{peopleManagerCount:numberOrNull("managerCount"),reportingLevels:numberOrNull("reportingLevels"),founderDirectReports:numberOrNull("founderDirectReports"),locations,departments:text("departments").split(",").map(v=>v.trim()).filter(Boolean),founderDecisions:text("founderDecisions"),expansion:text("expansion"),roleClarity:text("roleClarity"),decisionRights:text("decisionRights"),governanceCadence:text("governanceCadence"),coordinationFriction:text("coordinationFriction"),confirmedAt:new Date().toISOString()}};
   }
 
-  recovered = readWorkspace();
-
-  function setValue(id, value) {
-    const element = document.getElementById(id);
-    if (!element || value === undefined || value === null || value === "") return;
-    element.value = String(value);
+  async function allocateReportId(data,previousReportId=""){
+    const response=await fetch(`${apiBase()}/api/report-id`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({requestKey:`organization:${crypto.randomUUID()}`,email:data.shared.email,companyName:data.shared.companyName,assessmentId:`organization-${Date.now()}`,previousReportId})});
+    const body=await response.json();if(!response.ok||!body.ok)throw new Error(body.error||"Could not issue a Report ID.");return body.reportId;
   }
 
-  if (recovered) {
-    document.getElementById("reuseNotice").textContent =
-      `Welcome back${recovered.companyName ? ` to ${recovered.companyName}` : ""}. We recovered your temporary Company Workspace. Existing company facts have been reused where available; update anything that has changed.`;
-
-    const data = recovered.companyData || {};
-    const shared = data.shared || data;
-    const workforce = data.workforce || {};
-    const organization = data.organization || {};
-    const geography = data.geography || {};
-
-    setValue("companyName", recovered.companyName || shared.companyName);
-    setValue("email", recovered.email || shared.email);
-    setValue("industry", shared.industry);
-    setValue("employees", workforce.totalEmployees ?? shared.employees);
-    setValue("growthStage", shared.growthStage);
-    setValue("expectedEmployees", workforce.expectedEmployees12Months ?? shared.expectedEmployees);
-    setValue("managerCount", organization.peopleManagerCount ?? organization.managerCount);
-    setValue("reportingLevels", organization.reportingLevels);
-    setValue("founderDirectReports", organization.founderDirectReports);
-    setValue("locations", geography.operatingLocationCount ?? organization.locations);
-    if (Array.isArray(organization.departments)) setValue("departments", organization.departments.join(", "));
-    setValue("roleClarity", organization.roleClarity);
-    setValue("decisionRights", organization.decisionRights);
-    setValue("governanceCadence", organization.governanceCadence);
-    setValue("coordinationFriction", organization.coordinationFriction);
-    setValue("founderDecisions", organization.founderDecisions);
-    setValue("expansion", organization.expansion);
-  }
-
-  function numberOrNull(id) {
-    const raw = document.getElementById(id).value.trim();
-    if (raw === "") return null;
-    const value = Number(raw);
-    return Number.isFinite(value) ? value : null;
-  }
-
-  function text(id) { return document.getElementById(id).value.trim(); }
-
-  function buildFacts() {
-    const employees = numberOrNull("employees");
-    const expectedEmployees = numberOrNull("expectedEmployees");
-    const locations = numberOrNull("locations");
-    return {
-      shared: {
-        companyName: text("companyName"), email: text("email"), industry: text("industry"),
-        employees, growthStage: text("growthStage"), expectedEmployees
-      },
-      workforce: { totalEmployees: employees, expectedEmployees12Months: expectedEmployees },
-      geography: { operatingLocationCount: locations },
-      organization: {
-        peopleManagerCount: numberOrNull("managerCount"), reportingLevels: numberOrNull("reportingLevels"),
-        founderDirectReports: numberOrNull("founderDirectReports"), locations,
-        departments: text("departments").split(",").map(value => value.trim()).filter(Boolean),
-        founderDecisions: text("founderDecisions"), expansion: text("expansion"),
-        roleClarity: text("roleClarity"), decisionRights: text("decisionRights"),
-        governanceCadence: text("governanceCadence"), coordinationFriction: text("coordinationFriction"),
-        confirmedAt: new Date().toISOString()
-      }
-    };
-  }
-
-  function apiBase() { return location.origin === "https://hrtechifyed.github.io" ? "https://growwithhr.onrender.com" : ""; }
-
-  async function allocateReportId(data, previousReportId = "") {
-    const response = await fetch(`${apiBase()}/api/report-id`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        requestKey: `organization:${crypto.randomUUID()}`,
-        email: data.shared.email,
-        companyName: data.shared.companyName,
-        assessmentId: `organization-${Date.now()}`,
-        previousReportId
-      })
-    });
-    const body = await response.json();
-    if (!response.ok || !body.ok) throw new Error(body.error || "Could not issue a Report ID.");
-    return body.reportId;
-  }
-
-  function titleCaseStatus(status) {
-    if (status === "needs-information") return "Needs information";
-    return status.charAt(0).toUpperCase() + status.slice(1);
-  }
-
-  function renderSummary(analysis) {
-    const order = ["action", "watch", "stable", "needs-information"];
-    summaryEl.innerHTML = order.map(status => `
-      <div class="summary-card"><strong>${analysis.statusSummary[status] || 0}</strong><span>${escapeHtml(titleCaseStatus(status))}</span></div>
-    `).join("");
-  }
-
-  function metric(label, value) {
-    return `<div class="metric-card"><strong>${escapeHtml(value ?? "Not available")}</strong><span>${escapeHtml(label)}</span></div>`;
-  }
-
-  function renderMetrics(analysis) {
-    const metrics = analysis.derivedMetrics;
-    metricsEl.innerHTML = [
-      metric("Current employees per manager", metrics.currentEmployeeToManagerRatio === null ? "Not available" : `${metrics.currentEmployeeToManagerRatio}:1`),
-      metric("12-month headcount change", metrics.expectedHeadcountGrowthPercent === null ? "Not available" : `${metrics.expectedHeadcountGrowthPercent >= 0 ? "+" : ""}${metrics.expectedHeadcountGrowthPercent}%`),
-      metric("Projected employees per manager if manager count is unchanged", metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged === null ? "Not available" : `${metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged}:1`),
-      metric("Functions / departments recorded", metrics.departmentCount)
-    ].join("");
-  }
-
-  function renderFindings(analysis) {
-    findingsEl.innerHTML = analysis.findings.map(item => `
-      <article class="finding">
-        <div class="finding__top">
-          <div><div class="status status--${escapeHtml(item.status)}">${escapeHtml(titleCaseStatus(item.status))}</div><h3>${escapeHtml(item.title)}</h3></div>
-          <small>Confidence: ${escapeHtml(item.confidence)}</small>
-        </div>
-        <p>${escapeHtml(item.whyItMatters)}</p>
-        <p><strong>What to do next:</strong> ${escapeHtml(item.action)}</p>
-        <p><strong>Growth trigger:</strong> ${escapeHtml(item.growthTrigger)}</p>
-        <details><summary>Facts used</summary>
-          <ul>${(item.factsUsed || []).map(key => `<li>${escapeHtml(key)}</li>`).join("") || "<li>No confirmed fact used yet.</li>"}</ul>
-          ${(item.missingFacts || []).length ? `<p><strong>Missing facts:</strong> ${item.missingFacts.map(escapeHtml).join(", ")}</p>` : ""}
-        </details>
-      </article>
-    `).join("");
-  }
-
-  function renderScenario(analysis) {
-    const scenario = analysis.scenario;
-    scenarioEl.innerHTML = `
-      <h3>${escapeHtml(scenario.name)}</h3>
-      <p>${escapeHtml(scenario.interpretation)}</p>
-      ${scenario.available ? `<p><strong>Projected employee-to-manager ratio:</strong> ${escapeHtml(scenario.projectedEmployeeToManagerRatio)}:1</p>` : ""}
-      ${scenario.assumptions.length ? `<p><strong>Assumptions:</strong> ${scenario.assumptions.map(escapeHtml).join(" · ")}</p>` : ""}
-      <small>${escapeHtml(scenario.disclaimer)}</small>
-    `;
-  }
-
-  form.addEventListener("submit", async event => {
-    event.preventDefault();
-    const button = form.querySelector('button[type="submit"]');
-    button.disabled = true; button.textContent = "Generating…";
-
-    try {
-      const data = buildFacts();
-      const analysis = analyzeOrganizationStructure(data);
-      const workspaceData = { ...data, factRegistry: analysis.factRegistry };
-      const prior = recovered?.reportId || "";
-      const reportId = await allocateReportId(data, prior);
-      let workspace;
-
-      if (recovered) {
-        workspace = (await window.GrowWithHRCompanyWorkspace.complete({
-          reportId: prior, newReportId: reportId, accessKey: recovered.accessKey,
-          companyName: data.shared.companyName, companyData: workspaceData, completedEngine: "organization"
-        })).workspace;
-        recovered = {
-          ...recovered, reportId, reportIds: workspace.reportIds || recovered.reportIds,
-          companyData: workspace.companyData || workspaceData, expiresAt: workspace.expiresAt,
-          completedEngines: workspace.completedEngines
-        };
-      } else {
-        const created = (await window.GrowWithHRCompanyWorkspace.create({
-          reportId, email: data.shared.email, companyName: data.shared.companyName,
-          companyData: workspaceData, completedEngine: "organization"
-        })).workspace;
-        workspace = created;
-        recovered = {
-          reportId, reportIds: created.reportIds, accessKey: created.accessKey,
-          email: data.shared.email, companyName: data.shared.companyName,
-          companyData: workspaceData, completedEngines: created.completedEngines, expiresAt: created.expiresAt
-        };
-      }
-
-      sessionStorage.setItem("growwithhr.workspace", JSON.stringify(recovered));
-      renderSummary(analysis); renderMetrics(analysis); renderFindings(analysis); renderScenario(analysis);
-      metaEl.innerHTML = `
-        <strong>Report ID:</strong> <span class="code">${escapeHtml(reportId)}</span><br>
-        ${workspace.accessKey ? `<strong>Workspace Recovery Code:</strong> <span class="code">${escapeHtml(workspace.accessKey)}</span><br><small>Save this code now. GrowWithHR does not display it again.</small><br>` : ""}
-        <strong>Reusable company data scheduled for deletion:</strong> ${escapeHtml(new Date(workspace.expiresAt).toLocaleDateString())}<br>
-        <small>GrowWithHR will email you seven days before deletion and again after the reusable company data has been deleted.</small>
-      `;
-      results.classList.remove("hidden");
-      results.scrollIntoView({ behavior: "smooth" });
-    } catch (error) {
-      alert(error.message || "Organization Intelligence could not be generated.");
-    } finally {
-      button.disabled = false; button.textContent = "Generate Organization Intelligence";
+  async function persistWorkspace(data,analysis){
+    const workspaceData={...data,factRegistry:analysis.factRegistry};
+    const prior=recovered?.reportId||"";
+    const reportId=await allocateReportId(data,prior);
+    let workspace;
+    if(recovered){
+      workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
+      recovered={...recovered,reportId,reportIds:workspace.reportIds||recovered.reportIds,companyData:workspace.companyData||workspaceData,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines};
+    }else{
+      workspace=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
+      recovered={reportId,reportIds:workspace.reportIds,accessKey:workspace.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngines:workspace.completedEngines,expiresAt:workspace.expiresAt};
     }
+    sessionStorage.setItem(SESSION_KEY,JSON.stringify(recovered));
+    return {reportId,workspace};
+  }
+
+  form.addEventListener("submit",async(event)=>{
+    event.preventDefault();
+    const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent="Generating…";
+    const data=buildFacts();
+    const analysis=analyzeOrganizationStructure(data);
+    const reportPayload={data,analysis,reportId:"",workspace:null,persistenceWarning:""};
+    sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
+    try{
+      const persisted=await persistWorkspace(data,analysis);
+      reportPayload.reportId=persisted.reportId;reportPayload.workspace=persisted.workspace;
+    }catch(error){
+      console.warn("Organization Structure analysis generated but workspace persistence failed.",error);
+      reportPayload.persistenceWarning="GrowWithHR could not save this analysis to your reusable workspace just now.";
+    }
+    sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
+    location.href="organization-structure-report.html#overview";
   });
 })();
 </script>
