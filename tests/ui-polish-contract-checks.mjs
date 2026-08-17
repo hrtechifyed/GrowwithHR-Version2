@@ -30,8 +30,11 @@ assert.match(uiCss, /body\.intelligence-hub-page \.hub-engine-section/);
 assert.match(uiCss, /body\[data-active-nav="analyze"\] \.org/);
 assert.match(uiCss, /@media \(prefers-reduced-motion: reduce\)/);
 
-assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn">Analyze My Company/);
-assert.match(homepage, /Organization Intelligence \(Available\)/);
+assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn">Understand My Company/);
+assert.match(homepage, /href="sample-reports\.html" class="secondary-btn">Explore Sample Reports/);
+assert.match(homepage, /Organization Structure \(Available\)/);
+assert.doesNotMatch(homepage, />Analyze My Company</);
+assert.doesNotMatch(homepage, />View Sample Advisory</);
 assert.match(homepage, /Interactive preview/);
 assert.doesNotMatch(homepage, /es-module-shims/);
 assert.doesNotMatch(homepage, /three@/);
@@ -53,5 +56,6 @@ assert.doesNotMatch(moreInfo, /sticky-card-debug\.js/);
 assert.match(moreInfo, /Progress on this device/);
 assert.match(moreInfo, /Reusable Company Workspace/);
 assert.match(moreInfo, /Deletion and reminders/);
+assert.match(moreInfo, /Report download and delivery activity/);
 
 console.log("GrowWithHR UI polish contracts passed.");
