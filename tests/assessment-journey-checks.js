@@ -41,6 +41,7 @@ function ordered(source, milestones, label) {
 }
 
 const home = read("index.html");
+const hub = read("intelligence-hub.html");
 const siteShell = read("js/site-shell.js");
 const analyze = read("analyze-company.html");
 
@@ -76,8 +77,26 @@ includes(
 
 includes(
     home,
-    'href="analyze-company.html"',
-    "The homepage must link to the stable assessment route."
+    'href="intelligence-hub.html"',
+    "The homepage must route Company Insights through the intelligence hub."
+);
+
+includes(
+    home,
+    "Understand My Company",
+    "The approved homepage Company Insights CTA must remain visible."
+);
+
+includes(
+    hub,
+    'href="analyze-company.html?engine=compliance"',
+    "The Company Insights hub must retain the stable Compliance assessment route."
+);
+
+includes(
+    hub,
+    'href="organization-intelligence.html"',
+    "The Company Insights hub must retain the Organization Structure assessment route."
 );
 
 includes(
