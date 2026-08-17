@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analyze My Company | GrowWithHR</title>
-  <meta name="description" content="Choose a GrowWithHR intelligence analysis or recover a saved Company Workspace.">
+  <title>Company Insights | GrowWithHR</title>
+  <meta name="description" content="Choose what you want to understand about your company or recover saved Company DNA.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -17,8 +17,31 @@
       <div class="container hero-layout">
         <div class="hero-content intelligence-hub-hero__content">
           <div class="hero-badge">GrowWithHR Intelligence</div>
-          <h1 id="hubTitle">Analyze <span>My Company</span></h1>
-          <p class="hero-description">Choose what you want to understand. Recover a workspace only if you want to reuse saved Company DNA.</p>
+          <h1 id="hubTitle">Understand <span>Your Company</span></h1>
+          <p class="hero-description">Choose what you want to understand first. If you have used GrowWithHR before, you can recover saved Company DNA below.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="hub-engine-section" aria-label="Company insight options">
+      <div class="container">
+        <div class="hub-engine-grid" aria-label="Available GrowWithHR analyses">
+          <article class="hub-engine-card">
+            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="hub-engine-tag">Available</div>
+            <h3>Compliance Needs</h3>
+            <p>Identify what compliance requirements may apply, what information is missing, and what to do next.</p>
+            <a class="hub-engine-card__action" href="analyze-company.html?engine=compliance">Identify My Company’s Compliance Needs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
+
+          <article class="hub-engine-card">
+            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
+            <div class="hub-engine-tag">Available</div>
+            <h3>Organization Structure</h3>
+            <p>Understand whether your management capacity, reporting lines and decision-making setup can support growth.</p>
+            <a class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p style="margin-top:12px"><a href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
+          </article>
         </div>
       </div>
     </section>
@@ -34,14 +57,8 @@
 
           <div>
             <form id="workspaceRecoverForm" class="hub-recover-form">
-              <label>
-                Report ID
-                <input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required>
-              </label>
-              <label>
-                Recovery Code
-                <input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required>
-              </label>
+              <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
+              <label>Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
               <button type="submit">Continue</button>
             </form>
             <div id="workspaceRecoverStatus" class="hub-workspace-status" aria-live="polite"></div>
@@ -52,33 +69,6 @@
           </div>
         </div>
         <p class="hub-privacy-note">Saved Company Data is kept for six months from your latest completed analysis. We email you seven days before scheduled deletion. <a href="more-info.html#privacy">Privacy details</a>.</p>
-      </div>
-    </section>
-
-    <section class="hub-engine-section" aria-labelledby="engineTitle">
-      <div class="container">
-        <div class="hub-engine-heading">
-          <div class="hub-eyebrow">Choose an analysis</div>
-          <h2 id="engineTitle">What do you want to understand?</h2>
-        </div>
-
-        <div class="hub-engine-grid" aria-label="Available intelligence engines">
-          <article class="hub-engine-card">
-            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
-            <div class="hub-engine-tag">Available</div>
-            <h3>Compliance Intelligence</h3>
-            <p>See what may apply, what information is missing and what to do next.</p>
-            <a class="hub-engine-card__action" href="analyze-company.html?engine=compliance">Analyze Compliance <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-          </article>
-
-          <article class="hub-engine-card">
-            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
-            <div class="hub-engine-tag">Available</div>
-            <h3>Organization Intelligence</h3>
-            <p>See where structure, reporting and decisions may create friction as you grow.</p>
-            <a class="hub-engine-card__action is-secondary" href="organization-intelligence.html">Analyze Organization <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-          </article>
-        </div>
       </div>
     </section>
   </main>
