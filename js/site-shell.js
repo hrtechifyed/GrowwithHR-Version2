@@ -14,6 +14,9 @@
     ]);
 
     const MORE_ITEMS = Object.freeze([
+        { label: "My Reports", href: "my-reports.html" },
+        { label: "Security & Data", href: "security.html" },
+        { label: "Terms", href: "terms.html" },
         { label: "About", href: "more-info.html#about" },
         { label: "Privacy", href: "more-info.html#privacy" },
         { label: "Contact", href: "more-info.html#contact" }
@@ -80,6 +83,9 @@
             "sample-advisory-report.html": "sample",
             "executive-advisory-report.html": "sample",
             "more-info.html": "more",
+            "my-reports.html": "more",
+            "security.html": "more",
+            "terms.html": "more",
             "advisory-dashboard.html": "platform",
             "growth-roadmap.html": "platform",
             "people-roadmap.html": "platform",
@@ -259,31 +265,21 @@
         if (!document.body) return;
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
-        ensurePolishStyles(prefix);
-
         const header = buildHeader(prefix, activeKey);
         const footer = buildFooter(prefix);
         placeHeader(header);
         placeFooter(footer);
         bindHeaderInteractions(header);
+        ensurePolishStyles(prefix);
         updatePageOffsets();
-
-        document.body.classList.add("has-site-shell");
-        document.documentElement.classList.add("site-shell-ready");
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
-
-        window.requestAnimationFrame(updatePageOffsets);
-        window.addEventListener("load", updatePageOffsets, { once: true });
         window.addEventListener("resize", updatePageOffsets);
-        window.dispatchEvent(new CustomEvent("growwithhr:site-shell-ready", { detail: { activeNav: activeKey, rootPrefix: prefix } }));
     }
 
-    if (document.body) renderSiteShell();
-    else document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
-
-    window.GrowWithHRSiteShell = Object.freeze({
-        render: renderSiteShell,
-        footerText: `${FOOTER_BRAND}\nAbout · Privacy · Contact\n${FOOTER_RIGHTS}`
-    });
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
+    } else {
+        renderSiteShell();
+    }
 })(window, document);
