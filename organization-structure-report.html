@@ -7,6 +7,7 @@
   <meta name="description" content="GrowWithHR Organization Structure executive overview, detailed findings and 12-month growth scenario.">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="js/site-shell.js" defer></script>
 </head>
 <body class="org-report-page" data-active-nav="analyze">
@@ -19,9 +20,12 @@
     </div>
     <div class="org-report-actions">
       <a class="org-secondary" href="organization-structure-methodology.html" target="_blank" rel="noopener">Methodology & Sources ↗</a>
-      <button class="org-primary" id="printReport" type="button">Print / Save PDF</button>
+      <button class="org-secondary" id="printReport" type="button">Print</button>
+      <button class="org-primary" id="downloadReport" type="button">Download PDF</button>
+      <button class="org-primary" id="emailReport" type="button">Email Report</button>
     </div>
   </div>
+  <div id="deliveryStatus" class="org-delivery-status" aria-live="polite"></div>
 
   <nav class="org-stepper" aria-label="Organization Structure report sections">
     <button class="org-step is-active" type="button" data-step="overview">1 · Executive Overview</button>
