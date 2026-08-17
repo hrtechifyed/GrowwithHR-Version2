@@ -162,6 +162,7 @@ const hub = fs.readFileSync(new URL("../intelligence-hub.html", import.meta.url)
 assert.match(hub, /createHandoff/);
 assert.match(hub, /organization-intelligence\.html\?handoff=/);
 assert.doesNotMatch(hub, /organization-intelligence\.html\?[^"'`]*(?:accessKey|recoveryCode)=/i);
+assert.doesNotMatch(hub, /Choose an analysis/i, "Company Insights must not show a redundant Choose an analysis CTA.");
 
 const reportPage = fs.readFileSync(new URL("../organization-structure-report.html", import.meta.url), "utf8");
 assert.match(reportPage, /downloadReport/);
@@ -218,5 +219,16 @@ assert.match(homepage, />Explore Sample Reports</);
 assert.match(homepage, /Organization Structure \(Available\)/);
 assert.doesNotMatch(homepage, />Analyze My Company</);
 assert.doesNotMatch(homepage, />View Sample Advisory</);
+
+const styles = fs.readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+const typography = fs.readFileSync(new URL("../css/27-typography-refinement.css", import.meta.url), "utf8");
+const variables = fs.readFileSync(new URL("../css/01-variables.css", import.meta.url), "utf8");
+assert.match(styles, /27-typography-refinement\.css/);
+assert.match(variables, /--type-display:clamp\(2\.35rem,3\.7vw,3\.5rem\)/);
+assert.match(variables, /--type-section:clamp\(1\.5rem,2vw,2rem\)/);
+assert.match(variables, /--type-body:1rem/);
+assert.match(typography, /#screen-overview > \.org-panel:first-child h2/);
+assert.match(typography, /font-size: clamp\(1\.625rem, 2vw, 2rem\)/);
+assert.match(typography, /\.intelligence-hub-page \.hero-actions[\s\S]*display: none !important/);
 
 console.log("Organization Structure completion checks passed.");

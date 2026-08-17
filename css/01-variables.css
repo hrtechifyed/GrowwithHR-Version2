@@ -47,6 +47,25 @@
     --text-dark:#0F172A;
 
     /* ======================================================
+       TYPOGRAPHY SCALE
+       Restrained product hierarchy: six practical tiers.
+    ====================================================== */
+
+    --type-display:clamp(2.35rem,3.7vw,3.5rem);
+    --type-page-title:clamp(2rem,3vw,2.75rem);
+    --type-section:clamp(1.5rem,2vw,2rem);
+    --type-card:clamp(1.125rem,1.35vw,1.375rem);
+    --type-body-lg:clamp(1rem,.97rem + .16vw,1.0625rem);
+    --type-body:1rem;
+    --type-meta:.875rem;
+    --type-label:.75rem;
+
+    --line-display:1.08;
+    --line-heading:1.22;
+    --line-body:1.62;
+    --line-compact:1.45;
+
+    /* ======================================================
        STATUS
     ====================================================== */
 
@@ -131,26 +150,24 @@
     ====================================================== */
 
     --container-width:1280px;
-    --page-max-width: min(1440px, 100%);
-    --page-gutter: clamp(16px, 4vw, 48px);
-    --content-narrow: 720px;
-    --content-medium: 960px;
-    --content-wide: 1180px;
-    --section-space: clamp(48px, 8vw, 96px);
-    --card-gap: clamp(16px, 2.5vw, 28px);
-    --card-min-width: 280px;
-    --navbar-height: clamp(68px, 8vw, 84px);
-    --font-size-body-fluid: clamp(1rem, .96rem + .18vw, 1.125rem);
-    --font-size-heading-fluid: clamp(2rem, 1.35rem + 3vw, 4.5rem);
+    --page-max-width:min(1440px,100%);
+    --page-gutter:clamp(16px,4vw,48px);
+    --content-narrow:720px;
+    --content-medium:960px;
+    --content-wide:1180px;
+    --section-space:clamp(48px,8vw,96px);
+    --card-gap:clamp(16px,2.5vw,28px);
+    --card-min-width:280px;
+    --navbar-height:clamp(68px,8vw,84px);
+    --font-size-body-fluid:var(--type-body-lg);
+    --font-size-heading-fluid:var(--type-display);
 
     /* ======================================================
        ANIMATION
     ====================================================== */
 
     --transition-fast:.20s ease;
-
     --transition-normal:.30s ease;
-
     --transition-slow:.45s ease;
 
 }
