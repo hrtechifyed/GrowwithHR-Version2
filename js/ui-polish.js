@@ -35,9 +35,7 @@ function setupHomepage() {
     }
 
     const workspace = document.querySelector(".home-page .workspace-window");
-    if (workspace) {
-        workspace.setAttribute("aria-label", "Interactive GrowWithHR advisory preview");
-    }
+    if (workspace) workspace.setAttribute("aria-label", "Interactive GrowWithHR advisory preview");
 
     const groups = [
         [".dna-item", "Company DNA"],
@@ -145,6 +143,11 @@ function setupHomepage() {
 }
 
 function setupIntelligenceHub() {
+    const description = document.querySelector(".intelligence-hub-hero__content .hero-description");
+    if (description) {
+        description.textContent = "Choose an analysis to start. If you have used GrowWithHR before, you can recover saved company details after choosing what you want to understand.";
+    }
+
     const heroContent = document.querySelector(".intelligence-hub-hero__content");
     if (heroContent && !heroContent.querySelector(".hub-hero-actions")) {
         const actions = createElement("div", "hub-hero-actions");
@@ -289,10 +292,9 @@ function setupOrganizationIntelligence() {
     actions?.insertAdjacentElement("beforebegin", controls);
 
     let active = 0;
-
     const stepName = (panel, index) => panel.querySelector(".section-title")?.textContent.trim() || `Step ${index + 1}`;
 
-    const show = (index) => {
+    const show = (index, moveFocus = true) => {
         active = Math.max(0, Math.min(panels.length - 1, index));
         panels.forEach((panel, panelIndex) => panel.classList.toggle("is-active", panelIndex === active));
         progressTitle.textContent = `Step ${active + 1} of ${panels.length}`;
@@ -300,8 +302,11 @@ function setupOrganizationIntelligence() {
         back.hidden = active === 0;
         next.hidden = active === panels.length - 1;
         if (actions) actions.hidden = active !== panels.length - 1;
-        panels[active].querySelector("input, select, textarea")?.focus({ preventScroll: true });
-        form.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+
+        if (moveFocus) {
+            panels[active].querySelector("input, select, textarea")?.focus({ preventScroll: true });
+            form.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        }
     };
 
     const validateActive = () => {
@@ -320,7 +325,7 @@ function setupOrganizationIntelligence() {
         if (validateActive()) show(active + 1);
     });
 
-    show(0);
+    show(0, false);
 }
 
 function setupComplianceAssessment() {
@@ -385,7 +390,7 @@ async function renderOfficialResources() {
             const date = new Date(`${data.lastVerified}T00:00:00`);
             verified.textContent = `Source library last verified ${Number.isNaN(date.getTime()) ? data.lastVerified : date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}`;
         }
-    } catch (error) {
+    } catch (_error) {
         container.innerHTML = `
             <article class="update-card">
                 <h3>Official resources are temporarily unavailable</h3>
