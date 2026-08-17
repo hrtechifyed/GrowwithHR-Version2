@@ -27,7 +27,7 @@
           <div class="trust-card-body">
             <h2>About</h2>
             <p>GrowWithHR helps founders, CXOs and HR leaders turn company, people, compliance and growth questions into practical intelligence and next actions.</p>
-            <p>The current release is a research-grade prototype using structured rules and governed research. Legal catalogue outputs remain subject to legal review and are not legal certification or proof of compliance.</p>
+            <p>The current release is a research-grade prototype using structured rules and governed research. Legal catalogue outputs remain subject to legal review and are not legal certification or proof of compliance. Organization Structure findings distinguish public evidence from GrowWithHR's own deterministic interpretation and prototype triggers.</p>
             <div class="trust-features"><span>🏢 Company Intelligence</span><span>🛡 Compliance</span><span>📈 Growth</span></div>
           </div>
         </article>
@@ -54,6 +54,11 @@
               </section>
 
               <section class="privacy-detail">
+                <h3>Secure new-tab handoff</h3>
+                <p>When a recovered Company Workspace is reused in Organization Structure, GrowWithHR creates a short-lived, one-time handoff token for the new browser tab. The Workspace Recovery Code is not placed in the page URL. The handoff token expires quickly and cannot be reused after it is consumed.</p>
+              </section>
+
+              <section class="privacy-detail">
                 <h3>Deletion and reminders</h3>
                 <p>GrowWithHR emails the workspace email address approximately <strong>seven days before the scheduled deletion date</strong>. On the scheduled date, reusable company information is deleted and a deletion-confirmation email is sent. You can also request earlier deletion from a recovered workspace.</p>
                 <p>The six-month period is a GrowWithHR product retention policy, not a statutory retention requirement.</p>
@@ -70,15 +75,21 @@
               </section>
 
               <section class="privacy-detail">
+                <h3>Report activity metadata</h3>
+                <p>For live report delivery and download operations, GrowWithHR may send HRTechify a minimal operational notification identifying the company, user email where available, Report ID, report type, file name, framework/version, event type and time. The notification is designed to record what report was delivered or downloaded; it does <strong>not</strong> copy the Organization Structure findings or recommendation content into the activity notification.</p>
+              </section>
+
+              <section class="privacy-detail">
                 <h3>What not to enter</h3>
                 <p>Do not enter confidential employee-level medical, payroll, disciplinary, performance or other sensitive personal information into GrowWithHR. Keep your Workspace Recovery Code private.</p>
               </section>
             </div>
 
             <ul class="privacy-commitments">
-              <li>We process information needed to provide the requested GrowWithHR intelligence and continuity experience.</li>
+              <li>We process information needed to provide the requested GrowWithHR intelligence, report delivery and continuity experience.</li>
               <li>Reusable Company Workspace data is encrypted before database storage and is not intended to be directly accessible from the browser database client.</li>
               <li>A Report ID by itself is not intended to unlock reusable company information.</li>
+              <li>Report activity notifications are intended to contain delivery metadata rather than the contents of structural findings.</li>
               <li>We do not sell company assessment information.</li>
               <li>Future private document or Company RAG features must follow the disclosed Company Workspace lifecycle before release.</li>
             </ul>
