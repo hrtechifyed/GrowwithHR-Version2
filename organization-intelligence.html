@@ -112,7 +112,7 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
     let workspace;
     if(recovered){
       workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
-      recovered={...recovered,reportId,reportIds:workspace.reportIds||recovered.reportIds,companyData:workspace.companyData||workspaceData,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines};
+      recovered={...recovered,reportId,reportIds:workspace.reportIds||recovered.reportIds,companyData:workspace.companyData || workspaceData,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines};
     }else{
       workspace=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
       recovered={reportId,reportIds:workspace.reportIds,accessKey:workspace.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngines:workspace.completedEngines,expiresAt:workspace.expiresAt};
