@@ -1,0 +1,96 @@
+name: Organization Structure Browser Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "feature/**"
+    paths:
+      - "intelligence-hub.html"
+      - "organization-intelligence.html"
+      - "organization-structure-report.html"
+      - "organization-structure-methodology.html"
+      - "sample-reports.html"
+      - "js/company-workspace-client.js"
+      - "js/organization-structure-report.mjs"
+      - "js/organization-structure-delivery.mjs"
+      - "js/modules/organization/**"
+      - "css/25-organization-structure.css"
+      - "css/26-brand-unification.css"
+      - "styles.css"
+      - "tests/e2e/organization-structure-journey.spec.ts"
+      - "playwright.config.ts"
+      - ".github/workflows/organization-structure-browser.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "intelligence-hub.html"
+      - "organization-intelligence.html"
+      - "organization-structure-report.html"
+      - "organization-structure-methodology.html"
+      - "sample-reports.html"
+      - "js/company-workspace-client.js"
+      - "js/organization-structure-report.mjs"
+      - "js/organization-structure-delivery.mjs"
+      - "js/modules/organization/**"
+      - "css/25-organization-structure.css"
+      - "css/26-brand-unification.css"
+      - "styles.css"
+      - "tests/e2e/organization-structure-journey.spec.ts"
+      - "playwright.config.ts"
+      - ".github/workflows/organization-structure-browser.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: organization-structure-browser-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    name: Organization Structure browser journey
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: true
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install project dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Playwright test package
+        run: npm install --no-save --no-audit --no-fund @playwright/test
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Organization Structure journey
+        run: npx playwright test tests/e2e/organization-structure-journey.spec.ts --project=chromium
+
+      - name: Upload browser report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: organization-structure-playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: organization-structure-test-results
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
