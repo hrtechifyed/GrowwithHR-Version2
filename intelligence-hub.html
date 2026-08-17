@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Company Insights | GrowWithHR</title>
-  <meta name="description" content="Understand your company through GrowWithHR insights or recover saved Company DNA.">
+  <meta name="description" content="Choose the GrowWithHR analysis that matches your current company question or recover saved Company DNA.">
   <meta name="growwithhr-legacy-contract-labels" content="Compliance Intelligence; Organization Intelligence">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -17,29 +17,45 @@
       <div class="hero-bg-grid" aria-hidden="true"></div>
       <div class="container hero-layout">
         <div class="hero-content intelligence-hub-hero__content">
-          <div class="hero-badge">GrowWithHR Intelligence</div>
-          <h1 id="hubTitle">Understand <span>Your Company</span></h1>
-          <p class="hero-description">Start with the company question you want to answer. If you have used GrowWithHR before, recover saved Company DNA below and hand it securely into another analysis.</p>
+          <div class="hero-badge">GrowWithHR Company Insights</div>
+          <h1 id="hubTitle">Start with the <span>company question</span> you need answered.</h1>
+          <p class="hero-description">The two analyses below solve different problems. Both use organization-level facts, keep uncertainty visible and show the basis behind the result.</p>
         </div>
       </div>
     </section>
 
     <section class="hub-engine-section" aria-label="Company insight options">
       <div class="container">
+        <div class="hub-start-note">
+          <h2>Before you start</h2>
+          <p>Plan on roughly 10–15 minutes with current company facts. Do not enter sensitive employee case data. You can review a sample report first, and completed analyses can create a recoverable Company Workspace for future use. <a class="org-link" href="security.html">Security & Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
+        </div>
+
         <div class="hub-engine-grid" aria-label="Available GrowWithHR analyses">
           <article class="hub-engine-card">
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
             <div class="hub-engine-tag">Available</div>
             <h3>Compliance Needs</h3>
-            <p>Identify what compliance requirements may apply, what information is missing, and what to do next.</p>
+            <p>Identify what compliance areas may require review, what information is missing and what to do next without presenting the result as legal certification.</p>
+            <div class="hub-card-meta">
+              <span><strong>Best when:</strong> hiring, changing workforce mix, expanding locations or reviewing HR obligations.</span>
+              <span><strong>You’ll need:</strong> company, workforce, location and operating facts.</span>
+              <span><strong>You receive:</strong> a traceable compliance advisory with source references, limitations and next actions.</span>
+            </div>
             <a class="hub-engine-card__action" href="analyze-company.html?engine=compliance">Identify My Company’s Compliance Needs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p style="margin-top:12px"><a href="sample-advisory-report.html">View sample Compliance report ↗</a></p>
           </article>
 
           <article class="hub-engine-card">
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
             <div class="hub-engine-tag">Available</div>
             <h3>Organization Structure</h3>
-            <p>Understand whether your management capacity, reporting lines and decision-making setup can support growth.</p>
+            <p>Understand whether management capacity, reporting lines, founder dependency and decision-making setup can support the next stage of growth.</p>
+            <div class="hub-card-meta">
+              <span><strong>Best when:</strong> the founder is overloaded, managers are stretched, decisions are slow or headcount is growing.</span>
+              <span><strong>You’ll need:</strong> team size, manager count, reporting structure, decision and coordination context.</span>
+              <span><strong>You receive:</strong> executive overview, detailed source-backed findings and a 12-month planning scenario.</span>
+            </div>
             <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
             <p style="margin-top:12px"><a href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
           </article>
@@ -53,23 +69,24 @@
           <div class="hub-workspace-copy">
             <div class="hub-eyebrow"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Returning?</div>
             <h2 id="returningTitle">Reuse your Company DNA</h2>
-            <p>Use a previous Report ID and Workspace Recovery Code.</p>
+            <p>Recover a previous workspace here, or open <a class="org-link" href="my-reports.html">My Reports</a> to see linked Report IDs and completed analyses.</p>
           </div>
 
           <div>
             <form id="workspaceRecoverForm" class="hub-recover-form">
               <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
               <label>Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
-              <button type="submit">Continue</button>
+              <button type="submit">Recover Workspace</button>
             </form>
             <div id="workspaceRecoverStatus" class="hub-workspace-status" aria-live="polite"></div>
             <div id="workspaceActions" class="hub-workspace-actions" hidden>
+              <a class="trust-link" href="my-reports.html">Open My Reports</a>
               <button id="workspaceStartFresh" class="fresh" type="button">Start fresh</button>
               <button id="workspaceDeleteData" class="delete" type="button">Delete my reusable company data now</button>
             </div>
           </div>
         </div>
-        <p class="hub-privacy-note">Saved Company Data is kept for six months from your latest completed analysis. We email you seven days before scheduled deletion. When you open Organization Structure in a new tab, a short-lived one-time handoff token can transfer the recovered workspace without putting the Recovery Code in the URL. <a href="more-info.html#privacy">Privacy details</a>.</p>
+        <p class="hub-privacy-note">Saved Company Data is kept for six months from your latest completed analysis. We email you seven days before scheduled deletion. When Organization Structure opens in a new tab, a short-lived one-time token can transfer the recovered workspace without putting the Recovery Code in the URL. <a href="security.html">Security & Data</a> · <a href="more-info.html#privacy">Privacy details</a>.</p>
       </div>
     </section>
   </main>
@@ -96,7 +113,7 @@
           const reportId = document.getElementById('workspaceReportId').value.trim();
           const accessKey = document.getElementById('workspaceRecoveryCode').value.trim();
           const result = await window.GrowWithHRCompanyWorkspace.recover(reportId, accessKey);
-          sessionStorage.setItem(SESSION_KEY, JSON.stringify({reportId:result.workspace.reportId,reportIds:result.workspace.reportIds,accessKey,email:result.workspace.email,companyName:result.workspace.companyName,completedEngines:result.workspace.completedEngines,expiresAt:result.workspace.expiresAt,companyData:result.workspace.companyData}));
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify({reportId:result.workspace.reportId,reportIds:result.workspace.reportIds,accessKey,email:result.workspace.email,companyName:result.workspace.companyName,completedEngines:result.workspace.completedEngines,createdAt:result.workspace.createdAt,updatedAt:result.workspace.updatedAt,lastAnalysisCompletedAt:result.workspace.lastAnalysisCompletedAt,expiresAt:result.workspace.expiresAt,companyData:result.workspace.companyData}));
           status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Saved data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}.`;
           refreshActions();
         } catch (error) { status.textContent = error.message || 'We could not recover that workspace.'; }
