@@ -24,64 +24,65 @@
 
 /* Freeze the ten parameter labels around the graph. Inline positions produced
    by the Canvas renderer are intentionally overridden so the words do not
-   orbit, tilt or zoom with the network. */
+   orbit, tilt or zoom with the network. Keep the labels close enough to read
+   as part of the graph while preserving clear separation from the node ring. */
 .home-page #dnaCoreCanvas .dna-label:nth-child(1) {
     left: 50% !important;
-    top: 13% !important;
+    top: 18% !important;
     transform: translate(-50%, -100%) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(2) {
-    left: 72% !important;
-    top: 20% !important;
+    left: 68% !important;
+    top: 24% !important;
     transform: translate(0, -100%) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(3) {
-    left: 86% !important;
-    top: 38% !important;
+    left: 78% !important;
+    top: 39% !important;
     transform: translate(0, -50%) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(4) {
-    left: 86% !important;
-    top: 62% !important;
+    left: 78% !important;
+    top: 61% !important;
     transform: translate(0, -50%) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(5) {
-    left: 72% !important;
-    top: 80% !important;
+    left: 68% !important;
+    top: 76% !important;
     transform: translate(0, 0) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(6) {
     left: 50% !important;
-    top: 87% !important;
+    top: 82% !important;
     transform: translate(-50%, 0) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(7) {
-    left: 28% !important;
-    top: 80% !important;
+    left: 32% !important;
+    top: 76% !important;
     transform: translate(-100%, 0) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(8) {
-    left: 14% !important;
-    top: 62% !important;
+    left: 22% !important;
+    top: 61% !important;
     transform: translate(-100%, -50%) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(9) {
-    left: 14% !important;
-    top: 38% !important;
+    left: 22% !important;
+    top: 39% !important;
     transform: translate(-100%, -50%) !important;
 }
 
 .home-page #dnaCoreCanvas .dna-label:nth-child(10) {
-    left: 28% !important;
-    top: 20% !important;
+    left: 32% !important;
+    top: 24% !important;
     transform: translate(-100%, -100%) !important;
 }
 
