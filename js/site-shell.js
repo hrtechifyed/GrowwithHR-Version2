@@ -283,6 +283,15 @@
         document.head.appendChild(link);
     }
 
+    function ensureHeaderParityStyles(prefix) {
+        if (document.querySelector("link[data-growwithhr-header-parity]")) return;
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = withRoot(prefix, "css/26-header-brand-lockup.css");
+        link.dataset.growwithhrHeaderParity = "";
+        document.head.appendChild(link);
+    }
+
     function bootstrapHomepageIntelligenceGraph() {
         if (!document.getElementById("dnaCoreCanvas") || window.GrowWithHRIntelligenceCore?.ready) return;
         import("./intelligence-core.js").catch((error) => console.error("GrowWithHR homepage intelligence graph failed to initialize", error));
@@ -297,6 +306,7 @@
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
         ensurePolishStyles(prefix);
+        ensureHeaderParityStyles(prefix);
 
         const header = buildHeader(prefix, activeKey);
         const footer = buildFooter(prefix);
