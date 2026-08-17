@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security & Data | GrowWithHR</title>
+  <meta name="description" content="How GrowWithHR handles company data, workspace recovery, report delivery and security boundaries.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="legal-page" data-active-nav="more">
+<main class="legal-shell">
+  <header class="legal-intro">
+    <div class="section-tag">TRUST & SECURITY</div>
+    <h1>How GrowWithHR handles company data</h1>
+    <p>GrowWithHR is designed to keep the analysis traceable while minimizing the amount of sensitive information it needs. This page explains the controls implemented in the current public product and the limits we do not claim to exceed.</p>
+  </header>
+
+  <div class="legal-callout"><strong>Important:</strong> GrowWithHR is not currently represented as SOC 2, ISO 27001 or another third-party security certification. The controls below describe the product architecture that is implemented today.</div>
+
+  <section class="legal-grid" aria-label="GrowWithHR security controls">
+    <article class="legal-card">
+      <h2>Company Workspace protection</h2>
+      <ul>
+        <li>Reusable Company Workspace data is encrypted before database storage using AES-256-GCM.</li>
+        <li>The Workspace Recovery Code is not stored in plaintext; the server compares a stored hash when access is requested.</li>
+        <li>A Report ID by itself is not intended to unlock reusable company information.</li>
+        <li>Recovered workspace data is returned only after the Report ID and Recovery Code are successfully verified.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
+      <h2>Cross-tab handoff</h2>
+      <p>When Company DNA is reused in another GrowWithHR analysis, the product can create a random one-time handoff token instead of putting the Workspace Recovery Code in the URL. The token expires after a short period and is deleted when redeemed.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Retention and deletion</h2>
+      <p>Reusable Company Workspace data is kept for six months from the latest completed analysis. GrowWithHR schedules a reminder approximately seven days before deletion. A recovered workspace can also request earlier deletion.</p>
+      <p>Downloaded reports remain with the customer. Minimal operational records may remain where needed for report identity, security, fraud prevention, system integrity or legal obligations.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Hosting and service boundaries</h2>
+      <ul>
+        <li>The public browser application is served from GitHub Pages.</li>
+        <li>GrowWithHR server APIs are currently hosted on Render.</li>
+        <li>Reusable workspace storage uses Supabase through server-side credentials; the browser does not receive the service-role key.</li>
+        <li>Requested report emails are sent through the configured Gmail API integration.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
+      <h2>Browser-to-API controls</h2>
+      <p>The server uses an approved-origin CORS allowlist rather than a wildcard policy. API requests are validated independently of CORS, and the service applies request-size and rate-limit controls where configured.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>What not to submit</h2>
+      <p>GrowWithHR is designed for organization-level company facts. Do not submit employee medical information, payroll records, disciplinary files, performance cases, complaint evidence or other highly sensitive employee-level material unless a future feature explicitly states that it is designed for that data.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Report activity metadata</h2>
+      <p>When an Organization Structure report is downloaded or emailed, GrowWithHR may send HRTechifyed minimal operational metadata such as report type, Report ID, company name, email where supplied, filename, framework/version and event time. The activity notice is not intended to contain the structural findings themselves.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Security reporting</h2>
+      <p>If you believe you found a security issue, do not publish credentials or sensitive details in a public issue. Email <a class="org-link" href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20security%20report">hrtechifyed@gmail.com</a> with the subject <strong>GrowWithHR security report</strong>.</p>
+    </article>
+  </section>
+
+  <p class="legal-meta">Last updated: 17 August 2026 · This page describes the current public product architecture and may change as GrowWithHR matures.</p>
+</main>
+<script src="js/build-marker.js"></script>
+</body>
+</html>
