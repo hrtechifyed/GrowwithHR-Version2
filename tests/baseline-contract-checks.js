@@ -165,7 +165,10 @@ assertIncludes(hubHtml, "Compliance Intelligence", "Intelligence Hub must expose
 assertIncludes(hubHtml, "Organization Intelligence", "Intelligence Hub must expose Organization Intelligence.");
 assertIncludes(hubHtml, "Delete my reusable company data now", "Returning users must have an early-delete control.");
 assertIncludes(hubHtml, "GrowWithHRCompanyWorkspace.erase", "Early-delete control must call the Company Workspace API.");
-assertIncludes(organizationHtml, "workspace.companyData || workspaceData", "Organization Intelligence must preserve merged cross-engine Company Workspace data.");
+assert(
+    /workspace\.companyData\s*\|\|\s*workspaceData/.test(organizationHtml),
+    "Organization Intelligence must preserve merged cross-engine Company Workspace data."
+);
 assertIncludes(continuityJs, 'completedEngine: "compliance"', "Compliance Intelligence must write to the shared Company Workspace.");
 assertIncludes(continuityJs, "previousReportId", "Compliance Intelligence must preserve report lineage for returning workspaces.");
 assertIncludes(continuityJs, "Workspace Recovery Code", "Compliance completion must surface the recovery credential.");
