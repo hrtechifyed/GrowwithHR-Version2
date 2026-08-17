@@ -28,6 +28,8 @@
         const response = await fetch(endpoint(path), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "omit",
+            cache: "no-store",
             body: JSON.stringify(payload || {})
         });
         let body = {};
@@ -42,7 +44,9 @@
         create: (payload) => post("/api/company-workspace/create", payload),
         recover: (reportId, accessKey) => post("/api/company-workspace/recover", { reportId, accessKey }),
         complete: (payload) => post("/api/company-workspace/complete", payload),
-        erase: (reportId, accessKey) => post("/api/company-workspace/delete", { reportId, accessKey })
+        erase: (reportId, accessKey) => post("/api/company-workspace/delete", { reportId, accessKey }),
+        createHandoff: (reportId, accessKey) => post("/api/company-workspace/handoff/create", { reportId, accessKey }),
+        consumeHandoff: (token) => post("/api/company-workspace/handoff/consume", { token })
     });
 
     window.GrowWithHRCompanyWorkspace = api;
