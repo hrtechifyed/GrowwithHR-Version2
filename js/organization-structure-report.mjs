@@ -1,4 +1,5 @@
 import { analyzeOrganizationStructure } from "./modules/organization/organization-structure-engine.mjs";
+import { generateOrganizationStructurePdf } from "./organization-structure-pdf.mjs";
 
 const REPORT_KEY = "growwithhr.organization.report";
 const STATUS_ORDER = ["action", "watch", "stable", "needs-information"];
@@ -48,58 +49,48 @@ function samplePayload() {
             reportingLevels: 2,
             founderDirectReports: 9,
             departments: ["Product", "Engineering", "Sales", "Customer Success", "Finance", "People"],
+            managerRole: "player-coach",
+            workComplexity: "complex",
+            workStandardization: "mixed",
+            teamIndependence: "mixed",
+            coachingIntensity: "high",
             roleClarity: "mixed",
             decisionRights: "mixed",
             governanceCadence: "ad-hoc",
             coordinationFriction: "some",
             founderDecisions: "Senior hiring, pricing exceptions, major spend and selected customer commitments",
-            expansion: "Planned hiring to 110 employees and expansion of customer operations",
+            expansion: "Planned hiring to 110 employees and expansion of customer operations into another location",
             confirmedAt: new Date().toISOString()
         }
     };
+    const analysis = analyzeOrganizationStructure(data);
+    analysis.reportModel.reportId = "SAMPLE-GWHR-ORG-001";
     return {
         sample: true,
         reportId: "SAMPLE-GWHR-ORG-001",
         data,
-        analysis: analyzeOrganizationStructure(data)
+        analysis,
+        reportModel: analysis.reportModel
     };
 }
 
 function payloadFromPage() {
     const params = new URLSearchParams(location.search);
     if (params.get("sample") === "1" || params.get("sample") === "organization") return samplePayload();
-    return readStoredReport();
+    const stored = readStoredReport();
+    if (stored?.analysis && !stored.reportModel) stored.reportModel = stored.analysis.reportModel;
+    if (stored?.reportModel && stored.reportId) stored.reportModel.reportId = stored.reportId;
+    return stored;
 }
 
-function priorityFindings(analysis, limit = 3) {
-    const rank = { action: 0, watch: 1, "needs-information": 2, stable: 3 };
-    return [...analysis.findings]
-        .sort((a, b) => rank[a.status] - rank[b.status])
-        .slice(0, limit);
+function reportModel(payload) {
+    return payload?.reportModel || payload?.analysis?.reportModel || {};
 }
 
-function primaryConstraint(analysis) {
-    return priorityFindings(analysis, 1)[0] || null;
-}
-
-function executiveSummary(analysis) {
-    const primary = primaryConstraint(analysis);
-    const actionCount = analysis.statusSummary.action || 0;
-    const watchCount = analysis.statusSummary.watch || 0;
-    if (!primary) return "No structural finding is available yet.";
-    if (actionCount > 0) {
-        return `Your structure has ${actionCount} area${actionCount === 1 ? "" : "s"} requiring action and ${watchCount} watchpoint${watchCount === 1 ? "" : "s"}. The clearest current constraint is ${primary.title.toLowerCase()}.`;
-    }
-    if (watchCount > 0) {
-        return `Your current structure is broadly workable, with ${watchCount} scaling watchpoint${watchCount === 1 ? "" : "s"}. The main area to monitor is ${primary.title.toLowerCase()}.`;
-    }
-    return "Your supplied structural facts do not create an immediate GrowWithHR action or watch trigger. Reassess when headcount, reporting lines, locations or decision ownership change materially.";
-}
-
-function statusCards(analysis) {
+function statusCards(model) {
     return STATUS_ORDER.map((status) => `
         <article class="org-panel org-status-card">
-            <strong>${escapeHtml(analysis.statusSummary[status] || 0)}</strong>
+            <strong>${escapeHtml(model.statusSummary?.[status] || 0)}</strong>
             <span>${escapeHtml(STATUS_LABELS[status])}</span>
         </article>
     `).join("");
@@ -110,66 +101,73 @@ function metric(label, value) {
 }
 
 function sourceBlock(item) {
-    const sources = Array.isArray(item.sources) ? item.sources : [];
+    const sources = Array.isArray(item?.sources) ? item.sources : [];
+    const ruleId = item?.ruleId || item?.id || "Unrecorded rule";
     return `
         <div class="org-source-block">
-            <h4>Source basis</h4>
-            <p class="org-rule-basis"><strong>GrowWithHR rule:</strong> ${escapeHtml(item.ruleBasis || "No rule basis recorded.")}</p>
+            <h4>Basis & Sources</h4>
+            <p class="org-rule-id"><strong>GrowWithHR rule:</strong> ${escapeHtml(ruleId)}${item?.ruleVersion ? ` · v${escapeHtml(item.ruleVersion)}` : ""}${item?.ruleLastReviewed ? ` · reviewed ${escapeHtml(item.ruleLastReviewed)}` : ""}</p>
+            <p class="org-rule-basis">${escapeHtml(item?.ruleBasis || "No rule basis recorded.")}</p>
             <ul class="org-source-list">
                 ${sources.map((source) => `
                     <li>
                         <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)} ↗</a>
                         <small>${escapeHtml(source.publisher)} · ${escapeHtml(source.section)} · ${escapeHtml(source.access)}</small>
-                        <small>${escapeHtml(source.supports)}</small>
+                        <small><strong>What this source supports:</strong> ${escapeHtml(source.supports)}</small>
                     </li>
                 `).join("") || "<li><small>No public source is currently attached to this rule.</small></li>"}
             </ul>
+            <small class="org-source-disclosure">The public source supports the underlying organization-design principle. GrowWithHR remains responsible for the disclosed deterministic interpretation above.</small>
         </div>
     `;
 }
 
 function renderOverview(payload) {
     const { analysis, data, reportId, sample, persistenceWarning } = payload;
+    const model = reportModel(payload);
     const facts = analysis.facts;
-    const metrics = analysis.derivedMetrics;
-    const primary = primaryConstraint(analysis);
-    const priorities = priorityFindings(analysis, 3);
-    const expected = facts.expectedEmployees12Months === null ? "Not provided" : facts.expectedEmployees12Months;
-    const managers = facts.peopleManagerCount === null ? "Not provided" : facts.peopleManagerCount;
-    const ratio = metrics.currentEmployeeToManagerRatio === null ? "Not available" : `${metrics.currentEmployeeToManagerRatio}:1`;
+    const metrics = model.metrics || {};
+    const primary = model.primaryConstraint;
+    const priorities = model.priorities || [];
+    const expected = metrics.expectedEmployees12Months ?? "Not provided";
+    const managers = metrics.peopleManagers ?? "Not provided";
+    const ratio = metrics.currentEmployeeToManagerRatio === null || metrics.currentEmployeeToManagerRatio === undefined ? "Not available" : `${metrics.currentEmployeeToManagerRatio}:1`;
+    const primaryFinding = primary ? analysis.findings.find((item) => item.id === primary.id) : null;
+    const contextBand = String(metrics.managementContextBand || "Not enough context").replaceAll("-", " ");
 
     document.getElementById("screen-overview").innerHTML = `
-        ${sample ? '<div class="org-banner"><strong>Illustrative sample:</strong> fictional company data is being used to demonstrate the Organization Structure report.</div>' : ""}
+        ${sample ? '<div class="org-banner"><strong>Illustrative sample:</strong> fictional company data is being used to demonstrate the Organization Structure report. No sample download or view activity is sent to HRTechifyed.</div>' : ""}
         ${persistenceWarning ? `<div class="org-banner"><strong>Save warning:</strong> ${escapeHtml(persistenceWarning)} Your analysis is still available in this browser.</div>` : ""}
         <article class="org-panel">
             <div class="org-kicker">Executive Summary</div>
-            <h2 style="margin:13px 0 8px">${escapeHtml(executiveSummary(analysis))}</h2>
-            <p class="org-subtle">Company: ${escapeHtml(facts.companyName || data?.shared?.companyName || "Not provided")} · Report ID: ${escapeHtml(reportId || "Local analysis")}</p>
-            <div class="org-evidence-note"><strong>How this was decided:</strong> GrowWithHR applied deterministic structural rules to the facts you supplied. Each detailed finding shows the exact public source supporting the principle and separately shows the GrowWithHR rule used to interpret your facts. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">Read the methodology ↗</a></div>
+            <h2 style="margin:13px 0 8px">${escapeHtml(model.executiveSummary || "No executive summary is available.")}</h2>
+            <p class="org-subtle">Company: ${escapeHtml(model.company?.name || facts.companyName || data?.shared?.companyName || "Not provided")} · Report ID: ${escapeHtml(reportId || "Local analysis")}</p>
+            <div class="org-evidence-note"><strong>Framework used:</strong> ${escapeHtml(model.framework?.name || analysis.methodology?.name)} v${escapeHtml(model.framework?.version || analysis.methodology?.version)} · ${escapeHtml(model.framework?.access || "Free public methodology")}. Every detailed finding shows the exact public source supporting the principle and separately shows the GrowWithHR rule used to interpret your facts. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">Read the framework & sources ↗</a></div>
         </article>
 
-        <div class="org-summary-grid">${statusCards(analysis)}</div>
+        <div class="org-summary-grid">${statusCards(model)}</div>
 
         <h2>Key structural metrics</h2>
         <div class="org-metric-grid">
-            ${metric("Employees", facts.employees ?? "Not provided")}
+            ${metric("Employees", metrics.employees ?? facts.employees ?? "Not provided")}
             ${metric("People managers", managers)}
             ${metric("Current employees per manager", ratio)}
             ${metric("12-month planned headcount", expected)}
         </div>
+        <p class="org-subtle" style="margin-top:10px">Management-capacity context: ${escapeHtml(contextBand)}. GrowWithHR considers the ratio together with work complexity, standardization, manager role, team independence, coaching intensity and location context.</p>
 
         <div class="org-overview-grid">
             <article class="org-panel org-primary-constraint">
                 <div class="org-kicker">Primary Constraint</div>
                 <h2 style="margin:12px 0 8px">${escapeHtml(primary?.title || "No immediate structural constraint")}</h2>
                 <p>${escapeHtml(primary?.whyItMatters || "No immediate structural trigger was identified from the supplied facts.")}</p>
-                ${primary ? sourceBlock(primary) : ""}
+                ${primaryFinding ? sourceBlock(primaryFinding) : ""}
             </article>
             <article class="org-panel">
                 <div class="org-kicker">Top Priorities</div>
                 <h2 style="margin:12px 0">What to focus on next</h2>
                 <ol class="org-priority-list">
-                    ${priorities.map((item) => `<li><strong>${escapeHtml(item.title)}</strong><br><span class="org-subtle">${escapeHtml(item.action)}</span></li>`).join("")}
+                    ${priorities.map((item) => `<li><strong>${escapeHtml(item.title)}</strong><br><span class="org-subtle">${escapeHtml(item.action)}</span></li>`).join("") || "<li>No immediate priority was generated.</li>"}
                 </ol>
             </article>
         </div>
@@ -184,8 +182,8 @@ function renderFindings(payload) {
     const { analysis } = payload;
     document.getElementById("screen-findings").innerHTML = `
         <div class="org-kicker">Detailed Structural Findings</div>
-        <h2 style="margin:12px 0 8px">See what is working, what needs attention, and what supports each recommendation.</h2>
-        <p class="org-subtle">A public source supports the organization-design principle. The GrowWithHR rule explains how that principle was applied to your facts. Where a numeric trigger is proprietary to this prototype, it is disclosed as such.</p>
+        <h2 style="margin:12px 0 8px">See what triggered each result, why it matters, what to do, and exactly what supports the recommendation.</h2>
+        <p class="org-subtle">A public source supports the organization-design principle. The GrowWithHR rule explains how that principle was applied to your facts. Prototype guardrails are disclosed as GrowWithHR rules rather than presented as universal external benchmarks.</p>
         <div class="org-findings-list" style="margin-top:18px">
             ${analysis.findings.map((item) => `
                 <article class="org-finding">
@@ -194,11 +192,12 @@ function renderFindings(payload) {
                             <span class="org-status org-status--${escapeHtml(item.status)}">${escapeHtml(STATUS_LABELS[item.status] || item.status)}</span>
                             <h3>${escapeHtml(item.title)}</h3>
                         </div>
-                        <small class="org-subtle">Confidence in supplied facts/rule path: ${escapeHtml(item.confidence)}</small>
+                        <small class="org-subtle">Evidence/input confidence: ${escapeHtml(item.confidence)}</small>
                     </div>
                     <p>${escapeHtml(item.whyItMatters)}</p>
                     <p><strong>What to do next:</strong> ${escapeHtml(item.action)}</p>
                     <p><strong>Reassess when:</strong> ${escapeHtml(item.growthTrigger)}</p>
+                    <p class="org-subtle"><strong>Confidence meaning:</strong> ${escapeHtml(item.confidenceMeaning || "Confidence reflects fact completeness and the deterministic rule path, not statistical certainty.")}</p>
                     ${sourceBlock(item)}
                     <details class="org-facts">
                         <summary>Facts used and missing information</summary>
@@ -217,11 +216,12 @@ function renderFindings(payload) {
 
 function renderScenario(payload) {
     const { analysis } = payload;
+    const model = reportModel(payload);
     const facts = analysis.facts;
-    const scenario = analysis.scenario;
-    const currentRatio = analysis.derivedMetrics.currentEmployeeToManagerRatio;
+    const scenario = model.scenario || analysis.scenario;
+    const currentRatio = model.metrics?.currentEmployeeToManagerRatio;
     const projectedRatio = scenario.projectedEmployeeToManagerRatio;
-    const priorities = priorityFindings(analysis, 3);
+    const priorities = model.priorities || [];
 
     document.getElementById("screen-scenario").innerHTML = `
         <div class="org-kicker">12-Month Growth Scenario</div>
@@ -233,13 +233,13 @@ function renderScenario(payload) {
                 <div class="org-kicker">Today</div>
                 <h3 style="margin:12px 0 6px">Current structure</h3>
                 <div class="org-scenario-number">${escapeHtml(facts.employees ?? "—")} employees</div>
-                <p>${escapeHtml(facts.peopleManagerCount ?? "—")} people managers · ${escapeHtml(currentRatio === null ? "Ratio unavailable" : `${currentRatio}:1 employees per manager`)}</p>
+                <p>${escapeHtml(facts.peopleManagerCount ?? "—")} people managers · ${escapeHtml(currentRatio === null || currentRatio === undefined ? "Ratio unavailable" : `${currentRatio}:1 employees per manager`)}</p>
             </article>
             <article class="org-panel">
                 <div class="org-kicker">12-Month Assumption</div>
                 <h3 style="margin:12px 0 6px">If manager count is unchanged</h3>
                 <div class="org-scenario-number">${escapeHtml(facts.expectedEmployees12Months ?? "—")} employees</div>
-                <p>${escapeHtml(facts.peopleManagerCount ?? "—")} people managers · ${escapeHtml(projectedRatio === null ? "Ratio unavailable" : `${projectedRatio}:1 employees per manager`)}</p>
+                <p>${escapeHtml(facts.peopleManagerCount ?? "—")} people managers · ${escapeHtml(projectedRatio === null || projectedRatio === undefined ? "Ratio unavailable" : `${projectedRatio}:1 employees per manager`)} · ${escapeHtml(STATUS_LABELS[scenario.projectedStatus] || scenario.projectedStatus || "Needs information")}</p>
             </article>
         </div>
 
@@ -257,13 +257,14 @@ function renderScenario(payload) {
                     <div class="org-kicker">Priority ${index + 1}</div>
                     <h3 style="margin:12px 0 8px">${escapeHtml(item.title)}</h3>
                     <p>${escapeHtml(item.action)}</p>
+                    <p class="org-subtle">Rule ${escapeHtml(item.id)} v${escapeHtml(item.ruleVersion)}</p>
                 </article>
             `).join("")}
         </div>
 
         <div class="org-actions">
             <button class="org-secondary" type="button" data-next="findings">← Detailed Findings</button>
-            <button class="org-primary" type="button" id="printReportBottom">Print / Save Full Report</button>
+            <button class="org-primary" type="button" id="downloadReportBottom">Download Full PDF</button>
         </div>
     `;
 }
@@ -280,14 +281,111 @@ function setStep(step) {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function bindNavigation() {
+function apiBase() {
+    return location.origin === "https://hrtechifyed.github.io" ? "https://growwithhr.onrender.com" : "";
+}
+
+function deliveryStatus(message, isError = false) {
+    const element = document.getElementById("reportDeliveryStatus");
+    if (!element) return;
+    element.hidden = false;
+    element.textContent = message;
+    element.classList.toggle("is-error", Boolean(isError));
+}
+
+function activityEvent(payload, event, filename) {
+    if (payload.sample) return;
+    const model = reportModel(payload);
+    const body = {
+        event: {
+            event,
+            companyName: model.company?.name || payload.analysis?.facts?.companyName,
+            email: model.company?.email || payload.analysis?.facts?.email || payload.data?.shared?.email,
+            reportId: payload.reportId || model.reportId,
+            filename,
+            framework: model.framework?.name,
+            frameworkVersion: model.framework?.version,
+            occurredAt: new Date().toISOString()
+        }
+    };
+    fetch(`${apiBase()}/api/organization-report/activity`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        keepalive: true
+    }).catch(() => {});
+}
+
+async function downloadPdf(payload) {
+    const button = document.getElementById("downloadReport");
+    const bottom = document.getElementById("downloadReportBottom");
+    [button, bottom].filter(Boolean).forEach((item) => { item.disabled = true; });
+    deliveryStatus("Preparing your branded Organization Structure PDF…");
+    try {
+        const result = await generateOrganizationStructurePdf(payload, { mode: "download" });
+        deliveryStatus(`Your Organization Structure PDF download has started: ${result.filename}`);
+        activityEvent(payload, "downloaded", result.filename);
+    } catch (error) {
+        console.error("Organization Structure PDF generation failed.", error);
+        deliveryStatus(error.message || "We could not prepare the Organization Structure PDF.", true);
+    } finally {
+        [button, bottom].filter(Boolean).forEach((item) => { item.disabled = false; });
+    }
+}
+
+async function emailPdf(payload) {
+    if (payload.sample) return;
+    const model = reportModel(payload);
+    const recipient = model.company?.email || payload.analysis?.facts?.email || payload.data?.shared?.email;
+    if (!recipient) {
+        deliveryStatus("No report email address is available. Return to the assessment and provide a work email.", true);
+        return;
+    }
+    const button = document.getElementById("emailReport");
+    button.disabled = true;
+    deliveryStatus(`Preparing the PDF and sending it to ${recipient}…`);
+    try {
+        const pdf = await generateOrganizationStructurePdf(payload, { mode: "base64" });
+        const methodologyUrl = new URL(model.framework?.methodologyUrl || "organization-structure-methodology.html", location.href).href;
+        const response = await fetch(`${apiBase()}/api/organization-report/deliver`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                lead: { email: recipient, companyName: model.company?.name || payload.analysis?.facts?.companyName },
+                report: {
+                    recipientEmail: recipient,
+                    companyName: model.company?.name || payload.analysis?.facts?.companyName,
+                    reportId: payload.reportId || model.reportId,
+                    reportType: "organization-structure",
+                    frameworkName: model.framework?.name,
+                    frameworkVersion: model.framework?.version,
+                    methodologyUrl
+                },
+                pdf: { filename: pdf.filename, base64: pdf.base64 }
+            })
+        });
+        let body = {};
+        try { body = await response.json(); } catch (_error) {}
+        if (!response.ok || body.ok === false) throw new Error(body.error || "The Organization Structure report email could not be sent.");
+        deliveryStatus(`Organization Structure report emailed to ${recipient}. HRTechifyed received the operational delivery metadata notification${body.internalSent ? "." : " when configured."}`);
+    } catch (error) {
+        console.error("Organization Structure email delivery failed.", error);
+        deliveryStatus(error.message || "The Organization Structure report email could not be sent.", true);
+    } finally {
+        button.disabled = false;
+    }
+}
+
+function bindNavigation(payload) {
     document.querySelectorAll(".org-step").forEach((button) => button.addEventListener("click", () => setStep(button.dataset.step)));
     document.addEventListener("click", (event) => {
         const next = event.target.closest("[data-next]");
         if (next) setStep(next.dataset.next);
-        if (event.target.closest("#printReportBottom")) window.print();
+        if (event.target.closest("#downloadReportBottom")) downloadPdf(payload);
     });
     document.getElementById("printReport")?.addEventListener("click", () => window.print());
+    document.getElementById("downloadReport")?.addEventListener("click", () => downloadPdf(payload));
+    document.getElementById("emailReport")?.addEventListener("click", () => emailPdf(payload));
 }
 
 function renderFailure() {
@@ -303,18 +401,25 @@ function renderFailure() {
         </article>
     `;
     document.querySelector(".org-stepper").hidden = true;
+    document.getElementById("downloadReport").hidden = true;
+    document.getElementById("emailReport").hidden = true;
 }
 
 const payload = payloadFromPage();
 if (!payload?.analysis) {
     renderFailure();
 } else {
-    const companyName = payload.analysis.facts.companyName || payload.data?.shared?.companyName || "your company";
+    const model = reportModel(payload);
+    const companyName = model.company?.name || payload.analysis.facts.companyName || payload.data?.shared?.companyName || "your company";
     document.getElementById("reportSubtitle").textContent = `See where ${companyName}'s structure, reporting lines and decision-making may create friction as the company grows.`;
+    if (payload.sample) {
+        document.getElementById("emailReport").hidden = true;
+        document.getElementById("downloadReport").textContent = "Download Sample PDF";
+    }
     renderOverview(payload);
     renderFindings(payload);
     renderScenario(payload);
-    bindNavigation();
+    bindNavigation(payload);
     const initial = ["overview", "findings", "scenario"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "overview";
     setStep(initial);
 }
