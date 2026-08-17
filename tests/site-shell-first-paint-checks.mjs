@@ -44,6 +44,8 @@ assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,
     "The homepage intelligence graph must have an independent module bootstrap fallback.");
 assert.match(shellSource, /css\/25-ui-polish\.css/,
     "The shared shell must load the final cross-page UI/accessibility polish layer.");
+assert.match(shellSource, /css\/26-header-brand-lockup\.css/,
+    "The shared shell must load the Sample Advisory navbar parity layer on every page.");
 assert.match(shellSource, /GrowWithHR by HRTechify/,
     "The shared shell must expose the approved GrowWithHR footer brand line.");
 
@@ -59,4 +61,4 @@ assert.ok(
     "Analyze My Company styles must load before the shared site shell."
 );
 
-console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap, shared footer and final polish loading.`);
+console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap, shared navbar parity, shared footer and final polish loading.`);
