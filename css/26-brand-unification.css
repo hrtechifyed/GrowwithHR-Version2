@@ -1,0 +1,160 @@
+/* GrowWithHR brand/action unification
+   Primary actions use the existing amber -> orange -> red brand gradient.
+   Semantic status colours remain distinct for Action / Watch / Stable / Needs information. */
+
+:root{
+    --action-primary:var(--gradient-brand);
+    --action-primary-text:#111827;
+    --action-primary-shadow:0 12px 30px rgba(255,122,0,.20);
+    --action-secondary-bg:rgba(255,255,255,.055);
+    --action-secondary-border:rgba(255,255,255,.14);
+}
+
+.primary-btn,
+.cta-button,
+.hub-engine-card__action,
+.org-primary,
+button.primary-btn,
+a.primary-btn,
+[type="submit"].primary-btn{
+    border:0!important;
+    background:var(--action-primary)!important;
+    color:var(--action-primary-text)!important;
+    box-shadow:var(--action-primary-shadow)!important;
+    font-weight:800;
+}
+
+.primary-btn:hover,
+.cta-button:hover,
+.hub-engine-card__action:hover,
+.org-primary:hover{
+    filter:brightness(1.04);
+}
+
+.secondary-btn,
+.org-secondary{
+    background:var(--action-secondary-bg)!important;
+    color:var(--text-primary)!important;
+    border-color:var(--action-secondary-border)!important;
+}
+
+.home-page,
+.intelligence-hub-page,
+.official-resources-page,
+.org-structure-page,
+.org-report-page,
+.org-methodology-page{
+    background:
+        radial-gradient(circle at 78% 12%,rgba(255,122,0,.10),transparent 34%),
+        radial-gradient(circle at 18% 18%,rgba(37,99,235,.08),transparent 30%),
+        var(--gradient-dark);
+    color:var(--text-primary);
+}
+
+.org-context-note{
+    padding:14px 16px;
+    border:1px solid rgba(255,176,0,.22);
+    border-radius:14px;
+    background:rgba(255,176,0,.06);
+    color:var(--text-secondary);
+    line-height:1.6;
+}
+
+.org-delivery-status{
+    margin:0 0 18px;
+    padding:12px 14px;
+    border:1px solid var(--glass-border);
+    border-radius:12px;
+    background:rgba(255,255,255,.045);
+    color:var(--text-secondary);
+    line-height:1.5;
+}
+.org-delivery-status[hidden]{display:none!important;}
+.org-delivery-status[data-state="success"]{border-color:rgba(34,197,94,.28);background:rgba(34,197,94,.08);color:#b8f3ca;}
+.org-delivery-status[data-state="error"]{border-color:rgba(239,68,68,.30);background:rgba(239,68,68,.08);color:#ffc0c0;}
+.org-delivery-status[data-state="working"]{border-color:rgba(255,176,0,.28);background:rgba(255,176,0,.07);color:#ffe09a;}
+.org-delivery-status[data-state="sample"]{border-color:rgba(79,139,255,.28);background:rgba(79,139,255,.08);color:#c7d8ff;}
+
+.org-metric small{
+    display:block;
+    margin-top:8px;
+    color:var(--text-muted);
+    font-size:.75rem;
+    line-height:1.4;
+}
+.org-context-strip{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-top:14px;
+}
+.org-context-strip strong{color:#ffe09a;}
+.org-context-strip span{font-weight:850;color:#fff;}
+.org-context-strip small{flex:1 1 360px;color:var(--text-muted);line-height:1.45;}
+
+.org-source-heading-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:8px;
+}
+.org-source-heading-row h4{margin:0;}
+.org-rule-id{
+    display:inline-flex;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:999px;
+    padding:5px 8px;
+    color:var(--text-muted);
+    font-size:.67rem;
+    font-weight:800;
+    letter-spacing:.04em;
+}
+.org-assumptions{
+    margin:14px 0;
+    padding:13px 15px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--glass-border);
+    color:var(--text-secondary);
+}
+.org-assumptions ul{margin:8px 0 0;padding-left:20px;line-height:1.55;}
+
+.org-methodology-section{margin-top:34px;}
+.org-methodology-section>h2{margin:12px 0 8px;}
+.org-factor-grid{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:12px;
+    margin-top:18px;
+}
+.org-factor-grid .org-panel{padding:16px;}
+.org-factor-grid strong{color:#ffe09a;}
+.org-factor-grid p{font-size:.9rem;color:var(--text-muted);line-height:1.5;}
+.org-rule-map{font-size:.84rem;color:#d8cda9!important;line-height:1.45;}
+.org-version-history{display:grid;gap:12px;margin-top:16px;}
+.org-version-row{
+    display:grid;
+    grid-template-columns:90px 120px minmax(0,1fr);
+    gap:14px;
+    align-items:start;
+}
+.org-version-row strong{color:#ffe09a;}
+.org-version-row span{color:var(--text-muted);}
+.org-version-row p{margin:0;}
+
+@media(max-width:1000px){
+    .org-factor-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:700px){
+    .org-factor-grid,.org-version-row{grid-template-columns:1fr;}
+    .org-report-actions{width:100%;}
+    .org-report-actions>*{flex:1 1 100%;}
+}
+
+@media print{
+    .org-delivery-status{display:none!important;}
+    .org-context-strip,.org-assumptions{background:#fff!important;color:#334155!important;border-color:#d7dce5!important;}
+    .org-context-strip span,.org-context-strip strong{color:#92400e!important;}
+}
