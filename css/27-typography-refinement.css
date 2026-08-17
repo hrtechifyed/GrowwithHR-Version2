@@ -1,0 +1,275 @@
+/* ==========================================================
+   GrowWithHR typography refinement
+   Keeps product pages readable and differentiated without
+   editorial-scale headlines or book-like body sizing.
+========================================================== */
+
+/* ---------------- Global rhythm ---------------- */
+
+body p,
+body li,
+body label,
+body input,
+body select,
+body textarea,
+body button,
+body a {
+    text-rendering: optimizeLegibility;
+}
+
+body p {
+    line-height: var(--line-body);
+}
+
+/* ---------------- Homepage ---------------- */
+
+body.home-page .hero-v2 .hero-home h1 {
+    max-width: 900px;
+    font-size: var(--type-display);
+    line-height: var(--line-display);
+    letter-spacing: -.035em;
+}
+
+body.home-page .section-heading h2,
+body.home-page .compliance-engine-heading h2,
+body.home-page .analyze-redirect-section .summary-card h2 {
+    font-size: var(--type-section);
+    line-height: var(--line-heading);
+}
+
+body.home-page .how-card h3,
+body.home-page .engine-step h3,
+body.home-page .capability-slide h3,
+body.home-page .workspace-card .card-header h3 {
+    font-size: var(--type-card);
+    line-height: var(--line-heading);
+}
+
+body.home-page .how-card p,
+body.home-page .engine-step p,
+body.home-page .capability-slide p,
+body.home-page .compliance-engine-section p,
+body.home-page .summary-card p {
+    font-size: var(--type-body);
+    line-height: var(--line-body);
+}
+
+/* ---------------- Company Insights ---------------- */
+
+.intelligence-hub-page .intelligence-hub-hero__content h1 {
+    max-width: 760px;
+    font-size: var(--type-display);
+    line-height: var(--line-display);
+    letter-spacing: -.035em;
+}
+
+.intelligence-hub-page .intelligence-hub-hero__content .hero-description {
+    max-width: 650px;
+    font-size: var(--type-body-lg);
+    line-height: var(--line-body);
+}
+
+/* The analysis cards are already visible directly below the hero.
+   Do not add a redundant hero-level “Choose an analysis” CTA. */
+.intelligence-hub-page .hero-actions {
+    display: none !important;
+}
+
+.intelligence-hub-page .hub-engine-heading h2,
+.intelligence-hub-page .hub-workspace-copy h2 {
+    font-size: var(--type-section);
+    line-height: var(--line-heading);
+}
+
+.intelligence-hub-page .hub-engine-card h3 {
+    font-size: var(--type-card);
+    line-height: var(--line-heading);
+}
+
+.intelligence-hub-page .hub-engine-card p,
+.intelligence-hub-page .hub-workspace-copy p {
+    font-size: var(--type-body);
+    line-height: var(--line-body);
+}
+
+.intelligence-hub-page .hub-engine-card__action,
+.intelligence-hub-page .hub-recover-form button,
+.intelligence-hub-page .hub-workspace-actions button {
+    font-size: .9375rem;
+    line-height: 1.35;
+}
+
+.intelligence-hub-page .hub-eyebrow,
+.intelligence-hub-page .hub-engine-tag,
+.intelligence-hub-page .hero-badge {
+    font-size: var(--type-label);
+}
+
+/* ---------------- Organization assessment / methodology ---------------- */
+
+.org-structure-page .org-title,
+.org-methodology-page .org-title {
+    max-width: 820px;
+    font-size: var(--type-page-title);
+    line-height: var(--line-display);
+    letter-spacing: -.035em;
+}
+
+.org-structure-page .org-lead,
+.org-methodology-page .org-lead {
+    font-size: var(--type-body-lg);
+    line-height: var(--line-body);
+}
+
+.org-structure-page .org-form-card h2,
+.org-methodology-page .org-methodology-section > h2,
+.org-methodology-page .org-panel h2 {
+    font-size: var(--type-section);
+    line-height: var(--line-heading);
+}
+
+.org-structure-page .org-section-title,
+.org-methodology-page .org-source-card h3,
+.org-methodology-page .org-rule-card h3 {
+    font-size: var(--type-card);
+    line-height: var(--line-heading);
+}
+
+/* ---------------- Organization report ---------------- */
+
+.org-report-page .org-report-head .org-title {
+    max-width: 760px;
+    font-size: var(--type-page-title);
+    line-height: var(--line-display);
+    letter-spacing: -.035em;
+}
+
+.org-report-page .org-lead {
+    max-width: 760px;
+    font-size: var(--type-body-lg);
+    line-height: var(--line-body);
+}
+
+.org-report-page .org-report-screen h2,
+.org-report-page .org-panel h2,
+.org-report-page .org-scenario-callout h2 {
+    font-size: var(--type-section);
+    line-height: var(--line-heading);
+    letter-spacing: -.02em;
+}
+
+/* Executive-summary sentences can be long; treat them as section-level
+   information, not as a newspaper-style display headline. */
+.org-report-page #screen-overview > .org-panel:first-child h2 {
+    max-width: 46ch;
+    font-size: clamp(1.625rem, 2vw, 2rem);
+    line-height: 1.28;
+    letter-spacing: -.018em;
+}
+
+.org-report-page .org-overview-grid h2,
+.org-report-page .org-primary-constraint h2 {
+    font-size: clamp(1.375rem, 1.75vw, 1.75rem);
+}
+
+.org-report-page .org-finding h3,
+.org-report-page .org-roadmap h3,
+.org-report-page .org-scenario-grid h3 {
+    font-size: var(--type-card);
+    line-height: var(--line-heading);
+}
+
+.org-report-page .org-panel p,
+.org-report-page .org-finding p,
+.org-report-page .org-scenario-callout p,
+.org-report-page .org-priority-list li {
+    font-size: var(--type-body);
+    line-height: var(--line-body);
+}
+
+.org-report-page .org-status-card strong,
+.org-report-page .org-metric strong {
+    font-size: clamp(1.35rem, 1.6vw, 1.6rem);
+}
+
+.org-report-page .org-scenario-number {
+    font-size: clamp(1.5rem, 2.25vw, 1.9rem);
+    line-height: 1.15;
+}
+
+.org-report-page .org-kicker,
+.org-report-page .org-status,
+.org-report-page .org-kicker--small,
+.org-methodology-page .org-kicker,
+.org-structure-page .org-kicker {
+    font-size: var(--type-label);
+    line-height: 1.25;
+}
+
+.org-report-page .org-subtle,
+.org-report-page .org-source-list small,
+.org-report-page .org-rule-id,
+.org-report-page .org-rule-basis,
+.org-methodology-page .org-source-meta,
+.org-structure-page .org-field small {
+    font-size: var(--type-meta);
+    line-height: var(--line-compact);
+}
+
+.org-report-page .org-primary,
+.org-report-page .org-secondary,
+.org-report-page .org-step-button,
+.org-report-page .org-step,
+.org-structure-page .org-primary,
+.org-structure-page .org-secondary {
+    font-size: .9375rem;
+    line-height: 1.35;
+}
+
+/* ---------------- Compliance / executive advisory ---------------- */
+
+.executive-advisory-page .section-heading h2,
+body .executive-summary-card .summary-hero-copy h2,
+body .executive-briefing h3,
+body .summary-card h2 {
+    font-size: var(--type-section);
+    line-height: var(--line-heading);
+}
+
+body .summary-hero-copy p,
+body .executive-briefing p,
+body .recommendation-card p,
+body .timeline-card p,
+body .compliance-card p,
+body .opportunity-card p {
+    font-size: var(--type-body);
+    line-height: var(--line-body);
+}
+
+body .recommendation-title,
+body .priority-content h3,
+body .timeline-card h3,
+body .compliance-card h3,
+body .opportunity-card h3 {
+    font-size: var(--type-card);
+    line-height: var(--line-heading);
+}
+
+/* ---------------- Small screens ---------------- */
+
+@media (max-width: 767px) {
+    body.home-page .hero-v2 .hero-home h1,
+    .intelligence-hub-page .intelligence-hub-hero__content h1 {
+        font-size: clamp(2.1rem, 9vw, 2.75rem);
+    }
+
+    .org-report-page .org-report-head .org-title,
+    .org-structure-page .org-title,
+    .org-methodology-page .org-title {
+        font-size: clamp(1.9rem, 8vw, 2.5rem);
+    }
+
+    .org-report-page #screen-overview > .org-panel:first-child h2 {
+        font-size: clamp(1.45rem, 6vw, 1.8rem);
+    }
+}
