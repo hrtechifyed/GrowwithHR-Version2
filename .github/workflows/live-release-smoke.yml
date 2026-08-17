@@ -55,6 +55,25 @@ jobs:
             exit 1
           fi
 
+      - name: Validate GitHub Pages Organization Structure routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://hrtechifyed.github.io/GrowwithHR-Version2"
+          input="$(curl -fsSL --connect-timeout 15 --max-time 45 "$base/organization-intelligence.html")"
+          report="$(curl -fsSL --connect-timeout 15 --max-time 45 "$base/organization-structure-report.html")"
+          methodology="$(curl -fsSL --connect-timeout 15 --max-time 45 "$base/organization-structure-methodology.html")"
+          samples="$(curl -fsSL --connect-timeout 15 --max-time 45 "$base/sample-reports.html")"
+          grep -Fq "Understand My" <<<"$input"
+          grep -Fq "Source transparency" <<<"$input"
+          grep -Fq 'id="taskComplexity"' <<<"$input"
+          grep -Fq 'id="downloadReport"' <<<"$report"
+          grep -Fq 'id="emailReport"' <<<"$report"
+          grep -Fq "12-Month Growth Scenario" <<<"$report"
+          grep -Fq 'id="spanContext"' <<<"$methodology"
+          grep -Fq "OpenStax" <<<"$methodology"
+          grep -Fq "View Sample Organization Structure Report" <<<"$samples"
+
       - name: Wait for Render homepage release
         shell: bash
         run: |
@@ -84,6 +103,20 @@ jobs:
             echo "Dark report option is still visible on the Render founder report route." >&2
             exit 1
           fi
+
+      - name: Validate Render Organization Structure routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://growwithhr.onrender.com"
+          input="$(curl -fsSL --connect-timeout 20 --max-time 60 "$base/organization-intelligence.html")"
+          report="$(curl -fsSL --connect-timeout 20 --max-time 60 "$base/organization-structure-report.html")"
+          methodology="$(curl -fsSL --connect-timeout 20 --max-time 60 "$base/organization-structure-methodology.html")"
+          grep -Fq 'id="founderDecisions"' <<<"$input"
+          grep -Fq 'id="expansionType"' <<<"$input"
+          grep -Fq 'id="downloadReport"' <<<"$report"
+          grep -Fq 'id="emailReport"' <<<"$report"
+          grep -Fq "Framework version history" <<<"$methodology"
 
       - name: Validate live report ID registry durability
         shell: bash
@@ -148,6 +181,13 @@ jobs:
                 "singleReportRouteVisible": true,
                 "darkReportOptionAbsent": true
               },
+              "githubPagesOrganizationStructure": {
+                "inputRouteVisible": true,
+                "threeScreenReportVisible": true,
+                "downloadAndEmailActionsVisible": true,
+                "methodologyAndSourcesVisible": true,
+                "sampleReportVisible": true
+              },
               "renderHomepage": {
                 "url": "https://growwithhr.onrender.com/index.html",
                 "versionVisible": true
@@ -156,6 +196,12 @@ jobs:
                 "url": "https://growwithhr.onrender.com/executive-advisory-report.html",
                 "singleReportRouteVisible": true,
                 "darkReportOptionAbsent": true
+              },
+              "renderOrganizationStructure": {
+                "inputRouteVisible": true,
+                "contextualInputsVisible": true,
+                "downloadAndEmailActionsVisible": true,
+                "methodologyVersionHistoryVisible": true
               },
               "reportIdRegistry": {
                 "url": "https://growwithhr.onrender.com/api/report-id/status",
