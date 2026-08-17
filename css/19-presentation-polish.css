@@ -1,43 +1,11 @@
 /* ==========================================================
    GrowWithHR presentation polish
-   Report layout, shared navigation and print safeguards
+   Report layout and print safeguards.
+
+   Shared navigation geometry belongs only in css/18-site-shell.css.
+   Keeping it out of page-level presentation CSS prevents individual
+   pages from moving or resizing the shared navbar.
    ========================================================== */
-
-.site-header-shell__inner {
-    position: relative;
-    display: block;
-}
-
-.site-nav-glass {
-    width: 100%;
-    min-height: 76px;
-    padding: 8px 14px 8px 86px;
-}
-
-.site-brand-logo {
-    position: absolute;
-    z-index: 4;
-    top: 50%;
-    left: 12px;
-    width: 62px;
-    height: 62px;
-    border-radius: 0;
-    transform: translateY(-50%);
-}
-
-.site-brand-logo::before {
-    display: none;
-}
-
-.site-brand-logo img {
-    content: url("../assets/hrtechify-logo-transparent.svg");
-    object-fit: contain;
-    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
-}
-
-.site-brand-logo:hover {
-    transform: translateY(-50%) scale(1.035);
-}
 
 body.has-site-shell .hero {
     min-height: 64vh;
@@ -170,17 +138,6 @@ body[data-active-nav="sample"] .contact-card {
 }
 
 @media (max-width: 900px) {
-    .site-nav-glass {
-        min-height: 62px;
-        padding: 5px 6px 5px 68px;
-    }
-
-    .site-brand-logo {
-        left: 7px;
-        width: 52px;
-        height: 52px;
-    }
-
     body[data-active-nav="sample"] .executive-profile-strip {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -198,21 +155,6 @@ body[data-active-nav="sample"] .contact-card {
 }
 
 @media (max-width: 580px) {
-    .site-nav-glass {
-        padding-left: 60px;
-    }
-
-    .site-brand-logo {
-        left: 5px;
-        width: 48px;
-        height: 48px;
-    }
-
-    .site-nav-glass > a[aria-label="HRTechify home"] {
-        padding-left: 4px !important;
-        font-size: 0.82rem !important;
-    }
-
     body.has-site-shell .hero {
         padding-top: calc(var(--site-shell-header-height, 72px) + 48px);
     }
