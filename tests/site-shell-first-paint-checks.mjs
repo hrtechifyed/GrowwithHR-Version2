@@ -34,7 +34,7 @@ for (const file of walk(root)) {
 assert.ok(shellPages.length >= 8, "Expected the active GrowWithHR routes to use the shared site shell.");
 
 const shellSource = fs.readFileSync(path.join(root, "js/site-shell.js"), "utf8");
-assert.match(shellSource, /if \(document\.body\)\s*\{\s*renderSiteShell\(\)/,
+assert.match(shellSource, /if \(document\.body\)\s*(?:\{\s*)?renderSiteShell\(\)/,
     "The shared shell must render immediately when a deferred head script finds body available.");
 assert.doesNotMatch(shellSource, /if \(document\.readyState === ["']loading["']\) document\.addEventListener\(["']DOMContentLoaded["'], renderSiteShell/,
     "The shell must not always wait for DOMContentLoaded after body parsing has completed.");
@@ -42,17 +42,21 @@ assert.match(shellSource, /document\.getElementById\(["']dnaCoreCanvas["']\)/,
     "The shared shell must detect the homepage intelligence graph container.");
 assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,
     "The homepage intelligence graph must have an independent module bootstrap fallback.");
+assert.match(shellSource, /css\/25-ui-polish\.css/,
+    "The shared shell must load the final cross-page UI/accessibility polish layer.");
+assert.match(shellSource, /GrowWithHR by HRTechify/,
+    "The shared shell must expose the approved GrowWithHR footer brand line.");
 
 const stylesSource = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)].map((match) => match[1]);
 assert.equal(
     styleImports.at(-1),
     "css/18-site-shell.css",
-    "The shared site shell must load last in styles.css so page-specific presentation CSS cannot change the navbar contract."
+    "The static shared site shell remains last in styles.css; the runtime polish layer is loaded explicitly afterward."
 );
 assert.ok(
     styleImports.indexOf("css/24-intelligence-hub.css") < styleImports.indexOf("css/18-site-shell.css"),
     "Analyze My Company styles must load before the shared site shell."
 );
 
-console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap and navbar style authority.`);
+console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap, shared footer and final polish loading.`);

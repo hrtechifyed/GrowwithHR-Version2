@@ -9,11 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="js/site-shell.js" defer></script>
 </head>
-
-  <body
-    class="official-resources-page"
-    data-active-nav="resources">
-  
+<body class="official-resources-page" data-active-nav="resources">
 
 <header class="hero hero-v2 official-hero">
   <div class="hero-bg-grid"></div>
@@ -24,7 +20,6 @@
       <div class="hero-badge">Verified Government Sources</div>
       <h1>Official Resources for Executive HR Decisions</h1>
       <p class="hero-description">A curated reference library of government and statutory sources used to ground GrowWithHR compliance guidance.</p>
-
     </div>
     <div class="hero-sidebar gwhr-peel-stack" data-testid="official-resources-stack">
       <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Statutory Authorities</h3></div><p>EPFO, ESIC and labour ministry references for people compliance checks.</p></article>
@@ -43,40 +38,13 @@
         <p>These links point to government and statutory resources. Always verify final obligations with current official notifications and qualified counsel.</p>
       </div>
       <div id="sourceGuidance" class="source-guidance"><span></span><p>Use these official links as starting points for verification. Final compliance decisions should be checked against current notifications and qualified professional advice.</p></div>
-      <div id="officialResourcesContainer" class="updates-grid resource-line-grid" aria-live="polite">
+      <div id="officialResourcesContainer" class="updates-grid resource-line-grid" aria-live="polite" aria-busy="true">
         <div class="update-card">Loading official resources...</div>
       </div>
     </div>
   </section>
 </main>
 
-<script>
-const container = document.getElementById('officialResourcesContainer');
-fetch('data/official-resources.json')
-  .then((response) => response.json())
-  .then((data) => {
-    const resources = data.resources || [];
-    container.innerHTML = resources.map((resource) => `
-      <article class="update-card resource-line-card">
-        <div class="resource-line-marker"></div>
-        <div>
-          <div class="update-type">${resource.type || 'Official Source'}</div>
-          <h3>${resource.name || 'Official Resource'}</h3>
-        </div>
-        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="secondary-btn">Visit →</a>
-      </article>
-    `).join('');
-    if (data.lastVerified) {
-      container.insertAdjacentHTML('beforeend', `<article class="update-card"><div class="update-type">Last verified</div><p>${data.lastVerified}</p></article>`);
-    }
-  })
-  .catch(() => {
-    container.innerHTML = '<div class="update-card">Unable to load official resources. Please try again later.</div>';
-  });
-  
-</script>
-
-<script src="js/sticky-card-debug.js"></script>
 <script src="js/build-marker.js"></script>
 </body>
 </html>

@@ -6,12 +6,8 @@
 (function siteShellBootstrap(window, document) {
     "use strict";
 
-    const HRTECHIFY_URL = "https://hrtechifyed.github.io/HRTECHIFY/";
-    const FOOTER_LINE_ONE = "HRTechify - People • Technology • Growth";
-    const FOOTER_LINE_TWO = "© 2026 All Rights Reserved.";
-
     const NAV_ITEMS = Object.freeze([
-        { key: "platform", label: "Home", href: "index.html#platform" },
+        { key: "platform", label: "Home", href: "index.html#home" },
         { key: "analyze", label: "Analyze My Company", href: "intelligence-hub.html" },
         { key: "resources", label: "Official Sources", href: "official-resources.html" },
         { key: "sample", label: "Sample Advisory", href: "sample-advisory-report.html" }
@@ -22,6 +18,9 @@
         { label: "Privacy", href: "more-info.html#privacy" },
         { label: "Contact", href: "more-info.html#contact" }
     ]);
+
+    const FOOTER_BRAND = "GrowWithHR by HRTechify";
+    const FOOTER_RIGHTS = "© 2026 HRTechify. All rights reserved.";
 
     function escapeHtml(value) {
         return String(value == null ? "" : value)
@@ -41,10 +40,12 @@
     function inferRootPrefix() {
         const bodyPrefix = document.body && document.body.dataset ? document.body.dataset.siteRoot : "";
         if (bodyPrefix) return normalizePrefix(bodyPrefix);
+
         const script = document.currentScript || Array.from(document.scripts).find((item) => {
             const source = item.getAttribute("src") || "";
             return /(?:^|\/)js\/site-shell\.js(?:[?#].*)?$/.test(source);
         });
+
         if (!script) return "";
         const source = (script.getAttribute("src") || "").replace(/[?#].*$/, "");
         const marker = "js/site-shell.js";
@@ -66,6 +67,7 @@
     function inferActiveNav() {
         const explicit = document.body && document.body.dataset ? document.body.dataset.activeNav : "";
         if (explicit) return explicit.trim().toLowerCase();
+
         const activeByFile = {
             "index.html": "platform",
             "analyze-company.html": "analyze",
@@ -80,6 +82,7 @@
             "people-roadmap.html": "platform",
             "compliance-roadmap.html": "platform"
         };
+
         return activeByFile[currentFileName()] || "";
     }
 
@@ -96,78 +99,229 @@
         const header = document.createElement("header");
         header.className = "site-header-shell";
         header.dataset.siteShellHeader = "";
+
         const primaryLinks = NAV_ITEMS.map((item) => navLinkMarkup(item, prefix, activeKey)).join("");
         const moreLinks = MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("");
 
         header.innerHTML = `
             <div class="site-header-shell__inner">
-                <a class="site-brand-logo" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="GrowWithHR home">
-                    <img src="${escapeHtml(withRoot(prefix, "assets/hrtechify-logo.png"))}" alt="HRTechify">
-                </a>
                 <nav class="site-nav-glass" aria-label="Primary navigation">
-                    <a href="${HRTECHIFY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Visit HRTechify website" style="position:relative;z-index:2;flex:0 0 auto;margin-right:auto;padding:0 8px 0 18px;color:var(--site-shell-orange-bright);font-size:clamp(0.82rem,3.4vw,1rem);font-weight:800;line-height:1;letter-spacing:.04em;white-space:nowrap;text-decoration:none;pointer-events:auto">HRTechify ↗</a>
+                    <a class="site-brand-logo" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="GrowWithHR home">
+                        <img src="${escapeHtml(withRoot(prefix, "assets/hrtechify-logo.png"))}" alt="HRTechify">
+                    </a>
+                    <a class="site-product-name" href="${escapeHtml(withRoot(prefix, "index.html#home"))}">GrowWithHR</a>
                     <button class="site-nav-toggle" type="button" aria-label="Open navigation" aria-controls="siteNavLinks" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
                     <div class="site-nav-links" id="siteNavLinks">
                         ${primaryLinks}
                         <div class="site-nav-more${activeKey === "more" ? " is-active" : ""}">
-                            <button class="site-nav-more__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}><span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span></button>
-                            <div class="site-nav-more__menu" id="siteMoreMenu" role="menu">${moreLinks}<a href="${HRTECHIFY_URL}" target="_blank" rel="noopener noreferrer">Visit HRTechify ↗</a></div>
+                            <button class="site-nav-more__toggle" type="button" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}><span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span></button>
+                            <div class="site-nav-more__menu" id="siteMoreMenu" aria-label="More navigation">${moreLinks}</div>
                         </div>
                     </div>
                 </nav>
             </div>`;
+
         return header;
     }
 
-    function buildFooter() {
+    function buildFooter(prefix) {
         const footer = document.createElement("footer");
         footer.className = "site-footer";
         footer.dataset.siteShellFooter = "";
-        footer.innerHTML = `<div class="site-footer__inner"><p class="site-footer__brand-line"><a href="${HRTECHIFY_URL}" target="_blank" rel="noopener noreferrer">${escapeHtml(FOOTER_LINE_ONE)}</a></p><p class="site-footer__rights-line">${escapeHtml(FOOTER_LINE_TWO)}</p></div>`;
+        footer.innerHTML = `
+            <div class="site-footer__inner">
+                <p class="site-footer__brand-line">${escapeHtml(FOOTER_BRAND)}</p>
+                <nav class="site-footer__nav" aria-label="Footer navigation">
+                    ${MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("")}
+                </nav>
+                <p class="site-footer__rights-line">${escapeHtml(FOOTER_RIGHTS)}</p>
+            </div>`;
         return footer;
     }
 
     function placeHeader(header) {
         const oldHeaders = Array.from(document.querySelector("body")?.querySelectorAll("[data-site-shell-header], nav.navbar, header.site-header-shell") || []);
         let anchor = null;
-        oldHeaders.forEach((item) => { if (!anchor && item.parentNode) anchor = item; });
-        if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(header, anchor);
-        else { const skipLink = document.querySelector(".skip-link, [data-skip-link]"); if (skipLink && skipLink.parentNode === document.body) skipLink.insertAdjacentElement("afterend", header); else document.body.insertBefore(header, document.body.firstChild); }
-        oldHeaders.forEach((item) => { if (item !== header && item.parentNode) item.remove(); });
+        oldHeaders.forEach((item) => {
+            if (!anchor && item.parentNode) anchor = item;
+        });
+
+        if (anchor && anchor.parentNode) {
+            anchor.parentNode.insertBefore(header, anchor);
+        } else {
+            const skipLink = document.querySelector(".skip-link, [data-skip-link], .advisory-skip-link");
+            if (skipLink && skipLink.parentNode === document.body) skipLink.insertAdjacentElement("afterend", header);
+            else document.body.insertBefore(header, document.body.firstChild);
+        }
+
+        oldHeaders.forEach((item) => {
+            if (item !== header && item.parentNode) item.remove();
+        });
     }
 
     function placeFooter(footer) {
         const oldFooters = Array.from(document.querySelectorAll("[data-site-shell-footer], footer.footer, footer.site-footer"));
         const lastFooter = oldFooters.length ? oldFooters[oldFooters.length - 1] : null;
-        if (lastFooter && lastFooter.parentNode) lastFooter.parentNode.insertBefore(footer, lastFooter); else document.body.appendChild(footer);
-        oldFooters.forEach((item) => { if (item !== footer && item.parentNode) item.remove(); });
+        if (lastFooter && lastFooter.parentNode) lastFooter.parentNode.insertBefore(footer, lastFooter);
+        else document.body.appendChild(footer);
+
+        oldFooters.forEach((item) => {
+            if (item !== footer && item.parentNode) item.remove();
+        });
     }
 
-    function lockBodyScroll(locked) { document.documentElement.classList.toggle("site-nav-open", locked); document.body.classList.toggle("site-nav-open", locked); }
+    function lockBodyScroll(locked) {
+        document.documentElement.classList.toggle("site-nav-open", locked);
+        document.body.classList.toggle("site-nav-open", locked);
+    }
+
+    function setBackgroundInert(locked, header) {
+        Array.from(document.body.children).forEach((child) => {
+            if (child === header || child.matches(".advisory-skip-link, .skip-link, [data-skip-link]")) return;
+            if (locked) {
+                child.dataset.siteShellWasInert = child.inert ? "true" : "false";
+                child.inert = true;
+            } else if (child.dataset.siteShellWasInert !== undefined) {
+                child.inert = child.dataset.siteShellWasInert === "true";
+                delete child.dataset.siteShellWasInert;
+            }
+        });
+    }
 
     function bindHeaderInteractions(header) {
-        const nav = header.querySelector(".site-nav-glass"); const toggle = header.querySelector(".site-nav-toggle"); const links = header.querySelector(".site-nav-links"); const more = header.querySelector(".site-nav-more"); const moreToggle = header.querySelector(".site-nav-more__toggle");
+        const nav = header.querySelector(".site-nav-glass");
+        const toggle = header.querySelector(".site-nav-toggle");
+        const links = header.querySelector(".site-nav-links");
+        const more = header.querySelector(".site-nav-more");
+        const moreToggle = header.querySelector(".site-nav-more__toggle");
         if (!nav || !toggle || !links || !more || !moreToggle) return;
-        const closeMore = () => { more.classList.remove("is-open"); moreToggle.setAttribute("aria-expanded", "false"); };
-        const closeMobileNav = () => { nav.classList.remove("is-open"); toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "Open navigation"); lockBodyScroll(false); closeMore(); };
-        toggle.addEventListener("click", () => { if (nav.classList.contains("is-open")) closeMobileNav(); else { nav.classList.add("is-open"); toggle.setAttribute("aria-expanded", "true"); toggle.setAttribute("aria-label", "Close navigation"); lockBodyScroll(true); } });
-        moreToggle.addEventListener("click", (event) => { event.stopPropagation(); const willOpen = !more.classList.contains("is-open"); more.classList.toggle("is-open", willOpen); moreToggle.setAttribute("aria-expanded", String(willOpen)); });
-        links.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMobileNav));
-        document.addEventListener("click", (event) => { if (!more.contains(event.target)) closeMore(); });
-        document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMobileNav(); });
-        window.addEventListener("resize", () => { if (window.matchMedia("(min-width: 901px)").matches) closeMobileNav(); });
+
+        let previouslyFocused = null;
+
+        const closeMore = () => {
+            more.classList.remove("is-open");
+            moreToggle.setAttribute("aria-expanded", "false");
+        };
+
+        const closeMobileNav = (restoreFocus = false) => {
+            const wasOpen = nav.classList.contains("is-open");
+            nav.classList.remove("is-open");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.setAttribute("aria-label", "Open navigation");
+            lockBodyScroll(false);
+            setBackgroundInert(false, header);
+            closeMore();
+            if (restoreFocus && wasOpen && previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+        };
+
+        const openMobileNav = () => {
+            previouslyFocused = document.activeElement;
+            nav.classList.add("is-open");
+            toggle.setAttribute("aria-expanded", "true");
+            toggle.setAttribute("aria-label", "Close navigation");
+            lockBodyScroll(true);
+            setBackgroundInert(true, header);
+            const firstLink = links.querySelector("a, button");
+            window.requestAnimationFrame(() => firstLink?.focus());
+        };
+
+        toggle.addEventListener("click", () => {
+            if (nav.classList.contains("is-open")) closeMobileNav(true);
+            else openMobileNav();
+        });
+
+        moreToggle.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const willOpen = !more.classList.contains("is-open");
+            more.classList.toggle("is-open", willOpen);
+            moreToggle.setAttribute("aria-expanded", String(willOpen));
+        });
+
+        links.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMobileNav(false)));
+
+        document.addEventListener("click", (event) => {
+            if (!more.contains(event.target)) closeMore();
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeMobileNav(true);
+                return;
+            }
+
+            if (event.key !== "Tab" || !nav.classList.contains("is-open") || !window.matchMedia("(max-width: 900px)").matches) return;
+            const focusable = Array.from(header.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((element) => !element.closest("[hidden]") && element.offsetParent !== null);
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (window.matchMedia("(min-width: 901px)").matches) closeMobileNav(false);
+        });
     }
 
-    function updatePageOffsets() { const header = document.querySelector("[data-site-shell-header]"); if (!header) return; document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`); }
+    function updatePageOffsets() {
+        const header = document.querySelector("[data-site-shell-header]");
+        if (!header) return;
+        document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+    }
 
-    function bootstrapHomepageIntelligenceGraph() { if (!document.getElementById("dnaCoreCanvas") || window.GrowWithHRIntelligenceCore?.ready) return; import("./intelligence-core.js").catch((error) => console.error("GrowWithHR homepage intelligence graph failed to initialize", error)); }
+    function ensurePolishStyles(prefix) {
+        if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = withRoot(prefix, "css/25-ui-polish.css");
+        link.dataset.growwithhrUiPolish = "";
+        document.head.appendChild(link);
+    }
+
+    function bootstrapHomepageIntelligenceGraph() {
+        if (!document.getElementById("dnaCoreCanvas") || window.GrowWithHRIntelligenceCore?.ready) return;
+        import("./intelligence-core.js").catch((error) => console.error("GrowWithHR homepage intelligence graph failed to initialize", error));
+    }
+
+    function bootstrapUiPolish() {
+        import("./ui-polish.js").catch((error) => console.error("GrowWithHR UI polish failed to initialize", error));
+    }
 
     function renderSiteShell() {
         if (!document.body) return;
-        const prefix = inferRootPrefix(); const activeKey = inferActiveNav(); const header = buildHeader(prefix, activeKey); const footer = buildFooter();
-        placeHeader(header); placeFooter(footer); bindHeaderInteractions(header); updatePageOffsets(); document.body.classList.add("has-site-shell"); document.documentElement.classList.add("site-shell-ready"); bootstrapHomepageIntelligenceGraph(); window.requestAnimationFrame(updatePageOffsets); window.addEventListener("load", updatePageOffsets, { once: true }); window.addEventListener("resize", updatePageOffsets); window.dispatchEvent(new CustomEvent("growwithhr:site-shell-ready", { detail: { activeNav: activeKey, rootPrefix: prefix } }));
+        const prefix = inferRootPrefix();
+        const activeKey = inferActiveNav();
+        ensurePolishStyles(prefix);
+
+        const header = buildHeader(prefix, activeKey);
+        const footer = buildFooter(prefix);
+        placeHeader(header);
+        placeFooter(footer);
+        bindHeaderInteractions(header);
+        updatePageOffsets();
+
+        document.body.classList.add("has-site-shell");
+        document.documentElement.classList.add("site-shell-ready");
+
+        bootstrapHomepageIntelligenceGraph();
+        bootstrapUiPolish();
+
+        window.requestAnimationFrame(updatePageOffsets);
+        window.addEventListener("load", updatePageOffsets, { once: true });
+        window.addEventListener("resize", updatePageOffsets);
+        window.dispatchEvent(new CustomEvent("growwithhr:site-shell-ready", { detail: { activeNav: activeKey, rootPrefix: prefix } }));
     }
 
-    if (document.body) renderSiteShell(); else document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
-    window.GrowWithHRSiteShell = Object.freeze({ render: renderSiteShell, footerText: `${FOOTER_LINE_ONE}\n${FOOTER_LINE_TWO}` });
+    if (document.body) renderSiteShell();
+    else document.addEventListener("DOMContentLoaded", renderSiteShell, { once: true });
+
+    window.GrowWithHRSiteShell = Object.freeze({
+        render: renderSiteShell,
+        footerText: `${FOOTER_BRAND}\nAbout · Privacy · Contact\n${FOOTER_RIGHTS}`
+    });
 })(window, document);

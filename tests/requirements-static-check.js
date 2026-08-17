@@ -35,23 +35,36 @@ for (const file of htmlFiles) {
 }
 
 const siteShell = read("js/site-shell.js");
-includes(siteShell, "HRTechify - People • Technology • Growth", "The shared footer must retain the current HRTechify brand line.");
-includes(siteShell, "© 2026 All Rights Reserved.", "The shared footer must retain the rights line.");
+includes(siteShell, "GrowWithHR by HRTechify", "The shared footer must use the approved GrowWithHR brand line.");
+includes(siteShell, "© 2026 HRTechify. All rights reserved.", "The shared footer must use the approved rights line.");
+includes(siteShell, "more-info.html#about", "The shared footer must link to About.");
+includes(siteShell, "more-info.html#privacy", "The shared footer must link to Privacy.");
+includes(siteShell, "more-info.html#contact", "The shared footer must link to Contact.");
 includes(siteShell, 'class="site-nav-toggle"', "The shared shell must provide mobile navigation.");
 includes(siteShell, 'aria-expanded="false"', "Mobile navigation must begin collapsed.");
 includes(siteShell, 'aria-controls="siteNavLinks"', "The navigation toggle must identify its controlled links.");
 includes(siteShell, 'nav.classList.add("is-open")', "The shared navigation must support opening.");
 includes(siteShell, 'nav.classList.remove("is-open")', "The shared navigation must support closing.");
 includes(siteShell, 'event.key === "Escape"', "The shared navigation must support keyboard dismissal.");
+includes(siteShell, "setBackgroundInert", "The mobile navigation must prevent interaction with background content while open.");
 
 const home = read("index.html");
 includes(home, 'id="home"', "The homepage hero must remain available.");
+includes(home, 'href="intelligence-hub.html"', "The primary Analyze My Company CTA must route through the intelligence hub.");
+includes(home, "Analyze My Company", "The primary analysis CTA must remain visible.");
 includes(home, 'href="sample-advisory-report.html"', "The sample advisory CTA must retain its destination.");
 includes(home, "View Sample Advisory", "The sample advisory CTA must remain visible.");
 includes(home, "Executive Intelligence", "The executive-intelligence preview must remain visible.");
-assert(home.indexOf("View Sample Advisory") < home.indexOf("Executive Intelligence"), "The sample advisory CTA must appear before the executive-intelligence preview.");
+assert(home.indexOf("Analyze My Company") < home.indexOf("Executive Intelligence"), "The primary analysis CTA must appear before the executive-intelligence preview.");
 includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence-stack test hook is required.");
+includes(home, "Organization Intelligence (Available)", "Organization Intelligence status must match the live intelligence hub.");
 assert(!home.includes("backupstyles.css"), "The obsolete backup stylesheet must not be loaded.");
+assert(!home.includes("es-module-shims"), "The homepage must not load the retired module shim.");
+assert(!home.includes("three@"), "The Canvas 2D homepage graph must not load unused Three.js.");
+
+const homeRuntime = read("app.js");
+assert(!homeRuntime.includes("fetch("), "The marketing homepage must not eagerly load the compliance knowledge base.");
+assert(!homeRuntime.includes("setInterval("), "Homepage preview controls must not auto-cycle without user control.");
 
 const heroCss = read("css/06-hero.css");
 includes(heroCss, ".hero-dashboard-layout", "The executive-intelligence layout is required.");

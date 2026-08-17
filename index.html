@@ -6,302 +6,138 @@
   <title>GrowWithHR | HRTechify</title>
   <meta name="description" content="GrowWithHR helps founders and HR leaders map HR compliance, people governance and growth-readiness obligations in minutes.">
   <link rel="stylesheet" href="styles.css">
-  <link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-
+  <link rel="prefetch" href="analyze-company.html">
   <script src="js/site-shell.js" defer></script>
 </head>
-<body
-    class="home-page"
-    data-active-nav="platform">
-
-  
-  <header id="home" class="hero hero-v2">
-
-    <div class="hero-bg-grid"></div>
-    <div class="hero-glow hero-glow-1"></div>
-    <div class="hero-glow hero-glow-2"></div>
-
-    <div class="container hero-layout">
-
-        <div class="hero-content hero-home">
-
-            <div class="hero-badge">
-
-                Decision-first HR compliance and advisory platform
-
-            </div>
-
-            <h1>
-
-                Tell us about your company.
-
-                <br>
-
-                <span>We'll tell you what matters next.</span>
-
-            </h1>
-            
-          <div class="hero-actions">
-    <a
-        href="sample-advisory-report.html"
-        class="secondary-btn">
-        View Sample Advisory
-    </a>
-</div>
-        
-        </div>
-
-        <div class="hero-workspace">
-
-            <div class="workspace-window">
-
-                <div class="workspace-header">
-
-                    <div class="workspace-dot red"></div>
-                    <div class="workspace-dot yellow"></div>
-                    <div class="workspace-dot green"></div>
-
-                    <div class="workspace-title">
-
-                        Executive Intelligence
-
-                    </div>
-
-                </div>
-
-                <div class="hero-dashboard-layout">
-
-                    <section class="hero-sidebar" aria-label="Executive intelligence controls" data-testid="home-executive-stack">
-
-                        <div class="workspace-card company-dna-card" data-testid="home-stack-card-company">
-
-                            <div class="card-header">
-                                <h3>Company DNA</h3>
-                            </div>
-
-                            <div class="dna-pillars">
-
-                                <button class="selector-item dna-item active" data-pillar="company">
-                                    <i class="fa-solid fa-building"></i>
-                                    <span>Company</span>
-                                </button>
-
-                                <button class="selector-item dna-item" data-pillar="people">
-                                    <i class="fa-solid fa-users"></i>
-                                    <span>People</span>
-                                </button>
-
-                                <button class="selector-item dna-item" data-pillar="operations">
-                                    <i class="fa-solid fa-gears"></i>
-                                    <span>Operations</span>
-                                </button>
-
-                                <button class="selector-item dna-item" data-pillar="growth">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                    <span>Maturity</span>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        <div class="workspace-card growth-stage home-stack-card rolling-card" data-testid="home-stack-card-growth">
-
-                            <div class="card-header">
-                                <h3>Growth Stage</h3>
-                            </div>
-
-                            <div class="growth-stage-list">
-
-                                <button class="selector-item stage-item active" data-stage="startup">
-                                    <i class="fa-solid fa-seedling"></i>
-                                    <span>Startup</span>
-                                </button>
-
-                                <button class="selector-item stage-item" data-stage="growth">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                    <span>Growth</span>
-                                </button>
-
-                                <button class="selector-item stage-item" data-stage="scaling">
-                                    <i class="fa-solid fa-arrow-trend-up"></i>
-                                    <span>Scaling</span>
-                                </button>
-
-                                <button class="selector-item stage-item" data-stage="enterprise">
-                                    <i class="fa-solid fa-building"></i>
-                                    <span>Enterprise</span>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        <div class="workspace-card recommendation-card home-stack-card rolling-card" data-testid="home-stack-card-recommendation">
-
-                            <div class="card-header">
-                                <h3>Recommendation Basis</h3>
-                            </div>
-
-                            <div class="recommendation-list">
-
-                                <button class="selector-item recommendation-item active" data-recommendation="company">
-                                    <i class="fa-solid fa-building"></i>
-                                    <span>Organization Profile</span>
-                                </button>
-
-                                <button class="selector-item recommendation-item" data-recommendation="stage">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                    <span>Maturity Stage</span>
-                                </button>
-
-                                <button class="selector-item recommendation-item" data-recommendation="laws">
-                                    <i class="fa-solid fa-scale-balanced"></i>
-                                    <span>Applicable Laws</span>
-                                </button>
-
-                                <button class="selector-item recommendation-item" data-recommendation="updates">
-                                    <i class="fa-solid fa-bell"></i>
-                                    <span>Regulatory Updates</span>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                    <section class="hero-graph">
-
-                        <div class="dna-core-wrapper">
-
-                            <div id="dnaCoreCanvas"></div>
-
-                        </div>
-
-                    </section>
-
-                    <footer class="hero-footer">
-
-                        <h3 class="core-title">
-
-                            GrowWithHR Intelligence Core
-
-                        </h3>
-
-                        <p class="core-subtitle">
-
-                            Executive Advisory Preview
-
-                        </p>
-
-                    </footer>
-
-                </div>
-
-            </div>
-
-        </div>
-
+<body class="home-page" data-active-nav="platform">
+
+<header id="home" class="hero hero-v2">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+
+  <div class="container hero-layout">
+    <div class="hero-content hero-home">
+      <div class="hero-badge">Decision-first HR compliance and advisory platform</div>
+      <h1>
+        Tell us about your company.
+        <br>
+        <span>We'll tell you what matters next.</span>
+      </h1>
+      <div class="hero-actions">
+        <a href="intelligence-hub.html" class="primary-btn">Analyze My Company</a>
+        <a href="sample-advisory-report.html" class="secondary-btn">View Sample Advisory</a>
+      </div>
     </div>
 
+    <div class="hero-workspace">
+      <div class="workspace-window" aria-label="Interactive GrowWithHR advisory preview">
+        <div class="workspace-header">
+          <div class="workspace-dot red"></div>
+          <div class="workspace-dot yellow"></div>
+          <div class="workspace-dot green"></div>
+          <div class="workspace-title">Executive Intelligence</div>
+          <span class="home-preview-label">Interactive preview</span>
+        </div>
+
+        <div class="hero-dashboard-layout">
+          <section class="hero-sidebar" aria-label="Executive intelligence controls" data-testid="home-executive-stack">
+            <div class="workspace-card company-dna-card" data-testid="home-stack-card-company">
+              <div class="card-header"><h3>Company DNA</h3></div>
+              <div class="dna-pillars" role="group" aria-label="Company DNA">
+                <button class="selector-item dna-item active" data-pillar="company" aria-pressed="true">
+                  <i class="fa-solid fa-building"></i><span>Company</span>
+                </button>
+                <button class="selector-item dna-item" data-pillar="people" aria-pressed="false">
+                  <i class="fa-solid fa-users"></i><span>People</span>
+                </button>
+                <button class="selector-item dna-item" data-pillar="operations" aria-pressed="false">
+                  <i class="fa-solid fa-gears"></i><span>Operations</span>
+                </button>
+                <button class="selector-item dna-item" data-pillar="growth" aria-pressed="false">
+                  <i class="fa-solid fa-chart-line"></i><span>Maturity</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="workspace-card growth-stage home-stack-card rolling-card" data-testid="home-stack-card-growth">
+              <div class="card-header"><h3>Growth Stage</h3></div>
+              <div class="growth-stage-list" role="group" aria-label="Growth stage">
+                <button class="selector-item stage-item active" data-stage="startup" aria-pressed="true">
+                  <i class="fa-solid fa-seedling"></i><span>Startup</span>
+                </button>
+                <button class="selector-item stage-item" data-stage="growth" aria-pressed="false">
+                  <i class="fa-solid fa-chart-line"></i><span>Growth</span>
+                </button>
+                <button class="selector-item stage-item" data-stage="scaling" aria-pressed="false">
+                  <i class="fa-solid fa-arrow-trend-up"></i><span>Scaling</span>
+                </button>
+                <button class="selector-item stage-item" data-stage="enterprise" aria-pressed="false">
+                  <i class="fa-solid fa-building"></i><span>Enterprise</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="workspace-card recommendation-card home-stack-card rolling-card" data-testid="home-stack-card-recommendation">
+              <div class="card-header"><h3>Recommendation Basis</h3></div>
+              <div class="recommendation-list" role="group" aria-label="Recommendation basis">
+                <button class="selector-item recommendation-item active" data-recommendation="company" aria-pressed="true">
+                  <i class="fa-solid fa-building"></i><span>Organization Profile</span>
+                </button>
+                <button class="selector-item recommendation-item" data-recommendation="stage" aria-pressed="false">
+                  <i class="fa-solid fa-chart-line"></i><span>Maturity Stage</span>
+                </button>
+                <button class="selector-item recommendation-item" data-recommendation="laws" aria-pressed="false">
+                  <i class="fa-solid fa-scale-balanced"></i><span>Applicable Laws</span>
+                </button>
+                <button class="selector-item recommendation-item" data-recommendation="updates" aria-pressed="false">
+                  <i class="fa-solid fa-bell"></i><span>Regulatory Updates</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="hero-graph">
+            <div class="dna-core-wrapper"><div id="dnaCoreCanvas"></div></div>
+          </section>
+
+          <footer class="hero-footer">
+            <h3 class="core-title">GrowWithHR Intelligence Core</h3>
+            <p class="core-subtitle">Executive Advisory Preview · GrowWithHR Public 0.20.4-prototype.1</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <section id="platform" class="how-section compact-section">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div class="section-tag">
-
-                HOW IT WORKS
-
-            </div>
-
-            <h2>
-
-                A focused path from company context to executive action.
-
-            </h2>
-
-        </div>
-
-        <div class="how-grid" data-testid="home-process-stack">
-
-            <article class="how-card">
-
-                <div class="how-number">
-
-                    01
-
-                </div>
-
-                <h3>
-
-                    Understand
-
-                </h3>
-
-                <p>
-
-                    Capture your Company DNA through a guided assessment.
-
-                </p>
-
-            </article>
-
-            <article class="how-card home-stack-card rolling-card">
-
-                <div class="how-number">
-
-                    02
-
-                </div>
-
-                <h3>
-
-                    Analyze
-
-                </h3>
-
-                <p>
-
-                    Deterministic rules evaluate compliance and governance before governed sources and AI explanation are used.
-
-                </p>
-
-            </article>
-
-            <article class="how-card home-stack-card rolling-card">
-
-                <div class="how-number">
-
-                    03
-
-                </div>
-
-                <h3>
-
-                    Advise
-
-                </h3>
-
-                <p>
-
-                    Receive an executive advisory dashboard with actionable recommendations.
-
-                </p>
-
-            </article>
-
-        </div>
-
+  <div class="container">
+    <div class="section-heading">
+      <div class="section-tag">HOW IT WORKS</div>
+      <h2>A focused path from company context to executive action.</h2>
     </div>
 
+    <div class="how-grid" data-testid="home-process-stack">
+      <article class="how-card">
+        <div class="how-number">01</div>
+        <h3>Understand</h3>
+        <p>Capture your Company DNA through a guided assessment.</p>
+      </article>
+      <article class="how-card home-stack-card rolling-card">
+        <div class="how-number">02</div>
+        <h3>Analyze</h3>
+        <p>GrowWithHR evaluates your company context against structured compliance and governance rules, while keeping uncertainty visible.</p>
+      </article>
+      <article class="how-card home-stack-card rolling-card">
+        <div class="how-number">03</div>
+        <h3>Advise</h3>
+        <p>Receive an executive advisory dashboard with actionable recommendations.</p>
+      </article>
+    </div>
+  </div>
 </section>
 
 <section id="compliance-engine" class="compliance-engine-section compact-section" aria-labelledby="compliance-engine-title">
@@ -309,7 +145,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     <div class="section-heading compliance-engine-heading">
       <div class="section-tag">HOW GROWWITHHR WORKS</div>
       <h2 id="compliance-engine-title">How GrowWithHR reaches a compliance answer</h2>
-      <p class="compliance-engine-intro">GrowWithHR separates the legal decision from source retrieval and AI explanation, so every result can show what was known, which rule ran and why the next action was recommended.</p>
+      <p class="compliance-engine-intro">GrowWithHR separates the compliance decision from supporting research and explanation, so you can see what was known, why a result appeared and what to review next.</p>
     </div>
 
     <div class="compliance-engine-flow" data-testid="compliance-engine-flow">
@@ -320,280 +156,115 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
       </article>
       <article class="engine-step">
         <span class="engine-step-number">02</span>
-        <h3>Apply deterministic rules</h3>
-        <p>Versioned rules create an immutable status, reason code and decision trace before retrieval begins.</p>
+        <h3>Apply structured rules</h3>
+        <p>Versioned rules create a clear status and decision trace before supporting source retrieval begins.</p>
       </article>
       <article class="engine-step">
         <span class="engine-step-number">03</span>
         <h3>Retrieve governed sources</h3>
-        <p>RAG can retrieve only the controlled sources and chunks permitted by that completed decision.</p>
+        <p>Supporting research is restricted to controlled source material connected to the completed decision.</p>
       </article>
       <article class="engine-step">
         <span class="engine-step-number">04</span>
         <h3>Explain and move to action</h3>
-        <p>The model explains the fixed result with citations, limitations and practical next steps. It cannot change the decision.</p>
+        <p>The explanation adds citations, limitations and practical next steps without changing the underlying result.</p>
       </article>
     </div>
 
     <div class="compliance-engine-difference">
       <div>
         <div class="section-tag">WHAT MAKES IT DIFFERENT</div>
-        <h3>Decision provenance, not an AI opinion</h3>
-        <p>Many systems surface alerts or generate an answer. GrowWithHR is designed to preserve the facts, rule version, reason code, source identity and decision fingerprint behind the recommendation.</p>
+        <h3>Traceable recommendations, not a black-box answer</h3>
+        <p>GrowWithHR preserves the company facts, rule basis and source identity behind each recommendation so leaders can understand what drove the result.</p>
       </div>
       <ul class="difference-list">
-        <li><strong>Deterministic rules decide.</strong> AI is never the applicability authority.</li>
-        <li><strong>Sources are controlled.</strong> Retrieval is restricted by source IDs, reason codes and fingerprints.</li>
+        <li><strong>Rules decide applicability.</strong> AI is not used as the applicability authority.</li>
+        <li><strong>Sources are controlled.</strong> Supporting research comes from governed source material.</li>
         <li><strong>Uncertainty stays visible.</strong> Missing information and specialist review are valid outcomes.</li>
-        <li><strong>The engine fails safely.</strong> Core decisions remain available when RAG or the provider is disabled.</li>
+        <li><strong>Core results remain available.</strong> The decision does not depend on an AI explanation being available.</li>
       </ul>
     </div>
 
-    <p class="compliance-engine-note">Research-prototype explanations support review and action planning; they are not legal certification. The current runtime contains 55 substantive legal profiles and 2 deliberate governance fallbacks. Source provenance is governed research, including structured secondary research, and every active legal catalogue remains needs-legal-review.</p>
+    <p class="compliance-engine-note">Research-prototype explanations support review and action planning; they are not legal certification.</p>
   </div>
 </section>
 
 <section id="capabilities" class="capabilities-section compact-section">
-
-    <div class="container">
-
-        <div class="section-heading">
-
-            <div class="section-tag">
-
-                PLATFORM CAPABILITIES
-
-            </div>
-
-            <h2>
-
-                Current capabilities and roadmap
-
-            </h2>
-
-        </div>
-
-<div class="capability-carousel">
-
-    <button class="carousel-arrow prev" type="button" aria-label="Previous capability">
-
-        ←
-
-    </button>
-
-    <div class="carousel-track" data-testid="home-capabilities-stack">
-
-        <article class="capability-slide active">
-
-            <div class="capability-icon">
-
-                ⚖️
-
-            </div>
-
-            <h3>
-
-                Compliance advisory (Available)
-
-            </h3>
-
-            <p>
-
-                Receive a rules-based advisory with traceable facts, safe applicability language and governed source references for further review.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                🏢
-
-            </div>
-
-            <h3>
-
-                Organization Intelligence (Planned)
-
-            </h3>
-
-            <p>
-
-                Build scalable structures, reporting lines and operating models as your company grows.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                👥
-
-            </div>
-
-            <h3>
-
-                Talent Intelligence (Planned)
-
-            </h3>
-
-            <p>
-
-                Understand workforce composition, hiring priorities and future capability needs.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                🎯
-
-            </div>
-
-            <h3>
-
-                Leadership Intelligence (Planned)
-
-            </h3>
-
-            <p>
-
-                Evaluate leadership maturity, succession readiness and executive capability.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                📈
-
-            </div>
-
-            <h3>
-
-                Performance Intelligence (Planned)
-
-            </h3>
-
-            <p>
-
-                Align goals, performance systems and accountability with business growth.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                🎓
-
-            </div>
-
-            <h3>
-
-                Learning Intelligence (Planned)
-
-            </h3>
-
-            <p>
-
-                Build future capability through targeted learning and development recommendations.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                💰
-
-            </div>
-
-            <h3>
-
-                Rewards Intelligence (Planned)
-
-            </h3>
-
-            <p>
-
-                Design compensation and recognition strategies that support sustainable growth.
-
-            </p>
-
-        </article>
-
-        <article class="capability-slide home-stack-card rolling-card">
-
-            <div class="capability-icon">
-
-                🤖
-
-            </div>
-
-            <h3>
-
-                Company Coach (Planned)
-
-            </h3>
-
-            <p>
-
-                Ask founder questions and receive company-specific recommendations based on your Company DNA.
-
-            </p>
-
-        </article>
-
+  <div class="container">
+    <div class="section-heading">
+      <div class="section-tag">PLATFORM CAPABILITIES</div>
+      <h2>Current capabilities and roadmap</h2>
     </div>
 
-    <button class="carousel-arrow next" type="button" aria-label="Next capability">
-
-        →
-
-    </button>
-
-</div>
-
+    <div class="capability-carousel">
+      <button class="carousel-arrow prev" type="button" aria-label="Previous capability">←</button>
+      <div class="carousel-track" data-testid="home-capabilities-stack">
+        <article class="capability-slide active">
+          <div class="capability-icon">⚖️</div>
+          <h3>Compliance advisory (Available)</h3>
+          <p>Receive a rules-based advisory with traceable facts, safe applicability language and governed source references for further review.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">🏢</div>
+          <h3>Organization Intelligence (Available)</h3>
+          <p>Review structures, reporting lines and operating models as your company grows.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">👥</div>
+          <h3>Talent Intelligence (Planned)</h3>
+          <p>Understand workforce composition, hiring priorities and future capability needs.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">🎯</div>
+          <h3>Leadership Intelligence (Planned)</h3>
+          <p>Evaluate leadership maturity, succession readiness and executive capability.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">📈</div>
+          <h3>Performance Intelligence (Planned)</h3>
+          <p>Align goals, performance systems and accountability with business growth.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">🎓</div>
+          <h3>Learning Intelligence (Planned)</h3>
+          <p>Build future capability through targeted learning and development recommendations.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">💰</div>
+          <h3>Rewards Intelligence (Planned)</h3>
+          <p>Design compensation and recognition strategies that support sustainable growth.</p>
+        </article>
+        <article class="capability-slide home-stack-card rolling-card">
+          <div class="capability-icon">🤖</div>
+          <h3>Company Coach (Planned)</h3>
+          <p>Ask founder questions and receive company-specific recommendations based on your Company DNA.</p>
+        </article>
+      </div>
+      <button class="carousel-arrow next" type="button" aria-label="Next capability">→</button>
+    </div>
+  </div>
 </section>
 
 <section class="analyze-redirect-section compact-section">
   <div class="container">
     <div class="summary-card glass">
       <h2>Ready to build your Company DNA?</h2>
-      <a href="analyze-company.html" class="primary-btn">Analyze My Company</a>
+      <a href="intelligence-hub.html" class="primary-btn">Analyze My Company</a>
     </div>
   </div>
 </section>
 
-<footer class="footer"><div class="container"><div class="footer-content"><div class="footer-brand"><img src="assets/hrtechify-logo.png" alt="HRTechify Logo" class="footer-logo"><div><div class="brand-name">HRTechify</div><div class="product-name" id="productVersion">GrowWithHR Public 0.20.4-prototype.1</div></div></div><p>© 2026 HRTechify. All Rights Reserved.</p><p>Smart People Strategy. More business momentum.</p></div></div></footer>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <p>GrowWithHR by HRTechify</p>
+      <p><a href="more-info.html#about">About</a> · <a href="more-info.html#privacy">Privacy</a> · <a href="more-info.html#contact">Contact</a></p>
+      <p>© 2026 HRTechify. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
 
-
-<script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
-
-<script type="importmap">
-{
-  "imports": {
-    "three":"https://unpkg.com/three@0.165.0/build/three.module.js"
-  }
-}
-</script>
-<script type="module" src="app.js"></script>  
+<script type="module" src="app.js"></script>
 <script src="js/build-marker.js"></script>
-
 </body>
 </html>
