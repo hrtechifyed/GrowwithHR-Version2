@@ -47,10 +47,11 @@ jobs:
       - name: Run baseline contracts
         run: npm run test:baseline
 
-      - name: Run Organization Intelligence structured checks
+      - name: Run Organization Structure checks
         run: >
           node tests/organization-intelligence-v1-checks.mjs &&
-          node tests/organization-workspace-headcount-bridge-checks.mjs
+          node tests/organization-workspace-headcount-bridge-checks.mjs &&
+          node tests/organization-rollout-completion-checks.mjs
 
       - name: Run site shell and UI polish checks
         run: >
