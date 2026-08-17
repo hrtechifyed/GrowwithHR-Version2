@@ -16,17 +16,11 @@
 ========================================== */
 
 body{
-
     font-family:"Inter","Segoe UI",sans-serif;
-
     color:var(--text-primary);
-
-    font-size:16px;
-
+    font-size:var(--type-body);
     font-weight:400;
-
-    line-height:1.7;
-
+    line-height:var(--line-body);
 }
 
 /* ==========================================
@@ -39,63 +33,31 @@ h3,
 h4,
 h5,
 h6{
-
     color:var(--text-primary);
-
     font-weight:700;
-
-    line-height:1.15;
-
-    letter-spacing:-.03em;
-
+    line-height:var(--line-heading);
+    letter-spacing:-.025em;
 }
-
-/* ==========================================
-   H1
-========================================== */
 
 h1{
-
-    font-size:clamp(3rem,6vw,5rem);
-
+    font-size:var(--type-page-title);
     font-weight:800;
-
+    line-height:var(--line-display);
 }
-
-/* ==========================================
-   H2
-========================================== */
 
 h2{
-
-    font-size:clamp(2.2rem,4vw,3.5rem);
-
+    font-size:var(--type-section);
     font-weight:700;
-
 }
-
-/* ==========================================
-   H3
-========================================== */
 
 h3{
-
-    font-size:1.55rem;
-
-    font-weight:600;
-
+    font-size:var(--type-card);
+    font-weight:650;
 }
 
-/* ==========================================
-   H4
-========================================== */
-
 h4{
-
-    font-size:1.2rem;
-
-    font-weight:600;
-
+    font-size:1rem;
+    font-weight:650;
 }
 
 /* ==========================================
@@ -103,13 +65,9 @@ h4{
 ========================================== */
 
 p{
-
     color:var(--text-secondary);
-
-    font-size:1.05rem;
-
-    line-height:1.8;
-
+    font-size:var(--type-body);
+    line-height:var(--line-body);
 }
 
 /* ==========================================
@@ -117,11 +75,9 @@ p{
 ========================================== */
 
 small{
-
     color:var(--text-muted);
-
-    font-size:.90rem;
-
+    font-size:var(--type-meta);
+    line-height:var(--line-compact);
 }
 
 /* ==========================================
@@ -129,33 +85,19 @@ small{
 ========================================== */
 
 .section-tag{
-
     display:inline-flex;
-
     align-items:center;
-
     gap:10px;
-
-    padding:10px 18px;
-
-    margin-bottom:20px;
-
+    padding:8px 14px;
+    margin-bottom:18px;
     border-radius:999px;
-
     background:rgba(255,176,0,.10);
-
     border:1px solid rgba(255,176,0,.25);
-
     color:var(--brand-gold);
-
-    font-size:.82rem;
-
+    font-size:var(--type-label);
     font-weight:700;
-
     text-transform:uppercase;
-
-    letter-spacing:.14em;
-
+    letter-spacing:.12em;
 }
 
 /* ==========================================
@@ -163,41 +105,28 @@ small{
 ========================================== */
 
 .section-heading{
-
     max-width:760px;
-
-    margin:0 auto 60px;
-
+    margin:0 auto 52px;
     text-align:center;
-
 }
 
 .section-heading.left-heading{
-
     margin-left:0;
-
     text-align:left;
-
 }
 
 .section-heading h2{
-
-    margin-bottom:18px;
-
+    margin-bottom:14px;
 }
 
 .section-heading p{
-
     max-width:680px;
-
     margin:0 auto;
-
+    font-size:var(--type-body-lg);
 }
 
 .section-heading.left-heading p{
-
     margin:0;
-
 }
 
 /* ==========================================
@@ -205,35 +134,19 @@ small{
 ========================================== */
 
 .brand-name{
-
-    font-size:1.35rem;
-
+    font-size:1.25rem;
     font-weight:800;
-
     background:var(--gradient-brand);
-
     -webkit-background-clip:text;
-
     -webkit-text-fill-color:transparent;
-
     background-clip:text;
-
 }
 
-/* ==========================================
-   PRODUCT NAME
-========================================== */
-
 .product-name{
-
     color:var(--text-secondary);
-
-    font-size:.82rem;
-
+    font-size:var(--type-label);
     letter-spacing:.08em;
-
     text-transform:uppercase;
-
 }
 
 /* ==========================================
@@ -241,71 +154,30 @@ small{
 ========================================== */
 
 .gradient-text{
-
     background:var(--gradient-brand);
-
     -webkit-background-clip:text;
-
     -webkit-text-fill-color:transparent;
-
     background-clip:text;
-
 }
 
 /* ==========================================
    TEXT UTILITIES
 ========================================== */
 
-.text-center{
-
-    text-align:center;
-
-}
-
-.text-left{
-
-    text-align:left;
-
-}
-
-.text-right{
-
-    text-align:right;
-
-}
-
-.text-muted{
-
-    color:var(--text-muted);
-
-}
-
-.text-primary{
-
-    color:var(--text-primary);
-
-}
-
-.text-brand{
-
-    color:var(--brand-orange);
-
-}
+.text-center{text-align:center;}
+.text-left{text-align:left;}
+.text-right{text-align:right;}
+.text-muted{color:var(--text-muted);}
+.text-primary{color:var(--text-primary);}
+.text-brand{color:var(--brand-orange);}
 
 /* ==========================================
    EMPHASIS
 ========================================== */
 
 strong{
-
     font-weight:700;
-
     color:var(--text-primary);
-
 }
 
-em{
-
-    font-style:italic;
-
-}
+em{font-style:italic;}
