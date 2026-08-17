@@ -1,81 +1,49 @@
 /* ==========================================================
-   GrowWithHR shared header brand lockup
-   Keeps the HRTechify mark fully inside the navigation capsule
-   and aligned with the GrowWithHR product name.
+   GrowWithHR shared navbar parity
+   ----------------------------------------------------------
+   The Sample Advisory header is the canonical visual baseline.
+   These rules preserve that exact shared-shell treatment on every
+   page, including routes that do not load the full styles.css bundle.
 
-   This file intentionally loads before 18-site-shell.css; selectors
-   are scoped through the shared header so these alignment corrections
-   remain authoritative without changing the shell's import contract.
+   The file is imported statically where available and is also loaded
+   by site-shell.js after page-specific styles so page CSS cannot move,
+   resize or restyle the shared brand lockup differently.
 ========================================================== */
 
-.site-header-shell .site-nav-glass {
-    min-height: 76px;
-    padding: 8px 16px 8px 12px;
+body.has-site-shell .site-header-shell__inner,
+.site-header-shell__inner {
+    position: relative;
 }
 
+body.has-site-shell .site-nav-glass,
+.site-header-shell .site-nav-glass {
+    width: 100%;
+}
+
+body.has-site-shell .site-nav-glass > .site-brand-logo,
 .site-nav-glass > .site-brand-logo {
-    position: relative;
     top: auto;
     left: auto;
-    width: 56px;
-    height: 56px;
-    flex: 0 0 56px;
     margin: 0 6px 0 0;
     align-self: center;
-    border-radius: 50%;
-    transform: none;
 }
 
-.site-nav-glass > .site-brand-logo:hover {
-    transform: scale(1.035);
+body.has-site-shell .site-brand-logo::before,
+.site-brand-logo::before {
+    display: none;
 }
 
-.site-nav-glass > .site-product-name {
-    padding-left: 6px;
-}
-
-@media (max-width: 1180px) {
-    .site-header-shell .site-nav-glass {
-        min-height: 72px;
-        padding-left: 10px;
-    }
-
-    .site-nav-glass > .site-brand-logo {
-        width: 52px;
-        height: 52px;
-        flex-basis: 52px;
-    }
+body.has-site-shell .site-brand-logo img,
+.site-brand-logo img {
+    content: url("../assets/hrtechify-logo.png") !important;
+    object-fit: contain;
+    mix-blend-mode: screen;
+    background: transparent;
 }
 
 @media (max-width: 900px) {
-    .site-header-shell .site-nav-glass {
-        min-height: 62px;
-        padding: 6px 7px 6px 8px;
-    }
-
+    body.has-site-shell .site-nav-glass > .site-brand-logo,
     .site-nav-glass > .site-brand-logo {
-        width: 46px;
-        height: 46px;
-        flex-basis: 46px;
         margin-right: 4px;
-    }
-
-    .site-nav-glass > .site-product-name {
-        padding-left: 4px;
-        padding-right: 10px;
-    }
-}
-
-@media (max-width: 520px) {
-    .site-header-shell .site-nav-glass {
-        min-height: 58px;
-        padding-left: 7px;
-    }
-
-    .site-nav-glass > .site-brand-logo {
-        width: 42px;
-        height: 42px;
-        flex-basis: 42px;
-        align-self: center;
     }
 }
