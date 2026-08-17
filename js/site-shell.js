@@ -8,9 +8,9 @@
 
     const NAV_ITEMS = Object.freeze([
         { key: "platform", label: "Home", href: "index.html#home" },
-        { key: "analyze", label: "Analyze My Company", href: "intelligence-hub.html" },
-        { key: "resources", label: "Official Sources", href: "official-resources.html" },
-        { key: "sample", label: "Sample Advisory", href: "sample-advisory-report.html" }
+        { key: "analyze", label: "Company Insights", href: "intelligence-hub.html" },
+        { key: "resources", label: "Evidence & Sources", href: "official-resources.html" },
+        { key: "sample", label: "Sample Reports", href: "sample-reports.html" }
     ]);
 
     const MORE_ITEMS = Object.freeze([
@@ -73,7 +73,10 @@
             "analyze-company.html": "analyze",
             "intelligence-hub.html": "analyze",
             "organization-intelligence.html": "analyze",
+            "organization-structure-report.html": "analyze",
             "official-resources.html": "resources",
+            "organization-structure-methodology.html": "resources",
+            "sample-reports.html": "sample",
             "sample-advisory-report.html": "sample",
             "executive-advisory-report.html": "sample",
             "more-info.html": "more",
@@ -264,7 +267,7 @@
         });
 
         window.addEventListener("resize", () => {
-            if (window.matchMedia("(min-width: 901px)").matches) closeMobileNav(false);
+            if (window.matchMedia("min-width: 901px").matches) closeMobileNav(false);
         });
     }
 
