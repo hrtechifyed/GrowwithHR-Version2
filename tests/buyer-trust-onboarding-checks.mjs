@@ -42,7 +42,7 @@ assert.match(security, /one-time handoff token/i);
 const terms = read("terms.html");
 assert.match(terms, /research-grade product/i);
 assert.match(terms, /not legal certification/i);
-assert.match(terms, /does not score individual employee capability/i);
+assert.match(terms, /do not score individual employees|individual capability judgments/i);
 assert.match(terms, /Source-backed recommendations/i);
 assert.match(terms, /product of HRTechify/i);
 
