@@ -17,7 +17,7 @@
 
   <div id="reuseNotice" class="org-banner">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR analyses during the workspace period.</div>
   <div class="org-boundary"><strong>What this does:</strong> Organization Structure evaluates structural facts and operating patterns. It does not score people, assess individual capability, recommend dismissals, determine compensation, or decide legal applicability. “I don’t know” is a valid answer.</div>
-  <div class="org-evidence-note"><strong>Source transparency:</strong> every finding in your report shows the public source supporting the organization-design principle and the separate GrowWithHR rule that interpreted your facts. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">See methodology & sources ↗</a></div>
+  <div class="org-evidence-note"><strong>Source transparency:</strong> every finding shows the public source supporting the organization-design principle and the separate GrowWithHR rule that interpreted your facts. Numeric triggers are labelled when they are GrowWithHR prototype rules rather than published benchmarks. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">See methodology & sources ↗</a></div>
 
   <form id="organizationForm" class="org-form-card">
     <h2>Tell us how your company is organized today</h2>
@@ -45,6 +45,25 @@
       <div class="org-field"><label for="locations">Operating locations</label><input id="locations" type="number" min="1" value="1" required></div>
       <div class="org-field wide"><label for="departments">Functions or departments</label><input id="departments" placeholder="Sales, Product, Engineering, Finance, People"><small>Use the functions you actually operate; formal department names are not required.</small></div>
 
+      <h3 class="org-section-title">Management-span context</h3>
+      <div class="org-field wide"><div class="org-context-note"><strong>Why these questions matter:</strong> GrowWithHR does not use one universal span-of-control benchmark. The free OpenStax framework identifies task complexity, worker location, delegation, manager interaction and workforce experience as relevant span factors. Your answers adjust GrowWithHR’s disclosed prototype review range. <a class="org-link" href="organization-structure-methodology.html#spanContext" target="_blank" rel="noopener">See the source ↗</a></div></div>
+      <div class="org-field">
+        <label for="taskComplexity">How complex or variable is the team’s work?</label>
+        <select id="taskComplexity"><option value="dont-know">I don’t know</option><option value="standardized">Mostly standardized / repeatable</option><option value="mixed">Mixed</option><option value="complex">Complex / highly variable</option></select>
+      </div>
+      <div class="org-field">
+        <label for="delegationAbility">How much can managers delegate routine responsibility?</label>
+        <select id="delegationAbility"><option value="dont-know">I don’t know</option><option value="high">A lot — ownership is delegated</option><option value="mixed">Mixed</option><option value="low">Limited — managers retain many decisions</option></select>
+      </div>
+      <div class="org-field">
+        <label for="managerInteraction">How much manager interaction or feedback is usually required?</label>
+        <select id="managerInteraction"><option value="dont-know">I don’t know</option><option value="low">Low routine interaction</option><option value="mixed">Mixed</option><option value="high">High / frequent interaction</option></select>
+      </div>
+      <div class="org-field">
+        <label for="teamExperience">How experienced and self-directed are most team members?</label>
+        <select id="teamExperience"><option value="dont-know">I don’t know</option><option value="experienced">Experienced / highly self-directed</option><option value="mixed">Mixed</option><option value="developing">Developing / needs more guidance</option></select>
+      </div>
+
       <h3 class="org-section-title">Ownership and operating model</h3>
       <div class="org-field">
         <label for="roleClarity">How clear are role responsibilities?</label>
@@ -62,8 +81,12 @@
         <label for="coordinationFriction">Cross-functional coordination friction</label>
         <select id="coordinationFriction"><option value="dont-know">I don’t know</option><option value="low">Low — handoffs usually work</option><option value="some">Some recurring friction</option><option value="high">High — handoffs or decisions regularly stall</option></select>
       </div>
-      <div class="org-field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval?</label><textarea id="founderDecisions" placeholder="For example: hiring approvals, pricing, customer exceptions, compensation, major spend — or leave blank if unknown"></textarea></div>
-      <div class="org-field wide"><label for="expansion">Planned expansion in the next 12 months</label><textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea></div>
+      <div class="org-field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval?</label><textarea id="founderDecisions" placeholder="Separate recurring decision categories with commas or new lines — for example: senior hiring, pricing exceptions, major spend, customer commitments"></textarea><small>GrowWithHR counts the decision categories you list as a deterministic founder-dependency signal; it does not use AI to infer hidden decisions.</small></div>
+      <div class="org-field">
+        <label for="expansionType">Primary expansion expected in the next 12 months</label>
+        <select id="expansionType"><option value="dont-know">I don’t know</option><option value="none">No material expansion planned</option><option value="hiring">Primarily hiring / headcount growth</option><option value="new-location">New operating location</option><option value="new-business-line">New product / business line</option><option value="acquisition">Acquisition / integration</option><option value="mixed">Multiple expansion types</option></select>
+      </div>
+      <div class="org-field"><label for="expansion">Expansion notes</label><textarea id="expansion" placeholder="Optional context about the planned change"></textarea></div>
     </div>
     <div class="org-actions">
       <button class="org-primary" type="submit">Generate Organization Structure Report →</button>
@@ -77,68 +100,90 @@
 <script type="module">
 import { analyzeOrganizationStructure } from "./js/modules/organization/organization-structure-engine.mjs";
 
-(() => {
-  const SESSION_KEY = "growwithhr.workspace";
-  const REPORT_KEY = "growwithhr.organization.report";
-  const form = document.getElementById("organizationForm");
-  let recovered = readWorkspace();
+const SESSION_KEY = "growwithhr.workspace";
+const REPORT_KEY = "growwithhr.organization.report";
+const form = document.getElementById("organizationForm");
 
-  function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");}catch(_){return null;} }
-  function setValue(id,value){const el=document.getElementById(id);if(!el||value===undefined||value===null||value==="")return;el.value=String(value);}
-  function text(id){return document.getElementById(id).value.trim();}
-  function numberOrNull(id){const raw=text(id);if(raw==="")return null;const value=Number(raw);return Number.isFinite(value)?value:null;}
-  function apiBase(){return location.origin==="https://hrtechifyed.github.io"?"https://growwithhr.onrender.com":"";}
+function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");}catch(_){return null;} }
+function setValue(id,value){const el=document.getElementById(id);if(!el||value===undefined||value===null||value==="")return;el.value=String(value);}
+function textValue(id){return document.getElementById(id).value.trim();}
+function numberOrNull(id){const raw=textValue(id);if(raw==="")return null;const value=Number(raw);return Number.isFinite(value)?value:null;}
+function apiBase(){return location.origin==="https://hrtechifyed.github.io"?"https://growwithhr.onrender.com":"";}
 
+let recovered = readWorkspace();
+const params = new URLSearchParams(location.search);
+const handoffToken = params.get("handoff");
+if (handoffToken && handoffToken !== "loading") {
+  try {
+    const result = await window.GrowWithHRCompanyWorkspace.consumeHandoff(handoffToken);
+    const workspace = result.workspace;
+    recovered = {
+      reportId: workspace.reportId,
+      reportIds: workspace.reportIds,
+      accessKey: result.accessKey,
+      email: workspace.email,
+      companyName: workspace.companyName,
+      completedEngines: workspace.completedEngines,
+      expiresAt: workspace.expiresAt,
+      companyData: workspace.companyData
+    };
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(recovered));
+    history.replaceState(null, "", "organization-intelligence.html");
+    document.getElementById("reuseNotice").textContent = `Company DNA securely handed off for ${workspace.companyName || "your company"}. Review the recovered facts and update anything that has changed.`;
+  } catch (error) {
+    document.getElementById("reuseNotice").textContent = `We could not complete the secure Company DNA handoff. ${error.message || "You can continue by entering the facts again."}`;
+  }
+}
+
+if(recovered){
+  if(!handoffToken) document.getElementById("reuseNotice").textContent=`Welcome back${recovered.companyName?` to ${recovered.companyName}`:""}. We recovered your temporary Company Workspace. Existing company facts have been reused where available; update anything that has changed.`;
+  const data=recovered.companyData||{};const shared=data.shared||data;const workforce=data.workforce||{};const organization=data.organization||{};const geography=data.geography||{};
+  setValue("companyName",recovered.companyName||shared.companyName);setValue("email",recovered.email||shared.email);setValue("industry",shared.industry);setValue("employees",workforce.totalEmployees??shared.employees);setValue("growthStage",shared.growthStage);setValue("expectedEmployees",workforce.expectedEmployees12Months??shared.expectedEmployees);setValue("managerCount",organization.peopleManagerCount??organization.managerCount);setValue("reportingLevels",organization.reportingLevels);setValue("founderDirectReports",organization.founderDirectReports);setValue("locations",geography.operatingLocationCount??organization.locations);if(Array.isArray(organization.departments))setValue("departments",organization.departments.join(", "));setValue("taskComplexity",organization.taskComplexity);setValue("delegationAbility",organization.delegationAbility);setValue("managerInteraction",organization.managerInteraction);setValue("teamExperience",organization.teamExperience);setValue("roleClarity",organization.roleClarity);setValue("decisionRights",organization.decisionRights);setValue("governanceCadence",organization.governanceCadence);setValue("coordinationFriction",organization.coordinationFriction);setValue("founderDecisions",organization.founderDecisions);setValue("expansionType",organization.expansionType);setValue("expansion",organization.expansion);
+}
+
+function buildFacts(){
+  const employees=numberOrNull("employees");const expectedEmployees=numberOrNull("expectedEmployees");const locations=numberOrNull("locations");
+  return {shared:{companyName:textValue("companyName"),email:textValue("email"),industry:textValue("industry"),employees,growthStage:textValue("growthStage"),expectedEmployees},workforce:{totalEmployees:employees,expectedEmployees12Months:expectedEmployees},geography:{operatingLocationCount:locations},organization:{peopleManagerCount:numberOrNull("managerCount"),reportingLevels:numberOrNull("reportingLevels"),founderDirectReports:numberOrNull("founderDirectReports"),locations,departments:textValue("departments").split(",").map(v=>v.trim()).filter(Boolean),taskComplexity:textValue("taskComplexity"),delegationAbility:textValue("delegationAbility"),managerInteraction:textValue("managerInteraction"),teamExperience:textValue("teamExperience"),founderDecisions:textValue("founderDecisions"),expansionType:textValue("expansionType"),expansion:textValue("expansion"),roleClarity:textValue("roleClarity"),decisionRights:textValue("decisionRights"),governanceCadence:textValue("governanceCadence"),coordinationFriction:textValue("coordinationFriction"),confirmedAt:new Date().toISOString()}};
+}
+
+async function allocateReportId(data,previousReportId=""){
+  const response=await fetch(`${apiBase()}/api/report-id`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({requestKey:`organization:${crypto.randomUUID()}`,email:data.shared.email,companyName:data.shared.companyName,assessmentId:`organization-${Date.now()}`,previousReportId})});
+  const body=await response.json();if(!response.ok||!body.ok)throw new Error(body.error||"Could not issue a Report ID.");return body.reportId;
+}
+
+async function persistWorkspace(data,analysis){
+  const workspaceData={...data,factRegistry:analysis.factRegistry};
+  const prior=recovered?.reportId||"";
+  const reportId=await allocateReportId(data,prior);
+  let workspace;
   if(recovered){
-    document.getElementById("reuseNotice").textContent=`Welcome back${recovered.companyName?` to ${recovered.companyName}`:""}. We recovered your temporary Company Workspace. Existing company facts have been reused where available; update anything that has changed.`;
-    const data=recovered.companyData||{};const shared=data.shared||data;const workforce=data.workforce||{};const organization=data.organization||{};const geography=data.geography||{};
-    setValue("companyName",recovered.companyName||shared.companyName);setValue("email",recovered.email||shared.email);setValue("industry",shared.industry);setValue("employees",workforce.totalEmployees??shared.employees);setValue("growthStage",shared.growthStage);setValue("expectedEmployees",workforce.expectedEmployees12Months??shared.expectedEmployees);setValue("managerCount",organization.peopleManagerCount??organization.managerCount);setValue("reportingLevels",organization.reportingLevels);setValue("founderDirectReports",organization.founderDirectReports);setValue("locations",geography.operatingLocationCount??organization.locations);if(Array.isArray(organization.departments))setValue("departments",organization.departments.join(", "));setValue("roleClarity",organization.roleClarity);setValue("decisionRights",organization.decisionRights);setValue("governanceCadence",organization.governanceCadence);setValue("coordinationFriction",organization.coordinationFriction);setValue("founderDecisions",organization.founderDecisions);setValue("expansion",organization.expansion);
+    workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
+    recovered={...recovered,reportId,reportIds:workspace.reportIds||recovered.reportIds,companyData:workspace.companyData || workspaceData,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines};
+  }else{
+    workspace=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
+    recovered={reportId,reportIds:workspace.reportIds,accessKey:workspace.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngines:workspace.completedEngines,expiresAt:workspace.expiresAt};
   }
+  sessionStorage.setItem(SESSION_KEY,JSON.stringify(recovered));
+  return {reportId,workspace};
+}
 
-  function buildFacts(){
-    const employees=numberOrNull("employees");const expectedEmployees=numberOrNull("expectedEmployees");const locations=numberOrNull("locations");
-    return {shared:{companyName:text("companyName"),email:text("email"),industry:text("industry"),employees,growthStage:text("growthStage"),expectedEmployees},workforce:{totalEmployees:employees,expectedEmployees12Months:expectedEmployees},geography:{operatingLocationCount:locations},organization:{peopleManagerCount:numberOrNull("managerCount"),reportingLevels:numberOrNull("reportingLevels"),founderDirectReports:numberOrNull("founderDirectReports"),locations,departments:text("departments").split(",").map(v=>v.trim()).filter(Boolean),founderDecisions:text("founderDecisions"),expansion:text("expansion"),roleClarity:text("roleClarity"),decisionRights:text("decisionRights"),governanceCadence:text("governanceCadence"),coordinationFriction:text("coordinationFriction"),confirmedAt:new Date().toISOString()}};
+form.addEventListener("submit",async(event)=>{
+  event.preventDefault();
+  const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent="Generating…";
+  const data=buildFacts();
+  const analysis=analyzeOrganizationStructure(data);
+  const reportPayload={data,analysis,reportId:"",workspace:null,persistenceWarning:"",generatedAt:new Date().toISOString()};
+  sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
+  try{
+    const persisted=await persistWorkspace(data,analysis);
+    reportPayload.reportId=persisted.reportId;reportPayload.workspace=persisted.workspace;
+  }catch(error){
+    console.warn("Organization Structure analysis generated but workspace persistence failed.",error);
+    reportPayload.persistenceWarning="GrowWithHR could not save this analysis to your reusable workspace just now.";
   }
-
-  async function allocateReportId(data,previousReportId=""){
-    const response=await fetch(`${apiBase()}/api/report-id`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({requestKey:`organization:${crypto.randomUUID()}`,email:data.shared.email,companyName:data.shared.companyName,assessmentId:`organization-${Date.now()}`,previousReportId})});
-    const body=await response.json();if(!response.ok||!body.ok)throw new Error(body.error||"Could not issue a Report ID.");return body.reportId;
-  }
-
-  async function persistWorkspace(data,analysis){
-    const workspaceData={...data,factRegistry:analysis.factRegistry};
-    const prior=recovered?.reportId||"";
-    const reportId=await allocateReportId(data,prior);
-    let workspace;
-    if(recovered){
-      workspace=(await window.GrowWithHRCompanyWorkspace.complete({reportId:prior,newReportId:reportId,accessKey:recovered.accessKey,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
-      recovered={...recovered,reportId,reportIds:workspace.reportIds||recovered.reportIds,companyData:workspace.companyData || workspaceData,expiresAt:workspace.expiresAt,completedEngines:workspace.completedEngines};
-    }else{
-      workspace=(await window.GrowWithHRCompanyWorkspace.create({reportId,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngine:"organization"})).workspace;
-      recovered={reportId,reportIds:workspace.reportIds,accessKey:workspace.accessKey,email:data.shared.email,companyName:data.shared.companyName,companyData:workspaceData,completedEngines:workspace.completedEngines,expiresAt:workspace.expiresAt};
-    }
-    sessionStorage.setItem(SESSION_KEY,JSON.stringify(recovered));
-    return {reportId,workspace};
-  }
-
-  form.addEventListener("submit",async(event)=>{
-    event.preventDefault();
-    const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent="Generating…";
-    const data=buildFacts();
-    const analysis=analyzeOrganizationStructure(data);
-    const reportPayload={data,analysis,reportId:"",workspace:null,persistenceWarning:""};
-    sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
-    try{
-      const persisted=await persistWorkspace(data,analysis);
-      reportPayload.reportId=persisted.reportId;reportPayload.workspace=persisted.workspace;
-    }catch(error){
-      console.warn("Organization Structure analysis generated but workspace persistence failed.",error);
-      reportPayload.persistenceWarning="GrowWithHR could not save this analysis to your reusable workspace just now.";
-    }
-    sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
-    location.href="organization-structure-report.html#overview";
-  });
-})();
+  sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
+  location.href="organization-structure-report.html#overview";
+});
 </script>
 <script src="js/build-marker.js"></script>
 </body>
