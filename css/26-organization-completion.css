@@ -1,0 +1,23 @@
+/* Organization Structure completion layer: contextual assessment, report delivery and methodology governance */
+.org-context-intro{grid-column:1/-1;margin:0;padding:14px 16px;border:1px solid rgba(79,139,255,.2);border-radius:12px;background:rgba(37,99,235,.07);color:var(--text-secondary);line-height:1.55;}
+.org-framework-field{align-content:start;padding:14px 16px;border:1px solid rgba(255,176,0,.2);border-radius:12px;background:rgba(255,176,0,.055);}
+.org-framework-field strong{color:#ffe09a;}
+.org-delivery-status{margin:0 0 18px;padding:12px 14px;border:1px solid rgba(34,197,94,.25);border-radius:12px;background:rgba(34,197,94,.08);color:#b8f4ca;line-height:1.5;}
+.org-delivery-status.is-error{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08);color:#ffb4b4;}
+.org-rule-id{margin:0 0 7px!important;color:#ffe09a!important;font-size:.86rem;}
+.org-source-disclosure{display:block;margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.08);color:var(--text-muted);line-height:1.45;}
+.org-methodology-section{margin-top:34px;}
+.org-methodology-section>h2{margin:12px 0 8px;}
+.org-rule-grid,.org-history-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px;}
+.org-rule-card{display:flex;flex-direction:column;gap:8px;}
+.org-kicker--small{font-size:.63rem;padding:6px 9px;align-self:flex-start;}
+.org-report-actions button[disabled]{opacity:.58;cursor:wait;transform:none;}
+
+@media(max-width:900px){.org-rule-grid,.org-history-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.org-context-intro{grid-column:auto}.org-report-actions{width:100%}.org-report-actions>*{flex:1 1 150px}}
+
+@media print{
+  .org-delivery-status{display:none!important}
+  .org-source-disclosure{color:#64748b!important;border-top-color:#d7dce5!important}
+  .org-rule-id{color:#92400e!important}
+}
