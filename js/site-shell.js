@@ -8,9 +8,9 @@
 
     const NAV_ITEMS = Object.freeze([
         { key: "platform", label: "Home", href: "index.html#home" },
-        { key: "analyze", label: "Analyze My Company", href: "intelligence-hub.html" },
-        { key: "resources", label: "Official Sources", href: "official-resources.html" },
-        { key: "sample", label: "Sample Advisory", href: "sample-advisory-report.html" }
+        { key: "analyze", label: "Company Insights", href: "intelligence-hub.html" },
+        { key: "resources", label: "Evidence & Sources", href: "official-resources.html" },
+        { key: "sample", label: "Sample Reports", href: "sample-reports.html" }
     ]);
 
     const MORE_ITEMS = Object.freeze([
@@ -38,15 +38,15 @@
     }
 
     function inferRootPrefix() {
-        const bodyPrefix = document.body && document.body.dataset ? document.body.dataset.siteRoot : "";
+        const bodyPrefix = document.body?.dataset?.siteRoot || "";
         if (bodyPrefix) return normalizePrefix(bodyPrefix);
 
         const script = document.currentScript || Array.from(document.scripts).find((item) => {
             const source = item.getAttribute("src") || "";
             return /(?:^|\/)js\/site-shell\.js(?:[?#].*)?$/.test(source);
         });
-
         if (!script) return "";
+
         const source = (script.getAttribute("src") || "").replace(/[?#].*$/, "");
         const marker = "js/site-shell.js";
         const markerIndex = source.lastIndexOf(marker);
@@ -65,7 +65,7 @@
     }
 
     function inferActiveNav() {
-        const explicit = document.body && document.body.dataset ? document.body.dataset.activeNav : "";
+        const explicit = document.body?.dataset?.activeNav || "";
         if (explicit) return explicit.trim().toLowerCase();
 
         const activeByFile = {
@@ -73,7 +73,10 @@
             "analyze-company.html": "analyze",
             "intelligence-hub.html": "analyze",
             "organization-intelligence.html": "analyze",
+            "organization-structure-report.html": "analyze",
             "official-resources.html": "resources",
+            "organization-structure-methodology.html": "resources",
+            "sample-reports.html": "sample",
             "sample-advisory-report.html": "sample",
             "executive-advisory-report.html": "sample",
             "more-info.html": "more",
@@ -82,7 +85,6 @@
             "people-roadmap.html": "platform",
             "compliance-roadmap.html": "platform"
         };
-
         return activeByFile[currentFileName()] || "";
     }
 
@@ -99,10 +101,6 @@
         const header = document.createElement("header");
         header.className = "site-header-shell";
         header.dataset.siteShellHeader = "";
-
-        const primaryLinks = NAV_ITEMS.map((item) => navLinkMarkup(item, prefix, activeKey)).join("");
-        const moreLinks = MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("");
-
         header.innerHTML = `
             <div class="site-header-shell__inner">
                 <a class="site-brand-logo" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="GrowWithHR home">
@@ -112,15 +110,14 @@
                     <a class="site-product-name" href="${escapeHtml(withRoot(prefix, "index.html#home"))}">GrowWithHR</a>
                     <button class="site-nav-toggle" type="button" aria-label="Open navigation" aria-controls="siteNavLinks" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
                     <div class="site-nav-links" id="siteNavLinks">
-                        ${primaryLinks}
+                        ${NAV_ITEMS.map((item) => navLinkMarkup(item, prefix, activeKey)).join("")}
                         <div class="site-nav-more${activeKey === "more" ? " is-active" : ""}">
                             <button class="site-nav-more__toggle" type="button" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}><span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span></button>
-                            <div class="site-nav-more__menu" id="siteMoreMenu" aria-label="More navigation">${moreLinks}</div>
+                            <div class="site-nav-more__menu" id="siteMoreMenu" aria-label="More navigation">${MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("")}</div>
                         </div>
                     </div>
                 </nav>
             </div>`;
-
         return header;
     }
 
@@ -131,43 +128,30 @@
         footer.innerHTML = `
             <div class="site-footer__inner">
                 <p class="site-footer__brand-line">${escapeHtml(FOOTER_BRAND)}</p>
-                <nav class="site-footer__nav" aria-label="Footer navigation">
-                    ${MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("")}
-                </nav>
+                <nav class="site-footer__nav" aria-label="Footer navigation">${MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("")}</nav>
                 <p class="site-footer__rights-line">${escapeHtml(FOOTER_RIGHTS)}</p>
             </div>`;
         return footer;
     }
 
     function placeHeader(header) {
-        const oldHeaders = Array.from(document.querySelector("body")?.querySelectorAll("[data-site-shell-header], nav.navbar, header.site-header-shell") || []);
-        let anchor = null;
-        oldHeaders.forEach((item) => {
-            if (!anchor && item.parentNode) anchor = item;
-        });
-
-        if (anchor && anchor.parentNode) {
-            anchor.parentNode.insertBefore(header, anchor);
-        } else {
+        const oldHeaders = Array.from(document.body?.querySelectorAll("[data-site-shell-header], nav.navbar, header.site-header-shell") || []);
+        const anchor = oldHeaders.find((item) => item.parentNode) || null;
+        if (anchor?.parentNode) anchor.parentNode.insertBefore(header, anchor);
+        else {
             const skipLink = document.querySelector(".skip-link, [data-skip-link], .advisory-skip-link");
-            if (skipLink && skipLink.parentNode === document.body) skipLink.insertAdjacentElement("afterend", header);
+            if (skipLink?.parentNode === document.body) skipLink.insertAdjacentElement("afterend", header);
             else document.body.insertBefore(header, document.body.firstChild);
         }
-
-        oldHeaders.forEach((item) => {
-            if (item !== header && item.parentNode) item.remove();
-        });
+        oldHeaders.forEach((item) => { if (item !== header && item.parentNode) item.remove(); });
     }
 
     function placeFooter(footer) {
         const oldFooters = Array.from(document.querySelectorAll("[data-site-shell-footer], footer.footer, footer.site-footer"));
-        const lastFooter = oldFooters.length ? oldFooters[oldFooters.length - 1] : null;
-        if (lastFooter && lastFooter.parentNode) lastFooter.parentNode.insertBefore(footer, lastFooter);
+        const lastFooter = oldFooters.at(-1);
+        if (lastFooter?.parentNode) lastFooter.parentNode.insertBefore(footer, lastFooter);
         else document.body.appendChild(footer);
-
-        oldFooters.forEach((item) => {
-            if (item !== footer && item.parentNode) item.remove();
-        });
+        oldFooters.forEach((item) => { if (item !== footer && item.parentNode) item.remove(); });
     }
 
     function lockBodyScroll(locked) {
@@ -197,12 +181,10 @@
         if (!nav || !toggle || !links || !more || !moreToggle) return;
 
         let previouslyFocused = null;
-
         const closeMore = () => {
             more.classList.remove("is-open");
             moreToggle.setAttribute("aria-expanded", "false");
         };
-
         const closeMobileNav = (restoreFocus = false) => {
             const wasOpen = nav.classList.contains("is-open");
             nav.classList.remove("is-open");
@@ -213,7 +195,6 @@
             closeMore();
             if (restoreFocus && wasOpen && previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
         };
-
         const openMobileNav = () => {
             previouslyFocused = document.activeElement;
             nav.classList.add("is-open");
@@ -221,48 +202,31 @@
             toggle.setAttribute("aria-label", "Close navigation");
             lockBodyScroll(true);
             setBackgroundInert(true, header);
-            const firstLink = links.querySelector("a, button");
-            window.requestAnimationFrame(() => firstLink?.focus());
+            window.requestAnimationFrame(() => links.querySelector("a, button")?.focus());
         };
 
-        toggle.addEventListener("click", () => {
-            if (nav.classList.contains("is-open")) closeMobileNav(true);
-            else openMobileNav();
-        });
-
+        toggle.addEventListener("click", () => nav.classList.contains("is-open") ? closeMobileNav(true) : openMobileNav());
         moreToggle.addEventListener("click", (event) => {
             event.stopPropagation();
             const willOpen = !more.classList.contains("is-open");
             more.classList.toggle("is-open", willOpen);
             moreToggle.setAttribute("aria-expanded", String(willOpen));
         });
-
         links.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMobileNav(false)));
-
-        document.addEventListener("click", (event) => {
-            if (!more.contains(event.target)) closeMore();
-        });
-
+        document.addEventListener("click", (event) => { if (!more.contains(event.target)) closeMore(); });
         document.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
                 closeMobileNav(true);
                 return;
             }
-
             if (event.key !== "Tab" || !nav.classList.contains("is-open") || !window.matchMedia("(max-width: 900px)").matches) return;
             const focusable = Array.from(header.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((element) => !element.closest("[hidden]") && element.offsetParent !== null);
             if (!focusable.length) return;
             const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-            if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault();
-                last.focus();
-            } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                first.focus();
-            }
+            const last = focusable.at(-1);
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
         });
-
         window.addEventListener("resize", () => {
             if (window.matchMedia("(min-width: 901px)").matches) closeMobileNav(false);
         });
@@ -270,8 +234,7 @@
 
     function updatePageOffsets() {
         const header = document.querySelector("[data-site-shell-header]");
-        if (!header) return;
-        document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+        if (header) document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
     }
 
     function ensurePolishStyles(prefix) {
@@ -307,7 +270,6 @@
 
         document.body.classList.add("has-site-shell");
         document.documentElement.classList.add("site-shell-ready");
-
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
 

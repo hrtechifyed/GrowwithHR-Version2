@@ -12,6 +12,24 @@ function hasKeyDeep(value, key) {
     return Object.values(value).some(item => hasKeyDeep(item, key));
 }
 
+function assertSourceTraceability(analysis) {
+    assert.equal(analysis.sourceTransparency.publicSourcesVisible, true);
+    assert.equal(analysis.sourceTransparency.ruleAndSourceSeparated, true);
+    assert.ok(analysis.methodology?.name?.includes("Organization Structure Assessment Framework"));
+    for (const item of analysis.findings) {
+        assert.equal(typeof item.ruleBasis, "string", `${item.id} must expose its GrowWithHR rule basis.`);
+        assert.ok(item.ruleBasis.length > 20, `${item.id} must explain the GrowWithHR rule.`);
+        assert.ok(Array.isArray(item.sources) && item.sources.length > 0, `${item.id} must expose at least one public source.`);
+        for (const source of item.sources) {
+            assert.match(source.url, /^https:\/\//, `${item.id} source must be directly linkable.`);
+            assert.ok(source.title && source.publisher && source.supports, `${item.id} source metadata must be complete.`);
+            assert.match(source.access, /free public/i, `${item.id} source must be publicly accessible without a paid framework dependency.`);
+        }
+    }
+    assert.ok(Array.isArray(analysis.scenario.sources) && analysis.scenario.sources.length > 0);
+    assert.match(analysis.scenario.ruleBasis, /scenario/i);
+}
+
 const stable = analyzeOrganizationStructure({
     shared: {
         companyName: "Stable Services",
@@ -42,7 +60,7 @@ const stable = analyzeOrganizationStructure({
 
 assert.equal(stable.module, "organization");
 assert.equal(stable.authority, "deterministic-structural-prototype");
-assert.equal(hasKeyDeep(stable, "score"), false, "Organization Intelligence must not expose an arbitrary maturity score.");
+assert.equal(hasKeyDeep(stable, "score"), false, "Organization Structure must not expose an arbitrary maturity score.");
 assert.equal(stable.boundaries.assessesIndividuals, false);
 assert.equal(stable.boundaries.legalApplicabilityAuthority, false);
 assert.equal(stable.boundaries.llmDecisionAuthority, false);
@@ -53,6 +71,7 @@ assert.match(stable.scenario.disclaimer, /not a forecast/i);
 assert.ok(stable.findings.every(item => Array.isArray(item.factsUsed)));
 assert.ok(stable.findings.every(item => Array.isArray(item.missingFacts)));
 assert.ok(stable.findings.every(item => ["stable", "watch", "action", "needs-information"].includes(item.status)));
+assertSourceTraceability(stable);
 
 const pressure = analyzeOrganizationStructure({
     shared: {
@@ -97,6 +116,8 @@ assert.equal(pressureById["ORG-COORDINATION-001"].status, "action");
 assert.equal(pressureById["ORG-GROWTH-001"].status, "action");
 assert.equal(pressureById["ORG-LOCATION-001"].status, "watch");
 assert.ok(pressure.statusSummary.action >= 6);
+assert.match(pressureById["ORG-CAPACITY-001"].ruleBasis, /prototype triggers/i);
+assertSourceTraceability(pressure);
 
 const missing = analyzeOrganizationStructure({
     shared: {
@@ -122,6 +143,7 @@ assert.ok(missing.missingFacts.includes("organization.roleClarity"));
 assert.ok(missing.missingFacts.includes("organization.decisionRights"));
 assert.ok(missing.missingFacts.includes("workforce.expectedEmployees12Months"));
 assert.ok(missing.statusSummary["needs-information"] >= 5);
+assertSourceTraceability(missing);
 
 const normalized = normalizeOrganizationInput({
     shared: { employees: 20 },
@@ -157,7 +179,34 @@ assert.match(page, /analyzeOrganizationStructure/);
 assert.match(page, /I don’t know/);
 assert.match(page, /factRegistry/);
 assert.match(page, /does not score people/i);
+assert.match(page, /Source transparency/i);
+assert.match(page, /organization-structure-methodology\.html/);
 assert.doesNotMatch(page, /Organization Score/i);
+
+const reportPage = fs.readFileSync(
+    new URL("../organization-structure-report.html", import.meta.url),
+    "utf8"
+);
+assert.match(reportPage, /Executive Overview/);
+assert.match(reportPage, /Detailed Findings/);
+assert.match(reportPage, /12-Month Growth Scenario/);
+assert.match(reportPage, /Methodology & Sources/);
+
+const reportRuntime = fs.readFileSync(
+    new URL("../js/organization-structure-report.mjs", import.meta.url),
+    "utf8"
+);
+assert.match(reportRuntime, /Source basis/);
+assert.match(reportRuntime, /GrowWithHR rule/);
+assert.match(reportRuntime, /source\.url/);
+
+const sourceRegistry = fs.readFileSync(
+    new URL("../js/modules/organization/organization-source-registry.mjs", import.meta.url),
+    "utf8"
+);
+assert.match(sourceRegistry, /Open Government Licence v3\.0/);
+assert.match(sourceRegistry, /prototype trigger/i);
+assert.doesNotMatch(sourceRegistry, /industry benchmark/i);
 
 const legacyEngine = fs.readFileSync(
     new URL("../js/modules/organization/engine.js", import.meta.url),
@@ -181,4 +230,4 @@ const report = fs.readFileSync(
 );
 assert.doesNotMatch(report, /Excellent|Needs Attention|Critical/);
 
-console.log("Organization Intelligence v1 structured checks passed.");
+console.log("Organization Structure source-traceability checks passed.");

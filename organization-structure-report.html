@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Structure Report | GrowWithHR</title>
+  <meta name="description" content="GrowWithHR Organization Structure executive overview, detailed findings and 12-month growth scenario.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="org-report-page" data-active-nav="analyze">
+<main class="org-shell" id="orgReportRoot" aria-live="polite">
+  <div class="org-report-head">
+    <div>
+      <div class="org-kicker">GrowWithHR · Organization Structure</div>
+      <h1 class="org-title">Understand My <span>Organization Structure</span></h1>
+      <p class="org-lead" id="reportSubtitle">Loading your structural analysis…</p>
+    </div>
+    <div class="org-report-actions">
+      <a class="org-secondary" href="organization-structure-methodology.html" target="_blank" rel="noopener">Methodology & Sources ↗</a>
+      <button class="org-primary" id="printReport" type="button">Print / Save PDF</button>
+    </div>
+  </div>
+
+  <nav class="org-stepper" aria-label="Organization Structure report sections">
+    <button class="org-step is-active" type="button" data-step="overview">1 · Executive Overview</button>
+    <button class="org-step" type="button" data-step="findings">2 · Detailed Findings</button>
+    <button class="org-step" type="button" data-step="scenario">3 · 12-Month Growth Scenario</button>
+  </nav>
+
+  <section class="org-report-screen" id="screen-overview" data-screen="overview"></section>
+  <section class="org-report-screen" id="screen-findings" data-screen="findings" hidden></section>
+  <section class="org-report-screen" id="screen-scenario" data-screen="scenario" hidden></section>
+</main>
+<script type="module" src="js/organization-structure-report.mjs"></script>
+<script src="js/build-marker.js"></script>
+</body>
+</html>

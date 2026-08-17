@@ -1,9 +1,17 @@
+import { FRAMEWORK, sourcesForRule } from "./organization-source-registry.mjs";
+
 /**
- * GrowWithHR Organization Intelligence v1
+ * GrowWithHR Organization Structure v1
  *
  * Deterministic structural analysis only. This module does not assess
  * individuals, legal applicability, compensation, leadership capability,
  * or talent capability.
+ *
+ * Source transparency rule:
+ * Every finding exposes the public sources that support the underlying
+ * organization-design principle and separately exposes the GrowWithHR rule
+ * used to interpret supplied company facts. Numeric prototype triggers are
+ * never presented as source-published or industry benchmarks.
  */
 
 const STATUS = Object.freeze({
@@ -121,7 +129,7 @@ function factMetadata(facts, metrics) {
     const confirmed = (key, isPresent, confidence = CONFIDENCE.HIGH) => {
         metadata[key] = {
             status: isPresent ? "confirmed" : "missing",
-            source: "organization-intelligence",
+            source: "organization-structure",
             capturedAt: isPresent ? capturedAt : null,
             lastConfirmedAt: isPresent ? capturedAt : null,
             usedBy: ["organization"],
@@ -157,6 +165,8 @@ function factMetadata(facts, metrics) {
     confirmed("organization.decisionRights", Boolean(facts.decisionRights) && facts.decisionRights !== "dont-know");
     confirmed("organization.governanceCadence", Boolean(facts.governanceCadence) && facts.governanceCadence !== "dont-know");
     confirmed("organization.coordinationFriction", Boolean(facts.coordinationFriction) && facts.coordinationFriction !== "dont-know");
+    confirmed("organization.founderDecisions", Boolean(facts.founderDecisions), CONFIDENCE.MEDIUM);
+    confirmed("organization.expansion", Boolean(facts.expansion), CONFIDENCE.MEDIUM);
     confirmed("geography.operatingLocationCount", facts.operatingLocationCount !== null);
 
     derived(
@@ -179,7 +189,22 @@ function factMetadata(facts, metrics) {
 }
 
 function finding({ id, area, status, title, factsUsed, whyItMatters, action, growthTrigger, confidence = CONFIDENCE.HIGH, missingFacts = [] }) {
-    return { id, area, status, title, factsUsed, whyItMatters, action, growthTrigger, confidence, missingFacts };
+    const evidence = sourcesForRule(id);
+    return {
+        id,
+        area,
+        status,
+        title,
+        factsUsed,
+        whyItMatters,
+        action,
+        growthTrigger,
+        confidence,
+        missingFacts,
+        framework: FRAMEWORK,
+        ruleBasis: evidence.ruleBasis,
+        sources: evidence.sources
+    };
 }
 
 function managementCapacity(facts, metrics) {
@@ -473,6 +498,7 @@ function locationComplexity(facts) {
 
 function scenarioFor(facts, metrics) {
     const available = facts.expectedEmployees12Months !== null && facts.peopleManagerCount !== null && facts.peopleManagerCount > 0;
+    const evidence = sourcesForRule("ORG-SCENARIO-HEADCOUNT-001");
     return {
         id: "ORG-SCENARIO-HEADCOUNT-001",
         name: "12-month headcount with current manager count unchanged",
@@ -483,11 +509,14 @@ function scenarioFor(facts, metrics) {
         interpretation: !available
             ? "Provide expected 12-month headcount and current manager count to run this structural scenario."
             : metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged > 12
-                ? "Under this assumption, management span becomes a structural action trigger."
+                ? "Under this assumption, management span becomes a GrowWithHR structural action trigger."
                 : metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged > 8
-                    ? "Under this assumption, management span becomes a structural watchpoint."
-                    : "Under this assumption, management span does not trigger the current prototype thresholds.",
-        disclaimer: "This scenario is a deterministic comparison of supplied facts. It is not a forecast, prediction, or recommendation about any individual."
+                    ? "Under this assumption, management span becomes a GrowWithHR structural watchpoint."
+                    : "Under this assumption, management span does not trigger the current GrowWithHR prototype thresholds.",
+        disclaimer: "This scenario is a deterministic comparison of supplied facts. It is not a forecast, prediction, or recommendation about any individual. The numeric trigger is a GrowWithHR prototype rule, not a published source benchmark.",
+        framework: FRAMEWORK,
+        ruleBasis: evidence.ruleBasis,
+        sources: evidence.sources
     };
 }
 
@@ -511,9 +540,15 @@ function analyzeOrganizationStructure(input = {}) {
 
     return {
         module: "organization",
-        version: "1.0.0-structured",
+        version: "1.1.0-source-traceability",
         generatedAt: new Date().toISOString(),
         authority: "deterministic-structural-prototype",
+        methodology: FRAMEWORK,
+        sourceTransparency: {
+            publicSourcesVisible: true,
+            ruleAndSourceSeparated: true,
+            numericPrototypeTriggersDisclosed: true
+        },
         facts,
         factRegistry: factMetadata(facts, metrics),
         derivedMetrics: metrics,
