@@ -340,24 +340,15 @@ function setupComplianceAssessment() {
         landing.insertBefore(heading, conversion);
     }
 
-    const start = document.getElementById("startAssessment");
-    if (start) {
-        const icon = start.querySelector("i");
-        start.textContent = "Start Compliance Analysis ";
-        if (icon) start.append(icon);
-    }
-
-    const resume = document.getElementById("resumeAssessmentButton");
-    if (resume) {
-        const icon = resume.querySelector("i");
-        resume.textContent = "Continue Compliance Analysis ";
-        if (icon) resume.append(icon);
-    }
+    // Preserve the established Start/Continue action labels because they are
+    // already part of the public assessment journey and accessibility contract.
 }
 
 async function renderOfficialResources() {
     const container = document.getElementById("officialResourcesContainer");
     if (!container) return;
+
+    container.setAttribute("aria-busy", "true");
 
     try {
         const response = await fetch("data/official-resources.json", { cache: "no-store" });
@@ -379,6 +370,7 @@ async function renderOfficialResources() {
                     <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="secondary-btn" aria-label="Visit ${name} official website">Visit official site →</a>
                 </article>`;
         }).join("");
+        container.setAttribute("aria-busy", "false");
 
         const heroContent = document.querySelector(".official-resources-page .hero-content");
         let verified = document.querySelector(".official-last-verified");
@@ -397,6 +389,7 @@ async function renderOfficialResources() {
                 <p>Please try loading the source library again.</p>
                 <button type="button" class="secondary-btn resource-retry">Retry</button>
             </article>`;
+        container.setAttribute("aria-busy", "false");
         container.querySelector(".resource-retry")?.addEventListener("click", renderOfficialResources);
     }
 }
