@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Official Government Sources | GrowWithHR</title>
-  <meta name="description" content="Official government sources used by GrowWithHR to support compliance guidance.">
+  <title>Evidence & Sources | GrowWithHR</title>
+  <meta name="description" content="See the public evidence and source libraries GrowWithHR uses for compliance and Organization Structure guidance.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script src="js/site-shell.js" defer></script>
 </head>
 <body class="official-resources-page" data-active-nav="resources">
@@ -17,27 +18,48 @@
   <div class="hero-glow hero-glow-2"></div>
   <div class="container hero-layout">
     <div class="hero-content">
-      <div class="hero-badge">Verified Government Sources</div>
-      <h1>Official Resources for Executive HR Decisions</h1>
-      <p class="hero-description">A curated reference library of government and statutory sources used to ground GrowWithHR compliance guidance.</p>
+      <div class="hero-badge">GrowWithHR Evidence & Sources</div>
+      <h1>See what supports a GrowWithHR recommendation</h1>
+      <p class="hero-description">GrowWithHR separates the source that supports a principle from the rule that interprets your company facts. Choose the evidence library relevant to the analysis you are reviewing.</p>
     </div>
     <div class="hero-sidebar gwhr-peel-stack" data-testid="official-resources-stack">
-      <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Statutory Authorities</h3></div><p>EPFO, ESIC and labour ministry references for people compliance checks.</p></article>
-      <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Legal Repository</h3></div><p>India Code and official portals for current acts, rules and notifications.</p></article>
-      <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Executive Use</h3></div><p>Use these links for verification before final compliance decisions.</p></article>
+      <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Compliance Evidence</h3></div><p>Government and statutory sources used to support compliance review and verification.</p></article>
+      <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Organization Structure</h3></div><p>Public organization-design sources plus the GrowWithHR structural rule used for each finding.</p></article>
+      <article class="workspace-card gwhr-peel-card"><div class="card-header"><h3>Transparent Basis</h3></div><p>Detailed Organization Structure findings show a direct source link next to the recommendation.</p></article>
     </div>
   </div>
 </header>
 
 <main>
-  <section class="updates-section compact-section official-source-section">
+  <section class="compact-section">
+    <div class="container">
+      <div class="hub-engine-grid" aria-label="Evidence libraries">
+        <article class="hub-engine-card">
+          <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div class="hub-engine-tag">Compliance</div>
+          <h3>Government & Statutory Sources</h3>
+          <p>Official references used to support compliance research. Final applicability remains determined by the GrowWithHR compliance rule set, with unresolved facts kept visible.</p>
+          <a class="hub-engine-card__action" href="#complianceSources">View Compliance Sources <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+        </article>
+        <article class="hub-engine-card">
+          <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
+          <div class="hub-engine-tag">Organization Structure</div>
+          <h3>Organization Design Methodology & Sources</h3>
+          <p>See the free/public sources behind structural principles, the GrowWithHR rule attached to each finding, and which numeric triggers are GrowWithHR prototype rules rather than published benchmarks.</p>
+          <a class="hub-engine-card__action" href="organization-structure-methodology.html">View Organization Sources <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="complianceSources" class="updates-section compact-section official-source-section">
     <div class="container">
       <div class="section-heading">
-        <div class="section-tag">SOURCE LIBRARY</div>
-        <h2>Official references used by GrowWithHR</h2>
-        <p>These links point to government and statutory resources. Always verify final obligations with current official notifications and qualified counsel.</p>
+        <div class="section-tag">COMPLIANCE SOURCE LIBRARY</div>
+        <h2>Official compliance references used by GrowWithHR</h2>
+        <p>These links point to government and statutory resources. Source references support review; they do not by themselves prove that an obligation applies or has been completed.</p>
       </div>
-      <div id="sourceGuidance" class="source-guidance"><span></span><p>Use these official links as starting points for verification. Final compliance decisions should be checked against current notifications and qualified professional advice.</p></div>
+      <div id="sourceGuidance" class="source-guidance"><span></span><p>Use these official links as starting points for verification. Final compliance decisions should be checked against current notifications and qualified professional advice where appropriate.</p></div>
       <div id="officialResourcesContainer" class="updates-grid resource-line-grid" aria-live="polite" aria-busy="true">
         <div class="update-card">Loading official resources...</div>
       </div>
