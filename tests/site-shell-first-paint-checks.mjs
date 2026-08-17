@@ -54,6 +54,14 @@ assert.match(
     "Every page must use the same logo-plus-navigation DOM contract from site-shell.js."
 );
 
+const buildMarkerSource = fs.readFileSync(path.join(root, "js/build-marker.js"), "utf8");
+assert.doesNotMatch(buildMarkerSource, /integrateBrandIntoNavigation/,
+    "The build marker must not reparent the shared brand after the site shell renders.");
+assert.doesNotMatch(buildMarkerSource, /site-header-shell--integrated-brand/,
+    "Runtime enhancements must not add an alternate integrated-brand navbar mode.");
+assert.doesNotMatch(buildMarkerSource, /integratedBrand/,
+    "Runtime enhancements must not introduce a second navbar DOM contract.");
+
 const stylesSource = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)].map((match) => match[1]);
 assert.equal(
