@@ -35,38 +35,72 @@ const ALL_PRIORITY_VALUES = [
     "organisation-design"
 ];
 
-test("keeps the original HRTechify logo inside the navigation capsule", async ({ page }) => {
-    await page.addInitScript((report) => {
-        localStorage.setItem("growwithhr-report", JSON.stringify(report));
-    }, REPORT);
-
+test("uses identical shared navbar geometry across public pages", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
-    await page.goto("/executive-advisory-report.html");
 
-    const navigation = page.locator(".site-nav-glass");
-    const brand = navigation.locator(":scope > .site-brand-logo");
-    const logo = brand.locator("img");
+    const routes = [
+        "/official-resources.html",
+        "/sample-advisory-report.html",
+        "/intelligence-hub.html"
+    ];
 
-    await expect(navigation).toBeVisible();
-    await expect(brand).toBeVisible();
-    await expect(logo).toHaveAttribute("src", /assets\/hrtechify-logo\.png$/);
+    const measurements = [];
 
-    const boxes = await page.evaluate(() => {
-        const nav = document.querySelector(".site-nav-glass")?.getBoundingClientRect();
-        const mark = document.querySelector(".site-nav-glass > .site-brand-logo")?.getBoundingClientRect();
-        return nav && mark
-            ? {
-                nav: { left: nav.left, right: nav.right, top: nav.top, bottom: nav.bottom },
-                mark: { left: mark.left, right: mark.right, top: mark.top, bottom: mark.bottom }
+    for (const route of routes) {
+        await page.goto(route);
+        const shell = page.locator(".site-header-shell__inner");
+        const brand = shell.locator(":scope > .site-brand-logo");
+        const navigation = shell.locator(":scope > .site-nav-glass");
+
+        await expect(shell).toBeVisible();
+        await expect(brand).toBeVisible();
+        await expect(navigation).toBeVisible();
+        await expect(navigation.locator(":scope > .site-brand-logo")).toHaveCount(0);
+        await expect(brand.locator("img")).toHaveAttribute("src", /assets\/hrtechify-logo\.png$/);
+
+        measurements.push(await shell.evaluate((element) => {
+            const brandElement = element.querySelector(":scope > .site-brand-logo");
+            const navElement = element.querySelector(":scope > .site-nav-glass");
+            const shellBox = element.getBoundingClientRect();
+            const brandBox = brandElement?.getBoundingClientRect();
+            const navBox = navElement?.getBoundingClientRect();
+
+            return brandBox && navBox
+                ? {
+                    shell: {
+                        left: shellBox.left,
+                        top: shellBox.top,
+                        width: shellBox.width,
+                        height: shellBox.height
+                    },
+                    brand: {
+                        left: brandBox.left,
+                        top: brandBox.top,
+                        width: brandBox.width,
+                        height: brandBox.height
+                    },
+                    nav: {
+                        left: navBox.left,
+                        top: navBox.top,
+                        width: navBox.width,
+                        height: navBox.height
+                    }
+                }
+                : null;
+        }));
+    }
+
+    const baseline = measurements[0];
+    expect(baseline).not.toBeNull();
+
+    for (const measurement of measurements.slice(1)) {
+        expect(measurement).not.toBeNull();
+        for (const part of ["shell", "brand", "nav"] as const) {
+            for (const property of ["left", "top", "width", "height"] as const) {
+                expect(Math.abs(measurement![part][property] - baseline![part][property])).toBeLessThanOrEqual(2);
             }
-            : null;
-    });
-
-    expect(boxes).not.toBeNull();
-    expect(boxes!.mark.left).toBeGreaterThanOrEqual(boxes!.nav.left);
-    expect(boxes!.mark.right).toBeLessThanOrEqual(boxes!.nav.right);
-    expect(boxes!.mark.top).toBeGreaterThanOrEqual(boxes!.nav.top);
-    expect(boxes!.mark.bottom).toBeLessThanOrEqual(boxes!.nav.bottom);
+        }
+    }
 });
 
 test("renders a clean single-column compliance report without scorecards or theme choices", async ({ page }) => {

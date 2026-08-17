@@ -44,10 +44,23 @@ assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,
     "The homepage intelligence graph must have an independent module bootstrap fallback.");
 assert.match(shellSource, /css\/25-ui-polish\.css/,
     "The shared shell must load the final cross-page UI/accessibility polish layer.");
-assert.match(shellSource, /css\/26-header-brand-lockup\.css/,
-    "The shared shell must load the Sample Advisory navbar parity layer on every page.");
+assert.doesNotMatch(shellSource, /26-header-brand-lockup\.css/,
+    "The shared shell must not load a second navbar geometry layer.");
 assert.match(shellSource, /GrowWithHR by HRTechify/,
     "The shared shell must expose the approved GrowWithHR footer brand line.");
+assert.match(
+    shellSource,
+    /<div class="site-header-shell__inner">\s*<a class="site-brand-logo"[\s\S]*?<nav class="site-nav-glass"/,
+    "Every page must use the same logo-plus-navigation DOM contract from site-shell.js."
+);
+
+const buildMarkerSource = fs.readFileSync(path.join(root, "js/build-marker.js"), "utf8");
+assert.doesNotMatch(buildMarkerSource, /integrateBrandIntoNavigation/,
+    "The build marker must not reparent the shared brand after the site shell renders.");
+assert.doesNotMatch(buildMarkerSource, /site-header-shell--integrated-brand/,
+    "Runtime enhancements must not add an alternate integrated-brand navbar mode.");
+assert.doesNotMatch(buildMarkerSource, /integratedBrand/,
+    "Runtime enhancements must not introduce a second navbar DOM contract.");
 
 const stylesSource = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)].map((match) => match[1]);
@@ -60,5 +73,25 @@ assert.ok(
     styleImports.indexOf("css/24-intelligence-hub.css") < styleImports.indexOf("css/18-site-shell.css"),
     "Analyze My Company styles must load before the shared site shell."
 );
+assert.equal(
+    styleImports.filter((item) => item.includes("header-brand-lockup")).length,
+    0,
+    "The stylesheet bundle must not include a second shared-navbar parity layer."
+);
 
-console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including independent homepage graph bootstrap, shared navbar parity, shared footer and final polish loading.`);
+const shellCss = fs.readFileSync(path.join(root, "css/18-site-shell.css"), "utf8");
+const presentationCss = fs.readFileSync(path.join(root, "css/19-presentation-polish.css"), "utf8");
+assert.match(shellCss, /\.site-header-shell__inner\s*\{/,
+    "Shared navbar geometry must be defined by css/18-site-shell.css.");
+assert.match(shellCss, /\.site-nav-glass\s*\{/,
+    "Shared navigation capsule geometry must be defined by css/18-site-shell.css.");
+assert.match(shellCss, /\.site-brand-logo\s*\{/,
+    "Shared logo geometry must be defined by css/18-site-shell.css.");
+assert.doesNotMatch(presentationCss, /(^|\n)\s*\.site-header-shell__inner\s*\{/,
+    "Page-level presentation CSS must not redefine the shared header layout.");
+assert.doesNotMatch(presentationCss, /(^|\n)\s*\.site-nav-glass\s*\{/,
+    "Page-level presentation CSS must not redefine the shared navigation capsule.");
+assert.doesNotMatch(presentationCss, /(^|\n)\s*\.site-brand-logo\s*\{/,
+    "Page-level presentation CSS must not move or resize the shared logo.");
+
+console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including one canonical navbar layout source, independent homepage graph bootstrap, shared footer and final polish loading.`);

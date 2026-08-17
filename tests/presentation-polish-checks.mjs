@@ -5,13 +5,15 @@ import vm from "node:vm";
 const read = (path) => fs.readFileSync(path, "utf8");
 const styles = read("styles.css");
 const polish = read("css/19-presentation-polish.css");
+const shell = read("css/18-site-shell.css");
 const logoRestore = read("css/21-logo-restore.css");
 const pdfPolish = read("js/pdf-polish.js");
 const buildMarker = read("js/build-marker.js");
 
 assert(styles.includes('@import url("css/19-presentation-polish.css");'));
 assert(styles.includes('@import url("css/21-logo-restore.css");'));
-assert(polish.includes(".site-nav-glass"));
+assert(shell.includes(".site-nav-glass"));
+assert(!polish.includes(".site-nav-glass"), "Page presentation CSS must not redefine the shared navbar.");
 assert(logoRestore.includes("hrtechify-logo.png"));
 assert(logoRestore.includes("mix-blend-mode: screen"));
 assert(polish.includes("grid-template-columns: repeat(6"));
