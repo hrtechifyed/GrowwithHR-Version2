@@ -52,8 +52,10 @@ jobs:
           node tests/organization-intelligence-v1-checks.mjs &&
           node tests/organization-workspace-headcount-bridge-checks.mjs
 
-      - name: Run site shell first-paint checks
-        run: node tests/site-shell-first-paint-checks.mjs
+      - name: Run site shell and UI polish checks
+        run: >
+          node tests/site-shell-first-paint-checks.mjs &&
+          node tests/ui-polish-contract-checks.mjs
 
       - name: Run M1 architecture contracts
         run: npm run test:m1
