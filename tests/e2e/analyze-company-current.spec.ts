@@ -41,7 +41,7 @@ test.describe("Company Insights entry", () => {
 
     await expect(page.getByRole("link", {
       name: /Identify My Company’s Compliance Needs/i
-    })).toHaveAttribute("href", "analyze-company.html?engine=compliance");
+    })).toHaveAttribute("href", "compliance-intelligence.html");
 
     const organizationLink = page.getByRole("link", {
       name: /Understand My Organization Structure/i
