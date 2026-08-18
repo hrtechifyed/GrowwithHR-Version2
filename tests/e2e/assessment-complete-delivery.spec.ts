@@ -84,8 +84,8 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.goto("/");
     await page.locator(".analyze-redirect-section a.primary-btn").click();
     await expect(page).toHaveURL(/\/intelligence-hub\.html$/);
-    await page.locator('a[href="analyze-company.html?engine=compliance"]').click();
-    await expect(page).toHaveURL(/\/analyze-company\.html\?engine=compliance$/);
+    await page.locator('a[href="compliance-intelligence.html"]').click();
+    await expect(page).toHaveURL(/\/compliance-intelligence\.html$/);
     await page.getByRole("button", { name: "Start my advisory" }).click();
 
     await page.locator("#companyName").fill("End-to-End Test Company");
