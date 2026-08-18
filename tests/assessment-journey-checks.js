@@ -89,8 +89,8 @@ includes(
 
 includes(
     hub,
-    'href="analyze-company.html?engine=compliance"',
-    "The Company Insights hub must retain the stable Compliance assessment route."
+    'href="compliance-intelligence.html"',
+    "The Company Insights hub must route Compliance Needs through its dedicated entry page."
 );
 
 includes(
