@@ -22,6 +22,7 @@ on:
       - "css/20-compliance-story.css"
       - "css/20-legal-explanation-panel.css"
       - "css/21-story-visual-sections.css"
+      - "css/29-sample-report-refinement.css"
       - "data/assessment/**"
       - "data/schema/**"
       - "js/config/app-config.js"
@@ -33,6 +34,7 @@ on:
       - "js/pdf.js"
       - "js/pdf-polish.js"
       - "js/pdf-law-transparency.js"
+      - "js/sample-advisory-pdf.js"
       - "js/industry-adaptive-assessment.js"
       - "js/company-applicability-orchestrator-v1.js"
       - "js/founder-web-report-v2.js"
@@ -76,6 +78,7 @@ on:
       - "css/20-compliance-story.css"
       - "css/20-legal-explanation-panel.css"
       - "css/21-story-visual-sections.css"
+      - "css/29-sample-report-refinement.css"
       - "data/assessment/**"
       - "data/schema/**"
       - "js/config/app-config.js"
@@ -87,6 +90,7 @@ on:
       - "js/pdf.js"
       - "js/pdf-polish.js"
       - "js/pdf-law-transparency.js"
+      - "js/sample-advisory-pdf.js"
       - "js/industry-adaptive-assessment.js"
       - "js/company-applicability-orchestrator-v1.js"
       - "js/founder-web-report-v2.js"
@@ -180,6 +184,7 @@ jobs:
           tests/e2e/analyze-company-v3-social-security-wave5l.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/presentation-polish.spec.ts
+          tests/e2e/sample-advisory-report.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
           tests/e2e/report-intelligence-v020.spec.ts
           tests/e2e/visual-story-report-v021.spec.ts
