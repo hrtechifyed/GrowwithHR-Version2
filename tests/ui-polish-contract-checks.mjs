@@ -13,13 +13,14 @@ const [siteShell, uiCss, uiJs, homepage, homepageRuntime, officialResources, mor
   read("more-info.html")
 ]);
 
-assert.match(siteShell, /GrowWithHR by HRTechify/);
-assert.match(siteShell, /About/);
-assert.match(siteShell, /Privacy/);
-assert.match(siteShell, /Contact/);
+assert.match(siteShell, /<strong>GrowWithHR<\/strong> by HRTechify/);
+assert.match(siteShell, /The-Corporatex\/index\.html#about/);
+assert.match(siteShell, /The-Corporatex\/privacy-safety\.html/);
+assert.match(siteShell, /mailto:hrtechifyed@gmail\.com/);
 assert.match(siteShell, /Security & Data/);
 assert.match(siteShell, /My Reports/);
 assert.match(siteShell, /© 2026 HRTechify\. All rights reserved\./);
+assert.match(siteShell, /removeHomepageTriggerStrip/);
 assert.match(siteShell, /index\.html#home/);
 assert.match(siteShell, /intelligence-hub\.html/);
 assert.doesNotMatch(siteShell, /HRTechify ↗/);
