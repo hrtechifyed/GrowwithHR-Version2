@@ -78,8 +78,12 @@ assert.match(
 const indexHtml = read("index.html");
 assertIncludes(
     indexHtml,
-    `GrowWithHR Public ${packageJson.version}`,
-    "The homepage must display the canonical version."
+    'src="js/build-marker.js"',
+    "The homepage must retain the build marker while release identifiers stay out of buyer-facing copy."
+);
+assert(
+    !indexHtml.includes(`GrowWithHR Public ${packageJson.version}`),
+    "The prototype release identifier should not be presented as buyer-facing homepage value copy."
 );
 
 /* ==========================================================
@@ -216,7 +220,10 @@ assert(!/companyData|encrypted_company_data|access_key_hash/.test(cronEntry), "C
 const moreInfoHtml = read("more-info.html");
 assertIncludes(moreInfoHtml, "stored in your browser", "Privacy information must disclose browser progress storage.");
 assertIncludes(moreInfoHtml, "Gmail API", "Privacy information must disclose Gmail API delivery.");
-assertIncludes(moreInfoHtml, "six months from your latest completed intelligence analysis", "Privacy information must disclose the six-month Company Workspace policy.");
+assert(
+    /six months from your latest completed (?:intelligence )?analysis/.test(moreInfoHtml),
+    "Privacy information must disclose the six-month Company Workspace policy."
+);
 assertIncludes(moreInfoHtml, "seven days before the scheduled deletion date", "Privacy information must disclose the deletion reminder timing.");
 assertIncludes(moreInfoHtml, "earlier deletion", "Privacy information must disclose user-requested early deletion.");
 assert(

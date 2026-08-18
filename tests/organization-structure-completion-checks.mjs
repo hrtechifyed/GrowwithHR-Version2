@@ -216,7 +216,9 @@ assert.match(privacy, /one-time opaque handoff token/i);
 const homepage = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 assert.match(homepage, />Understand My Company</);
 assert.match(homepage, />Explore Sample Reports</);
-assert.match(homepage, /Organization Structure \(Available\)/);
+assert.match(homepage, /<span class="buyer-card__label">Organization Structure<\/span>/);
+assert.match(homepage, /Where will our structure start constraining growth\?/);
+assert.doesNotMatch(homepage, /Organization Structure \(Available\)/);
 assert.doesNotMatch(homepage, />Analyze My Company</);
 assert.doesNotMatch(homepage, />View Sample Advisory</);
 

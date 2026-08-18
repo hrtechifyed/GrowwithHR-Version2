@@ -17,6 +17,8 @@ assert.match(siteShell, /GrowWithHR by HRTechify/);
 assert.match(siteShell, /About/);
 assert.match(siteShell, /Privacy/);
 assert.match(siteShell, /Contact/);
+assert.match(siteShell, /Security & Data/);
+assert.match(siteShell, /My Reports/);
 assert.match(siteShell, /© 2026 HRTechify\. All rights reserved\./);
 assert.match(siteShell, /index\.html#home/);
 assert.match(siteShell, /intelligence-hub\.html/);
@@ -32,7 +34,11 @@ assert.match(uiCss, /@media \(prefers-reduced-motion: reduce\)/);
 
 assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn">Understand My Company/);
 assert.match(homepage, /href="sample-reports\.html" class="secondary-btn">Explore Sample Reports/);
-assert.match(homepage, /Organization Structure \(Available\)/);
+assert.match(homepage, /Compliance Needs/);
+assert.match(homepage, /Organization Structure/);
+assert.match(homepage, /Current Product/i);
+assert.doesNotMatch(homepage, /Talent Intelligence \(Planned\)/);
+assert.doesNotMatch(homepage, /Leadership Intelligence \(Planned\)/);
 assert.doesNotMatch(homepage, />Analyze My Company</);
 assert.doesNotMatch(homepage, />View Sample Advisory</);
 assert.match(homepage, /Interactive preview/);
@@ -57,5 +63,6 @@ assert.match(moreInfo, /Progress on this device/);
 assert.match(moreInfo, /Reusable Company Workspace/);
 assert.match(moreInfo, /Deletion and reminders/);
 assert.match(moreInfo, /Report download and delivery activity/);
+assert.match(moreInfo, /Anurag Sinha/);
 
 console.log("GrowWithHR UI polish contracts passed.");

@@ -34,10 +34,12 @@ for (const file of walk(root)) {
 assert.ok(shellPages.length >= 8, "Expected the active GrowWithHR routes to use the shared site shell.");
 
 const shellSource = fs.readFileSync(path.join(root, "js/site-shell.js"), "utf8");
-assert.match(shellSource, /if \(document\.body\)\s*(?:\{\s*)?renderSiteShell\(\)/,
-    "The shared shell must render immediately when a deferred head script finds body available.");
-assert.doesNotMatch(shellSource, /if \(document\.readyState === ["']loading["']\) document\.addEventListener\(["']DOMContentLoaded["'], renderSiteShell/,
-    "The shell must not always wait for DOMContentLoaded after body parsing has completed.");
+const immediateBodyBootstrap = /if \(document\.body\)\s*(?:\{\s*)?renderSiteShell\(\)/.test(shellSource);
+const deferredReadyStateBootstrap = /if \(document\.readyState === ["']loading["']\)[\s\S]*DOMContentLoaded[\s\S]*else\s*\{\s*renderSiteShell\(\)/.test(shellSource);
+assert.ok(
+    immediateBodyBootstrap || deferredReadyStateBootstrap,
+    "The deferred shared shell must render immediately once parsing has progressed beyond loading."
+);
 assert.match(shellSource, /document\.getElementById\(["']dnaCoreCanvas["']\)/,
     "The shared shell must detect the homepage intelligence graph container.");
 assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,

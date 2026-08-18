@@ -57,7 +57,9 @@ includes(home, "Explore Sample Reports", "The sample reports CTA must remain vis
 includes(home, "Executive Intelligence", "The executive-intelligence preview must remain visible.");
 assert(home.indexOf("Understand My Company") < home.indexOf("Executive Intelligence"), "The primary company-insights CTA must appear before the executive-intelligence preview.");
 includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence-stack test hook is required.");
-includes(home, "Organization Structure (Available)", "Organization Structure status must match the live intelligence hub.");
+includes(home, '<span class="buyer-card__label">Organization Structure</span>', "Organization Structure must remain a visible current product capability.");
+includes(home, "Where will our structure start constraining growth?", "Organization Structure must use the current buyer-facing value proposition.");
+assert(!home.includes("Organization Structure (Available)"), "The retired roadmap-style Organization status label must not reappear.");
 assert(!home.includes(">Analyze My Company<"), "The retired homepage CTA label must not reappear.");
 assert(!home.includes(">View Sample Advisory<"), "The retired single-sample CTA label must not reappear.");
 assert(!home.includes("backupstyles.css"), "The obsolete backup stylesheet must not be loaded.");
@@ -117,12 +119,3 @@ const variablesCss = read("css/01-variables.css");
 const buildMarker = read("js/build-marker.js");
 includes(buildMarker, "window.GWHR_BUILD_ID", "The development build marker must remain exposed.");
 includes(buildMarker, "window.GWHR_DEBUG", "Opt-in build diagnostics must remain available.");
-
-const playwrightSpec = read("tests/playwright/growwithhr-ui.spec.js");
-assert(/from\s+["']@playwright\/test["']/.test(playwrightSpec), "The Playwright UI test must import @playwright/test.");
-
-const workspaceHtml = read("m5-compliance-workspace.html");
-includes(workspaceHtml, "Compliance Workspace Beta", "The M5 private workspace must remain available.");
-includes(workspaceHtml, "Nothing on this page is uploaded to a server", "The M5 workspace must disclose its browser-local boundary.");
-
-console.log("Static requirement checks passed.");

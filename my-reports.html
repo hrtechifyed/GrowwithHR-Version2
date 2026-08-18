@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reports | GrowWithHR</title>
+  <meta name="description" content="Recover your GrowWithHR Company Workspace and view report history and completed analyses.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="workspace-page" data-active-nav="more">
+<main class="workspace-shell">
+  <header class="workspace-intro">
+    <div class="section-tag">MY GROWWITHHR</div>
+    <h1>Recover your reports and Company Workspace</h1>
+    <p>Use the Report ID and Workspace Recovery Code from a completed analysis. This is a recovery-based customer workspace, not a password account. GrowWithHR does not currently require a permanent user login to recover saved Company DNA.</p>
+  </header>
+
+  <section class="workspace-card-v2 workspace-login" aria-labelledby="recoverHeading">
+    <h2 id="recoverHeading">Open my workspace</h2>
+    <form id="workspaceRecoverForm" class="workspace-login-form">
+      <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
+      <label>Workspace Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
+      <button type="submit">Open My Reports</button>
+    </form>
+    <p id="workspaceStatus" class="workspace-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="workspaceDashboard" class="workspace-dashboard" hidden aria-labelledby="workspaceTitle">
+    <div class="workspace-summary">
+      <article class="workspace-card-v2"><span class="workspace-eyebrow">Company</span><strong id="workspaceCompany">—</strong><p id="workspaceEmail"></p></article>
+      <article class="workspace-card-v2"><span class="workspace-eyebrow">Reports</span><strong id="workspaceReportCount">0</strong><p>Report IDs linked to this workspace</p></article>
+      <article class="workspace-card-v2"><span class="workspace-eyebrow">Analyses</span><strong id="workspaceEngineCount">0</strong><p>Completed analysis types</p></article>
+      <article class="workspace-card-v2"><span class="workspace-eyebrow">Saved until</span><strong id="workspaceExpiry">—</strong><p>Based on the current retention window</p></article>
+    </div>
+
+    <div class="workspace-history-grid">
+      <article class="workspace-card-v2">
+        <h2 id="workspaceTitle">Report history</h2>
+        <p>GrowWithHR currently stores the report identifiers linked to this recovered Company Workspace. The newest Report ID is marked as current.</p>
+        <div id="workspaceReportList" class="workspace-report-list"></div>
+      </article>
+
+      <article class="workspace-card-v2">
+        <h2>Completed analyses</h2>
+        <div id="workspaceEngineTags" class="workspace-engine-tags"></div>
+        <p class="workspace-disclosure">This workspace view does not claim to be a full subscription account. It provides secure recovery, report identity history and continuity into another GrowWithHR analysis using the credentials you already received.</p>
+        <div class="onboarding-actions">
+          <a class="primary-btn" href="intelligence-hub.html">Continue with Company Insights</a>
+          <button id="deleteWorkspace" class="secondary-btn" type="button">Delete reusable company data</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <p class="workspace-disclosure">Keep your Workspace Recovery Code private. For details on retention, encryption and data handling, see <a class="org-link" href="security.html">Security & Data</a> and <a class="org-link" href="more-info.html#privacy">Privacy</a>.</p>
+</main>
+<script src="js/company-workspace-client.js"></script>
+<script>
+(() => {
+  const SESSION_KEY = 'growwithhr.workspace';
+  const form = document.getElementById('workspaceRecoverForm');
+  const status = document.getElementById('workspaceStatus');
+  const dashboard = document.getElementById('workspaceDashboard');
+  const deleteButton = document.getElementById('deleteWorkspace');
+  let currentWorkspace = null;
+
+  const dateText = (value) => {
+    const date = new Date(value || '');
+    return Number.isFinite(date.getTime()) ? date.toLocaleDateString() : 'Not available';
+  };
+
+  function render(workspace, accessKey) {
+    currentWorkspace = { ...workspace, accessKey };
+    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentWorkspace)); } catch (_) {}
+    document.getElementById('workspaceCompany').textContent = workspace.companyName || 'Your company';
+    document.getElementById('workspaceEmail').textContent = workspace.email || 'No email shown';
+    const reportIds = Array.isArray(workspace.reportIds) ? workspace.reportIds : [];
+    const engines = Array.isArray(workspace.completedEngines) ? workspace.completedEngines : [];
+    document.getElementById('workspaceReportCount').textContent = String(reportIds.length);
+    document.getElementById('workspaceEngineCount').textContent = String(engines.length);
+    document.getElementById('workspaceExpiry').textContent = dateText(workspace.expiresAt);
+    document.getElementById('workspaceReportList').innerHTML = reportIds.slice().reverse().map((reportId, index) => `
+      <div class="workspace-report-row">
+        <div><code>${String(reportId).replace(/[&<>"']/g, '')}</code><br><span>${index === 0 ? 'Current report' : 'Previous report identifier'}</span></div>
+        <span>${index === 0 ? dateText(workspace.lastAnalysisCompletedAt) : 'Linked to this workspace'}</span>
+      </div>`).join('') || '<p>No report history is available.</p>';
+    document.getElementById('workspaceEngineTags').innerHTML = engines.map((engine) => `<span>${String(engine).replace(/[&<>"']/g, '')}</span>`).join('') || '<span>No completed analysis recorded</span>';
+    dashboard.hidden = false;
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    status.textContent = 'Recovering your GrowWithHR workspace…';
+    dashboard.hidden = true;
+    try {
+      const reportId = document.getElementById('workspaceReportId').value.trim();
+      const accessKey = document.getElementById('workspaceRecoveryCode').value.trim();
+      const result = await window.GrowWithHRCompanyWorkspace.recover(reportId, accessKey);
+      render(result.workspace, accessKey);
+      status.textContent = 'Workspace recovered. Your report history and completed analyses are shown below.';
+    } catch (error) {
+      status.textContent = error.message || 'GrowWithHR could not recover that workspace.';
+    }
+  });
+
+  deleteButton.addEventListener('click', async () => {
+    if (!currentWorkspace?.reportId || !currentWorkspace?.accessKey) return;
+    if (!confirm('Delete the reusable company information for this GrowWithHR workspace? This cannot be undone. Downloaded reports are not affected.')) return;
+    deleteButton.disabled = true;
+    try {
+      await window.GrowWithHRCompanyWorkspace.erase(currentWorkspace.reportId, currentWorkspace.accessKey);
+      try { sessionStorage.removeItem(SESSION_KEY); } catch (_) {}
+      dashboard.hidden = true;
+      status.textContent = 'Reusable company data deleted. Previously downloaded reports are not affected.';
+      currentWorkspace = null;
+    } catch (error) {
+      status.textContent = error.message || 'GrowWithHR could not delete this workspace right now.';
+    } finally {
+      deleteButton.disabled = false;
+    }
+  });
+})();
+</script>
+<script src="js/build-marker.js"></script>
+</body>
+</html>
