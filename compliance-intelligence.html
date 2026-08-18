@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Executive Advisory Briefing | HRTechify</title>
+    
+    <meta
+        name="description"
+        content="Complete the HRTechify Executive Advisory Briefing and receive personalised guidance based on your business, workforce and growth plans.">
+
+    <!-- Shared design system -->
+    <link rel="stylesheet" href="css/01-variables.css">
+    <link rel="stylesheet" href="css/02-base.css">
+    <link rel="stylesheet" href="css/03-typography.css">
+    <link rel="stylesheet" href="css/04-layout.css">
+    <link rel="stylesheet" href="css/05-navbar.css">
+    <!-- Advisory-page layout and assessment components. -->
+    <link rel="stylesheet" href="css/17-advisory-briefing.css">
+    <!-- Shared navbar, active navigation and homepage-style footer. -->
+    <link rel="stylesheet" href="css/18-site-shell.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+
+<body
+    class="analyze-company-page"
+    data-active-nav="analyze">
+    
+    <a class="advisory-skip-link" href="#mainContent">
+        Skip to advisory briefing
+    </a>
+    
+    <main id="mainContent" class="advisory-main">
+            
+        <section
+            id="assessmentShell"
+            class="advisory-shell"
+            data-testid="advisory-experience-stage">
+
+            <!-- ======================================================
+                 ENTRY SCREEN
+            ======================================================= -->
+<section
+    id="landingScreen"
+    class="advisory-entry"
+    aria-labelledby="entryTitle">
+
+    <h1
+        id="entryTitle"
+        class="advisory-visually-hidden">
+        HRTechify Executive Advisory Briefing
+    </h1>
+
+    <!-- ==================================================
+         COMPACT HERO AND ACTIONS
+    =================================================== -->
+    <header class="advisory-entry__conversion">
+
+        <div
+            class="advisory-entry__reassurance"
+            aria-label="Who this briefing is designed for">
+
+            <span
+                class="advisory-entry__reassurance-icon"
+                aria-hidden="true">
+                <i class="fa-solid fa-shield-halved"></i>
+            </span>
+
+            <div class="advisory-entry__reassurance-copy">
+                <strong>Built for decision-makers</strong>
+
+                <small>
+                    For founders, business leaders and People leads.
+                    Approximate figures are fine.
+                </small>
+            </div>
+        </div>
+
+        <div class="advisory-entry__action-deck">
+
+            <!-- First-time visitor state -->
+            <div
+                id="firstVisitActions"
+                class="advisory-entry__actions">
+
+                <button
+                    id="startAssessment"
+                    class="advisory-primary-button advisory-primary-button--large"
+                    type="button"
+                    data-testid="begin-executive-assessment">
+
+                    Start my advisory
+
+                    <i
+                        class="fa-solid fa-arrow-right"
+                        aria-hidden="true"></i>
+                </button>
+
+                <a
+                    class="advisory-secondary-button advisory-secondary-button--large"
+                    href="sample-advisory-report.html">
+
+                    View a sample advisory
+
+                    <i
+                        class="fa-solid fa-arrow-up-right-from-square"
+                        aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <!-- Returning-user state -->
+            <div
+                id="resumePanel"
+                class="advisory-entry__resume"
+                hidden>
+
+                <p class="advisory-entry__resume-status">
+                    <i
+                        class="fa-solid fa-rotate"
+                        aria-hidden="true"></i>
+
+                    <strong>Welcome back</strong>
+
+                    <span aria-hidden="true">·</span>
+
+                    <span id="resumeMessage">
+                        Your progress is saved.
+                    </span>
+                </p>
+
+                <div
+                    class="advisory-entry__actions advisory-entry__actions--resume">
+
+                    <button
+                        id="resumeAssessmentButton"
+                        class="advisory-primary-button advisory-primary-button--large"
+                        type="button">
+
+                        Continue my advisory
+
+                        <i
+                            class="fa-solid fa-arrow-right"
+                            aria-hidden="true"></i>
+                    </button>
+
+                    <button
+                        id="startAgainButton"
+                        class="advisory-secondary-button advisory-secondary-button--large"
+                        type="button">
+                        Start again
+                    </button>
+
+                    <a
+                        class="advisory-secondary-button advisory-secondary-button--large"
+                        href="sample-advisory-report.html">
+
+                        View sample
+
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square"
+                            aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================================================
+         EQUAL-WIDTH ADVISORY PANELS
+    =================================================== -->
+    <div class="advisory-entry__stage">
+
+        <!-- Guided briefing panel -->
+        <section
+            class="advisory-entry__features"
+            aria-labelledby="briefingHighlightsTitle">
+
+            <div class="advisory-entry__eyebrow">
+                <i
+                    class="fa-solid fa-sparkles"
+                    aria-hidden="true"></i>
+
+                A guided executive briefing
+            </div>
+
+            <h2
+                id="briefingHighlightsTitle"
+                class="advisory-visually-hidden">
+                What to expect from your advisory briefing
+            </h2>
+
+            <ul
+                class="advisory-feature-grid"
+                aria-label="Advisory briefing details">
+
+                <li class="advisory-feature-card">
+                    <span
+                        class="advisory-feature-card__icon"
+                        aria-hidden="true">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+
+                    <span class="advisory-feature-card__copy">
+                        <strong>5–7 minutes</strong>
+                        <small>Focused and practical</small>
+                    </span>
+                </li>
+
+                <li class="advisory-feature-card">
+                    <span
+                        class="advisory-feature-card__icon"
+                        aria-hidden="true">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </span>
+
+                    <span class="advisory-feature-card__copy">
+                        <strong>Four chapters</strong>
+                        <small>Business to growth</small>
+                    </span>
+                </li>
+
+                <li class="advisory-feature-card">
+                    <span
+                        class="advisory-feature-card__icon"
+                        aria-hidden="true">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </span>
+
+                    <span class="advisory-feature-card__copy">
+                        <strong>Review first</strong>
+                        <small>Check before generating</small>
+                    </span>
+                </li>
+
+                <li class="advisory-feature-card">
+                    <span
+                        class="advisory-feature-card__icon"
+                        aria-hidden="true">
+                        <i class="fa-regular fa-envelope"></i>
+                    </span>
+
+                    <span class="advisory-feature-card__copy">
+                        <strong>Work email required</strong>
+                        <small>Used for delivery</small>
+                    </span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Organisation story panel -->
+        <aside
+            class="advisory-entry__visual"
+            aria-label="The four chapters in your organisation story">
+
+            <div
+                class="advisory-story-preview"
+                role="list">
+
+                <span class="advisory-story-preview__label">
+                    Your organisation story
+                </span>
+
+                <div
+                    class="advisory-story-preview__chapter"
+                    data-story-step="1"
+                    role="listitem">
+
+                    <span class="advisory-story-preview__number">
+                        01
+                    </span>
+
+                    <div>
+                        <strong>Your business</strong>
+                        <small>Purpose, industry and stage</small>
+                    </div>
+                </div>
+
+                <div
+                    class="advisory-story-preview__chapter"
+                    data-story-step="2"
+                    role="listitem">
+
+                    <span class="advisory-story-preview__number">
+                        02
+                    </span>
+
+                    <div>
+                        <strong>Your people</strong>
+                        <small>Team and ways of working</small>
+                    </div>
+                </div>
+
+                <div
+                    class="advisory-story-preview__chapter"
+                    data-story-step="3"
+                    role="listitem">
+
+                    <span class="advisory-story-preview__number">
+                        03
+                    </span>
+
+                    <div>
+                        <strong>How work happens</strong>
+                        <small>Locations and footprint</small>
+                    </div>
+                </div>
+
+                <div
+                    class="advisory-story-preview__chapter"
+                    data-story-step="4"
+                    role="listitem">
+
+                    <span class="advisory-story-preview__number">
+                        04
+                    </span>
+
+                    <div>
+                        <strong>Your next chapter</strong>
+                        <small>Growth and priorities</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <p class="advisory-entry__privacy">
+        Your information is used to prepare and deliver your advisory.
+        Read our
+        <a href="more-info.html#privacy">
+            privacy information
+        </a>.
+    </p>
+</section>            
+            
+           <!-- ======================================================
+                 SEVEN-MOMENT STORY WORKSPACE
+            ======================================================= -->
+            <section
+                id="conversationWorkspace"
+                class="advisory-workspace"
+                aria-labelledby="stepTitle"
+                hidden>
+
+                <aside class="advisory-chapter-rail" aria-label="Advisory chapters">
+                    <div class="advisory-chapter-rail__heading">
+                        <span>Your advisory journey</span>
+                        <strong id="desktopTimeRemaining">About 5 minutes remaining</strong>
+                    </div>
+
+                    <ol id="chapterRail" class="advisory-chapter-list">
+                        <li class="advisory-chapter is-current" data-chapter="0" aria-current="step">
+                            <span class="advisory-chapter__marker">1</span>
+                            <span class="advisory-chapter__copy">
+                                <strong>Your business</strong>
+                                <small>Organisation and stage</small>
+                            </span>
+                        </li>
+
+                        <li class="advisory-chapter" data-chapter="1">
+                            <span class="advisory-chapter__marker">2</span>
+                            <span class="advisory-chapter__copy">
+                                <strong>Your people</strong>
+                                <small>Workforce and working model</small>
+                            </span>
+                        </li>
+
+                        <li class="advisory-chapter" data-chapter="2">
+                            <span class="advisory-chapter__marker">3</span>
+                            <span class="advisory-chapter__copy">
+                                <strong>How work happens</strong>
+                                <small>Operating footprint</small>
+                            </span>
+                        </li>
+
+                        <li class="advisory-chapter" data-chapter="3">
+                            <span class="advisory-chapter__marker">4</span>
+                            <span class="advisory-chapter__copy">
+                                <strong>Your next chapter</strong>
+                                <small>Growth and people readiness</small>
+                            </span>
+                        </li>
+                    </ol>
+                </aside>
+
+                <div class="advisory-workspace__content">
+                    <header class="advisory-progress-header">
+                        <div class="advisory-progress-header__topline">
+                            <div class="advisory-progress-header__copy">
+                                <span id="stepIndicator" class="advisory-step-indicator">
+                                    Chapter 1 of 4 · Your business
+                                </span>
+                                <span id="mobileTimeRemaining" class="advisory-time-remaining">
+                                    About 5 minutes remaining
+                                </span>
+                            </div>
+
+                            <div class="advisory-progress-header__utility">
+                                <span id="saveStatus" class="advisory-save-status" aria-live="polite">
+                                    Progress saves automatically
+                                </span>
+
+                                <button
+                                    id="saveExitButton"
+                                    class="advisory-text-button advisory-save-exit-button"
+                                    type="button"
+                                    hidden>
+                                    <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
+                                    Save and exit
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            id="progressTrack"
+                            class="advisory-progress-track"
+                            role="progressbar"
+                            aria-label="Advisory briefing progress"
+                            aria-valuemin="0"
+                            aria-valuemax="7"
+                            aria-valuenow="1">
+                            <span id="progressBar" class="advisory-progress-fill"></span>
+                        </div>
+                    </header>
+
+                    <form id="storyForm" class="advisory-form-card" novalidate>
+                        <div class="advisory-form-card__heading">
+                            <p id="storyEyebrow" class="advisory-form-eyebrow">Your business</p>
+                            <h2 id="stepTitle">Let’s start with the business you’re building.</h2>
+                            <p id="stepDescription">
+                                These basics help us keep every recommendation grounded in your
+                                organisation’s reality.
+                            </p>
+                        </div>
+
+                        <div
+                            id="storyContainer"
+                            class="advisory-story-container"
+                            aria-live="polite">
+                            <!-- JavaScript renders each of the seven story moments here. -->
+                        </div>
+
+                        <footer class="advisory-form-actions">
+                            <button
+                                id="backButton"
+                                class="advisory-secondary-button"
+                                type="button"
+                                hidden>
+                                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                                Back
+                            </button>
+
+                            <span id="footerMessage" class="advisory-form-actions__status">
+                                Story 1 of 7
+                            </span>
+
+                            <button
+                                id="nextButton"
+                                class="advisory-primary-button"
+                                type="submit">
+                                Continue
+                                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ======================================================
+                 ORGANISATION STORY REVIEW
+            ======================================================= -->
+            <section
+                id="reviewScreen"
+                class="advisory-panel-screen"
+                aria-labelledby="reviewTitle"
+                tabindex="-1"
+                hidden>
+                <article class="advisory-review-card">
+                    <div class="advisory-panel-heading">
+                        <span class="advisory-panel-eyebrow">Your organisation story</span>
+                        <h2 id="reviewTitle">Here’s the story we heard.</h2>
+                        <p>
+                            Scan the summary, edit anything that has changed, and then we’ll use
+                            this context to prepare your advisory.
+                        </p>
+                    </div>
+
+                    <div id="reviewContainer" class="advisory-review-grid">
+                        <article class="advisory-summary-card">
+                            <div class="advisory-summary-card__heading">
+                                <span class="advisory-summary-card__number">01</span>
+                                <h3>Your business</h3>
+                            </div>
+                            <p id="businessSummary">Your business summary will appear here.</p>
+                            <button class="advisory-edit-button" type="button" data-edit-screen="0">
+                                Edit business details
+                            </button>
+                        </article>
+
+                        <article class="advisory-summary-card">
+                            <div class="advisory-summary-card__heading">
+                                <span class="advisory-summary-card__number">02</span>
+                                <h3>Your people</h3>
+                            </div>
+                            <p id="peopleSummary">Your workforce summary will appear here.</p>
+                            <button class="advisory-edit-button" type="button" data-edit-screen="2">
+                                Edit workforce details
+                            </button>
+                        </article>
+
+                        <article class="advisory-summary-card">
+                            <div class="advisory-summary-card__heading">
+                                <span class="advisory-summary-card__number">03</span>
+                                <h3>How work happens</h3>
+                            </div>
+                            <p id="operationsSummary">Your operating summary will appear here.</p>
+                            <button class="advisory-edit-button" type="button" data-edit-screen="4">
+                                Edit operating details
+                            </button>
+                        </article>
+
+                        <article class="advisory-summary-card">
+                            <div class="advisory-summary-card__heading">
+                                <span class="advisory-summary-card__number">04</span>
+                                <h3>Your next chapter</h3>
+                            </div>
+                            <p id="growthSummary">Your growth summary will appear here.</p>
+                            <button class="advisory-edit-button" type="button" data-edit-screen="5">
+                                Edit growth priorities
+                            </button>
+                        </article>
+                    </div>
+
+                    <div class="advisory-panel-actions">
+                        <button
+                            id="reviewBackButton"
+                            class="advisory-secondary-button"
+                            type="button">
+                            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                            Go back
+                        </button>
+
+                        <button
+                            id="continueToContactButton"
+                            class="advisory-primary-button"
+                            type="button">
+                            Continue to advisory details
+                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ======================================================
+                 MANDATORY LEAD CAPTURE
+            ======================================================= -->
+            <section
+                id="contactScreen"
+                class="advisory-panel-screen"
+                aria-labelledby="contactTitle"
+                tabindex="-1"
+                hidden>
+                <article class="advisory-contact-card">
+                    <div class="advisory-panel-heading">
+                        <span class="advisory-panel-eyebrow">Final step</span>
+                        <h2 id="contactTitle">Where should we prepare your advisory?</h2>
+                        <p>
+                            Enter your details to generate your personalised advisory, save it
+                            against your organisation and help us provide relevant follow-up support.
+                        </p>
+                    </div>
+
+                    <form id="leadCaptureForm" class="advisory-lead-form" novalidate>
+                        <div class="advisory-field">
+                            <label for="leadName">
+                                Your name
+                                <span aria-hidden="true">*</span>
+                            </label>
+                            <input
+                                id="leadName"
+                                name="leadName"
+                                type="text"
+                                autocomplete="name"
+                                placeholder="Enter your full name"
+                                aria-describedby="leadNameError"
+                                required>
+                            <p id="leadNameError" class="advisory-field-error" hidden></p>
+                        </div>
+
+                        <div class="advisory-field">
+                            <label for="leadEmail">
+                                Work email
+                                <span aria-hidden="true">*</span>
+                            </label>
+                            <input
+                                id="leadEmail"
+                                name="leadEmail"
+                                type="email"
+                                inputmode="email"
+                                autocomplete="email"
+                                placeholder="name@company.com"
+                                aria-describedby="leadEmailHelp leadEmailError"
+                                required>
+                                
+                            <p id="leadEmailHelp" class="advisory-field-help">
+                                    We’ll use this email to prepare and deliver your advisory
+                                    and help you return to it.
+                                </p>
+                            
+                            <p id="leadEmailError" class="advisory-field-error" hidden></p>
+                        </div>
+
+                        <div class="advisory-field">
+                            <label for="leadRole">
+                                Your role
+                                <span class="advisory-optional-label">Optional</span>
+                            </label>
+                            <select id="leadRole" name="leadRole">
+                                <option value="">Select the closest option</option>
+                                <option value="founder-business-leader">Founder or business leader</option>
+                                <option value="hr-people-leader">HR or People leader</option>
+                                <option value="operations-leader">Operations leader</option>
+                                <option value="finance-leader">Finance leader</option>
+                                <option value="consultant-advisor">Consultant or advisor</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <fieldset class="advisory-consent-group">
+                            <legend>
+                                Optional updates
+                            </legend>
+                        
+                            <label
+                                class="advisory-consent-option"
+                                for="marketingConsent">
+                        
+                                <input
+                                    id="marketingConsent"
+                                    name="marketingConsent"
+                                    type="checkbox">
+                        
+                                <span>
+                                    Send me occasional HR insights, tools, product updates
+                                    and invitations from HRTechify. This is optional.
+                                </span>
+                            </label>
+                        </fieldset>
+                        
+                        <p class="advisory-privacy-note">
+                            Only your name and email are required to prepare and deliver
+                            your advisory. Optional updates can be declined or unsubscribed
+                            from at any time. Read our
+                            <a href="more-info.html#privacy">privacy information</a>.
+                        </p>
+
+                        <div class="advisory-panel-actions">
+                            <button
+                                id="contactBackButton"
+                                class="advisory-secondary-button"
+                                type="button">
+                                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                                Back to review
+                            </button>
+
+                            <button
+                                id="generateReportButton"
+                                class="advisory-primary-button"
+                                type="submit">
+                                Generate my advisory
+                                <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </form>
+                </article>
+            </section>
+
+            <!-- ======================================================
+                 GENERATION STATE
+            ======================================================= -->
+            <section
+                id="loadingScreen"
+                class="advisory-panel-screen"
+                aria-labelledby="loadingTitle"
+                tabindex="-1"
+                hidden>
+                <article class="advisory-generation-card">
+                    <div class="advisory-generation-mark" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="advisory-panel-heading">
+                        <span class="advisory-panel-eyebrow">Personalising your guidance</span>
+                        <h2 id="loadingTitle">Building your advisory</h2>
+                        <p>
+                            We’re connecting your business context, workforce shape and growth plans.
+                        </p>
+                    </div>
+
+                    <ol id="generationSteps" class="advisory-generation-steps" aria-live="polite">
+                        <li class="is-active" data-generation-step="0">
+                            <i class="fa-solid fa-circle-notch" aria-hidden="true"></i>
+                            Organising your context
+                        </li>
+                        <li data-generation-step="1">
+                            <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                            Identifying people priorities
+                        </li>
+                        <li data-generation-step="2">
+                            <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                            Preparing recommended next steps
+                        </li>
+                    </ol>
+
+                    <p id="loadingMessage" class="advisory-generation-status">
+                        Organising your context…
+                    </p>
+
+                    <div id="generationError" class="advisory-generation-error" hidden>
+                        <h3>We couldn’t prepare the advisory just yet.</h3>
+                        <p>
+                            Your answers have been saved. Try again without completing the briefing again.
+                        </p>
+                        <div class="advisory-panel-actions">
+                            <button id="returnToReviewButton" class="advisory-secondary-button" type="button">
+                                Return to review
+                            </button>
+                            <button id="retryGenerationButton" class="advisory-primary-button" type="button">
+                                Try again
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ======================================================
+                 COMPLETION STATE
+            ======================================================= -->
+            <section
+                id="successScreen"
+                class="advisory-panel-screen"
+                aria-labelledby="successTitle"
+                tabindex="-1"
+                hidden>
+                <article class="advisory-success-card">
+                    <div class="advisory-success-icon" aria-hidden="true">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div class="advisory-panel-heading">
+                        <span class="advisory-panel-eyebrow">Briefing complete</span>
+                        <h2 id="successTitle">Your advisory is ready.</h2>
+                        <p>
+                            Built around your organisation’s current stage—not a generic score or checklist.
+                        </p>
+                    </div>
+
+                    <div class="advisory-report-meta">
+                        <span>Prepared for <strong id="preparedForName">you</strong></span>
+                        <span>
+                            <strong id="preparedForCompany">Your organisation</strong>
+                            ·
+                            <time id="preparedDate"></time>
+                        </span>
+                    </div>
+
+                    <div class="advisory-success-actions">
+                        <button id="viewReportButton" class="advisory-primary-button" type="button">
+                            Open my advisory
+                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+
+                        <button id="downloadReportButton" class="advisory-secondary-button" type="button">
+                            <i class="fa-solid fa-download" aria-hidden="true"></i>
+                            Download PDF
+                        </button>
+
+                        <button id="emailAgainButton" class="advisory-text-button" type="button">
+                            Email me another copy
+                        </button>
+
+                        <button id="editAnswersButton" class="advisory-text-button" type="button">
+                            Edit my answers
+                        </button>
+                    </div>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <!-- ==========================================================
+         SAVE AND EXIT CONFIRMATION
+    ========================================================== -->
+    <div
+        id="exitModal"
+        class="advisory-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="exitModalTitle"
+        hidden>
+        <div class="advisory-modal__backdrop" data-close-exit-modal></div>
+
+        <div class="advisory-modal__card">
+            <div class="advisory-modal__icon" aria-hidden="true">
+                <i class="fa-regular fa-bookmark"></i>
+            </div>
+
+            <h2 id="exitModalTitle">Your progress is saved.</h2>
+            <p>
+                You can return to this briefing on this device and continue from where you stopped.
+            </p>
+
+            <div class="advisory-modal__actions">
+                <button id="cancelExitButton" class="advisory-secondary-button" type="button">
+                    Continue briefing
+                </button>
+                <button id="confirmExitButton" class="advisory-primary-button" type="button">
+                    Save and leave
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accessible announcements -->
+    <div id="liveRegion" class="advisory-visually-hidden" aria-live="polite" aria-atomic="true"></div>
+    <div id="assertiveRegion" class="advisory-visually-hidden" aria-live="assertive" aria-atomic="true"></div>
+
+    <script id="assessmentConfig" type="application/json">
+    {
+        "application": "GrowWithHR",
+        "experience": "Executive Advisory Briefing",
+        "applicationVersion": "0.20.4-prototype.1",
+        "experienceVersion": "2.0.0",
+        "schemaVersion": 1,
+        "chapters": 4,
+        "storyMoments": 7,
+        "emailRequired": true,
+        "report": "sample-advisory-report.html"
+    }
+    </script>
+
+    <noscript>
+        <section class="advisory-noscript">
+            <div class="advisory-noscript__card">
+                <h2>JavaScript is required</h2>
+                <p>
+                    The GrowWithHR Executive Advisory Briefing uses JavaScript to save your
+                    progress and prepare your personalised advisory. Enable JavaScript and reload this page.
+                </p>
+                <a href="index.html" class="advisory-primary-button">Return to home</a>
+            </div>
+        </section>
+    </noscript>
+
+<!-- ==========================================================
+     EXECUTIVE ADVISORY APPLICATION DEPENDENCIES
+
+     Loading order:
+     1. Shared site functionality
+     2. PDF and email services
+     3. Extracted assessment modules
+     4. Modular assessment controller
+     5. Build marker
+========================================================== -->
+
+<!-- Shared site navigation and shell behavior -->
+
+
+<!-- PDF generation dependency -->
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+</script>
+
+<!-- Existing PDF integration -->
+<script src="js/pdf.js"></script>
+
+<!-- Existing Gmail delivery integration -->
+<script src="js/gmail-service.js"></script>
+
+<!-- ==========================================================
+     EXECUTIVE ASSESSMENT MODULES
+========================================================== -->
+
+<!-- Static assessment definitions and option catalogues -->
+<script src="js/executive-assessment/assessment-definition.js"></script>
+
+<!-- Shared pure utility functions -->
+<script src="js/executive-assessment/assessment-utils.js"></script>
+
+<!-- Browser storage and saved-progress handling -->
+<script src="js/executive-assessment/assessment-storage.js"></script>
+
+<!-- Industry catalogue loading, caching and resolution -->
+<script src="js/executive-assessment/industry-catalog.js"></script>
+
+<!-- Assessment and lead validation -->
+<script src="js/executive-assessment/assessment-validation.js"></script>
+
+<!-- Reusable assessment-field HTML builders -->
+<script src="js/executive-assessment/assessment-fields.js"></script>
+
+<!-- Assessment moment screen renderers -->
+<script src="js/executive-assessment/assessment-screens.js"></script>
+
+<!-- Review-screen summary builder -->
+<script src="js/executive-assessment/assessment-review.js"></script>
+
+<!-- Report and lead-record mapping -->
+<script src="js/executive-assessment/report-mapper.js"></script>
+
+<!-- PDF and email-delivery orchestration -->
+<script src="js/executive-assessment/advisory-delivery.js"></script>
+
+<!-- Mutable assessment-state model -->
+<script src="js/executive-assessment/assessment-state.js"></script>
+
+<!-- Modular production controller -->
+<script src="js/executive-assessment.js"></script>
+
+<!-- Visible application build marker -->
+<script src="js/build-marker.js">
+    
+</script>
+</body>
+</html>
