@@ -48,8 +48,16 @@ assert.match(shellSource, /css\/25-ui-polish\.css/,
     "The shared shell must load the final cross-page UI/accessibility polish layer.");
 assert.doesNotMatch(shellSource, /26-header-brand-lockup\.css/,
     "The shared shell must not load a second navbar geometry layer.");
-assert.match(shellSource, /GrowWithHR by HRTechify/,
-    "The shared shell must expose the approved GrowWithHR footer brand line.");
+assert.match(shellSource, /<strong>GrowWithHR<\/strong> by HRTechify/,
+    "The shared shell must expose the approved left-aligned GrowWithHR footer brand line.");
+assert.match(shellSource, /The-Corporatex\/index\.html#about/,
+    "The footer About link must point to the HRTechify corporate About page.");
+assert.match(shellSource, /The-Corporatex\/privacy-safety\.html/,
+    "The footer Privacy link must point to the HRTechify corporate privacy page.");
+assert.match(shellSource, /mailto:hrtechifyed@gmail\.com/,
+    "The footer Contact link must open email to HRTechify.");
+assert.match(shellSource, /removeHomepageTriggerStrip/,
+    "The shared shell must remove the redundant homepage buyer-trigger strip.");
 assert.match(
     shellSource,
     /<div class="site-header-shell__inner">\s*<a class="site-brand-logo"[\s\S]*?<nav class="site-nav-glass"/,
