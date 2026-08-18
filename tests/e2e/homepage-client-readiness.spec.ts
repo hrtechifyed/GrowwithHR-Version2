@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("homepage client readiness", () => {
-  test("desktop capability controls are visible and advance the carousel", async ({ page }) => {
+  test("desktop shows the two current product capabilities", async ({ page }) => {
     const problems: string[] = [];
     page.on("console", message => {
       if (["error", "warning"].includes(message.type())) problems.push(`${message.type()}: ${message.text()}`);
@@ -9,22 +9,23 @@ test.describe("homepage client readiness", () => {
     page.on("pageerror", error => problems.push(`pageerror: ${error.message}`));
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/index.html", { waitUntil: "networkidle" });
-    const track = page.locator(".carousel-track");
-    const next = page.getByRole("button", { name: "Next capability" });
-    await expect(next).toBeVisible();
-    const before = await track.evaluate(element => element.scrollLeft);
-    await next.click();
-    await expect.poll(() => track.evaluate(element => element.scrollLeft)).toBeGreaterThan(before);
-    await expect(page.locator(".capability-slide").nth(1)).toHaveClass(/active/);
+
+    const cards = page.locator("#capabilities .buyer-card");
+    await expect(cards).toHaveCount(2);
+    await expect(page.getByRole("link", { name: /Identify My Company’s Compliance Needs/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Understand My Organization Structure/i })).toBeVisible();
     expect(problems).toEqual([]);
   });
 
-  test("mobile carousel remains horizontally scrollable without desktop arrows", async ({ page }) => {
+  test("mobile capabilities remain usable without horizontal page overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/index.html", { waitUntil: "networkidle" });
-    await expect(page.getByRole("button", { name: "Next capability" })).toBeHidden();
-    const dimensions = await page.locator(".carousel-track").evaluate(element => ({ clientWidth: element.clientWidth, scrollWidth: element.scrollWidth }));
-    expect(dimensions.scrollWidth).toBeGreaterThan(dimensions.clientWidth);
+    await expect(page.locator("#capabilities .buyer-card")).toHaveCount(2);
+
+    const overflow = await page.evaluate(() => (
+      document.documentElement.scrollWidth - document.documentElement.clientWidth
+    ));
+    expect(overflow).toBeLessThanOrEqual(2);
   });
 
   test("legacy assessment URL redirects to the single stable route", async ({ page }) => {
@@ -34,10 +35,10 @@ test.describe("homepage client readiness", () => {
   });
 });
 
-test("homepage explains the compliance-engine authority boundary", async ({ page }) => {
+test("homepage explains the source and GrowWithHR rule boundary", async ({ page }) => {
   await page.goto("/index.html", { waitUntil: "networkidle" });
-  await expect(page.getByRole("heading", { name: "How GrowWithHR reaches a compliance answer" })).toBeVisible();
+  await expect(page.locator("#compliance-engine-title")).toHaveText("The recommendation and its source are kept separate.");
   await expect(page.locator("[data-testid=\"compliance-engine-flow\"] .engine-step")).toHaveCount(4);
-  await expect(page.getByText("Rules decide applicability.", { exact: false })).toBeVisible();
-  await expect(page.getByText("AI is not used as the applicability authority.", { exact: false })).toBeVisible();
+  await expect(page.getByText("The GrowWithHR rule explains how those facts produced the result.", { exact: false })).toBeVisible();
+  await expect(page.getByText("The relevant public source explains the underlying principle or authority.", { exact: false })).toBeVisible();
 });
