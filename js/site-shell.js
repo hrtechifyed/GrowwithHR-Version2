@@ -79,6 +79,7 @@
         const activeByFile = {
             "index.html": "platform",
             "analyze-company.html": "analyze",
+            "compliance-intelligence.html": "analyze",
             "intelligence-hub.html": "analyze",
             "organization-intelligence.html": "analyze",
             "organization-structure-report.html": "analyze",
