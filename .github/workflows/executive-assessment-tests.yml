@@ -6,6 +6,8 @@ on:
   push:
     paths:
       - "index.html"
+      - "intelligence-hub.html"
+      - "compliance-intelligence.html"
       - "app.js"
       - "sample-advisory-report.html"
       - "executive-advisory-report.html"
@@ -58,6 +60,8 @@ on:
   pull_request:
     paths:
       - "index.html"
+      - "intelligence-hub.html"
+      - "compliance-intelligence.html"
       - "app.js"
       - "sample-advisory-report.html"
       - "executive-advisory-report.html"
@@ -149,6 +153,7 @@ jobs:
           tests/e2e/assessment-stage-continue.spec.ts
           tests/e2e/assessment-complete-delivery.spec.ts
           tests/e2e/analyze-company-current.spec.ts
+          tests/e2e/compliance-dedicated-entry.spec.ts
           tests/e2e/analyze-company-v3.spec.ts
           tests/e2e/analyze-company-v3-traceability.spec.ts
           tests/e2e/analyze-company-v3-compliance-story.spec.ts
