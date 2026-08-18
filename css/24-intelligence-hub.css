@@ -38,10 +38,18 @@ body.intelligence-hub-page .container {
 
 .intelligence-hub-hero__content h1 {
     max-width: 900px;
-    margin: 0 auto 18px;
+    margin: 0 auto 12px;
     font-size: clamp(2.6rem, 6vw, 5.2rem);
     line-height: 1.02;
     text-wrap: balance;
+}
+
+.hub-trust-signal {
+    max-width: 720px;
+    margin: 0 auto 10px;
+    color: var(--text-secondary);
+    font-size: .96rem;
+    line-height: 1.55;
 }
 
 .intelligence-hub-hero__content .hero-description {
@@ -303,6 +311,88 @@ body.intelligence-hub-page .container {
     border-color: rgba(255,176,0,.35);
 }
 
+.hub-card-deliverables {
+    display: grid;
+    gap: 5px;
+}
+
+.hub-card-deliverables ul {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding-left: 18px;
+}
+
+.hub-sample-action {
+    margin: 12px 0 0 !important;
+}
+
+.hub-sample-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 9px 15px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: var(--radius-pill);
+    background: rgba(255,255,255,.035);
+    color: var(--text-primary);
+    font-weight: 750;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+}
+
+.hub-sample-link:hover {
+    border-color: rgba(255,176,0,.42);
+    background: rgba(255,176,0,.07);
+    transform: translateY(-1px);
+}
+
+.hub-start-note {
+    margin: 28px auto 0;
+    max-width: 920px;
+    border: 1px solid rgba(255,176,0,.22);
+    border-radius: 16px;
+    background: rgba(255,176,0,.055);
+}
+
+.hub-start-note summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 48px;
+    padding: 13px 18px;
+    color: var(--text-primary);
+    font-weight: 800;
+    cursor: pointer;
+    list-style: none;
+}
+
+.hub-start-note summary::-webkit-details-marker {
+    display: none;
+}
+
+.hub-start-note__chevron {
+    color: var(--brand-gold);
+    transition: transform var(--transition-fast);
+}
+
+.hub-start-note[open] .hub-start-note__chevron {
+    transform: rotate(180deg);
+}
+
+.hub-start-note__content {
+    padding: 0 18px 16px;
+}
+
+.hub-start-note__content p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
 @media (max-width: 860px) {
     .hub-workspace-card,
     .hub-engine-grid {
@@ -337,6 +427,10 @@ body.intelligence-hub-page .container {
     }
 
     .hub-workspace-actions button {
+        width: 100%;
+    }
+
+    .hub-sample-link {
         width: 100%;
     }
 }
