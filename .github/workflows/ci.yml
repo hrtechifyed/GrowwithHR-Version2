@@ -57,6 +57,7 @@ jobs:
         run: >
           node tests/site-shell-first-paint-checks.mjs &&
           node tests/buyer-trust-onboarding-checks.mjs &&
+          node tests/compliance-dedicated-entry-checks.mjs &&
           node tests/ui-polish-contract-checks.mjs
 
       - name: Run M1 architecture contracts
