@@ -22,7 +22,12 @@
         { label: "Contact", href: "more-info.html#contact" }
     ]);
 
-    const FOOTER_BRAND = "GrowWithHR by HRTechify";
+    const FOOTER_ITEMS = Object.freeze([
+        { label: "About", href: "https://hrtechifyed.github.io/The-Corporatex/index.html#about" },
+        { label: "Privacy", href: "https://hrtechifyed.github.io/The-Corporatex/privacy-safety.html" },
+        { label: "Contact", href: "mailto:hrtechifyed@gmail.com" }
+    ]);
+
     const FOOTER_RIGHTS = "© 2026 HRTechify. All rights reserved.";
 
     function escapeHtml(value) {
@@ -103,6 +108,10 @@
         return `<a href="${escapeHtml(withRoot(prefix, item.href))}">${escapeHtml(item.label)}</a>`;
     }
 
+    function footerItemMarkup(item) {
+        return `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`;
+    }
+
     function buildHeader(prefix, activeKey) {
         const header = document.createElement("header");
         header.className = "site-header-shell";
@@ -127,14 +136,14 @@
         return header;
     }
 
-    function buildFooter(prefix) {
+    function buildFooter() {
         const footer = document.createElement("footer");
         footer.className = "site-footer";
         footer.dataset.siteShellFooter = "";
         footer.innerHTML = `
             <div class="site-footer__inner">
-                <p class="site-footer__brand-line">${escapeHtml(FOOTER_BRAND)}</p>
-                <nav class="site-footer__nav" aria-label="Footer navigation">${MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("")}</nav>
+                <p class="site-footer__brand-line"><strong>GrowWithHR</strong> by HRTechify</p>
+                <nav class="site-footer__nav" aria-label="Footer navigation">${FOOTER_ITEMS.map((item) => footerItemMarkup(item)).join("")}</nav>
                 <p class="site-footer__rights-line">${escapeHtml(FOOTER_RIGHTS)}</p>
             </div>`;
         return footer;
@@ -261,12 +270,17 @@
         import("./ui-polish.js").catch((error) => console.error("GrowWithHR UI polish failed to initialize", error));
     }
 
+    function removeHomepageTriggerStrip() {
+        document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
+    }
+
     function renderSiteShell() {
         if (!document.body) return;
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
         const header = buildHeader(prefix, activeKey);
-        const footer = buildFooter(prefix);
+        const footer = buildFooter();
+        removeHomepageTriggerStrip();
         placeHeader(header);
         placeFooter(footer);
         bindHeaderInteractions(header);

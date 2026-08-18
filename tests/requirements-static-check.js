@@ -35,11 +35,12 @@ for (const file of htmlFiles) {
 }
 
 const siteShell = read("js/site-shell.js");
-includes(siteShell, "GrowWithHR by HRTechify", "The shared footer must use the approved GrowWithHR brand line.");
+includes(siteShell, "<strong>GrowWithHR</strong> by HRTechify", "The shared footer must use the approved GrowWithHR brand line.");
 includes(siteShell, "© 2026 HRTechify. All rights reserved.", "The shared footer must use the approved rights line.");
-includes(siteShell, "more-info.html#about", "The shared footer must link to About.");
-includes(siteShell, "more-info.html#privacy", "The shared footer must link to Privacy.");
-includes(siteShell, "more-info.html#contact", "The shared footer must link to Contact.");
+includes(siteShell, "https://hrtechifyed.github.io/The-Corporatex/index.html#about", "The shared footer must link to the HRTechify corporate About page.");
+includes(siteShell, "https://hrtechifyed.github.io/The-Corporatex/privacy-safety.html", "The shared footer must link to the HRTechify corporate Privacy page.");
+includes(siteShell, "mailto:hrtechifyed@gmail.com", "The shared footer must link Contact to HRTechify email.");
+includes(siteShell, "removeHomepageTriggerStrip", "The shared shell must remove the redundant homepage buyer-trigger strip.");
 includes(siteShell, 'class="site-nav-toggle"', "The shared shell must provide mobile navigation.");
 includes(siteShell, 'aria-expanded="false"', "Mobile navigation must begin collapsed.");
 includes(siteShell, 'aria-controls="siteNavLinks"', "The navigation toggle must identify its controlled links.");
