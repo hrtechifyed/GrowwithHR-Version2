@@ -9,7 +9,7 @@ function bindSelectorGroup({ selector, dataAttribute, eventName, autoAdvanceMs =
     if (!items.length) return null;
 
     let activeIndex = Math.max(0, items.findIndex((item) => item.classList.contains("active")));
-    let intervalId = 0;
+    let timerId = 0;
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const activate = (index) => {
@@ -33,9 +33,9 @@ function bindSelectorGroup({ selector, dataAttribute, eventName, autoAdvanceMs =
     };
 
     const stopAutoAdvance = () => {
-        if (intervalId) {
-            window.clearInterval(intervalId);
-            intervalId = 0;
+        if (timerId) {
+            window.clearTimeout(timerId);
+            timerId = 0;
         }
     };
 
@@ -43,8 +43,9 @@ function bindSelectorGroup({ selector, dataAttribute, eventName, autoAdvanceMs =
         stopAutoAdvance();
         if (items.length < 2 || motionQuery.matches) return;
 
-        intervalId = window.setInterval(() => {
+        timerId = window.setTimeout(() => {
             activate(activeIndex + 1);
+            startAutoAdvance();
         }, autoAdvanceMs);
     };
 
