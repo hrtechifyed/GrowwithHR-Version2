@@ -11,8 +11,11 @@ const APP_CONFIG = Object.freeze({
     version: "0.20.4-prototype.1",
     releaseName: "Research Prototype",
 
+    // Canonical public product URL. This intentionally stays independent of
+    // the GitHub repository name so future repository renames do not alter the
+    // public product identity or runtime links.
     website:
-        "https://hrtechifyed.github.io/GrowwithHR/",
+        "https://growwithhr.onrender.com/",
 
     supportEmail:
         "hrtechifyed@gmail.com",
