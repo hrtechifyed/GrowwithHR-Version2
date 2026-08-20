@@ -19,6 +19,8 @@ jobs:
   smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      PAGES_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,7 +31,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          url="https://hrtechifyed.github.io/GrowwithHR-Version2/index.html"
+          url="${PAGES_BASE_URL}/index.html"
           for attempt in $(seq 1 60); do
             body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url" 2>/dev/null || true)"
             if grep -Fq "GrowWithHR Public 0.20.4-prototype.1" <<<"$body"; then
@@ -46,7 +48,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          url="https://hrtechifyed.github.io/GrowwithHR-Version2/executive-advisory-report.html"
+          url="${PAGES_BASE_URL}/executive-advisory-report.html"
           body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url")"
           grep -Fq "HR Compliance & Growth Report" <<<"$body"
           grep -Fq 'id="founderReportRoot"' <<<"$body"
@@ -140,11 +142,11 @@ jobs:
             "status": "passed",
             "checks": {
               "githubPagesHomepage": {
-                "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/index.html",
+                "url": "${PAGES_BASE_URL}/index.html",
                 "versionVisible": true
               },
               "githubPagesFounderReport": {
-                "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/executive-advisory-report.html",
+                "url": "${PAGES_BASE_URL}/executive-advisory-report.html",
                 "singleReportRouteVisible": true,
                 "darkReportOptionAbsent": true
               },
@@ -163,7 +165,7 @@ jobs:
                 "durableStorageConfigured": true,
                 "sequencePolicy": "global-non-resetting-symmetric-alpha-numeric",
                 "issuedCount": $issued_count,
-                "lastReportId": "$last_report_id",
+                "lastReportId": "$last_report_id,
                 "lastSuffix": "$last_suffix"
               },
               "legalRagStatus": {
