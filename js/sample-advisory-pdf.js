@@ -9,7 +9,22 @@
 (function initialiseSampleAdvisoryPdf(window, document) {
     "use strict";
 
+    const SAMPLE_REPORT_SUFFIX = "SM01";
+    const SAMPLE_GENERATED_AT = new Date().toISOString();
+
+    function buildSampleReportId(generatedAt) {
+        const date = new Date(generatedAt);
+        const safeDate = Number.isNaN(date.getTime()) ? new Date() : date;
+        const year = String(safeDate.getUTCFullYear());
+        const month = String(safeDate.getUTCMonth() + 1).padStart(2, "0");
+        const day = String(safeDate.getUTCDate()).padStart(2, "0");
+        return `GWHR-${year}-${month}${day}-${SAMPLE_REPORT_SUFFIX}`;
+    }
+
+    const SAMPLE_REPORT_ID = buildSampleReportId(SAMPLE_GENERATED_AT);
+
     const SAMPLE_REPORT = {
+        reportId: SAMPLE_REPORT_ID,
         companyName: "Acme Technologies Pvt. Ltd.",
         recipientName: "Illustrative Executive Leadership",
         recipientRole: "Fictional sample organisation",
@@ -45,7 +60,7 @@
             "Performance and rewards",
             "Workforce planning"
         ],
-        generatedAt: new Date().toISOString(),
+        generatedAt: SAMPLE_GENERATED_AT,
         source: "HRTechify illustrative sample advisory"
     };
 
@@ -54,6 +69,43 @@
             button: document.getElementById("downloadSampleAdvisoryPdf"),
             status: document.getElementById("samplePdfStatus")
         };
+    }
+
+    function ensureSampleReportIdentity() {
+        if (document.getElementById("sampleReportIdentity")) {
+            return;
+        }
+
+        const heroContent = document.querySelector(
+            ".sample-advisory-page .hero .hero-content"
+        );
+
+        if (!heroContent) {
+            return;
+        }
+
+        const identity = document.createElement("p");
+        identity.id = "sampleReportIdentity";
+        identity.className = "sample-report-identity";
+        identity.setAttribute(
+            "aria-label",
+            `Sample Report ID ${SAMPLE_REPORT_ID}`
+        );
+
+        const label = document.createElement("span");
+        label.textContent = "Sample Report ID";
+
+        const value = document.createElement("strong");
+        value.textContent = SAMPLE_REPORT_ID;
+
+        identity.append(label, value);
+
+        const description = heroContent.querySelector(".hero-description");
+        if (description) {
+            description.insertAdjacentElement("afterend", identity);
+        } else {
+            heroContent.prepend(identity);
+        }
     }
 
     function showStatus(statusElement, message, isError = false) {
@@ -101,12 +153,13 @@
 
             await pdfService.downloadAdvisoryPdf({
                 isSample: true,
+                reportId: SAMPLE_REPORT_ID,
                 filename: "HRTechify-Sample-Executive-Advisory.pdf",
                 runningTitle: "GrowWithHR Sample Executive Advisory",
                 coverLabel: "ILLUSTRATIVE SAMPLE EXECUTIVE ADVISORY",
                 coverTitle: "Executive Advisory",
                 coverIntro:
-                    "A fictional, illustrative leadership document demonstrating how GrowWithHR turns organisation information into a structured executive people advisory.",
+                    `Sample Report ID: ${SAMPLE_REPORT_ID}. A fictional, illustrative leadership document demonstrating how GrowWithHR turns organisation information into a structured executive people advisory.`,
                 report: SAMPLE_REPORT
             });
 
@@ -133,6 +186,8 @@
     }
 
     function initialise() {
+        ensureSampleReportIdentity();
+
         const { button } = getElements();
 
         if (!button || button.dataset.samplePdfBound) {
@@ -142,6 +197,12 @@
         button.dataset.samplePdfBound = "true";
         button.addEventListener("click", downloadSamplePdf);
     }
+
+    window.GrowWithHRSampleAdvisory = Object.freeze({
+        reportId: SAMPLE_REPORT_ID,
+        generatedAt: SAMPLE_GENERATED_AT,
+        report: Object.freeze({ ...SAMPLE_REPORT })
+    });
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", initialise, {
