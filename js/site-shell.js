@@ -34,6 +34,8 @@
         "sample-advisory-report.html",
         "executive-advisory-report.html"
     ]);
+    const PHONE_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"></rect><path d="M10.5 18.5h3"></path></svg>';
+    const LAPTOP_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="11" rx="1.5"></rect><path d="M2.5 18.5h19M8.5 18.5l.8-2h5.4l.8 2"></path></svg>';
 
     function escapeHtml(value) {
         return String(value == null ? "" : value)
@@ -75,6 +77,21 @@
 
     function currentFileName() {
         return (window.location.pathname || "").split("/").filter(Boolean).pop() || "index.html";
+    }
+
+    function isReportLayout() {
+        return REPORT_LAYOUT_FILES.has(currentFileName());
+    }
+
+    function seedViewMode() {
+        if (isReportLayout()) return;
+        let stored = null;
+        try { stored = window.localStorage.getItem("growwithhr:view-mode"); } catch (_error) {}
+        const mode = stored === "compact" || stored === "wide"
+            ? stored
+            : (window.matchMedia("(max-width: 1024px)").matches ? "compact" : "wide");
+        document.documentElement.dataset.gwhViewMode = mode;
+        if (document.body) document.body.dataset.gwhViewMode = mode;
     }
 
     function inferActiveNav() {
@@ -142,14 +159,23 @@
         return header;
     }
 
-    function buildFooter() {
+    function buildFooter(includeViewSwitch = false) {
         const footer = document.createElement("footer");
         footer.className = "site-footer";
         footer.dataset.siteShellFooter = "";
+        const switchMarkup = includeViewSwitch ? `
+                <div class="site-footer__view-switch">
+                    <span class="site-footer__view-label">Choose the layout that suits your screen.</span>
+                    <div class="site-footer__view-controls" role="group" aria-label="Website layout">
+                        <button class="site-footer__view-button" type="button" data-gwh-view-mode-choice="compact" aria-pressed="false" title="Mobile and tablet layout">${PHONE_ICON}<span>Mobile / Tablet</span></button>
+                        <button class="site-footer__view-button" type="button" data-gwh-view-mode-choice="wide" aria-pressed="false" title="Laptop and desktop layout">${LAPTOP_ICON}<span>Laptop / Desktop</span></button>
+                    </div>
+                </div>` : "";
         footer.innerHTML = `
             <div class="site-footer__inner">
                 <p class="site-footer__brand-line"><strong>GrowWithHR</strong> by HRTechify</p>
                 <nav class="site-footer__nav" aria-label="Footer navigation">${FOOTER_ITEMS.map((item) => footerItemMarkup(item)).join("")}</nav>
+                ${switchMarkup}
                 <p class="site-footer__rights-line">${escapeHtml(FOOTER_RIGHTS)}</p>
             </div>`;
         return footer;
@@ -240,7 +266,8 @@
                 closeMobileNav(true);
                 return;
             }
-            if (event.key !== "Tab" || !nav.classList.contains("is-open") || !window.matchMedia("(max-width: 900px)").matches) return;
+            const compactMode = document.documentElement.dataset.gwhViewMode === "compact";
+            if (event.key !== "Tab" || !nav.classList.contains("is-open") || !(compactMode || window.matchMedia("(max-width: 900px)").matches)) return;
             const focusable = Array.from(header.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((element) => !element.closest("[hidden]") && element.offsetParent !== null);
             if (!focusable.length) return;
             const first = focusable[0];
@@ -249,8 +276,9 @@
             else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
         });
         window.addEventListener("resize", () => {
-            if (window.matchMedia("(min-width: 901px)").matches) closeMobileNav(false);
+            if (window.matchMedia("(min-width: 901px)").matches && document.documentElement.dataset.gwhViewMode !== "compact") closeMobileNav(false);
         });
+        window.addEventListener("growwithhr:viewmodechange", () => closeMobileNav(false));
     }
 
     function updatePageOffsets() {
@@ -275,7 +303,7 @@
             link.dataset.growwithhrUiPolish = "";
             document.head.appendChild(link);
         }
-        if (!REPORT_LAYOUT_FILES.has(currentFileName()) && !document.querySelector("link[data-growwithhr-founder-redesign]")) {
+        if (!isReportLayout() && !document.querySelector("link[data-growwithhr-founder-redesign]")) {
             document.body.classList.add("gwh-founder-redesign");
             const redesign = document.createElement("link");
             redesign.rel = "stylesheet";
@@ -283,10 +311,11 @@
             redesign.dataset.growwithhrFounderRedesign = "";
             document.head.appendChild(redesign);
         }
-        if (!REPORT_LAYOUT_FILES.has(currentFileName())) {
+        if (!isReportLayout()) {
             appendStylesheetOnce("link[data-growwithhr-contrast-guard]", prefix, "css/29-contrast-guard.css", "data-growwithhr-contrast-guard");
             appendStylesheetOnce("link[data-growwithhr-contrast-audit-fixes]", prefix, "css/30-contrast-audit-fixes.css", "data-growwithhr-contrast-audit-fixes");
             appendStylesheetOnce("link[data-growwithhr-hrtechify-alignment]", prefix, "css/31-hrtechify-alignment.css", "data-growwithhr-hrtechify-alignment");
+            appendStylesheetOnce("link[data-growwithhr-view-mode-switch]", prefix, "css/32-view-mode-switch.css", "data-growwithhr-view-mode-switch");
         }
     }
 
@@ -299,16 +328,24 @@
         import("./ui-polish.js").catch((error) => console.error("GrowWithHR UI polish failed to initialize", error));
     }
 
+    function bootstrapViewModeSwitcher() {
+        if (isReportLayout()) return;
+        import("./view-mode-switch.js")
+            .then((module) => module.initViewModeSwitcher?.())
+            .catch((error) => console.error("GrowWithHR view mode switcher failed to initialize", error));
+    }
+
     function removeHomepageTriggerStrip() {
         document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
     }
 
     function renderSiteShell() {
         if (!document.body) return;
+        seedViewMode();
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
         const header = buildHeader(prefix, activeKey);
-        const footer = buildFooter();
+        const footer = buildFooter(!isReportLayout());
         removeHomepageTriggerStrip();
         placeHeader(header);
         placeFooter(footer);
@@ -317,7 +354,9 @@
         updatePageOffsets();
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
+        bootstrapViewModeSwitcher();
         window.addEventListener("resize", updatePageOffsets);
+        window.addEventListener("growwithhr:viewmodechange", updatePageOffsets);
     }
 
     if (document.readyState === "loading") {

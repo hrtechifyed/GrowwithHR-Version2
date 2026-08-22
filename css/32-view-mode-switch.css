@@ -1,1 +1,253 @@
-/* placeholder */
+/* GrowWithHR selectable presentation modes.
+   Scoped to non-report founder-redesign pages so report layouts remain unchanged. */
+
+body.gwh-founder-redesign .site-footer__view-switch{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 14px;
+  width:100%;
+  margin:14px 0 10px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+body.gwh-founder-redesign .site-footer__view-label{
+  color:rgba(255,255,255,.62);
+  font-size:.74rem;
+  line-height:1.4;
+}
+body.gwh-founder-redesign .site-footer__view-controls{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+}
+body.gwh-founder-redesign .site-footer__view-button{
+  min-height:40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(255,216,90,.25);
+  border-radius:10px;
+  background:transparent;
+  color:#e9d2c0;
+  font:inherit;
+  font-size:.76rem;
+  font-weight:760;
+  cursor:pointer;
+}
+body.gwh-founder-redesign .site-footer__view-button:hover,
+body.gwh-founder-redesign .site-footer__view-button:focus-visible{
+  border-color:#ffd85a;
+  background:rgba(255,216,90,.08);
+  color:#fff8eb;
+}
+body.gwh-founder-redesign .site-footer__view-button[aria-pressed="true"]{
+  border-color:#ffd85a;
+  background:#ffd85a;
+  color:#220302;
+}
+body.gwh-founder-redesign .site-footer__view-button svg{
+  width:20px;
+  height:20px;
+  flex:none;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+/* ---------------- COMPACT: MOBILE / TABLET ---------------- */
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .container{
+  width:min(960px,calc(100% - 34px))!important;
+  max-width:960px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-header-shell{
+  padding-inline:16px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-header-shell__inner{
+  min-height:68px!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-brand-logo{
+  width:48px!important;
+  height:48px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-glass{
+  position:relative!important;
+  min-height:52px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-product-name{
+  padding-left:7px!important;
+  font-size:1rem!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-toggle{
+  display:inline-flex!important;
+  width:46px!important;
+  height:44px!important;
+  margin-left:auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-direction:column!important;
+  gap:5px!important;
+  border:1px solid var(--hri-line)!important;
+  border-radius:8px!important;
+  background:var(--hri-paper)!important;
+  color:var(--hri-ink)!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-toggle span{
+  position:static!important;
+  display:block!important;
+  width:21px!important;
+  height:2px!important;
+  background:var(--hri-ink)!important;
+  transform:none!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-glass.is-open .site-nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)!important}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-glass.is-open .site-nav-toggle span:nth-child(2){opacity:0!important}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-glass.is-open .site-nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)!important}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-links{
+  position:absolute!important;
+  z-index:5100!important;
+  top:calc(100% + 9px)!important;
+  left:0!important;
+  right:0!important;
+  display:none!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:0!important;
+  max-height:min(70vh,640px)!important;
+  padding:10px!important;
+  overflow-y:auto!important;
+  border:1px solid var(--hri-line)!important;
+  border-radius:10px!important;
+  background:var(--hri-paper)!important;
+  box-shadow:var(--hri-shadow)!important;
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+  pointer-events:auto!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-glass.is-open .site-nav-links{display:flex!important}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-link,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-more__toggle{
+  width:100%!important;
+  min-height:48px!important;
+  justify-content:flex-start!important;
+  padding:11px 12px!important;
+  border-bottom:1px solid rgba(34,3,2,.08)!important;
+  border-radius:6px!important;
+  background:transparent!important;
+  color:var(--hri-ink)!important;
+  text-align:left!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-link.is-active,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-link[aria-current="page"],
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-more.is-active>.site-nav-more__toggle{
+  background:var(--hri-soft)!important;
+  border-color:transparent!important;
+  color:var(--hri-ink)!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .site-nav-more__menu{
+  position:static!important;
+  min-width:0!important;
+  margin:2px 0 4px!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:var(--hri-soft)!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .hero,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .hero-v2{
+  padding:58px 0 60px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .hero-layout{
+  grid-template-columns:1fr!important;
+  gap:34px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .hero h1{
+  max-width:820px!important;
+  font-size:clamp(2.7rem,7vw,4.5rem)!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .workspace-window{
+  max-width:760px!important;
+  min-height:445px!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .compact-section,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .how-section,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .capabilities-section,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .compliance-engine-section,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .analyze-redirect-section{
+  padding:54px 0!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .how-grid,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .compliance-engine-flow{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .buyer-authority-grid,
+html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .compliance-engine-difference{
+  grid-template-columns:1fr!important;
+}
+
+/* ---------------- WIDE: LAPTOP / DESKTOP ---------------- */
+html[data-gwh-view-mode="wide"] body.gwh-founder-redesign .container{
+  width:min(1440px,calc(100% - 64px))!important;
+  max-width:1440px!important;
+}
+html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .hero-layout{
+  grid-template-columns:minmax(0,1.04fr) minmax(420px,.96fr)!important;
+  gap:clamp(42px,5.5vw,82px)!important;
+}
+html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .how-grid,
+html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .compliance-engine-flow{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+
+/* Safety: manually selecting wide on a small physical screen never creates horizontal scrolling. */
+@media(max-width:700px){
+  body.gwh-founder-redesign .site-footer__view-switch{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  body.gwh-founder-redesign .site-footer__view-controls{width:100%}
+  body.gwh-founder-redesign .site-footer__view-button{
+    flex:1 1 0;
+    min-width:0;
+    padding-inline:9px;
+  }
+  body.gwh-founder-redesign .site-footer__view-button span{font-size:.7rem}
+
+  html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .container,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign .container{
+    width:min(100% - 28px,1440px)!important;
+  }
+  html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .how-grid,
+  html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .buyer-outcome-grid,
+  html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .buyer-trust-grid,
+  html[data-gwh-view-mode="compact"] body.gwh-founder-redesign.home-page .compliance-engine-flow{
+    grid-template-columns:1fr!important;
+  }
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .hero-layout{
+    grid-template-columns:1fr!important;
+    gap:30px!important;
+  }
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .how-grid,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .buyer-outcome-grid,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .buyer-trust-grid,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .compliance-engine-flow{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:430px){
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .how-grid,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .buyer-outcome-grid,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .buyer-trust-grid,
+  html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .compliance-engine-flow{
+    grid-template-columns:1fr!important;
+  }
+}
