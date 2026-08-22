@@ -1,4 +1,5 @@
 /* Mobile = promotion/discovery; desktop = detailed evaluation. Detail remains reachable. */
+/* release-refresh: 2026-08-23 */
 @media (max-width:700px){
   .home-page .hero{padding:34px 0 42px!important;min-height:auto!important}
   .home-page .hero-layout{gap:24px!important}
