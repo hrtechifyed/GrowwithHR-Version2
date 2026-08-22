@@ -29,6 +29,11 @@
     ]);
 
     const FOOTER_RIGHTS = "© 2026 HRTechify. All rights reserved.";
+    const REPORT_LAYOUT_FILES = new Set([
+        "organization-structure-report.html",
+        "sample-advisory-report.html",
+        "executive-advisory-report.html"
+    ]);
 
     function escapeHtml(value) {
         return String(value == null ? "" : value)
@@ -254,12 +259,21 @@
     }
 
     function ensurePolishStyles(prefix) {
-        if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = withRoot(prefix, "css/25-ui-polish.css");
-        link.dataset.growwithhrUiPolish = "";
-        document.head.appendChild(link);
+        if (!document.querySelector("link[data-growwithhr-ui-polish]")) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = withRoot(prefix, "css/25-ui-polish.css");
+            link.dataset.growwithhrUiPolish = "";
+            document.head.appendChild(link);
+        }
+        if (!REPORT_LAYOUT_FILES.has(currentFileName()) && !document.querySelector("link[data-growwithhr-founder-redesign]")) {
+            document.body.classList.add("gwh-founder-redesign");
+            const redesign = document.createElement("link");
+            redesign.rel = "stylesheet";
+            redesign.href = withRoot(prefix, "css/26-founder-redesign.css");
+            redesign.dataset.growwithhrFounderRedesign = "";
+            document.head.appendChild(redesign);
+        }
     }
 
     function bootstrapHomepageIntelligenceGraph() {
