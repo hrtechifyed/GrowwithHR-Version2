@@ -52,6 +52,12 @@ body.gwh-founder-redesign .legal-callout p {
   color:#65483f!important;
 }
 
+/* Resource descriptions sit on white/cream cards. Keep them dark enough in every view mode. */
+body.gwh-founder-redesign .resource-line-card__description,
+html body.gwh-founder-redesign .resource-line-card__description {
+  color:#65483f!important;
+}
+
 /* Founder redesign CSS is injected later by site-shell.js. These selectors intentionally
    carry greater specificity so the accessibility colors remain authoritative regardless
    of stylesheet load timing. */
