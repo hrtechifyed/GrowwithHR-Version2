@@ -165,10 +165,9 @@
         footer.dataset.siteShellFooter = "";
         const switchMarkup = includeViewSwitch ? `
                 <div class="site-footer__view-switch">
-                    <span class="site-footer__view-label">Choose the layout that suits your screen.</span>
                     <div class="site-footer__view-controls" role="group" aria-label="Website layout">
-                        <button class="site-footer__view-button" type="button" data-gwh-view-mode-choice="compact" aria-pressed="false" title="Mobile and tablet layout">${PHONE_ICON}<span>Mobile / Tablet</span></button>
-                        <button class="site-footer__view-button" type="button" data-gwh-view-mode-choice="wide" aria-pressed="false" title="Laptop and desktop layout">${LAPTOP_ICON}<span>Laptop / Desktop</span></button>
+                        <button class="site-footer__view-button" type="button" data-gwh-view-mode-choice="compact" aria-pressed="false" aria-label="Use mobile and tablet layout" title="Mobile and tablet layout">${PHONE_ICON}</button>
+                        <button class="site-footer__view-button" type="button" data-gwh-view-mode-choice="wide" aria-pressed="false" aria-label="Use laptop and desktop layout" title="Laptop and desktop layout">${LAPTOP_ICON}</button>
                     </div>
                 </div>` : "";
         footer.innerHTML = `
@@ -316,6 +315,7 @@
             appendStylesheetOnce("link[data-growwithhr-contrast-audit-fixes]", prefix, "css/30-contrast-audit-fixes.css", "data-growwithhr-contrast-audit-fixes");
             appendStylesheetOnce("link[data-growwithhr-hrtechify-alignment]", prefix, "css/31-hrtechify-alignment.css", "data-growwithhr-hrtechify-alignment");
             appendStylesheetOnce("link[data-growwithhr-view-mode-switch]", prefix, "css/32-view-mode-switch.css", "data-growwithhr-view-mode-switch");
+            appendStylesheetOnce("link[data-growwithhr-final-mobile-palette]", prefix, "css/33-final-mobile-palette.css", "data-growwithhr-final-mobile-palette");
         }
     }
 
