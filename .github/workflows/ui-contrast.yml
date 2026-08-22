@@ -1,0 +1,52 @@
+name: UI Contrast Accessibility
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "styles.css"
+      - "css/**"
+      - "js/site-shell.js"
+      - "*.html"
+      - "tests/ui-contrast-a11y-check.mjs"
+      - ".github/workflows/ui-contrast.yml"
+  push:
+    branches:
+      - "fix/**"
+    paths:
+      - "styles.css"
+      - "css/**"
+      - "js/site-shell.js"
+      - "*.html"
+      - "tests/ui-contrast-a11y-check.mjs"
+      - ".github/workflows/ui-contrast.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contrast:
+    name: Color contrast across mobile tablet desktop
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: npm install --no-audit --no-fund
+      - run: npm install --no-save --no-audit --no-fund @playwright/test @axe-core/playwright http-server
+      - run: npx playwright install --with-deps chromium
+      - name: Start static site
+        run: npx http-server . -p 4173 -c-1 > /tmp/gwh-ui.log 2>&1 &
+      - name: Wait for site
+        run: |
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:4173/index.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/gwh-ui.log
+          exit 1
+      - name: Run color contrast audit
+        run: node tests/ui-contrast-a11y-check.mjs
