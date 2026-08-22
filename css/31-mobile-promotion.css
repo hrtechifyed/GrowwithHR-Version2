@@ -1,18 +1,70 @@
-/* Mobile = promotion/discovery; desktop = detailed evaluation. Detail remains reachable. */
+/* Mobile = visual-first discovery with progressive density. Nothing is removed.
+   Desktop remains the detailed evaluation experience. */
 @media (max-width:700px){
-  .home-page .hero{padding:34px 0 42px!important;min-height:auto!important}
-  .home-page .hero-layout{gap:24px!important}
-  .home-page .hero-badge{font-size:.68rem!important;letter-spacing:.08em!important;margin-bottom:12px!important}
-  .home-page .hero h1{font-size:clamp(2.15rem,10vw,3.15rem)!important;line-height:1.02!important;max-width:11ch!important;margin-bottom:14px!important}
-  .home-page .hero-description{font-size:.94rem!important;line-height:1.5!important;max-width:33ch!important;display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
-  .home-page .hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important}.home-page .hero-actions a{min-height:44px!important;padding:11px 10px!important;font-size:.78rem!important;text-align:center!important}
-  .home-page .hero-workspace{margin-top:8px!important}.home-page .workspace-window{border-radius:18px!important;overflow:hidden!important}.home-page .workspace-header{padding:14px 16px!important}.home-page .workspace-title{font-size:.9rem!important}.home-page .home-preview-label{display:none!important}
-  .home-page .hero-sidebar{display:none!important}.home-page .hero-dashboard-layout{display:block!important}.home-page .dna-core-panel{min-height:360px!important;padding:12px!important}.home-page #dnaCoreCanvas{min-height:330px!important;height:330px!important}
-  .home-page .buyer-value-strip{display:none!important}
-  .home-page .homepage-section,.home-page .home-section,.home-page section{scroll-margin-top:72px}
-  .home-page .section-title,.home-page h2{font-size:clamp(1.75rem,8vw,2.45rem)!important;line-height:1.08!important}.home-page .section-subtitle,.home-page .section-description{font-size:.92rem!important;line-height:1.5!important}
-  .home-page .value-card,.home-page .trust-card,.home-page .feature-card{padding:18px!important;min-height:0!important}.home-page .value-card p,.home-page .trust-card p,.home-page .feature-card p{font-size:.86rem!important;line-height:1.45!important;display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
-  .home-page .what-you-get-grid,.home-page .trust-grid,.home-page .feature-grid{gap:10px!important}
-  .home-page details{padding:14px 0!important}.home-page details summary{font-size:.95rem!important}.home-page details p{font-size:.88rem!important;line-height:1.5!important}
-  .site-footer{font-size:.84rem!important}
+  .home-page .hero{padding:30px 0 38px!important;min-height:auto!important;background:#06162f!important;color:#fff!important}
+  .home-page .hero-layout{gap:22px!important}
+  .home-page .hero-badge{font-size:.68rem!important;letter-spacing:.08em!important;margin-bottom:12px!important;color:#ffd54a!important}
+  .home-page .hero h1{font-size:clamp(2.05rem,9.6vw,3rem)!important;line-height:1.02!important;max-width:12ch!important;margin-bottom:14px!important;color:#fff!important}
+  .home-page .hero h1 span{color:#ff9800!important}
+  .home-page .hero-description{font-size:.94rem!important;line-height:1.5!important;max-width:35ch!important;color:#fff!important;margin-bottom:16px!important}
+  .home-page .hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important}
+  .home-page .hero-actions a{min-height:44px!important;padding:11px 10px!important;font-size:.78rem!important;text-align:center!important}
+  .home-page .primary-btn{background:#ffc107!important;color:#071426!important;border-color:#ffc107!important}
+  .home-page .secondary-btn{background:transparent!important;color:#fff!important;border-color:#fff!important}
+
+  /* Keep all buyer triggers; make them swipeable instead of deleting them. */
+  .home-page .buyer-value-strip{display:flex!important;overflow-x:auto!important;gap:8px!important;padding:3px 0 8px!important;scroll-snap-type:x proximity!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}
+  .home-page .buyer-value-strip::-webkit-scrollbar{display:none!important}
+  .home-page .buyer-value-strip span{flex:0 0 auto!important;scroll-snap-align:start!important;padding:7px 10px!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:999px!important;color:#fff!important;background:#102a52!important;font-size:.72rem!important;white-space:nowrap!important}
+
+  /* Intelligence Core is the visual signature. The interactive controls remain available below it. */
+  .home-page .hero-workspace{margin-top:6px!important}
+  .home-page .workspace-window{border-radius:18px!important;overflow:hidden!important;background:#081b36!important;border:1px solid rgba(255,193,7,.42)!important}
+  .home-page .workspace-header{padding:13px 14px!important;background:#071426!important}
+  .home-page .workspace-title{font-size:.88rem!important;color:#fff!important}
+  .home-page .home-preview-label{font-size:.65rem!important;color:#ffd54a!important}
+  .home-page .hero-dashboard-layout{display:flex!important;flex-direction:column!important;gap:12px!important;padding:12px!important}
+  .home-page .hero-graph{order:1!important;display:block!important;width:100%!important;min-height:320px!important}
+  .home-page .dna-core-wrapper{min-height:320px!important;height:320px!important;width:100%!important}
+  .home-page #dnaCoreCanvas{display:block!important;min-height:320px!important;height:320px!important;width:100%!important}
+  .home-page .hero-footer{order:2!important;padding:2px 6px 10px!important;text-align:center!important}
+  .home-page .core-title{font-size:1rem!important;color:#fff!important;margin:0 0 4px!important}
+  .home-page .core-subtitle{font-size:.76rem!important;line-height:1.4!important;color:#fff!important;margin:0!important}
+  .home-page .hero-sidebar{order:3!important;display:grid!important;grid-template-columns:1fr!important;gap:8px!important;width:100%!important}
+  .home-page .hero-sidebar .workspace-card{display:block!important;padding:12px!important;border-radius:12px!important;background:#102a52!important;border:1px solid rgba(255,193,7,.3)!important}
+  .home-page .hero-sidebar .card-header h3{font-size:.82rem!important;color:#ffd54a!important;margin:0 0 8px!important}
+  .home-page .dna-pillars,.home-page .growth-stage-list,.home-page .recommendation-list{display:flex!important;overflow-x:auto!important;gap:6px!important;padding-bottom:3px!important;scrollbar-width:none!important}
+  .home-page .dna-pillars::-webkit-scrollbar,.home-page .growth-stage-list::-webkit-scrollbar,.home-page .recommendation-list::-webkit-scrollbar{display:none!important}
+  .home-page .selector-item{display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;gap:5px!important;min-height:38px!important;padding:8px 10px!important;border-radius:9px!important;background:#071426!important;color:#fff!important;border:1px solid rgba(255,255,255,.25)!important;font-size:.72rem!important}
+  .home-page .selector-item.active{background:#ffc107!important;color:#071426!important;border-color:#ffc107!important}
+
+  /* Compact typography, never hidden or clipped. */
+  .home-page section{scroll-margin-top:72px}
+  .home-page .compact-section{padding:44px 0!important}
+  .home-page .section-heading{margin-bottom:22px!important}
+  .home-page .section-tag{font-size:.68rem!important;letter-spacing:.1em!important;color:#c56a00!important}
+  .home-page .section-heading h2,.home-page section h2{font-size:clamp(1.72rem,7.6vw,2.35rem)!important;line-height:1.08!important}
+  .home-page .section-heading>p,.home-page .section-subtitle,.home-page .section-description{font-size:.9rem!important;line-height:1.5!important}
+
+  .home-page .how-grid,.home-page .buyer-outcome-grid,.home-page .compliance-engine-flow,.home-page .buyer-trust-grid,.home-page .buyer-authority-grid{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+  .home-page .how-card,.home-page .buyer-card,.home-page .engine-step,.home-page .buyer-authority-card{display:block!important;padding:18px!important;min-height:0!important;border-radius:14px!important}
+  .home-page .how-card p,.home-page .buyer-card p,.home-page .engine-step p,.home-page .buyer-authority-card p{display:block!important;overflow:visible!important;font-size:.86rem!important;line-height:1.48!important}
+  .home-page .how-card h3,.home-page .buyer-card h3,.home-page .engine-step h3,.home-page .buyer-authority-card h3{font-size:1.05rem!important;line-height:1.25!important}
+  .home-page .focus-note{font-size:.8rem!important;line-height:1.45!important;margin-top:14px!important}
+
+  .home-page .compliance-engine-flow,.home-page .compliance-engine-difference{display:grid!important}
+  .home-page .compliance-engine-difference{grid-template-columns:1fr!important;gap:14px!important;padding:18px!important}
+  .home-page .difference-list{margin:0!important;padding-left:20px!important}
+  .home-page .difference-list li{font-size:.84rem!important;line-height:1.48!important;margin-bottom:8px!important}
+
+  .home-page .buyer-authority-links{display:flex!important;flex-wrap:wrap!important;gap:8px 14px!important}
+  .home-page .buyer-boundary{font-size:.84rem!important;line-height:1.5!important;padding:14px!important}
+  .home-page .summary-card{padding:20px!important}
+  .home-page .summary-card p{font-size:.9rem!important;line-height:1.5!important}
+
+  /* The footer remains available; only its density is reduced. */
+  .home-page .footer{display:block!important;padding:26px 0!important;background:#071426!important;color:#fff!important}
+  .home-page .footer-content{display:grid!important;gap:9px!important;text-align:center!important}
+  .home-page .footer-content p{margin:0!important;font-size:.75rem!important;line-height:1.5!important;color:#fff!important}
+  .home-page .footer a{color:#ffd54a!important}
 }
