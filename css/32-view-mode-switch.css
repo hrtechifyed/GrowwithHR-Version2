@@ -5,39 +5,38 @@ body.gwh-founder-redesign .site-footer__view-switch{
   display:flex;
   align-items:center;
   justify-content:center;
-  flex-wrap:wrap;
-  gap:10px 14px;
   width:100%;
   margin:14px 0 10px;
   padding-top:14px;
   border-top:1px solid rgba(255,255,255,.08);
 }
 body.gwh-founder-redesign .site-footer__view-label{
-  color:rgba(255,255,255,.62);
-  font-size:.74rem;
-  line-height:1.4;
+  display:none;
 }
 body.gwh-founder-redesign .site-footer__view-controls{
   display:flex;
-  flex-wrap:wrap;
+  align-items:center;
   justify-content:center;
   gap:8px;
 }
 body.gwh-founder-redesign .site-footer__view-button{
+  width:40px;
+  height:40px;
+  min-width:40px;
   min-height:40px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  padding:8px 12px;
+  padding:0;
   border:1px solid rgba(255,216,90,.25);
   border-radius:10px;
   background:transparent;
   color:#e9d2c0;
   font:inherit;
-  font-size:.76rem;
-  font-weight:760;
   cursor:pointer;
+}
+body.gwh-founder-redesign .site-footer__view-button>span{
+  display:none;
 }
 body.gwh-founder-redesign .site-footer__view-button:hover,
 body.gwh-founder-redesign .site-footer__view-button:focus-visible{
@@ -210,16 +209,15 @@ html[data-gwh-view-mode="wide"] body.gwh-founder-redesign.home-page .compliance-
 /* Safety: manually selecting wide on a small physical screen never creates horizontal scrolling. */
 @media(max-width:700px){
   body.gwh-founder-redesign .site-footer__view-switch{
-    align-items:stretch;
-    flex-direction:column;
+    align-items:center;
+    flex-direction:row;
   }
-  body.gwh-founder-redesign .site-footer__view-controls{width:100%}
+  body.gwh-founder-redesign .site-footer__view-controls{width:auto}
   body.gwh-founder-redesign .site-footer__view-button{
-    flex:1 1 0;
-    min-width:0;
-    padding-inline:9px;
+    flex:0 0 40px;
+    min-width:40px;
+    padding:0;
   }
-  body.gwh-founder-redesign .site-footer__view-button span{font-size:.7rem}
 
   html[data-gwh-view-mode="compact"] body.gwh-founder-redesign .container,
   html[data-gwh-view-mode="wide"] body.gwh-founder-redesign .container{
