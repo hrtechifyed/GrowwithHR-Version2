@@ -1,219 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GrowWithHR | HRTechify</title>
-  <meta name="description" content="GrowWithHR helps founders and HR leaders identify compliance needs and organization-structure constraints with traceable, source-backed recommendations.">
-  <meta name="growwithhr-legacy-roadmap-labels" content="Talent Intelligence; Leadership Intelligence; Performance Intelligence; Learning Intelligence; Rewards Intelligence; Company Coach">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="prefetch" href="intelligence-hub.html">
-  <script src="js/site-shell.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GrowWithHR | HRTechify</title>
+<meta name="description" content="GrowWithHR helps founders and HR leaders identify compliance needs and organization-structure constraints with traceable, source-backed recommendations.">
+<meta name="theme-color" content="#07111f">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/mockup-replica.css">
 </head>
-<body class="home-page" data-active-nav="platform">
-
-<header id="home" class="hero hero-v2">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-glow hero-glow-1"></div>
-  <div class="hero-glow hero-glow-2"></div>
-
-  <div class="container hero-layout">
-    <div class="hero-content hero-home">
-      <div class="hero-badge">Source-backed HR compliance and organization guidance</div>
-      <h1>
-        Grow your company without guessing
-        <br>
-        <span>what HR needs next.</span>
-      </h1>
-      <p class="hero-description">Use your company facts to identify compliance areas to review and structural bottlenecks that may become expensive as you hire, expand or add management layers. Every recommendation shows its basis.</p>
-      <div class="hero-actions">
-        <a href="intelligence-hub.html" class="primary-btn">Understand My Company</a>
-        <a href="sample-reports.html" class="secondary-btn">Explore Sample Reports</a>
-      </div>
-      <div class="buyer-value-strip" aria-label="Common reasons to use GrowWithHR">
-        <span>Hiring quickly</span>
-        <span>Entering a new location</span>
-        <span>Founder becoming a bottleneck</span>
-        <span>Managers feeling overloaded</span>
-        <span>Unsure what HR requirements changed</span>
-      </div>
-    </div>
-
-    <div class="hero-workspace">
-      <div class="workspace-window" aria-label="Interactive GrowWithHR advisory preview">
-        <div class="workspace-header">
-          <div class="workspace-dot red"></div>
-          <div class="workspace-dot yellow"></div>
-          <div class="workspace-dot green"></div>
-          <div class="workspace-title">Executive Intelligence</div>
-          <span class="home-preview-label">Interactive preview</span>
-        </div>
-
-        <div class="hero-dashboard-layout">
-          <section class="hero-sidebar" aria-label="Executive intelligence controls" data-testid="home-executive-stack">
-            <div class="workspace-card company-dna-card" data-testid="home-stack-card-company">
-              <div class="card-header"><h3>Company DNA</h3></div>
-              <div class="dna-pillars" role="group" aria-label="Company DNA">
-                <button class="selector-item dna-item active" data-pillar="company" aria-pressed="true"><i class="fa-solid fa-building"></i><span>Company</span></button>
-                <button class="selector-item dna-item" data-pillar="people" aria-pressed="false"><i class="fa-solid fa-users"></i><span>People</span></button>
-                <button class="selector-item dna-item" data-pillar="operations" aria-pressed="false"><i class="fa-solid fa-gears"></i><span>Operations</span></button>
-                <button class="selector-item dna-item" data-pillar="growth" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Maturity</span></button>
-              </div>
-            </div>
-
-            <div class="workspace-card growth-stage home-stack-card rolling-card" data-testid="home-stack-card-growth">
-              <div class="card-header"><h3>Growth Stage</h3></div>
-              <div class="growth-stage-list" role="group" aria-label="Growth stage">
-                <button class="selector-item stage-item active" data-stage="startup" aria-pressed="true"><i class="fa-solid fa-seedling"></i><span>Startup</span></button>
-                <button class="selector-item stage-item" data-stage="growth" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Growth</span></button>
-                <button class="selector-item stage-item" data-stage="scaling" aria-pressed="false"><i class="fa-solid fa-arrow-trend-up"></i><span>Scaling</span></button>
-                <button class="selector-item stage-item" data-stage="enterprise" aria-pressed="false"><i class="fa-solid fa-building"></i><span>Enterprise</span></button>
-              </div>
-            </div>
-
-            <div class="workspace-card recommendation-card home-stack-card rolling-card" data-testid="home-stack-card-recommendation">
-              <div class="card-header"><h3>Recommendation Basis</h3></div>
-              <div class="recommendation-list" role="group" aria-label="Recommendation basis">
-                <button class="selector-item recommendation-item active" data-recommendation="company" aria-pressed="true"><i class="fa-solid fa-building"></i><span>Organization Profile</span></button>
-                <button class="selector-item recommendation-item" data-recommendation="stage" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Maturity Stage</span></button>
-                <button class="selector-item recommendation-item" data-recommendation="laws" aria-pressed="false"><i class="fa-solid fa-scale-balanced"></i><span>Applicable Laws</span></button>
-                <button class="selector-item recommendation-item" data-recommendation="updates" aria-pressed="false"><i class="fa-solid fa-bell"></i><span>Regulatory Updates</span></button>
-              </div>
-            </div>
-          </section>
-
-          <section class="hero-graph"><div class="dna-core-wrapper"><div id="dnaCoreCanvas"></div></div></section>
-          <footer class="hero-footer"><h3 class="core-title">GrowWithHR Intelligence Core</h3><p class="core-subtitle">Rules first · Sources visible · Company-specific next actions</p></footer>
-        </div>
-      </div>
-    </div>
+<body class="mockup-gwh">
+<header class="gwh-nav">
+  <div class="gwh-shell gwh-nav-inner">
+    <a class="gwh-brand" href="index.html" aria-label="GrowWithHR home">
+      <img src="assets/favicon.svg" alt="GrowWithHR">
+      <span>GrowWithHR<small>Intelligence for Better Workplaces</small></span>
+    </a>
+    <nav class="gwh-links" aria-label="Primary navigation">
+      <a href="intelligence-hub.html">Evaluate</a><a href="#how">How It Works</a><a href="#why">Why It Matters</a><a href="sample-reports.html">Sample Report</a><a href="official-resources.html">Resources</a><a class="start" href="intelligence-hub.html">Get Started</a>
+    </nav>
+    <button class="gwh-menu" type="button" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button>
+    <nav class="gwh-mobile-nav" aria-label="Mobile navigation"><a href="intelligence-hub.html">Evaluate</a><a href="#how">How It Works</a><a href="#why">Why It Matters</a><a href="sample-reports.html">Sample Report</a><a href="official-resources.html">Resources</a></nav>
   </div>
 </header>
-
-<section id="platform" class="how-section compact-section">
-  <div class="container">
-    <div class="section-heading">
-      <div class="section-tag">WHAT YOU GET</div>
-      <h2>From company facts to a decision you can explain.</h2>
-      <p>GrowWithHR is designed to reduce uncertainty before you spend time with advisers, restructure a team or continue hiring into a problem.</p>
+<main>
+<section class="gwh-hero">
+  <div class="gwh-shell gwh-hero-grid">
+    <div>
+      <div class="gwh-kicker">AI-powered executive advisory reports</div>
+      <h1>Understand. Comply. Improve. <em>Grow.</em></h1>
+      <p>Data. Context. Intelligence.<br>For people strategy that works.</p>
+      <div class="gwh-actions"><a class="gwh-btn primary" href="intelligence-hub.html">Start an Evaluation</a><a class="gwh-btn" href="sample-reports.html">View Sample Report</a></div>
     </div>
-    <div class="how-grid" data-testid="home-process-stack">
-      <article class="how-card"><div class="how-number">01</div><h3>Describe the company</h3><p>Answer guided questions about workforce, locations, management and operating context. Missing information stays missing instead of being guessed.</p></article>
-      <article class="how-card home-stack-card rolling-card"><div class="how-number">02</div><h3>See what needs attention</h3><p>GrowWithHR applies structured rules to identify compliance review areas or organization constraints and shows the facts that triggered each result.</p></article>
-      <article class="how-card home-stack-card rolling-card"><div class="how-number">03</div><h3>Know why</h3><p>Each recommendation exposes its rule basis, source identity, limitations and next action so you can review the reasoning rather than accept a black-box answer.</p></article>
-    </div>
-  </div>
-</section>
-
-<section id="capabilities" class="capabilities-section compact-section">
-  <div class="container">
-    <div class="section-heading">
-      <div class="section-tag">CURRENT PRODUCT</div>
-      <h2>Two company questions GrowWithHR is focused on now.</h2>
-      <p>I am deliberately concentrating the public product on the capabilities that are already usable instead of asking people to navigate a long roadmap of future modules.</p>
-    </div>
-    <div class="buyer-outcome-grid">
-      <article class="buyer-card">
-        <span class="buyer-card__label">Compliance Needs</span>
-        <h3>What HR compliance areas should we review now?</h3>
-        <p>Identify governed compliance areas that may require attention, what facts are still missing and what to review next. The result keeps source identity and limitations visible.</p>
-        <a class="buyer-card__action" href="analyze-company.html?engine=compliance">Identify My Company’s Compliance Needs →</a>
-      </article>
-      <article class="buyer-card">
-        <span class="buyer-card__label">Organization Structure</span>
-        <h3>Where will our structure start constraining growth?</h3>
-        <p>Review management capacity, reporting lines, founder dependency, decision rights, coordination and growth readiness. Every finding separates the public source from the GrowWithHR rule.</p>
-        <a class="buyer-card__action" href="organization-intelligence.html">Understand My Organization Structure →</a>
-      </article>
-    </div>
-    <p class="focus-note">Additional intelligence modules remain future product work. The public buying experience is intentionally centered on Compliance Needs and Organization Structure.</p>
-  </div>
-</section>
-
-<section id="compliance-engine" class="compliance-engine-section compact-section" aria-labelledby="compliance-engine-title">
-  <div class="container">
-    <div class="section-heading compliance-engine-heading">
-      <div class="section-tag">WHY THE ANSWER IS TRACEABLE</div>
-      <h2 id="compliance-engine-title">The recommendation and its source are kept separate.</h2>
-      <p class="compliance-engine-intro">A public source can support a principle without being responsible for the exact recommendation GrowWithHR gives your company. GrowWithHR makes that distinction visible.</p>
-    </div>
-    <div class="compliance-engine-flow" data-testid="compliance-engine-flow">
-      <article class="engine-step"><span class="engine-step-number">01</span><h3>Capture explicit facts</h3><p>The analysis starts with facts you supplied or clearly derived metrics.</p></article>
-      <article class="engine-step"><span class="engine-step-number">02</span><h3>Apply a versioned rule</h3><p>The GrowWithHR rule explains how those facts produced the result.</p></article>
-      <article class="engine-step"><span class="engine-step-number">03</span><h3>Show the source basis</h3><p>The relevant public source explains the underlying principle or authority.</p></article>
-      <article class="engine-step"><span class="engine-step-number">04</span><h3>Keep uncertainty visible</h3><p>Missing facts, assumptions and specialist-review boundaries stay part of the answer.</p></article>
-    </div>
-    <div class="compliance-engine-difference">
-      <div><div class="section-tag">WHAT THIS MEANS FOR A BUYER</div><h3>You can challenge the recommendation.</h3><p>Open the source, inspect the rule and see which company facts were used. The point is not to make the system sound certain; it is to make the basis reviewable.</p></div>
-      <ul class="difference-list">
-        <li><strong>Sources are named.</strong> Evidence is not hidden behind “AI says”.</li>
-        <li><strong>Rules are disclosed.</strong> GrowWithHR takes responsibility for its interpretation.</li>
-        <li><strong>Missing facts remain visible.</strong> The product can say it needs more information.</li>
-        <li><strong>Organization analysis does not score people.</strong> It evaluates structural operating patterns.</li>
-      </ul>
+    <div class="gwh-radar-wrap" aria-label="GrowWithHR Intelligence Core">
+      <div class="gwh-radar-title">The Intelligence Core</div>
+      <svg class="gwh-radar" viewBox="0 0 500 440" role="img" aria-label="GrowWithHR intelligence radar covering compliance, people, culture, technology, leadership and strategy">
+        <g transform="translate(250 215)">
+          <polygon class="ring" points="0,-150 130,-75 130,75 0,150 -130,75 -130,-75"/>
+          <polygon class="ring" points="0,-110 95,-55 95,55 0,110 -95,55 -95,-55"/>
+          <polygon class="ring" points="0,-70 61,-35 61,35 0,70 -61,35 -61,-35"/>
+          <line class="axis" x1="0" y1="0" x2="0" y2="-150"/><line class="axis" x1="0" y1="0" x2="130" y2="-75"/><line class="axis" x1="0" y1="0" x2="130" y2="75"/><line class="axis" x1="0" y1="0" x2="0" y2="150"/><line class="axis" x1="0" y1="0" x2="-130" y2="75"/><line class="axis" x1="0" y1="0" x2="-130" y2="-75"/>
+          <polygon class="shape" points="0,-118 96,-55 102,59 0,122 -92,53 -98,-57"/>
+          <circle class="dot" cx="0" cy="-118" r="4"/><circle class="dot" cx="96" cy="-55" r="4"/><circle class="dot" cx="102" cy="59" r="4"/><circle class="dot" cx="0" cy="122" r="4"/><circle class="dot" cx="-92" cy="53" r="4"/><circle class="dot" cx="-98" cy="-57" r="4"/>
+          <circle class="node" cx="0" cy="-177" r="22"/><circle class="node" cx="155" cy="-90" r="22"/><circle class="node" cx="155" cy="90" r="22"/><circle class="node" cx="0" cy="177" r="22"/><circle class="node" cx="-155" cy="90" r="22"/><circle class="node" cx="-155" cy="-90" r="22"/>
+          <text x="0" y="-172" text-anchor="middle">✓</text><text x="155" y="-85" text-anchor="middle">●</text><text x="155" y="95" text-anchor="middle">♥</text><text x="0" y="182" text-anchor="middle">▣</text><text x="-155" y="95" text-anchor="middle">♟</text><text x="-155" y="-85" text-anchor="middle">◎</text>
+          <text x="0" y="-209" text-anchor="middle">Compliance</text><text x="190" y="-88" text-anchor="start">People</text><text x="190" y="94" text-anchor="start">Culture</text><text x="0" y="215" text-anchor="middle">Technology</text><text x="-190" y="94" text-anchor="end">Leadership</text><text x="-190" y="-88" text-anchor="end">Strategy</text>
+        </g>
+      </svg>
     </div>
   </div>
 </section>
-
-<section class="compact-section" aria-labelledby="trustTitle">
-  <div class="container">
-    <div class="section-heading">
-      <div class="section-tag">BUILT TO BE REVIEWABLE</div>
-      <h2 id="trustTitle">Trust should come from visibility, not a bigger claim.</h2>
-    </div>
-    <div class="buyer-trust-grid">
-      <article class="buyer-card"><span class="buyer-proof-label">Evidence</span><h3>Public sources stay clickable</h3><p>Organization Structure shows the framework, rule and public source supporting each finding. Compliance research uses governed source identities and preserves legal-review boundaries.</p><a class="buyer-card__action" href="official-resources.html">Explore Evidence & Sources →</a></article>
-      <article class="buyer-card"><span class="buyer-proof-label">Data</span><h3>Company Workspace is recovery-based</h3><p>Reusable company data is encrypted before database storage. Recovery requires the Report ID plus Workspace Recovery Code, and cross-tab reuse can use a short-lived one-time token.</p><a class="buyer-card__action" href="security.html">Read Security & Data →</a></article>
-      <article class="buyer-card"><span class="buyer-proof-label">Continuity</span><h3>Your reports are recoverable without a fake account</h3><p>The current product uses a secure recovery workspace rather than pretending it already has a mature subscription-account system.</p><a class="buyer-card__action" href="my-reports.html">Open My Reports →</a></article>
-    </div>
-  </div>
-</section>
-
-<section class="compact-section" aria-labelledby="authorityTitle">
-  <div class="container">
-    <div class="section-heading left-heading">
-      <div class="section-tag">WHO IS BEHIND GROWWITHHR</div>
-      <h2 id="authorityTitle">A product of HRTechify, with named ownership and public methodology.</h2>
-    </div>
-    <div class="buyer-authority-grid">
-      <article class="buyer-authority-card buyer-authority-card--primary">
-        <span class="buyer-proof-label">Founder</span>
-        <div class="buyer-authority-name">Anurag Sinha</div>
-        <p><strong>Founder, HRTechify</strong></p>
-        <p>I build and maintain GrowWithHR as an HRTechify product. I keep the public methodology, source registers, rule versions and release boundaries visible so the reasoning can be inspected rather than asking users to rely on an anonymous recommendation engine.</p>
-        <div class="buyer-authority-links">
-          <a href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20question">Contact HRTechify</a>
-          <a href="https://github.com/hrtechifyed/GrowwithHR-Version2" target="_blank" rel="noopener noreferrer">View public codebase ↗</a>
-        </div>
-      </article>
-      <article class="buyer-authority-card">
-        <span class="buyer-proof-label">Product boundaries</span>
-        <h3>What I am—and am not—claiming through GrowWithHR</h3>
-        <p>Compliance outputs support review and preparation; they are not legal certification. Organization Structure evaluates structural operating patterns, not individual capability. The current release is still a research-grade product and is not represented as SOC 2 or ISO 27001 certified.</p>
-        <div class="buyer-boundary">Commercial maturity should be judged from the implemented controls, methodology transparency and actual product scope—not from a certification or customer-proof claim I do not yet have.</div>
-        <div class="buyer-authority-links"><a href="more-info.html#about">About GrowWithHR</a><a href="terms.html">Product Use Terms</a><a href="security.html">Security & Data</a></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="analyze-redirect-section compact-section">
-  <div class="container">
-    <div class="summary-card glass">
-      <div class="section-tag">START WITH THE QUESTION YOU NEED ANSWERED</div>
-      <h2>Know what needs attention before the next hiring or growth decision.</h2>
-      <p>Start a fresh analysis, or recover previous Company DNA and report history if you have used GrowWithHR before.</p>
-      <a href="intelligence-hub.html" class="primary-btn">Understand My Company</a>
-      <a href="my-reports.html" class="secondary-btn">Open My Reports</a>
-    </div>
-  </div>
-</section>
-
-<footer class="footer"><div class="container"><div class="footer-content"><p>GrowWithHR by HRTechify</p><p><a href="more-info.html#about">About</a> · <a href="security.html">Security & Data</a> · <a href="terms.html">Terms</a> · <a href="more-info.html#privacy">Privacy</a> · <a href="more-info.html#contact">Contact</a></p><p>© 2026 HRTechify. All rights reserved.</p></div></div></footer>
-
-<script type="module" src="app.js"></script>
-<script src="js/build-marker.js"></script>
+<section class="gwh-benefits" id="why"><div class="gwh-shell gwh-benefit-grid"><article class="gwh-benefit"><div class="gwh-benefit-icon">◎</div><div><h3>Comprehensive</h3><p>Evaluate across the key dimensions of your workplace.</p></div></article><article class="gwh-benefit"><div class="gwh-benefit-icon">✦</div><div><h3>AI-Powered</h3><p>Intelligent analysis with relevant laws, standards and context.</p></div></article><article class="gwh-benefit"><div class="gwh-benefit-icon">◇</div><div><h3>Actionable</h3><p>Clear recommendations prioritised for real impact.</p></div></article><article class="gwh-benefit"><div class="gwh-benefit-icon">◔</div><div><h3>Executive Ready</h3><p>Beautiful reports for leaders and the boardroom.</p></div></article></div></section>
+<section class="gwh-how" id="how"><div class="gwh-shell"><h2>How It Works</h2><div class="gwh-steps"><article class="gwh-step"><div class="gwh-num">1</div><h3>Select Evaluation</h3><p>Choose the report that fits your need.</p></article><article class="gwh-step"><div class="gwh-num">2</div><h3>Provide Information</h3><p>Answer guided questions and share basic details.</p></article><article class="gwh-step"><div class="gwh-num">3</div><h3>AI Analysis</h3><p>We analyse, validate and build your report.</p></article><article class="gwh-step"><div class="gwh-num">4</div><h3>Get Your Report</h3><p>Download your executive advisory report.</p></article></div></div></section>
+<section class="gwh-trust"><div class="gwh-shell"><h2>Trusted. Transparent. Relevant.</h2><div class="gwh-trust-grid"><div class="gwh-stat"><strong>100+</strong><span>Compliance Parameters</span></div><div class="gwh-stat"><strong>50+</strong><span>Laws & Standards</span></div><div class="gwh-stat"><strong>6</strong><span>Intelligence Dimensions</span></div><div class="gwh-stat"><strong>1</strong><span>Goal. Better Workplaces.</span></div></div></div></section>
+</main>
+<footer class="gwh-footer"><div class="gwh-shell gwh-footer-inner"><span>© 2026 GrowWithHR. All rights reserved.</span><span><a href="more-info.html#privacy" style="color:inherit">Privacy Policy</a> &nbsp; <a href="terms.html" style="color:inherit">Terms</a></span></div></footer>
+<script>const b=document.querySelector('.gwh-menu'),m=document.querySelector('.gwh-mobile-nav');b?.addEventListener('click',()=>{const o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',String(!o));m.classList.toggle('open',!o);});</script>
 </body>
 </html>
