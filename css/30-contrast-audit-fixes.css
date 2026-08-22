@@ -51,3 +51,20 @@ body.gwh-founder-redesign .summary-card p,
 body.gwh-founder-redesign .legal-callout p {
   color:#65483f!important;
 }
+
+/* Founder redesign CSS is injected later by site-shell.js. These selectors intentionally
+   carry greater specificity so the accessibility colors remain authoritative regardless
+   of stylesheet load timing. */
+html body.gwh-founder-redesign .section-tag,
+html body.gwh-founder-redesign .org-kicker {
+  color:#7f170d!important;
+}
+html body.gwh-founder-redesign .compliance-engine-intro {
+  color:#65483f!important;
+}
+html body.gwh-founder-redesign.home-page .hero .section-tag,
+html body.gwh-founder-redesign.home-page .hero .hero-badge,
+html body.gwh-founder-redesign .compliance-engine-difference .section-tag,
+html body.gwh-founder-redesign .buyer-authority-card--primary .section-tag {
+  color:#ffd34f!important;
+}
