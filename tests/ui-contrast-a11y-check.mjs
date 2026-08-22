@@ -49,6 +49,36 @@ try {
 
       await runAxe('default');
 
+      if (file === 'index.html') {
+        const compact = page.locator('[data-gwh-view-mode-choice="compact"]');
+        const wide = page.locator('[data-gwh-view-mode-choice="wide"]');
+        if (await compact.count() && await wide.count()) {
+          await compact.first().click();
+          await page.waitForTimeout(80);
+          const compactState = await page.evaluate(() => ({
+            mode: document.documentElement.dataset.gwhViewMode,
+            stored: localStorage.getItem('growwithhr:view-mode')
+          }));
+          if (compactState.mode !== 'compact' || compactState.stored !== 'compact') {
+            failures.push({ viewport: viewport.name, file, state: 'switch-compact', target: 'footer view switch', summary: 'Compact mode did not apply and persist.' });
+          }
+          await runAxe('compact-selected');
+
+          await wide.first().click();
+          await page.waitForTimeout(80);
+          const wideState = await page.evaluate(() => ({
+            mode: document.documentElement.dataset.gwhViewMode,
+            stored: localStorage.getItem('growwithhr:view-mode')
+          }));
+          if (wideState.mode !== 'wide' || wideState.stored !== 'wide') {
+            failures.push({ viewport: viewport.name, file, state: 'switch-wide', target: 'footer view switch', summary: 'Wide mode did not apply and persist.' });
+          }
+          await runAxe('wide-selected');
+        } else {
+          failures.push({ viewport: viewport.name, file, state: 'view-switch', target: 'footer view switch', summary: 'Expected Mobile / Tablet and Laptop / Desktop controls were not rendered.' });
+        }
+      }
+
       if (viewport.width <= 900) {
         const menu = page.locator('.site-nav-toggle');
         if (await menu.count()) {
@@ -67,7 +97,7 @@ try {
 }
 
 if (failures.length) {
-  console.error(`Color contrast audit found ${failures.length} issue(s):`);
+  console.error(`Color contrast / view-mode audit found ${failures.length} issue(s):`);
   for (const failure of failures.slice(0, 80)) {
     console.error(`- [${failure.viewport}] ${failure.file} (${failure.state}) ${failure.target}: ${failure.summary}`);
   }
@@ -75,4 +105,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Color contrast audit passed across ${pages.length} pages and ${viewports.length} viewport classes.`);
+console.log(`Color contrast and view-mode audit passed across ${pages.length} pages and ${viewports.length} viewport classes.`);
