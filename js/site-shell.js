@@ -258,6 +258,15 @@
         if (header) document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
     }
 
+    function appendStylesheetOnce(selector, prefix, path, dataAttribute) {
+        if (document.querySelector(selector)) return;
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = withRoot(prefix, path);
+        link.setAttribute(dataAttribute, "");
+        document.head.appendChild(link);
+    }
+
     function ensurePolishStyles(prefix) {
         if (!document.querySelector("link[data-growwithhr-ui-polish]")) {
             const link = document.createElement("link");
@@ -273,6 +282,10 @@
             redesign.href = withRoot(prefix, "css/26-founder-redesign.css");
             redesign.dataset.growwithhrFounderRedesign = "";
             document.head.appendChild(redesign);
+        }
+        if (!REPORT_LAYOUT_FILES.has(currentFileName())) {
+            appendStylesheetOnce("link[data-growwithhr-contrast-guard]", prefix, "css/29-contrast-guard.css", "data-growwithhr-contrast-guard");
+            appendStylesheetOnce("link[data-growwithhr-contrast-audit-fixes]", prefix, "css/30-contrast-audit-fixes.css", "data-growwithhr-contrast-audit-fixes");
         }
     }
 

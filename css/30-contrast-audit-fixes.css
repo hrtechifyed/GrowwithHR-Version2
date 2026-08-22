@@ -1,0 +1,70 @@
+/* Targeted fixes from automated color-contrast audit. Scoped to non-report founder redesign. */
+body.gwh-founder-redesign .section-tag,
+body.gwh-founder-redesign .org-kicker {
+  color:#7f170d!important;
+}
+
+/* Gold is reserved for labels that actually sit on dark surfaces. */
+body.gwh-founder-redesign.home-page .hero .section-tag,
+body.gwh-founder-redesign.home-page .hero .hero-badge,
+body.gwh-founder-redesign .compliance-engine-difference .section-tag,
+body.gwh-founder-redesign .buyer-authority-card--primary .section-tag {
+  color:#ffd34f!important;
+}
+
+body.gwh-founder-redesign .compliance-engine-intro {
+  color:#220302!important;
+}
+
+/* Organization Intelligence uses pale blue/cream information panels: force dark readable copy. */
+body.gwh-founder-redesign #reuseNotice,
+body.gwh-founder-redesign .org-boundary,
+body.gwh-founder-redesign .org-boundary strong,
+body.gwh-founder-redesign .org-evidence-note,
+body.gwh-founder-redesign .org-evidence-note strong {
+  color:#2d1712!important;
+}
+body.gwh-founder-redesign .org-link,
+body.gwh-founder-redesign .org-evidence-note .org-link,
+body.gwh-founder-redesign .org-field .org-link {
+  color:#7f170d!important;
+}
+body.gwh-founder-redesign .org-link:hover,
+body.gwh-founder-redesign .org-link:focus-visible {
+  color:#5f1009!important;
+}
+
+/* Light boundary/callout surfaces must not inherit white or slate text. */
+body.gwh-founder-redesign .buyer-boundary,
+body.gwh-founder-redesign .buyer-boundary strong,
+body.gwh-founder-redesign .legal-callout,
+body.gwh-founder-redesign .legal-callout strong {
+  color:#2d1712!important;
+}
+
+/* Keep body copy safely over AA rather than sitting on the 4.5 threshold. */
+body.gwh-founder-redesign .how-section p,
+body.gwh-founder-redesign .capabilities-section p,
+body.gwh-founder-redesign .compliance-engine-section p,
+body.gwh-founder-redesign .compact-section p,
+body.gwh-founder-redesign .summary-card p,
+body.gwh-founder-redesign .legal-callout p {
+  color:#65483f!important;
+}
+
+/* Founder redesign CSS is injected later by site-shell.js. These selectors intentionally
+   carry greater specificity so the accessibility colors remain authoritative regardless
+   of stylesheet load timing. */
+html body.gwh-founder-redesign .section-tag,
+html body.gwh-founder-redesign .org-kicker {
+  color:#7f170d!important;
+}
+html body.gwh-founder-redesign .compliance-engine-intro {
+  color:#220302!important;
+}
+html body.gwh-founder-redesign.home-page .hero .section-tag,
+html body.gwh-founder-redesign.home-page .hero .hero-badge,
+html body.gwh-founder-redesign .compliance-engine-difference .section-tag,
+html body.gwh-founder-redesign .buyer-authority-card--primary .section-tag {
+  color:#ffd34f!important;
+}

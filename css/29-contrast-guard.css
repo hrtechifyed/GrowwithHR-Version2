@@ -1,0 +1,219 @@
+/* GrowWithHR contrast guard
+   Scoped to the founder redesign so report layouts remain unchanged.
+   Rule: dark surfaces use light text; light surfaces use dark text. */
+body.gwh-founder-redesign{
+  --cg-dark:#250402;
+  --cg-dark-2:#3a0704;
+  --cg-light:#fff7e8;
+  --cg-paper:#fffdf8;
+  --cg-soft:#fff0cf;
+  --cg-muted-dark:#6d5047;
+  --cg-muted-light:#ecd3c2;
+  --cg-accent:#ffd34f;
+}
+
+/* Light surfaces */
+body.gwh-founder-redesign .site-header-shell,
+body.gwh-founder-redesign .site-nav-glass,
+body.gwh-founder-redesign .site-nav-more__menu,
+body.gwh-founder-redesign .how-section,
+body.gwh-founder-redesign .capabilities-section,
+body.gwh-founder-redesign .compliance-engine-section,
+body.gwh-founder-redesign .compact-section,
+body.gwh-founder-redesign .analyze-redirect-section,
+body.gwh-founder-redesign .summary-card,
+body.gwh-founder-redesign .summary-card.glass,
+body.gwh-founder-redesign .how-card,
+body.gwh-founder-redesign .buyer-card,
+body.gwh-founder-redesign .engine-step,
+body.gwh-founder-redesign .buyer-authority-card:not(.buyer-authority-card--primary),
+body.gwh-founder-redesign .buyer-boundary,
+body.gwh-founder-redesign .hub-engine-card,
+body.gwh-founder-redesign .workspace-recovery-card,
+body.gwh-founder-redesign .report-card,
+body.gwh-founder-redesign .saved-report-card {
+  color:var(--cg-dark)!important;
+}
+
+body.gwh-founder-redesign .site-header-shell h1,
+body.gwh-founder-redesign .site-header-shell h2,
+body.gwh-founder-redesign .site-header-shell h3,
+body.gwh-founder-redesign .site-nav-glass a,
+body.gwh-founder-redesign .site-nav-more__menu a,
+body.gwh-founder-redesign .how-section h1,
+body.gwh-founder-redesign .how-section h2,
+body.gwh-founder-redesign .how-section h3,
+body.gwh-founder-redesign .capabilities-section h1,
+body.gwh-founder-redesign .capabilities-section h2,
+body.gwh-founder-redesign .capabilities-section h3,
+body.gwh-founder-redesign .compliance-engine-section h1,
+body.gwh-founder-redesign .compliance-engine-section h2,
+body.gwh-founder-redesign .compliance-engine-section h3,
+body.gwh-founder-redesign .compact-section h1,
+body.gwh-founder-redesign .compact-section h2,
+body.gwh-founder-redesign .compact-section h3,
+body.gwh-founder-redesign .summary-card h1,
+body.gwh-founder-redesign .summary-card h2,
+body.gwh-founder-redesign .summary-card h3,
+body.gwh-founder-redesign .how-card h3,
+body.gwh-founder-redesign .buyer-card h3,
+body.gwh-founder-redesign .engine-step h3,
+body.gwh-founder-redesign .buyer-authority-card:not(.buyer-authority-card--primary) h3,
+body.gwh-founder-redesign .hub-engine-card h2,
+body.gwh-founder-redesign .hub-engine-card h3,
+body.gwh-founder-redesign .workspace-recovery-card h2,
+body.gwh-founder-redesign .workspace-recovery-card h3,
+body.gwh-founder-redesign .report-card h2,
+body.gwh-founder-redesign .report-card h3,
+body.gwh-founder-redesign .saved-report-card h2,
+body.gwh-founder-redesign .saved-report-card h3 {
+  color:var(--cg-dark)!important;
+}
+
+body.gwh-founder-redesign .how-section p,
+body.gwh-founder-redesign .capabilities-section p,
+body.gwh-founder-redesign .compliance-engine-section p,
+body.gwh-founder-redesign .compact-section p,
+body.gwh-founder-redesign .summary-card p,
+body.gwh-founder-redesign .how-card p,
+body.gwh-founder-redesign .buyer-card p,
+body.gwh-founder-redesign .engine-step p,
+body.gwh-founder-redesign .buyer-authority-card:not(.buyer-authority-card--primary) p,
+body.gwh-founder-redesign .buyer-boundary,
+body.gwh-founder-redesign .hub-engine-card p,
+body.gwh-founder-redesign .workspace-recovery-card p,
+body.gwh-founder-redesign .report-card p,
+body.gwh-founder-redesign .saved-report-card p {
+  color:var(--cg-muted-dark)!important;
+}
+
+/* Explicit light-background button treatment. This fixes pale text such as “Open My Reports”. */
+body.gwh-founder-redesign .how-section .secondary-btn,
+body.gwh-founder-redesign .capabilities-section .secondary-btn,
+body.gwh-founder-redesign .compliance-engine-section .secondary-btn,
+body.gwh-founder-redesign .compact-section .secondary-btn,
+body.gwh-founder-redesign .analyze-redirect-section .secondary-btn,
+body.gwh-founder-redesign .summary-card .secondary-btn,
+body.gwh-founder-redesign .summary-card.glass .secondary-btn,
+body.gwh-founder-redesign .workspace-recovery-card .secondary-btn {
+  background:transparent!important;
+  color:var(--cg-dark)!important;
+  border-color:rgba(37,4,2,.38)!important;
+}
+body.gwh-founder-redesign .how-section .secondary-btn:hover,
+body.gwh-founder-redesign .capabilities-section .secondary-btn:hover,
+body.gwh-founder-redesign .compliance-engine-section .secondary-btn:hover,
+body.gwh-founder-redesign .compact-section .secondary-btn:hover,
+body.gwh-founder-redesign .analyze-redirect-section .secondary-btn:hover,
+body.gwh-founder-redesign .summary-card .secondary-btn:hover,
+body.gwh-founder-redesign .summary-card.glass .secondary-btn:hover,
+body.gwh-founder-redesign .workspace-recovery-card .secondary-btn:hover {
+  background:#f4e2bd!important;
+  color:var(--cg-dark)!important;
+}
+
+/* Light-surface text links */
+body.gwh-founder-redesign .buyer-card__action,
+body.gwh-founder-redesign .buyer-authority-card:not(.buyer-authority-card--primary) a,
+body.gwh-founder-redesign .hub-engine-card__action,
+body.gwh-founder-redesign .summary-card a:not(.primary-btn):not(.secondary-btn),
+body.gwh-founder-redesign .compact-section a:not(.primary-btn):not(.secondary-btn) {
+  color:#7f170d!important;
+}
+
+/* Dark surfaces */
+body.gwh-founder-redesign.home-page .hero,
+body.gwh-founder-redesign.home-page .hero-v2,
+body.gwh-founder-redesign .compliance-engine-difference,
+body.gwh-founder-redesign .buyer-authority-card--primary,
+body.gwh-founder-redesign .site-footer {
+  color:var(--cg-light)!important;
+}
+
+body.gwh-founder-redesign.home-page .hero h1,
+body.gwh-founder-redesign.home-page .hero h2,
+body.gwh-founder-redesign.home-page .hero h3,
+body.gwh-founder-redesign .compliance-engine-difference h1,
+body.gwh-founder-redesign .compliance-engine-difference h2,
+body.gwh-founder-redesign .compliance-engine-difference h3,
+body.gwh-founder-redesign .buyer-authority-card--primary h1,
+body.gwh-founder-redesign .buyer-authority-card--primary h2,
+body.gwh-founder-redesign .buyer-authority-card--primary h3,
+body.gwh-founder-redesign .buyer-authority-card--primary .buyer-authority-name,
+body.gwh-founder-redesign .site-footer h1,
+body.gwh-founder-redesign .site-footer h2,
+body.gwh-founder-redesign .site-footer h3,
+body.gwh-founder-redesign .site-footer strong {
+  color:var(--cg-light)!important;
+}
+
+body.gwh-founder-redesign.home-page .hero p,
+body.gwh-founder-redesign .compliance-engine-difference p,
+body.gwh-founder-redesign .compliance-engine-difference li,
+body.gwh-founder-redesign .buyer-authority-card--primary p,
+body.gwh-founder-redesign .site-footer p {
+  color:var(--cg-muted-light)!important;
+}
+
+body.gwh-founder-redesign.home-page .hero .secondary-btn {
+  background:transparent!important;
+  color:var(--cg-light)!important;
+  border-color:rgba(255,247,232,.52)!important;
+}
+body.gwh-founder-redesign.home-page .hero .secondary-btn:hover {
+  background:rgba(255,255,255,.09)!important;
+  color:#fff!important;
+}
+
+body.gwh-founder-redesign .compliance-engine-difference a,
+body.gwh-founder-redesign .buyer-authority-card--primary a,
+body.gwh-founder-redesign .site-footer a,
+body.gwh-founder-redesign .site-footer a:visited {
+  color:#ffe28a!important;
+}
+
+/* Navigation contrast: active and hover states must never become yellow-on-yellow. */
+body.gwh-founder-redesign .site-nav-link:hover,
+body.gwh-founder-redesign .site-nav-link:focus-visible,
+body.gwh-founder-redesign .site-nav-more__toggle:hover,
+body.gwh-founder-redesign .site-nav-more__toggle:focus-visible {
+  background:var(--cg-soft)!important;
+  color:var(--cg-dark)!important;
+}
+body.gwh-founder-redesign .site-nav-link.is-active,
+body.gwh-founder-redesign .site-nav-link[aria-current="page"],
+body.gwh-founder-redesign .site-nav-more.is-active>.site-nav-more__toggle {
+  background:var(--cg-dark)!important;
+  color:var(--cg-light)!important;
+  border-color:var(--cg-dark)!important;
+}
+body.gwh-founder-redesign .site-nav-more__menu a:hover,
+body.gwh-founder-redesign .site-nav-more__menu a:focus-visible {
+  background:var(--cg-soft)!important;
+  color:var(--cg-dark)!important;
+}
+
+/* Form controls stay legible on the light product UI. */
+body.gwh-founder-redesign input,
+body.gwh-founder-redesign select,
+body.gwh-founder-redesign textarea {
+  color:var(--cg-dark)!important;
+  background:var(--cg-paper)!important;
+}
+body.gwh-founder-redesign input::placeholder,
+body.gwh-founder-redesign textarea::placeholder {
+  color:#80665d!important;
+  opacity:1!important;
+}
+
+/* Keyboard focus must remain visible on either tone. */
+body.gwh-founder-redesign :where(a,button,input,select,textarea,summary):focus-visible {
+  outline:3px solid #c56b00!important;
+  outline-offset:3px!important;
+}
+body.gwh-founder-redesign.home-page .hero :where(a,button):focus-visible,
+body.gwh-founder-redesign .compliance-engine-difference :where(a,button):focus-visible,
+body.gwh-founder-redesign .buyer-authority-card--primary :where(a,button):focus-visible,
+body.gwh-founder-redesign .site-footer :where(a,button):focus-visible {
+  outline-color:var(--cg-accent)!important;
+}
