@@ -286,6 +286,7 @@
         if (!REPORT_LAYOUT_FILES.has(currentFileName())) {
             appendStylesheetOnce("link[data-growwithhr-contrast-guard]", prefix, "css/29-contrast-guard.css", "data-growwithhr-contrast-guard");
             appendStylesheetOnce("link[data-growwithhr-contrast-audit-fixes]", prefix, "css/30-contrast-audit-fixes.css", "data-growwithhr-contrast-audit-fixes");
+            appendStylesheetOnce("link[data-growwithhr-hrtechify-alignment]", prefix, "css/31-hrtechify-alignment.css", "data-growwithhr-hrtechify-alignment");
         }
     }
 
