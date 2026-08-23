@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Report | GrowWithHR</title>
+  <meta name="description" content="Open a GrowWithHR report saved to your signed-in account.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body data-active-nav="account">
+<main class="prototype-shell">
+  <header class="prototype-panel" style="margin-bottom:24px">
+    <div class="prototype-kicker">My GrowWithHR · Account Report</div>
+    <h1 id="accountReportTitle" class="prototype-title" style="font-size:clamp(2rem,4vw,3.4rem)">Loading your report…</h1>
+    <p id="accountReportLead" class="prototype-lead">This report is available because you are signed in to the account that generated it.</p>
+    <div class="prototype-actions">
+      <button id="openFullReport" class="prototype-btn" type="button" hidden>Open full report</button>
+      <button id="emailAccountReport" class="prototype-btn secondary" type="button" hidden>Email report again</button>
+      <a class="prototype-btn secondary" href="my-growwithhr.html">My GrowWithHR</a>
+    </div>
+    <p id="accountReportStatus" class="prototype-status" role="status" aria-live="polite"></p>
+  </header>
+
+  <section id="accountReportOverview" class="prototype-panel" hidden></section>
+  <section id="accountReportDetails" class="prototype-panel" hidden></section>
+</main>
+<script type="module" src="js/account-report.js"></script>
+</body>
+</html>
