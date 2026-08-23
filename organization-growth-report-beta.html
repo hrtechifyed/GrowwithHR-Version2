@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Structure & Growth Report | GrowWithHR Prototype</title>
+  <meta name="description" content="Compare organization structure options, trade-offs and implementation paths based on company growth and constraints.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body data-active-nav="analyze">
+<main class="prototype-shell" id="growthReportRoot">
+  <header class="prototype-panel" style="margin-bottom:24px">
+    <div class="prototype-kicker">GrowWithHR · Organization Structure & Growth Engine · Working Prototype</div>
+    <h1 id="reportTitle" class="prototype-title">Organization Structure & Growth</h1>
+    <p id="reportLead" class="prototype-lead">Loading your decision report…</p>
+    <div class="prototype-actions">
+      <button id="printReport" class="prototype-btn secondary" type="button">Print</button>
+      <a class="prototype-btn secondary" href="organization-structure-methodology.html" target="_blank" rel="noopener">Methodology & Sources ↗</a>
+      <a id="backWorkspace" class="prototype-btn secondary" href="my-growwithhr.html">My GrowWithHR</a>
+    </div>
+    <p id="reportStatus" class="prototype-status" role="status" aria-live="polite"></p>
+  </header>
+
+  <section id="reportSummary" class="report-section prototype-panel"></section>
+  <section id="reportSignals" class="report-section prototype-panel"></section>
+  <section id="reportQuestion" class="report-section prototype-panel"></section>
+  <section id="reportReferences" class="report-section prototype-panel"></section>
+  <section id="reportOptions" class="report-section prototype-panel"></section>
+  <section id="reportComparison" class="report-section prototype-panel"></section>
+  <section id="reportRecommendation" class="report-section prototype-panel"></section>
+  <section id="reportChoice" class="report-section prototype-panel"></section>
+  <section id="reportImplementation" class="report-section prototype-panel"></section>
+  <section id="reportTriggers" class="report-section prototype-panel"></section>
+  <section id="reportTrust" class="report-section prototype-panel"></section>
+</main>
+<script type="module" src="js/organization-growth-report-beta.mjs"></script>
+<script src="js/build-marker.js"></script>
+</body>
+</html>
