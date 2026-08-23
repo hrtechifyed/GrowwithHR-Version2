@@ -15,6 +15,7 @@ const { handleOrganizationReportRequest } = require("./server-organization-repor
 const { handleWorkspaceHandoffRequest } = require("./server-workspace-handoff");
 const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
 const { handleAuthConfigRequest } = require("./server-auth-config");
+const { handleAccountRequest } = require("./server-account");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
     "https://hrtechifyed.github.io"
@@ -98,6 +99,7 @@ function installApiCors() {
                 }
 
                 if (handleAuthConfigRequest(request, response)) return;
+                if (handleAccountRequest(request, response)) return;
                 if (handleM7ReadinessRequest(request, response)) return;
                 if (handleSharedLegalExplanationRequest(request, response)) return;
                 if (handleLegalExplanationRequest(request, response)) return;
