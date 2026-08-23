@@ -54,6 +54,25 @@ create table if not exists public.reports (
   payload jsonb not null default '{}'::jsonb,
   selected_option_key text,
   implementation_plan jsonb,
+  legacy_report_id text unique,
+  last_emailed_at timestamptz,
+  email_count integer not null default 0 check (email_count >= 0),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- One legacy recovery identity is assigned to the account when its first real
+-- report is generated. The first Report ID + Recovery Code remain the user's
+-- legacy fallback credentials, while later reports receive their own Report IDs
+-- and are linked into the same legacy Company Workspace.
+-- The recovery code is encrypted server-side and this table has no browser RLS
+-- policy; only the GrowWithHR backend service-role can read it.
+create table if not exists public.account_legacy_recovery (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  first_report_id uuid not null references public.reports(id) on delete cascade,
+  recovery_report_id text not null unique,
+  current_report_id text not null,
+  encrypted_recovery_code text not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -62,6 +81,8 @@ create index if not exists assessments_user_engine_updated_idx
   on public.assessments(user_id, engine, updated_at desc);
 create index if not exists reports_user_created_idx
   on public.reports(user_id, created_at desc);
+create index if not exists reports_legacy_report_id_idx
+  on public.reports(legacy_report_id);
 create index if not exists companies_owner_idx
   on public.companies(owner_user_id);
 
@@ -70,6 +91,7 @@ alter table public.companies enable row level security;
 alter table public.company_memberships enable row level security;
 alter table public.assessments enable row level security;
 alter table public.reports enable row level security;
+alter table public.account_legacy_recovery enable row level security;
 
 -- Profiles: users can only access their own profile.
 drop policy if exists profiles_own_all on public.profiles;
@@ -109,3 +131,6 @@ drop policy if exists reports_own_all on public.reports;
 create policy reports_own_all on public.reports
   for all using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- Intentionally no browser/client policy for account_legacy_recovery.
+-- Raw recovery credentials are returned only by an authenticated backend route.
