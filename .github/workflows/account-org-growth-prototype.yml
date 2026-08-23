@@ -1,4 +1,4 @@
-name: Account + Organization Growth Prototype Checks
+name: Zero-Cost GrowWithHR Prototype Checks
 
 on:
   push:
@@ -8,24 +8,28 @@ on:
     branches:
       - main
     paths:
-      - 'auth.html'
-      - 'account-settings.html'
-      - 'my-growwithhr.html'
+      - 'intelligence-hub.html'
+      - 'my-reports.html'
+      - 'compliance-report-recover.html'
+      - 'executive-advisory-report.html'
       - 'organization-growth-beta.html'
       - 'organization-growth-report-beta.html'
-      - 'js/auth-client.js'
-      - 'js/account-settings.js'
-      - 'js/my-growwithhr.js'
-      - 'js/organization-growth-beta.mjs'
-      - 'js/organization-growth-report-beta.mjs'
+      - 'css/26-account-org-growth-prototype.css'
+      - 'js/auth-guard.js'
       - 'js/compliance-account-bridge.js'
-      - 'js/compliance-report-account-bridge.js'
+      - 'js/compliance-zero-cost-report-bridge.mjs'
+      - 'js/compliance-report-recover.mjs'
+      - 'js/my-reports-zero-cost.mjs'
+      - 'js/zero-cost-report-vault.mjs'
+      - 'js/organization-growth-beta.mjs'
+      - 'js/organization-growth-zero-cost.mjs'
+      - 'js/organization-growth-report-beta.mjs'
+      - 'js/organization-growth-report-zero-cost.mjs'
       - 'js/modules/organization/organization-growth-*.mjs'
-      - 'server-auth-config.js'
-      - 'server-account.js'
-      - 'server-entry.js'
-      - 'supabase/migrations/20260823_account_workspace_prototype.sql'
-      - 'tests/account-org-growth-prototype-checks.mjs'
+      - 'supabase/config.toml'
+      - 'supabase/functions/growwithhr-prototype-report-vault/**'
+      - 'supabase/migrations/20260823_zero_cost_report_vault_prototype.sql'
+      - 'tests/zero-cost-prototype-checks.mjs'
       - '.github/workflows/account-org-growth-prototype.yml'
   workflow_dispatch:
 
@@ -45,5 +49,18 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run prototype contract checks
-        run: node tests/account-org-growth-prototype-checks.mjs
+      - name: Syntax check zero-cost browser modules
+        run: |
+          node --check js/zero-cost-report-vault.mjs
+          node --check js/organization-growth-beta.mjs
+          node --check js/organization-growth-zero-cost.mjs
+          node --check js/organization-growth-report-beta.mjs
+          node --check js/organization-growth-report-zero-cost.mjs
+          node --check js/compliance-zero-cost-report-bridge.mjs
+          node --check js/compliance-report-recover.mjs
+          node --check js/my-reports-zero-cost.mjs
+          node --check js/auth-guard.js
+          node --check js/compliance-account-bridge.js
+
+      - name: Run zero-cost prototype contract checks
+        run: node tests/zero-cost-prototype-checks.mjs
