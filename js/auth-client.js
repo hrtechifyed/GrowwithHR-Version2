@@ -55,6 +55,23 @@ export async function getSession() {
   return data.session || null;
 }
 
+async function accountPost(path, payload = {}) {
+  const session = await getSession();
+  if (!session?.access_token) throw new Error("Sign in is required.");
+  const response = await fetch(`${apiBase()}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.access_token}`
+    },
+    body: JSON.stringify(payload),
+    credentials: "omit"
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || body?.ok === false) throw new Error(body?.error || "GrowWithHR account request failed.");
+  return body;
+}
+
 export async function getUser() {
   const client = await getAuthClient();
   const { data, error } = await client.auth.getUser();
@@ -116,12 +133,6 @@ export async function signOut() {
   if (error) throw error;
 }
 
-export async function signOutAll() {
-  const client = await getAuthClient();
-  const { error } = await client.auth.signOut({ scope: "global" });
-  if (error) throw error;
-}
-
 export async function onAuthStateChange(callback) {
   const client = await getAuthClient();
   return client.auth.onAuthStateChange((_event, session) => callback(session));
@@ -138,54 +149,6 @@ export async function ensureProfile(user) {
     .single();
   if (error) throw error;
   return data;
-}
-
-export async function ensureCompany({ name, industry = "", profile = {} }) {
-  const user = await getUser();
-  if (!user) throw new Error("Sign in is required to save a company profile.");
-  const cleanedName = String(name || "").trim();
-  if (!cleanedName) return null;
-  const client = await getAuthClient();
-  const { data: existing, error: findError } = await client
-    .from("companies")
-    .select("*")
-    .eq("owner_user_id", user.id)
-    .ilike("name", cleanedName)
-    .limit(1)
-    .maybeSingle();
-  if (findError) throw findError;
-
-  let company;
-  if (existing) {
-    const { data, error } = await client.from("companies").update({
-      industry: String(industry || existing.industry || "").trim() || null,
-      profile: { ...(existing.profile || {}), ...(profile || {}) },
-      updated_at: new Date().toISOString()
-    }).eq("id", existing.id).select().single();
-    if (error) throw error;
-    company = data;
-  } else {
-    const { data, error } = await client.from("companies").insert({
-      owner_user_id: user.id,
-      name: cleanedName,
-      industry: String(industry || "").trim() || null,
-      profile: profile || {}
-    }).select().single();
-    if (error) throw error;
-    company = data;
-    await client.from("company_memberships").upsert({ company_id: company.id, user_id: user.id, role: "owner" }, { onConflict: "company_id,user_id" });
-  }
-  return company;
-}
-
-export async function listCompanies() {
-  const client = await getAuthClient();
-  const { data, error } = await client
-    .from("companies")
-    .select("id,name,industry,profile,created_at,updated_at")
-    .order("updated_at", { ascending: false });
-  if (error) throw error;
-  return data || [];
 }
 
 export async function latestAssessment(engine) {
@@ -209,7 +172,7 @@ export async function getAssessment(id) {
   return data || null;
 }
 
-export async function saveAssessmentDraft({ id = null, companyId = null, engine, answers, progress, lastStep, status = "in_progress", analysisPayload = null }) {
+export async function saveAssessmentDraft({ id = null, engine, answers, progress, lastStep, status = "in_progress", analysisPayload = null }) {
   const user = await getUser();
   if (!user) throw new Error("Sign in is required to save this assessment.");
   const client = await getAuthClient();
@@ -224,7 +187,6 @@ export async function saveAssessmentDraft({ id = null, companyId = null, engine,
     updated_at: new Date().toISOString(),
     completed_at: status === "completed" ? new Date().toISOString() : null
   };
-  if (companyId) payload.company_id = companyId;
   if (id) payload.id = id;
 
   const query = id
@@ -239,17 +201,32 @@ export async function listAssessments() {
   const client = await getAuthClient();
   const { data, error } = await client
     .from("assessments")
-    .select("id,company_id,engine,status,progress,last_step,answers,created_at,updated_at,completed_at")
+    .select("id,engine,status,progress,last_step,answers,created_at,updated_at,completed_at")
     .order("updated_at", { ascending: false });
   if (error) throw error;
   return data || [];
 }
 
-export async function saveReport({ assessmentId = null, companyId = null, engine, title, payload, selectedOptionKey = null, implementationPlan = null }) {
+export async function ensureLegacyRecoveryForReport(reportId) {
+  const body = await accountPost("/api/account/report/legacy-ensure", { reportId });
+  return body.recovery || null;
+}
+
+export async function getLegacyRecoveryCredentials() {
+  const body = await accountPost("/api/account/legacy-recovery", {});
+  return body.recovery || null;
+}
+
+export async function emailReportAgain(reportId) {
+  const body = await accountPost("/api/account/report/email", { reportId });
+  return body.delivery || null;
+}
+
+export async function saveReport({ assessmentId = null, engine, title, payload, selectedOptionKey = null, implementationPlan = null }) {
   const user = await getUser();
   if (!user) throw new Error("Sign in is required to save a report.");
   const client = await getAuthClient();
-  const record = {
+  const { data, error } = await client.from("reports").insert({
     user_id: user.id,
     assessment_id: assessmentId,
     engine,
@@ -258,10 +235,22 @@ export async function saveReport({ assessmentId = null, companyId = null, engine
     selected_option_key: selectedOptionKey,
     implementation_plan: implementationPlan,
     updated_at: new Date().toISOString()
-  };
-  if (companyId) record.company_id = companyId;
-  const { data, error } = await client.from("reports").insert(record).select().single();
+  }).select().single();
   if (error) throw error;
+
+  // Every real signed-in report should receive a legacy Report ID. The first
+  // report also creates the account's fallback Recovery Code; later reports are
+  // linked into that same legacy recovery workspace. Report saving itself is not
+  // discarded if the prototype backend is temporarily unavailable; My GrowWithHR
+  // retries provisioning when the user next opens the workspace.
+  try {
+    const recovery = await ensureLegacyRecoveryForReport(data.id);
+    if (recovery?.reportLegacyId) data.legacy_report_id = recovery.reportLegacyId;
+    data.legacyRecovery = recovery;
+  } catch (legacyError) {
+    console.warn("GrowWithHR legacy recovery provisioning will be retried from My GrowWithHR.", legacyError);
+    data.legacyRecoveryError = legacyError.message || "Legacy recovery provisioning is pending.";
+  }
   return data;
 }
 
@@ -276,7 +265,7 @@ export async function listReports() {
   const client = await getAuthClient();
   const { data, error } = await client
     .from("reports")
-    .select("id,company_id,engine,title,selected_option_key,created_at,updated_at")
+    .select("id,engine,title,selected_option_key,legacy_report_id,last_emailed_at,email_count,created_at,updated_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data || [];
@@ -301,20 +290,4 @@ export async function deleteAccountData() {
   await client.from("assessments").delete().eq("user_id", user.id);
   await client.from("companies").delete().eq("owner_user_id", user.id);
   await client.from("profiles").delete().eq("user_id", user.id);
-}
-
-export async function deleteAccountPermanently() {
-  const session = await getSession();
-  if (!session?.access_token) throw new Error("A signed-in GrowWithHR session is required.");
-  const response = await fetch(`${apiBase()}/api/account/delete`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${session.access_token}` }
-  });
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok || !body?.ok) throw new Error(body?.error || "The account could not be deleted.");
-  try {
-    const client = await getAuthClient();
-    await client.auth.signOut({ scope: "local" });
-  } catch (_error) {}
-  return body;
 }
