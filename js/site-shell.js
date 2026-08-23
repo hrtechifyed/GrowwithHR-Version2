@@ -333,6 +333,19 @@
             });
     }
 
+    function bootstrapAccountBridges() {
+        const file = currentFileName();
+        if (file === "compliance-intelligence.html") {
+            import("./compliance-account-bridge.js").catch((error) => console.error("GrowWithHR Compliance account bridge failed to initialize", error));
+        }
+        if (file === "executive-advisory-report.html") {
+            const params = new URLSearchParams(window.location.search || "");
+            if (params.get("sample") !== "1" && params.get("report")) {
+                import("./compliance-report-account-bridge.js").catch((error) => console.error("GrowWithHR Compliance report account bridge failed to initialize", error));
+            }
+        }
+    }
+
     function removeHomepageTriggerStrip() {
         document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
     }
@@ -354,6 +367,7 @@
         bootstrapOrganizationAutosave();
         bootstrapAccountNav(prefix);
         bootstrapProtectedAccountPolicy();
+        bootstrapAccountBridges();
         window.addEventListener("resize", updatePageOffsets);
     }
 
