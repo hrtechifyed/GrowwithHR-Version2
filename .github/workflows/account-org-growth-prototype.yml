@@ -1,0 +1,49 @@
+name: Account + Organization Growth Prototype Checks
+
+on:
+  push:
+    branches:
+      - prototype/account-org-growth-workflow-v1
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'auth.html'
+      - 'account-settings.html'
+      - 'my-growwithhr.html'
+      - 'organization-growth-beta.html'
+      - 'organization-growth-report-beta.html'
+      - 'js/auth-client.js'
+      - 'js/account-settings.js'
+      - 'js/my-growwithhr.js'
+      - 'js/organization-growth-beta.mjs'
+      - 'js/organization-growth-report-beta.mjs'
+      - 'js/compliance-account-bridge.js'
+      - 'js/compliance-report-account-bridge.js'
+      - 'js/modules/organization/organization-growth-*.mjs'
+      - 'server-auth-config.js'
+      - 'server-account.js'
+      - 'server-entry.js'
+      - 'supabase/migrations/20260823_account_workspace_prototype.sql'
+      - 'tests/account-org-growth-prototype-checks.mjs'
+      - '.github/workflows/account-org-growth-prototype.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prototype-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run prototype contract checks
+        run: node tests/account-org-growth-prototype-checks.mjs
