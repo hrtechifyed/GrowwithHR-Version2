@@ -116,6 +116,12 @@ export async function signOut() {
   if (error) throw error;
 }
 
+export async function signOutAll() {
+  const client = await getAuthClient();
+  const { error } = await client.auth.signOut({ scope: "global" });
+  if (error) throw error;
+}
+
 export async function onAuthStateChange(callback) {
   const client = await getAuthClient();
   return client.auth.onAuthStateChange((_event, session) => callback(session));
@@ -132,6 +138,54 @@ export async function ensureProfile(user) {
     .single();
   if (error) throw error;
   return data;
+}
+
+export async function ensureCompany({ name, industry = "", profile = {} }) {
+  const user = await getUser();
+  if (!user) throw new Error("Sign in is required to save a company profile.");
+  const cleanedName = String(name || "").trim();
+  if (!cleanedName) return null;
+  const client = await getAuthClient();
+  const { data: existing, error: findError } = await client
+    .from("companies")
+    .select("*")
+    .eq("owner_user_id", user.id)
+    .ilike("name", cleanedName)
+    .limit(1)
+    .maybeSingle();
+  if (findError) throw findError;
+
+  let company;
+  if (existing) {
+    const { data, error } = await client.from("companies").update({
+      industry: String(industry || existing.industry || "").trim() || null,
+      profile: { ...(existing.profile || {}), ...(profile || {}) },
+      updated_at: new Date().toISOString()
+    }).eq("id", existing.id).select().single();
+    if (error) throw error;
+    company = data;
+  } else {
+    const { data, error } = await client.from("companies").insert({
+      owner_user_id: user.id,
+      name: cleanedName,
+      industry: String(industry || "").trim() || null,
+      profile: profile || {}
+    }).select().single();
+    if (error) throw error;
+    company = data;
+    await client.from("company_memberships").upsert({ company_id: company.id, user_id: user.id, role: "owner" }, { onConflict: "company_id,user_id" });
+  }
+  return company;
+}
+
+export async function listCompanies() {
+  const client = await getAuthClient();
+  const { data, error } = await client
+    .from("companies")
+    .select("id,name,industry,profile,created_at,updated_at")
+    .order("updated_at", { ascending: false });
+  if (error) throw error;
+  return data || [];
 }
 
 export async function latestAssessment(engine) {
@@ -155,7 +209,7 @@ export async function getAssessment(id) {
   return data || null;
 }
 
-export async function saveAssessmentDraft({ id = null, engine, answers, progress, lastStep, status = "in_progress", analysisPayload = null }) {
+export async function saveAssessmentDraft({ id = null, companyId = null, engine, answers, progress, lastStep, status = "in_progress", analysisPayload = null }) {
   const user = await getUser();
   if (!user) throw new Error("Sign in is required to save this assessment.");
   const client = await getAuthClient();
@@ -170,6 +224,7 @@ export async function saveAssessmentDraft({ id = null, engine, answers, progress
     updated_at: new Date().toISOString(),
     completed_at: status === "completed" ? new Date().toISOString() : null
   };
+  if (companyId) payload.company_id = companyId;
   if (id) payload.id = id;
 
   const query = id
@@ -184,17 +239,17 @@ export async function listAssessments() {
   const client = await getAuthClient();
   const { data, error } = await client
     .from("assessments")
-    .select("id,engine,status,progress,last_step,answers,created_at,updated_at,completed_at")
+    .select("id,company_id,engine,status,progress,last_step,answers,created_at,updated_at,completed_at")
     .order("updated_at", { ascending: false });
   if (error) throw error;
   return data || [];
 }
 
-export async function saveReport({ assessmentId = null, engine, title, payload, selectedOptionKey = null, implementationPlan = null }) {
+export async function saveReport({ assessmentId = null, companyId = null, engine, title, payload, selectedOptionKey = null, implementationPlan = null }) {
   const user = await getUser();
   if (!user) throw new Error("Sign in is required to save a report.");
   const client = await getAuthClient();
-  const { data, error } = await client.from("reports").insert({
+  const record = {
     user_id: user.id,
     assessment_id: assessmentId,
     engine,
@@ -203,7 +258,9 @@ export async function saveReport({ assessmentId = null, engine, title, payload, 
     selected_option_key: selectedOptionKey,
     implementation_plan: implementationPlan,
     updated_at: new Date().toISOString()
-  }).select().single();
+  };
+  if (companyId) record.company_id = companyId;
+  const { data, error } = await client.from("reports").insert(record).select().single();
   if (error) throw error;
   return data;
 }
@@ -219,7 +276,7 @@ export async function listReports() {
   const client = await getAuthClient();
   const { data, error } = await client
     .from("reports")
-    .select("id,engine,title,selected_option_key,created_at,updated_at")
+    .select("id,company_id,engine,title,selected_option_key,created_at,updated_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data || [];
@@ -244,4 +301,20 @@ export async function deleteAccountData() {
   await client.from("assessments").delete().eq("user_id", user.id);
   await client.from("companies").delete().eq("owner_user_id", user.id);
   await client.from("profiles").delete().eq("user_id", user.id);
+}
+
+export async function deleteAccountPermanently() {
+  const session = await getSession();
+  if (!session?.access_token) throw new Error("A signed-in GrowWithHR session is required.");
+  const response = await fetch(`${apiBase()}/api/account/delete`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${session.access_token}` }
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || !body?.ok) throw new Error(body?.error || "The account could not be deleted.");
+  try {
+    const client = await getAuthClient();
+    await client.auth.signOut({ scope: "local" });
+  } catch (_error) {}
+  return body;
 }
