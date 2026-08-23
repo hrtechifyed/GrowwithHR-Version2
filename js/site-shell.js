@@ -29,6 +29,18 @@
     ]);
 
     const FOOTER_RIGHTS = "© 2026 HRTechify. All rights reserved.";
+    const ACCOUNT_PROTECTED_FILES = new Set([
+        "analyze-company.html",
+        "analyze-company-v3.html",
+        "compliance-intelligence.html",
+        "organization-intelligence.html",
+        "organization-structure-report.html",
+        "executive-advisory-report.html",
+        "advisory-dashboard.html",
+        "growth-roadmap.html",
+        "people-roadmap.html",
+        "compliance-roadmap.html"
+    ]);
 
     function escapeHtml(value) {
         return String(value == null ? "" : value)
@@ -299,14 +311,26 @@
             const module = await import("./auth-client.js");
             const session = await module.getSession();
             if (session?.user) {
-                const label = session.user.user_metadata?.display_name || session.user.user_metadata?.full_name || "My GrowWithHR";
-                slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "my-growwithhr.html"))}" title="Signed in as ${escapeHtml(session.user.email || "")}">${escapeHtml(label === "My GrowWithHR" ? label : `My GrowWithHR`)}</a>`;
+                slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "my-growwithhr.html"))}" title="Signed in as ${escapeHtml(session.user.email || "")}">My GrowWithHR</a>`;
             } else {
                 slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "auth.html"))}">Sign In</a>`;
             }
         } catch (_error) {
             slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "auth.html"))}">Sign In</a>`;
         }
+    }
+
+    function bootstrapProtectedAccountPolicy() {
+        const file = currentFileName();
+        if (!ACCOUNT_PROTECTED_FILES.has(file)) return;
+        const params = new URLSearchParams(window.location.search || "");
+        if (params.get("sample") === "1") return;
+        import("./auth-guard.js")
+            .then((module) => module.requireGrowWithHRAccount({ allowSample: true }))
+            .catch(() => {
+                const target = `${file}${window.location.search || ""}${window.location.hash || ""}`;
+                window.location.replace(`auth.html?return=${encodeURIComponent(target)}`);
+            });
     }
 
     function removeHomepageTriggerStrip() {
@@ -329,6 +353,7 @@
         bootstrapUiPolish();
         bootstrapOrganizationAutosave();
         bootstrapAccountNav(prefix);
+        bootstrapProtectedAccountPolicy();
         window.addEventListener("resize", updatePageOffsets);
     }
 
