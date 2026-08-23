@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recover Compliance Report | GrowWithHR</title>
+  <meta name="description" content="Recover an encrypted GrowWithHR Compliance report using its Report ID and Recovery Code.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body data-active-nav="more">
+  <main class="prototype-shell">
+    <section class="prototype-panel">
+      <div class="prototype-kicker">GrowWithHR · Report Recovery</div>
+      <h1 class="prototype-title" style="font-size:clamp(2rem,4vw,3.4rem)">Recover your Compliance report</h1>
+      <p class="prototype-lead">No password account is required. Enter the Report ID and Recovery Code that were shown when the report was generated.</p>
+      <form id="recoverComplianceForm" class="prototype-form" style="margin-top:22px">
+        <div class="prototype-field"><label for="recoverReportId">Report ID</label><input id="recoverReportId" required autocomplete="off" placeholder="GWHR-2026-0823-AA000001"></div>
+        <div class="prototype-field"><label for="recoverCode">Recovery Code</label><input id="recoverCode" required autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"></div>
+        <div class="prototype-actions"><button class="prototype-btn" type="submit">Recover Report</button><a class="prototype-btn secondary" href="my-reports.html">Back to My Reports</a></div>
+      </form>
+      <p id="recoverComplianceStatus" class="prototype-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <script type="module" src="js/compliance-report-recover.mjs"></script>
+</body>
+</html>
