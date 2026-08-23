@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My GrowWithHR</title>
-  <meta name="description" content="Resume GrowWithHR assessments, review your company workspace and access your reports.">
+  <meta name="description" content="Resume GrowWithHR assessments, access every account report and use your legacy recovery fallback.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -19,17 +19,10 @@
         <div>
           <div class="prototype-kicker">My GrowWithHR · Prototype</div>
           <h1 id="workspaceWelcome" class="prototype-title" style="font-size:clamp(2rem,4vw,3.4rem)">Welcome back</h1>
-          <p class="prototype-lead">Resume unfinished work, review completed analyses and keep company information, assessments and reports in one account-linked workspace.</p>
+          <p class="prototype-lead">Resume unfinished work and see every report generated from this signed-in account in one place.</p>
         </div>
-        <div class="prototype-actions"><a class="prototype-btn" href="intelligence-hub.html">Analyze My Company</a><a class="prototype-btn secondary" href="account-settings.html">Account & Security</a><button id="workspaceSignOut" class="prototype-btn secondary" type="button">Sign out</button></div>
+        <div class="prototype-actions"><a class="prototype-btn" href="intelligence-hub.html">Analyze My Company</a><button id="workspaceSignOut" class="prototype-btn secondary" type="button">Sign out</button></div>
       </header>
-
-      <section class="report-section">
-        <div class="prototype-kicker">My Company</div>
-        <h2>Company workspace</h2>
-        <p class="prototype-lead">Company-level facts can be reused across GrowWithHR engines with the user’s review rather than being re-entered every time.</p>
-        <div id="companyList" class="account-list"></div>
-      </section>
 
       <section class="report-section">
         <div class="prototype-kicker">Assessments</div>
@@ -37,17 +30,33 @@
         <div id="assessmentList" class="account-list"></div>
       </section>
 
+      <section id="legacyRecoverySection" class="prototype-panel" hidden>
+        <div class="prototype-kicker">Legacy recovery fallback</div>
+        <h2>Your first report creates your recovery identity</h2>
+        <p class="prototype-lead">The Report ID and Recovery Code below are assigned when this account generates its first real GrowWithHR report. Later reports are linked to the same legacy recovery workspace. You normally do not need these credentials while you can sign in.</p>
+        <div class="prototype-grid">
+          <article class="prototype-card"><strong>Recovery Report ID</strong><p id="legacyRecoveryReportId" style="font-family:monospace;word-break:break-all">—</p></article>
+          <article class="prototype-card"><strong>Recovery Code</strong><p id="legacyRecoveryCode" style="font-family:monospace;word-break:break-all">—</p></article>
+        </div>
+        <p id="legacyRecoveryEmailStatus" class="prototype-status"></p>
+        <div class="prototype-actions">
+          <button id="copyLegacyRecovery" class="prototype-btn secondary" type="button">Copy recovery credentials</button>
+          <a class="prototype-btn secondary" href="my-reports.html">Open Legacy Report Recovery</a>
+        </div>
+      </section>
+
       <section class="report-section">
         <div class="prototype-kicker">Reports</div>
-        <h2>Your completed analysis</h2>
+        <h2>All reports from this account</h2>
+        <p class="prototype-lead">Open any report whenever you sign in. You can also ask GrowWithHR to email secure access to the report again to your signed-in account email.</p>
         <div id="reportList" class="account-list"></div>
       </section>
 
       <section class="prototype-panel">
         <div class="prototype-kicker">Account & Security</div>
         <h2>Prototype account model</h2>
-        <p class="prototype-lead">This working branch uses Supabase Auth and account-private database rows protected by Row Level Security. Before production release, OAuth redirects, database policies, retention, deletion and security documentation must be independently reviewed.</p>
-        <div class="prototype-actions"><a class="prototype-btn secondary" href="account-settings.html">Manage Account & Security</a><a class="prototype-btn secondary" href="security.html">Security & Data</a><a class="prototype-btn secondary" href="terms.html">Product Use Terms</a></div>
+        <p class="prototype-lead">This working branch uses Supabase Auth and account-private database rows protected by Row Level Security. Legacy recovery remains a fallback, not the normal way to access signed-in reports. Before production release, OAuth redirects, database policies, retention, deletion and security documentation must be independently reviewed.</p>
+        <div class="prototype-actions"><a class="prototype-btn secondary" href="security.html">Security & Data</a><a class="prototype-btn secondary" href="terms.html">Product Use Terms</a><a class="prototype-btn secondary" href="my-reports.html">Legacy Report Recovery</a></div>
       </section>
     </div>
     <p id="workspaceStatus" class="prototype-status" role="status" aria-live="polite"></p>
