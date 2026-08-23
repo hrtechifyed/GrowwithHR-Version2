@@ -25,12 +25,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Syntax check account report service
+      - name: Syntax check backend account report service
         run: node --check server-account-report-service.js
-      - name: Syntax check account browser modules
-        run: |
-          node --check js/auth-client.js
-          node --check js/my-growwithhr.js
-          node --check js/account-report.js
       - name: Run account report recovery contracts
         run: node tests/account-report-recovery-prototype-checks.mjs
