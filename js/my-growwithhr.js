@@ -2,6 +2,7 @@ import {
   ensureProfile,
   getUser,
   listAssessments,
+  listCompanies,
   listReports,
   signOut
 } from "./auth-client.js";
@@ -9,6 +10,7 @@ import {
 const loading = document.getElementById("workspaceLoading");
 const content = document.getElementById("workspaceContent");
 const welcome = document.getElementById("workspaceWelcome");
+const companiesRoot = document.getElementById("companyList");
 const assessmentsRoot = document.getElementById("assessmentList");
 const reportsRoot = document.getElementById("reportList");
 const signOutButton = document.getElementById("workspaceSignOut");
@@ -30,6 +32,24 @@ function assessmentHref(item) {
 function reportHref(item) {
   if (item.engine === "organization-growth") return `organization-growth-report-beta.html?report=${encodeURIComponent(item.id)}`;
   return `executive-advisory-report.html?report=${encodeURIComponent(item.id)}`;
+}
+
+function renderCompanies(items) {
+  if (!items.length) {
+    companiesRoot.innerHTML = `<div class="prototype-card"><h3>No company profile saved yet</h3><p>Your company workspace will be created when you begin a signed-in analysis and provide the company name.</p></div>`;
+    return;
+  }
+  companiesRoot.innerHTML = items.map((item) => {
+    const profile = item.profile || {};
+    const details = [item.industry, profile.growthStage, profile.currentEmployees ? `${profile.currentEmployees} employees` : ""].filter(Boolean);
+    return `<article class="account-item">
+      <div>
+        <h3 style="margin:0 0 7px">${esc(item.name)}</h3>
+        <div class="account-meta">${details.map((detail) => `<span>${esc(detail)}</span>`).join("")}<span>Updated ${esc(new Date(item.updated_at).toLocaleString())}</span></div>
+      </div>
+      <a class="prototype-btn secondary" href="intelligence-hub.html">Run another analysis</a>
+    </article>`;
+  }).join("");
 }
 
 function renderAssessments(items) {
@@ -76,7 +96,8 @@ async function boot() {
     await ensureProfile(user).catch(() => null);
     const name = user.user_metadata?.display_name || user.user_metadata?.full_name || user.email?.split("@")[0] || "there";
     welcome.textContent = `Welcome back, ${name}`;
-    const [assessments, reports] = await Promise.all([listAssessments(), listReports()]);
+    const [companies, assessments, reports] = await Promise.all([listCompanies(), listAssessments(), listReports()]);
+    renderCompanies(companies);
     renderAssessments(assessments);
     renderReports(reports);
     loading.hidden = true;
