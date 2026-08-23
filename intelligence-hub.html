@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analyze My Company | GrowWithHR</title>
-  <meta name="description" content="Choose the GrowWithHR analysis that matches your current company question or recover your saved company profile.">
+  <meta name="description" content="Choose the GrowWithHR analysis that matches your current company question. Real assessments require sign-in so progress and reports can be saved; sample reports remain open.">
   <meta name="growwithhr-legacy-contract-labels" content="Compliance Intelligence; Organization Intelligence">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script src="js/site-shell.js" defer></script>
@@ -17,10 +18,10 @@
       <div class="hero-bg-grid" aria-hidden="true"></div>
       <div class="container hero-layout">
         <div class="hero-content intelligence-hub-hero__content">
-          <div class="hero-badge">GrowWithHR · Analyze My Company</div>
+          <div class="hero-badge">GrowWithHR · Analyze My Company · Prototype Account Flow</div>
           <h1 id="hubTitle">Start with the <span>company question</span> you need answered.</h1>
-          <p class="hub-trust-signal">Built from real HR compliance frameworks — sample reports available before you commit.</p>
-          <p class="hero-description">The two analyses below solve different problems. Both use organization-level facts, keep uncertainty visible and show the basis behind the result.</p>
+          <p class="hub-trust-signal">Sample reports are open. Real assessments require sign-in so your work can save automatically and resume later.</p>
+          <p class="hero-description">The two engines solve different problems. Both use organization-level facts, keep uncertainty visible and show the basis behind the result rather than asking you to accept an unexplained answer.</p>
         </div>
       </div>
     </section>
@@ -30,7 +31,7 @@
         <div class="hub-engine-grid" aria-label="Available GrowWithHR analyses">
           <article class="hub-engine-card">
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
-            <div class="hub-engine-tag">Available</div>
+            <div class="hub-engine-tag">Available · Sign-in required for real analysis</div>
             <h3>Compliance Needs</h3>
             <p>Identify what compliance areas may require review, what information is missing and what to do next without presenting the result as legal certification.</p>
             <div class="hub-card-meta">
@@ -51,23 +52,23 @@
 
           <article class="hub-engine-card">
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
-            <div class="hub-engine-tag">Available</div>
+            <div class="hub-engine-tag">Working prototype · Sign-in required for real analysis</div>
             <h3>Organization Structure &amp; Growth Engine</h3>
-            <p>Understand whether manager workload and capacity, reporting lines, over-reliance on the founder and decision-making setup can support the next stage of growth.</p>
+            <p>Explore whether the current structure can support the growth you foresee across headcount, products, customers, geography and business complexity — while respecting real constraints such as limited headcount, combined roles and leadership budget.</p>
             <div class="hub-card-meta">
-              <span><strong>Best when:</strong> the founder is overloaded, managers are stretched, decisions are slow or headcount is growing.</span>
-              <span><strong>You’ll need:</strong> team size, manager count, reporting structure, how decisions are made and how teams work together.</span>
-              <span><strong>You receive:</strong> summary for leaders, detailed findings with supporting sources and a 12-month growth outlook.</span>
+              <span><strong>Best when:</strong> the business is evolving, responsibilities are becoming concentrated, managers are stretched, decisions are slow or you want to prepare the structure before growth creates friction.</span>
+              <span><strong>You’ll need:</strong> current company facts, growth assumptions, constraints, responsibility ownership, management context and how decisions happen.</span>
+              <span><strong>You receive:</strong> structural pressure view, relevant external reference points, multiple organization options, pros and cons, a GrowWithHR suggested direction, your own selected direction and a practical implementation path.</span>
             </div>
-            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Analyze My Organization Structure &amp; Growth <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-            <p class="hub-sample-action"><a class="hub-sample-link" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
+            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-growth-beta.html">Explore My Organization Structure &amp; Growth <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p class="hub-sample-action"><a class="hub-sample-link" href="organization-growth-report-beta.html?sample=1">View sample Organization Structure &amp; Growth report ↗</a></p>
           </article>
         </div>
 
-        <details class="hub-start-note">
+        <details class="hub-start-note" open>
           <summary>Before you start <span class="hub-start-note__chevron" aria-hidden="true">⌄</span></summary>
           <div class="hub-start-note__content">
-            <p>Plan on roughly 10–15 minutes with current company facts. Do not enter sensitive employee case data. You can review a sample report first, and completed analyses can create a saved company profile for future use. <a class="org-link" href="security.html">Security & Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
+            <p><strong>These are thoughtful company assessments, not quick quizzes.</strong> The Organization Structure &amp; Growth prototype is designed around roughly 15–20 minutes of input and can be completed across multiple sittings. Sign in before entering company information so account-linked auto-save and resume can work. Do not enter sensitive employee case data. <a class="org-link" href="security.html">Security & Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
           </div>
         </details>
       </div>
@@ -77,26 +78,29 @@
       <div class="container">
         <div class="hub-workspace-card">
           <div class="hub-workspace-copy">
-            <div class="hub-eyebrow"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Returning?</div>
-            <h2 id="returningTitle">Reuse your saved company profile</h2>
-            <p>Recover a previous saved report here, or open <a class="org-link" href="my-reports.html">My Reports</a> to see linked Report IDs and completed analyses.</p>
+            <div class="hub-eyebrow"><i class="fa-solid fa-user" aria-hidden="true"></i> Returning?</div>
+            <h2 id="returningTitle">Continue from My GrowWithHR</h2>
+            <p>Your account workspace is the prototype home for unfinished assessments and completed reports. The older Report ID + Recovery Code flow remains available below only as a legacy transition path while the account model is being developed.</p>
+            <div class="prototype-actions"><a class="prototype-btn" href="my-growwithhr.html">Open My GrowWithHR</a><a class="prototype-btn secondary" href="auth.html">Sign in / Create Account</a></div>
           </div>
 
-          <div>
+          <details style="margin-top:18px">
+            <summary>Legacy report recovery</summary>
+            <p class="hub-privacy-note">Use this only for reports created under the earlier recovery-code model.</p>
             <form id="workspaceRecoverForm" class="hub-recover-form">
               <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
               <label>Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
-              <button type="submit">Open Saved Company Profile</button>
+              <button type="submit">Recover Legacy Workspace</button>
             </form>
             <div id="workspaceRecoverStatus" class="hub-workspace-status" aria-live="polite"></div>
             <div id="workspaceActions" class="hub-workspace-actions" hidden>
-              <a class="trust-link" href="my-reports.html">Open My Reports</a>
-              <button id="workspaceStartFresh" class="fresh" type="button">Start fresh</button>
-              <button id="workspaceDeleteData" class="delete" type="button">Delete my saved company information now</button>
+              <a class="trust-link" href="my-reports.html">Open Legacy My Reports</a>
+              <button id="workspaceStartFresh" class="fresh" type="button">Clear recovered browser workspace</button>
+              <button id="workspaceDeleteData" class="delete" type="button">Delete legacy saved company information</button>
             </div>
-          </div>
+          </details>
         </div>
-        <p class="hub-privacy-note">Your data stays secure when reopening a saved report — <a href="security.html">full details</a>. Saved reports are kept for 6 months — <a href="security.html#retention">Data policy</a>.</p>
+        <p class="hub-privacy-note">Prototype note: account-linked storage, cross-device resume, OAuth configuration, Row Level Security and data-retention behavior must be reviewed before production rollout.</p>
       </div>
     </section>
   </main>
@@ -110,7 +114,6 @@
       const actions = document.getElementById('workspaceActions');
       const deleteButton = document.getElementById('workspaceDeleteData');
       const freshButton = document.getElementById('workspaceStartFresh');
-      const organizationLink = document.getElementById('organizationStructureLink');
 
       function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');}catch(_){return null;} }
       function clearWorkspace(){ try{sessionStorage.removeItem(SESSION_KEY);}catch(_){} refreshActions(); }
@@ -118,59 +121,34 @@
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        status.textContent = 'Recovering saved report…';
+        status.textContent = 'Recovering legacy saved report…';
         try {
           const reportId = document.getElementById('workspaceReportId').value.trim();
           const accessKey = document.getElementById('workspaceRecoveryCode').value.trim();
           const result = await window.GrowWithHRCompanyWorkspace.recover(reportId, accessKey);
           sessionStorage.setItem(SESSION_KEY, JSON.stringify({reportId:result.workspace.reportId,reportIds:result.workspace.reportIds,accessKey,email:result.workspace.email,companyName:result.workspace.companyName,completedEngines:result.workspace.completedEngines,createdAt:result.workspace.createdAt,updatedAt:result.workspace.updatedAt,lastAnalysisCompletedAt:result.workspace.lastAnalysisCompletedAt,expiresAt:result.workspace.expiresAt,companyData:result.workspace.companyData}));
-          status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Saved data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}.`;
+          status.textContent = `Recovered ${result.workspace.companyName || 'your company'} under the legacy model. Use the legacy My Reports path for those reports.`;
           refreshActions();
-        } catch (error) { status.textContent = error.message || 'We could not recover that saved report.'; }
-      });
-
-      organizationLink.addEventListener('click', async (event) => {
-        const workspace = readWorkspace();
-        if (!workspace?.reportId || !workspace?.accessKey) return;
-        event.preventDefault();
-
-        const newTab = window.open('about:blank', '_blank');
-        if (newTab) newTab.opener = null;
-        status.textContent = 'Preparing secure access to your saved company profile…';
-
-        try {
-          const result = await window.GrowWithHRCompanyWorkspace.createHandoff(workspace.reportId, workspace.accessKey, 'organization-structure');
-          const token = result?.handoff?.token;
-          if (!token) throw new Error('Secure access could not be prepared.');
-          const target = `organization-intelligence.html?handoff=${encodeURIComponent(token)}`;
-          if (newTab) newTab.location.replace(target);
-          else window.open(target, '_blank', 'noopener');
-          status.textContent = 'Organization Structure & Growth Engine opened with your saved company profile. Your Recovery Code was not placed in the URL.';
-        } catch (error) {
-          const target = 'organization-intelligence.html';
-          if (newTab) newTab.location.replace(target);
-          else window.open(target, '_blank', 'noopener');
-          status.textContent = 'Secure reuse was unavailable, so the Organization Structure & Growth Engine opened without your saved company profile. You can continue by entering the current company facts.';
-        }
+        } catch (error) { status.textContent = error.message || 'We could not recover that legacy saved report.'; }
       });
 
       freshButton.addEventListener('click', () => {
         clearWorkspace();
-        status.textContent = 'Starting fresh in this browser.';
+        status.textContent = 'Legacy recovered browser workspace cleared.';
       });
 
       deleteButton.addEventListener('click', async () => {
         const workspace = readWorkspace();
         if (!workspace?.reportId || !workspace?.accessKey) return;
-        if (!confirm('Permanently delete the saved company information for this saved report now? This cannot be undone. Downloaded reports are not affected.')) return;
+        if (!confirm('Permanently delete the saved company information for this legacy saved report now? This cannot be undone. Downloaded reports are not affected.')) return;
         deleteButton.disabled = true;
-        status.textContent = 'Deleting saved company information…';
+        status.textContent = 'Deleting legacy saved company information…';
         try {
           await window.GrowWithHRCompanyWorkspace.erase(workspace.reportId, workspace.accessKey);
           clearWorkspace();
-          status.textContent = 'Saved company information deleted. A confirmation email will be sent.';
+          status.textContent = 'Legacy saved company information deleted.';
         } catch (error) {
-          status.textContent = error.message || 'We could not delete that saved report just yet.';
+          status.textContent = error.message || 'We could not delete that legacy saved report just yet.';
         } finally {
           deleteButton.disabled = false;
           refreshActions();
