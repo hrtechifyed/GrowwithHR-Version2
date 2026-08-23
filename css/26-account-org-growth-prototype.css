@@ -15,3 +15,6 @@
 .site-account-slot{display:flex;align-items:center}.site-account-link{display:inline-flex;align-items:center;text-decoration:none;color:inherit;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);white-space:nowrap}
 @media(max-width:900px){.auth-layout,.prototype-grid,.prototype-grid.three,.option-grid{grid-template-columns:1fr}.signal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.trust-trace{grid-template-columns:repeat(2,minmax(0,1fr))}.account-dashboard-head{align-items:flex-start;flex-direction:column}.account-item{grid-template-columns:1fr}.site-account-slot{width:100%}.site-account-link{width:100%;justify-content:center}.wizard-top{top:var(--site-shell-header-height,0)}}
 @media(max-width:560px){.prototype-shell{padding-left:16px;padding-right:16px}.prototype-panel{padding:20px}.signal-grid,.trust-trace{grid-template-columns:1fr}.wizard-nav{flex-direction:column-reverse}.wizard-nav .prototype-btn{width:100%}.review-row{grid-template-columns:1fr}.auth-layout{padding-left:16px;padding-right:16px}}
+/* Zero-cost prototype: account UI is intentionally dormant. */
+.site-account-slot{display:none!important}
+.site-nav-more__menu a[href$="my-growwithhr.html"]{display:none!important}
