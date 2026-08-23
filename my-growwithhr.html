@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My GrowWithHR</title>
+  <meta name="description" content="Resume GrowWithHR assessments and access your reports.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body data-active-nav="account">
+  <main class="prototype-shell">
+    <div id="workspaceLoading" class="prototype-panel"><p class="prototype-lead">Loading your GrowWithHR workspace…</p></div>
+
+    <div id="workspaceContent" hidden>
+      <header class="account-dashboard-head">
+        <div>
+          <div class="prototype-kicker">My GrowWithHR · Prototype</div>
+          <h1 id="workspaceWelcome" class="prototype-title" style="font-size:clamp(2rem,4vw,3.4rem)">Welcome back</h1>
+          <p class="prototype-lead">Resume unfinished work, review completed analyses and keep your company thinking in one account-linked workspace.</p>
+        </div>
+        <div class="prototype-actions"><a class="prototype-btn" href="intelligence-hub.html">Analyze My Company</a><button id="workspaceSignOut" class="prototype-btn secondary" type="button">Sign out</button></div>
+      </header>
+
+      <section class="report-section">
+        <div class="prototype-kicker">Assessments</div>
+        <h2>Continue where you left off</h2>
+        <div id="assessmentList" class="account-list"></div>
+      </section>
+
+      <section class="report-section">
+        <div class="prototype-kicker">Reports</div>
+        <h2>Your completed analysis</h2>
+        <div id="reportList" class="account-list"></div>
+      </section>
+
+      <section class="prototype-panel">
+        <div class="prototype-kicker">Account & Security</div>
+        <h2>Prototype account model</h2>
+        <p class="prototype-lead">This working branch uses Supabase Auth and account-private database rows protected by Row Level Security. Before production release, OAuth redirects, database policies, retention, deletion and security documentation must be independently reviewed.</p>
+        <div class="prototype-actions"><a class="prototype-btn secondary" href="security.html">Security & Data</a><a class="prototype-btn secondary" href="terms.html">Product Use Terms</a></div>
+      </section>
+    </div>
+    <p id="workspaceStatus" class="prototype-status" role="status" aria-live="polite"></p>
+  </main>
+  <script type="module" src="js/my-growwithhr.js"></script>
+</body>
+</html>
