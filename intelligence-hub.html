@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Company Insights | GrowWithHR</title>
+  <title>Analyze My Company | GrowWithHR</title>
   <meta name="description" content="Choose the GrowWithHR analysis that matches your current company question or recover your saved company profile.">
   <meta name="growwithhr-legacy-contract-labels" content="Compliance Intelligence; Organization Intelligence">
   <link rel="stylesheet" href="styles.css">
@@ -17,7 +17,7 @@
       <div class="hero-bg-grid" aria-hidden="true"></div>
       <div class="container hero-layout">
         <div class="hero-content intelligence-hub-hero__content">
-          <div class="hero-badge">GrowWithHR Company Insights</div>
+          <div class="hero-badge">GrowWithHR · Analyze My Company</div>
           <h1 id="hubTitle">Start with the <span>company question</span> you need answered.</h1>
           <p class="hub-trust-signal">Built from real HR compliance frameworks — sample reports available before you commit.</p>
           <p class="hero-description">The two analyses below solve different problems. Both use organization-level facts, keep uncertainty visible and show the basis behind the result.</p>
@@ -25,7 +25,7 @@
       </div>
     </section>
 
-    <section class="hub-engine-section" aria-label="Company insight options">
+    <section class="hub-engine-section" aria-label="Company analysis options">
       <div class="container">
         <div class="hub-engine-grid" aria-label="Available GrowWithHR analyses">
           <article class="hub-engine-card">
@@ -35,13 +35,13 @@
             <p>Identify what compliance areas may require review, what information is missing and what to do next without presenting the result as legal certification.</p>
             <div class="hub-card-meta">
               <span><strong>Best when:</strong> hiring, changing workforce mix, expanding locations or reviewing HR obligations.</span>
-              <span><strong>You’ll need:</strong> company, workforce, location and operating facts.</span>
+              <span><strong>You’ll need:</strong> company, workforce, location and information about how your company operates.</span>
               <div class="hub-card-deliverables">
                 <strong>You receive:</strong>
                 <ul>
-                  <li>Applicability summary</li>
-                  <li>Source-referenced findings</li>
-                  <li>Flagged next actions</li>
+                  <li>Which requirements may apply</li>
+                  <li>Findings with supporting sources</li>
+                  <li>Recommended next steps</li>
                 </ul>
               </div>
             </div>
@@ -53,11 +53,11 @@
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
             <div class="hub-engine-tag">Available</div>
             <h3>Organization Structure</h3>
-            <p>Understand whether management capacity, reporting lines, founder dependency and decision-making setup can support the next stage of growth.</p>
+            <p>Understand whether manager workload and capacity, reporting lines, over-reliance on the founder and decision-making setup can support the next stage of growth.</p>
             <div class="hub-card-meta">
               <span><strong>Best when:</strong> the founder is overloaded, managers are stretched, decisions are slow or headcount is growing.</span>
-              <span><strong>You’ll need:</strong> team size, manager count, reporting structure, decision and coordination context.</span>
-              <span><strong>You receive:</strong> executive overview, detailed source-backed findings and a 12-month planning scenario.</span>
+              <span><strong>You’ll need:</strong> team size, manager count, reporting structure, how decisions are made and how teams work together.</span>
+              <span><strong>You receive:</strong> summary for leaders, detailed findings with supporting sources and a 12-month growth outlook.</span>
             </div>
             <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
             <p class="hub-sample-action"><a class="hub-sample-link" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
@@ -67,7 +67,7 @@
         <details class="hub-start-note">
           <summary>Before you start <span class="hub-start-note__chevron" aria-hidden="true">⌄</span></summary>
           <div class="hub-start-note__content">
-            <p>Plan on roughly 10–15 minutes with current company facts. Do not enter sensitive employee case data. You can review a sample report first, and completed analyses can create a recoverable Company Workspace for future use. <a class="org-link" href="security.html">Security & Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
+            <p>Plan on roughly 10–15 minutes with current company facts. Do not enter sensitive employee case data. You can review a sample report first, and completed analyses can create a saved company profile for future use. <a class="org-link" href="security.html">Security & Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
           </div>
         </details>
       </div>
@@ -86,13 +86,13 @@
             <form id="workspaceRecoverForm" class="hub-recover-form">
               <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
               <label>Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
-              <button type="submit">Recover Workspace</button>
+              <button type="submit">Open Saved Company Profile</button>
             </form>
             <div id="workspaceRecoverStatus" class="hub-workspace-status" aria-live="polite"></div>
             <div id="workspaceActions" class="hub-workspace-actions" hidden>
               <a class="trust-link" href="my-reports.html">Open My Reports</a>
               <button id="workspaceStartFresh" class="fresh" type="button">Start fresh</button>
-              <button id="workspaceDeleteData" class="delete" type="button">Delete my reusable company data now</button>
+              <button id="workspaceDeleteData" class="delete" type="button">Delete my saved company information now</button>
             </div>
           </div>
         </div>
@@ -162,13 +162,13 @@
       deleteButton.addEventListener('click', async () => {
         const workspace = readWorkspace();
         if (!workspace?.reportId || !workspace?.accessKey) return;
-        if (!confirm('Permanently delete the reusable company information for this saved report now? This cannot be undone. Downloaded reports are not affected.')) return;
+        if (!confirm('Permanently delete the saved company information for this saved report now? This cannot be undone. Downloaded reports are not affected.')) return;
         deleteButton.disabled = true;
-        status.textContent = 'Deleting saved company data…';
+        status.textContent = 'Deleting saved company information…';
         try {
           await window.GrowWithHRCompanyWorkspace.erase(workspace.reportId, workspace.accessKey);
           clearWorkspace();
-          status.textContent = 'Reusable company data deleted. A confirmation email will be sent.';
+          status.textContent = 'Saved company information deleted. A confirmation email will be sent.';
         } catch (error) {
           status.textContent = error.message || 'We could not delete that saved report just yet.';
         } finally {
