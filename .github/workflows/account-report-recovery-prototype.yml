@@ -1,31 +1,23 @@
-name: Account Report Recovery Prototype
+name: Deferred Account Report Recovery Prototype
 
+# Password-account work is intentionally deferred while GrowWithHR follows the
+# zero-cost Report ID + Recovery Code prototype. Keep this workflow available for
+# manual future validation without running stale account checks on every push.
 on:
-  push:
-    branches:
-      - prototype/account-org-growth-workflow-v1
-  pull_request:
-    paths:
-      - 'server-account-report-service.js'
-      - 'server-entry.js'
-      - 'js/auth-client.js'
-      - 'js/my-growwithhr.js'
-      - 'js/account-report.js'
-      - 'my-growwithhr.html'
-      - 'account-report.html'
-      - 'supabase/migrations/20260823_account_workspace_prototype.sql'
-      - 'tests/account-report-recovery-prototype-checks.mjs'
-      - '.github/workflows/account-report-recovery-prototype.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  prototype-contract:
+  deferred-account-contract:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Syntax check backend account report service
+      - name: Syntax check deferred backend account report service
         run: node --check server-account-report-service.js
-      - name: Run account report recovery contracts
+      - name: Run deferred account report recovery contracts
         run: node tests/account-report-recovery-prototype-checks.mjs
