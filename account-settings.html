@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account & Security | GrowWithHR</title>
+  <meta name="description" content="Manage your GrowWithHR prototype account, password and signed-in sessions.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body data-active-nav="account">
+<main class="prototype-shell" style="max-width:900px">
+  <header class="prototype-panel" style="margin-bottom:22px">
+    <div class="prototype-kicker">My GrowWithHR · Account & Security · Prototype</div>
+    <h1>Account & Security</h1>
+    <p class="prototype-lead">Manage the signed-in account used for account-linked assessments, auto-save and reports.</p>
+    <p><strong id="accountEmail">Loading account…</strong></p>
+    <div class="prototype-actions"><a class="prototype-btn secondary" href="my-growwithhr.html">Back to My GrowWithHR</a></div>
+  </header>
+
+  <section class="prototype-panel" style="margin-bottom:22px">
+    <div class="prototype-kicker">Password</div>
+    <h2>Change password</h2>
+    <p class="prototype-lead">For email/password accounts, choose a new password. A separate Forgot Password flow is also available from Sign In.</p>
+    <form id="changePasswordForm" class="prototype-form">
+      <div class="prototype-field"><label for="settingsNewPassword">New password</label><input id="settingsNewPassword" type="password" minlength="8" autocomplete="new-password" required></div>
+      <div class="prototype-field"><label for="settingsConfirmPassword">Confirm new password</label><input id="settingsConfirmPassword" type="password" minlength="8" autocomplete="new-password" required></div>
+      <div class="prototype-actions"><button class="prototype-btn" type="submit">Update password</button></div>
+    </form>
+  </section>
+
+  <section class="prototype-panel" style="margin-bottom:22px">
+    <div class="prototype-kicker">Sessions</div>
+    <h2>Sign out everywhere</h2>
+    <p class="prototype-lead">End GrowWithHR sessions across devices linked to this account.</p>
+    <button id="signOutAllSessions" class="prototype-btn secondary" type="button">Sign out all sessions</button>
+  </section>
+
+  <section class="prototype-panel">
+    <div class="prototype-kicker">Permanent deletion</div>
+    <h2>Delete account</h2>
+    <p class="prototype-lead">This prototype control deletes the Supabase Auth user. The prototype tables use cascading account ownership so account-linked profiles, assessments and reports are removed with the account. This behavior must be verified in staging before production use.</p>
+    <button id="deleteAccount" class="prototype-btn secondary" type="button">Delete my GrowWithHR account</button>
+  </section>
+
+  <p id="accountSettingsStatus" class="prototype-status" role="status" aria-live="polite"></p>
+</main>
+<script type="module" src="js/account-settings.js"></script>
+</body>
+</html>
