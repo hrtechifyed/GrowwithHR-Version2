@@ -1,6 +1,7 @@
 import { analyzeOrganizationStructure } from "./modules/organization/organization-structure-engine.mjs";
 import { buildOrganizationGrowthDecision } from "./modules/organization/organization-growth-options-engine.mjs";
 import {
+  ensureCompany,
   ensureProfile,
   getUser,
   getAssessment,
@@ -31,6 +32,7 @@ const stepSections = Array.from(document.querySelectorAll(".wizard-step"));
 
 let user = null;
 let assessmentId = null;
+let companyId = null;
 let currentStep = 1;
 let saveTimer = null;
 let saveInFlight = Promise.resolve();
@@ -133,16 +135,35 @@ function renderReview() {
   }).join("");
 }
 
+async function ensureCompanyForAnswers(answers) {
+  if (companyId || !answers.companyName) return companyId;
+  const company = await ensureCompany({
+    name: answers.companyName,
+    industry: answers.industry,
+    profile: {
+      growthStage: answers.growthStage || "",
+      businessModel: answers.businessModel || "",
+      currentEmployees: answers.employees || "",
+      operatingLocations: answers.locations || "",
+      productsCount: answers.productsCount || ""
+    }
+  });
+  companyId = company?.id || null;
+  return companyId;
+}
+
 async function persistNow({ status = "in_progress", analysisPayload = null, silent = false } = {}) {
   if (!user) throw new Error("Sign in is required to save this assessment.");
   const answers = values();
-  const localPayload = { assessmentId, currentStep, answers, savedAt: new Date().toISOString() };
+  const localPayload = { assessmentId, companyId, currentStep, answers, savedAt: new Date().toISOString() };
   writeLocalDraft(localPayload);
   if (!silent) autosaveStatus.textContent = "Saving securely to your GrowWithHR account…";
 
   saveInFlight = saveInFlight.then(async () => {
+    await ensureCompanyForAnswers(answers);
     const saved = await saveAssessmentDraft({
       id: assessmentId,
+      companyId,
       engine: ENGINE,
       answers,
       progress: status === "completed" ? 100 : progressFor(currentStep),
@@ -151,7 +172,8 @@ async function persistNow({ status = "in_progress", analysisPayload = null, sile
       analysisPayload
     });
     assessmentId = saved.id;
-    writeLocalDraft({ assessmentId, currentStep, answers, savedAt: saved.updated_at });
+    companyId = saved.company_id || companyId;
+    writeLocalDraft({ assessmentId, companyId, currentStep, answers, savedAt: saved.updated_at });
     if (!silent) autosaveStatus.textContent = `✓ Saved automatically · ${new Date(saved.updated_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
     return saved;
   }).catch((error) => {
@@ -179,6 +201,7 @@ async function restoreExisting() {
 
   if (saved?.answers) {
     assessmentId = saved.id;
+    companyId = saved.company_id || null;
     currentStep = Math.max(1, Math.min(TOTAL_STEPS, Number(saved.last_step) || 1));
     applyValues(saved.answers);
     restoredFromServer = true;
@@ -189,6 +212,7 @@ async function restoreExisting() {
   const local = readLocalDraft();
   if (local?.answers) {
     assessmentId = local.assessmentId || null;
+    companyId = local.companyId || null;
     currentStep = Math.max(1, Math.min(TOTAL_STEPS, Number(local.currentStep) || 1));
     applyValues(local.answers);
     autosaveStatus.textContent = `Saved device draft restored${local.savedAt ? ` · ${new Date(local.savedAt).toLocaleString()}` : ""}`;
@@ -245,6 +269,7 @@ async function completeAnalysis() {
   const completed = await persistNow({ status: "completed", analysisPayload, silent: true });
   const report = await saveReport({
     assessmentId: completed.id,
+    companyId: completed.company_id || companyId,
     engine: ENGINE,
     title: `${data.companyName || "Company"} · Organization Structure & Growth`,
     payload: {
@@ -301,7 +326,7 @@ form.addEventListener("input", queueSave);
 form.addEventListener("change", queueSave);
 window.addEventListener("pagehide", () => {
   if (!wizard.hidden && user) {
-    writeLocalDraft({ assessmentId, currentStep, answers: values(), savedAt: new Date().toISOString() });
+    writeLocalDraft({ assessmentId, companyId, currentStep, answers: values(), savedAt: new Date().toISOString() });
   }
 });
 
