@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My GrowWithHR</title>
-  <meta name="description" content="Resume GrowWithHR assessments and access your reports.">
+  <meta name="description" content="Resume GrowWithHR assessments, review your company workspace and access your reports.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -19,10 +19,17 @@
         <div>
           <div class="prototype-kicker">My GrowWithHR · Prototype</div>
           <h1 id="workspaceWelcome" class="prototype-title" style="font-size:clamp(2rem,4vw,3.4rem)">Welcome back</h1>
-          <p class="prototype-lead">Resume unfinished work, review completed analyses and keep your company thinking in one account-linked workspace.</p>
+          <p class="prototype-lead">Resume unfinished work, review completed analyses and keep company information, assessments and reports in one account-linked workspace.</p>
         </div>
-        <div class="prototype-actions"><a class="prototype-btn" href="intelligence-hub.html">Analyze My Company</a><button id="workspaceSignOut" class="prototype-btn secondary" type="button">Sign out</button></div>
+        <div class="prototype-actions"><a class="prototype-btn" href="intelligence-hub.html">Analyze My Company</a><a class="prototype-btn secondary" href="account-settings.html">Account & Security</a><button id="workspaceSignOut" class="prototype-btn secondary" type="button">Sign out</button></div>
       </header>
+
+      <section class="report-section">
+        <div class="prototype-kicker">My Company</div>
+        <h2>Company workspace</h2>
+        <p class="prototype-lead">Company-level facts can be reused across GrowWithHR engines with the user’s review rather than being re-entered every time.</p>
+        <div id="companyList" class="account-list"></div>
+      </section>
 
       <section class="report-section">
         <div class="prototype-kicker">Assessments</div>
@@ -40,7 +47,7 @@
         <div class="prototype-kicker">Account & Security</div>
         <h2>Prototype account model</h2>
         <p class="prototype-lead">This working branch uses Supabase Auth and account-private database rows protected by Row Level Security. Before production release, OAuth redirects, database policies, retention, deletion and security documentation must be independently reviewed.</p>
-        <div class="prototype-actions"><a class="prototype-btn secondary" href="security.html">Security & Data</a><a class="prototype-btn secondary" href="terms.html">Product Use Terms</a></div>
+        <div class="prototype-actions"><a class="prototype-btn secondary" href="account-settings.html">Manage Account & Security</a><a class="prototype-btn secondary" href="security.html">Security & Data</a><a class="prototype-btn secondary" href="terms.html">Product Use Terms</a></div>
       </section>
     </div>
     <p id="workspaceStatus" class="prototype-status" role="status" aria-live="polite"></p>
