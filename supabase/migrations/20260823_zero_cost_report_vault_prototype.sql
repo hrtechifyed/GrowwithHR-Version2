@@ -62,6 +62,8 @@ begin
 end;
 $$;
 
+revoke execute on function public.prototype_allocate_report_id() from anon;
+revoke execute on function public.prototype_allocate_report_id() from authenticated;
 revoke all on function public.prototype_allocate_report_id() from public;
 grant execute on function public.prototype_allocate_report_id() to service_role;
 
