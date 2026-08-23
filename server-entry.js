@@ -14,6 +14,7 @@ const { handleSingleReportDeliveryRequest } = require("./server-single-report-de
 const { handleOrganizationReportRequest } = require("./server-organization-report-delivery");
 const { handleWorkspaceHandoffRequest } = require("./server-workspace-handoff");
 const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
+const { handleAuthConfigRequest } = require("./server-auth-config");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
     "https://hrtechifyed.github.io"
@@ -86,7 +87,7 @@ function installApiCors() {
 
                     response.setHeader("Access-Control-Allow-Origin", origin);
                     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+                    response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
                     response.setHeader("Access-Control-Max-Age", "600");
 
                     if (request.method === "OPTIONS") {
@@ -96,6 +97,7 @@ function installApiCors() {
                     }
                 }
 
+                if (handleAuthConfigRequest(request, response)) return;
                 if (handleM7ReadinessRequest(request, response)) return;
                 if (handleSharedLegalExplanationRequest(request, response)) return;
                 if (handleLegalExplanationRequest(request, response)) return;
