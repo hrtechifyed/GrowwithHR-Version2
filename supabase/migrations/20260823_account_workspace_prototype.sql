@@ -73,6 +73,7 @@ create table if not exists public.account_legacy_recovery (
   recovery_report_id text not null unique,
   current_report_id text not null,
   encrypted_recovery_code text not null,
+  credentials_emailed_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
