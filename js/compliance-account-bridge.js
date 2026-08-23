@@ -6,6 +6,7 @@ const TOTAL_MOMENTS = 7;
 
 let user = null;
 let accountAssessment = null;
+let companyId = null;
 let lastSnapshot = "";
 let timer = null;
 let syncing = false;
@@ -61,6 +62,30 @@ function reportSnapshot() {
   return readJson(REPORT_STORAGE_KEY);
 }
 
+function companyFacts(state) {
+  const answers = state?.answers || {};
+  const name = answers.companyName || answers.organisationName || answers.organizationName || answers.businessName || answers.company || "";
+  const industry = answers.industryName || answers.industry || answers.industryOther || "";
+  return { name: String(name || "").trim(), industry: String(industry || "").trim() };
+}
+
+async function ensureCompanyForState(auth, state) {
+  if (companyId) return companyId;
+  const facts = companyFacts(state);
+  if (!facts.name) return null;
+  const company = await auth.ensureCompany({
+    name: facts.name,
+    industry: facts.industry,
+    profile: {
+      source: "compliance-engine-prototype",
+      totalEmployees: state?.answers?.employees || state?.answers?.totalEmployees || "",
+      growthStage: state?.answers?.stage || state?.answers?.growthStage || ""
+    }
+  });
+  companyId = company?.id || null;
+  return companyId;
+}
+
 async function restoreFromAccount(auth) {
   const params = new URLSearchParams(location.search);
   const requestedId = params.get("assessment");
@@ -70,6 +95,7 @@ async function restoreFromAccount(auth) {
   if (!saved?.answers?.legacyAssessment) return false;
 
   accountAssessment = saved;
+  companyId = saved.company_id || null;
   const local = assessmentSnapshot();
   const localUpdated = Date.parse(local?.updatedAt || 0) || 0;
   const remoteUpdated = Date.parse(saved.updated_at || 0) || 0;
@@ -77,14 +103,14 @@ async function restoreFromAccount(auth) {
 
   if (remoteUpdated > localUpdated && !alreadyRestored) {
     writeJson(ASSESSMENT_STORAGE_KEY, saved.answers.legacyAssessment);
-    saveBridgeState({ assessmentId: saved.id, restoredAt: new Date().toISOString() });
+    saveBridgeState({ assessmentId: saved.id, companyId, restoredAt: new Date().toISOString() });
     params.set("assessment", saved.id);
     params.set("accountRestored", "1");
     location.replace(`${location.pathname}?${params.toString()}${location.hash}`);
     return true;
   }
 
-  saveBridgeState({ assessmentId: saved.id });
+  saveBridgeState({ assessmentId: saved.id, companyId });
   return false;
 }
 
@@ -95,9 +121,10 @@ async function linkCompletedReport(auth, savedAssessment, state) {
   const linkedId = savedAssessment?.analysis_payload?.accountReportId;
   if (linkedId) return savedAssessment;
 
-  const companyName = state?.answers?.companyName || state?.answers?.organisationName || state?.answers?.organizationName || "Company";
+  const companyName = companyFacts(state).name || "Company";
   const accountReport = await auth.saveReport({
     assessmentId: savedAssessment.id,
+    companyId: savedAssessment.company_id || companyId,
     engine: ENGINE,
     title: `${companyName} · Compliance Advisory`,
     payload: {
@@ -110,6 +137,7 @@ async function linkCompletedReport(auth, savedAssessment, state) {
 
   const updated = await auth.saveAssessmentDraft({
     id: savedAssessment.id,
+    companyId: savedAssessment.company_id || companyId,
     engine: ENGINE,
     answers: { legacyAssessment: state },
     progress: 100,
@@ -117,7 +145,7 @@ async function linkCompletedReport(auth, savedAssessment, state) {
     status: "completed",
     analysisPayload: { accountReportId: accountReport.id, legacyReportLinked: true }
   });
-  saveBridgeState({ assessmentId: updated.id, reportId: accountReport.id });
+  saveBridgeState({ assessmentId: updated.id, companyId: updated.company_id || companyId, reportId: accountReport.id });
   return updated;
 }
 
@@ -131,9 +159,12 @@ async function syncCurrentState(auth, { force = false } = {}) {
   setVisibleSaveStatus("Saving to your GrowWithHR account…");
   try {
     const id = accountAssessment?.id || bridgeState().assessmentId || null;
+    companyId = accountAssessment?.company_id || bridgeState().companyId || companyId;
+    await ensureCompanyForState(auth, state);
     const status = state.completed ? "completed" : "in_progress";
     accountAssessment = await auth.saveAssessmentDraft({
       id,
+      companyId,
       engine: ENGINE,
       answers: { legacyAssessment: state },
       progress: progressFrom(state),
@@ -141,8 +172,9 @@ async function syncCurrentState(auth, { force = false } = {}) {
       status,
       analysisPayload: accountAssessment?.analysis_payload || null
     });
+    companyId = accountAssessment.company_id || companyId;
     lastSnapshot = serialised;
-    saveBridgeState({ assessmentId: accountAssessment.id });
+    saveBridgeState({ assessmentId: accountAssessment.id, companyId });
     accountAssessment = await linkCompletedReport(auth, accountAssessment, state);
     setVisibleSaveStatus(`✓ Saved to My GrowWithHR · ${new Date(accountAssessment.updated_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`);
   } catch (error) {
@@ -171,7 +203,7 @@ export async function bootstrapComplianceAccountBridge() {
     window.addEventListener("pagehide", () => {
       window.clearInterval(timer);
       const state = assessmentSnapshot();
-      if (state) saveBridgeState({ assessmentId: accountAssessment?.id || bridgeState().assessmentId, deviceSnapshotAt: new Date().toISOString() });
+      if (state) saveBridgeState({ assessmentId: accountAssessment?.id || bridgeState().assessmentId, companyId, deviceSnapshotAt: new Date().toISOString() });
     });
     await syncCurrentState(auth, { force: false });
   } catch (error) {
