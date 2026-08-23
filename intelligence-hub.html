@@ -52,14 +52,14 @@
           <article class="hub-engine-card">
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
             <div class="hub-engine-tag">Available</div>
-            <h3>Organization Structure</h3>
+            <h3>Organization Structure &amp; Growth Engine</h3>
             <p>Understand whether manager workload and capacity, reporting lines, over-reliance on the founder and decision-making setup can support the next stage of growth.</p>
             <div class="hub-card-meta">
               <span><strong>Best when:</strong> the founder is overloaded, managers are stretched, decisions are slow or headcount is growing.</span>
               <span><strong>You’ll need:</strong> team size, manager count, reporting structure, how decisions are made and how teams work together.</span>
               <span><strong>You receive:</strong> summary for leaders, detailed findings with supporting sources and a 12-month growth outlook.</span>
             </div>
-            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Understand My Organization Structure <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Analyze My Organization Structure &amp; Growth <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
             <p class="hub-sample-action"><a class="hub-sample-link" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
           </article>
         </div>
@@ -145,12 +145,12 @@
           const target = `organization-intelligence.html?handoff=${encodeURIComponent(token)}`;
           if (newTab) newTab.location.replace(target);
           else window.open(target, '_blank', 'noopener');
-          status.textContent = 'Organization Structure opened with your saved company profile. Your Recovery Code was not placed in the URL.';
+          status.textContent = 'Organization Structure & Growth Engine opened with your saved company profile. Your Recovery Code was not placed in the URL.';
         } catch (error) {
           const target = 'organization-intelligence.html';
           if (newTab) newTab.location.replace(target);
           else window.open(target, '_blank', 'noopener');
-          status.textContent = 'Secure reuse was unavailable, so Organization Structure opened without your saved company profile. You can continue by entering the current company facts.';
+          status.textContent = 'Secure reuse was unavailable, so the Organization Structure & Growth Engine opened without your saved company profile. You can continue by entering the current company facts.';
         }
       });
 
