@@ -14,7 +14,7 @@
     ]);
 
     const MORE_ITEMS = Object.freeze([
-        { label: "My Reports", href: "my-reports.html" },
+        { label: "My GrowWithHR", href: "my-growwithhr.html" },
         { label: "Security & Data", href: "security.html" },
         { label: "Terms", href: "terms.html" },
         { label: "About", href: "more-info.html#about" },
@@ -82,12 +82,17 @@
             "compliance-intelligence.html": "analyze",
             "intelligence-hub.html": "analyze",
             "organization-intelligence.html": "analyze",
+            "organization-growth-beta.html": "analyze",
             "organization-structure-report.html": "analyze",
+            "organization-growth-report-beta.html": "analyze",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
             "sample-reports.html": "sample",
             "sample-advisory-report.html": "sample",
             "executive-advisory-report.html": "sample",
+            "auth.html": "account",
+            "reset-password.html": "account",
+            "my-growwithhr.html": "account",
             "more-info.html": "more",
             "my-reports.html": "more",
             "security.html": "more",
@@ -130,6 +135,9 @@
                         <div class="site-nav-more${activeKey === "more" ? " is-active" : ""}">
                             <button class="site-nav-more__toggle" type="button" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}><span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span></button>
                             <div class="site-nav-more__menu" id="siteMoreMenu" aria-label="More navigation">${MORE_ITEMS.map((item) => moreItemMarkup(item, prefix)).join("")}</div>
+                        </div>
+                        <div class="site-account-slot" data-site-account-slot>
+                            <a class="site-account-link" href="${escapeHtml(withRoot(prefix, "auth.html"))}">Sign In</a>
                         </div>
                     </div>
                 </nav>
@@ -254,12 +262,20 @@
     }
 
     function ensurePolishStyles(prefix) {
-        if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = withRoot(prefix, "css/25-ui-polish.css");
-        link.dataset.growwithhrUiPolish = "";
-        document.head.appendChild(link);
+        if (!document.querySelector("link[data-growwithhr-ui-polish]")) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = withRoot(prefix, "css/25-ui-polish.css");
+            link.dataset.growwithhrUiPolish = "";
+            document.head.appendChild(link);
+        }
+        if (!document.querySelector("link[data-growwithhr-account-prototype]")) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = withRoot(prefix, "css/26-account-org-growth-prototype.css");
+            link.dataset.growwithhrAccountPrototype = "";
+            document.head.appendChild(link);
+        }
     }
 
     function bootstrapHomepageIntelligenceGraph() {
@@ -274,6 +290,23 @@
     function bootstrapOrganizationAutosave() {
         if (!document.getElementById("organizationForm")) return;
         import("./organization-autosave.js").catch((error) => console.error("GrowWithHR organization autosave failed to initialize", error));
+    }
+
+    async function bootstrapAccountNav(prefix) {
+        const slot = document.querySelector("[data-site-account-slot]");
+        if (!slot) return;
+        try {
+            const module = await import("./auth-client.js");
+            const session = await module.getSession();
+            if (session?.user) {
+                const label = session.user.user_metadata?.display_name || session.user.user_metadata?.full_name || "My GrowWithHR";
+                slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "my-growwithhr.html"))}" title="Signed in as ${escapeHtml(session.user.email || "")}">${escapeHtml(label === "My GrowWithHR" ? label : `My GrowWithHR`)}</a>`;
+            } else {
+                slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "auth.html"))}">Sign In</a>`;
+            }
+        } catch (_error) {
+            slot.innerHTML = `<a class="site-account-link" href="${escapeHtml(withRoot(prefix, "auth.html"))}">Sign In</a>`;
+        }
     }
 
     function removeHomepageTriggerStrip() {
@@ -295,6 +328,7 @@
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
         bootstrapOrganizationAutosave();
+        bootstrapAccountNav(prefix);
         window.addEventListener("resize", updatePageOffsets);
     }
 
