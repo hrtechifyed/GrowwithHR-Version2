@@ -271,6 +271,11 @@
         import("./ui-polish.js").catch((error) => console.error("GrowWithHR UI polish failed to initialize", error));
     }
 
+    function bootstrapOrganizationAutosave() {
+        if (!document.getElementById("organizationForm")) return;
+        import("./organization-autosave.js").catch((error) => console.error("GrowWithHR organization autosave failed to initialize", error));
+    }
+
     function removeHomepageTriggerStrip() {
         document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
     }
@@ -289,6 +294,7 @@
         updatePageOffsets();
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
+        bootstrapOrganizationAutosave();
         window.addEventListener("resize", updatePageOffsets);
     }
 
