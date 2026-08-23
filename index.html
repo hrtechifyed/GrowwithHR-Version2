@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GrowWithHR | HRTechify</title>
-  <meta name="description" content="GrowWithHR helps founders and HR leaders identify compliance needs and organization-structure constraints with traceable, source-backed recommendations.">
+  <meta name="description" content="GrowWithHR helps you understand what HR compliance requirements may apply to your company and whether your organization structure can support growth.">
   <meta name="growwithhr-legacy-roadmap-labels" content="Talent Intelligence; Leadership Intelligence; Performance Intelligence; Learning Intelligence; Rewards Intelligence; Company Coach">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -21,13 +21,13 @@
 
   <div class="container hero-layout">
     <div class="hero-content hero-home">
-      <div class="hero-badge">Source-backed HR compliance and organization guidance</div>
+      <div class="hero-badge">HR compliance and organization guidance based on trusted sources</div>
       <h1>
         Grow your company without guessing
         <br>
         <span>what HR needs next.</span>
       </h1>
-      <p class="hero-description">Use your company facts to identify compliance areas to review and structural bottlenecks that may become expensive as you hire, expand or add management layers. Every recommendation shows its basis.</p>
+      <p class="hero-description">Answer a few questions about your company. GrowWithHR shows what may need attention, why it matters, the sources behind the recommendation and what to do next.</p>
       <div class="hero-actions">
         <a href="intelligence-hub.html" class="primary-btn">Understand My Company</a>
         <a href="sample-reports.html" class="secondary-btn">Explore Sample Reports</a>
@@ -47,19 +47,19 @@
           <div class="workspace-dot red"></div>
           <div class="workspace-dot yellow"></div>
           <div class="workspace-dot green"></div>
-          <div class="workspace-title">Executive Intelligence</div>
+          <div class="workspace-title">Company Analysis</div>
           <span class="home-preview-label">Interactive preview</span>
         </div>
 
         <div class="hero-dashboard-layout">
-          <section class="hero-sidebar" aria-label="Executive intelligence controls" data-testid="home-executive-stack">
+          <section class="hero-sidebar" aria-label="Company analysis controls" data-testid="home-executive-stack">
             <div class="workspace-card company-dna-card" data-testid="home-stack-card-company">
-              <div class="card-header"><h3>Company DNA</h3></div>
-              <div class="dna-pillars" role="group" aria-label="Company DNA">
+              <div class="card-header"><h3>About Your Company</h3></div>
+              <div class="dna-pillars" role="group" aria-label="About your company">
                 <button class="selector-item dna-item active" data-pillar="company" aria-pressed="true"><i class="fa-solid fa-building"></i><span>Company</span></button>
                 <button class="selector-item dna-item" data-pillar="people" aria-pressed="false"><i class="fa-solid fa-users"></i><span>People</span></button>
                 <button class="selector-item dna-item" data-pillar="operations" aria-pressed="false"><i class="fa-solid fa-gears"></i><span>Operations</span></button>
-                <button class="selector-item dna-item" data-pillar="growth" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Maturity</span></button>
+                <button class="selector-item dna-item" data-pillar="growth" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Company Stage</span></button>
               </div>
             </div>
 
@@ -74,18 +74,18 @@
             </div>
 
             <div class="workspace-card recommendation-card home-stack-card rolling-card" data-testid="home-stack-card-recommendation">
-              <div class="card-header"><h3>Recommendation Basis</h3></div>
-              <div class="recommendation-list" role="group" aria-label="Recommendation basis">
-                <button class="selector-item recommendation-item active" data-recommendation="company" aria-pressed="true"><i class="fa-solid fa-building"></i><span>Organization Profile</span></button>
-                <button class="selector-item recommendation-item" data-recommendation="stage" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Maturity Stage</span></button>
+              <div class="card-header"><h3>Why This Recommendation</h3></div>
+              <div class="recommendation-list" role="group" aria-label="Why this recommendation">
+                <button class="selector-item recommendation-item active" data-recommendation="company" aria-pressed="true"><i class="fa-solid fa-building"></i><span>Your Company Profile</span></button>
+                <button class="selector-item recommendation-item" data-recommendation="stage" aria-pressed="false"><i class="fa-solid fa-chart-line"></i><span>Growth Stage</span></button>
                 <button class="selector-item recommendation-item" data-recommendation="laws" aria-pressed="false"><i class="fa-solid fa-scale-balanced"></i><span>Applicable Laws</span></button>
-                <button class="selector-item recommendation-item" data-recommendation="updates" aria-pressed="false"><i class="fa-solid fa-bell"></i><span>Regulatory Updates</span></button>
+                <button class="selector-item recommendation-item" data-recommendation="updates" aria-pressed="false"><i class="fa-solid fa-bell"></i><span>Relevant Regulatory Changes</span></button>
               </div>
             </div>
           </section>
 
           <section class="hero-graph"><div class="dna-core-wrapper"><div id="dnaCoreCanvas"></div></div></section>
-          <footer class="hero-footer"><h3 class="core-title">GrowWithHR Intelligence Core</h3><p class="core-subtitle">Rules first · Sources visible · Company-specific next actions</p></footer>
+          <footer class="hero-footer"><h3 class="core-title">How GrowWithHR Analyzes Your Company</h3><p class="core-subtitle">Company facts · Trusted sources · Clear next actions</p></footer>
         </div>
       </div>
     </div>
@@ -101,8 +101,8 @@
     </div>
     <div class="how-grid" data-testid="home-process-stack">
       <article class="how-card"><div class="how-number">01</div><h3>Describe the company</h3><p>Answer guided questions about workforce, locations, management and operating context. Missing information stays missing instead of being guessed.</p></article>
-      <article class="how-card home-stack-card rolling-card"><div class="how-number">02</div><h3>See what needs attention</h3><p>GrowWithHR applies structured rules to identify compliance review areas or organization constraints and shows the facts that triggered each result.</p></article>
-      <article class="how-card home-stack-card rolling-card"><div class="how-number">03</div><h3>Know why</h3><p>Each recommendation exposes its rule basis, source identity, limitations and next action so you can review the reasoning rather than accept a black-box answer.</p></article>
+      <article class="how-card home-stack-card rolling-card"><div class="how-number">02</div><h3>See what needs attention</h3><p>GrowWithHR applies defined evaluation criteria to identify compliance review areas or organization constraints and shows the facts that triggered each result.</p></article>
+      <article class="how-card home-stack-card rolling-card"><div class="how-number">03</div><h3>Know why</h3><p>Each recommendation explains why it was made, shows the source, limitations and next action so you can review the reasoning rather than accept an answer without explanation.</p></article>
     </div>
   </div>
 </section>
@@ -118,13 +118,13 @@
       <article class="buyer-card">
         <span class="buyer-card__label">Compliance Needs</span>
         <h3>What HR compliance areas should we review now?</h3>
-        <p>Identify governed compliance areas that may require attention, what facts are still missing and what to review next. The result keeps source identity and limitations visible.</p>
+        <p>Identify compliance areas that may require attention, what facts are still missing and what to review next. The result keeps the source and limitations visible.</p>
         <a class="buyer-card__action" href="analyze-company.html?engine=compliance">Identify My Company’s Compliance Needs →</a>
       </article>
       <article class="buyer-card">
         <span class="buyer-card__label">Organization Structure</span>
         <h3>Where will our structure start constraining growth?</h3>
-        <p>Review management capacity, reporting lines, founder dependency, decision rights, coordination and growth readiness. Every finding separates the public source from the GrowWithHR rule.</p>
+        <p>Review manager workload and capacity, reporting lines, over-reliance on the founder, who makes which decisions, how teams work together and whether the structure can support growth. Every finding shows the source and explains how GrowWithHR reached the conclusion.</p>
         <a class="buyer-card__action" href="organization-intelligence.html">Understand My Organization Structure →</a>
       </article>
     </div>
@@ -135,23 +135,23 @@
 <section id="compliance-engine" class="compliance-engine-section compact-section" aria-labelledby="compliance-engine-title">
   <div class="container">
     <div class="section-heading compliance-engine-heading">
-      <div class="section-tag">WHY THE ANSWER IS TRACEABLE</div>
-      <h2 id="compliance-engine-title">The recommendation and its source are kept separate.</h2>
+      <div class="section-tag">SEE WHY YOU RECEIVED THIS RECOMMENDATION</div>
+      <h2 id="compliance-engine-title">Every recommendation shows what it is based on.</h2>
       <p class="compliance-engine-intro">A public source can support a principle without being responsible for the exact recommendation GrowWithHR gives your company. GrowWithHR makes that distinction visible.</p>
     </div>
     <div class="compliance-engine-flow" data-testid="compliance-engine-flow">
-      <article class="engine-step"><span class="engine-step-number">01</span><h3>Capture explicit facts</h3><p>The analysis starts with facts you supplied or clearly derived metrics.</p></article>
-      <article class="engine-step"><span class="engine-step-number">02</span><h3>Apply a versioned rule</h3><p>The GrowWithHR rule explains how those facts produced the result.</p></article>
-      <article class="engine-step"><span class="engine-step-number">03</span><h3>Show the source basis</h3><p>The relevant public source explains the underlying principle or authority.</p></article>
-      <article class="engine-step"><span class="engine-step-number">04</span><h3>Keep uncertainty visible</h3><p>Missing facts, assumptions and specialist-review boundaries stay part of the answer.</p></article>
+      <article class="engine-step"><span class="engine-step-number">01</span><h3>Use the information you provide</h3><p>The analysis starts with facts you supplied or clearly derived metrics.</p></article>
+      <article class="engine-step"><span class="engine-step-number">02</span><h3>Evaluate the information using defined criteria</h3><p>GrowWithHR shows how those criteria produced the result.</p></article>
+      <article class="engine-step"><span class="engine-step-number">03</span><h3>Show the supporting source</h3><p>The relevant public source shows the underlying principle or authority.</p></article>
+      <article class="engine-step"><span class="engine-step-number">04</span><h3>Clearly show when more information is needed</h3><p>If information is missing or specialist review is needed, the answer says so.</p></article>
     </div>
     <div class="compliance-engine-difference">
-      <div><div class="section-tag">WHAT THIS MEANS FOR A BUYER</div><h3>You can challenge the recommendation.</h3><p>Open the source, inspect the rule and see which company facts were used. The point is not to make the system sound certain; it is to make the basis reviewable.</p></div>
+      <div><div class="section-tag">WHAT THIS MEANS FOR A BUYER</div><h3>You can see how the recommendation was reached.</h3><p>Open the source and see which company facts and evaluation criteria were used. The goal is to make the basis easy to review.</p></div>
       <ul class="difference-list">
         <li><strong>Sources are named.</strong> Evidence is not hidden behind “AI says”.</li>
-        <li><strong>Rules are disclosed.</strong> GrowWithHR takes responsibility for its interpretation.</li>
+        <li><strong>The reasoning is explained.</strong> GrowWithHR explains how it interpreted the information.</li>
         <li><strong>Missing facts remain visible.</strong> The product can say it needs more information.</li>
-        <li><strong>Organization analysis does not score people.</strong> It evaluates structural operating patterns.</li>
+        <li><strong>Organization analysis does not score people.</strong> It evaluates how the organization is structured and works.</li>
       </ul>
     </div>
   </div>
@@ -160,13 +160,13 @@
 <section class="compact-section" aria-labelledby="trustTitle">
   <div class="container">
     <div class="section-heading">
-      <div class="section-tag">BUILT TO BE REVIEWABLE</div>
-      <h2 id="trustTitle">Trust should come from visibility, not a bigger claim.</h2>
+      <div class="section-tag">BUILT SO YOU CAN SEE WHY</div>
+      <h2 id="trustTitle">See the information, sources and reasoning behind every result.</h2>
     </div>
     <div class="buyer-trust-grid">
-      <article class="buyer-card"><span class="buyer-proof-label">Evidence</span><h3>Public sources stay clickable</h3><p>Organization Structure shows the framework, rule and public source supporting each finding. Compliance research uses governed source identities and preserves legal-review boundaries.</p><a class="buyer-card__action" href="official-resources.html">Explore Evidence & Sources →</a></article>
-      <article class="buyer-card"><span class="buyer-proof-label">Data</span><h3>Company Workspace is recovery-based</h3><p>Reusable company data is encrypted before database storage. Recovery requires the Report ID plus Workspace Recovery Code, and cross-tab reuse can use a short-lived one-time token.</p><a class="buyer-card__action" href="security.html">Read Security & Data →</a></article>
-      <article class="buyer-card"><span class="buyer-proof-label">Continuity</span><h3>Your reports are recoverable without a fake account</h3><p>The current product uses a secure recovery workspace rather than pretending it already has a mature subscription-account system.</p><a class="buyer-card__action" href="my-reports.html">Open My Reports →</a></article>
+      <article class="buyer-card"><span class="buyer-proof-label">Evidence</span><h3>Public sources stay clickable</h3><p>Organization Structure shows the reasoning and public source supporting each finding. Compliance research uses trusted source references and clearly shows when legal review may be needed.</p><a class="buyer-card__action" href="official-resources.html">Explore Sources →</a></article>
+      <article class="buyer-card"><span class="buyer-proof-label">Data</span><h3>Your saved company information can be securely reopened</h3><p>Saved company information is encrypted before database storage and can be reopened using the Report ID and Recovery Code.</p><a class="buyer-card__action" href="security.html">Read Security & Data →</a></article>
+      <article class="buyer-card"><span class="buyer-proof-label">Previous Reports</span><h3>Access previous reports without creating an account</h3><p>The current product lets you securely reopen saved reports using your Report ID and Recovery Code.</p><a class="buyer-card__action" href="my-reports.html">Open My Reports →</a></article>
     </div>
   </div>
 </section>
@@ -175,14 +175,14 @@
   <div class="container">
     <div class="section-heading left-heading">
       <div class="section-tag">WHO IS BEHIND GROWWITHHR</div>
-      <h2 id="authorityTitle">A product of HRTechify, with named ownership and public methodology.</h2>
+      <h2 id="authorityTitle">Built by HRTechify with a transparent approach.</h2>
     </div>
     <div class="buyer-authority-grid">
       <article class="buyer-authority-card buyer-authority-card--primary">
         <span class="buyer-proof-label">Founder</span>
         <div class="buyer-authority-name">Anurag Sinha</div>
         <p><strong>Founder, HRTechify</strong></p>
-        <p>GrowWithHR is built and maintained as an HRTechify product. The product’s public methodology, source registers, rule versions and release boundaries are designed to make its reasoning inspectable rather than asking users to rely on an anonymous recommendation engine.</p>
+        <p>GrowWithHR is built and maintained as an HRTechify product. Its methods, sources and product limitations are shown publicly so users can review the reasoning behind recommendations.</p>
         <div class="buyer-authority-links">
           <a href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20question">Contact HRTechify</a>
           <a href="https://github.com/hrtechifyed/GrowwithHR-Version2" target="_blank" rel="noopener noreferrer">View public codebase ↗</a>
@@ -191,8 +191,8 @@
       <article class="buyer-authority-card">
         <span class="buyer-proof-label">Product boundaries</span>
         <h3>What HRTechify is—and is not—claiming</h3>
-        <p>Compliance outputs support review and preparation; they are not legal certification. Organization Structure evaluates structural operating patterns, not individual capability. The current release is still a research-grade product and is not represented as SOC 2 or ISO 27001 certified.</p>
-        <div class="buyer-boundary">Commercial maturity should be judged from the implemented controls, methodology transparency and actual product scope—not from a certification or customer-proof claim GrowWithHR does not yet have.</div>
+        <p>Compliance outputs support review and preparation; they are not legal certification. Organization Structure evaluates how the organization is structured and works, not individual capability. GrowWithHR is currently developing and is not represented as SOC 2 or ISO 27001 certified.</p>
+        <div class="buyer-boundary">GrowWithHR is still developing. Its current capabilities, limitations and methods are shown openly.</div>
         <div class="buyer-authority-links"><a href="more-info.html#about">About GrowWithHR</a><a href="terms.html">Product Use Terms</a><a href="security.html">Security & Data</a></div>
       </article>
     </div>
@@ -204,7 +204,7 @@
     <div class="summary-card glass">
       <div class="section-tag">START WITH THE QUESTION YOU NEED ANSWERED</div>
       <h2>Know what needs attention before the next hiring or growth decision.</h2>
-      <p>Start a fresh analysis, or recover previous Company DNA and report history if you have used GrowWithHR before.</p>
+      <p>Start a fresh analysis, or recover previous saved company information and report history if you have used GrowWithHR before.</p>
       <a href="intelligence-hub.html" class="primary-btn">Understand My Company</a>
       <a href="my-reports.html" class="secondary-btn">Open My Reports</a>
     </div>
