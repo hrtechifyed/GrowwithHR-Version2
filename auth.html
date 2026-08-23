@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in | GrowWithHR</title>
+  <meta name="description" content="Sign in or create your GrowWithHR account to save assessments, resume later and access your reports.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/26-account-org-growth-prototype.css">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body data-active-nav="account">
+  <main class="auth-layout">
+    <section class="prototype-panel">
+      <div class="prototype-kicker">GrowWithHR Account · Prototype</div>
+      <h1 class="prototype-title">Save your thinking, not just the final report.</h1>
+      <p class="prototype-lead">Real GrowWithHR analyses require a signed-in account so your assessment can save automatically, continue later and stay linked to your reports. Sample reports remain open without signing in.</p>
+      <div class="prototype-grid">
+        <article class="prototype-card"><h3>Auto-save</h3><p>Your progress can be saved while you work, so a thoughtful assessment does not have to be completed in one sitting.</p></article>
+        <article class="prototype-card"><h3>Resume later</h3><p>Return to your GrowWithHR workspace and continue the latest unfinished assessment.</p></article>
+        <article class="prototype-card"><h3>Reports in one place</h3><p>Completed reports stay connected to your account rather than depending on a code you have to remember.</p></article>
+        <article class="prototype-card"><h3>Google or email</h3><p>Use email and password, or continue with Google. Password reset is available when needed.</p></article>
+      </div>
+      <p class="prototype-lead" style="margin-top:20px;font-size:.92rem">This branch is a working product prototype, not a production authentication rollout. The account database migration and OAuth settings must be reviewed before release.</p>
+    </section>
+
+    <section class="prototype-panel" aria-labelledby="authHeading">
+      <div class="prototype-kicker">Account access</div>
+      <h2 id="authHeading">Sign in or create an account</h2>
+      <button id="googleSignIn" class="prototype-btn google" type="button" style="width:100%">Continue with Google</button>
+      <div class="auth-divider"><span>or</span></div>
+
+      <div class="auth-tabs" role="tablist" aria-label="Account options">
+        <button class="auth-tab is-active" type="button" data-auth-tab="signin">Sign in</button>
+        <button class="auth-tab" type="button" data-auth-tab="signup">Create account</button>
+        <button class="auth-tab" type="button" data-auth-tab="forgot">Forgot password</button>
+      </div>
+
+      <form id="signInForm" class="prototype-form" data-auth-panel="signin">
+        <div class="prototype-field"><label for="signInEmail">Email</label><input id="signInEmail" type="email" autocomplete="email" required></div>
+        <div class="prototype-field"><label for="signInPassword">Password</label><input id="signInPassword" type="password" autocomplete="current-password" required></div>
+        <button class="prototype-btn" type="submit">Sign in</button>
+        <button class="prototype-btn secondary" type="button" data-show-auth="forgot">Forgot password?</button>
+      </form>
+
+      <form id="signUpForm" class="prototype-form" data-auth-panel="signup" hidden>
+        <div class="prototype-field"><label for="signUpName">Your name</label><input id="signUpName" autocomplete="name"></div>
+        <div class="prototype-field"><label for="signUpEmail">Email</label><input id="signUpEmail" type="email" autocomplete="email" required></div>
+        <div class="prototype-field"><label for="signUpPassword">Password</label><input id="signUpPassword" type="password" autocomplete="new-password" minlength="8" required><small>Use at least 8 characters for this prototype.</small></div>
+        <div class="prototype-field"><label for="signUpConfirmPassword">Confirm password</label><input id="signUpConfirmPassword" type="password" autocomplete="new-password" minlength="8" required></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;color:var(--gwh-muted)"><input id="signUpConsent" type="checkbox" required style="width:auto;margin-top:4px"> <span>I agree to the <a href="terms.html">Terms</a> and acknowledge the <a href="more-info.html#privacy">Privacy notice</a>.</span></label>
+        <button class="prototype-btn" type="submit">Create account</button>
+      </form>
+
+      <form id="forgotForm" class="prototype-form" data-auth-panel="forgot" hidden>
+        <p class="prototype-lead" style="font-size:.95rem">Enter the email linked to your GrowWithHR account. We will request a secure reset email.</p>
+        <div class="prototype-field"><label for="forgotEmail">Email</label><input id="forgotEmail" type="email" autocomplete="email" required></div>
+        <button class="prototype-btn" type="submit">Send reset link</button>
+        <button class="prototype-btn secondary" type="button" data-show-auth="signin">Back to sign in</button>
+      </form>
+
+      <p id="authStatus" class="prototype-status" role="status" aria-live="polite"></p>
+      <p style="margin-top:18px"><a href="sample-reports.html">View sample reports without signing in →</a></p>
+    </section>
+  </main>
+  <script type="module" src="js/auth-page.js"></script>
+  <script src="js/build-marker.js"></script>
+</body>
+</html>
