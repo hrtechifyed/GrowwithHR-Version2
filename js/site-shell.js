@@ -8,8 +8,8 @@
 
     const NAV_ITEMS = Object.freeze([
         { key: "platform", label: "Home", href: "index.html#home" },
-        { key: "analyze", label: "Company Insights", href: "intelligence-hub.html" },
-        { key: "resources", label: "Evidence & Sources", href: "official-resources.html" },
+        { key: "analyze", label: "Analyze My Company", href: "intelligence-hub.html" },
+        { key: "resources", label: "Sources", href: "official-resources.html" },
         { key: "sample", label: "Sample Reports", href: "sample-reports.html" }
     ]);
 
