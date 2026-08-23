@@ -19,32 +19,28 @@
 
     <div class="prototype-grid three" style="margin-top:24px">
       <article class="prototype-card"><h3>Allow 15–20 minutes</h3><p>The quality of the options depends on thoughtful inputs about growth, constraints, roles and how work actually happens.</p></article>
-      <article class="prototype-card"><h3>You can stop anytime</h3><p>Your answers auto-save. Leave the assessment and continue later from My GrowWithHR, including on another device once account sync is configured.</p></article>
+      <article class="prototype-card"><h3>You can stop anytime</h3><p>Your answers auto-save on this browser. Leave the assessment and continue later on the same device.</p></article>
       <article class="prototype-card"><h3>You stay in control</h3><p>GrowWithHR will compare multiple structures and explain trade-offs. You choose the direction that fits your business reality.</p></article>
     </div>
 
     <div class="prototype-card" style="margin-top:18px">
-      <h3>Why sign-in is required for a real assessment</h3>
-      <p>GrowWithHR asks for organization-level business information and this exercise may take more than one sitting. Signing in lets progress, analysis and reports stay connected to your account. <strong>Sample reports remain available without signing in.</strong></p>
+      <h3>How saving and report recovery work</h3>
+      <p>No sign-in is required. Your assessment auto-saves on this device. When you generate a report, GrowWithHR gives you a <strong>Report ID + Recovery Code</strong> so the completed report can be recovered later. <strong>Sample reports remain open.</strong></p>
     </div>
 
-    <div id="introSignedOutActions" class="prototype-actions" hidden>
-      <a id="engineSignIn" class="prototype-btn" href="auth.html?return=organization-growth-beta.html">Sign in / Create Account</a>
-      <a class="prototype-btn secondary" href="organization-growth-report-beta.html?sample=1">View sample report</a>
-    </div>
-    <div id="introSignedInActions" class="prototype-actions" hidden>
+    <div id="introActions" class="prototype-actions">
       <button id="startAssessment" class="prototype-btn" type="button">Start / Continue My Organization Review</button>
       <a class="prototype-btn secondary" href="organization-growth-report-beta.html?sample=1">View sample report</a>
-      <a class="prototype-btn secondary" href="my-growwithhr.html">My GrowWithHR</a>
+      <a class="prototype-btn secondary" href="my-reports.html">My Reports / Recover</a>
     </div>
-    <p id="introStatus" class="prototype-status" role="status" aria-live="polite">Checking account status…</p>
+    <p id="introStatus" class="prototype-status" role="status" aria-live="polite">Checking for saved progress on this device…</p>
   </section>
 
   <section id="engineWizard" class="org-beta-wizard" hidden>
     <div class="wizard-top">
       <div class="wizard-progress-label"><span id="stepLabel">Step 1 of 7 · Your Company</span><span id="timeHint">About 15–20 minutes total</span></div>
       <div class="wizard-progress-track" aria-hidden="true"><span id="progressBar" style="width:14.3%"></span></div>
-      <div id="autosaveStatus" class="wizard-save-state" role="status" aria-live="polite">Preparing account-linked auto-save…</div>
+      <div id="autosaveStatus" class="wizard-save-state" role="status" aria-live="polite">Preparing device auto-save…</div>
     </div>
 
     <form id="organizationGrowthForm" class="prototype-panel" novalidate>
