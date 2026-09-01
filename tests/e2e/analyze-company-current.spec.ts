@@ -37,17 +37,24 @@ test.describe("Company Insights entry", () => {
 
     await primaryCta.click();
     await expect(page).toHaveURL(/intelligence-hub\.html$/);
-    await expect(page.locator("#hubTitle")).toContainText("Start with the company question");
+    await expect(page.locator("#hubTitle")).toContainText("Understand your company");
+    await expect(page.getByText("CHANGE INTELLIGENCE", { exact: true })).toBeVisible();
+    await expect(page.getByText(/first assessment establishes a confirmed company baseline/i)).toBeVisible();
+    await expect(page.getByText(/Full report delivered by email/i)).toBeVisible();
 
     await expect(page.getByRole("link", {
-      name: /Identify My Company’s Compliance Needs/i
+      name: /Assess My HR Compliance Readiness/i
     })).toHaveAttribute("href", "compliance-intelligence.html");
 
     const organizationLink = page.getByRole("link", {
-      name: /Understand My Organization Structure/i
+      name: /Analyze My Organization Structure & Growth/i
     });
     await expect(organizationLink).toHaveAttribute("href", "organization-intelligence.html");
     await expect(organizationLink).toHaveAttribute("target", "_blank");
+
+    await expect(page.locator("#reportGlimpse")).toBeVisible();
+    await expect(page.locator('a[href="sample-advisory-report.html"]')).toHaveCount(0);
+    await expect(page.locator('a[href="organization-structure-report.html?sample=1"]')).toHaveCount(0);
   });
 });
 
