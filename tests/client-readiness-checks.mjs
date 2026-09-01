@@ -16,7 +16,7 @@ assert(assessment.includes('"experienceVersion": "2.0.0"'));
 assert(!assessment.includes('href="assets/favicon.ico"'));
 assert(homepage.includes('CURRENT PRODUCT'));
 assert(homepage.includes('<span class="buyer-card__label">Compliance Needs</span>'));
-assert(homepage.includes('<span class="buyer-card__label">Organization Structure</span>'));
+assert(homepage.includes('<span class="buyer-card__label">Organization Structure &amp; Growth Engine</span>'));
 assert(!homepage.includes('aria-label="Next capability"'));
 assert(!homepage.includes('(to be done)'));
 assert(!homepage.includes('(in progress)'));

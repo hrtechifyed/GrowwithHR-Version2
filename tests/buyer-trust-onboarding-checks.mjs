@@ -28,9 +28,9 @@ assert.ok(hub.indexOf('class="hub-engine-grid"') < hub.indexOf('<details class="
 assert.match(hub, /Best when:/);
 assert.match(hub, /You’ll need:/);
 assert.match(hub, /You receive:/);
-assert.match(hub, /Applicability summary/);
-assert.match(hub, /Source-referenced findings/);
-assert.match(hub, /Flagged next actions/);
+assert.match(hub, /Which requirements may apply/);
+assert.match(hub, /Findings with supporting sources/);
+assert.match(hub, /Recommended next steps/);
 assert.match(hub, /Reuse your saved company profile/i);
 assert.match(hub, /Recover a previous saved report here/i);
 assert.doesNotMatch(hub, /Reuse your Company DNA/i);
@@ -46,7 +46,7 @@ assert.match(hub, /id="organizationStructureLink"[^>]*href="organization-intelli
 assert.match(hub, /id="workspaceReportId"/);
 assert.match(hub, /id="workspaceRecoveryCode"/);
 assert.match(hub, />Recovery Code<input/);
-assert.match(hub, /<button type="submit">Recover Workspace<\/button>/);
+assert.match(hub, /<button type="submit">Open Saved Company Profile<\/button>/);
 assert.match(hub, /GrowWithHRCompanyWorkspace\.recover/);
 assert.match(hub, /my-reports\.html/);
 assert.match(hub, /security\.html/);

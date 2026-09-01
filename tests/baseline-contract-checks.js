@@ -167,7 +167,7 @@ const workspaceServer = require(filePath("server-company-workspace-v2.js"));
 
 assertIncludes(hubHtml, "Compliance Intelligence", "Intelligence Hub must expose Compliance Intelligence.");
 assertIncludes(hubHtml, "Organization Intelligence", "Intelligence Hub must expose Organization Intelligence.");
-assertIncludes(hubHtml, "Delete my reusable company data now", "Returning users must have an early-delete control.");
+assertIncludes(hubHtml, 'id="workspaceDeleteData"', "Returning users must have an early-delete control.");
 assertIncludes(hubHtml, "GrowWithHRCompanyWorkspace.erase", "Early-delete control must call the Company Workspace API.");
 assert(
     /workspace\.companyData\s*\|\|\s*workspaceData/.test(organizationHtml),
