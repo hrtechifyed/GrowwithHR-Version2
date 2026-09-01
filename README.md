@@ -65,7 +65,7 @@ This release hardens the customer product without changing the legal/compliance 
 - Stable compatibility Compliance route: `/analyze-company.html`
 - Private-beta Compliance DNA route: `/analyze-company-v3.html`
 
-The deployed product remains the root-level HTML/CSS/JavaScript application. `apps/web/src/` is an archived React/TypeScript experiment and is not the deployed build.
+The deployed product remains the root-level HTML/CSS/JavaScript application. `apps/web/src/` is an **archived experimental React/TypeScript UX layer** and is not the deployed build.
 
 ## Organization Structure & Growth
 
