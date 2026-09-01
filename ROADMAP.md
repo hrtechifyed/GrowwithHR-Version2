@@ -1,135 +1,252 @@
 # GrowWithHR Product Roadmap
 
-Current application version: `0.20.2`
-Current public route: `/analyze-company.html`
-Private-beta route: `/analyze-company-v3.html` with `complianceDnaV3: false`
-Last updated: 6 August 2026
+**Updated:** 1 September 2026  
+**Current release candidate:** `v0.20.4-prototype.1`  
+**Product classification:** research-grade prototype  
+**Current customer focus:** two decision engines + Change Intelligence
 
-## Completed milestones
+## Product principle
 
-### M0 — Baseline and recovery (`0.15.1-beta`)
+GrowWithHR will not expand into a long list of HR modules until the two current products are strong, explainable, repeatable and commercially useful.
 
-Complete. Established protected routes, persistence contracts, CI, deterministic fixtures and rollback records.
+The current hierarchy is:
 
-### M1 — Five-Act Story Foundation (`0.16.0-beta`)
+```text
+GrowWithHR
+├─ Organization Structure & Growth — flagship
+├─ HR Compliance Readiness — supporting capability
+├─ Change Intelligence — recurring layer across both engines
+├─ Executive Reports — monetisable decision output
+└─ Sources & Methodology — trust and explainability layer
+```
 
-Complete and validated. Added the isolated private-beta route, compatibility adapter and accessible Five-Act presentation.
+Future Talent, Leadership, Learning, Performance, Rewards or generic AI-coach modules are **not** part of the current release plan.
 
-### M2 — Explainable Recommendation Foundation (`0.16.0-beta`)
+---
 
-Complete and validated. Added confirmed and derived facts, deterministic rule evaluation, applicability/evidence separation and source traceability.
+## Current release — Product Hardening & Authenticated Report Delivery
 
-### M3 — Compliance Story and Safe Health Model (`0.18.0`)
+### Organization Structure & Growth
 
-Complete, validated and published. Added a versioned Compliance Story model, company snapshot, safe status counts, ranked priorities, grouped findings, assumptions and limitations without changing stable contracts.
+Current priority: make this the strongest commercial product in GrowWithHR.
 
-### M4 — Explainable Intelligence (`0.19.0`)
+Implemented / release-candidate scope:
 
-Complete, validated and released. Added separate profile-completeness, applicability-certainty and evidence-coverage dimensions, information-gain questions, reproducible decision trace and founder-facing report integration without introducing a blended compliance score.
+- Organization-first customer navigation and positioning;
+- deterministic organization-level findings;
+- management-capacity interpretation using work context rather than one universal span benchmark;
+- reporting architecture, founder dependency, decision ownership and coordination findings;
+- explicit positive foundations and primary constraint;
+- prioritized actions;
+- deterministic 12-month growth scenario;
+- executive report structure designed for CEO / CHRO use;
+- full fictional public sample report;
+- personalized website result limited to an executive glimpse;
+- complete personalized PDF delivered by authenticated email request.
 
-### M5 — Compliance Workspace Beta (`0.20.0`)
+### HR Compliance Readiness
 
-Complete, validated and released. Added a private browser-local workspace with tasks, owners, status history, due-date source states, evidence placeholders, calendar entries, strict JSON backup import/export, isolated reset and an in-memory fallback when browser storage is unavailable.
+Current priority: improve usefulness and credibility without overstating legal authority.
 
-## Current product release
+Implemented / release-candidate scope:
 
-### v0.20.2 — Governed Legal RAG Private Beta
+- customer-facing name **HR Compliance Readiness**;
+- review / missing-information / specialist-review framing rather than compliance certification;
+- deterministic legal decision authority retained;
+- governed RAG remains explanation-only;
+- sources, missing facts, limitations and next actions remain visible;
+- full fictional public sample report;
+- personalized website result limited to a glimpse;
+- complete personalized PDF delivered only after authenticated email request.
 
-Released 6 August 2026. This release adds the shared all-laws private-beta runtime, a public explanation of the compliance-engine authority boundary and maintained validation for all registered legal RAG profiles.
+The following remain prohibited claims:
 
-- 57 active private-beta profiles and zero runtime-blocked profiles;
-- one POSH statutory catalogue profile;
-- 56 conservative governance-fallback profiles;
-- shared feature and status endpoints;
-- homepage architecture and differentiation section;
-- repeatable all-laws validation command and documentation.
+- “certified compliant”;
+- “legally compliant”;
+- “proof of compliance”;
+- AI-selected applicable law without the deterministic governed contract.
 
-This release does not activate M6 persistence and does not claim completion of the M7 v0.22.0 reliability exit. Law-specific statutory corpus replacement remains a controlled follow-on programme.
+### Change Intelligence
 
-## Approval-gated milestone foundation
+Current priority: create a reason to return to GrowWithHR as the company changes.
 
-### M6 — Evidence and Persistence Beta (`0.21.0`, approval required)
+Implemented / release-candidate model:
 
-The contract foundation is implemented and validated, but runtime persistence remains disabled. M6 is the only milestone authorised to change the storage and privacy posture and still requires explicit privacy, legal, security and release approval before activation.
+```text
+Previous confirmed baseline
+        +
+Current confirmed company facts
+        ↓
+Fact delta
+        ↓
+Re-run deterministic engine
+        ↓
+Finding/status delta
+        ↓
+Explain material change
+```
 
-Implemented contract scope:
+Change Intelligence is intentionally a layer within the existing engines rather than another standalone module.
 
-- consent-based durable organisation profile contract;
-- tenant and organisation isolation contract;
-- database-backed task and evidence-metadata shapes;
-- audit-event and status-history shapes;
-- export and deletion receipts;
-- encrypted backup and restore manifest;
-- non-destructive migration receipt;
-- continued browser-only support requirement.
+It should answer:
 
-Not activated:
+- what changed in the company;
+- which pressures increased;
+- which areas improved;
+- which new priorities appeared;
+- which information gaps were introduced or resolved;
+- which compliance-readiness areas may need renewed review.
 
-- authentication;
-- database connections;
-- remote task or evidence storage;
-- cross-device resume;
-- cloud migration.
+If no previous confirmed baseline exists, the first assessment establishes it.
 
-## Current hardening milestone
+---
 
-### M7 — RAG-Ready Hardening (`0.22.0`)
+## Current report-access model
 
-**Technical status: implemented, release exit pending.**
+### Public
 
-The M7 implementation freezes the profile, obligation, applicability and citation contracts; introduces explicit source lifecycle and effective-date handling; adds a read-only operational readiness endpoint, bounded monitoring, performance budgets, security controls, an executable disaster-recovery drill and an operator handoff package.
+- complete fictional Organization Structure & Growth sample;
+- complete fictional HR Compliance Readiness sample;
+- methodology and sources;
+- executive-style examples of report structure.
 
-Implemented scope:
+### Personalized
 
-- seven versioned contract baselines with byte-identity checks;
-- explicit `effectiveFrom`, `effectiveTo`, `reviewedAt` and supersession normalization;
-- no inference of effective dates from publication or review dates;
-- high-certainty presentation blocked for changed, superseded, future, unreviewed or date-unconfirmed sources;
-- `GET /api/m7/readiness` with non-sensitive readiness and aggregate metrics;
-- documented latency and reliability budgets;
-- executable RAG-disable and deterministic-decision DR simulation;
-- dedicated GitHub Actions workflow and archived DR artifact;
-- technical and operational handoff documentation.
+```text
+Assessment complete
+→ executive website glimpse
+→ sign in / sign up with assessment work email
+→ Supabase access token validated server-side
+→ recipient must match authenticated work email
+→ complete personalized PDF sent by email
+```
 
-M7 does not activate new legal profiles or corpora, enable M6 persistence, make v3 public, change reports/PDFs/email or cut the v0.22.0 release.
+The production product should not expose a complete personalized report through a publicly reachable web renderer. Localhost-only rendering may remain for automated regression and developer verification.
 
-### M7 release-exit gate
+Company Workspace recovery remains separate:
 
-The release-exit gate remains open until **two consecutive qualified production releases** meet the documented reliability targets and have archived evidence for availability, latency, source-scope integrity, decision immutability, sensitive-data logging, rollback and disaster recovery.
+- Report ID + Recovery Code = reusable company baseline recovery;
+- customer authentication = complete personalized PDF delivery authorization.
 
-Pull-request CI and repository-level drills are implementation evidence, not qualified production-release evidence. The canonical application version therefore remains `0.20.0` until an explicit coordinated release decision is made.
+---
 
-## Legal RAG activation sequence
+## Near-term product priorities
 
-The reusable RAG platform and M7 hardening do not approve a corpus. Each legal feature remains subject to the controlled sequence:
+### P1 — Report quality and conversion
 
-1. exact official files and integrity metadata;
-2. reviewed page and section mappings;
-3. approved facts and privacy boundaries;
-4. approved deterministic rules;
-5. curated reason-code-specific governed chunks;
-6. legal, RAG, security, test and release approvals;
-7. explicit runtime profile activation.
+- keep the executive decision brief as the first substantive page;
+- preserve HRTechify branding and consistent report color tokens;
+- prevent status chips/cards/tables from overflowing at any supported label length;
+- use the full safe A4 content width without crowding;
+- keep detailed methodology below the executive answer rather than ahead of it;
+- maintain complete fictional samples as the public proof of report quality.
 
-Blank review fields, source registration, tests or a prepared packet are not approval.
+### P2 — Change Intelligence maturity
+
+- extend comparison coverage across all durable organization facts;
+- add stable change-event semantics and reassessment triggers;
+- distinguish “company fact changed” from “finding changed because a rule/source version changed”;
+- add change summaries to emailed PDFs;
+- preserve previous-baseline provenance and Report ID lineage.
+
+### P3 — HR Compliance Readiness source/legal hardening
+
+- substantively review the 524 overdue temporal review entries rather than moving dates administratively;
+- keep approved records strict in CI;
+- continue exact official-source assurance work under #143;
+- continue production Legal / Privacy / RAG / Source / Security / Release approval work under #142;
+- retain `needs-legal-review` until qualified review actually occurs.
+
+### P4 — Customer account and access hardening
+
+- strengthen Supabase Auth operational controls;
+- add durable abuse/rate-limit controls to sensitive delivery/recovery routes;
+- document account/session lifecycle and deletion behavior;
+- consider enterprise identity requirements such as SSO/RBAC only when the target customer segment requires them;
+- keep privileged Supabase credentials backend-only.
+
+### P5 — Longitudinal commercial model
+
+Only after Change Intelligence proves recurring value:
+
+- support scheduled/recommended reassessment windows;
+- surface “what changed since last assessment?” prominently in returning-user journeys;
+- create a clear annual / subscription value proposition for growing SMEs;
+- evaluate benchmarking only where credible, current and appropriately scoped data exists.
+
+---
+
+## Historical engineering milestones
+
+The earlier engineering milestones remain completed history and are retained in release manifests and `CHANGELOG.md`:
+
+- **M0 — Baseline and recovery**
+- **M1 — Five-Act Story Foundation**
+- **M2 — Explainable Recommendation Foundation**
+- **M3 — Compliance Story and Safe Health Model**
+- **M4 — Explainable Intelligence**
+- **M5 — Compliance Workspace Beta**
+- **M6 — Evidence / persistence contract foundation**
+- **M7 — RAG-Ready Hardening implementation**
+
+Those milestone names describe engineering evolution. They are not the current customer navigation or commercial product hierarchy.
+
+---
+
+## Legal RAG runtime and production-hardening boundary
+
+The maintained legal-RAG prototype currently preserves the runtime invariant:
+
+- 57 callable profiles;
+- 55 substantive profiles;
+- 2 governance fallbacks;
+- 21 active catalogues.
+
+Every active substantive legal catalogue remains `needs-legal-review`.
+
+Wave 5J (Bonded and Forced Labour) remains governance/research-only and safeguarding-human-first. Wave 5M (Multi-country Employment) remains outside the current substantive release.
+
+Deterministic rules remain the product decision authority. RAG/provider output may explain but may not create facts, change status/reason/source scope, select another law family or certify compliance.
+
+---
 
 ## Release gates
 
-Every release must pass version consistency, compliance-data validation, the complete regression suite, stable/private browser coverage, responsive and keyboard checks, privacy/security review, release-manifest review and a documented rollback path.
+Every customer-facing release must pass, on the exact merge candidate SHA:
 
-Additional M7 gates:
+1. version consistency;
+2. compliance-data validation;
+3. baseline and architecture contracts;
+4. Organization Structure deterministic/source checks;
+5. site-shell and shared-navigation consistency;
+6. customer authentication/report-access contracts;
+7. client/server readiness;
+8. report presentation and visual-section checks;
+9. journey/scenario regression checks;
+10. archived compatibility checks;
+11. Playwright customer journey/browser coverage;
+12. founder/report browser acceptance;
+13. Legal RAG maintained workflows;
+14. post-merge `main` CI;
+15. GitHub Pages deployment; and
+16. live release smoke.
 
-- frozen contract identities remain unchanged or move through a versioned successor;
-- source lifecycle coverage is measured using explicit dates only;
-- deterministic decisions remain available with RAG and provider execution disabled;
-- the DR drill and deployment smoke tests are archived;
-- two consecutive qualified production releases satisfy the reliability ledger;
-- explicit v0.22.0 release approval is recorded.
+Green engineering evidence does not grant legal approval.
 
-## Protected boundaries
+---
 
-- `/analyze-company.html` remains the public production and rollback path.
-- `/analyze-company-v3.html` remains private and disabled by default.
-- Existing browser-storage, report, PDF, email and delivery contracts remain protected.
-- Remote persistence remains disabled until M6 approval.
-- RAG retrieves approved sources and enriches explanations only; it never replaces deterministic applicability decisions.
+## Deliberate non-priorities
+
+Do not add these merely to make the product look larger:
+
+- Talent Intelligence;
+- Learning Intelligence;
+- Rewards Intelligence;
+- Performance Intelligence;
+- Leadership Intelligence;
+- generic AI coach;
+- employee case-management;
+- payroll / ATS / HRIS features;
+- fabricated universal HR benchmarks.
+
+The next stage remains: **two outstanding decision products, a credible recurring Change Intelligence layer and reports users are willing to pay for.**
