@@ -1,0 +1,317 @@
+/* ==========================================================
+   GrowWithHR layered-dark theme
+   Shared page rhythm: navy, charcoal and warm-brown surfaces.
+   This layer changes presentation only; print rules remain owned
+   by each report or page-specific stylesheet.
+========================================================== */
+
+:root{
+  --layer-navy-strong:#08111f;
+  --layer-navy:#0c1628;
+  --layer-charcoal-strong:#0d1016;
+  --layer-charcoal:#141820;
+  --layer-warm-strong:#110d0a;
+  --layer-warm:#1a140f;
+  --layer-card-top:rgba(255,255,255,.062);
+  --layer-card-bottom:rgba(255,255,255,.024);
+  --layer-border:rgba(255,255,255,.095);
+  --layer-warm-border:rgba(255,176,0,.18);
+}
+
+html{
+  background:#070b12;
+}
+
+body:not(.home-page){
+  min-height:100vh;
+  background-color:#080c14;
+  background-image:
+    radial-gradient(circle at 8% 8%,rgba(255,149,26,.09),transparent 28rem),
+    radial-gradient(circle at 94% 24%,rgba(37,99,235,.11),transparent 34rem),
+    linear-gradient(180deg,var(--layer-navy-strong) 0%,var(--layer-charcoal-strong) 48%,var(--layer-warm-strong) 100%);
+  background-attachment:fixed;
+  color:var(--text-primary,#fff);
+}
+
+/* Shared dark cards retain strong white/grey text contrast. */
+.legal-card,
+.workspace-card-v2,
+.hub-engine-card,
+.org-panel,
+.org-form-card,
+.org-source-card,
+.m4-panel,
+.workspace-panel{
+  border-color:var(--layer-border);
+  background:linear-gradient(180deg,var(--layer-card-top),var(--layer-card-bottom));
+  box-shadow:0 18px 44px rgba(0,0,0,.22);
+}
+
+/* Intelligence and sample-report hubs. */
+.intelligence-hub-page .intelligence-hub-hero{
+  background:
+    radial-gradient(circle at 84% 18%,rgba(37,99,235,.15),transparent 34%),
+    linear-gradient(180deg,var(--layer-navy) 0%,var(--layer-navy-strong) 100%);
+}
+
+.intelligence-hub-page .hub-engine-section{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(148,163,184,.055),transparent 34%),
+    linear-gradient(180deg,var(--layer-charcoal) 0%,var(--layer-charcoal-strong) 100%);
+  border-block:1px solid rgba(255,255,255,.055);
+}
+
+.intelligence-hub-page .hub-workspace-section{
+  background:
+    radial-gradient(circle at 88% 20%,rgba(255,176,0,.085),transparent 34%),
+    linear-gradient(180deg,var(--layer-warm) 0%,var(--layer-warm-strong) 100%);
+  border-top:1px solid rgba(255,176,0,.075);
+}
+
+.intelligence-hub-page .hub-engine-card:nth-child(3n+2){
+  background:linear-gradient(180deg,rgba(30,45,70,.72),rgba(12,20,35,.86));
+}
+
+.intelligence-hub-page .hub-engine-card:nth-child(3n){
+  background:linear-gradient(180deg,rgba(63,43,24,.48),rgba(22,16,12,.82));
+  border-color:rgba(255,176,0,.13);
+}
+
+/* Sources and product-information pages. */
+.official-resources-page .hero{
+  background:
+    radial-gradient(circle at 18% 22%,rgba(255,176,0,.09),transparent 30%),
+    linear-gradient(180deg,var(--layer-navy) 0%,var(--layer-navy-strong) 100%);
+}
+
+.official-resources-page > .compact-section{
+  background:linear-gradient(180deg,var(--layer-charcoal) 0%,var(--layer-charcoal-strong) 100%);
+}
+
+.official-resources-page .official-source-section{
+  background:
+    radial-gradient(circle at 88% 12%,rgba(255,122,0,.075),transparent 34%),
+    linear-gradient(180deg,var(--layer-warm) 0%,var(--layer-warm-strong) 100%);
+  border-top:1px solid rgba(255,176,0,.075);
+}
+
+.more-info-page .info-band:nth-of-type(3n+1){
+  background:
+    radial-gradient(circle at 12% 20%,rgba(59,130,246,.09),transparent 32%),
+    linear-gradient(180deg,var(--layer-navy) 0%,var(--layer-navy-strong) 100%);
+}
+
+.more-info-page .info-band:nth-of-type(3n+2){
+  background:
+    radial-gradient(circle at 86% 20%,rgba(148,163,184,.055),transparent 32%),
+    linear-gradient(180deg,var(--layer-charcoal) 0%,var(--layer-charcoal-strong) 100%);
+}
+
+.more-info-page .info-band:nth-of-type(3n){
+  background:
+    radial-gradient(circle at 14% 76%,rgba(255,176,0,.085),transparent 32%),
+    linear-gradient(180deg,var(--layer-warm) 0%,var(--layer-warm-strong) 100%);
+}
+
+.more-info-page .info-band{
+  border-top-color:rgba(255,255,255,.07);
+}
+
+/* Legal, security and saved-workspace pages. */
+.legal-page,
+.workspace-page{
+  background-color:#080c14;
+}
+
+.legal-page .legal-card:nth-child(3n+2),
+.workspace-page .workspace-card-v2:nth-child(3n+2){
+  background:linear-gradient(180deg,rgba(25,39,62,.7),rgba(12,19,32,.84));
+}
+
+.legal-page .legal-card:nth-child(3n),
+.workspace-page .workspace-card-v2:nth-child(3n){
+  background:linear-gradient(180deg,rgba(61,42,24,.46),rgba(22,16,12,.8));
+  border-color:rgba(255,176,0,.13);
+}
+
+/* Organization Structure journeys and methodology. */
+.org-structure-page,
+.org-report-page,
+.org-methodology-page{
+  background-color:#080c14;
+  background-image:
+    radial-gradient(circle at 10% 8%,rgba(255,176,0,.075),transparent 30rem),
+    radial-gradient(circle at 90% 30%,rgba(37,99,235,.11),transparent 34rem),
+    linear-gradient(180deg,var(--layer-navy-strong),var(--layer-charcoal-strong) 58%,var(--layer-warm-strong));
+}
+
+.org-structure-page .org-panel:nth-child(3n+2),
+.org-report-page .org-panel:nth-child(3n+2),
+.org-methodology-page .org-methodology-section:nth-of-type(3n+2){
+  background:linear-gradient(180deg,rgba(24,38,62,.72),rgba(10,17,30,.86));
+}
+
+.org-structure-page .org-panel:nth-child(3n),
+.org-report-page .org-panel:nth-child(3n),
+.org-methodology-page .org-methodology-section:nth-of-type(3n){
+  background:linear-gradient(180deg,rgba(61,42,24,.5),rgba(22,16,12,.84));
+  border-color:rgba(255,176,0,.13);
+}
+
+/* Compliance assessments and explainability workspaces. */
+.analyze-company-page .advisory-main,
+.compliance-dna-page .dna-main,
+.m4-page .m4-shell,
+.m5-workspace-page .workspace-shell{
+  background:
+    radial-gradient(circle at 12% 10%,rgba(255,176,0,.075),transparent 28rem),
+    radial-gradient(circle at 90% 24%,rgba(37,99,235,.12),transparent 34rem),
+    linear-gradient(180deg,var(--layer-navy-strong) 0%,var(--layer-charcoal-strong) 62%,var(--layer-warm-strong) 100%);
+}
+
+.m4-page .m4-hero,
+.m4-page .m4-panel,
+.m5-workspace-page .workspace-hero,
+.m5-workspace-page .workspace-panel{
+  color:var(--text-primary,#fff);
+  border-color:var(--layer-border);
+  background:linear-gradient(180deg,var(--layer-card-top),var(--layer-card-bottom));
+  box-shadow:0 18px 44px rgba(0,0,0,.22);
+}
+
+.m4-page .m4-title,
+.m4-page .m4-panel h2,
+.m5-workspace-page .workspace-hero h1,
+.m5-workspace-page .workspace-panel h2,
+.m5-workspace-page .workspace-panel h3{
+  color:var(--text-primary,#fff);
+}
+
+.m4-page .m4-note,
+.m4-page .m4-basis,
+.m4-page .m4-question,
+.m5-workspace-page .workspace-hero p,
+.m5-workspace-page .workspace-panel p,
+.m5-workspace-page .workspace-panel label{
+  color:var(--text-secondary,#cbd5e1);
+}
+
+.m5-workspace-page .workspace-note{
+  color:#3b2a10;
+}
+
+.m5-workspace-page input,
+.m5-workspace-page textarea,
+.m5-workspace-page select{
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+.analyze-company-page .advisory-feature-card:nth-child(even),
+.analyze-company-page .advisory-summary-card:nth-child(even),
+.compliance-dna-page .dna-story-card:nth-child(even),
+.m4-page .m4-panel:nth-child(even),
+.m5-workspace-page .workspace-panel:nth-child(even){
+  background:linear-gradient(180deg,rgba(24,39,64,.7),rgba(10,18,31,.86));
+  border-color:rgba(96,165,250,.13);
+}
+
+.analyze-company-page .advisory-feature-card:nth-child(3n),
+.analyze-company-page .advisory-summary-card:nth-child(3n),
+.compliance-dna-page .dna-story-card:nth-child(3n),
+.m4-page .m4-panel:nth-child(3n),
+.m5-workspace-page .workspace-panel:nth-child(3n){
+  background:linear-gradient(180deg,rgba(61,42,24,.48),rgba(22,16,12,.82));
+  border-color:rgba(255,176,0,.13);
+}
+
+/* Dashboards and reports keep their content hierarchy but gain page rhythm. */
+.sample-advisory-page .hero,
+.advisory-dashboard-page .hero{
+  background:
+    radial-gradient(circle at 16% 18%,rgba(255,176,0,.085),transparent 30%),
+    radial-gradient(circle at 86% 22%,rgba(37,99,235,.12),transparent 34%),
+    linear-gradient(180deg,var(--layer-navy) 0%,var(--layer-navy-strong) 100%);
+}
+
+.sample-advisory-page > .section:nth-of-type(3n+1),
+.advisory-dashboard-page > .section:nth-of-type(3n+1){
+  background:linear-gradient(180deg,var(--layer-charcoal) 0%,var(--layer-charcoal-strong) 100%);
+}
+
+.sample-advisory-page > .section:nth-of-type(3n+2),
+.advisory-dashboard-page > .section:nth-of-type(3n+2){
+  background:linear-gradient(180deg,var(--layer-navy) 0%,var(--layer-navy-strong) 100%);
+}
+
+.sample-advisory-page > .section:nth-of-type(3n),
+.advisory-dashboard-page > .section:nth-of-type(3n){
+  background:linear-gradient(180deg,var(--layer-warm) 0%,var(--layer-warm-strong) 100%);
+}
+
+.founder-report-page,
+.org-report-page{
+  background-image:
+    radial-gradient(circle at 8% 8%,rgba(255,176,0,.07),transparent 28rem),
+    radial-gradient(circle at 92% 22%,rgba(37,99,235,.1),transparent 34rem),
+    linear-gradient(180deg,var(--layer-navy-strong),var(--layer-charcoal-strong) 60%,var(--layer-warm-strong));
+}
+
+/* Lightweight redirects and retired roadmap placeholders. */
+.utility-page,
+.roadmap-page{
+  display:grid;
+  align-content:center;
+  justify-items:center;
+  min-height:100vh;
+  padding:clamp(24px,6vw,72px);
+  text-align:center;
+}
+
+.utility-page main,
+.roadmap-page > h1,
+.roadmap-page > p,
+.roadmap-page > a{
+  position:relative;
+  z-index:1;
+}
+
+.utility-page main{
+  width:min(100%,680px);
+  padding:clamp(24px,5vw,48px);
+  border:1px solid var(--layer-border);
+  border-radius:24px;
+  background:linear-gradient(180deg,var(--layer-card-top),var(--layer-card-bottom));
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+}
+
+.roadmap-page > a,
+.utility-page a{
+  color:#ffd56a;
+}
+
+@media(max-width:700px){
+  body:not(.home-page){
+    background-attachment:scroll;
+  }
+}
+
+@media(prefers-contrast:more){
+  .legal-card,
+  .workspace-card-v2,
+  .hub-engine-card,
+  .org-panel,
+  .org-form-card,
+  .org-source-card,
+  .m4-panel,
+  .workspace-panel{
+    border-color:rgba(255,255,255,.34);
+  }
+}
+
+@media print{
+  body{
+    background-image:none !important;
+    background-attachment:scroll !important;
+  }
+}

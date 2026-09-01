@@ -12,6 +12,7 @@ assert.match(home, /Compliance Needs/);
 assert.match(home, /Organization Structure/);
 assert.match(home, /Anurag Sinha/);
 assert.match(home, /Founder, HRTechify/);
+assert.match(home, /Clear capabilities\. Clear boundaries\./);
 assert.match(home, /Security & Data/);
 assert.match(home, /Open My Reports/);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
@@ -98,6 +99,28 @@ assert.match(shell, /"terms\.html": "more"/);
 
 const styles = read("styles.css");
 assert.match(styles, /css\/28-buyer-trust\.css/);
+assert.match(styles, /css\/29-layered-dark\.css/);
 assert.ok(styles.indexOf("css/28-buyer-trust.css") < styles.indexOf("css/18-site-shell.css"), "Site shell must remain the final static stylesheet import.");
+assert.ok(styles.indexOf("css/29-layered-dark.css") < styles.indexOf("css/18-site-shell.css"), "The shared layered-dark theme must load before the final site shell stylesheet.");
+
+const layeredTheme = read("css/29-layered-dark.css");
+assert.match(layeredTheme, /--layer-navy:/);
+assert.match(layeredTheme, /--layer-charcoal:/);
+assert.match(layeredTheme, /--layer-warm:/);
+assert.match(layeredTheme, /\.intelligence-hub-page/);
+assert.match(layeredTheme, /\.analyze-company-page/);
+assert.match(layeredTheme, /\.org-structure-page/);
+assert.match(layeredTheme, /\.sample-advisory-page/);
+assert.match(layeredTheme, /@media print/);
+
+const root = new URL("../", import.meta.url);
+for (const file of fs.readdirSync(root).filter((name) => name.endsWith(".html"))) {
+    const source = fs.readFileSync(new URL(file, root), "utf8");
+    assert.match(
+        source,
+        /styles\.css\?v=20260901-layered-dark-global|29-layered-dark\.css\?v=20260901-layered-dark-global/,
+        `${file} must load the shared layered-dark theme.`
+    );
+}
 
 console.log("Buyer trust, onboarding and customer workspace checks passed.");
