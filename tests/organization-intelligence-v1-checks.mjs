@@ -196,7 +196,8 @@ const reportRuntime = fs.readFileSync(
     new URL("../js/organization-structure-report.mjs", import.meta.url),
     "utf8"
 );
-assert.match(reportRuntime, /Basis & Sources/);
+assert.match(reportRuntime, /Why GrowWithHR is saying this/);
+assert.match(reportRuntime, /CHANGE INTELLIGENCE/);
 assert.match(reportRuntime, /GrowWithHR rule/);
 assert.match(reportRuntime, /source\.url/);
 
