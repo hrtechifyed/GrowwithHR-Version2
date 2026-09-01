@@ -187,7 +187,9 @@ The earlier engineering milestones remain completed history and are retained in 
 - **M4 — Explainable Intelligence**
 - **M5 — Compliance Workspace Beta**
 - **M6 — Evidence / persistence contract foundation**
-- **M7 — RAG-Ready Hardening implementation**
+- **M7 — RAG-Ready Hardening** — technical status: **implemented, release exit pending**.
+
+M7 remains an engineering hardening milestone rather than a claim that the `0.22.0` release has been cut. Its release-exit evidence still requires **two consecutive qualified production releases** meeting the maintained reliability rules; pull-request CI alone is not sufficient.
 
 Those milestone names describe engineering evolution. They are not the current customer navigation or commercial product hierarchy.
 
