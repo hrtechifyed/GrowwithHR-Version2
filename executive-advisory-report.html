@@ -28,8 +28,7 @@
     <script>
     (() => {
         const localRegressionHost = ["localhost", "127.0.0.1", "::1"].includes(location.hostname);
-        const internalPreview = localRegressionHost && new URLSearchParams(location.search).get("internal-preview") === "1";
-        if (!internalPreview) return;
+        if (!localRegressionHost) return;
         document.getElementById("personalReportRouteNotice").innerHTML = '<p class="gwh-web-eyebrow">GROWWITHHR · LOCAL REGRESSION PREVIEW</p><h1>Preparing HR Compliance & Growth Report…</h1><p>Local automated-testing preview only.</p>';
         const scripts = [
             "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
