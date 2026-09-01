@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createRequire } from "node:module";
 
+const require = createRequire(import.meta.url);
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const home = read("index.html");
@@ -16,6 +18,13 @@ assert.match(home, /Security & Data/);
 assert.match(home, /Open My Reports/);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(home, /Leadership Intelligence \(Planned\)/);
+
+const positioning = read("js/product-positioning.js");
+assert.match(positioning, /flagship: "Organization Structure & Growth"/);
+assert.match(positioning, /secondary: "HR Compliance Readiness"/);
+assert.match(positioning, /recurringLayer: "Change Intelligence"/);
+assert.match(positioning, /\["Compliance Needs", "HR Compliance Readiness"\]/);
+assert.match(positioning, /Organization Structure & Growth · Flagship/);
 
 const hub = read("intelligence-hub.html");
 assert.match(hub, /Understand your company/i);
@@ -74,6 +83,10 @@ assert.match(security, /Supabase/);
 assert.match(security, /Gmail API/);
 assert.match(security, /not currently represented as SOC 2, ISO 27001/i);
 assert.match(security, /one-time handoff token/i);
+assert.match(security, /publishable key/i);
+assert.match(security, /matching signed-in work email/i);
+assert.match(security, /Bearer access token/i);
+assert.match(security, /complete personalised reports are not exposed as public full-report web pages/i);
 assert.match(security, /<article id="retention" class="legal-card">/);
 assert.match(security, /kept for six months from the latest completed analysis/i);
 assert.match(security, /approximately seven days before deletion/i);
@@ -100,16 +113,48 @@ assert.match(about, /Security & Data/);
 assert.match(about, /Product Use Terms/);
 
 const shell = read("js/site-shell.js");
+assert.match(shell, /label: "Organization & Growth"/);
+assert.match(shell, /label: "HR Compliance Readiness"/);
 assert.match(shell, /label: "My Reports"/);
+assert.match(shell, /label: "Sources & Methodology"/);
+assert.match(shell, /label: "Sample Reports"/);
 assert.match(shell, /label: "Security & Data"/);
 assert.match(shell, /label: "Terms"/);
-assert.match(shell, /"compliance-intelligence\.html": "analyze"/);
-assert.match(shell, /"my-reports\.html": "more"/);
-assert.match(shell, /"security\.html": "more"/);
-assert.match(shell, /"terms\.html": "more"/);
+assert.match(shell, /"organization-intelligence\.html": "organization"/);
+assert.match(shell, /"compliance-intelligence\.html": "compliance"/);
+assert.match(shell, /"my-reports\.html": "reports"/);
+assert.match(shell, /"official-resources\.html": "resources"/);
+assert.match(shell, /bootstrapProductPositioning/);
+assert.match(shell, /js\/product-positioning\.js/);
+
+const customerAuth = read("js/customer-auth.js");
+assert.match(customerAuth, /publishable key only/i);
+assert.match(customerAuth, /requireMatchingSession/);
+assert.match(customerAuth, /Authorization/);
+assert.doesNotMatch(customerAuth, /SERVICE_ROLE/i);
+
+const reportGate = read("server-customer-report-gate.js");
+assert.match(reportGate, /SUPABASE_SERVICE_ROLE_KEY/);
+assert.match(reportGate, /ensureRecipientOwnership/);
+assert.match(reportGate, /complete report can only be emailed to the signed-in work email/i);
+const customerReportGate = require("../server-customer-report-gate.js");
+assert.deepEqual(
+    customerReportGate.emailCandidates({
+        lead: { email: "Buyer@Example.com" },
+        report: { recipientEmail: "buyer@example.com", recipientEmails: ["BUYER@example.com"] }
+    }),
+    ["buyer@example.com"]
+);
+assert.doesNotThrow(() => customerReportGate.ensureRecipientOwnership({
+    lead: { email: "buyer@example.com" },
+    report: { recipientEmail: "BUYER@example.com" }
+}, "buyer@example.com"));
+assert.throws(() => customerReportGate.ensureRecipientOwnership({
+    lead: { email: "other@example.com" }
+}, "buyer@example.com"), /signed-in work email/i);
 
 const styles = read("styles.css");
 assert.match(styles, /css\/28-buyer-trust\.css/);
 assert.ok(styles.indexOf("css/28-buyer-trust.css") < styles.indexOf("css/18-site-shell.css"), "Site shell must remain the final static stylesheet import.");
 
-console.log("Buyer trust, onboarding, Change Intelligence and customer workspace checks passed.");
+console.log("Buyer trust, onboarding, Change Intelligence, authenticated report access and customer workspace checks passed.");
