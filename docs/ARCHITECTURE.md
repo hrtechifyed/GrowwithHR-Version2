@@ -1,176 +1,367 @@
 # GrowWithHR Architecture
 
-## Deployment decision
+**Current architecture snapshot:** 1 September 2026  
+**Release line:** `v0.20.4-prototype.1` research-grade prototype
 
-The production application is the root-level static HTML/CSS/JavaScript site. `server.js` supplies optional delivery and explanation APIs, while `server-entry.js` is the CORS-aware production entrypoint used by Render. `apps/web/src` remains an archived experimental React/TypeScript UX layer and is not part of the deployed build.
+## 1. Deployment model
 
-## Public architecture
+The deployed product is the root-level static HTML/CSS/JavaScript application hosted on GitHub Pages.
 
-1. `index.html` presents the product and links to `analyze-company.html`.
-2. Stable assessment modules validate answers and persist same-browser progress under protected keys.
-3. Presentation modules enrich the report experience without changing compliance applicability logic.
-4. The stable report mapper prepares the advisory record.
-5. `js/pdf.js` and `js/pdf-polish.js` render the deterministic advisory model as a browser-generated PDF.
-6. `executive-advisory-report.html` consumes the same enriched advisory model.
-7. Email delivery uses a data-minimised request only when requested.
-8. `server-entry.js` applies exact-origin CORS controls and delegates protected API routes.
+`server-entry.js` is the CORS-aware production Node entry point on Render and delegates server-side routes for Company Workspace, report delivery, customer authentication gates, legal explanations, Report ID mediation and related protected operations.
 
-The approved cross-origin client is `https://hrtechifyed.github.io`. Additional approved origins may be supplied through `ALLOWED_CORS_ORIGINS`; wildcard origins are not used.
+`apps/web/src/` remains an archived React/TypeScript experiment and is not the deployed build.
 
-## Private-beta architecture
+## 2. Customer product architecture
 
-`/analyze-company-v3.html` is no-index and disabled from public routing by default. Its Compliance DNA modules consume protected assessment answers through compatibility adapters and produce isolated traceability/legal-review/workspace output without changing stable report, PDF, email or delivery contracts.
+The public product is deliberately concentrated on:
 
-The v3 route mounts the substantive review surfaces for POSH, Maternity Benefit, EPF Waves 3A–3C, ESI Waves 4A–4D, Appropriate Government Wave 5A, Maharashtra Shops Wave 5B, Code on Wages Wave 5C, Gratuity Wave 5D, Employee's Compensation Wave 5E, OSHWC Wave 5F, Industrial Relations Wave 5G, Apprentices Wave 5H, Child and Adolescent Labour Wave 5I, Contract Workforce Wave 5K and generic Social Security Wave 5L.
+1. **Organization Structure & Growth — flagship**
+2. **HR Compliance Readiness — supporting capability**
+3. **Change Intelligence — recurring layer across repeat assessments**
 
-Wave 5J Bonded and Forced Labour and Wave 5M Multi-country Employment are governance-only fallbacks and intentionally have no assessment fact contract, browser panel, substantive runtime catalogue or provider route.
+The primary shared navigation is generated centrally by `js/site-shell.js`:
 
-All legal-review panels submit only after explicit user action. Their inputs/results are not written to browser storage and are not inserted into the stable report, PDF or email.
+```text
+Organization & Growth
+HR Compliance Readiness
+My Reports
+Sources & Methodology
+```
 
-## Protected browser keys
+Secondary navigation includes Sample Reports, Security & Data, Terms, About, Privacy and Contact.
 
-- `growwithhr-advisory-briefing-v2`
-- `growwithhr-report`
-- `growwithhr-lead`
-- `growwithhr-advisory-delivery-v1`
-- `growwithhr-industry-catalog-v1`
-- `growwithhr-report-theme` — presentation preference only
+The Intelligence Hub explains the company-analysis model, Change Intelligence and report-glimpse concept. It is not required to remain the only route into the two engines.
 
-Feature-flag overrides use the documented `growwithhr-feature-` prefix and are not assessment records.
+## 3. Public versus personalized report architecture
 
-## Deterministic decision and governed RAG architecture
+### Public fictional samples
+
+Complete fictional reports remain publicly viewable so a prospective customer can inspect report format and depth:
+
+- Organization Structure & Growth sample;
+- HR Compliance Readiness sample.
+
+Sample data must be explicitly fictional / illustrative and must not be represented as a real assessment.
+
+### Personalized reports
+
+The normal production path is:
+
+```text
+Assessment complete
+→ executive web glimpse
+→ sign in / sign up with assessment work email
+→ Supabase access token
+→ server-side token verification
+→ recipient must match authenticated work email
+→ complete personalized PDF delivered by Gmail
+```
+
+The complete personalized report must not be protected merely by a hidden link, CSS blur or client-side display toggle.
+
+A localhost-only full report renderer may be retained for deterministic browser regression/developer verification. Production users must not be able to unlock that renderer by supplying the same query parameter on the deployed host.
+
+## 4. Shared site shell and visual consistency
+
+`js/site-shell.js` is the canonical source for shared navbar/footer markup and interaction behavior.
+
+Shared styles and variables remain the authority for the existing GrowWithHR visual system. Page-specific CSS may extend the shared system but must not redefine a competing global navbar, footer or brand palette.
+
+Automated contracts protect:
+
+- one canonical shared header/footer;
+- active-navigation behavior;
+- mobile navigation behavior;
+- keyboard/focus behavior;
+- common footer links;
+- required shared style loading;
+- customer terminology.
+
+## 5. Organization Structure & Growth architecture
+
+The Organization engine is deterministic and organization-level.
+
+Primary components include:
+
+- `organization-intelligence.html` — structured customer assessment;
+- `js/modules/organization/organization-structure-engine.mjs` — deterministic engine;
+- `js/modules/organization/organization-source-registry.mjs` — framework, rule/source mappings and public-source metadata;
+- `js/organization-structure-report.mjs` — sample, glimpse, report and Change Intelligence rendering;
+- `js/organization-structure-pdf.mjs` — branded PDF generation.
+
+The engine can evaluate structural facts such as:
+
+- employee and manager counts;
+- reporting layers;
+- founder direct reports;
+- manager role;
+- work complexity;
+- standardization;
+- team independence;
+- coaching intensity;
+- role clarity;
+- decision rights;
+- governance cadence;
+- coordination friction;
+- location complexity; and
+- expected headcount.
+
+The engine does not expose an arbitrary individual/organization maturity score.
+
+It separates public source principles from GrowWithHR prototype rule interpretation. Numeric watch/action guardrails remain GrowWithHR prototype rules unless an external source explicitly publishes the value.
+
+The 12-month scenario is deterministic planning support and is explicitly not a forecast.
+
+## 6. HR Compliance Readiness architecture
+
+The customer-facing compliance product is **HR Compliance Readiness**.
+
+The legal authority path remains:
 
 ```text
 assessment answers
 → deterministic fact mapper
 → deterministic rule evaluator
-→ immutable decision
+→ immutable product decision
 → legal RAG profile resolver
 → governed catalogue retrieval
 → explanation-only provider
 → strict response validation
 ```
 
-The deterministic rule owns status, reason code, missing facts and source scope. Retrieval has `applicabilityAuthority: none` and `usedForDecision: false`. Provider output must preserve the decision fingerprint, status, reason code and citation scope and may never fill missing assessment facts.
+The deterministic rule owns:
 
-Complete and reported-gap substantive scenarios stay `specialist-review`. Missing required facts return `more-information-needed`.
+- status;
+- reason code;
+- missing facts;
+- allowed source IDs / source scope.
 
-## Main-integrated runtime coverage
+Retrieval/provider output must preserve:
 
-The legal-RAG implementation through Wave 5M is integrated into `main` as of 10 August 2026.
+```text
+usedForDecision: false
+applicabilityAuthority: none
+```
 
-Runtime invariant:
+The provider cannot:
+
+- create missing company facts;
+- choose applicable law independently;
+- change status or reason code;
+- change the decision fingerprint;
+- broaden permitted source IDs;
+- certify compliance.
+
+The current product framing is readiness/review/preparation rather than assurance.
+
+## 7. Change Intelligence architecture
+
+Change Intelligence is not a standalone third engine.
+
+It operates on a prior confirmed company baseline plus the current structured facts.
+
+```text
+Previous baseline
+      +
+Current facts
+      ↓
+Fact delta
+      ↓
+Current deterministic engine run
+      ↓
+Finding/status delta
+      ↓
+User-facing change interpretation
+```
+
+The comparison authority is structured facts and deterministic finding states, not generated report prose.
+
+Organization Change Intelligence is integrated with the Organization report/runtime model. Compliance Change Intelligence is supported by `js/compliance-change-intelligence.js` and related assessment/report contracts.
+
+If no previous confirmed baseline exists, no comparison is invented.
+
+## 8. Company Workspace architecture
+
+The reusable Company Workspace is separate from browser-only progress continuity.
+
+Persistent reusable company data is mediated by the Render backend and stored in Supabase.
+
+The reusable company payload is encrypted by the backend using AES-256-GCM before storage.
+
+Workspace recovery uses:
+
+```text
+Report ID + Recovery Code
+```
+
+The Recovery Code is stored as a SHA-256 hash rather than plaintext and is verified server-side.
+
+A short-lived, cryptographically random one-time handoff token can transfer recovered company data into another intelligence experience without placing the Recovery Code in the URL.
+
+The normal workspace retention policy remains six months from the latest completed analysis, subject to the documented deletion/reminder process.
+
+## 9. Customer authentication architecture
+
+Supabase now has two distinct roles:
+
+1. Company Workspace database; and
+2. customer authentication for complete personalized report delivery.
+
+Browser authentication uses only the Supabase publishable key.
+
+Privileged Supabase/service-role credentials remain backend-only.
+
+`server-customer-report-gate.js` and report-delivery routes validate the customer Bearer token and bind the requested recipient to the authenticated work email.
+
+Authentication does not replace Workspace Recovery Code verification. Recovery Code verification does not replace authentication for complete report delivery.
+
+## 10. Report formatting architecture
+
+The report system is expected to remain consistent with the existing HRTechify/GrowWithHR brand rather than creating a second visual identity.
+
+Current report principles include:
+
+- HRTechify logo on the report cover;
+- shared dark / warm brand treatment;
+- status colors reserved for semantic meaning;
+- executive decision brief before detailed methodology;
+- safe A4 page width/margins;
+- measured/wrapping status chips and status cards;
+- overflow/page-break protection for tables/cards;
+- readable source blocks and footers;
+- no unsupported claims hidden inside decorative graphics.
+
+`js/report-format-safety-v1.js` provides reusable formatting-safety support. Organization-specific PDF logic lives in `js/organization-structure-pdf.mjs`; the Compliance Readiness report continues to use its maintained PDF/report pipeline.
+
+## 11. Backend and infrastructure boundaries
+
+### GitHub Pages
+
+Public static frontend only. No privileged server secrets.
+
+### Render
+
+Private API boundary for operations including:
+
+- workspace creation/recovery/completion/deletion;
+- encryption/decryption;
+- temporary handoff;
+- customer-auth validation;
+- recipient/work-email binding;
+- complete report delivery;
+- Report ID mediation;
+- legal/operational explanation routing.
+
+### Supabase
+
+- Company Workspace persistence;
+- customer authentication.
+
+The Company Workspace table remains a server-mediated data path. Customer Auth sessions do not grant direct browser access to encrypted workspace rows.
+
+### Cloudflare
+
+- Workers AI: governed explanation-only provider role;
+- Worker/Durable Object: persistent Report ID allocation/registry.
+
+These are separate responsibilities.
+
+### Gmail API
+
+Requested complete report email delivery. Sent email/attachments have a retention lifecycle separate from Company Workspace deletion.
+
+### Google Drive / governed source workflow
+
+Upstream legal/research source governance. It is not normal customer workspace storage.
+
+## 12. CORS, authentication and recovery are different controls
+
+CORS is an origin restriction for normal browser requests. It is not authentication.
+
+Sensitive operations require route-specific controls such as:
+
+- Bearer-token validation for complete personalized report delivery;
+- Recovery Code verification for Company Workspace recovery;
+- server-only privileged credentials;
+- request/input validation;
+- request-size limits;
+- rate limiting / abuse controls where configured or required.
+
+## 13. Legal RAG current runtime scope
+
+The maintained prototype runtime preserves:
 
 - 57 callable profiles;
 - 55 substantive profiles;
-- 2 governance-fallback profiles;
-- 21 active catalogues;
-- zero blocked runtime profiles.
+- 2 governance fallbacks;
+- 21 active catalogues.
 
-The two governance fallbacks are Bonded and Forced Labour (Wave 5J research/safeguarding stop) and Multi-country Employment (Wave 5M jurisdiction/cross-border-data stop).
+Every active substantive legal catalogue remains `needs-legal-review`.
 
-All substantive catalogues remain `needs-legal-review`.
+Wave 5J — Bonded and Forced Labour — remains governance/research-only and safeguarding-human-first.
 
-## Authority boundaries by later wave
+Wave 5M — Multi-country Employment — remains outside the substantive current release and has no generic cross-border assessment/provider authority.
 
-### Wave 5A — Appropriate Government
-Records cross-code jurisdiction/source readiness and escalation only. It does not select the legally appropriate Government, State/UT, law, source pack, forum or jurisdiction.
+Detailed law-family/wave authority boundaries remain documented in the historical/current Legal RAG architecture files under `docs/architecture/` and `growwithhr-rag/`.
 
-### Wave 5B — Maharashtra Shops and Establishments
-Records a Maharashtra-only source-readiness and organisation-control review. The 2025 amendment remains draft-only; no exact final instrument was found in the 10 August 2026 official re-check. The wave does not decide coverage, thresholds, registration, working conditions, penalties or enforcement.
+## 14. Compliance review-currentness gate
 
-### Wave 5C — Code on Wages
-Records source/version/effective-date, jurisdiction-routing, rate-source-register and State/UT-instrument controls. It does not select rates/categories/zones/scheduled employment or perform employee-level payroll/entitlement/remedy arithmetic.
+Compliance-data validation distinguishes approved/current legal records from draft/unapproved research records.
 
-### Wave 5D — Gratuity
-Records Chapter V, First Schedule, Rules and transition/source controls. It does not determine coverage, individual eligibility, continuous service, wages, gratuity amount, nomination, forfeiture, claim or remedy.
+- Approved records remain strict for review-currentness.
+- Draft/unapproved overdue review dates remain visible as warnings in normal prototype CI.
+- `COMPLIANCE_REQUIRE_CURRENT_REVIEW=true` can deliberately require strict review-currentness across all records.
 
-### Wave 5E — Employee's Compensation
-Records Chapter VII, schedules, Rules, transition, ESI-overlap, employer-process and authority-source controls. It does not decide injury/disease causation, diagnosis, disablement, dependency, liability, wages, compensation, claims or remedies.
+The current 524 overdue temporal entries across 51 draft/unapproved law records remain a real substantive review backlog. They must not be cleared by simply moving dates without actual review.
 
-### Wave 5F — OSHWC
-Records a bounded Central/Maharashtra source route and generic establishment controls. Maharashtra's 2026 OSHWC Labour and Factories/Other Ports instruments remain draft-only after the 10 August 2026 official re-check. The wave does not decide applicability, thresholds, classification, registration/licensing, working conditions, incidents, penalties or enforcement.
+## 15. Privacy boundary
 
-### Wave 5G — Industrial Relations
-Records Code/Rules, transition/amendment, Model Standing Orders, Maharashtra draft reconciliation and authority/source controls. The Maharashtra State rules remain draft-only after the 10 August 2026 re-check. It does not decide Chapter IV applicability, worker thresholds, certification, disciplinary/dispute outcomes, strikes/lock-outs, retrenchment/closure, penalties or remedies.
+GrowWithHR is designed for controlled organization-level information.
 
-### Wave 5H — Apprentices
-Records Act/Rules/amendment status, current-Rules-versus-portal reconciliation, trade/category classification-source, manpower/band, State variation, portal/NAPS, authority and training-infrastructure controls. It does not decide Act applicability, mandatory engagement, counts, individual eligibility, contracts, stipend, certification, NAPS/DBT, enforcement or remedy.
+Sensitive employee-level identities, medical/case data, payroll bodies, complaint/dispute narratives, notices/orders and evidence bodies remain outside normal provider/report paths unless a separately approved contract expressly permits them.
 
-### Wave 5I — Child and Adolescent Labour
-Safeguarding-first source/classification/exception/authority readiness only. It is not case management, emergency handling, age inference or risk scoring and does not determine age/status, work, hazardous classification, exceptions, offences, rescue, prosecution, rehabilitation or remedies.
+Email-delivered reports create copies outside the Company Workspace lifecycle. Workspace deletion therefore cannot be described as deleting all sent/downloaded copies everywhere.
 
-### Wave 5J — Bonded and Forced Labour
-Research-only governance stop. Runtime promotion is blocked pending exact current operational materials, qualified constitutional/statutory/criminal mapping, human-only safeguarding, privacy/security and State/UT controls. Current official research confirms the Ministry SOP referenced by NHRC as issued on 14 May 2026, but the exact Ministry-hosted file remains uncontrolled. The public Ministry source still surfaces the 2021 rehabilitation scheme and no exact approved/notified 2026–31 operational plan has been controlled.
+## 16. Quality and release gates
 
-### Wave 5K — Contract Workforce
-Bounded OSHWC Chapter XI Part I source-readiness with separate EPF and ESI contractor dependencies.
+The exact release candidate SHA must pass the maintained chain, including:
 
-```text
-OSHWC contract-workforce decision ─┐
-EPF contractor-control decision ───┼─> separate dependency/reconciliation statuses only
-ESI contractor-control decision ───┘
-```
+- version consistency;
+- compliance-data validation;
+- baseline contracts;
+- Organization source/deterministic checks;
+- shared shell / buyer trust / UI contracts;
+- architecture milestones;
+- client/server readiness;
+- report presentation and visual checks;
+- journey/scenario regressions;
+- archived compatibility;
+- Executive Assessment Playwright suite;
+- founder/report browser acceptance;
+- All-Laws RAG maintained validation;
+- M4 report integration;
+- M7 RAG-ready hardening.
 
-No family may determine another family's applicability or substantive result. Maharashtra OSHWC State rules remain draft-only.
+After merge, `main` must also pass its CI, GitHub Pages deployment and Live Release Smoke.
 
-### Wave 5L — Generic Social Security family routing
-A chapter/source-family router, not a generic applicability engine.
+## 17. Approval boundary
 
-```text
-generic Social Security route
-  ├─> EPF/EPS/EDLI dedicated review
-  ├─> ESI dedicated review
-  ├─> Gratuity dedicated review
-  ├─> Maternity Benefit dedicated review
-  ├─> Employee's Compensation dedicated review
-  ├─> BOCW Chapter VIII specialist review
-  └─> Chapter IX unorganised/gig/platform specialist review
-```
+Passing deterministic, retrieval, browser, report, authentication, integration or hardening tests is software evidence only.
 
-The generic route cannot override, combine or infer a dedicated family result. BOCW Chapter VIII and Chapter IX remain specialist-only.
+It does **not** grant legal, privacy, safeguarding, RAG, exact-source-file, State/UT, section-mapping, assessment-fact, deterministic-rule, security or production-release approval.
 
-### Wave 5M — Multi-country Employment
-Governance-only jurisdiction/data gate. No assessment, substantive rule, RAG catalogue, browser panel or provider route may exist until exactly one country pair and operating model are selected and specialist jurisdictional plus cross-border data approvals are recorded.
+Production hardening remains tracked under #142 and #143. Green CI does not convert the research-grade HR Compliance Readiness prototype into legal certification.
 
-Future pair-specific work must separately control employment law, immigration/work authorisation, tax/treaty/payroll/permanent-establishment, social-security/SSA and privacy/security sources for both jurisdictions. The product must not decide immigration, tax residence, withholding, social-security coverage, applicable employment law, EOR/PEO legality, cross-border transfer legality or remedy from generic data.
+## 18. Current canonical documents
 
-## Source-governance boundary
+- `README.md`
+- `ABOUT.md`
+- `HOW_GROWWITHHR_WORKS.md`
+- `docs/ARCHITECTURE.md`
+- `SECURITY.md`
+- `ROADMAP.md`
+- `FILES_OVERVIEW.md`
+- `CHANGELOG.md`
+- `RELEASE_NOTES.md`
 
-The platform distinguishes:
-
-- exact controlled full files with verified hashes/pagination;
-- `source-identity-only` snapshots;
-- regulator/programme or portal context;
-- draft instruments; and
-- historical/research-only sources.
-
-The active Drive Source Register was reconciled through Wave 5M on 10 August 2026. Shared exact Social Security/EPF/ESI files are reused across families rather than duplicated. Missing exact files are not assigned fabricated hashes or pagination.
-
-Maharashtra Shops/OSHWC/IR draft instruments remain draft-only until exact final instruments are separately acquired, fingerprinted and approved. Wave 5J's exact Ministry SOP and 2026–31 rehabilitation/welfare operational-plan source blockers remain open.
-
-## Privacy boundaries
-
-Earlier waves retain their established prohibitions on identities, contact details, complaints, medical records, payroll, claims, accident narratives, notices/orders and evidence bodies except where an explicitly approved privacy-safe organisation-level field is part of a deterministic fact contract.
-
-Wave 5J prohibits identifying/allegation/coercion/debt/trafficking/rescue/case/victim/witness/evidence data. Wave 5M prohibits person-level mobility, passport/visa, nationality, tax-ID/residency-day, social-security, payroll/wage, bank/remittance, medical/dependant, agreement/dispute, precise-location and evidence-body data.
-
-## Operational endpoints
-
-```text
-POST /api/legal-explanation/feature/:featureId
-GET  /api/legal-rag/status
-GET  /api/m7/readiness
-```
-
-Current `main/server-entry.js` uses the Wave 5L shared router overlay. That is intentional: Wave 5M is governance-only and has no router. The main-integrated runtime reports the 57/55/2 profile mix and 21 catalogues.
-
-## Integration validation
-
-The exact integration head was green on All-Laws RAG, Executive Assessment, M4 Report Integration, M7 RAG-Ready Hardening and repository-wide GrowWithHR CI before merging to `main`.
-
-## Approval boundary
-
-Passing deterministic, retrieval, browser, report, integration or hardening tests is software evidence only. It does **not** grant legal, privacy, safeguarding, RAG, exact-source-file, State/UT, section-mapping, assessment-fact, deterministic-rule, security, cross-border-data or release approval. Every active substantive catalogue remains `needs-legal-review` until qualified decisions are recorded.
-
-See `docs/architecture/compliance-engine-differentiation.md`, `docs/architecture/all-laws-runnable-private-beta-rag.md` and `docs/testing/all-laws-rag-validation.md`.
+Dated files under `docs/releases/` remain historical evidence and should not be rewritten to describe later behavior.
