@@ -1,85 +1,132 @@
 # GrowWithHR
 
-GrowWithHR is a deterministic, traceable HR compliance advisory prototype. It records explicit organisation facts, applies versioned deterministic rules, retrieves governed research material only after the decision, and uses AI only to explain the fixed result.
+GrowWithHR is an HR decision-support prototype from HRTechify. It converts structured organization facts into deterministic, traceable recommendations, evidence and next actions while keeping AI outside the decision-authority boundary.
 
-> **Authority boundary:** deterministic rules decide the product result within the prototype contract. RAG retrieves only the source scope selected by that decision. The provider explains only and cannot create facts, choose applicable law, change status/reason/source scope or certify compliance.
+> **Core authority principle:** rules decide. Governed sources substantiate. AI explains. For HR Compliance Readiness, the deterministic rule decides the product status/source scope first; RAG and the provider cannot create facts, choose applicable law, change the fixed result or certify compliance.
 
 ## Current customer product — 1 September 2026
 
 The public GrowWithHR experience is deliberately concentrated on two decision products and one recurring layer rather than a long list of future HR modules:
 
-1. **Organization Structure & Growth — flagship.** Reviews structural capacity, manager context, reporting architecture, founder dependence, decision ownership, coordination and a deterministic 12-month growth scenario. It evaluates the organisation, not individual employee capability or performance.
-2. **HR Compliance Readiness — supporting capability.** Identifies HR compliance areas that may require review, missing information, governed sources and next actions. It is a readiness and preparation tool, not compliance assurance, legal certification or proof of compliance.
-3. **Change Intelligence — recurring layer.** Where a prior confirmed company baseline is available, GrowWithHR compares structured company facts and deterministic findings to show what changed, what pressure increased or improved, and what may need renewed attention.
+1. **Organization Structure & Growth — flagship.** Reviews structural capacity, management context, reporting architecture, founder dependence, decision ownership, coordination and a deterministic 12-month growth scenario. It evaluates the organization, not individual employee/manager performance.
+2. **HR Compliance Readiness — supporting capability.** Identifies HR compliance areas that may require review, missing information, governed source context and next actions. It is a readiness/preparation tool, not compliance assurance, legal certification or proof of compliance.
+3. **Change Intelligence — recurring layer.** When a prior confirmed company baseline exists, GrowWithHR compares structured company facts and deterministic findings to show what changed, which pressures increased or improved, what new priorities appeared and what may require renewed review.
 
-Customer-facing navigation is intentionally simple: **Organization & Growth · HR Compliance Readiness · My Reports · Sources & Methodology**. Complete fictional sample reports remain public so a buyer can inspect the report format. Personalised results show only an executive glimpse in the website; complete personalised PDFs are delivered by email after Supabase customer authentication. The server validates the customer access token and requires every requested recipient to match the authenticated work email.
+Primary customer navigation is intentionally simple:
 
-The existing Company Workspace recovery model remains separate from report authentication. Report ID + Recovery Code reopens reusable company baseline data; customer authentication controls delivery of complete personalised PDFs.
+**Organization & Growth · HR Compliance Readiness · My Reports · Sources & Methodology**
 
-## Current prototype release
+Complete fictional sample reports remain public so prospective users can inspect report format and depth.
 
-**Updated:** 11 August 2026  
-**Application baseline:** `0.20.3-prototype.1`  
-**Release line:** Governed Compliance & Legal RAG Prototype  
-**Release classification:** research-grade prototype / GitHub prerelease  
-**Legal-review status:** every active legal catalogue remains `needs-legal-review`
+Personalized customer results use a different access model:
 
-The effective Legal RAG runtime contains:
+```text
+Assessment complete
+→ website shows executive report glimpse
+→ sign in / sign up with assessment work email
+→ Supabase access token validated server-side
+→ requested recipient must match authenticated work email
+→ complete personalized PDF delivered by email
+```
 
-| Control | Current state |
-|---|---:|
-| Callable profiles | 57 |
-| Substantive profiles | 55 |
-| Governance fallback profiles | 2 |
-| Active catalogues | 21 |
-| Active catalogue legal status | `needs-legal-review` |
+The normal deployed customer route does not expose the complete personalized report as a public web document. A localhost-only internal renderer may remain for automated regression/developer verification.
 
-The two governance fallbacks are deliberately non-substantive:
+## Company Workspace versus report authentication
 
-- **Wave 5J — Bonded and Forced Labour:** governance/research-only; no assessment/runtime activation. Live safeguarding concerns remain human-only.
-- **Wave 5M — Multi-country Employment:** excluded from the current release. #141 is closed `not planned`; there is no country pair, assessment contract, runtime catalogue, browser/provider route or cross-border data design in this release.
+These are deliberately separate controls:
 
-## Prototype source standard
+- **Report ID + Recovery Code** reopens reusable Company Workspace baseline data.
+- **Supabase customer authentication** authorizes complete personalized PDF delivery.
 
-This release is intentionally a **high-quality research prototype**, not a production legal-certification system.
+The Recovery Code is not stored in plaintext. The backend stores a SHA-256 hash and verifies the supplied code. The reusable company-data payload is encrypted by the backend using AES-256-GCM before storage in Supabase.
 
-For the prototype:
+Browser authentication uses only the Supabase publishable key. Privileged Supabase/service credentials remain server-side. Complete report-delivery endpoints validate the Bearer token and bind the recipient to the authenticated work email.
 
-- structured secondary research with controlled provenance is an accepted legal/source basis;
-- exact official-file verification is supplementary assurance, not a release prerequisite;
-- secondary-research provenance must not be presented as official or counsel-approved provenance;
-- draft, guidance, portal and research material retains its classification;
-- all active legal catalogues remain `needs-legal-review`;
-- outputs must not be represented as legal opinions, legal certification or proof of compliance.
+## Current release candidate
 
-The 31-file Exact File Reconciliation already recorded in the Source Register remains useful supplementary audit evidence, but a runtime migration to official-file hashes is **not required for this prototype release**. Production-grade official-file assurance remains tracked as future hardening under #143. Production legal/privacy/RAG/source/security certification remains future work under #142.
+**Updated:** 1 September 2026  
+**Version line:** `v0.20.4-prototype.1`  
+**Release theme:** product hardening, Change Intelligence and authenticated complete-report delivery  
+**Release classification:** research-grade prototype / prerelease  
+**Legal-review status:** every active substantive legal catalogue remains `needs-legal-review`
 
-## Start here
-
-- [ABOUT.md](ABOUT.md) — what the prototype is, how it works, privacy/authority boundaries and a hypothetical end-to-end example.
-- [Legal RAG runtime README](growwithhr-rag/README.md) — runtime components, retrieval/provider behaviour and server configuration.
-- [Platform architecture](docs/architecture/legal-rag-platform-architecture.md) — current effective architecture and runtime composition.
-- [Source-pack pipeline](docs/architecture/legal-rag-source-pack-build-pipeline.md) — source identity, optional exact-file assurance and publication controls.
-- [Feature coverage inventory](docs/architecture/complete-feature-coverage-inventory.md) — current family/profile catalogue inventory.
-- [All-laws validation](docs/testing/all-laws-rag-validation.md) — regression and release validation procedure.
-- [Prototype release readiness](docs/releases/legal-rag-release-readiness-2026-08-11.md) — prototype release gate, validation and production-hardening boundary.
+This release hardens the customer product without changing the legal/compliance authority boundary.
 
 ## Product routes
 
 - Organization Structure & Growth: `/organization-intelligence.html`
 - HR Compliance Readiness: `/compliance-intelligence.html`
-- Stable compatibility assessment: `/analyze-company.html`
-- Customer report recovery: `/my-reports.html`
+- Company analysis / Change Intelligence overview: `/intelligence-hub.html`
+- Customer report/workspace recovery: `/my-reports.html`
 - Public fictional samples: `/sample-reports.html`
-- Sources & methodology: `/official-resources.html`
+- Organization methodology: `/organization-structure-methodology.html`
+- Sources & Methodology: `/official-resources.html`
+- Security & Data: `/security.html`
+- Stable compatibility Compliance route: `/analyze-company.html`
 - Private-beta Compliance DNA route: `/analyze-company-v3.html`
-- Private-beta feature flag: `complianceDnaV3: false`
-- Shared legal explanation route: `POST /api/legal-explanation/feature/:featureId`
-- Legal RAG status route: `GET /api/legal-rag/status`
 
-The deployed product remains the root-level HTML/CSS/JavaScript application. `apps/web/src` is an archived experimental React/TypeScript UX layer and is not the deployed build.
+The deployed product remains the root-level HTML/CSS/JavaScript application. `apps/web/src/` is an archived React/TypeScript experiment and is not the deployed build.
 
-## How a legal explanation is produced
+## Organization Structure & Growth
+
+The Organization engine is deterministic and organization-level.
+
+It can evaluate facts and patterns including:
+
+- employee and people-manager counts;
+- reporting layers;
+- founder direct reports;
+- manager role;
+- work complexity;
+- work standardization;
+- team independence;
+- coaching intensity;
+- role clarity;
+- decision rights;
+- governance cadence;
+- coordination friction;
+- location complexity; and
+- expected headcount.
+
+It does not treat one employee-to-manager ratio as a universal benchmark. Context matters.
+
+Its executive report is designed to answer:
+
+1. What is working?
+2. What is the primary constraint?
+3. What needs attention now?
+4. What are the top leadership actions?
+5. What may happen as headcount grows?
+
+Detailed findings retain facts used, missing facts, rule/version context and source transparency. The 12-month scenario is a deterministic planning scenario, not a forecast.
+
+## Change Intelligence
+
+Change Intelligence is a layer across the existing engines rather than a third standalone module.
+
+```text
+Previous confirmed baseline
+        +
+Current confirmed company facts
+        ↓
+Fact delta
+        ↓
+Re-run deterministic engine
+        ↓
+Finding/status delta
+        ↓
+Explain material changes
+```
+
+The comparison authority is structured company facts and deterministic findings—not generated report prose.
+
+If no previous confirmed baseline exists, GrowWithHR does not invent one. The first completed assessment establishes the baseline for later comparison.
+
+## HR Compliance Readiness
+
+The compliance experience is intentionally framed as **readiness**, not assurance.
+
+A legal explanation is produced through the deterministic-first path:
 
 ```text
 Assessment answers
@@ -90,77 +137,114 @@ Assessment answers
 → retrieval/citation fingerprint
 → explanation-only provider
 → strict response validation
-→ user-facing explanation and next action
+→ readiness explanation + sources + next action
 ```
 
-Retrieval happens only after the deterministic decision. Complete/reported-gap substantive outcomes remain review-oriented (`specialist-review`); missing required facts remain `more-information-needed`. A language model cannot repair missing facts or turn research evidence into legal approval.
+Customer-facing states can include concepts such as:
 
-## Main-integrated substantive coverage
+- may require review / review now;
+- more information needed;
+- specialist review recommended;
+- monitor / watch as the company changes; and
+- narrowly governed no-immediate-trigger states.
 
-Substantive prototype coverage includes:
+A no-immediate-trigger result is not proof that a company is compliant.
 
-- POSH — 7 profiles;
-- Maternity Benefit — 10 profiles;
-- EPF/EPS/EDLI — 12 profiles across Waves 3A–3C;
-- ESI — 15 profiles across Waves 4A–4D;
-- Appropriate Government — Wave 5A;
-- Maharashtra Shops and Establishments — Wave 5B;
-- Code on Wages — Wave 5C;
-- Gratuity — Wave 5D;
-- Employee's Compensation — Wave 5E;
-- OSHWC — Wave 5F;
-- Industrial Relations — Wave 5G;
-- Apprentices — Wave 5H;
-- Child and Adolescent Labour — Wave 5I;
-- Contract Workforce — Wave 5K; and
-- Generic Social Security family/chapter routing — Wave 5L.
+## Current Legal RAG runtime
 
-The tool does not turn these bounded controls into individual entitlement, payroll, medical, injury-causation, enforcement, immigration, tax, safeguarding or legal-certification decisions.
+| Control | Current state |
+|---|---:|
+| Callable profiles | 57 |
+| Substantive profiles | 55 |
+| Governance fallback profiles | 2 |
+| Active catalogues | 21 |
+| Active catalogue legal status | `needs-legal-review` |
 
-## RAG authority boundary
+The two governance fallbacks remain deliberately non-substantive:
 
-All substantive profiles use deterministic-first RAG. Retrieval/provider output must preserve:
+- **Wave 5J — Bonded and Forced Labour:** governance/research-only and safeguarding-human-first.
+- **Wave 5M — Multi-country Employment:** outside the substantive current release; no generic cross-border assessment/provider authority.
 
-```text
-usedForDecision: false
-applicabilityAuthority: none
-```
+## Prototype legal/source standard
 
-RAG is used for governed explanation and citation support, not applicability authority.
+This is a high-quality research prototype, not a production legal-certification system.
 
-## Privacy and security boundary
+For the prototype:
 
-Legal-review browser panels are explicit-submit and in-memory only. Feature clients must send only allow-listed organisation-level controls and controlled references.
+- structured secondary research with controlled provenance is an accepted source basis;
+- exact official-file verification is supplementary assurance rather than a prototype release prerequisite;
+- secondary-research provenance is not represented as official or counsel-approved provenance;
+- draft, guidance, portal and research material retains its classification;
+- all active substantive legal catalogues remain `needs-legal-review`;
+- output must not be represented as legal opinion, certification or proof of compliance.
 
-Person-level identities, payroll/contribution bodies, medical/case data, complaint/dispute narratives, notices/orders, evidence bodies and other prohibited content remain outside the provider path unless a separately approved contract explicitly allows them. Wave 5J and Wave 5M have no substantive browser/provider surface.
+The current 524 overdue temporal review entries across 51 draft/unapproved law records remain a real substantive review backlog. Normal prototype CI reports them rather than silently treating those records as current. Approved records remain strict. `COMPLIANCE_REQUIRE_CURRENT_REVIEW=true` can be used for a deliberate strict all-record currentness gate.
 
-Personalised complete report delivery is separately authenticated. Browser code uses a Supabase publishable key for customer authentication; privileged Supabase credentials remain server-side. Complete report endpoints validate the Bearer token and bind report recipients to the authenticated work email before Gmail delivery.
+Production-grade exact official-source assurance remains future hardening under #143. Broader production Legal / Privacy / RAG / Source / Security / Release approval remains future hardening under #142.
 
-## Validation and prototype release gate
+## Report design and access
 
-A prototype release may be published when:
+GrowWithHR report design uses the existing HRTechify/GrowWithHR brand rather than a separate visual identity.
 
-1. the release is explicitly labelled prototype/prerelease;
-2. `needs-legal-review` remains intact;
-3. secondary-research provenance is represented truthfully;
-4. the complete maintained engineering regression is green on the exact release SHA;
-5. the runtime remains 57 callable / 55 substantive / 2 governance fallback / 21 catalogues;
-6. Wave 5J and Wave 5M remain non-substantive;
-7. the release notes retain the no-certification and professional-review limitations.
+Current report principles include:
 
-Key smoke invariant:
+- HRTechify logo on the report cover;
+- restrained brand palette;
+- status colors used for semantic meaning;
+- executive answer before methodology;
+- safe A4 page width and margins;
+- measured/wrapping status labels so long review states do not spill outside boxes;
+- card/table overflow and page-break protection;
+- readable evidence/source blocks;
+- complete fictional public samples;
+- personalized full PDF delivered only after authenticated request.
 
-```json
-{
-  "profileCount": 57,
-  "substantiveProfiles": 55,
-  "governanceFallbackProfiles": 2,
-  "activeCatalogs": 21
-}
-```
+## Privacy and data-minimization boundary
+
+GrowWithHR is designed for organization-level information, not sensitive employee case-management data.
+
+Person-level medical/case data, payroll bodies, complaint/dispute narratives, investigation evidence, notices/orders and other unnecessary identifiable employee material remain outside normal assessment/provider/report paths unless a separately approved contract expressly permits them.
+
+Selected assessment progress can still use browser storage. The reusable Company Workspace uses the separate encrypted server-side architecture. Email-delivered PDFs can remain in Gmail Sent and recipient mailboxes independently of Company Workspace deletion.
+
+## Validation and release gate
+
+A customer-facing release may merge only after the exact candidate SHA passes the maintained engineering chain, including:
+
+1. version consistency;
+2. compliance-data validation;
+3. baseline contracts;
+4. Organization deterministic/source checks;
+5. shared site-shell / buyer-trust / UI checks;
+6. customer authentication/report-access contracts;
+7. client/server readiness;
+8. report experience and visual checks;
+9. journey/scenario regression;
+10. archived compatibility;
+11. Executive Assessment Playwright coverage;
+12. founder/report browser acceptance;
+13. All-Laws RAG validation;
+14. M4 report integration; and
+15. M7 hardening.
+
+After merge, `main` CI, GitHub Pages deployment and Live Release Smoke must also pass.
+
+Green CI is software evidence. It does not grant legal approval.
+
+## Start here
+
+- [ABOUT.md](ABOUT.md) — current customer product and governance overview.
+- [HOW_GROWWITHHR_WORKS.md](HOW_GROWWITHHR_WORKS.md) — plain-English current architecture/data flow.
+- [Architecture](docs/ARCHITECTURE.md) — current technical architecture and authority boundaries.
+- [Security](SECURITY.md) — current security/report-access posture.
+- [Roadmap](ROADMAP.md) — current product priorities and future hardening.
+- [File Overview](FILES_OVERVIEW.md) — current deployed/runtime file map.
+- [Release Notes](RELEASE_NOTES.md) and [Changelog](CHANGELOG.md) — current candidate and historical changes.
+- [Legal RAG runtime README](growwithhr-rag/README.md) — detailed governed Legal RAG runtime.
+- [All-laws validation](docs/testing/all-laws-rag-validation.md) — maintained legal-RAG regression procedure.
+
+Dated files under `docs/releases/` and the dated 20 August architecture handbook remain historical records and are not rewritten to describe later behavior.
 
 ## Prototype versus production
 
-Issue #142 remains open as the **future production-hardening/certification gate**. It does not block this clearly labelled prototype release. Issue #143 remains open as future exact official-source hardening and is also non-blocking for the prototype.
-
-GrowWithHR provides research-backed advisory information, traceability and implementation starting points. It is not professional legal, tax, payroll, immigration, privacy, security or safeguarding advice.
+GrowWithHR provides research-backed HR decision support, traceability and implementation starting points. It is not professional legal, tax, payroll, immigration, privacy, security or safeguarding advice and must not be marketed as legal certification, proof of compliance, SOC 2 certification or ISO 27001 certification unless independently obtained in future.
