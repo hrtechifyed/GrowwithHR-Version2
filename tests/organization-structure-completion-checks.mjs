@@ -174,7 +174,8 @@ assert.match(reportRuntime, /organization-structure-pdf\.mjs/);
 assert.match(reportRuntime, /\/api\/organization-report\/activity/);
 assert.match(reportRuntime, /\/api\/organization-report\/deliver/);
 assert.match(reportRuntime, /"downloaded"/);
-assert.match(reportRuntime, /reportModel\(payload\)/);
+assert.match(reportRuntime, /payload\.reportModel/);
+assert.match(reportRuntime, /buildChangeIntelligence/);
 assert.match(reportRuntime, /GrowWithHR rule/);
 
 const pdfRuntime = fs.readFileSync(new URL("../js/organization-structure-pdf.mjs", import.meta.url), "utf8");
