@@ -37,7 +37,7 @@ test.describe("Dedicated Compliance entry", () => {
     await page.goto("/intelligence-hub.html");
 
     const complianceLink = page.getByRole("link", {
-      name: /Identify My Company’s Compliance Needs/i
+      name: /Assess My HR Compliance Readiness/i
     });
 
     await expect(complianceLink).toHaveAttribute("href", "compliance-intelligence.html");
