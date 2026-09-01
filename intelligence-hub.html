@@ -4,12 +4,356 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analyze My Company | GrowWithHR</title>
-  <meta name="description" content="Choose the GrowWithHR analysis that matches your current company question or recover your saved company profile.">
+  <meta name="description" content="Choose a GrowWithHR company analysis, understand how Change Intelligence works over time, and preview the executive insight included in your emailed report.">
   <meta name="growwithhr-legacy-contract-labels" content="Compliance Intelligence; Organization Intelligence">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script src="js/site-shell.js" defer></script>
+  <style>
+    /* Page-scoped redesign only. Global GrowWithHR shell, palette and behavior remain unchanged. */
+    .intelligence-hub-page .hub-value-line {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      margin:24px auto 0;
+      max-width:860px;
+    }
+    .intelligence-hub-page .hub-value-line span {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:38px;
+      padding:8px 14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius-pill);
+      background:rgba(255,255,255,.035);
+      color:var(--text-secondary);
+      font-size:.88rem;
+      font-weight:700;
+    }
+    .intelligence-hub-page .hub-value-line i { color:var(--brand-gold); }
+
+    .intelligence-hub-page .hub-change-section,
+    .intelligence-hub-page .hub-report-preview-section {
+      position:relative;
+      padding:clamp(52px,7vw,86px) 0;
+    }
+    .intelligence-hub-page .hub-change-section {
+      background:var(--bg-secondary);
+      overflow:hidden;
+    }
+    .intelligence-hub-page .hub-change-section::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,176,0,.09), transparent 32%),
+        radial-gradient(circle at 85% 75%, rgba(37,99,235,.08), transparent 35%);
+    }
+    .intelligence-hub-page .hub-section-heading {
+      position:relative;
+      z-index:1;
+      max-width:820px;
+      margin:0 auto 30px;
+      text-align:center;
+    }
+    .intelligence-hub-page .hub-section-heading h2 {
+      margin:10px auto 12px;
+      font-size:clamp(2rem,4vw,3.25rem);
+      line-height:1.1;
+      text-wrap:balance;
+    }
+    .intelligence-hub-page .hub-section-heading p {
+      margin:0 auto;
+      max-width:720px;
+      color:var(--text-secondary);
+      line-height:1.65;
+    }
+    .intelligence-hub-page .hub-change-grid {
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+      gap:clamp(20px,4vw,36px);
+      align-items:stretch;
+    }
+    .intelligence-hub-page .hub-change-explainer,
+    .intelligence-hub-page .hub-delta-preview,
+    .intelligence-hub-page .hub-preview-card {
+      border:1px solid var(--glass-border);
+      border-radius:var(--radius-lg);
+      background:var(--gradient-card);
+      box-shadow:var(--shadow-md);
+    }
+    .intelligence-hub-page .hub-change-explainer,
+    .intelligence-hub-page .hub-delta-preview { padding:clamp(24px,4vw,38px); }
+    .intelligence-hub-page .hub-change-explainer h3 {
+      margin:10px 0 10px;
+      font-size:clamp(1.5rem,2.6vw,2.05rem);
+    }
+    .intelligence-hub-page .hub-change-explainer p {
+      color:var(--text-secondary);
+      line-height:1.65;
+    }
+    .intelligence-hub-page .hub-change-steps {
+      display:grid;
+      gap:12px;
+      margin-top:22px;
+    }
+    .intelligence-hub-page .hub-change-step {
+      display:grid;
+      grid-template-columns:42px minmax(0,1fr);
+      gap:12px;
+      align-items:start;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+    }
+    .intelligence-hub-page .hub-change-step strong { display:block; margin-bottom:3px; }
+    .intelligence-hub-page .hub-change-step span:last-child {
+      color:var(--text-secondary);
+      line-height:1.5;
+      font-size:.92rem;
+    }
+    .intelligence-hub-page .hub-change-step__number {
+      display:grid;
+      place-items:center;
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      background:rgba(255,176,0,.10);
+      border:1px solid rgba(255,176,0,.20);
+      color:var(--brand-gold);
+      font-weight:900;
+    }
+    .intelligence-hub-page .hub-delta-preview__head {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .intelligence-hub-page .hub-delta-preview__head h3 { margin:6px 0 0; }
+    .intelligence-hub-page .hub-demo-label {
+      flex:0 0 auto;
+      padding:7px 10px;
+      border-radius:var(--radius-pill);
+      background:rgba(37,99,235,.12);
+      border:1px solid rgba(79,139,255,.24);
+      color:#a9c6ff;
+      font-size:.72rem;
+      font-weight:850;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .intelligence-hub-page .hub-delta-table {
+      display:grid;
+      gap:8px;
+    }
+    .intelligence-hub-page .hub-delta-row {
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(70px,.6fr) 28px minmax(70px,.6fr);
+      gap:10px;
+      align-items:center;
+      padding:12px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,.035);
+      color:var(--text-secondary);
+    }
+    .intelligence-hub-page .hub-delta-row strong { color:var(--text-primary); }
+    .intelligence-hub-page .hub-delta-arrow { text-align:center; color:var(--brand-gold); }
+    .intelligence-hub-page .hub-change-signal-grid {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:16px;
+    }
+    .intelligence-hub-page .hub-change-signal {
+      padding:13px;
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+    }
+    .intelligence-hub-page .hub-change-signal strong { display:block; font-size:1.25rem; }
+    .intelligence-hub-page .hub-change-signal span { color:var(--text-muted); font-size:.8rem; }
+
+    .intelligence-hub-page .hub-engine-card--flagship {
+      border-color:rgba(255,176,0,.28);
+      box-shadow:var(--shadow-lg), 0 0 45px rgba(255,122,0,.10);
+    }
+    .intelligence-hub-page .hub-engine-card__topline {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:4px;
+    }
+    .intelligence-hub-page .hub-flagship-label {
+      color:#111827;
+      background:var(--brand-gold);
+      border-radius:var(--radius-pill);
+      padding:6px 10px;
+      font-size:.7rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .intelligence-hub-page .hub-delivery-note {
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      margin:18px 0 20px;
+      padding:13px 14px;
+      border-radius:13px;
+      background:rgba(255,176,0,.055);
+      border:1px solid rgba(255,176,0,.18);
+      color:var(--text-secondary);
+      line-height:1.5;
+      font-size:.9rem;
+    }
+    .intelligence-hub-page .hub-delivery-note i { color:var(--brand-gold); margin-top:3px; }
+    .intelligence-hub-page .hub-preview-anchor {
+      margin:13px 0 0 !important;
+      color:var(--text-muted) !important;
+      font-size:.88rem;
+    }
+    .intelligence-hub-page .hub-preview-anchor a { color:var(--brand-gold); font-weight:800; }
+
+    .intelligence-hub-page .hub-report-preview-section { background:var(--bg-primary); }
+    .intelligence-hub-page .hub-report-preview-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:clamp(18px,3vw,28px);
+    }
+    .intelligence-hub-page .hub-preview-card {
+      overflow:hidden;
+      position:relative;
+    }
+    .intelligence-hub-page .hub-preview-card__head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:22px 24px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.025);
+    }
+    .intelligence-hub-page .hub-preview-card__head h3 { margin:4px 0 0; }
+    .intelligence-hub-page .hub-preview-card__body { padding:24px; }
+    .intelligence-hub-page .hub-preview-position {
+      padding:16px;
+      border:1px solid rgba(255,176,0,.18);
+      border-radius:14px;
+      background:rgba(255,176,0,.055);
+    }
+    .intelligence-hub-page .hub-preview-position span {
+      display:block;
+      margin-bottom:5px;
+      color:var(--text-muted);
+      font-size:.76rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .intelligence-hub-page .hub-preview-position strong {
+      display:block;
+      font-size:clamp(1.2rem,2vw,1.55rem);
+      line-height:1.3;
+    }
+    .intelligence-hub-page .hub-preview-list {
+      display:grid;
+      gap:10px;
+      margin:18px 0 0;
+      padding:0;
+      list-style:none;
+    }
+    .intelligence-hub-page .hub-preview-list li {
+      display:grid;
+      grid-template-columns:28px minmax(0,1fr);
+      gap:10px;
+      align-items:start;
+      color:var(--text-secondary);
+      line-height:1.5;
+    }
+    .intelligence-hub-page .hub-preview-list span:first-child {
+      display:grid;
+      place-items:center;
+      width:26px;
+      height:26px;
+      border-radius:9px;
+      background:rgba(255,255,255,.055);
+      color:var(--brand-gold);
+      font-size:.75rem;
+      font-weight:900;
+    }
+    .intelligence-hub-page .hub-preview-lock {
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      margin-top:22px;
+      padding:16px;
+      border-radius:14px;
+      border:1px dashed rgba(255,255,255,.16);
+      background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+      color:var(--text-secondary);
+      line-height:1.55;
+    }
+    .intelligence-hub-page .hub-preview-lock i { color:var(--brand-gold); margin-top:3px; }
+    .intelligence-hub-page .hub-preview-lock strong { color:var(--text-primary); }
+    .intelligence-hub-page .hub-report-delivery-banner {
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr);
+      gap:16px;
+      align-items:center;
+      max-width:900px;
+      margin:28px auto 0;
+      padding:18px 20px;
+      border:1px solid rgba(255,176,0,.22);
+      border-radius:16px;
+      background:rgba(255,176,0,.055);
+    }
+    .intelligence-hub-page .hub-report-delivery-banner__icon {
+      display:grid;
+      place-items:center;
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:rgba(255,176,0,.10);
+      color:var(--brand-gold);
+      font-size:1.1rem;
+    }
+    .intelligence-hub-page .hub-report-delivery-banner p { margin:3px 0 0; color:var(--text-secondary); line-height:1.55; }
+
+    .intelligence-hub-page .hub-returning-change-note {
+      margin-top:14px;
+      padding:12px 14px;
+      border-left:3px solid var(--brand-gold);
+      border-radius:0 12px 12px 0;
+      background:rgba(255,176,0,.05);
+      color:var(--text-secondary);
+      font-size:.9rem;
+      line-height:1.55;
+    }
+
+    @media (max-width:860px) {
+      .intelligence-hub-page .hub-change-grid,
+      .intelligence-hub-page .hub-report-preview-grid { grid-template-columns:1fr; }
+      .intelligence-hub-page .hub-change-signal-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width:560px) {
+      .intelligence-hub-page .hub-delta-row {
+        grid-template-columns:1fr auto 24px auto;
+        gap:6px;
+        font-size:.84rem;
+      }
+      .intelligence-hub-page .hub-preview-card__head { align-items:flex-start; flex-direction:column; }
+      .intelligence-hub-page .hub-report-delivery-banner { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body class="intelligence-hub-page" data-active-nav="analyze">
   <main>
@@ -18,58 +362,200 @@
       <div class="container hero-layout">
         <div class="hero-content intelligence-hub-hero__content">
           <div class="hero-badge">GrowWithHR · Analyze My Company</div>
-          <h1 id="hubTitle">Start with the <span>company question</span> you need answered.</h1>
-          <p class="hub-trust-signal">Built from real HR compliance frameworks — sample reports available before you commit.</p>
-          <p class="hero-description">The two analyses below solve different problems. Both use organization-level facts, keep uncertainty visible and show the basis behind the result.</p>
+          <h1 id="hubTitle">Understand your company <span>today — and what changes as you grow.</span></h1>
+          <p class="hub-trust-signal">Two focused company diagnostics. One evolving company view.</p>
+          <p class="hero-description">Start with Organization Structure &amp; Growth or HR Compliance Readiness. Your first assessment establishes a confirmed company baseline; when you return, GrowWithHR can show what materially changed instead of simply repeating the same report.</p>
+          <div class="hub-value-line" aria-label="GrowWithHR analysis value">
+            <span><i class="fa-solid fa-sitemap" aria-hidden="true"></i> Organization &amp; growth</span>
+            <span><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i> HR compliance readiness</span>
+            <span><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Change Intelligence over time</span>
+            <span><i class="fa-regular fa-envelope" aria-hidden="true"></i> Full report delivered by email</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hub-change-section" aria-labelledby="changeIntelligenceTitle">
+      <div class="container">
+        <div class="hub-section-heading">
+          <div class="section-tag">CHANGE INTELLIGENCE</div>
+          <h2 id="changeIntelligenceTitle">Your company changes. Your next assessment should show you what changed with it.</h2>
+          <p>Change Intelligence becomes useful once GrowWithHR has a previous confirmed assessment to compare with. It compares company facts and deterministic findings over time — not generated report wording.</p>
+        </div>
+
+        <div class="hub-change-grid">
+          <article class="hub-change-explainer">
+            <div class="hub-engine-tag">How it works</div>
+            <h3>From one-time diagnosis to an evolving company view.</h3>
+            <p>A new user does not need previous data. The first assessment creates the baseline. On a later assessment, GrowWithHR can surface the changes that matter and explain why the recommendation changed.</p>
+            <div class="hub-change-steps">
+              <div class="hub-change-step">
+                <span class="hub-change-step__number">1</span>
+                <span><strong>First assessment</strong>Confirm the company facts and receive the current-state analysis.</span>
+              </div>
+              <div class="hub-change-step">
+                <span class="hub-change-step__number">2</span>
+                <span><strong>Return when the company changes</strong>Update headcount, managers, locations, operating model or other relevant facts.</span>
+              </div>
+              <div class="hub-change-step">
+                <span class="hub-change-step__number">3</span>
+                <span><strong>See what materially changed</strong>Understand new pressures, improvements, new review triggers and priorities that moved.</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="hub-delta-preview" aria-label="Illustrative Change Intelligence preview">
+            <div class="hub-delta-preview__head">
+              <div>
+                <div class="hub-engine-tag">Illustrative comparison</div>
+                <h3>What a returning company could see</h3>
+              </div>
+              <span class="hub-demo-label">Example only</span>
+            </div>
+            <div class="hub-delta-table">
+              <div class="hub-delta-row"><strong>Employees</strong><span>82</span><span class="hub-delta-arrow">→</span><span>108</span></div>
+              <div class="hub-delta-row"><strong>People managers</strong><span>11</span><span class="hub-delta-arrow">→</span><span>12</span></div>
+              <div class="hub-delta-row"><strong>Founder direct reports</strong><span>7</span><span class="hub-delta-arrow">→</span><span>10</span></div>
+              <div class="hub-delta-row"><strong>Operating locations</strong><span>1</span><span class="hub-delta-arrow">→</span><span>2</span></div>
+            </div>
+            <div class="hub-change-signal-grid" aria-label="Illustrative change signals">
+              <div class="hub-change-signal"><strong>2</strong><span>pressures increased</span></div>
+              <div class="hub-change-signal"><strong>1</strong><span>area improved</span></div>
+              <div class="hub-change-signal"><strong>1</strong><span>new review trigger</span></div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="hub-engine-section" aria-label="Company analysis options">
       <div class="container">
+        <div class="hub-section-heading">
+          <div class="section-tag">CHOOSE YOUR COMPANY QUESTION</div>
+          <h2>Start with the decision you need to make now.</h2>
+          <p>Both analyses use organization-level facts, keep uncertainty visible and show the basis behind the result. The full advisory report is delivered to the work email used in the assessment.</p>
+        </div>
+
         <div class="hub-engine-grid" aria-label="Available GrowWithHR analyses">
+          <article class="hub-engine-card hub-engine-card--flagship">
+            <div class="hub-engine-card__topline">
+              <div class="hub-engine-tag">Available</div>
+              <span class="hub-flagship-label">Flagship</span>
+            </div>
+            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
+            <h3>Organization Structure &amp; Growth</h3>
+            <p>Understand whether management capacity, reporting lines, founder dependency, decision ownership and operating cadence can support the next stage of growth.</p>
+            <div class="hub-card-meta">
+              <span><strong>Best when:</strong> the founder is overloaded, managers are stretched, decisions are slow or headcount is growing.</span>
+              <span><strong>You’ll need:</strong> team size, manager count, reporting structure, decision ownership and how teams work together.</span>
+              <div class="hub-card-deliverables">
+                <strong>You receive:</strong>
+                <ul>
+                  <li>Executive position and primary structural constraint</li>
+                  <li>Detailed findings, sources and actions</li>
+                  <li>12-month growth scenario</li>
+                  <li>Change Intelligence when a previous confirmed assessment exists</li>
+                </ul>
+              </div>
+            </div>
+            <div class="hub-delivery-note"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>The website shows a concise executive glimpse after analysis. The complete PDF advisory is delivered to your work email.</span></div>
+            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Analyze My Organization Structure &amp; Growth <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p class="hub-preview-anchor"><a href="#reportGlimpse">See the report glimpse below ↓</a></p>
+          </article>
+
           <article class="hub-engine-card">
+            <div class="hub-engine-card__topline">
+              <div class="hub-engine-tag">Available</div>
+            </div>
             <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></div>
-            <div class="hub-engine-tag">Available</div>
-            <h3>Compliance Needs</h3>
-            <p>Identify what compliance areas may require review, what information is missing and what to do next without presenting the result as legal certification.</p>
+            <h3>HR Compliance Readiness</h3>
+            <p>Identify which HR compliance areas may require review, what information is missing and what should be verified next without presenting the result as legal certification.</p>
             <div class="hub-card-meta">
               <span><strong>Best when:</strong> hiring, changing workforce mix, expanding locations or reviewing HR obligations.</span>
               <span><strong>You’ll need:</strong> company, workforce, location and information about how your company operates.</span>
               <div class="hub-card-deliverables">
                 <strong>You receive:</strong>
                 <ul>
-                  <li>Which requirements may apply</li>
-                  <li>Findings with supporting sources</li>
-                  <li>Recommended next steps</li>
+                  <li>Areas that may require review</li>
+                  <li>Missing information and specialist-review signals</li>
+                  <li>Supporting sources and recommended next actions</li>
+                  <li>Change Intelligence when a previous confirmed assessment exists</li>
                 </ul>
               </div>
             </div>
-            <a class="hub-engine-card__action" href="compliance-intelligence.html">Identify My Company’s Compliance Needs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-            <p class="hub-sample-action"><a class="hub-sample-link" href="sample-advisory-report.html">View sample Compliance report ↗</a></p>
-          </article>
-
-          <article class="hub-engine-card">
-            <div class="hub-engine-card__icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></div>
-            <div class="hub-engine-tag">Available</div>
-            <h3>Organization Structure &amp; Growth Engine</h3>
-            <p>Understand whether manager workload and capacity, reporting lines, over-reliance on the founder and decision-making setup can support the next stage of growth.</p>
-            <div class="hub-card-meta">
-              <span><strong>Best when:</strong> the founder is overloaded, managers are stretched, decisions are slow or headcount is growing.</span>
-              <span><strong>You’ll need:</strong> team size, manager count, reporting structure, how decisions are made and how teams work together.</span>
-              <span><strong>You receive:</strong> summary for leaders, detailed findings with supporting sources and a 12-month growth outlook.</span>
-            </div>
-            <a id="organizationStructureLink" class="hub-engine-card__action" href="organization-intelligence.html" target="_blank" rel="noopener" data-workspace-handoff="organization-structure">Analyze My Organization Structure &amp; Growth <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-            <p class="hub-sample-action"><a class="hub-sample-link" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample Organization Structure report ↗</a></p>
+            <div class="hub-delivery-note"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>The website shows a concise executive glimpse after analysis. The complete PDF advisory is delivered to your work email.</span></div>
+            <a class="hub-engine-card__action" href="compliance-intelligence.html">Assess My HR Compliance Readiness <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p class="hub-preview-anchor"><a href="#reportGlimpse">See the report glimpse below ↓</a></p>
           </article>
         </div>
 
         <details class="hub-start-note">
           <summary>Before you start <span class="hub-start-note__chevron" aria-hidden="true">⌄</span></summary>
           <div class="hub-start-note__content">
-            <p>Plan on roughly 10–15 minutes with current company facts. Do not enter sensitive employee case data. You can review a sample report first, and completed analyses can create a saved company profile for future use. <a class="org-link" href="security.html">Security & Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
+            <p>Plan on roughly 10–15 minutes with current company facts. Do not enter sensitive employee case data. A work email is required for delivery of the complete PDF advisory. The website intentionally shows only an executive glimpse of the report. Completed analyses can create a saved company profile for future comparison. <a class="org-link" href="security.html">Security &amp; Data</a> · <a class="org-link" href="terms.html">Product Use Terms</a></p>
           </div>
         </details>
+      </div>
+    </section>
+
+    <section id="reportGlimpse" class="hub-report-preview-section" aria-labelledby="reportGlimpseTitle">
+      <div class="container">
+        <div class="hub-section-heading">
+          <div class="section-tag">REPORT GLIMPSE</div>
+          <h2 id="reportGlimpseTitle">Enough to understand the insight. Not the full report.</h2>
+          <p>The on-site result is intentionally concise. It confirms the executive position, the main issue and the first actions. Detailed findings, source-by-source evidence, methodology, scenarios and the complete action plan remain in the emailed PDF.</p>
+        </div>
+
+        <div class="hub-report-preview-grid">
+          <article class="hub-preview-card">
+            <div class="hub-preview-card__head">
+              <div>
+                <div class="hub-engine-tag">Organization Structure &amp; Growth</div>
+                <h3>Illustrative executive glimpse</h3>
+              </div>
+              <span class="hub-demo-label">Fictional example</span>
+            </div>
+            <div class="hub-preview-card__body">
+              <div class="hub-preview-position">
+                <span>Overall position</span>
+                <strong>Growth pressure is emerging in decision ownership and founder dependency.</strong>
+              </div>
+              <ul class="hub-preview-list">
+                <li><span>1</span><span><strong>Primary constraint:</strong> too many recurring decisions still depend on the founder.</span></li>
+                <li><span>2</span><span><strong>What to do first:</strong> define decision rights for recurring approvals before the next hiring wave.</span></li>
+                <li><span>3</span><span><strong>Change signal:</strong> founder direct reports increased since the previous assessment.</span></li>
+              </ul>
+              <div class="hub-preview-lock"><i class="fa-solid fa-lock" aria-hidden="true"></i><span><strong>In the full emailed PDF:</strong> detailed structural findings, facts used, missing information, source links, rule basis, 12-month scenario and complete priority roadmap.</span></div>
+            </div>
+          </article>
+
+          <article class="hub-preview-card">
+            <div class="hub-preview-card__head">
+              <div>
+                <div class="hub-engine-tag">HR Compliance Readiness</div>
+                <h3>Illustrative executive glimpse</h3>
+              </div>
+              <span class="hub-demo-label">Fictional example</span>
+            </div>
+            <div class="hub-preview-card__body">
+              <div class="hub-preview-position">
+                <span>Readiness position</span>
+                <strong>Several areas should be reviewed before the next workforce expansion.</strong>
+              </div>
+              <ul class="hub-preview-list">
+                <li><span>1</span><span><strong>Review now:</strong> one or more workforce facts triggered an HR compliance review area.</span></li>
+                <li><span>2</span><span><strong>Information gap:</strong> at least one result cannot be concluded from the information supplied.</span></li>
+                <li><span>3</span><span><strong>Next step:</strong> verify the identified area against current source material and specialist advice where appropriate.</span></li>
+              </ul>
+              <div class="hub-preview-lock"><i class="fa-solid fa-lock" aria-hidden="true"></i><span><strong>In the full emailed PDF:</strong> detailed readiness findings, source references, missing facts, limitations, specialist-review signals and complete recommended actions. The report is not legal certification.</span></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="hub-report-delivery-banner">
+          <div class="hub-report-delivery-banner__icon"><i class="fa-regular fa-envelope" aria-hidden="true"></i></div>
+          <div><strong>Complete report delivery</strong><p>The full customer report is designed as a downloadable PDF delivered to the work email used in the assessment. The website is the analysis and executive-preview surface, not the repository for the complete advisory document.</p></div>
+        </div>
       </div>
     </section>
 
@@ -77,26 +563,27 @@
       <div class="container">
         <div class="hub-workspace-card">
           <div class="hub-workspace-copy">
-            <div class="hub-eyebrow"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Returning?</div>
-            <h2 id="returningTitle">Reuse your saved company profile</h2>
-            <p>Recover a previous saved report here, or open <a class="org-link" href="my-reports.html">My Reports</a> to see linked Report IDs and completed analyses.</p>
+            <div class="hub-eyebrow"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Returning company</div>
+            <h2 id="returningTitle">Return to your company baseline and see what changed.</h2>
+            <p>Recover your saved company profile to reuse confirmed facts, update what has changed and enable comparison with an earlier assessment where a valid baseline exists.</p>
+            <div class="hub-returning-change-note"><strong>Change Intelligence starts here:</strong> your first assessment creates the baseline. A later confirmed assessment can compare facts and resulting findings so GrowWithHR can explain what improved, worsened or newly requires attention.</div>
           </div>
 
           <div>
             <form id="workspaceRecoverForm" class="hub-recover-form">
               <label>Report ID<input id="workspaceReportId" autocomplete="off" placeholder="GWHR-2026-0813-AA01" required></label>
               <label>Recovery Code<input id="workspaceRecoveryCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX" required></label>
-              <button type="submit">Open Saved Company Profile</button>
+              <button type="submit">Recover Company Baseline</button>
             </form>
             <div id="workspaceRecoverStatus" class="hub-workspace-status" aria-live="polite"></div>
             <div id="workspaceActions" class="hub-workspace-actions" hidden>
-              <a class="trust-link" href="my-reports.html">Open My Reports</a>
+              <a class="trust-link" href="my-reports.html">View My Report IDs</a>
               <button id="workspaceStartFresh" class="fresh" type="button">Start fresh</button>
               <button id="workspaceDeleteData" class="delete" type="button">Delete my saved company information now</button>
             </div>
           </div>
         </div>
-        <p class="hub-privacy-note">Your data stays secure when reopening a saved report — <a href="security.html">full details</a>. Saved reports are kept for 6 months — <a href="security.html#retention">Data policy</a>.</p>
+        <p class="hub-privacy-note">Your data stays secure when reopening a saved company profile — <a href="security.html">full details</a>. Saved company information is kept for 6 months — <a href="security.html#retention">Data policy</a>.</p>
       </div>
     </section>
   </main>
@@ -118,15 +605,15 @@
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        status.textContent = 'Recovering saved report…';
+        status.textContent = 'Recovering saved company profile…';
         try {
           const reportId = document.getElementById('workspaceReportId').value.trim();
           const accessKey = document.getElementById('workspaceRecoveryCode').value.trim();
           const result = await window.GrowWithHRCompanyWorkspace.recover(reportId, accessKey);
           sessionStorage.setItem(SESSION_KEY, JSON.stringify({reportId:result.workspace.reportId,reportIds:result.workspace.reportIds,accessKey,email:result.workspace.email,companyName:result.workspace.companyName,completedEngines:result.workspace.completedEngines,createdAt:result.workspace.createdAt,updatedAt:result.workspace.updatedAt,lastAnalysisCompletedAt:result.workspace.lastAnalysisCompletedAt,expiresAt:result.workspace.expiresAt,companyData:result.workspace.companyData}));
-          status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Saved data is available until ${new Date(result.workspace.expiresAt).toLocaleDateString()}.`;
+          status.textContent = `Recovered ${result.workspace.companyName || 'your company'}. Previous confirmed information can now be reused and updated for comparison.`;
           refreshActions();
-        } catch (error) { status.textContent = error.message || 'We could not recover that saved report.'; }
+        } catch (error) { status.textContent = error.message || 'We could not recover that saved company profile.'; }
       });
 
       organizationLink.addEventListener('click', async (event) => {
@@ -145,12 +632,12 @@
           const target = `organization-intelligence.html?handoff=${encodeURIComponent(token)}`;
           if (newTab) newTab.location.replace(target);
           else window.open(target, '_blank', 'noopener');
-          status.textContent = 'Organization Structure & Growth Engine opened with your saved company profile. Your Recovery Code was not placed in the URL.';
+          status.textContent = 'Organization Structure & Growth opened with your saved company profile. Your Recovery Code was not placed in the URL.';
         } catch (error) {
           const target = 'organization-intelligence.html';
           if (newTab) newTab.location.replace(target);
           else window.open(target, '_blank', 'noopener');
-          status.textContent = 'Secure reuse was unavailable, so the Organization Structure & Growth Engine opened without your saved company profile. You can continue by entering the current company facts.';
+          status.textContent = 'Secure reuse was unavailable, so Organization Structure & Growth opened without your saved company profile. You can continue by entering the current company facts.';
         }
       });
 
