@@ -4,6 +4,8 @@
     const GITHUB_PAGES_ORIGIN = "https://hrtechifyed.github.io";
     const GITHUB_PAGES_PROJECT_PATH = "/GrowwithHR-Version2/";
     const RENDER_BASE = "https://growwithhr.onrender.com";
+    const SESSION_KEY = "growwithhr.workspace";
+    const PREVIOUS_SNAPSHOT_KEY = "growwithhr.workspace.previous";
 
     function cleanText(value, fallback = "") {
         return String(value ?? "").trim() || fallback;
@@ -39,15 +41,43 @@
         return body;
     }
 
+    function readCurrentSession() {
+        try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null"); }
+        catch (_error) { return null; }
+    }
+
+    function preservePreviousSnapshot() {
+        try {
+            const current = readCurrentSession();
+            if (!current?.companyData) return;
+            sessionStorage.setItem(PREVIOUS_SNAPSHOT_KEY, JSON.stringify({
+                reportId: current.reportId || "",
+                companyName: current.companyName || "",
+                capturedAt: new Date().toISOString(),
+                companyData: current.companyData
+            }));
+        } catch (_error) {}
+    }
+
+    async function create(payload) {
+        try { sessionStorage.removeItem(PREVIOUS_SNAPSHOT_KEY); } catch (_error) {}
+        return post("/api/company-workspace/create", payload);
+    }
+
+    async function complete(payload) {
+        preservePreviousSnapshot();
+        return post("/api/company-workspace/complete", payload);
+    }
+
     const api = Object.freeze({
-        create: (payload) => post("/api/company-workspace/create", payload),
+        create,
         recover: (reportId, accessKey) => post("/api/company-workspace/recover", { reportId, accessKey }),
-        complete: (payload) => post("/api/company-workspace/complete", payload),
+        complete,
         erase: (reportId, accessKey) => post("/api/company-workspace/delete", { reportId, accessKey }),
         createHandoff: (reportId, accessKey, target = "organization-structure") =>
             post("/api/company-workspace/handoff/create", { reportId, accessKey, target }),
-        redeemHandoff: (token) =>
-            post("/api/company-workspace/handoff/redeem", { token })
+        redeemHandoff: (token) => post("/api/company-workspace/handoff/redeem", { token }),
+        previousSnapshotKey: PREVIOUS_SNAPSHOT_KEY
     });
 
     window.GrowWithHRCompanyWorkspace = api;

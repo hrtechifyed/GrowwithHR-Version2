@@ -12,6 +12,7 @@ const { handleOperationalExplanationRequest } = require("./server-operational-ex
 const { handleReportIdRequest } = require("./server-report-id-registry");
 const { handleSingleReportDeliveryRequest } = require("./server-single-report-delivery");
 const { handleOrganizationReportRequest } = require("./server-organization-report-delivery");
+const { handleCustomerReportGate } = require("./server-customer-report-gate");
 const { handleWorkspaceHandoffRequest } = require("./server-workspace-handoff");
 const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
 
@@ -86,7 +87,7 @@ function installApiCors() {
 
                     response.setHeader("Access-Control-Allow-Origin", origin);
                     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-                    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+                    response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
                     response.setHeader("Access-Control-Max-Age", "600");
 
                     if (request.method === "OPTIONS") {
@@ -103,6 +104,10 @@ function installApiCors() {
                 if (handleReportIdRequest(request, response)) return;
                 if (handleWorkspaceHandoffRequest(request, response)) return;
                 if (handleCompanyWorkspaceRequest(request, response)) return;
+                if (handleCustomerReportGate(request, response, {
+                    compliance: handleSingleReportDeliveryRequest,
+                    organization: handleOrganizationReportRequest
+                })) return;
                 if (handleOrganizationReportRequest(request, response)) return;
                 if (handleSingleReportDeliveryRequest(request, response)) return;
                 listener(request, response);
