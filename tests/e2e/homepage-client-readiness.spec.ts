@@ -13,7 +13,7 @@ test.describe("homepage client readiness", () => {
     const cards = page.locator("#capabilities .buyer-card");
     await expect(cards).toHaveCount(2);
     await expect(page.getByRole("link", { name: /Identify My Company’s Compliance Needs/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Understand My Organization Structure/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Analyze My Organization Structure & Growth/i })).toBeVisible();
     expect(problems).toEqual([]);
   });
 
@@ -37,7 +37,7 @@ test.describe("homepage client readiness", () => {
 
 test("homepage explains the source and GrowWithHR rule boundary", async ({ page }) => {
   await page.goto("/index.html", { waitUntil: "networkidle" });
-  await expect(page.locator("#compliance-engine-title")).toHaveText("The recommendation and its source are kept separate.");
+  await expect(page.locator("#compliance-engine-title")).toHaveText("Every recommendation shows what it is based on.");
   await expect(page.locator("[data-testid=\"compliance-engine-flow\"] .engine-step")).toHaveCount(4);
   await expect(page.getByText("The GrowWithHR rule explains how those facts produced the result.", { exact: false })).toBeVisible();
   await expect(page.getByText("The relevant public source explains the underlying principle or authority.", { exact: false })).toBeVisible();

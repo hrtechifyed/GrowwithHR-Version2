@@ -44,7 +44,7 @@ test.describe("Company Insights entry", () => {
     })).toHaveAttribute("href", "compliance-intelligence.html");
 
     const organizationLink = page.getByRole("link", {
-      name: /Understand My Organization Structure/i
+      name: /Analyze My Organization Structure & Growth/i
     });
     await expect(organizationLink).toHaveAttribute("href", "organization-intelligence.html");
     await expect(organizationLink).toHaveAttribute("target", "_blank");
@@ -93,9 +93,9 @@ test.describe("Analyze My Company", () => {
     await page.goto("/analyze-company.html");
     await page.getByRole("button", { name: /Continue my advisory/ }).click();
 
-    const founderLed = page.locator('input[name="peopleFunction"][value="Founder Led"]');
+    const founderLed = page.getByRole("radio", { name: /Founder-led/i });
     await expect(founderLed).toBeVisible();
-    await founderLed.check({ force: true });
+    await founderLed.check();
     await expect(founderLed).toBeChecked();
     await expect(page.locator('input[name="priorities"]')).toHaveCount(0);
     await page.locator("#nextButton").click();
@@ -142,8 +142,8 @@ test.describe("Shared report navigation", () => {
     await expect(page.locator("[data-site-shell-header]")).toHaveCount(1);
     await expect(page.locator("nav.navbar")).toHaveCount(0);
     await expect(page.locator(".site-nav-link")).toHaveCount(4);
-    await expect(page.getByRole("link", { name: "Company Insights", exact: true })).toHaveCount(1);
-    await expect(page.getByRole("link", { name: "Evidence & Sources", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "Analyze My Company", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "Sources", exact: true })).toHaveCount(1);
     await expect(page.getByRole("link", { name: "Sample Reports", exact: true })).toHaveCount(1);
   });
 });

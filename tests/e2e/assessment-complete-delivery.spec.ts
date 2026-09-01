@@ -116,9 +116,9 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.locator('input[name="expansionPlans"][value="scale-operations"]').click({ force: true });
     await page.locator("#nextButton").click();
 
-    const founderLed = page.locator('input[name="peopleFunction"][value="Founder Led"]');
+    const founderLed = page.getByRole("radio", { name: /Founder-led/i });
     await expect(founderLed).toBeVisible();
-    await founderLed.check({ force: true });
+    await founderLed.check();
     await expect(founderLed).toBeChecked();
     await expect(page.locator('input[name="priorities"]')).toHaveCount(0);
     await page.locator("#nextButton").click();
