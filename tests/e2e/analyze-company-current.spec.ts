@@ -27,8 +27,8 @@ async function seedSavedBriefing(page: Page, currentMoment = 2): Promise<void> {
   }, { key: STORAGE_KEY, moment: currentMoment });
 }
 
-test.describe("Company Insights entry", () => {
-  test("routes the homepage through Company Insights before an analysis", async ({ page }) => {
+test.describe("Company analysis entry", () => {
+  test("routes the homepage through the company analysis hub before an assessment", async ({ page }) => {
     await page.goto("/index.html");
 
     const primaryCta = page.locator(".hero-actions a.primary-btn");
@@ -39,7 +39,7 @@ test.describe("Company Insights entry", () => {
     await expect(page).toHaveURL(/intelligence-hub\.html$/);
     await expect(page.locator("#hubTitle")).toContainText("Understand your company");
     await expect(page.getByText("CHANGE INTELLIGENCE", { exact: true })).toBeVisible();
-    await expect(page.getByText(/first assessment establishes a confirmed company baseline/i)).toBeVisible();
+    await expect(page.getByText(/first assessment creates the baseline/i)).toBeVisible();
     await expect(page.getByText(/Full report delivered by email/i)).toBeVisible();
 
     await expect(page.getByRole("link", {
@@ -143,14 +143,15 @@ test.describe("Analyze My Company", () => {
 });
 
 test.describe("Shared report navigation", () => {
-  test("renders one shared navbar without duplicate links", async ({ page }) => {
+  test("renders one shared navbar without duplicate product links", async ({ page }) => {
     await page.goto("/executive-advisory-report.html");
 
     await expect(page.locator("[data-site-shell-header]")).toHaveCount(1);
     await expect(page.locator("nav.navbar")).toHaveCount(0);
     await expect(page.locator(".site-nav-link")).toHaveCount(4);
-    await expect(page.getByRole("link", { name: "Company Insights", exact: true })).toHaveCount(1);
-    await expect(page.getByRole("link", { name: "Evidence & Sources", exact: true })).toHaveCount(1);
-    await expect(page.getByRole("link", { name: "Sample Reports", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "Organization & Growth", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "HR Compliance Readiness", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "My Reports", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "Sources & Methodology", exact: true })).toHaveCount(1);
   });
 });
