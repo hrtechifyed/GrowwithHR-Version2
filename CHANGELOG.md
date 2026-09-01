@@ -4,9 +4,60 @@ All notable changes to GrowWithHR are documented here.
 
 ---
 
-## [Unreleased]
+## [Unreleased] — Product Hardening, Change Intelligence and Authenticated Report Delivery
 
-No unreleased product changes are currently recorded.
+### Customer product
+
+- Made **Organization Structure & Growth** the flagship customer capability.
+- Repositioned customer-facing Compliance as **HR Compliance Readiness** rather than compliance assurance/certification.
+- Simplified primary navigation to **Organization & Growth · HR Compliance Readiness · My Reports · Sources & Methodology**.
+- Kept Sample Reports, Security & Data, Terms, About, Privacy and Contact as secondary navigation.
+- Kept the current product deliberately focused on two engines rather than adding new Talent, Learning, Rewards, Performance, Leadership or generic AI-coach modules.
+
+### Change Intelligence
+
+- Added repeat-assessment Change Intelligence using structured company facts and deterministic findings.
+- Added comparison of changed facts, increased/improved pressures, new priorities and information-gap changes.
+- Kept the comparison authority on structured facts/deterministic engine results rather than generated report prose.
+- Preserved explicit no-baseline behavior when a previous confirmed assessment does not exist.
+
+### Reports and customer access
+
+- Kept complete **fictional sample reports** publicly viewable as examples of report format and depth.
+- Changed personalized web results to an executive **glimpse** rather than exposing the complete personalized report.
+- Added Supabase customer sign-in/sign-up for complete personalized report delivery.
+- Added server-side Bearer-token validation and required the report recipient to match the authenticated assessment work email.
+- Kept Company Workspace Report ID + Recovery Code recovery separate from customer authentication.
+- Restricted the complete personalized web renderer to localhost-only internal regression/developer use rather than a production query-parameter bypass.
+
+### Report design and formatting
+
+- Replaced the Organization PDF cover's abstract mark with the HRTechify logo.
+- Added reusable report-format safety helpers for measured/wrapping status labels and layout protection.
+- Hardened long review / needs-information / status components against overflow.
+- Refined report color usage so HRTechify/GrowWithHR brand colors carry identity while status colors retain semantic meaning.
+- Strengthened executive-first report hierarchy, safe A4 width usage, margins, card/table alignment and page-break behavior.
+
+### Organization Structure & Growth
+
+- Strengthened executive interpretation around positive foundations, primary constraint, top actions and 12-month implication.
+- Preserved contextual management-capacity logic rather than introducing a universal span-of-control benchmark.
+- Preserved organization-level boundaries: no individual employee/manager performance scoring, compensation decision or dismissal recommendation.
+
+### HR Compliance Readiness
+
+- Preserved deterministic legal decision authority and explanation-only RAG/provider behavior.
+- Preserved review-oriented / missing-information / specialist-review framing.
+- Preserved `needs-legal-review` across all active substantive catalogues.
+- Preserved the 524 overdue temporal review entries across draft/unapproved law records as a substantive review backlog rather than administratively moving review dates.
+- Preserved production hardening under #142 and exact official-source assurance under #143.
+
+### Documentation and validation
+
+- Updated current product, architecture, security, roadmap, report-access and file-overview documentation for the September 2026 customer model.
+- Kept dated files under `docs/releases/` as historical evidence rather than rewriting prior release history.
+- Updated static/browser regression contracts only where the agreed customer product contract superseded older labels/routes.
+- Release remains gated on the exact candidate SHA passing repository-wide CI, Executive Assessment Playwright coverage, founder/report browser acceptance, All-Laws RAG, M4 report integration and M7 hardening before merge, followed by `main` CI, Pages deployment and Live Release Smoke.
 
 ---
 
@@ -271,22 +322,22 @@ No unreleased product changes are currently recorded.
 - Added a backend health-check endpoint for delivery configuration.
 - Added error handling for advisory-delivery requests.
 
-### Current data-handling position
+### Current data-handling position at that release
 
-- Assessment interaction primarily takes place in the browser.
-- Limited progress may be stored in browser `localStorage`.
-- The advisory model and PDF are prepared in the browser.
-- Report-delivery information is sent to the backend when the user requests email delivery.
-- The backend validates the request and sends the advisory through the Gmail API.
-- Sent emails and PDF attachments may remain in the connected Gmail account.
-- GrowWithHR does not currently intentionally save completed assessments in a dedicated application database.
+- Assessment interaction primarily took place in the browser.
+- Limited progress could be stored in browser `localStorage`.
+- The advisory model and PDF were prepared in the browser.
+- Report-delivery information was sent to the backend when the user requested email delivery.
+- The backend validated the request and sent the advisory through the Gmail API.
+- Sent emails and PDF attachments could remain in the connected Gmail account.
+- GrowWithHR did not at that release intentionally save completed assessments in a dedicated application database.
 
-### Known limitations
+### Known limitations at that release
 
-- GrowWithHR remains a beta-stage, rules-based advisory product.
-- Browser progress is available only in the same browser.
-- Browser data may be cleared or replaced.
-- GrowWithHR does not currently provide user accounts or cloud-saved assessments.
-- GrowWithHR does not currently provide cross-device resume.
-- Evidence placeholders in M5 are not uploaded evidence and do not prove compliance.
-- Sent-email retention depends on the connected Gmail account.
+- GrowWithHR remained a beta-stage, rules-based advisory product.
+- Browser progress was available only in the same browser.
+- Browser data could be cleared or replaced.
+- GrowWithHR did not at that release provide user accounts or cloud-saved assessments.
+- GrowWithHR did not at that release provide cross-device resume.
+- Evidence placeholders in M5 were not uploaded evidence and did not prove compliance.
+- Sent-email retention depended on the connected Gmail account.
