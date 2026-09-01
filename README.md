@@ -4,6 +4,18 @@ GrowWithHR is a deterministic, traceable HR compliance advisory prototype. It re
 
 > **Authority boundary:** deterministic rules decide the product result within the prototype contract. RAG retrieves only the source scope selected by that decision. The provider explains only and cannot create facts, choose applicable law, change status/reason/source scope or certify compliance.
 
+## Current customer product — 1 September 2026
+
+The public GrowWithHR experience is deliberately concentrated on two decision products and one recurring layer rather than a long list of future HR modules:
+
+1. **Organization Structure & Growth — flagship.** Reviews structural capacity, manager context, reporting architecture, founder dependence, decision ownership, coordination and a deterministic 12-month growth scenario. It evaluates the organisation, not individual employee capability or performance.
+2. **HR Compliance Readiness — supporting capability.** Identifies HR compliance areas that may require review, missing information, governed sources and next actions. It is a readiness and preparation tool, not compliance assurance, legal certification or proof of compliance.
+3. **Change Intelligence — recurring layer.** Where a prior confirmed company baseline is available, GrowWithHR compares structured company facts and deterministic findings to show what changed, what pressure increased or improved, and what may need renewed attention.
+
+Customer-facing navigation is intentionally simple: **Organization & Growth · HR Compliance Readiness · My Reports · Sources & Methodology**. Complete fictional sample reports remain public so a buyer can inspect the report format. Personalised results show only an executive glimpse in the website; complete personalised PDFs are delivered by email after Supabase customer authentication. The server validates the customer access token and requires every requested recipient to match the authenticated work email.
+
+The existing Company Workspace recovery model remains separate from report authentication. Report ID + Recovery Code reopens reusable company baseline data; customer authentication controls delivery of complete personalised PDFs.
+
 ## Current prototype release
 
 **Updated:** 11 August 2026  
@@ -54,7 +66,12 @@ The 31-file Exact File Reconciliation already recorded in the Source Register re
 
 ## Product routes
 
-- Public assessment: `/analyze-company.html`
+- Organization Structure & Growth: `/organization-intelligence.html`
+- HR Compliance Readiness: `/compliance-intelligence.html`
+- Stable compatibility assessment: `/analyze-company.html`
+- Customer report recovery: `/my-reports.html`
+- Public fictional samples: `/sample-reports.html`
+- Sources & methodology: `/official-resources.html`
 - Private-beta Compliance DNA route: `/analyze-company-v3.html`
 - Private-beta feature flag: `complianceDnaV3: false`
 - Shared legal explanation route: `POST /api/legal-explanation/feature/:featureId`
@@ -116,6 +133,8 @@ RAG is used for governed explanation and citation support, not applicability aut
 Legal-review browser panels are explicit-submit and in-memory only. Feature clients must send only allow-listed organisation-level controls and controlled references.
 
 Person-level identities, payroll/contribution bodies, medical/case data, complaint/dispute narratives, notices/orders, evidence bodies and other prohibited content remain outside the provider path unless a separately approved contract explicitly allows them. Wave 5J and Wave 5M have no substantive browser/provider surface.
+
+Personalised complete report delivery is separately authenticated. Browser code uses a Supabase publishable key for customer authentication; privileged Supabase credentials remain server-side. Complete report endpoints validate the Bearer token and bind report recipients to the authenticated work email before Gmail delivery.
 
 ## Validation and prototype release gate
 
