@@ -55,10 +55,9 @@ includes(home, 'href="intelligence-hub.html"', "The primary Understand My Compan
 includes(home, "Understand My Company", "The primary company-insights CTA must remain visible.");
 includes(home, 'href="sample-reports.html"', "The sample reports CTA must route through the sample-report hub.");
 includes(home, "Explore Sample Reports", "The sample reports CTA must remain visible.");
-includes(home, "Executive Intelligence", "The executive-intelligence preview must remain visible.");
-assert(home.indexOf("Understand My Company") < home.indexOf("Executive Intelligence"), "The primary company-insights CTA must appear before the executive-intelligence preview.");
-includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence-stack test hook is required.");
-includes(home, '<span class="buyer-card__label">Organization Structure</span>', "Organization Structure must remain a visible current product capability.");
+includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence preview must remain available.");
+assert(home.indexOf("Understand My Company") < home.indexOf('data-testid="home-executive-stack"'), "The primary company-insights CTA must appear before the homepage intelligence preview.");
+includes(home, '<span class="buyer-card__label">Organization Structure &amp; Growth Engine</span>', "Organization Structure & Growth Engine must remain a visible current product capability.");
 includes(home, "Where will our structure start constraining growth?", "Organization Structure must use the current buyer-facing value proposition.");
 assert(!home.includes("Organization Structure (Available)"), "The retired roadmap-style Organization status label must not reappear.");
 assert(!home.includes(">Analyze My Company<"), "The retired homepage CTA label must not reappear.");
