@@ -11,5 +11,65 @@
 .legal-page{background:var(--bg-primary);color:var(--text-primary)}.legal-shell{max-width:1040px;margin:0 auto;padding:calc(var(--site-shell-header-height,84px) + 48px) var(--page-gutter) 80px}.legal-intro{max-width:800px;margin-bottom:24px}.legal-intro h1{font-size:var(--font-page-title);margin:10px 0}.legal-grid{display:grid;gap:16px}.legal-card ul{padding-left:20px;color:var(--text-secondary)}.legal-card li{margin-bottom:8px}.legal-callout{padding:14px 16px;border:1px solid rgba(255,176,0,.22);border-radius:12px;background:rgba(255,176,0,.06);color:var(--text-secondary);line-height:1.6}.legal-meta{color:var(--text-muted);font-size:.9rem}
 .hub-start-note{margin:28px auto 0;max-width:920px;padding:0;border:1px solid rgba(255,176,0,.22);border-radius:16px;background:rgba(255,176,0,.055)}.hub-start-note summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:48px;padding:13px 18px;color:var(--text-primary);font-weight:800;cursor:pointer;list-style:none}.hub-start-note summary::-webkit-details-marker{display:none}.hub-start-note__content{padding:0 18px 16px}.hub-start-note__content p{margin:0;color:var(--text-secondary)}.hub-card-meta{display:grid;gap:7px;margin:14px 0 22px;padding:13px 14px;border-radius:12px;background:rgba(255,255,255,.025);color:var(--text-muted);font-size:.9rem}.hub-card-meta strong{color:var(--text-primary)}
 
+/* Homepage layered-dark rhythm: distinct surfaces without sacrificing contrast. */
+.home-page .how-section{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(47,91,170,.11),transparent 34%),
+    linear-gradient(180deg,#0d1424 0%,#0a1020 100%);
+}
+.home-page .capabilities-section{
+  background:
+    radial-gradient(circle at 88% 14%,rgba(255,151,31,.08),transparent 32%),
+    linear-gradient(180deg,#15110d 0%,#100d0b 100%);
+  border-block:1px solid rgba(255,176,0,.07);
+}
+.home-page .compliance-engine-section{
+  background:
+    radial-gradient(circle at 15% 80%,rgba(37,99,235,.1),transparent 38%),
+    linear-gradient(180deg,#0a1324 0%,#080e1a 100%);
+}
+.home-surface{
+  position:relative;
+  isolation:isolate;
+  border-top:1px solid rgba(255,255,255,.055);
+}
+.home-surface::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  pointer-events:none;
+}
+.home-surface--charcoal{
+  background:linear-gradient(180deg,#12161d 0%,#0e1117 100%);
+}
+.home-surface--charcoal::before{
+  background:radial-gradient(circle at 82% 20%,rgba(148,163,184,.055),transparent 34%);
+}
+.home-surface--warm{
+  background:linear-gradient(180deg,#18130f 0%,#120f0c 100%);
+}
+.home-surface--warm::before{
+  background:
+    radial-gradient(circle at 12% 28%,rgba(255,176,0,.09),transparent 30%),
+    radial-gradient(circle at 92% 74%,rgba(255,122,0,.05),transparent 34%);
+}
+.home-surface--navy{
+  background:linear-gradient(180deg,#0b1321 0%,#080d17 100%);
+}
+.home-surface--navy::before{
+  background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.08),transparent 42%);
+}
+.home-page .home-surface .buyer-card,
+.home-page .home-surface .buyer-authority-card,
+.home-page .home-surface .summary-card{
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));
+  border-color:rgba(255,255,255,.1);
+}
+.home-page .home-surface--warm .buyer-authority-card--primary{
+  background:linear-gradient(180deg,rgba(255,176,0,.1),rgba(255,255,255,.025));
+  border-color:rgba(255,176,0,.28);
+}
+
 @media(max-width:900px){.buyer-value-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.buyer-trust-grid,.onboarding-grid,.workspace-summary{grid-template-columns:1fr 1fr}.buyer-authority-grid{grid-template-columns:1fr}.workspace-login-form{grid-template-columns:1fr}.workspace-login-form button{width:100%}}
 @media(max-width:700px){.buyer-outcome-grid,.buyer-trust-grid,.onboarding-grid,.workspace-history-grid,.workspace-summary{grid-template-columns:1fr}.buyer-value-strip{grid-template-columns:1fr}.workspace-report-row{align-items:flex-start;flex-direction:column}.onboarding-actions>*{width:100%}}

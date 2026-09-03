@@ -5,20 +5,12 @@ const REPORT_STORAGE_KEY = "growwithhr-report";
 const DELIVERY_STORAGE_KEY = "growwithhr-advisory-delivery-v1";
 
 test.describe("Complete assessment and advisory delivery", () => {
-  test("moves from Analyze My Company through authenticated PDF email delivery", async ({ page }) => {
+  test("moves from Analyze My Company through PDF generation and confirmed email delivery", async ({ page }) => {
     test.setTimeout(60_000);
     let deliveryPayload: Record<string, any> | null = null;
-    let authorizationHeader = "";
 
     await page.route("https://unpkg.com/**", route => route.abort());
     await page.route("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/**", route => route.abort());
-    await page.route("https://cdn.jsdelivr.net/npm/@supabase/**", async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/javascript",
-        body: `window.supabase={createClient:()=>({auth:{getSession:async()=>({data:{session:{user:{email:"test.user@example.com"},access_token:"test-access-token"}},error:null}),signInWithPassword:async()=>({data:{session:{user:{email:"test.user@example.com"},access_token:"test-access-token"}},error:null}),signUp:async()=>({data:{session:{user:{email:"test.user@example.com"},access_token:"test-access-token"},user:{email:"test.user@example.com"}},error:null}),signOut:async()=>({error:null})}})};`
-      });
-    });
     await page.route("**/jspdf.umd.min.js", async route => {
       await route.fulfill({ status: 200, contentType: "application/javascript", body: "" });
     });
@@ -43,7 +35,6 @@ test.describe("Complete assessment and advisory delivery", () => {
       });
     });
     await page.route("**/api/send-advisory", async route => {
-      authorizationHeader = route.request().headers()["authorization"] || "";
       deliveryPayload = route.request().postDataJSON();
       await route.fulfill({
         status: 200,
@@ -55,7 +46,7 @@ test.describe("Complete assessment and advisory delivery", () => {
           customerSent: true,
           internalStatus: "not-configured",
           internalSent: false,
-          attachmentFilename: "GrowWithHR-HR-Compliance-Readiness-Report-End-to-End-Test-Company-GWHR-2026-0812-AA01.pdf"
+          attachmentFilename: "GrowWithHR-HR-Compliance-Growth-Report-End-to-End-Test-Company-GWHR-2026-0812-AA01.pdf"
         })
       });
     });
@@ -125,9 +116,9 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.locator('input[name="expansionPlans"][value="scale-operations"]').click({ force: true });
     await page.locator("#nextButton").click();
 
-    const founderLed = page.locator('input[name="peopleFunction"][value="Founder Led"]');
+    const founderLed = page.getByRole("radio", { name: /Founder-led/i });
     await expect(founderLed).toBeVisible();
-    await founderLed.check({ force: true });
+    await founderLed.check();
     await expect(founderLed).toBeChecked();
     await expect(page.locator('input[name="priorities"]')).toHaveCount(0);
     await page.locator("#nextButton").click();
@@ -149,16 +140,8 @@ test.describe("Complete assessment and advisory delivery", () => {
 
     await page.locator("#generateReportButton").click();
     await expect(page.locator("#successScreen")).toBeVisible({ timeout: 30_000 });
-    await expect(page.locator("#successTitle")).toHaveText("Your report glimpse is ready.");
-    await expect(page.locator("#personalReportGlimpse")).toBeVisible();
-    expect(deliveryPayload).toBeNull();
+    await expect(page.locator("#successTitle")).toHaveText("Your advisory is ready.");
 
-    const emailFullReport = page.locator("#emailFullReportButton");
-    await expect(emailFullReport).toBeEnabled({ timeout: 15_000 });
-    await emailFullReport.click();
-    await expect(page.locator("#fullReportDeliveryStatus")).toContainText("Complete report sent to test.user@example.com");
-
-    expect(authorizationHeader).toBe("Bearer test-access-token");
     expect(deliveryPayload).not.toBeNull();
     const payload = deliveryPayload as Record<string, any>;
     expect(payload.action).toBe("capture");

@@ -25,23 +25,24 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.sha }}
 
       - name: Wait for GitHub Pages release
         shell: bash
         run: |
           set -euo pipefail
-          url="${PAGES_BASE_URL}/index.html"
+          url="${PAGES_BASE_URL}/index.html?growwithhr_commit=${GITHUB_SHA}"
+          expected_sha="$(sha256sum index.html | cut -d' ' -f1)"
           for attempt in $(seq 1 60); do
-            body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url" 2>/dev/null || true)"
-            if grep -Fq "GrowWithHR Public 0.20.4-prototype.1" <<<"$body"; then
-              echo "GitHub Pages v0.20.4-prototype.1 is live."
+            if curl -fsSL --connect-timeout 15 --max-time 45 "$url" -o /tmp/github-pages-index.html 2>/dev/null && \
+               printf '%s  %s\n' "$expected_sha" /tmp/github-pages-index.html | sha256sum --check --status; then
+              echo "GitHub Pages exposes the expected index.html content for commit ${GITHUB_SHA}."
               exit 0
             fi
             echo "GitHub Pages not updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "GitHub Pages did not expose v0.20.4-prototype.1 within the smoke window." >&2
+          echo "GitHub Pages did not expose the expected index.html content for commit ${GITHUB_SHA} within the smoke window." >&2
           exit 1
 
       - name: Validate GitHub Pages founder report route
@@ -61,17 +62,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          url="https://growwithhr.onrender.com/index.html"
+          url="https://growwithhr.onrender.com/index.html?growwithhr_commit=${GITHUB_SHA}"
+          expected_sha="$(sha256sum index.html | cut -d' ' -f1)"
           for attempt in $(seq 1 60); do
-            body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
-            if grep -Fq "GrowWithHR Public 0.20.4-prototype.1" <<<"$body"; then
-              echo "Render homepage v0.20.4-prototype.1 is live."
+            if curl -fsSL --connect-timeout 20 --max-time 60 "$url" -o /tmp/render-index.html 2>/dev/null && \
+               printf '%s  %s\n' "$expected_sha" /tmp/render-index.html | sha256sum --check --status; then
+              echo "Render exposes the expected index.html content for commit ${GITHUB_SHA}."
               exit 0
             fi
             echo "Render homepage not updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "Render homepage did not expose v0.20.4-prototype.1 within the smoke window." >&2
+          echo "Render did not expose the expected index.html content for commit ${GITHUB_SHA} within the smoke window." >&2
           exit 1
 
       - name: Validate Render founder report route

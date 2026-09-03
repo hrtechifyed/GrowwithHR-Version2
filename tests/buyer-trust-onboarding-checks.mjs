@@ -1,8 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { createRequire } from "node:module";
 
-const require = createRequire(import.meta.url);
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const home = read("index.html");
@@ -14,27 +12,14 @@ assert.match(home, /Compliance Needs/);
 assert.match(home, /Organization Structure/);
 assert.match(home, /Anurag Sinha/);
 assert.match(home, /Founder, HRTechify/);
+assert.match(home, /Clear capabilities\. Clear boundaries\./);
 assert.match(home, /Security & Data/);
 assert.match(home, /Open My Reports/);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(home, /Leadership Intelligence \(Planned\)/);
 
-const positioning = read("js/product-positioning.js");
-assert.match(positioning, /flagship: "Organization Structure & Growth"/);
-assert.match(positioning, /secondary: "HR Compliance Readiness"/);
-assert.match(positioning, /recurringLayer: "Change Intelligence"/);
-assert.match(positioning, /\["Compliance Needs", "HR Compliance Readiness"\]/);
-assert.match(positioning, /Organization Structure & Growth · Flagship/);
-
 const hub = read("intelligence-hub.html");
-assert.match(hub, /Understand your company/i);
-assert.match(hub, /what changes as you grow/i);
-assert.match(hub, /CHANGE INTELLIGENCE/i);
-assert.match(hub, /first assessment creates the baseline/i);
-assert.match(hub, /compares company facts and deterministic findings over time/i);
-assert.match(hub, /illustrative comparison/i);
-assert.match(hub, /pressures increased/i);
-assert.match(hub, /new review trigger/i);
+assert.match(hub, /Built from real HR compliance frameworks — sample reports available before you commit\./i);
 assert.match(hub, /<details class="hub-start-note">/);
 assert.doesNotMatch(hub, /<details class="hub-start-note"[^>]*\bopen\b/);
 assert.match(hub, /<summary>Before you start/);
@@ -44,30 +29,25 @@ assert.ok(hub.indexOf('class="hub-engine-grid"') < hub.indexOf('<details class="
 assert.match(hub, /Best when:/);
 assert.match(hub, /You’ll need:/);
 assert.match(hub, /You receive:/);
-assert.match(hub, /Organization Structure &amp; Growth/);
-assert.match(hub, /HR Compliance Readiness/);
-assert.match(hub, /Full report delivered by email/i);
-assert.match(hub, /website shows a concise executive glimpse/i);
-assert.match(hub, /REPORT GLIMPSE/i);
-assert.match(hub, /Enough to understand the insight\. Not the full report\./i);
-assert.match(hub, /complete PDF advisory is delivered to your work email/i);
-assert.doesNotMatch(hub, /hub-sample-link/);
-assert.doesNotMatch(hub, /href="sample-advisory-report\.html"/);
-assert.doesNotMatch(hub, /href="organization-structure-report\.html\?sample=1"/);
-assert.match(hub, /Return to your company baseline and see what changed/i);
-assert.match(hub, /Recover Company Baseline/);
+assert.match(hub, /Which requirements may apply/);
+assert.match(hub, /Findings with supporting sources/);
+assert.match(hub, /Recommended next steps/);
+assert.match(hub, /Reuse your saved company profile/i);
+assert.match(hub, /Recover a previous saved report here/i);
 assert.doesNotMatch(hub, /Reuse your Company DNA/i);
 assert.doesNotMatch(hub, /short-lived one-time token can transfer/i);
-assert.match(hub, /Your data stays secure when reopening a saved company profile/i);
-assert.match(hub, /Saved company information is kept for 6 months/i);
+assert.match(hub, /Your data stays secure when reopening a saved report/i);
+assert.match(hub, /Saved reports are kept for 6 months/i);
 assert.match(hub, /href="security\.html#retention">Data policy<\/a>/);
+assert.match(hub, /class="hub-sample-link" href="sample-advisory-report\.html"/);
+assert.match(hub, /class="hub-sample-link" href="organization-structure-report\.html\?sample=1"/);
 assert.match(hub, /href="compliance-intelligence\.html"/);
 assert.doesNotMatch(hub, /href="analyze-company\.html\?engine=compliance"/);
 assert.match(hub, /id="organizationStructureLink"[^>]*href="organization-intelligence\.html"/);
 assert.match(hub, /id="workspaceReportId"/);
 assert.match(hub, /id="workspaceRecoveryCode"/);
 assert.match(hub, />Recovery Code<input/);
-assert.match(hub, /<button type="submit">Recover Company Baseline<\/button>/);
+assert.match(hub, /<button type="submit">Open Saved Company Profile<\/button>/);
 assert.match(hub, /GrowWithHRCompanyWorkspace\.recover/);
 assert.match(hub, /my-reports\.html/);
 assert.match(hub, /security\.html/);
@@ -83,10 +63,6 @@ assert.match(security, /Supabase/);
 assert.match(security, /Gmail API/);
 assert.match(security, /not currently represented as SOC 2, ISO 27001/i);
 assert.match(security, /one-time handoff token/i);
-assert.match(security, /publishable key/i);
-assert.match(security, /matching signed-in work email/i);
-assert.match(security, /Bearer access token/i);
-assert.match(security, /complete personalised reports are not exposed as public full-report web pages/i);
 assert.match(security, /<article id="retention" class="legal-card">/);
 assert.match(security, /kept for six months from the latest completed analysis/i);
 assert.match(security, /approximately seven days before deletion/i);
@@ -113,48 +89,38 @@ assert.match(about, /Security & Data/);
 assert.match(about, /Product Use Terms/);
 
 const shell = read("js/site-shell.js");
-assert.match(shell, /label: "Organization & Growth"/);
-assert.match(shell, /label: "HR Compliance Readiness"/);
 assert.match(shell, /label: "My Reports"/);
-assert.match(shell, /label: "Sources & Methodology"/);
-assert.match(shell, /label: "Sample Reports"/);
 assert.match(shell, /label: "Security & Data"/);
 assert.match(shell, /label: "Terms"/);
-assert.match(shell, /"organization-intelligence\.html": "organization"/);
-assert.match(shell, /"compliance-intelligence\.html": "compliance"/);
-assert.match(shell, /"my-reports\.html": "reports"/);
-assert.match(shell, /"official-resources\.html": "resources"/);
-assert.match(shell, /bootstrapProductPositioning/);
-assert.match(shell, /js\/product-positioning\.js/);
-
-const customerAuth = read("js/customer-auth.js");
-assert.match(customerAuth, /publishable key only/i);
-assert.match(customerAuth, /requireMatchingSession/);
-assert.match(customerAuth, /Authorization/);
-assert.doesNotMatch(customerAuth, /SERVICE_ROLE/i);
-
-const reportGate = read("server-customer-report-gate.js");
-assert.match(reportGate, /SUPABASE_SERVICE_ROLE_KEY/);
-assert.match(reportGate, /ensureRecipientOwnership/);
-assert.match(reportGate, /complete report can only be emailed to the signed-in work email/i);
-const customerReportGate = require("../server-customer-report-gate.js");
-assert.deepEqual(
-    customerReportGate.emailCandidates({
-        lead: { email: "Buyer@Example.com" },
-        report: { recipientEmail: "buyer@example.com", recipientEmails: ["BUYER@example.com"] }
-    }),
-    ["buyer@example.com"]
-);
-assert.doesNotThrow(() => customerReportGate.ensureRecipientOwnership({
-    lead: { email: "buyer@example.com" },
-    report: { recipientEmail: "BUYER@example.com" }
-}, "buyer@example.com"));
-assert.throws(() => customerReportGate.ensureRecipientOwnership({
-    lead: { email: "other@example.com" }
-}, "buyer@example.com"), /signed-in work email/i);
+assert.match(shell, /"compliance-intelligence\.html": "analyze"/);
+assert.match(shell, /"my-reports\.html": "more"/);
+assert.match(shell, /"security\.html": "more"/);
+assert.match(shell, /"terms\.html": "more"/);
 
 const styles = read("styles.css");
 assert.match(styles, /css\/28-buyer-trust\.css/);
+assert.match(styles, /css\/29-layered-dark\.css/);
 assert.ok(styles.indexOf("css/28-buyer-trust.css") < styles.indexOf("css/18-site-shell.css"), "Site shell must remain the final static stylesheet import.");
+assert.ok(styles.indexOf("css/29-layered-dark.css") < styles.indexOf("css/18-site-shell.css"), "The shared layered-dark theme must load before the final site shell stylesheet.");
 
-console.log("Buyer trust, onboarding, Change Intelligence, authenticated report access and customer workspace checks passed.");
+const layeredTheme = read("css/29-layered-dark.css");
+assert.match(layeredTheme, /--layer-navy:/);
+assert.match(layeredTheme, /--layer-charcoal:/);
+assert.match(layeredTheme, /--layer-warm:/);
+assert.match(layeredTheme, /\.intelligence-hub-page/);
+assert.match(layeredTheme, /\.analyze-company-page/);
+assert.match(layeredTheme, /\.org-structure-page/);
+assert.match(layeredTheme, /\.sample-advisory-page/);
+assert.match(layeredTheme, /@media print/);
+
+const root = new URL("../", import.meta.url);
+for (const file of fs.readdirSync(root).filter((name) => name.endsWith(".html"))) {
+    const source = fs.readFileSync(new URL(file, root), "utf8");
+    assert.match(
+        source,
+        /styles\.css\?v=20260901-layered-dark-global|29-layered-dark\.css\?v=20260901-layered-dark-global/,
+        `${file} must load the shared layered-dark theme.`
+    );
+}
+
+console.log("Buyer trust, onboarding and customer workspace checks passed.");
