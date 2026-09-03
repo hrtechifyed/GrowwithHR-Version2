@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "1.1.1-report-lineage";
+    const VERSION = "1.1.2-report-lineage";
     const LOCAL_ENDPOINT = "/api/report-id";
     const GITHUB_PAGES_ORIGIN = "https://hrtechifyed.github.io";
     const GITHUB_PAGES_PROJECT_PATH = "/GrowwithHR-Version2/";
@@ -35,12 +35,18 @@
 
     async function allocate(payload = {}) {
         const source = mergeSource(payload);
-        const forceNew = payload.forceNewReportId === true || payload.forceNew === true;
         const existingReportId = clean(payload.reportId || source.reportId);
+        const previousReportId = clean(payload.previousReportId || source.previousReportId);
+        const explicitForceNew = payload.forceNewReportId === true || payload.forceNew === true;
+        // A revised snapshot is cloned from its parent before allocation, so at this point
+        // reportId and previousReportId can intentionally be the same. That equality is the
+        // lineage signal that a fresh ID is required rather than a replay of the parent ID.
+        const forceNew = explicitForceNew || Boolean(existingReportId && previousReportId && existingReportId === previousReportId);
+
         if (existingReportId && !forceNew) {
             return {
                 reportId: existingReportId,
-                previousReportId: clean(payload.previousReportId || source.previousReportId),
+                previousReportId,
                 generatedAt: clean(payload.generatedAt || source.generatedAt, new Date().toISOString()),
                 replayed: true
             };
@@ -50,7 +56,6 @@
         const requestKey = forceNew
             ? randomRequestKey()
             : clean(payload.reportRequestKey || payload.requestKey, randomRequestKey());
-        const previousReportId = clean(payload.previousReportId || source.previousReportId);
         const allocation = (async () => {
             const response = await window.fetch(endpoint(), {
                 method: "POST",
