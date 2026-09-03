@@ -6,6 +6,8 @@
 (function siteShellBootstrap(window, document) {
     "use strict";
 
+    const THEME_VERSION = "20260901-layered-dark-global";
+
     const NAV_ITEMS = Object.freeze([
         { key: "organization", label: "Organization & Growth", href: "organization-intelligence.html" },
         { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" },
@@ -256,6 +258,33 @@
         if (header) document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
     }
 
+    function ensureLayeredDarkVersion(prefix) {
+        const sharedStyles = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => {
+            const source = (item.getAttribute("href") || "").replace(/[?#].*$/, "");
+            return /(?:^|\/)styles\.css$/.test(source);
+        });
+        if (sharedStyles) {
+            const source = (sharedStyles.getAttribute("href") || withRoot(prefix, "styles.css")).replace(/[?#].*$/, "");
+            sharedStyles.setAttribute("href", `${source}?v=${THEME_VERSION}`);
+            sharedStyles.dataset.growwithhrThemeVersion = THEME_VERSION;
+            return;
+        }
+
+        const directTheme = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => /(?:^|\/)css\/29-layered-dark\.css(?:[?#].*)?$/.test(item.getAttribute("href") || ""));
+        if (directTheme) {
+            const source = (directTheme.getAttribute("href") || withRoot(prefix, "css/29-layered-dark.css")).replace(/[?#].*$/, "");
+            directTheme.setAttribute("href", `${source}?v=${THEME_VERSION}`);
+            directTheme.dataset.growwithhrThemeVersion = THEME_VERSION;
+            return;
+        }
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = `${withRoot(prefix, "css/29-layered-dark.css")}?v=${THEME_VERSION}`;
+        link.dataset.growwithhrThemeVersion = THEME_VERSION;
+        document.head.appendChild(link);
+    }
+
     function ensurePolishStyles(prefix) {
         if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
         const link = document.createElement("link");
@@ -299,6 +328,7 @@
         if (!document.body) return;
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
+        ensureLayeredDarkVersion(prefix);
         const header = buildHeader(prefix, activeKey);
         const footer = buildFooter();
         removeHomepageTriggerStrip();
