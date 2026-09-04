@@ -96,6 +96,7 @@
             await import("./report-identity-v1.js");
             await import("./report-founder-demo-single-v1.js");
             await import("./report-founder-intelligence-parity-v1.js");
+            await import("./report-editorial-template-v1.js");
             await import("./report-visual-sections-v021.js");
 
             const visualReady = await waitFor(() => Boolean(
@@ -104,7 +105,9 @@
                 window.GrowWithHRReportIdentity?.version &&
                 window.GrowWithHRFounderDemoReport?.singleEdition === true &&
                 window.GrowWithHRFounderIntelligenceParity?.installed === true &&
+                window.GrowWithHREditorialReportTemplate?.installed === true &&
                 window.GrowWithHRReportBrandTemplate?.singleEdition === true &&
+                window.GrowWithHRReportBrandTemplate?.reportStyle === "editorial-research-v1" &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
                 window.GrowWithHRPDF?.singleReportDelivery === true &&
                 window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1"
@@ -130,6 +133,8 @@
                 governedFounderExplanation: true,
                 compactStorySections: true,
                 founderDemoSingleReport: true,
+                editorialResearchTemplate: true,
+                reportStyleId: "editorial-research-v1",
                 singleReportDelivery: true,
                 singleEditionUi: true,
                 reportTemplateId: "hrtechify-founder-compliance-growth-v1",
