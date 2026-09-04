@@ -126,7 +126,15 @@ test.describe("founder-demo visual story and report", () => {
                 GrowWithHRPDF?: { buildAdvisoryPdf: (payload: unknown) => Promise<any> };
             }).GrowWithHRPDF!;
             const brand = (window as Window & {
-                GrowWithHRReportBrandTemplate?: { templateId?: string; logoAsset?: string; singleEdition?: boolean; reportStyle?: string };
+                GrowWithHRReportBrandTemplate?: {
+                    templateId?: string;
+                    logoAsset?: string;
+                    singleEdition?: boolean;
+                    reportStyle?: string;
+                    editorialResearchTemplate?: boolean;
+                    reusableTemplateContext?: boolean;
+                    preservesDeterministicInformation?: boolean;
+                };
             }).GrowWithHRReportBrandTemplate!;
             const report = {
                 companyName: "Template Standard Pvt Ltd", entity: "Private Limited Company", industry: "Professional Services",
@@ -142,6 +150,8 @@ test.describe("founder-demo visual story and report", () => {
                 reportId: pdf.reportId,
                 reportStructureVersion: pdf.reportStructureVersion,
                 sharedTemplateId: pdf.sharedTemplateId,
+                reportStyleId: pdf.reportStyleId,
+                informationPreservation: pdf.informationPreservation,
                 brandLogoAsset: pdf.brandLogoAsset,
                 imageCount: pdf.document.images.length,
                 brand
@@ -158,9 +168,14 @@ test.describe("founder-demo visual story and report", () => {
         expect(result.reportId).toBe("GWHR-2026-0811-AA01");
         expect(result.reportStructureVersion).toBe("founder-demo-single-v1");
         expect(result.sharedTemplateId).toBe("hrtechify-founder-compliance-growth-v1");
+        expect(result.reportStyleId).toBe("editorial-research-v1");
+        expect(result.informationPreservation).toBe("full-deterministic-finding-appendix");
         expect(result.brandLogoAsset).toBe("assets/hrtechify-logo.png");
         expect(result.brand.singleEdition).toBe(true);
-        expect(result.brand.reportStyle).toBe("clean-standard");
+        expect(result.brand.reportStyle).toBe("editorial-research-v1");
+        expect(result.brand.editorialResearchTemplate).toBe(true);
+        expect(result.brand.reusableTemplateContext).toBe(true);
+        expect(result.brand.preservesDeterministicInformation).toBe(true);
         expect(result.imageCount).toBeGreaterThanOrEqual(2);
     });
 
@@ -198,7 +213,7 @@ test.describe("founder-demo visual story and report", () => {
         expect(result.attachmentCount).toBe(1);
         expect(result.singleReportDelivery).toBe(true);
         expect(result.dualThemeDelivery).toBe(false);
-        expect(result.pageCount).toBeGreaterThanOrEqual(7);
+        expect(result.pageCount).toBeGreaterThanOrEqual(6);
     });
 
     test("emails exactly one standard report PDF", async ({ page }) => {

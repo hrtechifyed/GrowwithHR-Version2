@@ -100,7 +100,9 @@
             await import("./report-identity-v1.js");
             await import("./report-founder-demo-single-v1.js");
             await import("./report-founder-intelligence-parity-v1.js");
+            await import("./report-editorial-template-v1.js");
             await import("./report-visual-sections-v021.js");
+            await import("./latest-report-delivery-guard-v1.js");
 
             const visualReady = await waitFor(() => Boolean(
                 window.GrowWithHRSingleEditionReportUI?.darkOptionVisible === false &&
@@ -108,11 +110,14 @@
                 window.GrowWithHRReportIdentity?.version &&
                 window.GrowWithHRFounderDemoReport?.singleEdition === true &&
                 window.GrowWithHRFounderIntelligenceParity?.installed === true &&
+                window.GrowWithHREditorialReportTemplate?.installed === true &&
                 window.GrowWithHRReportBrandTemplate?.singleEdition === true &&
+                window.GrowWithHRReportBrandTemplate?.reportStyle === "editorial-research-v1" &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
                 window.GrowWithHRReportFormatSafety?.measuredStatusCards === true &&
                 window.GrowWithHRPDF?.singleReportDelivery === true &&
-                window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1"
+                window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1" &&
+                (!window.GrowWithHRModules?.AdvisoryDelivery || window.GrowWithHRLatestReportDeliveryGuard?.installed === true)
             ));
             if (!visualReady) throw new Error("The single HRTechify founder intelligence report did not become ready.");
 
@@ -135,6 +140,11 @@
                 governedFounderExplanation: true,
                 compactStorySections: true,
                 founderDemoSingleReport: true,
+                editorialResearchTemplate: true,
+                reportStyleId: "editorial-research-v1",
+                latestReportOnlyDelivery: true,
+                stalePdfReuseAllowed: false,
+                resendRegeneratesFromCurrentAssessment: true,
                 singleReportDelivery: true,
                 singleEditionUi: true,
                 reportFormatSafety: true,
