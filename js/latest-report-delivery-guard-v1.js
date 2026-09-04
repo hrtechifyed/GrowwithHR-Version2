@@ -18,7 +18,15 @@
     const Service = deliveryModule?.AdvisoryDeliveryService;
 
     if (!Service?.prototype) {
-        throw new Error("GrowWithHR advisory delivery must load before the latest-report delivery guard.");
+        window.GrowWithHRLatestReportDeliveryGuard = Object.freeze({
+            version: VERSION,
+            installed: false,
+            skipped: true,
+            reason: "advisory-delivery-module-not-present",
+            reportStyleId: STYLE_ID,
+            informationPreservation: PRESERVATION
+        });
+        return;
     }
 
     if (Service.prototype[INSTALL_FLAG]) return;
