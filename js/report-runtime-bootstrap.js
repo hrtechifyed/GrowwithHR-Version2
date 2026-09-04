@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.30.1-company-workspace-continuity";
+    const VERSION = "0.30.2-latest-report-only-delivery";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -98,6 +98,7 @@
             await import("./report-founder-intelligence-parity-v1.js");
             await import("./report-editorial-template-v1.js");
             await import("./report-visual-sections-v021.js");
+            await import("./latest-report-delivery-guard-v1.js");
 
             const visualReady = await waitFor(() => Boolean(
                 window.GrowWithHRSingleEditionReportUI?.darkOptionVisible === false &&
@@ -110,7 +111,8 @@
                 window.GrowWithHRReportBrandTemplate?.reportStyle === "editorial-research-v1" &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
                 window.GrowWithHRPDF?.singleReportDelivery === true &&
-                window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1"
+                window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1" &&
+                (!window.GrowWithHRModules?.AdvisoryDelivery || window.GrowWithHRLatestReportDeliveryGuard?.installed === true)
             ));
             if (!visualReady) throw new Error("The single HRTechify founder intelligence report did not become ready.");
 
@@ -135,6 +137,9 @@
                 founderDemoSingleReport: true,
                 editorialResearchTemplate: true,
                 reportStyleId: "editorial-research-v1",
+                latestReportOnlyDelivery: true,
+                stalePdfReuseAllowed: false,
+                resendRegeneratesFromCurrentAssessment: true,
                 singleReportDelivery: true,
                 singleEditionUi: true,
                 reportTemplateId: "hrtechify-founder-compliance-growth-v1",
