@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Security & Data | GrowWithHR</title>
-  <meta name="description" content="How GrowWithHR handles company data, workspace recovery, report delivery and security boundaries.">
-  <link rel="stylesheet" href="styles.css?v=20260901-layered-dark-global">
+  <meta name="description" content="How GrowWithHR handles company data, customer authentication, workspace recovery, report delivery and security boundaries.">
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script src="js/site-shell.js" defer></script>
 </head>
@@ -21,24 +21,36 @@
 
   <section class="legal-grid" aria-label="GrowWithHR security controls">
     <article class="legal-card">
+      <h2>Customer sign-in for complete reports</h2>
+      <ul>
+        <li>GrowWithHR uses Supabase Auth for customer report-access sessions. The browser uses only the Supabase publishable key; the Supabase service-role key remains server-side.</li>
+        <li>After an assessment, the website shows a concise executive glimpse. The complete personalised PDF is delivered by email only after the customer signs in with the matching signed-in work email used for that assessment.</li>
+        <li>The browser sends a Bearer access token with the report-delivery request. The GrowWithHR server validates that token against Supabase Auth before the existing email-delivery handler can run.</li>
+        <li>The server also verifies that every requested report recipient matches the authenticated customer email, so an authenticated request cannot redirect a personalised report to a different address.</li>
+        <li>On the public deployment, complete personalised reports are not exposed as public full-report web pages. Complete fictional sample reports remain publicly viewable so buyers can inspect the report format before using the product.</li>
+      </ul>
+    </article>
+
+    <article class="legal-card">
       <h2>Company Workspace protection</h2>
       <ul>
         <li>Reusable Company Workspace data is encrypted before database storage using AES-256-GCM.</li>
         <li>The Workspace Recovery Code is not stored in plaintext; the server compares a stored hash when access is requested.</li>
         <li>A Report ID by itself is not intended to unlock reusable company information.</li>
         <li>Recovered workspace data is returned only after the Report ID and Recovery Code are successfully verified.</li>
+        <li>The Workspace Recovery Code model is separate from customer report authentication: it reopens reusable company baseline data, while Supabase Auth controls delivery of complete personalised PDFs.</li>
       </ul>
     </article>
 
     <article class="legal-card">
       <h2>Cross-tab handoff</h2>
-      <p>When Company DNA is reused in another GrowWithHR analysis, the product can create a random one-time handoff token instead of putting the Workspace Recovery Code in the URL. The token expires after a short period and is deleted when redeemed.</p>
+      <p>When saved company information is reused in another GrowWithHR analysis, the product can create a random one-time handoff token instead of putting the Workspace Recovery Code in the URL. The token expires after a short period and is deleted when redeemed.</p>
     </article>
 
     <article id="retention" class="legal-card">
       <h2>Retention and deletion</h2>
       <p>Reusable Company Workspace data is kept for six months from the latest completed analysis. GrowWithHR schedules a reminder approximately seven days before deletion. A recovered workspace can also request earlier deletion.</p>
-      <p>Downloaded reports remain with the customer. Minimal operational records may remain where needed for report identity, security, fraud prevention, system integrity or legal obligations.</p>
+      <p>Downloaded or emailed reports remain with the customer. Minimal operational records may remain where needed for report identity, security, fraud prevention, system integrity or legal obligations.</p>
     </article>
 
     <article class="legal-card">
@@ -46,14 +58,14 @@
       <ul>
         <li>The public browser application is served from GitHub Pages.</li>
         <li>GrowWithHR server APIs are currently hosted on Render.</li>
-        <li>Reusable workspace storage uses Supabase through server-side credentials; the browser does not receive the service-role key.</li>
-        <li>Requested report emails are sent through the configured Gmail API integration.</li>
+        <li>Supabase provides customer authentication and reusable workspace storage. Browser authentication uses a publishable key; privileged workspace and authentication verification operations use server-side credentials.</li>
+        <li>Requested complete report emails are sent through the configured Gmail API integration after server-side authentication checks pass.</li>
       </ul>
     </article>
 
     <article class="legal-card">
       <h2>Browser-to-API controls</h2>
-      <p>The server uses an approved-origin CORS allowlist rather than a wildcard policy. API requests are validated independently of CORS, and the service applies request-size and rate-limit controls where configured.</p>
+      <p>The server uses an approved-origin CORS allowlist rather than a wildcard policy. API requests are validated independently of CORS, and the service applies request-size and rate-limit controls where configured. Complete report-delivery endpoints additionally require a valid Supabase customer access token and recipient-email ownership validation.</p>
     </article>
 
     <article class="legal-card">
@@ -63,7 +75,7 @@
 
     <article class="legal-card">
       <h2>Report activity metadata</h2>
-      <p>When an Organization Structure report is downloaded or emailed, GrowWithHR may send HRTechifyed minimal operational metadata such as report type, Report ID, company name, email where supplied, filename, framework/version and event time. The activity notice is not intended to contain the structural findings themselves.</p>
+      <p>When an Organization Structure report is downloaded as a fictional sample or a personalised report is securely emailed, GrowWithHR may record minimal operational metadata such as report type, Report ID, company name, authenticated email where supplied, filename, framework/version and event time. The activity notice is not intended to contain the structural findings themselves.</p>
     </article>
 
     <article class="legal-card">
@@ -72,7 +84,7 @@
     </article>
   </section>
 
-  <p class="legal-meta">Last updated: 17 August 2026 · This page describes the current public product architecture and may change as GrowWithHR matures.</p>
+  <p class="legal-meta">Last updated: 1 September 2026 · This page describes the current public product architecture and may change as GrowWithHR matures.</p>
 </main>
 <script src="js/build-marker.js"></script>
 </body>

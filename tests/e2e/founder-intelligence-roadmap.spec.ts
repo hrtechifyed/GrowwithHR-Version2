@@ -102,7 +102,7 @@ async function installRuntime(page: any, report: Record<string, unknown>) {
 test.describe("Founder intelligence roadmap", () => {
     test("runs today, growth and governed-explanation stories", async ({ page }) => {
         await installRuntime(page, BASE_REPORT);
-        await page.goto("/executive-advisory-report.html", { waitUntil: "domcontentloaded" });
+        await page.goto("/executive-advisory-report.html?internal-preview=1", { waitUntil: "domcontentloaded" });
         await page.waitForFunction(() => (window as any).GrowWithHRFounderWebReport?.version === "3.0.0-founder-intelligence-web");
 
         await expect(page.getByRole("heading", { name: "What to understand about each fixed finding" })).toBeVisible();
@@ -134,7 +134,7 @@ test.describe("Founder intelligence roadmap", () => {
             reportId: priorReportId,
             generatedAt: "2026-08-12T14:00:00.000Z"
         });
-        await page.goto("/executive-advisory-report.html", { waitUntil: "domcontentloaded" });
+        await page.goto("/executive-advisory-report.html?internal-preview=1", { waitUntil: "domcontentloaded" });
         await page.waitForFunction(() => (window as any).GrowWithHRFounderWebReport?.version === "3.0.0-founder-intelligence-web");
 
         await expect(page.getByRole("heading", { name: "Resolve missing company facts" })).toBeVisible();

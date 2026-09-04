@@ -32,12 +32,12 @@ async function seedSavedProgress(page: Page, currentMoment = 2): Promise<void> {
 }
 
 test.describe("Dedicated Compliance entry", () => {
-  test("Company Insights opens the dedicated Compliance URL", async ({ page }) => {
+  test("company analysis hub opens the dedicated HR Compliance Readiness URL", async ({ page }) => {
     await clearSavedProgress(page);
     await page.goto("/intelligence-hub.html");
 
     const complianceLink = page.getByRole("link", {
-      name: /Identify My Company’s Compliance Needs/i
+      name: /Assess My HR Compliance Readiness/i
     });
 
     await expect(complianceLink).toHaveAttribute("href", "compliance-intelligence.html");
@@ -52,7 +52,7 @@ test.describe("Dedicated Compliance entry", () => {
     await page.goto("/compliance-intelligence.html");
 
     await expect(page.locator("[data-site-shell-header]")).toHaveCount(1);
-    await expect(page.locator('.site-nav-link[data-nav-key="analyze"]')).toHaveAttribute("aria-current", "page");
+    await expect(page.locator('.site-nav-link[data-nav-key="compliance"]')).toHaveAttribute("aria-current", "page");
     await expect(page.locator("#firstVisitActions")).toBeVisible();
     await expect(page.locator("#resumePanel")).toBeHidden();
     await expect(page.getByRole("button", { name: "Start my advisory" })).toBeVisible();

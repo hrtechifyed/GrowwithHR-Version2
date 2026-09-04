@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "0.30.2-latest-report-only-delivery";
+    const VERSION = "0.31.0-authenticated-report-access";
     const ACCEPTANCE_BOOTSTRAP_COMPATIBILITY = "0.25.0-report-runtime-bootstrap";
     const MAX_ATTEMPTS = 160;
     let attempts = 0;
@@ -43,8 +43,11 @@
         if (!document.body?.classList.contains("analyze-company-page")) return;
         void import("./company-workspace-client.js")
             .then(() => import("./company-workspace-continuity.js"))
+            .then(() => import("./compliance-change-intelligence.js"))
+            .then(() => import("./customer-auth.js"))
+            .then(() => import("./report-access-gate.js"))
             .catch((error) => {
-                console.error("GrowWithHR Company Workspace continuity could not load.", error);
+                console.error("GrowWithHR Company Workspace/report access continuity could not load.", error);
             });
     }
 
@@ -90,6 +93,7 @@
             await import("./story-visual-sections-v021.js");
             await import("./report-visual-core-v021.js");
             await import("./report-brand-template-v022.js");
+            await import("./report-format-safety-v1.js");
             await import("./report-visual-renderers-v021.js");
             await import("./report-executive-summary-v022.js");
             await import("./report-template-parity-v022.js");
@@ -110,6 +114,7 @@
                 window.GrowWithHRReportBrandTemplate?.singleEdition === true &&
                 window.GrowWithHRReportBrandTemplate?.reportStyle === "editorial-research-v1" &&
                 window.GrowWithHRReportBrandTemplate?.logoAsset === "assets/hrtechify-logo.png" &&
+                window.GrowWithHRReportFormatSafety?.measuredStatusCards === true &&
                 window.GrowWithHRPDF?.singleReportDelivery === true &&
                 window.GrowWithHRPDF?.reportStructureVersion === "founder-demo-single-v1" &&
                 (!window.GrowWithHRModules?.AdvisoryDelivery || window.GrowWithHRLatestReportDeliveryGuard?.installed === true)
@@ -142,6 +147,9 @@
                 resendRegeneratesFromCurrentAssessment: true,
                 singleReportDelivery: true,
                 singleEditionUi: true,
+                reportFormatSafety: true,
+                authenticatedFullReportDelivery: true,
+                websiteReportMode: "executive-glimpse",
                 reportTemplateId: "hrtechify-founder-compliance-growth-v1",
                 reportLogoAsset: "assets/hrtechify-logo.png",
                 reportIdRequired: true,

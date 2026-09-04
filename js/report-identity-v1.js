@@ -2,7 +2,7 @@
 (() => {
     "use strict";
 
-    const VERSION = "1.1.0-report-lineage";
+    const VERSION = "1.1.2-report-lineage";
     const LOCAL_ENDPOINT = "/api/report-id";
     const GITHUB_PAGES_ORIGIN = "https://hrtechifyed.github.io";
     const GITHUB_PAGES_PROJECT_PATH = "/GrowwithHR-Version2/";
@@ -34,20 +34,29 @@
     async function readJson(response) { try { return await response.json(); } catch (_error) { return {}; } }
 
     async function allocate(payload = {}) {
-        if (clean(payload.reportId)) {
+        const source = mergeSource(payload);
+        const existingReportId = clean(payload.reportId || source.reportId);
+        const previousReportId = clean(payload.previousReportId || source.previousReportId);
+        const explicitForceNew = payload.forceNewReportId === true || payload.forceNew === true;
+        // A revised snapshot is cloned from its parent before allocation, so at this point
+        // reportId and previousReportId can intentionally be the same. That equality is the
+        // lineage signal that a fresh ID is required rather than a replay of the parent ID.
+        const forceNew = explicitForceNew || Boolean(existingReportId && previousReportId && existingReportId === previousReportId);
+
+        if (existingReportId && !forceNew) {
             return {
-                reportId: clean(payload.reportId),
-                previousReportId: clean(payload.previousReportId || payload.report?.previousReportId),
-                generatedAt: clean(payload.generatedAt, new Date().toISOString()),
+                reportId: existingReportId,
+                previousReportId,
+                generatedAt: clean(payload.generatedAt || source.generatedAt, new Date().toISOString()),
                 replayed: true
             };
         }
-        if (activeAllocation) return activeAllocation;
+        if (activeAllocation && !forceNew) return activeAllocation;
 
-        const source = mergeSource(payload);
-        const requestKey = clean(payload.reportRequestKey || payload.requestKey, randomRequestKey());
-        const previousReportId = clean(payload.previousReportId || source.previousReportId);
-        activeAllocation = (async () => {
+        const requestKey = forceNew
+            ? randomRequestKey()
+            : clean(payload.reportRequestKey || payload.requestKey, randomRequestKey());
+        const allocation = (async () => {
             const response = await window.fetch(endpoint(), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -74,7 +83,10 @@
                 durableStorageConfigured: Boolean(result.durableStorageConfigured),
                 persistenceRequirement: clean(result.persistenceRequirement)
             });
-        })().finally(() => { activeAllocation = null; });
+        })();
+
+        if (forceNew) return allocation;
+        activeAllocation = allocation.finally(() => { activeAllocation = null; });
         return activeAllocation;
     }
 

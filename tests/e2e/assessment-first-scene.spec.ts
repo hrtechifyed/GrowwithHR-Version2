@@ -241,7 +241,7 @@ test.describe(
                     localStorage.setItem("growwithhr-report", JSON.stringify(report));
                 }, REPORT);
                 await page.setViewportSize({ width: 1440, height: 1000 });
-                await page.goto("/executive-advisory-report.html");
+                await page.goto("/executive-advisory-report.html?internal-preview=1");
 
                 const shell = page.locator("#founderReportRoot");
                 await expect(shell).toBeVisible();

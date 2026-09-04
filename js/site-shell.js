@@ -6,15 +6,17 @@
 (function siteShellBootstrap(window, document) {
     "use strict";
 
+    const THEME_VERSION = "20260901-layered-dark-global";
+
     const NAV_ITEMS = Object.freeze([
-        { key: "platform", label: "Home", href: "index.html#home" },
-        { key: "analyze", label: "Analyze My Company", href: "intelligence-hub.html" },
-        { key: "resources", label: "Sources", href: "official-resources.html" },
-        { key: "sample", label: "Sample Reports", href: "sample-reports.html" }
+        { key: "organization", label: "Organization & Growth", href: "organization-intelligence.html" },
+        { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" },
+        { key: "reports", label: "My Reports", href: "my-reports.html" },
+        { key: "resources", label: "Sources & Methodology", href: "official-resources.html" }
     ]);
 
     const MORE_ITEMS = Object.freeze([
-        { label: "My Reports", href: "my-reports.html" },
+        { label: "Sample Reports", href: "sample-reports.html" },
         { label: "Security & Data", href: "security.html" },
         { label: "Terms", href: "terms.html" },
         { label: "About", href: "more-info.html#about" },
@@ -73,31 +75,34 @@
     }
 
     function inferActiveNav() {
-        const explicit = document.body?.dataset?.activeNav || "";
-        if (explicit) return explicit.trim().toLowerCase();
-
         const activeByFile = {
-            "index.html": "platform",
-            "analyze-company.html": "analyze",
-            "compliance-intelligence.html": "analyze",
-            "intelligence-hub.html": "analyze",
-            "organization-intelligence.html": "analyze",
-            "organization-structure-report.html": "analyze",
+            "organization-intelligence.html": "organization",
+            "organization-structure-report.html": "organization",
+            "compliance-intelligence.html": "compliance",
+            "analyze-company.html": "compliance",
+            "my-reports.html": "reports",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
-            "sample-reports.html": "sample",
-            "sample-advisory-report.html": "sample",
-            "executive-advisory-report.html": "sample",
+            "sample-reports.html": "more",
+            "sample-advisory-report.html": "more",
+            "executive-advisory-report.html": "more",
             "more-info.html": "more",
-            "my-reports.html": "more",
             "security.html": "more",
-            "terms.html": "more",
-            "advisory-dashboard.html": "platform",
-            "growth-roadmap.html": "platform",
-            "people-roadmap.html": "platform",
-            "compliance-roadmap.html": "platform"
+            "terms.html": "more"
         };
-        return activeByFile[currentFileName()] || "";
+        const byFile = activeByFile[currentFileName()];
+        if (byFile) return byFile;
+
+        const explicit = (document.body?.dataset?.activeNav || "").trim().toLowerCase();
+        const aliases = {
+            organization: "organization",
+            compliance: "compliance",
+            reports: "reports",
+            resources: "resources",
+            sample: "more",
+            more: "more"
+        };
+        return aliases[explicit] || "";
     }
 
     function navLinkMarkup(item, prefix, activeKey) {
@@ -253,6 +258,33 @@
         if (header) document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
     }
 
+    function ensureLayeredDarkVersion(prefix) {
+        const sharedStyles = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => {
+            const source = (item.getAttribute("href") || "").replace(/[?#].*$/, "");
+            return /(?:^|\/)styles\.css$/.test(source);
+        });
+        if (sharedStyles) {
+            const source = (sharedStyles.getAttribute("href") || withRoot(prefix, "styles.css")).replace(/[?#].*$/, "");
+            sharedStyles.setAttribute("href", `${source}?v=${THEME_VERSION}`);
+            sharedStyles.dataset.growwithhrThemeVersion = THEME_VERSION;
+            return;
+        }
+
+        const directTheme = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => /(?:^|\/)css\/29-layered-dark\.css(?:[?#].*)?$/.test(item.getAttribute("href") || ""));
+        if (directTheme) {
+            const source = (directTheme.getAttribute("href") || withRoot(prefix, "css/29-layered-dark.css")).replace(/[?#].*$/, "");
+            directTheme.setAttribute("href", `${source}?v=${THEME_VERSION}`);
+            directTheme.dataset.growwithhrThemeVersion = THEME_VERSION;
+            return;
+        }
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = `${withRoot(prefix, "css/29-layered-dark.css")}?v=${THEME_VERSION}`;
+        link.dataset.growwithhrThemeVersion = THEME_VERSION;
+        document.head.appendChild(link);
+    }
+
     function ensurePolishStyles(prefix) {
         if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
         const link = document.createElement("link");
@@ -260,6 +292,18 @@
         link.href = withRoot(prefix, "css/25-ui-polish.css");
         link.dataset.growwithhrUiPolish = "";
         document.head.appendChild(link);
+    }
+
+    function bootstrapProductPositioning(prefix) {
+        if (window.GrowWithHRProductPositioning || document.querySelector("script[data-growwithhr-product-positioning]")) {
+            window.GrowWithHRProductPositioning?.apply?.();
+            return;
+        }
+        const script = document.createElement("script");
+        script.src = withRoot(prefix, "js/product-positioning.js");
+        script.dataset.growwithhrProductPositioning = "";
+        script.addEventListener("load", () => window.GrowWithHRProductPositioning?.apply?.(), { once: true });
+        document.body.appendChild(script);
     }
 
     function bootstrapHomepageIntelligenceGraph() {
@@ -284,6 +328,7 @@
         if (!document.body) return;
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
+        ensureLayeredDarkVersion(prefix);
         const header = buildHeader(prefix, activeKey);
         const footer = buildFooter();
         removeHomepageTriggerStrip();
@@ -291,6 +336,7 @@
         placeFooter(footer);
         bindHeaderInteractions(header);
         ensurePolishStyles(prefix);
+        bootstrapProductPositioning(prefix);
         updatePageOffsets();
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();

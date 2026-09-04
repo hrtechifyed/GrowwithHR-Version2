@@ -74,7 +74,7 @@ assert.match(dedicated, /src=["']js\/gmail-service\.js["']/);
 assert.match(hub, /href=["']compliance-intelligence\.html["']/);
 assert.doesNotMatch(hub, /href=["']analyze-company\.html\?engine=compliance["']/);
 assert.match(hub, /href=["']organization-intelligence\.html["']/);
-assert.match(shell, /["']compliance-intelligence\.html["']:\s*["']analyze["']/);
+assert.match(shell, /["']compliance-intelligence\.html["']:\s*["']compliance["']/);
 
 assert.match(assessmentRedirect, /url=analyze-company\.html/);
 assert.match(assessmentRedirect, /window\.location\.replace\("analyze-company\.html" \+ window\.location\.search \+ window\.location\.hash\)/);
