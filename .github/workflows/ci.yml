@@ -53,6 +53,9 @@ jobs:
           node tests/organization-workspace-headcount-bridge-checks.mjs &&
           node tests/organization-structure-completion-checks.mjs
 
+      - name: Run Workforce & Capability deterministic checks
+        run: node tests/workforce-capability-planning-checks.mjs
+
       - name: Run site shell, buyer trust and UI polish checks
         run: >
           node tests/site-shell-first-paint-checks.mjs &&
