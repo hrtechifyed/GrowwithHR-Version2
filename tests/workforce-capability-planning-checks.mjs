@@ -130,6 +130,7 @@ const planningPage = read("workforce-capability-planning.html");
 const reportPage = read("workforce-capability-report.html");
 const reportRuntime = read("js/workforce-capability-report.mjs");
 const pdfRuntime = read("js/workforce-capability-pdf.mjs");
+const workspaceBridge = read("js/workforce-capability-workspace-bridge.js");
 const customerGate = read("server-customer-report-gate.js");
 const serverEntry = read("server-entry.js");
 const delivery = read("server-workforce-capability-report-delivery.js");
@@ -139,6 +140,15 @@ assert.match(planningPage, /Compare planning frameworks/);
 assert.match(planningPage, /Implementation economics/);
 assert.match(planningPage, /Create my implementation plan &amp; report/);
 assert.match(planningPage, /workforce-capability-methodology\.html/);
+assert.match(planningPage, /workforce-capability-workspace-bridge\.js/);
+assert.ok(
+  planningPage.indexOf("workforce-capability-workspace-bridge.js") < planningPage.indexOf("workforce-capability-planning.mjs"),
+  "The WCP workspace bridge must normalize cross-engine horizon data before the planning module persists a workspace."
+);
+assert.match(workspaceBridge, /planningHorizonMonths/);
+assert.match(workspaceBridge, /planningHorizonEmployees/);
+assert.match(workspaceBridge, /horizonMonths === 12/);
+assert.match(workspaceBridge, /delete companyData\.workforce\.expectedEmployees12Months/);
 assert.match(reportPage, /workforce-capability-report\.mjs/);
 assert.match(reportRuntime, /generateWorkforceCapabilityPdf/);
 assert.match(reportRuntime, /\/api\/workforce-capability-report\/deliver/);
@@ -153,4 +163,4 @@ assert.match(delivery, /WCP-2026\.1/);
 assert.match(orchestrator, /specialistDecisionAuthorityPreserved:\s*true/);
 assert.match(orchestrator, /crossEngineDecisionAuthority:\s*false/);
 
-console.log("Workforce & Capability deterministic planning, report and delivery checks passed.");
+console.log("Workforce & Capability deterministic planning, report, workspace and delivery checks passed.");
