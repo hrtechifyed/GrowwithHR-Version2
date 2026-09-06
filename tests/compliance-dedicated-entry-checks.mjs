@@ -74,7 +74,10 @@ assert.match(dedicated, /src=["']js\/gmail-service\.js["']/);
 assert.match(hub, /href=["']compliance-intelligence\.html["']/);
 assert.doesNotMatch(hub, /href=["']analyze-company\.html\?engine=compliance["']/);
 assert.match(hub, /href=["']organization-intelligence\.html["']/);
-assert.match(shell, /["']compliance-intelligence\.html["']:\s*["']compliance["']/);
+assert.match(shell, /["']compliance-intelligence\.html["']:\s*["']analyze["']/,
+  "The dedicated Compliance route must remain active under the unified Analyze navigation.");
+assert.match(shell, /label:\s*["']HR Compliance Readiness["'][\s\S]*href:\s*["']compliance-intelligence\.html["']/,
+  "HR Compliance Readiness must remain present inside the unified Analyze menu.");
 
 assert.match(assessmentRedirect, /url=analyze-company\.html/);
 assert.match(assessmentRedirect, /window\.location\.replace\("analyze-company\.html" \+ window\.location\.search \+ window\.location\.hash\)/);
