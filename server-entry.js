@@ -12,6 +12,7 @@ const { handleOperationalExplanationRequest } = require("./server-operational-ex
 const { handleReportIdRequest } = require("./server-report-id-registry");
 const { handleSingleReportDeliveryRequest } = require("./server-single-report-delivery");
 const { handleOrganizationReportRequest } = require("./server-organization-report-delivery");
+const { handleWorkforceCapabilityReportRequest } = require("./server-workforce-capability-report-delivery");
 const { handleCustomerReportGate } = require("./server-customer-report-gate");
 const { handleWorkspaceHandoffRequest } = require("./server-workspace-handoff");
 const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
@@ -106,8 +107,10 @@ function installApiCors() {
                 if (handleCompanyWorkspaceRequest(request, response)) return;
                 if (handleCustomerReportGate(request, response, {
                     compliance: handleSingleReportDeliveryRequest,
-                    organization: handleOrganizationReportRequest
+                    organization: handleOrganizationReportRequest,
+                    workforce: handleWorkforceCapabilityReportRequest
                 })) return;
+                if (handleWorkforceCapabilityReportRequest(request, response)) return;
                 if (handleOrganizationReportRequest(request, response)) return;
                 if (handleSingleReportDeliveryRequest(request, response)) return;
                 listener(request, response);
