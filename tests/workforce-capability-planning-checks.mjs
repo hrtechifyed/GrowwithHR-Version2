@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {
   analyzeWorkforceCapability,
   finalizeWorkforcePlan,
@@ -6,6 +7,8 @@ import {
   ENGINE_VERSION,
   RULESET_VERSION
 } from "../js/modules/workforce/workforce-capability-engine.mjs";
+
+const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const baseInput = {
   company: {
@@ -123,4 +126,30 @@ const twoFrameworks = analyzeWorkforceCapability({ ...baseInput, frameworks: ["c
 assert.deepEqual(twoFrameworks.frameworkSelection, ["cipd", "capability"]);
 assert.equal(twoFrameworks.frameworkComparisons.length, 2);
 
-console.log("Workforce & Capability deterministic planning checks passed.");
+const planningPage = read("workforce-capability-planning.html");
+const reportPage = read("workforce-capability-report.html");
+const reportRuntime = read("js/workforce-capability-report.mjs");
+const pdfRuntime = read("js/workforce-capability-pdf.mjs");
+const customerGate = read("server-customer-report-gate.js");
+const serverEntry = read("server-entry.js");
+const delivery = read("server-workforce-capability-report-delivery.js");
+const orchestrator = read("js/company-intelligence-orchestrator-v1.js");
+
+assert.match(planningPage, /Compare planning frameworks/);
+assert.match(planningPage, /Implementation economics/);
+assert.match(planningPage, /Create my implementation plan &amp; report/);
+assert.match(planningPage, /workforce-capability-methodology\.html/);
+assert.match(reportPage, /workforce-capability-report\.mjs/);
+assert.match(reportRuntime, /generateWorkforceCapabilityPdf/);
+assert.match(reportRuntime, /\/api\/workforce-capability-report\/deliver/);
+assert.match(pdfRuntime, /Workforce & Capability Planning Report/);
+assert.match(customerGate, /\/api\/workforce-capability-report\/deliver/);
+assert.match(customerGate, /handlers\.workforce/);
+assert.match(serverEntry, /handleWorkforceCapabilityReportRequest/);
+assert.match(serverEntry, /workforce:\s*handleWorkforceCapabilityReportRequest/);
+assert.match(delivery, /Your GrowWithHR Workforce & Capability Plan/);
+assert.match(delivery, /WCP-2026\.1/);
+assert.match(orchestrator, /specialistDecisionAuthorityPreserved:\s*true/);
+assert.match(orchestrator, /crossEngineDecisionAuthority:\s*false/);
+
+console.log("Workforce & Capability deterministic planning, report and delivery checks passed.");
