@@ -91,7 +91,7 @@
             <h3>Organization &amp; Growth</h3>
             <p>Assess management capacity, founder dependency, decision ownership, reporting structure and operating rhythm as the company grows.</p>
             <div class="analysis-engine-meta"><span><strong>Best when:</strong> growth is creating structural pressure or decision bottlenecks.</span><span><strong>Output:</strong> executive position, detailed findings, source-backed actions and growth scenario.</span></div>
-            <a class="analysis-action" href="organization-intelligence.html">Analyze Organization &amp; Growth <i class="fa-solid fa-arrow-right"></i></a>
+            <a id="organizationAnalysisLink" class="analysis-action" href="organization-intelligence.html">Analyze Organization &amp; Growth <i class="fa-solid fa-arrow-right"></i></a>
             <a class="analysis-method" href="organization-structure-methodology.html">Methodology &amp; sources ↗</a>
           </article>
 
@@ -109,7 +109,7 @@
             <h3>Workforce &amp; Capability Planning</h3>
             <p>Connect business strategy to critical capabilities, workforce demand, gaps, implementation choices, time, cost and scenario trade-offs.</p>
             <div class="analysis-engine-meta"><span><strong>Frameworks:</strong> compare CIPD workforce planning, capability-led planning and scenario/work-redesign lenses.</span><span><strong>Output:</strong> gap analysis, Build · Buy · Borrow · Bind · Bot · Move options, implementation economics and a 12–36 month roadmap.</span></div>
-            <a class="analysis-action" href="workforce-capability-planning.html">Plan Workforce &amp; Capabilities <i class="fa-solid fa-arrow-right"></i></a>
+            <a id="workforceCapabilityAnalysisLink" class="analysis-action" href="workforce-capability-planning.html">Plan Workforce &amp; Capabilities <i class="fa-solid fa-arrow-right"></i></a>
             <a class="analysis-method" href="workforce-capability-methodology.html">Methodology &amp; rules ↗</a>
           </article>
         </div>
@@ -161,6 +161,8 @@
       const deleteButton = document.getElementById("workspaceDeleteData");
       const statusGrid = document.getElementById("analysisStatusGrid");
       const next = document.getElementById("analysisNextRecommendation");
+      const organizationLink = document.getElementById("organizationAnalysisLink");
+      const workforceLink = document.getElementById("workforceCapabilityAnalysisLink");
 
       function readWorkspace(){ try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");}catch(_){return null;} }
       function saveWorkspace(workspace){ try{sessionStorage.setItem(SESSION_KEY,JSON.stringify(workspace));}catch(_){} }
@@ -175,6 +177,25 @@
         const target=intel.engines.find((engine)=>engine.id===recommendation.engineId);
         next.innerHTML=`<strong>Recommended next:</strong> ${target?`<a href="${target.href}">${target.label}</a>`:"Change Intelligence"}. ${recommendation.reason}`;
       }
+
+      async function secureAnalysisHandoff(event,target,url){
+        const workspace=readWorkspace();
+        if(!workspace?.reportId||!workspace?.accessKey)return;
+        event.preventDefault();
+        status.textContent="Preparing secure access to your saved company profile…";
+        try{
+          const result=await window.GrowWithHRCompanyWorkspace.createHandoff(workspace.reportId,workspace.accessKey,target);
+          const token=result?.handoff?.token;
+          if(!token)throw new Error("Secure handoff could not be prepared.");
+          location.href=`${url}?handoff=${encodeURIComponent(token)}`;
+        }catch(_error){
+          status.textContent="Secure reuse was unavailable. Opening the analysis without placing your Recovery Code in the URL.";
+          location.href=url;
+        }
+      }
+
+      organizationLink.addEventListener("click",(event)=>secureAnalysisHandoff(event,"organization-structure","organization-intelligence.html"));
+      workforceLink.addEventListener("click",(event)=>secureAnalysisHandoff(event,"workforce-capability","workforce-capability-planning.html"));
 
       form.addEventListener("submit",async(event)=>{
         event.preventDefault(); status.textContent="Recovering saved company profile…";
