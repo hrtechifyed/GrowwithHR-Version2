@@ -1,16 +1,24 @@
 /**
  * GrowWithHR shared site shell
  * ------------------------------------------------------------
- * Renders one consistent header and footer across every page.
+ * Canonical logo, navigation and footer for every public page.
+ * Analysis engines live under one Analyze menu so the top-level
+ * navigation does not grow every time a specialist engine is added.
  */
 (function siteShellBootstrap(window, document) {
     "use strict";
 
-    const THEME_VERSION = "20260901-layered-dark-global";
+    const THEME_VERSION = "20260906-unified-analysis-shell";
 
-    const NAV_ITEMS = Object.freeze([
+    const ANALYZE_ITEMS = Object.freeze([
+        { key: "analysis-overview", label: "Company Analysis Overview", href: "intelligence-hub.html" },
         { key: "organization", label: "Organization & Growth", href: "organization-intelligence.html" },
         { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" },
+        { key: "workforce-capability", label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
+        { key: "change-intelligence", label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" }
+    ]);
+
+    const NAV_ITEMS = Object.freeze([
         { key: "reports", label: "My Reports", href: "my-reports.html" },
         { key: "resources", label: "Sources & Methodology", href: "official-resources.html" }
     ]);
@@ -50,13 +58,11 @@
     function inferRootPrefix() {
         const bodyPrefix = document.body?.dataset?.siteRoot || "";
         if (bodyPrefix) return normalizePrefix(bodyPrefix);
-
         const script = document.currentScript || Array.from(document.scripts).find((item) => {
             const source = item.getAttribute("src") || "";
             return /(?:^|\/)js\/site-shell\.js(?:[?#].*)?$/.test(source);
         });
         if (!script) return "";
-
         const source = (script.getAttribute("src") || "").replace(/[?#].*$/, "");
         const marker = "js/site-shell.js";
         const markerIndex = source.lastIndexOf(marker);
@@ -76,13 +82,17 @@
 
     function inferActiveNav() {
         const activeByFile = {
-            "organization-intelligence.html": "organization",
-            "organization-structure-report.html": "organization",
-            "compliance-intelligence.html": "compliance",
-            "analyze-company.html": "compliance",
+            "intelligence-hub.html": "analyze",
+            "organization-intelligence.html": "analyze",
+            "organization-structure-report.html": "analyze",
+            "compliance-intelligence.html": "analyze",
+            "analyze-company.html": "analyze",
+            "workforce-capability-planning.html": "analyze",
+            "workforce-capability-report.html": "analyze",
             "my-reports.html": "reports",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
+            "workforce-capability-methodology.html": "resources",
             "sample-reports.html": "more",
             "sample-advisory-report.html": "more",
             "executive-advisory-report.html": "more",
@@ -92,11 +102,14 @@
         };
         const byFile = activeByFile[currentFileName()];
         if (byFile) return byFile;
-
         const explicit = (document.body?.dataset?.activeNav || "").trim().toLowerCase();
         const aliases = {
-            organization: "organization",
-            compliance: "compliance",
+            analyze: "analyze",
+            analysis: "analyze",
+            organization: "analyze",
+            compliance: "analyze",
+            workforce: "analyze",
+            "workforce-capability": "analyze",
             reports: "reports",
             resources: "resources",
             sample: "more",
@@ -108,6 +121,10 @@
     function navLinkMarkup(item, prefix, activeKey) {
         const isActive = item.key === activeKey;
         return `<a class="site-nav-link${isActive ? " is-active" : ""}" href="${escapeHtml(withRoot(prefix, item.href))}" data-nav-key="${escapeHtml(item.key)}" ${isActive ? 'aria-current="page"' : ""}>${escapeHtml(item.label)}</a>`;
+    }
+
+    function menuItemMarkup(item, prefix) {
+        return `<a href="${escapeHtml(withRoot(prefix, item.href))}" data-analysis-key="${escapeHtml(item.key || "")}">${escapeHtml(item.label)}</a>`;
     }
 
     function moreItemMarkup(item, prefix) {
@@ -131,6 +148,10 @@
                     <a class="site-product-name" href="${escapeHtml(withRoot(prefix, "index.html#home"))}">GrowWithHR</a>
                     <button class="site-nav-toggle" type="button" aria-label="Open navigation" aria-controls="siteNavLinks" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
                     <div class="site-nav-links" id="siteNavLinks">
+                        <div class="site-nav-analyze${activeKey === "analyze" ? " is-active" : ""}">
+                            <button class="site-nav-analyze__toggle" type="button" aria-expanded="false" aria-controls="siteAnalyzeMenu" ${activeKey === "analyze" ? 'aria-current="page"' : ""}><span>Analyze</span><span class="site-nav-analyze__chevron" aria-hidden="true">⌄</span></button>
+                            <div class="site-nav-analyze__menu" id="siteAnalyzeMenu" aria-label="Analysis navigation">${ANALYZE_ITEMS.map((item) => menuItemMarkup(item, prefix)).join("")}</div>
+                        </div>
                         ${NAV_ITEMS.map((item) => navLinkMarkup(item, prefix, activeKey)).join("")}
                         <div class="site-nav-more${activeKey === "more" ? " is-active" : ""}">
                             <button class="site-nav-more__toggle" type="button" aria-expanded="false" aria-controls="siteMoreMenu" ${activeKey === "more" ? 'aria-current="page"' : ""}><span>More</span><span class="site-nav-more__chevron" aria-hidden="true">⌄</span></button>
@@ -197,15 +218,22 @@
         const nav = header.querySelector(".site-nav-glass");
         const toggle = header.querySelector(".site-nav-toggle");
         const links = header.querySelector(".site-nav-links");
+        const analyze = header.querySelector(".site-nav-analyze");
+        const analyzeToggle = header.querySelector(".site-nav-analyze__toggle");
         const more = header.querySelector(".site-nav-more");
         const moreToggle = header.querySelector(".site-nav-more__toggle");
-        if (!nav || !toggle || !links || !more || !moreToggle) return;
+        if (!nav || !toggle || !links || !analyze || !analyzeToggle || !more || !moreToggle) return;
 
         let previouslyFocused = null;
+        const closeAnalyze = () => {
+            analyze.classList.remove("is-open");
+            analyzeToggle.setAttribute("aria-expanded", "false");
+        };
         const closeMore = () => {
             more.classList.remove("is-open");
             moreToggle.setAttribute("aria-expanded", "false");
         };
+        const closeDropdowns = () => { closeAnalyze(); closeMore(); };
         const closeMobileNav = (restoreFocus = false) => {
             const wasOpen = nav.classList.contains("is-open");
             nav.classList.remove("is-open");
@@ -213,7 +241,7 @@
             toggle.setAttribute("aria-label", "Open navigation");
             lockBodyScroll(false);
             setBackgroundInert(false, header);
-            closeMore();
+            closeDropdowns();
             if (restoreFocus && wasOpen && previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
         };
         const openMobileNav = () => {
@@ -227,17 +255,29 @@
         };
 
         toggle.addEventListener("click", () => nav.classList.contains("is-open") ? closeMobileNav(true) : openMobileNav());
+        analyzeToggle.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const willOpen = !analyze.classList.contains("is-open");
+            closeMore();
+            analyze.classList.toggle("is-open", willOpen);
+            analyzeToggle.setAttribute("aria-expanded", String(willOpen));
+        });
         moreToggle.addEventListener("click", (event) => {
             event.stopPropagation();
             const willOpen = !more.classList.contains("is-open");
+            closeAnalyze();
             more.classList.toggle("is-open", willOpen);
             moreToggle.setAttribute("aria-expanded", String(willOpen));
         });
         links.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMobileNav(false)));
-        document.addEventListener("click", (event) => { if (!more.contains(event.target)) closeMore(); });
+        document.addEventListener("click", (event) => {
+            if (!analyze.contains(event.target)) closeAnalyze();
+            if (!more.contains(event.target)) closeMore();
+        });
         document.addEventListener("keydown", (event) => {
             if (event.key === "Escape") {
                 closeMobileNav(true);
+                closeDropdowns();
                 return;
             }
             if (event.key !== "Tab" || !nav.classList.contains("is-open") || !window.matchMedia("(max-width: 900px)").matches) return;
@@ -255,7 +295,12 @@
 
     function updatePageOffsets() {
         const header = document.querySelector("[data-site-shell-header]");
-        if (header) document.documentElement.style.setProperty("--site-shell-header-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+        if (!header) return;
+        document.documentElement.style.setProperty("--site-shell-rendered-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+        /* The desktop header is now part of normal document flow. Keeping this
+         * legacy offset at zero prevents older page styles from adding a second
+         * header-sized top gap. */
+        document.documentElement.style.setProperty("--site-shell-header-height", "0px");
     }
 
     function ensureLayeredDarkVersion(prefix) {
@@ -269,27 +314,19 @@
             sharedStyles.dataset.growwithhrThemeVersion = THEME_VERSION;
             return;
         }
-
         const directTheme = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => /(?:^|\/)css\/29-layered-dark\.css(?:[?#].*)?$/.test(item.getAttribute("href") || ""));
         if (directTheme) {
             const source = (directTheme.getAttribute("href") || withRoot(prefix, "css/29-layered-dark.css")).replace(/[?#].*$/, "");
             directTheme.setAttribute("href", `${source}?v=${THEME_VERSION}`);
             directTheme.dataset.growwithhrThemeVersion = THEME_VERSION;
-            return;
         }
-
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = `${withRoot(prefix, "css/29-layered-dark.css")}?v=${THEME_VERSION}`;
-        link.dataset.growwithhrThemeVersion = THEME_VERSION;
-        document.head.appendChild(link);
     }
 
     function ensurePolishStyles(prefix) {
         if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
         const link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = withRoot(prefix, "css/25-ui-polish.css");
+        link.href = `${withRoot(prefix, "css/25-ui-polish.css")}?v=${THEME_VERSION}`;
         link.dataset.growwithhrUiPolish = "";
         document.head.appendChild(link);
     }
@@ -320,6 +357,14 @@
         import("./organization-autosave.js").catch((error) => console.error("GrowWithHR organization autosave failed to initialize", error));
     }
 
+    function bootstrapCompanyIntelligence(prefix) {
+        if (window.GrowWithHRCompanyIntelligence || document.querySelector("script[data-growwithhr-company-intelligence]")) return;
+        const script = document.createElement("script");
+        script.src = withRoot(prefix, "js/company-intelligence-orchestrator-v1.js");
+        script.dataset.growwithhrCompanyIntelligence = "";
+        document.body.appendChild(script);
+    }
+
     function removeHomepageTriggerStrip() {
         document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
     }
@@ -334,6 +379,7 @@
         removeHomepageTriggerStrip();
         placeHeader(header);
         placeFooter(footer);
+        document.body.classList.add("has-site-shell");
         bindHeaderInteractions(header);
         ensurePolishStyles(prefix);
         bootstrapProductPositioning(prefix);
@@ -341,6 +387,7 @@
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
         bootstrapOrganizationAutosave();
+        bootstrapCompanyIntelligence(prefix);
         window.addEventListener("resize", updatePageOffsets);
     }
 
