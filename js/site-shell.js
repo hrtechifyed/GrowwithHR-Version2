@@ -8,7 +8,7 @@
 (function siteShellBootstrap(window, document) {
     "use strict";
 
-    const THEME_VERSION = "20260906-unified-analysis-shell";
+    const THEME_VERSION = "20260908-shared-home-navigation";
 
     const ANALYZE_ITEMS = Object.freeze([
         { key: "analysis-overview", label: "Company Analysis Overview", href: "intelligence-hub.html" },
@@ -81,6 +81,7 @@
     }
 
     function inferActiveNav() {
+        if (currentFileName() === "index.html") return "home";
         const activeByFile = {
             "intelligence-hub.html": "analyze",
             "organization-intelligence.html": "analyze",
@@ -104,6 +105,7 @@
         if (byFile) return byFile;
         const explicit = (document.body?.dataset?.activeNav || "").trim().toLowerCase();
         const aliases = {
+            home: "home",
             analyze: "analyze",
             analysis: "analyze",
             organization: "analyze",
@@ -121,6 +123,11 @@
     function navLinkMarkup(item, prefix, activeKey) {
         const isActive = item.key === activeKey;
         return `<a class="site-nav-link${isActive ? " is-active" : ""}" href="${escapeHtml(withRoot(prefix, item.href))}" data-nav-key="${escapeHtml(item.key)}" ${isActive ? 'aria-current="page"' : ""}>${escapeHtml(item.label)}</a>`;
+    }
+
+    function homeLinkMarkup(prefix, activeKey) {
+        const isActive = activeKey === "home";
+        return `<a class="site-nav-link site-nav-home${isActive ? " is-active" : ""}" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" data-nav-key="home" aria-label="Home" title="Home" ${isActive ? 'aria-current="page"' : ""}><svg class="site-nav-home__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span class="site-nav-home__label">Home</span></a>`;
     }
 
     function menuItemMarkup(item, prefix) {
@@ -148,6 +155,7 @@
                     <a class="site-product-name" href="${escapeHtml(withRoot(prefix, "index.html#home"))}">GrowWithHR</a>
                     <button class="site-nav-toggle" type="button" aria-label="Open navigation" aria-controls="siteNavLinks" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
                     <div class="site-nav-links" id="siteNavLinks">
+                        ${homeLinkMarkup(prefix, activeKey)}
                         <div class="site-nav-analyze${activeKey === "analyze" ? " is-active" : ""}">
                             <button class="site-nav-analyze__toggle" type="button" aria-expanded="false" aria-controls="siteAnalyzeMenu" ${activeKey === "analyze" ? 'aria-current="page"' : ""}><span>Analyze</span><span class="site-nav-analyze__chevron" aria-hidden="true">⌄</span></button>
                             <div class="site-nav-analyze__menu" id="siteAnalyzeMenu" aria-label="Analysis navigation">${ANALYZE_ITEMS.map((item) => menuItemMarkup(item, prefix)).join("")}</div>
@@ -250,7 +258,7 @@
             toggle.setAttribute("aria-expanded", "true");
             toggle.setAttribute("aria-label", "Close navigation");
             lockBodyScroll(true);
-            setBackgroundInert(true, header);
+            setBackgroundInert(false, header);
             window.requestAnimationFrame(() => links.querySelector("a, button")?.focus());
         };
 
@@ -297,9 +305,6 @@
         const header = document.querySelector("[data-site-shell-header]");
         if (!header) return;
         document.documentElement.style.setProperty("--site-shell-rendered-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
-        /* The desktop header is now part of normal document flow. Keeping this
-         * legacy offset at zero prevents older page styles from adding a second
-         * header-sized top gap. */
         document.documentElement.style.setProperty("--site-shell-header-height", "0px");
     }
 
@@ -323,12 +328,20 @@
     }
 
     function ensurePolishStyles(prefix) {
-        if (document.querySelector("link[data-growwithhr-ui-polish]")) return;
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = `${withRoot(prefix, "css/25-ui-polish.css")}?v=${THEME_VERSION}`;
-        link.dataset.growwithhrUiPolish = "";
-        document.head.appendChild(link);
+        if (!document.querySelector("link[data-growwithhr-ui-polish]")) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = `${withRoot(prefix, "css/25-ui-polish.css")}?v=${THEME_VERSION}`;
+            link.dataset.growwithhrUiPolish = "";
+            document.head.appendChild(link);
+        }
+        if (!document.querySelector("link[data-growwithhr-home-navigation]")) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = `${withRoot(prefix, "css/31-home-navigation.css")}?v=${THEME_VERSION}`;
+            link.dataset.growwithhrHomeNavigation = "";
+            document.head.appendChild(link);
+        }
     }
 
     function bootstrapProductPositioning(prefix) {
