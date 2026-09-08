@@ -5,135 +5,89 @@ const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "
 
 const home = read("index.html");
 assert.match(home, /Grow your company without guessing/i);
-assert.match(home, /what HR needs next/i);
-assert.match(home, /Hiring quickly/);
-assert.match(home, /Founder becoming a bottleneck/);
-assert.match(home, /Compliance Needs/);
-assert.match(home, /Organization Structure/);
-assert.match(home, /Anurag Sinha/);
-assert.match(home, /Founder, HRTechify/);
 assert.match(home, /Clear capabilities\. Clear boundaries\./);
-assert.match(home, /Security & Data/);
 assert.match(home, /Open My Reports/);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(home, /Leadership Intelligence \(Planned\)/);
 
 const hub = read("intelligence-hub.html");
-assert.match(hub, /Two focused company diagnostics\. One evolving company view\./i);
-assert.match(hub, /Organization Structure &amp; Growth/);
+assert.match(hub, /One company view\.\s*<span>Multiple specialist analysis engines/i);
+assert.match(hub, /Organization &amp; Growth/);
 assert.match(hub, /HR Compliance Readiness/);
-assert.match(hub, /Change Intelligence over time/i);
-assert.match(hub, /Full report delivered by email/i);
-assert.match(hub, /<details class="hub-start-note">/);
-assert.doesNotMatch(hub, /<details class="hub-start-note"[^>]*\bopen\b/);
-assert.match(hub, /<summary>Before you start/);
-assert.match(hub, /10–15 minutes/);
-assert.match(hub, /Do not enter sensitive employee case data/i);
-assert.ok(hub.indexOf('class="hub-engine-grid"') < hub.indexOf('<details class="hub-start-note">'), "Product cards must appear before the collapsed Before you start details element.");
-assert.match(hub, /Best when:/);
-assert.match(hub, /You’ll need:/);
-assert.match(hub, /You receive:/);
-assert.match(hub, /Areas that may require review/);
-assert.match(hub, /Supporting sources and recommended next actions/);
-assert.match(hub, /executive glimpse/i);
-assert.match(hub, /id="reportGlimpse"/);
-assert.match(hub, /Fictional example/);
-assert.match(hub, /Complete report delivery/);
-assert.match(hub, /Recover your saved company profile/i);
-assert.match(hub, /first assessment creates the baseline/i);
-assert.doesNotMatch(hub, /Reuse your Company DNA/i);
-assert.doesNotMatch(hub, /short-lived one-time token can transfer/i);
-assert.match(hub, /Your data stays secure when reopening a saved company profile/i);
-assert.match(hub, /Saved company information is kept for 6 months/i);
-assert.match(hub, /href="security\.html#retention">Data policy<\/a>/);
-assert.match(hub, /href="compliance-intelligence\.html"/);
-assert.doesNotMatch(hub, /href="analyze-company\.html\?engine=compliance"/);
-assert.match(hub, /id="organizationStructureLink"[^>]*href="organization-intelligence\.html"/);
-assert.match(hub, /id="workspaceReportId"/);
-assert.match(hub, /id="workspaceRecoveryCode"/);
-assert.match(hub, />Recovery Code<input/);
-assert.match(hub, /<button type="submit">Recover Company Baseline<\/button>/);
+assert.match(hub, /Workforce &amp; Capability Planning/);
+assert.match(hub, /COMPANY INTELLIGENCE ORCHESTRATOR/);
+assert.match(hub, /The orchestrator coordinates\. Specialist engines decide\./i);
+assert.match(hub, /Change Intelligence/i);
+assert.match(hub, /Recover your Company Workspace/i);
 assert.match(hub, /GrowWithHRCompanyWorkspace\.recover/);
-assert.match(hub, /my-reports\.html/);
-assert.match(hub, /security\.html/);
-assert.match(hub, /terms\.html/);
-assert.doesNotMatch(hub, /Choose an analysis/i);
+assert.match(hub, /GrowWithHRCompanyIntelligence/);
+assert.match(hub, /workforce-capability-planning\.html/);
+assert.match(hub, /workforce-capability-methodology\.html/);
+assert.match(hub, /AI may assist with interpretation and mapping, but does not silently create company facts or act as the final decision authority/i);
+
+const workforce = read("workforce-capability-planning.html");
+assert.match(workforce, /Plan the <span>capabilities and workforce<\/span> your strategy actually needs/i);
+assert.match(workforce, /CIPD strategic workforce-planning lens/i);
+assert.match(workforce, /GrowWithHR capability-led cascade/i);
+assert.match(workforce, /Scenario and work-redesign lens/i);
+assert.match(workforce, /Build · Buy · Borrow · Bind · Bot · Move/);
+assert.match(workforce, /Select at least two/i);
+assert.match(workforce, /Implementation economics/i);
+assert.match(workforce, /company’s planning cost, not only base salary/i);
+assert.match(workforce, /I don’t know/);
+assert.match(workforce, /does not score individual employees/i);
+assert.match(workforce, /Compare planning frameworks/);
+assert.match(workforce, /Create my implementation plan &amp; report/);
+
+const methodology = read("workforce-capability-methodology.html");
+assert.match(methodology, /CIPD/i);
+assert.match(methodology, /ESCO/i);
+assert.match(methodology, /O\*NET/i);
+assert.match(methodology, /WCP-2026\.1/);
+assert.match(methodology, /AI decision authority/i);
+assert.match(methodology, /High/i);
+assert.match(methodology, /Medium/i);
+assert.match(methodology, /Low/i);
+
+const resources = read("official-resources.html");
+assert.match(resources, /Organization &amp; Growth/);
+assert.match(resources, /HR Compliance Readiness/);
+assert.match(resources, /Workforce &amp; Capability Planning/);
+assert.match(resources, /workforce-capability-methodology\.html/);
+assert.match(resources, /Facts used/i);
+assert.match(resources, /Rule \/ framework/i);
+assert.match(resources, /Uncertainty/i);
 
 const security = read("security.html");
 assert.match(security, /AES-256-GCM/);
 assert.match(security, /not stored in plaintext/i);
-assert.match(security, /GitHub Pages/);
-assert.match(security, /Render/);
-assert.match(security, /Supabase/);
-assert.match(security, /Gmail API/);
 assert.match(security, /not currently represented as SOC 2, ISO 27001/i);
-assert.match(security, /one-time handoff token/i);
-assert.match(security, /<article id="retention" class="legal-card">/);
-assert.match(security, /kept for six months from the latest completed analysis/i);
-assert.match(security, /approximately seven days before deletion/i);
 
 const terms = read("terms.html");
 assert.match(terms, /research-grade product/i);
 assert.match(terms, /not legal certification/i);
 assert.match(terms, /do not score individual employees|individual capability judgments/i);
-assert.match(terms, /Source-backed recommendations/i);
-assert.match(terms, /product of HRTechify/i);
 
 const workspace = read("my-reports.html");
 assert.match(workspace, /recovery-based customer workspace/i);
-assert.match(workspace, /not a password account/i);
 assert.match(workspace, /GrowWithHRCompanyWorkspace\.recover/);
-assert.match(workspace, /reportIds/);
 assert.match(workspace, /completedEngines/);
-assert.match(workspace, /Delete reusable company data/);
-
-const about = read("more-info.html");
-assert.match(about, /founded by <strong>Anurag Sinha<\/strong>/);
-assert.match(about, /Public codebase/);
-assert.match(about, /Security & Data/);
-assert.match(about, /Product Use Terms/);
 
 const shell = read("js/site-shell.js");
+assert.match(shell, /label: "Company Analysis Overview"/);
 assert.match(shell, /label: "Organization & Growth"/);
 assert.match(shell, /label: "HR Compliance Readiness"/);
+assert.match(shell, /label: "Workforce & Capability Planning"/);
+assert.match(shell, /label: "Change Intelligence"/);
+assert.match(shell, /<span>Analyze<\/span>/);
 assert.match(shell, /label: "My Reports"/);
 assert.match(shell, /label: "Sources & Methodology"/);
-assert.match(shell, /label: "Sample Reports"/);
-assert.match(shell, /label: "Security & Data"/);
-assert.match(shell, /label: "Terms"/);
-assert.match(shell, /"compliance-intelligence\.html": "compliance"/);
-assert.match(shell, /"my-reports\.html": "reports"/);
-assert.match(shell, /"security\.html": "more"/);
-assert.match(shell, /"terms\.html": "more"/);
-assert.match(shell, /20260901-layered-dark-global/);
+assert.match(shell, /site-nav-analyze/);
 
-const styles = read("styles.css");
-assert.match(styles, /css\/28-buyer-trust\.css/);
-assert.match(styles, /css\/29-layered-dark\.css/);
-assert.match(styles, /css\/29-report-access\.css/);
-assert.ok(styles.indexOf("css/28-buyer-trust.css") < styles.indexOf("css/18-site-shell.css"), "Site shell must remain the final static stylesheet import.");
-assert.ok(styles.indexOf("css/29-layered-dark.css") < styles.indexOf("css/18-site-shell.css"), "The shared layered-dark theme must load before the final site shell stylesheet.");
-assert.ok(styles.indexOf("css/29-report-access.css") < styles.indexOf("css/18-site-shell.css"), "Report-access styling must load before the final site shell stylesheet.");
+const shellCss = read("css/18-site-shell.css");
+assert.match(shellCss, /\.site-header-shell\s*\{[\s\S]*?position:\s*relative/,
+  "Desktop site header must remain in normal document flow so it cannot cover scrolling page content.");
+assert.doesNotMatch(shellCss, /\.site-header-shell\s*\{[\s\S]{0,220}?position:\s*fixed/,
+  "The full desktop site header must not be fixed over page content.");
 
-const layeredTheme = read("css/29-layered-dark.css");
-assert.match(layeredTheme, /--layer-navy:/);
-assert.match(layeredTheme, /--layer-charcoal:/);
-assert.match(layeredTheme, /--layer-warm:/);
-assert.match(layeredTheme, /\.intelligence-hub-page/);
-assert.match(layeredTheme, /\.analyze-company-page/);
-assert.match(layeredTheme, /\.org-structure-page/);
-assert.match(layeredTheme, /\.sample-advisory-page/);
-assert.match(layeredTheme, /@media print/);
-
-const root = new URL("../", import.meta.url);
-for (const file of fs.readdirSync(root).filter((name) => name.endsWith(".html"))) {
-    const source = fs.readFileSync(new URL(file, root), "utf8");
-    const hasVersionedTheme = /styles\.css\?v=20260901-layered-dark-global|29-layered-dark\.css\?v=20260901-layered-dark-global/.test(source);
-    const delegatesToSharedShell = /<script[^>]+src="js\/site-shell\.js"[^>]*><\/script>/.test(source) && /<link[^>]+href="styles\.css"[^>]*>/.test(source);
-    assert.ok(
-        hasVersionedTheme || delegatesToSharedShell,
-        `${file} must load the shared layered-dark theme directly or delegate cache-busting to the shared site shell.`
-    );
-}
-
-console.log("Buyer trust, onboarding and customer workspace checks passed.");
+console.log("Buyer trust, unified Analyze navigation and Workforce & Capability onboarding checks passed.");

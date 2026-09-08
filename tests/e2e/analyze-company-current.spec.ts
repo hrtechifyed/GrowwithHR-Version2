@@ -27,8 +27,8 @@ async function seedSavedBriefing(page: Page, currentMoment = 2): Promise<void> {
   }, { key: STORAGE_KEY, moment: currentMoment });
 }
 
-test.describe("Company Insights entry", () => {
-  test("routes the homepage through Company Insights before an analysis", async ({ page }) => {
+test.describe("Company Analysis entry", () => {
+  test("routes the homepage through one Company Analysis hub before a specialist engine", async ({ page }) => {
     await page.goto("/index.html");
 
     const primaryCta = page.locator(".hero-actions a.primary-btn");
@@ -37,17 +37,22 @@ test.describe("Company Insights entry", () => {
 
     await primaryCta.click();
     await expect(page).toHaveURL(/intelligence-hub\.html$/);
-    await expect(page.locator("#hubTitle")).toContainText("Start with the company question");
+    await expect(page.locator(".analysis-overview-hero h1")).toContainText("One company view");
+    await expect(page.locator("#orchestratorTitle")).toContainText("The orchestrator coordinates");
 
     await expect(page.getByRole("link", {
-      name: /Identify My Company’s Compliance Needs/i
+      name: /Assess HR Compliance Readiness/i
     })).toHaveAttribute("href", "compliance-intelligence.html");
 
     const organizationLink = page.getByRole("link", {
-      name: /Analyze My Organization Structure & Growth/i
+      name: /Analyze Organization & Growth/i
     });
     await expect(organizationLink).toHaveAttribute("href", "organization-intelligence.html");
-    await expect(organizationLink).toHaveAttribute("target", "_blank");
+    await expect(organizationLink).not.toHaveAttribute("target", "_blank");
+
+    await expect(page.getByRole("link", {
+      name: /Plan Workforce & Capabilities/i
+    })).toHaveAttribute("href", "workforce-capability-planning.html");
   });
 });
 
@@ -136,14 +141,15 @@ test.describe("Analyze My Company", () => {
 });
 
 test.describe("Shared report navigation", () => {
-  test("renders one shared navbar without duplicate links", async ({ page }) => {
+  test("renders one shared navbar with a single Analyze menu", async ({ page }) => {
     await page.goto("/executive-advisory-report.html");
 
     await expect(page.locator("[data-site-shell-header]")).toHaveCount(1);
     await expect(page.locator("nav.navbar")).toHaveCount(0);
-    await expect(page.locator(".site-nav-link")).toHaveCount(4);
-    await expect(page.getByRole("link", { name: "Analyze My Company", exact: true })).toHaveCount(1);
-    await expect(page.getByRole("link", { name: "Sources", exact: true })).toHaveCount(1);
-    await expect(page.getByRole("link", { name: "Sample Reports", exact: true })).toHaveCount(1);
+    await expect(page.locator(".site-nav-link")).toHaveCount(2);
+    await expect(page.getByRole("button", { name: /Analyze/i })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "My Reports", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("link", { name: "Sources & Methodology", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("button", { name: /More/i })).toHaveCount(1);
   });
 });

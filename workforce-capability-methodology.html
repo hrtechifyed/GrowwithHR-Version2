@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workforce &amp; Capability Planning Methodology | GrowWithHR</title>
+  <meta name="description" content="See the frameworks, deterministic rules, confidence method, scenario boundaries and implementation assumptions used by GrowWithHR Workforce & Capability Planning.">
+  <link rel="stylesheet" href="styles.css?v=20260906-unified-analysis-shell">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="wcp-methodology-page" data-active-nav="resources">
+  <main class="wcp-shell">
+    <section class="wcp-hero">
+      <div>
+        <div class="wcp-kicker">GrowWithHR · Sources &amp; Methodology</div>
+        <h1 class="wcp-title">Workforce &amp; Capability Planning <span>methodology</span></h1>
+        <p class="wcp-lead">This page separates external frameworks and taxonomies from GrowWithHR’s own deterministic interpretation rules. The external material structures the analysis; it does not silently decide whether your company has a capability gap.</p>
+      </div>
+      <aside class="wcp-hero-card">
+        <strong>Current methodology identity</strong>
+        <ul>
+          <li>Engine version: 1.0.0</li>
+          <li>Rule set: WCP-2026.1</li>
+          <li>AI decision authority: No</li>
+          <li>Company facts must be user-confirmed</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="wcp-methodology-grid" aria-label="Frameworks used">
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">WORKFORCE-PLANNING LENS</div>
+        <h2>CIPD Strategic Workforce Planning</h2>
+        <p>GrowWithHR uses the CIPD workforce-planning structure as a planning lens: establish the baseline, assess workforce supply, analyze workforce demand, identify gaps, create the action plan and deliver the plan.</p>
+        <p>The engine also exposes the Seven Rights as a completeness check: people, skills, roles, shape, place, time and cost.</p>
+        <a class="wcp-method-link" href="https://www.cipd.org/uk/knowledge/guides/strategic-workforce-planning/" target="_blank" rel="noopener">CIPD Strategic Workforce Planning ↗</a>
+      </article>
+
+      <article id="capability-cascade" class="wcp-method-card">
+        <div class="wcp-eyebrow">CAPABILITY-LED LENS</div>
+        <h2>GrowWithHR Capability Cascade</h2>
+        <p>This is a GrowWithHR planning framework, not an external standard. It prevents the engine from jumping directly from “growth” to “hire more people”.</p>
+        <p><strong>Business strategy → critical business capability → work / activities → skills / knowledge → roles / workforce segments → capacity.</strong></p>
+        <p>A capability describes what the business must be able to do. A skill describes knowledge or proficiency that helps enable the work. They are deliberately not treated as interchangeable.</p>
+      </article>
+
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">REFERENCE TAXONOMY</div>
+        <h2>ESCO</h2>
+        <p>ESCO can be used as a structured reference vocabulary for occupations, knowledge and skills and for occupation-to-skill relationships. GrowWithHR does not use an ESCO label as proof that a company has or lacks a capability.</p>
+        <p><strong>Reference captured by this ruleset:</strong> ESCO v1.2.1.</p>
+        <a class="wcp-method-link" href="https://esco.ec.europa.eu/en/classification" target="_blank" rel="noopener">ESCO classification ↗</a>
+      </article>
+
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">WORK / TASK REFERENCE</div>
+        <h2>O*NET Content Model</h2>
+        <p>O*NET can provide a reference structure for work activities, tasks, skills and knowledge where occupation-level context is useful. It does not determine company-specific workforce demand or individual proficiency.</p>
+        <p><strong>Reference captured by this ruleset:</strong> O*NET 31.0 reference.</p>
+        <a class="wcp-method-link" href="https://www.onetcenter.org/content.html" target="_blank" rel="noopener">O*NET Content Model ↗</a>
+      </article>
+
+      <article id="scenario-planning" class="wcp-method-card">
+        <div class="wcp-eyebrow">SCENARIO LENS</div>
+        <h2>GrowWithHR Scenario &amp; Work Redesign Lens</h2>
+        <p>The engine compares supplied base-growth, higher-growth and work-redesign assumptions. Scenario values are planning assumptions, not forecasts.</p>
+        <p>A work-redesign percentage creates a capacity-equivalent scenario only. It does not automatically translate into job reductions, dismissals or a recommendation to remove the same percentage of roles.</p>
+      </article>
+
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">INTERVENTION LOGIC</div>
+        <h2>Build · Buy · Borrow · Bind · Bot · Move</h2>
+        <p>GrowWithHR tests multiple ways to close a workforce or capability gap instead of defaulting to external hiring.</p>
+        <ul>
+          <li><strong>Build:</strong> internal adjacent capability exists and there is time to develop it.</li>
+          <li><strong>Buy:</strong> strategically important capability is missing and timing or internal supply makes external hiring relevant.</li>
+          <li><strong>Borrow:</strong> demand is urgent, temporary, project-based or variable.</li>
+          <li><strong>Bind:</strong> strategically important capability is already present but materially concentrated.</li>
+          <li><strong>Bot:</strong> meaningful work may be redesigned or automated; assessment is at work/task level, not job-title level.</li>
+          <li><strong>Move:</strong> adjacent internal capability may be redeployed before external hiring is assumed.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="wcp-panel" style="margin-top:22px">
+      <div class="wcp-eyebrow">DETERMINISTIC RULE REGISTER</div>
+      <h2>How gap findings are produced</h2>
+      <p>The rules below operate on company information confirmed in the assessment. They are visible in the report so a user can challenge the inputs or rule rather than trusting a hidden score.</p>
+      <div class="wcp-rule-table">
+        <div class="wcp-rule-row"><code>WCP-GAP-INFO-01</code><span>Future capability demand is identified but current coverage is unknown → Information needed, not a fabricated gap.</span></div>
+        <div class="wcp-rule-row"><code>WCP-CAP-GAP-04</code><span>Critical / important capability + current coverage none or low → Confirmed capability gap from the supplied data.</span></div>
+        <div class="wcp-rule-row"><code>WCP-CAP-GAP-05</code><span>Critical capability + partial current coverage → Likely gap, subject to current supply validation.</span></div>
+        <div class="wcp-rule-row"><code>WCP-CAPACITY-GAP-02</code><span>Capability exists + company reports insufficient capacity → Capacity gap.</span></div>
+        <div class="wcp-rule-row"><code>WCP-CAPACITY-PRESSURE-01</code><span>Capability exists + current capacity is constrained → Capacity pressure.</span></div>
+        <div class="wcp-rule-row"><code>WCP-CONCENTRATION-01</code><span>Adequate / partial coverage + high or single-point concentration → Fragile coverage.</span></div>
+        <div class="wcp-rule-row"><code>WCP-COVERAGE-OK-01</code><span>No material gap signal from the supplied inputs → Adequate for the current scenario.</span></div>
+      </div>
+    </section>
+
+    <section class="wcp-methodology-grid" style="margin-top:22px">
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">CONFIDENCE</div>
+        <h2>High · Medium · Low</h2>
+        <p>GrowWithHR does not show fake percentage confidence.</p>
+        <ul>
+          <li><strong>High:</strong> required company inputs are available and no material information gap remains for the finding.</li>
+          <li><strong>Medium:</strong> the direction is reasonably clear but one or more inputs could change magnitude or intervention choice.</li>
+          <li><strong>Low:</strong> several important inputs are missing, so the engine explicitly shows what would increase confidence.</li>
+        </ul>
+      </article>
+
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">TIME &amp; COST</div>
+        <h2>Implementation economics boundary</h2>
+        <p>Cost output is only calculated from company-supplied cost fields in the current ruleset. If those inputs are absent, the report says <strong>Not estimated</strong>.</p>
+        <p>Indicative implementation windows attached to Build / Buy / Borrow / Bind / Bot / Move are planning assumptions and must be validated against the company’s actual hiring, learning, procurement and technology lead times.</p>
+        <p>GrowWithHR does not invent role quantities, salaries or universal productivity benchmarks.</p>
+      </article>
+
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">AI BOUNDARY</div>
+        <h2>AI does not decide the finding</h2>
+        <p><strong>AI decision authority: No.</strong> If future AI assistance proposes capability or skills mappings from free text, the user must confirm the mapping before it can enter deterministic analysis.</p>
+        <p>External taxonomies and generated text are reference / explanation layers. The company finding comes from user-confirmed facts plus the visible GrowWithHR ruleset.</p>
+      </article>
+
+      <article class="wcp-method-card">
+        <div class="wcp-eyebrow">WHAT WOULD CHANGE THE ANSWER?</div>
+        <h2>Every result is challengeable</h2>
+        <p>Each material finding lists the company facts used, missing facts, rule ID, confidence and what could change the conclusion — such as a different strategy horizon, stronger internal coverage, credible partner capacity, higher productive capacity or validated work redesign.</p>
+        <p>The objective is not to claim that one workforce plan is universally correct. The objective is to make the planning logic inspectable.</p>
+      </article>
+    </section>
+
+    <div class="wcp-actions"><a class="wcp-primary" href="workforce-capability-planning.html">Start Workforce &amp; Capability Planning →</a><a class="wcp-secondary" href="official-resources.html">Back to Sources &amp; Methodology</a></div>
+  </main>
+  <script src="js/build-marker.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workforce &amp; Capability Planning | GrowWithHR</title>
+  <meta name="description" content="Compare workforce-planning, capability-led and scenario lenses, then build an implementation plan with transparent rules, assumptions, timing and cost inputs.">
+  <link rel="stylesheet" href="styles.css?v=20260906-unified-analysis-shell">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="wcp-page" data-active-nav="analyze">
+  <main class="wcp-shell" id="wcpRoot">
+    <section class="wcp-hero" aria-labelledby="wcpTitle">
+      <div>
+        <div class="wcp-kicker">GrowWithHR · Workforce &amp; Capability Planning</div>
+        <h1 id="wcpTitle" class="wcp-title">Plan the <span>capabilities and workforce</span> your strategy actually needs.</h1>
+        <p class="wcp-lead">Start from business strategy, identify critical capabilities, compare three planning lenses, then choose the implementation approach that fits your time and budget constraints.</p>
+      </div>
+      <aside class="wcp-hero-card" aria-label="What this engine does">
+        <strong>One analysis. Three planning lenses.</strong>
+        <ul>
+          <li>CIPD strategic workforce-planning lens</li>
+          <li>GrowWithHR capability-led cascade</li>
+          <li>Scenario and work-redesign lens</li>
+          <li>Build · Buy · Borrow · Bind · Bot · Move options</li>
+        </ul>
+      </aside>
+    </section>
+
+    <div id="wcpReuseNotice" class="wcp-reuse-notice">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR analyses during the workspace period.</div>
+    <div class="wcp-boundary"><strong>Decision boundary:</strong> GrowWithHR evaluates organization-level capability and workforce planning. It does not score individual employees, decide who should be dismissed, determine compensation, or fabricate skills, workforce quantities or salary benchmarks. “I don’t know” is a valid answer.</div>
+
+    <form id="wcpForm" class="wcp-form-card" novalidate>
+      <h2>Build the planning baseline</h2>
+      <p class="wcp-subtle">Use current organization-level information. Cost fields are optional: if you do not provide them, GrowWithHR will show that the cost is not yet estimated rather than inventing a benchmark.</p>
+
+      <section class="wcp-section" aria-labelledby="wcpCompanyHeading">
+        <h3 id="wcpCompanyHeading">1 · Company and planning horizon</h3>
+        <p>These facts anchor workforce demand and let GrowWithHR reuse a confirmed company baseline where available.</p>
+        <div class="wcp-grid">
+          <div class="wcp-field"><label for="wcpCompanyName">Company name</label><input id="wcpCompanyName" required></div>
+          <div class="wcp-field"><label for="wcpEmail">Work email</label><input id="wcpEmail" type="email" required></div>
+          <div class="wcp-field"><label for="wcpIndustry">Industry</label><input id="wcpIndustry" required></div>
+          <div class="wcp-field"><label for="wcpLocations">Where must this workforce / capability be available?</label><input id="wcpLocations" placeholder="Bengaluru, India; Europe; Remote"></div>
+          <div class="wcp-field"><label for="wcpCurrentEmployees">Current employees</label><input id="wcpCurrentEmployees" type="number" min="1" required></div>
+          <div class="wcp-field"><label for="wcpExpectedEmployees">Expected employees at the planning horizon</label><input id="wcpExpectedEmployees" type="number" min="1" placeholder="Leave blank if unknown"><small>Planning assumption, not a forecast.</small></div>
+          <div class="wcp-field"><label for="wcpHorizonMonths">When must the capability be usable?</label><select id="wcpHorizonMonths"><option value="">I don’t know</option><option value="3">Within 3 months</option><option value="6">Within 6 months</option><option value="12">Within 12 months</option><option value="18">Within 18 months</option><option value="24">Within 24 months</option><option value="36">Within 36 months</option></select></div>
+        </div>
+      </section>
+
+      <section class="wcp-section" aria-labelledby="wcpStrategyHeading">
+        <h3 id="wcpStrategyHeading">2 · Business strategy</h3>
+        <p>GrowWithHR will not silently infer strategy. State the objective that should drive capability and workforce demand.</p>
+        <div class="wcp-grid">
+          <div class="wcp-field wide"><label for="wcpStrategyObjective">What business objective must the workforce plan enable?</label><textarea id="wcpStrategyObjective" required placeholder="For example: Enter the enterprise segment and make 40% of revenue come from enterprise customers within 24 months."></textarea></div>
+          <div class="wcp-field"><label for="wcpTargetOutcome">Target business outcome</label><input id="wcpTargetOutcome" placeholder="For example: 40% enterprise revenue"></div>
+          <div class="wcp-field"><label for="wcpBusinessImpact">What happens if this capability is unavailable?</label><select id="wcpBusinessImpact"><option value="">I don’t know</option><option value="critical">Strategy cannot execute / major risk</option><option value="material">Material delay or performance impact</option><option value="moderate">Manageable delay / workaround exists</option></select></div>
+        </div>
+      </section>
+
+      <section class="wcp-section" aria-labelledby="wcpCapabilityHeading">
+        <h3 id="wcpCapabilityHeading">3 · Critical capabilities</h3>
+        <p>A capability is what the business must be able to do. It is not the same thing as a skill. Add up to five capabilities and describe current supply at organization level.</p>
+        <div id="wcpCapabilityList" class="wcp-capability-list" aria-live="polite"></div>
+        <div class="wcp-actions"><button id="wcpAddCapability" class="wcp-secondary" type="button">+ Add another capability</button></div>
+      </section>
+
+      <section class="wcp-section" aria-labelledby="wcpFrameworkHeading">
+        <h3 id="wcpFrameworkHeading">4 · Frameworks to compare</h3>
+        <p>Select at least two. GrowWithHR shows what each lens emphasizes before you choose one approach or a hybrid implementation plan.</p>
+        <div class="wcp-framework-choice">
+          <label class="wcp-framework-option"><input type="checkbox" name="wcpFramework" value="cipd" checked><strong>CIPD workforce-planning lens</strong><span>Supply, demand, gaps, actions and completeness across people, skills, roles, shape, place, time and cost.</span></label>
+          <label class="wcp-framework-option"><input type="checkbox" name="wcpFramework" value="capability" checked><strong>Capability-led lens</strong><span>Strategy → capability → work → skills → roles → capacity, using transparent GrowWithHR rules.</span></label>
+          <label class="wcp-framework-option"><input type="checkbox" name="wcpFramework" value="scenario" checked><strong>Scenario / work-redesign lens</strong><span>Tests whether growth, automation or redesigned work changes the workforce decision.</span></label>
+        </div>
+      </section>
+
+      <section class="wcp-section" aria-labelledby="wcpScenarioHeading">
+        <h3 id="wcpScenarioHeading">5 · Scenario assumptions</h3>
+        <p>Leave values blank if you do not know them. Scenario calculations are planning assumptions, not predictions.</p>
+        <div class="wcp-grid">
+          <div class="wcp-field"><label for="wcpBaseGrowthPct">Base workforce growth assumption (%)</label><input id="wcpBaseGrowthPct" type="number" min="-90" max="500" step="1"></div>
+          <div class="wcp-field"><label for="wcpHighGrowthPct">Higher-growth assumption (%)</label><input id="wcpHighGrowthPct" type="number" min="-90" max="500" step="1"></div>
+          <div class="wcp-field"><label for="wcpWorkRedesignPct">Work redesign / automation equivalent (%)</label><input id="wcpWorkRedesignPct" type="number" min="0" max="80" step="1"><small>This does not automatically mean job reduction.</small></div>
+        </div>
+      </section>
+
+      <section class="wcp-section" aria-labelledby="wcpEconomicsHeading">
+        <h3 id="wcpEconomicsHeading">6 · Implementation economics</h3>
+        <p>Optional company inputs. GrowWithHR uses these to compare implementation routes. Blank fields remain “Not estimated”.</p>
+        <div class="wcp-grid">
+          <div class="wcp-field"><label for="wcpCurrency">Currency</label><select id="wcpCurrency"><option value="INR">INR</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select></div>
+          <div class="wcp-field"><label for="wcpBudgetCap">Available implementation budget</label><input id="wcpBudgetCap" type="number" min="0"></div>
+          <div class="wcp-field"><label for="wcpAnnualCostPerHire">Annual cost per external hire</label><input id="wcpAnnualCostPerHire" type="number" min="0"><small>Use your company’s planning cost, not only base salary.</small></div>
+          <div class="wcp-field"><label for="wcpTrainingCostPerPerson">Development / training cost per person</label><input id="wcpTrainingCostPerPerson" type="number" min="0"></div>
+          <div class="wcp-field"><label for="wcpContractorMonthlyCost">Contractor / partner monthly cost</label><input id="wcpContractorMonthlyCost" type="number" min="0"></div>
+          <div class="wcp-field"><label for="wcpAutomationInvestment">Automation / technology planning envelope</label><input id="wcpAutomationInvestment" type="number" min="0"></div>
+        </div>
+      </section>
+
+      <div class="wcp-actions">
+        <button id="wcpAnalyze" class="wcp-primary" type="submit">Compare planning frameworks →</button>
+        <a class="wcp-secondary" href="intelligence-hub.html">Back to Company Analysis</a>
+        <a class="wcp-secondary" href="workforce-capability-methodology.html" target="_blank" rel="noopener">Methodology &amp; Rules ↗</a>
+      </div>
+      <p id="wcpFormError" class="wcp-error" role="alert" hidden></p>
+    </form>
+
+    <section id="wcpResults" class="wcp-analysis-results" hidden aria-live="polite">
+      <article class="wcp-panel">
+        <div class="wcp-eyebrow">FRAMEWORK COMPARISON</div>
+        <h2>See how the same company problem looks through different lenses.</h2>
+        <div id="wcpFrameworkResults" class="wcp-framework-comparison"></div>
+      </article>
+
+      <article class="wcp-panel">
+        <div class="wcp-eyebrow">GAP ANALYSIS</div>
+        <h2 id="wcpOverallPosition">Workforce and capability findings</h2>
+        <p>Every finding exposes the facts, deterministic rule, missing information, confidence and what could change the result.</p>
+        <div id="wcpFindingResults" class="wcp-findings-grid"></div>
+      </article>
+
+      <article class="wcp-panel">
+        <div class="wcp-eyebrow">CHOOSE THE IMPLEMENTATION LENS</div>
+        <h2>Which approach should drive the final plan?</h2>
+        <p>You are not locked into one framework. Choose the lens that best fits the decision, or combine them into a hybrid plan.</p>
+        <div id="wcpChoiceGrid" class="wcp-choice-grid">
+          <button type="button" class="wcp-choice-button is-selected" data-plan-choice="hybrid"><strong>Hybrid</strong><span>Combine workforce completeness, capability criticality and scenario resilience.</span></button>
+          <button type="button" class="wcp-choice-button" data-plan-choice="cipd"><strong>CIPD-led</strong><span>Prioritize workforce supply, demand, gaps, time and cost.</span></button>
+          <button type="button" class="wcp-choice-button" data-plan-choice="capability"><strong>Capability-led</strong><span>Prioritize strategic capability building and internal adjacency.</span></button>
+          <button type="button" class="wcp-choice-button" data-plan-choice="scenario"><strong>Scenario-led</strong><span>Prioritize work redesign, flexibility and no-regret actions.</span></button>
+        </div>
+        <div class="wcp-actions">
+          <button id="wcpFinalize" class="wcp-primary" type="button">Create my implementation plan &amp; report →</button>
+        </div>
+        <p id="wcpFinalizeStatus" class="wcp-progress" role="status" aria-live="polite"></p>
+      </article>
+    </section>
+  </main>
+
+  <script src="js/company-workspace-client.js"></script>
+  <script src="js/workforce-capability-workspace-bridge.js"></script>
+  <script type="module" src="js/workforce-capability-planning.mjs"></script>
+  <script src="js/build-marker.js"></script>
+</body>
+</html>

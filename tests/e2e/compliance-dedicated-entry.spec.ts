@@ -37,7 +37,7 @@ test.describe("Dedicated Compliance entry", () => {
     await page.goto("/intelligence-hub.html");
 
     const complianceLink = page.getByRole("link", {
-      name: /Assess My HR Compliance Readiness/i
+      name: /Assess HR Compliance Readiness/i
     });
 
     await expect(complianceLink).toHaveAttribute("href", "compliance-intelligence.html");
@@ -52,7 +52,10 @@ test.describe("Dedicated Compliance entry", () => {
     await page.goto("/compliance-intelligence.html");
 
     await expect(page.locator("[data-site-shell-header]")).toHaveCount(1);
-    await expect(page.locator('.site-nav-link[data-nav-key="compliance"]')).toHaveAttribute("aria-current", "page");
+    const analyze = page.getByRole("button", { name: "Analyze", exact: true });
+    await expect(analyze).toHaveAttribute("aria-current", "page");
+    await analyze.click();
+    await expect(page.getByRole("link", { name: "HR Compliance Readiness", exact: true })).toHaveAttribute("href", "compliance-intelligence.html");
     await expect(page.locator("#firstVisitActions")).toBeVisible();
     await expect(page.locator("#resumePanel")).toBeHidden();
     await expect(page.getByRole("button", { name: "Start my advisory" })).toBeVisible();

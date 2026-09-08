@@ -160,7 +160,9 @@ assert.match(assessmentPage, /organization\.expansion/);
 
 const hub = fs.readFileSync(new URL("../intelligence-hub.html", import.meta.url), "utf8");
 assert.match(hub, /createHandoff/);
-assert.match(hub, /organization-intelligence\.html\?handoff=/);
+assert.match(hub, /secureAnalysisHandoff/);
+assert.match(hub, /organization-intelligence\.html/);
+assert.match(hub, /\?handoff=\$\{encodeURIComponent\(token\)\}/);
 assert.doesNotMatch(hub, /organization-intelligence\.html\?[^"'`]*(?:accessKey|recoveryCode)=/i);
 assert.doesNotMatch(hub, /Choose an analysis/i, "Company Insights must not show a redundant Choose an analysis CTA.");
 

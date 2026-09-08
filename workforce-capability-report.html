@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workforce &amp; Capability Planning Report | GrowWithHR</title>
+  <meta name="description" content="GrowWithHR Workforce & Capability Planning executive report, framework comparison, implementation options, scenarios and roadmap.">
+  <link rel="stylesheet" href="styles.css?v=20260906-unified-analysis-shell">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="wcp-report-page" data-active-nav="analyze">
+  <main class="wcp-shell" id="wcpReportRoot" aria-live="polite">
+    <div class="wcp-report-head">
+      <div>
+        <div class="wcp-kicker">GrowWithHR · Workforce &amp; Capability Planning</div>
+        <h1 class="wcp-title" style="font-size:clamp(2.2rem,5vw,4.2rem)">Your <span>workforce &amp; capability</span> plan</h1>
+        <p class="wcp-lead" id="wcpReportSubtitle">Loading your planning analysis…</p>
+      </div>
+      <div class="wcp-report-actions">
+        <a class="wcp-secondary" href="workforce-capability-methodology.html" target="_blank" rel="noopener">Methodology &amp; Rules ↗</a>
+        <button class="wcp-secondary" id="wcpPrintReport" type="button">Print</button>
+        <button class="wcp-primary" id="wcpDownloadReport" type="button">Download PDF</button>
+      </div>
+    </div>
+    <p id="wcpReportDeliveryStatus" class="wcp-delivery-status" role="status" aria-live="polite" hidden></p>
+    <section id="wcpReportContent"></section>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script type="module" src="js/workforce-capability-report.mjs"></script>
+  <script src="js/build-marker.js"></script>
+</body>
+</html>
