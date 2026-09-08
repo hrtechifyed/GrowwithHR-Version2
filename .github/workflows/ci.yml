@@ -59,6 +59,7 @@ jobs:
       - name: Run site shell, buyer trust and UI polish checks
         run: >
           node tests/site-shell-first-paint-checks.mjs &&
+          node tests/shared-home-navigation-checks.mjs &&
           node tests/buyer-trust-onboarding-checks.mjs &&
           node tests/compliance-dedicated-entry-checks.mjs &&
           node tests/ui-polish-contract-checks.mjs
