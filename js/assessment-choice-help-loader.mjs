@@ -1,4 +1,5 @@
 import './assessment-choice-help.js';
+import './assessment-choice-help-experience.mjs';
 
 if (!document.querySelector('link[data-growwithhr-choice-help]')) {
   const link = document.createElement('link');
