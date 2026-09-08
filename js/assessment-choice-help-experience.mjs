@@ -11,20 +11,19 @@ if (api && !document.documentElement.dataset.gwhChoiceExperience) {
   const controls = () => Array.from(document.querySelectorAll('main select, main input[type="radio"], main input[type="checkbox"]')).filter(control => catalog[fieldKey(control)]);
   const group = control => control instanceof HTMLSelectElement ? Array.from(control.options) : Array.from(document.querySelectorAll(`main input[name="${CSS.escape(control.name)}"]`)).filter(input => input.type === control.type);
   let activeControl = null;
-  let activeTrigger = null;
   document.addEventListener('click', event => {
     const trigger = event.target.closest?.('.gwh-choice-help-trigger');
     if (!trigger) return;
     const container = trigger.closest('[data-field-wrapper], .wcp-field, .org-field, .advisory-field, fieldset');
     activeControl = container?.querySelector('select, input[type="radio"], input[type="checkbox"]') || null;
-    activeTrigger = trigger;
     if (!activeControl) return;
     queueMicrotask(() => {
       const dialog = document.querySelector('.gwh-choice-help-dialog');
       if (!dialog?.open) return;
-      const options = group(activeControl);
+      const control = activeControl;
+      const options = group(control);
       const cards = Array.from(dialog.querySelectorAll('.gwh-choice-help-option'));
-      const entry = catalog[fieldKey(activeControl)];
+      const entry = catalog[fieldKey(control)];
       let index = 0;
       options.forEach(option => {
         const description = entry?.options?.[option.value] || option.title || '';
@@ -33,13 +32,13 @@ if (api && !document.documentElement.dataset.gwhChoiceExperience) {
         if (!card || card.querySelector('.gwh-choice-help-use')) return;
         const button = document.createElement('button');
         button.type = 'button'; button.className = 'gwh-choice-help-use';
-        button.textContent = activeControl.type === 'checkbox' ? 'Toggle this option' : 'Use this answer';
-        button.disabled = option.disabled || activeControl.disabled;
+        button.textContent = control.type === 'checkbox' ? 'Toggle this option' : 'Use this answer';
+        button.disabled = option.disabled || control.disabled;
         button.addEventListener('click', () => {
           if (option instanceof HTMLOptionElement) {
-            activeControl.value = option.value;
-            activeControl.dispatchEvent(new Event('input', { bubbles: true }));
-            activeControl.dispatchEvent(new Event('change', { bubbles: true }));
+            control.value = option.value;
+            control.dispatchEvent(new Event('input', { bubbles: true }));
+            control.dispatchEvent(new Event('change', { bubbles: true }));
           } else {
             option.click();
           }
@@ -50,7 +49,7 @@ if (api && !document.documentElement.dataset.gwhChoiceExperience) {
     });
   }, true);
   function renderOverview() {
-    const form = document.querySelector('#wcpForm, #organizationForm, #advisoryForm, #assessmentForm, .advisory-form');
+    const form = document.querySelector('#wcpForm, #organizationForm, #storyForm, #advisoryForm, #assessmentForm, .advisory-form');
     if (!form || form.querySelector('.gwh-choice-help-overview')) return;
     const intro = form.querySelector('h2, h3, .advisory-field-group');
     if (!intro) return;
