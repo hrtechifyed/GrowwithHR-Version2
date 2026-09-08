@@ -25,12 +25,14 @@ on:
       - "css/21-story-visual-sections.css"
       - "css/28-buyer-trust.css"
       - "css/29-layered-dark.css"
+      - "css/assessment-choice-help.css"
       - "data/assessment/**"
       - "data/schema/**"
       - "js/config/app-config.js"
       - "js/executive-assessment.js"
       - "js/executive-assessment/**"
       - "js/assessment-v3/**"
+      - "js/assessment-choice-help*"
       - "js/m5/**"
       - "js/build-marker.js"
       - "js/pdf.js"
@@ -83,12 +85,14 @@ on:
       - "css/21-story-visual-sections.css"
       - "css/28-buyer-trust.css"
       - "css/29-layered-dark.css"
+      - "css/assessment-choice-help.css"
       - "data/assessment/**"
       - "data/schema/**"
       - "js/config/app-config.js"
       - "js/executive-assessment.js"
       - "js/executive-assessment/**"
       - "js/assessment-v3/**"
+      - "js/assessment-choice-help*"
       - "js/m5/**"
       - "js/build-marker.js"
       - "js/pdf.js"
@@ -131,28 +135,21 @@ jobs:
     name: Playwright assessment tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     env:
       CI: true
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
       - name: Install project dependencies
         run: npm install --no-audit --no-fund
-
       - name: Install Playwright test package
         run: npm install --no-save --no-audit --no-fund @playwright/test
-
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-
       - name: Run assessment, report, homepage and workspace browser tests
         run: >
           npx playwright test
@@ -192,8 +189,8 @@ jobs:
           tests/e2e/report-intelligence-v020.spec.ts
           tests/e2e/visual-story-report-v021.spec.ts
           tests/e2e/founder-intelligence-roadmap.spec.ts
+          tests/e2e/assessment-choice-help.spec.ts
           --project=chromium
-
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -202,7 +199,6 @@ jobs:
           path: playwright-report/
           if-no-files-found: ignore
           retention-days: 7
-
       - name: Upload failure evidence
         if: failure()
         uses: actions/upload-artifact@v4
