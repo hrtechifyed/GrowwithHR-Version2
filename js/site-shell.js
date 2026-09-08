@@ -258,7 +258,7 @@
             toggle.setAttribute("aria-expanded", "true");
             toggle.setAttribute("aria-label", "Close navigation");
             lockBodyScroll(true);
-            setBackgroundInert(false, header);
+            setBackgroundInert(true, header);
             window.requestAnimationFrame(() => links.querySelector("a, button")?.focus());
         };
 
@@ -305,6 +305,9 @@
         const header = document.querySelector("[data-site-shell-header]");
         if (!header) return;
         document.documentElement.style.setProperty("--site-shell-rendered-height", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+        /* The desktop header is now part of normal document flow. Keeping this
+         * legacy offset at zero prevents older page styles from adding a second
+         * header-sized top gap. */
         document.documentElement.style.setProperty("--site-shell-header-height", "0px");
     }
 
