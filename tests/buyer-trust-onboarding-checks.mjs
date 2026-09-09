@@ -4,11 +4,17 @@ import fs from "node:fs";
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const home = read("index.html");
-assert.match(home, /Grow your company without guessing/i);
-assert.match(home, /Clear capabilities\. Clear boundaries\./);
-assert.match(home, /Open My Reports/);
+assert.match(home, /Practical people insights/i);
+assert.match(home, /Explore our assessment engines/i);
+assert.match(home, /Welcome back!/);
+assert.match(home, /HR Compliance Readiness/);
+assert.match(home, /Organization &amp; Growth/);
+assert.match(home, /Workforce &amp; Capability Planning/);
+assert.match(home, /href="intelligence-hub\.html"/);
+assert.match(home, /href="sample-reports\.html"/);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(home, /Leadership Intelligence \(Planned\)/);
+assert.doesNotMatch(home, /Open My Reports|Recover your reports|readiness score|readiness in number/i);
 
 const hub = read("intelligence-hub.html");
 assert.match(hub, /One company view\.\s*<span>Multiple specialist analysis engines/i);
