@@ -44,9 +44,12 @@ assert.match(uiCss, /grid-template-columns: minmax\(0, 1fr\) auto minmax\(0, 1fr
 assert.match(uiCss, /body\.intelligence-hub-page/);
 assert.match(uiCss, /@media \(prefers-reduced-motion: reduce\)/);
 
-assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn">Understand My Company/);
-assert.match(homepage, /href="sample-reports\.html" class="secondary-btn">Explore Sample Reports/);
+assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn"[^>]*>Understand My Company/);
+assert.match(homepage, /href="sample-reports\.html" class="secondary-btn"[^>]*>Explore Sample Reports/);
 assert.match(homepage, /Current Product/i);
+assert.match(homepage, /Welcome back!/);
+assert.match(homepage, /Workforce &amp; Capability Planning/);
+assert.match(homepage, /gwhr-approved-home__preview/);
 assert.doesNotMatch(homepage, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(homepage, /Leadership Intelligence \(Planned\)/);
 assert.doesNotMatch(homepageRuntime, /fetch\(/);
@@ -67,5 +70,6 @@ assert.match(officialResources, /Workforce &amp; Capability Planning/);
 assert.match(moreInfo, /Progress on this device/);
 assert.match(moreInfo, /Reusable Company Workspace/);
 assert.match(moreInfo, /Anurag Sinha/);
+assert.match(moreInfo, /How can I contact HRTechify\?/);
 
 console.log("GrowWithHR unified navigation and UI polish contracts passed.");
