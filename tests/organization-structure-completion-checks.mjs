@@ -110,7 +110,7 @@ const noExpansion = analyzeOrganizationStructure(baseInput({
 }));
 const expansion = analyzeOrganizationStructure(baseInput({
     shared: { employees: 50, expectedEmployees: 55 },
-    workforce: { totalEmployees: 50, expectedEmployees: 55 },
+    workforce: { totalEmployees: 50, expectedEmployees12Months: 55 },
     geography: { operatingLocationCount: 1 },
     organization: { peopleManagerCount: 10, expansion: "Open a new operating location and launch a new product line" }
 }));
@@ -136,7 +136,7 @@ assert.match(model.confidenceMeaning, /not statistical/i);
 assert.match(model.assumptions.join(" "), /not a forecast/i);
 
 assert.equal(FRAMEWORK.version, "1.1");
-assert.ok(Array.is(FRAMEWORK.changeLog) && FRAMEWORK.changeLog.length >= 2);
+assert.ok(Array.isArray(FRAMEWORK.changeLog) && FRAMEWORK.changeLog.length >= 2);
 assert.ok(FRAMEWORK.lastReviewed);
 assert.equal(SOURCES["OPENSTAX-SPAN-CONTEXT"].access, "Free public source");
 assert.match(SOURCES["OPENSTAX-SPAN-CONTEXT"].license, /CC BY 4\.0/i);
