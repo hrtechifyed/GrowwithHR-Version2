@@ -32,6 +32,8 @@ body.has-site-shell .site-nav-link.is-active,body.has-site-shell .site-nav-link[
 body.has-site-shell .site-nav-analyze__menu,body.has-site-shell .site-nav-more__menu,body.has-site-shell .site-nav-links{background-color:#211812}
 body.has-site-shell .site-product-name{color:#fff8f1}
 body.has-site-shell .site-nav-link,body.has-site-shell .site-nav-analyze__toggle,body.has-site-shell .site-nav-more__toggle{font-family:inherit}
+body.has-site-shell .site-nav-link[href$="my-reports.html"]{display:none!important}
+body.has-site-shell.intelligence-hub-page .analysis-workspace{display:none!important}
 body.has-site-shell .site-footer{background:var(--site-footer-background)}
 body.has-site-shell .gwhr-approved-contact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px}
 body.has-site-shell .gwhr-approved-contact article{min-width:0;padding:24px;border:1px solid var(--glass-border);border-radius:16px;background:var(--gradient-card)}
