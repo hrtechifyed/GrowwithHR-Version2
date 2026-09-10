@@ -14,6 +14,8 @@ test.describe("homepage client readiness", () => {
     await expect(cards).toHaveCount(2);
     await expect(page.getByRole("link", { name: /Identify My Company’s Compliance Needs/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Analyze My Organization Structure & Growth/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Open My Reports/i })).toHaveCount(0);
+    await expect(page.locator("body")).not.toContainText(/Recovery Code|recover previous saved company/i);
     expect(problems).toEqual([]);
   });
 

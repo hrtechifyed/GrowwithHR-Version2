@@ -1,0 +1,21 @@
+/* Keep advisory radio and checkbox controls directly interactive while preserving card styling. */
+.analyze-company-page .advisory-choice-card input,
+.analyze-company-page .advisory-choice-pill input,
+.analyze-company-page .advisory-checkbox-card input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 2;
+}
+
+.analyze-company-page .advisory-choice-card__surface,
+.analyze-company-page .advisory-choice-pill > span,
+.analyze-company-page .advisory-checkbox-card > span {
+    position: relative;
+    z-index: 1;
+}

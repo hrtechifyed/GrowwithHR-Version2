@@ -76,8 +76,16 @@ const stylesSource = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)].map((match) => match[1]);
 assert.equal(
     styleImports.at(-1),
-    "css/18-site-shell.css",
-    "The static shared site shell remains last in styles.css; the runtime polish layer is loaded explicitly afterward."
+    "css/32-assessment-interaction-fix.css",
+    "The assessment interaction safety layer must remain the final static stylesheet."
+);
+assert.ok(
+    styleImports.indexOf("css/18-site-shell.css") < styleImports.indexOf("css/31-approved-template.css"),
+    "The approved template must load after the canonical shared shell without replacing it."
+);
+assert.ok(
+    styleImports.indexOf("css/31-approved-template.css") < styleImports.indexOf("css/32-assessment-interaction-fix.css"),
+    "The interaction fix must load after the approved presentation template."
 );
 assert.ok(
     styleImports.indexOf("css/24-intelligence-hub.css") < styleImports.indexOf("css/18-site-shell.css"),
