@@ -4,17 +4,11 @@ import fs from "node:fs";
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const home = read("index.html");
-assert.match(home, /Practical people insights/i);
-assert.match(home, /Explore our assessment engines/i);
-assert.match(home, /Welcome back!/);
-assert.match(home, /HR Compliance Readiness/);
-assert.match(home, /Organization &amp; Growth/);
-assert.match(home, /Workforce &amp; Capability Planning/);
-assert.match(home, /href="intelligence-hub\.html"/);
-assert.match(home, /href="sample-reports\.html"/);
+assert.match(home, /Grow your company without guessing/i);
+assert.match(home, /Clear capabilities\. Clear boundaries\./);
+assert.doesNotMatch(home, /Open My Reports|Recovery Code|recover previous saved company/i);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(home, /Leadership Intelligence \(Planned\)/);
-assert.doesNotMatch(home, /Open My Reports|Recover your reports|readiness score|readiness in number/i);
 
 const hub = read("intelligence-hub.html");
 assert.match(hub, /One company view\.\s*<span>Multiple specialist analysis engines/i);
@@ -24,7 +18,6 @@ assert.match(hub, /Workforce &amp; Capability Planning/);
 assert.match(hub, /COMPANY INTELLIGENCE ORCHESTRATOR/);
 assert.match(hub, /The orchestrator coordinates\. Specialist engines decide\./i);
 assert.match(hub, /Change Intelligence/i);
-assert.match(hub, /Recover your Company Workspace/i);
 assert.match(hub, /GrowWithHRCompanyWorkspace\.recover/);
 assert.match(hub, /GrowWithHRCompanyIntelligence/);
 assert.match(hub, /workforce-capability-planning\.html/);
@@ -95,5 +88,11 @@ assert.match(shellCss, /\.site-header-shell\s*\{[\s\S]*?position:\s*relative/,
   "Desktop site header must remain in normal document flow so it cannot cover scrolling page content.");
 assert.doesNotMatch(shellCss, /\.site-header-shell\s*\{[\s\S]{0,220}?position:\s*fixed/,
   "The full desktop site header must not be fixed over page content.");
+
+const approvedCss = read("css/31-approved-template.css");
+assert.match(approvedCss, /site-nav-link\[href\$="my-reports\.html"\][\s\S]*display:none/i,
+  "My Reports must not be advertised in the public navigation while recovery is not a public feature.");
+assert.match(approvedCss, /intelligence-hub-page \.analysis-workspace[\s\S]*display:none/i,
+  "The recovery workspace must stay hidden from the current public Analyze experience.");
 
 console.log("Buyer trust, unified Analyze navigation and Workforce & Capability onboarding checks passed.");
