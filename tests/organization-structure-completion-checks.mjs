@@ -214,15 +214,13 @@ assert.match(methodology, /CC BY 4\.0/);
 const privacy = fs.readFileSync(new URL("../more-info.html", import.meta.url), "utf8");
 assert.match(privacy, /Report download and delivery activity/);
 assert.match(privacy, /not intended to contain the structural findings/i);
-assert.match(privacy, /one-time opaque handoff token/i);
+assert.doesNotMatch(privacy, /Workspace Recovery Code|one-time opaque handoff token/i);
 
 const homepage = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 assert.match(homepage, />Understand My Company</);
 assert.match(homepage, />Explore Sample Reports</);
-assert.match(homepage, /<span class="buyer-card__label">Organization &amp; Growth<\/span>/);
-assert.match(homepage, /Can our structure support growth\?/);
-assert.match(homepage, /href="organization-intelligence\.html"/);
-assert.match(homepage, /href="workforce-capability-planning\.html"/);
+assert.match(homepage, /<span class="buyer-card__label">Organization Structure &amp; Growth Engine<\/span>/);
+assert.match(homepage, /Where will our structure start constraining growth\?/);
 assert.doesNotMatch(homepage, /Organization Structure \(Available\)/);
 assert.doesNotMatch(homepage, />Analyze My Company</);
 assert.doesNotMatch(homepage, />View Sample Advisory</);
