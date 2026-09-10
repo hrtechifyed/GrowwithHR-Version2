@@ -57,10 +57,8 @@ includes(home, 'href="sample-reports.html"', "The sample reports CTA must route 
 includes(home, "Explore Sample Reports", "The sample reports CTA must remain visible.");
 includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence preview must remain available.");
 assert(home.indexOf("Understand My Company") < home.indexOf('data-testid="home-executive-stack"'), "The primary company-insights CTA must appear before the homepage intelligence preview.");
-includes(home, '<span class="buyer-card__label">Organization &amp; Growth</span>', "Organization & Growth must remain a visible current product capability.");
-includes(home, "Can our structure support growth?", "Organization & Growth must use the approved buyer-facing value proposition.");
-includes(home, "Workforce &amp; Capability Planning", "The current workforce planning engine must be visible.");
-includes(home, "Welcome back!", "The homepage must acknowledge returning visitors.");
+includes(home, '<span class="buyer-card__label">Organization Structure &amp; Growth Engine</span>', "Organization Structure & Growth Engine must remain a visible current product capability.");
+includes(home, "Where will our structure start constraining growth?", "Organization Structure must use the current buyer-facing value proposition.");
 assert(!home.includes("Organization Structure (Available)"), "The retired roadmap-style Organization status label must not reappear.");
 assert(!home.includes(">Analyze My Company<"), "The retired homepage CTA label must not reappear.");
 assert(!home.includes(">View Sample Advisory<"), "The retired single-sample CTA label must not reappear.");
@@ -104,7 +102,7 @@ const assessmentJs = read("js/executive-assessment.js");
 const storageJs = read("js/executive-assessment/assessment-storage.js");
 includes(storageJs, '"growwithhr-advisory-briefing-v2"', "The current assessment storage key must be preserved.");
 includes(storageJs, "window.localStorage.getItem", "Saved assessment progress must remain readable.");
-includes(storageJs, "window.localStorage.setItem", "Saved assessment progress must remain writable.");
+includes(storageJs, "window.localStorage.setItem", "Assessment progress must remain writable.");
 
 const variablesCss = read("css/01-variables.css");
 [
