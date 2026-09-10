@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("homepage client readiness", () => {
-  test("desktop shows the three current product capabilities", async ({ page }) => {
+  test("desktop shows the two current product capabilities", async ({ page }) => {
     const problems: string[] = [];
     page.on("console", message => {
       if (["error", "warning"].includes(message.type())) problems.push(`${message.type()}: ${message.text()}`);
@@ -11,20 +11,18 @@ test.describe("homepage client readiness", () => {
     await page.goto("/index.html", { waitUntil: "networkidle" });
 
     const cards = page.locator("#capabilities .buyer-card");
-    await expect(cards).toHaveCount(3);
-    await expect(cards.nth(0)).toContainText("HR Compliance Readiness");
-    await expect(cards.nth(1)).toContainText("Organization & Growth");
-    await expect(cards.nth(2)).toContainText("Workforce & Capability Planning");
-    await expect(cards.nth(0).getByRole("link", { name: /Get started/i })).toHaveAttribute("href", "compliance-intelligence.html");
-    await expect(cards.nth(1).getByRole("link", { name: /Get started/i })).toHaveAttribute("href", "organization-intelligence.html");
-    await expect(cards.nth(2).getByRole("link", { name: /Get started/i })).toHaveAttribute("href", "workforce-capability-planning.html");
+    await expect(cards).toHaveCount(2);
+    await expect(page.getByRole("link", { name: /Identify My Company’s Compliance Needs/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Analyze My Organization Structure & Growth/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Open My Reports/i })).toHaveCount(0);
+    await expect(page.locator("body")).not.toContainText(/Recovery Code|recover previous saved company/i);
     expect(problems).toEqual([]);
   });
 
   test("mobile capabilities remain usable without horizontal page overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/index.html", { waitUntil: "networkidle" });
-    await expect(page.locator("#capabilities .buyer-card")).toHaveCount(3);
+    await expect(page.locator("#capabilities .buyer-card")).toHaveCount(2);
 
     const overflow = await page.evaluate(() => (
       document.documentElement.scrollWidth - document.documentElement.clientWidth
@@ -39,13 +37,10 @@ test.describe("homepage client readiness", () => {
   });
 });
 
-test("homepage explains a finding without an invented readiness score", async ({ page }) => {
+test("homepage explains the source and GrowWithHR rule boundary", async ({ page }) => {
   await page.goto("/index.html", { waitUntil: "networkidle" });
-  await expect(page.getByRole("heading", { name: "Explore a sample insight" })).toBeVisible();
-  await expect(page.locator(".gwhr-home-example")).toContainText("Decision ownership needs clarification");
-  await expect(page.locator(".gwhr-home-example")).toContainText("Recommended action");
-  await expect(page.locator(".gwhr-home-example")).toContainText("Clarify decision owners and escalation paths.");
-  await expect(page.locator(".gwhr-home-example").getByRole("link", { name: /See a Sample Report/i })).toHaveAttribute("href", "sample-reports.html");
-  await expect(page.locator(".gwhr-home-example")).not.toContainText(/readiness score|\d+\s*\/\s*100/i);
-  await expect(page.getByRole("link", { name: /Open My Reports/i })).toHaveCount(0);
+  await expect(page.locator("#compliance-engine-title")).toHaveText("Every recommendation shows what it is based on.");
+  await expect(page.locator("[data-testid=\"compliance-engine-flow\"] .engine-step")).toHaveCount(4);
+  await expect(page.getByText("The GrowWithHR rule explains how those facts produced the result.", { exact: false })).toBeVisible();
+  await expect(page.getByText("The relevant public source explains the underlying principle or authority.", { exact: false })).toBeVisible();
 });
