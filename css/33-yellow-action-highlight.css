@@ -1,0 +1,70 @@
+/* Yellow release visibility layer: keeps primary actions and buyer action links consistent. */
+@media screen {
+  :root {
+    --brand-gold: #ffd84d;
+    --brand-orange: #ffc107;
+    --gradient-brand: linear-gradient(135deg, #fff176 0%, #ffd54f 48%, #ffb300 100%);
+  }
+
+  body.has-site-shell :is(
+    .primary-btn,
+    .analysis-action,
+    .hub-engine-card__action,
+    .modal-primary,
+    .btn-primary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .cta-button,
+    .action-primary,
+    button[type="submit"]
+  ) {
+    background: var(--gradient-brand) !important;
+    color: #241900 !important;
+    border: 1px solid rgba(255, 216, 77, .48) !important;
+    border-radius: 10px;
+    font-weight: 800;
+  }
+
+  body.has-site-shell .buyer-card__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    max-width: 100%;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 216, 77, .46);
+    border-radius: 10px;
+    background: rgba(255, 193, 7, .10);
+    color: var(--brand-gold) !important;
+    font-weight: 800;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  body.has-site-shell .buyer-card__action:hover {
+    background: rgba(255, 193, 7, .16);
+    border-color: rgba(255, 216, 77, .70);
+  }
+
+  body.has-site-shell :is(
+    .section-tag,
+    .hero-badge,
+    .workspace-eyebrow,
+    .buyer-card__label,
+    .buyer-proof-label,
+    .home-preview-label,
+    .analysis-engine-label,
+    .workspace-badge,
+    .buyer-authority-links a,
+    .gwhr-approved-contact a
+  ) {
+    color: var(--brand-gold) !important;
+  }
+
+  body.home-page.has-site-shell :is(.hero-graph, .dna-core-wrapper, #dnaCoreCanvas) {
+    display: none !important;
+  }
+}
