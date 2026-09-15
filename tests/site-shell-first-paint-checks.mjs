@@ -41,9 +41,9 @@ assert.ok(
     "The deferred shared shell must render immediately once parsing has progressed beyond loading."
 );
 assert.match(shellSource, /document\.getElementById\(["']dnaCoreCanvas["']\)/,
-    "The shared shell must detect the homepage intelligence graph container.");
+    "The shared shell must retain compatibility detection for pages that expose the intelligence graph container.");
 assert.match(shellSource, /import\(["']\.\/intelligence-core\.js["']\)/,
-    "The homepage intelligence graph must have an independent module bootstrap fallback.");
+    "The shared shell must retain the independent intelligence graph bootstrap fallback for compatible pages.");
 assert.match(shellSource, /css\/25-ui-polish\.css/,
     "The shared shell must load the final cross-page UI/accessibility polish layer.");
 assert.doesNotMatch(shellSource, /26-header-brand-lockup\.css/,
@@ -73,7 +73,8 @@ assert.doesNotMatch(buildMarkerSource, /integratedBrand/,
     "Runtime enhancements must not introduce a second navbar DOM contract.");
 
 const stylesSource = fs.readFileSync(path.join(root, "styles.css"), "utf8");
-const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)].map((match) => match[1]);
+const styleImports = [...stylesSource.matchAll(/@import\s+url\(["']([^"']+)["']\);/g)]
+    .map((match) => match[1].replace(/[?#].*$/, ""));
 assert.equal(
     styleImports.at(-1),
     "css/32-assessment-interaction-fix.css",
@@ -112,4 +113,4 @@ assert.doesNotMatch(presentationCss, /(^|\n)\s*\.site-nav-glass\s*\{/,
 assert.doesNotMatch(presentationCss, /(^|\n)\s*\.site-brand-logo\s*\{/,
     "Page-level presentation CSS must not move or resize the shared logo.");
 
-console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including one canonical navbar layout source, independent homepage graph bootstrap, shared footer and final polish loading.`);
+console.log(`Site shell first-paint checks passed for ${shellPages.length} pages, including one canonical navbar layout source, compatibility graph bootstrap, shared footer and final polish loading.`);
