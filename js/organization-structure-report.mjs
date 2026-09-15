@@ -45,12 +45,13 @@ const FACTS=[
 function buildChangeIntelligence(payload){
     const previousData=payload.previousData || readJson(PREVIOUS_SNAPSHOT_KEY)?.companyData;
     if(!previousData)return {baselineAvailable:false,changes:[],factChanges:[],findingChanges:[],summary:{increased:0,improved:0,newPriority:0,informationGap:0}};
-    let previousAnalysis=null;try{previousAnalysis=analyzeOrganizationStructure(previousData);}catch(_error){}
+    const baselineAvailable=Boolean(previousData.organization?.confirmedAt);
+    let previousAnalysis=null;if(baselineAvailable){try{previousAnalysis=analyzeOrganizationStructure(previousData);}catch(_error){}}
     const factChanges=FACTS.map(([label,path])=>({label,field:path,before:factValue(previousData,path),after:factValue(payload.data,path)})).filter((item)=>clean(item.before)!==""&&clean(item.after)!==""&&String(item.before)!==String(item.after));
     const beforeById=new Map(list(previousAnalysis?.findings).map((item)=>[item.id,item]));
     const findingChanges=list(payload.analysis?.findings).map((after)=>{const before=beforeById.get(after.id);if(!before||before.status===after.status)return null;let direction="changed";const beforeRank=statusRank(before.status),afterRank=statusRank(after.status);if(after.status==="needs-information"&&before.status!=="needs-information")direction="information-gap";else if(before.status==="needs-information"&&after.status!=="needs-information")direction="information-resolved";else if(beforeRank!==null&&afterRank!==null&&afterRank>beforeRank)direction="increased";else if(beforeRank!==null&&afterRank!==null&&afterRank<beforeRank)direction="improved";return{id:after.id,title:after.title,beforeStatus:before.status,afterStatus:after.status,direction};}).filter(Boolean);
     const summary={increased:findingChanges.filter((item)=>item.direction==="increased").length,improved:findingChanges.filter((item)=>item.direction==="improved").length,newPriority:findingChanges.filter((item)=>item.beforeStatus==="stable"&&["watch","action"].includes(item.afterStatus)).length,informationGap:findingChanges.filter((item)=>item.direction==="information-gap").length};
-    return {baselineAvailable:true,previousReportId:payload.previousReportId||readJson(PREVIOUS_SNAPSHOT_KEY)?.reportId||"Previous confirmed baseline",factChanges,changes:factChanges,findingChanges,summary};
+    return {baselineAvailable,previousReportId:payload.previousReportId||readJson(PREVIOUS_SNAPSHOT_KEY)?.reportId||"Previous confirmed baseline",factChanges,changes:factChanges,findingChanges,summary};
 }
 
 function sourceLinks(item){return list(item.sources).map((source)=>`<a class="org-source-link" href="${esc(source.url)}" target="_blank" rel="noopener">${esc(source.title)} · ${esc(source.publisher)}</a>`).join("");}

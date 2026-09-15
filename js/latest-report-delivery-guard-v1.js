@@ -56,6 +56,7 @@
             window.GrowWithHREditorialReportTemplate?.installed === true &&
             window.GrowWithHREditorialReportTemplate?.styleId === STYLE_ID &&
             window.GrowWithHRReportBrandTemplate?.reportStyle === STYLE_ID &&
+            window.GrowWithHRPDF?.__growwithhrVisualSectionedReportInstalled === true &&
             typeof window.GrowWithHRPDF?.buildAdvisoryPdf === "function"
         );
     }
@@ -72,6 +73,9 @@
     }
 
     async function buildLatest(service, payload = {}) {
+        if (!latestRuntimeReady() && window.GrowWithHRVisualSectionedReportReady) {
+            await window.GrowWithHRVisualSectionedReportReady;
+        }
         if (!latestRuntimeReady()) {
             throw new Error("The latest GrowWithHR editorial report runtime is not ready. Reload the page before sending or downloading the report.");
         }
@@ -83,6 +87,7 @@
             report: records.report,
             lead: records.lead,
             answers: records.answers,
+            inputChanges: source.inputChanges ?? records.report?.inputChanges ?? [],
             ...(identity.reportId ? { reportId: identity.reportId } : {}),
             ...(identity.previousReportId ? { previousReportId: identity.previousReportId } : {})
         });
@@ -106,6 +111,7 @@
 
         const built = await buildLatest(this, {
             ...source,
+            ...identityFrom(source, this),
             pdf: null,
             pdfDocument: null,
             document: null
@@ -121,6 +127,7 @@
         if (!isLatestPdf(pdf)) {
             pdf = (await buildLatest(this, {
                 ...source,
+                ...identityFrom(source, this),
                 pdf: null,
                 pdfDocument: null,
                 document: null
@@ -184,6 +191,7 @@
         if (!isLatestPdf(pdf)) {
             pdf = (await buildLatest(this, {
                 ...source,
+                ...identityFrom(source, this),
                 pdf: null,
                 pdfDocument: null,
                 document: null

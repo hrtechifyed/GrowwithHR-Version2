@@ -53,13 +53,13 @@
         const label = organization?.querySelector(".buyer-card__label");
         if (label && !/flagship/i.test(label.textContent || "")) label.textContent = "Organization Structure & Growth · Flagship";
         const focus = document.querySelector("#capabilities .focus-note");
-        if (focus) focus.textContent = "The public product is intentionally focused on Organization Structure & Growth as the flagship diagnostic, supported by HR Compliance Readiness. Additional intelligence modules remain future product work.";
+        if (focus) focus.textContent = "Start with one analysis and reuse your confirmed company facts across Organization, Compliance and Workforce & Capability Planning.";
     }
 
     function updateMetaDescription() {
         if (!document.body?.classList.contains("home-page")) return;
         const meta = document.querySelector('meta[name="description"]');
-        if (meta) meta.setAttribute("content", "GrowWithHR turns company facts into explainable organization-growth decisions, HR compliance readiness signals, Change Intelligence and clear next actions.");
+        if (meta) meta.setAttribute("content", "GrowWithHR turns company facts into organization-growth decisions, HR compliance readiness, workforce and capability plans, and Change Intelligence.");
     }
 
     function apply() {

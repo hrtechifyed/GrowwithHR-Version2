@@ -47,6 +47,9 @@ jobs:
       - name: Run baseline contracts
         run: npm run test:baseline
 
+      - name: Run application audit regressions
+        run: node tests/application-audit-regressions.mjs
+
       - name: Run Organization Intelligence structured checks
         run: >
           node tests/organization-intelligence-v1-checks.mjs &&

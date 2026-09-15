@@ -35,6 +35,7 @@ test.describe("Complete assessment and advisory delivery", () => {
       });
     });
     await page.route("**/api/send-advisory", async route => {
+      expect(route.request().headers()["authorization"]).toBe("Bearer local-test-token");
       deliveryPayload = route.request().postDataJSON();
       await route.fulfill({
         status: 200,
@@ -54,6 +55,15 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.addInitScript(() => {
       localStorage.clear();
       sessionStorage.clear();
+      let session: any = null;
+      (window as any).supabase = { createClient: () => ({ auth: {
+        getSession: async () => ({ data: { session }, error: null }),
+        signInWithPassword: async ({ email }: { email: string }) => {
+          session = { user: { email }, access_token: 'local-test-token' };
+          return { data: { session }, error: null };
+        },
+        signOut: async () => { session = null; return { error: null }; }
+      } }) };
 
       class FakeJsPDF {
         pages = 1;
@@ -84,7 +94,7 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.goto("/");
     await page.locator(".analyze-redirect-section a.primary-btn").click();
     await expect(page).toHaveURL(/\/intelligence-hub\.html$/);
-    await page.locator('a[href="compliance-intelligence.html"]').click();
+    await page.locator('.analysis-action[href="compliance-intelligence.html"]').click();
     await expect(page).toHaveURL(/\/compliance-intelligence\.html$/);
     await page.getByRole("button", { name: "Start my advisory" }).click();
 
@@ -112,8 +122,8 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.locator("#countries").fill("1");
     await page.locator("#nextButton").click();
 
-    await page.locator('input[name="hiringPlans"][value="Moderate Growth"]').click({ force: true });
-    await page.locator('input[name="expansionPlans"][value="scale-operations"]').click({ force: true });
+    await page.locator('input[name="hiringPlans"][value="Moderate Growth"]').check();
+    await page.locator('input[name="expansionPlans"][value="scale-operations"]').check();
     await page.locator("#nextButton").click();
 
     const founderLed = page.getByRole("radio", { name: /Founder-led/i });
@@ -138,9 +148,17 @@ test.describe("Complete assessment and advisory delivery", () => {
       (window as Window & { GrowWithHREmail?: { sendAdvisory?: unknown } }).GrowWithHREmail?.sendAdvisory
     ));
 
+    await page.waitForFunction(() => Boolean((window as any).GrowWithHRReportAccessGate?.installed));
     await page.locator("#generateReportButton").click();
     await expect(page.locator("#successScreen")).toBeVisible({ timeout: 30_000 });
-    await expect(page.locator("#successTitle")).toHaveText("Your advisory is ready.");
+    await expect(page.locator('#personalReportGlimpse')).toBeVisible();
+    expect(deliveryPayload).toBeNull();
+    await expect(page.locator('#emailFullReportButton')).toBeDisabled();
+    await page.locator('#customerAuthMount input[name="password"]').fill('local-test-password');
+    await page.locator('#customerAuthMount .gwh-auth-submit').click();
+    await expect(page.locator('#emailFullReportButton')).toBeEnabled();
+    await page.locator('#emailFullReportButton').click();
+    await expect(page.locator('#fullReportDeliveryStatus')).toContainText('Complete report sent');
 
     expect(deliveryPayload).not.toBeNull();
     const payload = deliveryPayload as Record<string, any>;

@@ -123,16 +123,12 @@ test.describe("Analyze My Company", () => {
     await expect(emailInput).toHaveValue("test.user@example.com;");
 
     await page.evaluate(() => {
-      (window as any).GrowWithHRPDF = { buildAdvisoryPdf: async () => null };
-      (window as any).GrowWithHREmail = {
-        sendAdvisory: async () => ({
-          ok: true,
-          customerStatus: "sent",
-          customerSent: true,
-          internalStatus: "sent",
-          internalSent: true
-        })
-      };
+      const app = (window as any).executiveAssessment;
+      app.deliveryService.prepareAndSend = async (payload: any) => ({
+        ...payload,
+        pdf: { base64: 'JVBERi0xLjQK', inputChanges: [] },
+        delivery: { ok: true, customerStatus: 'auth-required', customerSent: false }
+      });
     });
 
     await page.locator("#generateReportButton").click();

@@ -146,7 +146,7 @@
     margin-bottom: 10px;
 }
 
-.analyze-company-page.advisory-compact-story .advisory-question-card input,
+.analyze-company-page.advisory-compact-story .advisory-question-card input:not([type="radio"]):not([type="checkbox"]),
 .analyze-company-page.advisory-compact-story .advisory-question-card select,
 .analyze-company-page.advisory-compact-story .advisory-question-card textarea {
     width: 100%;
