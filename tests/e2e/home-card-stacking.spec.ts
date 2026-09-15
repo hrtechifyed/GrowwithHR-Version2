@@ -147,7 +147,7 @@ test.describe(
         }
 
         test(
-            "renders the self-contained intelligence graph",
+            "does not show the homepage intelligence graph",
             async ({ page }) => {
                 await page.setViewportSize({
                     width: 1440,
@@ -155,95 +155,22 @@ test.describe(
                 });
                 await page.goto("/?e2e=1");
 
-                const graph = page.locator(
-                    "#dnaCoreCanvas"
-                );
-                const canvas = graph.locator(
-                    "canvas[data-growwithhr-intelligence-core]"
-                );
+                await expect(
+                    page.locator(".hero-graph")
+                ).toBeHidden();
+                await expect(
+                    page.locator("#dnaCoreCanvas")
+                ).toBeHidden();
 
-                await expect(graph).toBeVisible();
-                await expect(graph).toHaveAttribute(
-                    "data-renderer",
-                    "canvas-2d"
+                const dashboardLayout = page.locator(
+                    ".hero-dashboard-layout"
                 );
-                await expect(graph).toHaveAttribute(
-                    "data-ready",
-                    "true"
+                await expect(dashboardLayout).toBeVisible();
+
+                const gridTemplateAreas = await dashboardLayout.evaluate(
+                    (element) => getComputedStyle(element).gridTemplateAreas
                 );
-                await expect(canvas).toHaveCount(1);
-
-                const dimensions =
-                    await canvas.evaluate(
-                        (element) => {
-                            const canvasElement =
-                                element as HTMLCanvasElement;
-                            const rect =
-                                canvasElement
-                                    .getBoundingClientRect();
-
-                            return {
-                                cssWidth: rect.width,
-                                cssHeight: rect.height,
-                                bitmapWidth:
-                                    canvasElement.width,
-                                bitmapHeight:
-                                    canvasElement.height
-                            };
-                        }
-                    );
-
-                expect(
-                    dimensions.cssWidth
-                ).toBeGreaterThan(250);
-                expect(
-                    dimensions.cssHeight
-                ).toBeGreaterThan(250);
-                expect(
-                    dimensions.bitmapWidth
-                ).toBeGreaterThanOrEqual(
-                    Math.floor(
-                        dimensions.cssWidth
-                    )
-                );
-                expect(
-                    dimensions.bitmapHeight
-                ).toBeGreaterThanOrEqual(
-                    Math.floor(
-                        dimensions.cssHeight
-                    )
-                );
-
-                const diagnostics =
-                    await page.evaluate(
-                        () => {
-                            return (
-                                window as Window & {
-                                    GrowWithHRIntelligenceCore?: {
-                                        renderer: string;
-                                        ready: boolean;
-                                        getState(): {
-                                            width: number;
-                                            height: number;
-                                        };
-                                    };
-                                }
-                            ).GrowWithHRIntelligenceCore;
-                        }
-                    );
-
-                expect(
-                    diagnostics?.renderer
-                ).toBe("canvas-2d");
-                expect(
-                    diagnostics?.ready
-                ).toBe(true);
-                expect(
-                    diagnostics?.getState().width
-                ).toBeGreaterThan(250);
-                expect(
-                    diagnostics?.getState().height
-                ).toBeGreaterThan(250);
+                expect(gridTemplateAreas).not.toContain("graph");
             }
         );
     }

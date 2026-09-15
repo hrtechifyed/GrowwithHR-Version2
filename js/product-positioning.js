@@ -41,6 +41,11 @@
         nodes.forEach(replaceTextNode);
     }
 
+    function removeHomepageIntelligenceGraph() {
+        if (!document.body?.classList.contains("home-page")) return;
+        document.querySelectorAll(".hero-graph").forEach((graph) => graph.remove());
+    }
+
     function prioritizeOrganizationOnHomepage() {
         if (!document.body?.classList.contains("home-page")) return;
         const grid = document.querySelector("#capabilities .buyer-outcome-grid");
@@ -64,6 +69,7 @@
 
     function apply() {
         normalizeVisibleTerminology();
+        removeHomepageIntelligenceGraph();
         prioritizeOrganizationOnHomepage();
         updateMetaDescription();
     }
