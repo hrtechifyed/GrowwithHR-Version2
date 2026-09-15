@@ -51,31 +51,42 @@ includes(siteShell, "setBackgroundInert", "The mobile navigation must prevent in
 
 const home = read("index.html");
 includes(home, 'id="home"', "The homepage hero must remain available.");
-includes(home, 'href="intelligence-hub.html"', "The primary Understand My Company CTA must route through the intelligence hub.");
-includes(home, "Understand My Company", "The primary company-insights CTA must remain visible.");
+includes(home, 'href="intelligence-hub.html"', "The primary assessment CTA must route through the intelligence hub.");
+includes(home, "Start an Assessment", "The primary homepage assessment CTA must remain visible.");
 includes(home, 'href="sample-reports.html"', "The sample reports CTA must route through the sample-report hub.");
-includes(home, "Explore Sample Reports", "The sample reports CTA must remain visible.");
-includes(home, 'data-testid="home-executive-stack"', "The homepage intelligence preview must remain available.");
-assert(home.indexOf("Understand My Company") < home.indexOf('data-testid="home-executive-stack"'), "The primary company-insights CTA must appear before the homepage intelligence preview.");
-includes(home, '<span class="buyer-card__label">Organization Structure &amp; Growth Engine</span>', "Organization Structure & Growth Engine must remain a visible current product capability.");
-includes(home, "Where will our structure start constraining growth?", "Organization Structure must use the current buyer-facing value proposition.");
+includes(home, "View a Sample Report", "The sample report CTA must remain visible.");
+includes(home, 'data-testid="home-product-preview"', "The homepage must show a qualitative product preview.");
+includes(home, 'data-testid="home-report-preview"', "The homepage must show a report preview.");
+includes(home, 'data-testid="home-capabilities-stack"', "The current product cards must remain visible.");
+includes(home, "Organization Structure &amp; Growth · Flagship", "Organization Structure & Growth must remain the flagship product.");
+includes(home, "Where could our structure constrain growth?", "Organization Structure must retain a clear growth-oriented buyer question.");
+includes(home, "No arbitrary scores", "The homepage must explicitly avoid arbitrary score framing.");
+includes(home, "Review may be required", "The homepage preview must use qualitative statuses.");
+assert(!home.includes('data-testid="home-executive-stack"'), "The retired legacy intelligence-card preview must not reappear.");
+assert(!home.includes("dnaCoreCanvas"), "The retired homepage graph must not reappear.");
 assert(!home.includes("Organization Structure (Available)"), "The retired roadmap-style Organization status label must not reappear.");
 assert(!home.includes(">Analyze My Company<"), "The retired homepage CTA label must not reappear.");
 assert(!home.includes(">View Sample Advisory<"), "The retired single-sample CTA label must not reappear.");
 assert(!home.includes("backupstyles.css"), "The obsolete backup stylesheet must not be loaded.");
 assert(!home.includes("es-module-shims"), "The homepage must not load the retired module shim.");
-assert(!home.includes("three@"), "The Canvas 2D homepage graph must not load unused Three.js.");
+assert(!home.includes("three@"), "The homepage must not load unused Three.js.");
 
 const homeRuntime = read("app.js");
 assert(!homeRuntime.includes("fetch("), "The marketing homepage must not eagerly load the compliance knowledge base.");
 assert(!homeRuntime.includes("setInterval("), "Homepage preview controls must not auto-cycle without user control.");
 
 const heroCss = read("css/06-hero.css");
-includes(heroCss, ".hero-dashboard-layout", "The executive-intelligence layout is required.");
+includes(heroCss, ".hero-dashboard-layout", "The legacy executive-intelligence layout must remain available for pages that still use it.");
 includes(heroCss, "grid-template-areas:", "The executive-intelligence layout must define responsive grid areas.");
-includes(heroCss, ".hero-sidebar", "The executive-intelligence controls are required.");
-includes(heroCss, "grid-template-columns:repeat(3, 1fr);", "The desktop intelligence cards must use three equal columns.");
-includes(heroCss, "introStackCardEnter", "The homepage cards must retain their staged entrance animation.");
+includes(heroCss, ".hero-sidebar", "The executive-intelligence controls must remain styled for compatible pages.");
+includes(heroCss, "grid-template-columns:repeat(3, 1fr);", "The desktop intelligence cards must retain their compatibility styling.");
+includes(heroCss, "introStackCardEnter", "The compatibility stylesheet must retain its staged entrance animation.");
+
+const productHomeCss = read("css/34-homepage-product-led.css");
+includes(productHomeCss, ".ph-hero-grid", "The product-led homepage hero layout is required.");
+includes(productHomeCss, ".ph-products-grid", "The product-led homepage product-card layout is required.");
+includes(productHomeCss, ".ph-report-window", "The product-led homepage report preview is required.");
+includes(productHomeCss, "@media (max-width: 760px)", "The product-led homepage must provide mobile behavior.");
 
 const assessmentHtml = read("analyze-company.html");
 [
