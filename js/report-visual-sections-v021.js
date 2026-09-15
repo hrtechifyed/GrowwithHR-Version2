@@ -39,7 +39,7 @@
             const model = buildModel(enrichedPayload);
             const rows = core.values(buildRows(enrichedPayload, model));
             const data = core.mergeSource(enrichedPayload, model);
-            const trace = { changes: core.values(enrichedPayload.inputChanges || enrichedPayload.trace?.changes) };
+            const trace = { changes: core.values(enrichedPayload.inputChanges ?? enrichedPayload.report?.inputChanges ?? enrichedPayload.trace?.changes) };
             const report = renderers.buildVariant(JsPDF, "standard", rows, model, enrichedPayload, trace, logo);
 
             return {
@@ -53,6 +53,7 @@
                 reportId: identityRecord.reportId,
                 previousReportId,
                 reportIdentity: { ...identityRecord, previousReportId },
+                inputChanges: trace.changes,
                 companyName: core.clean(data.companyName, "Your Organisation"),
                 selectedThemes: ["standard"],
                 singleReportDelivery: true,
@@ -107,5 +108,6 @@
         return true;
     }
 
-    install().catch((error) => console.error("GrowWithHR single founder-demo report could not install.", error));
+    window.GrowWithHRVisualSectionedReportReady = install();
+    window.GrowWithHRVisualSectionedReportReady.catch((error) => console.error("GrowWithHR single founder-demo report could not install.", error));
 })();

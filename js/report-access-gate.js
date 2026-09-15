@@ -25,7 +25,7 @@
 
     function currentPayload(app) {
         return {
-            report: app.writeReportData(),
+            report: { ...app.writeReportData(), ...(app.lastChangeReport || {}) },
             lead: app.writeLeadRecord(),
             answers: { ...app.answers }
         };
@@ -72,12 +72,12 @@
         const model = previewModel(payload);
         const priorities = pickPriorities(model, payload.answers);
         const company = clean(payload.answers.companyName || payload.report.companyName, "Your organisation");
-        const employees = clean(payload.answers.employees || payload.answers.employeeCount, "Not provided");
+        const employees = clean(payload.answers.employees ?? payload.answers.employeeCount, "Not provided");
         const states = Array.isArray(payload.answers.operatingStates)
             ? payload.answers.operatingStates.length
             : clean(payload.answers.operatingStateCount || payload.answers.locations, "Not provided");
         const complianceCount = Array.isArray(model?.compliance) ? model.compliance.length : statValue(model, ["complianceAreaCount", "applicableCount"], "Generated");
-        const changeCount = Array.isArray(payload.report?.inputChanges) ? payload.report.inputChanges.length : 0;
+        const changeCount = list(app.lastPdfDocument?.inputChanges || payload.report?.inputChanges).length;
         return `
             <section class="gwh-report-glimpse" id="personalReportGlimpse" aria-labelledby="personalReportGlimpseTitle">
                 <div class="gwh-report-glimpse__head">
@@ -236,7 +236,8 @@
     }
 
     async function bootstrap() {
-        await Promise.resolve(window.GrowWithHRCustomerAuthReady).catch(() => {});
+        // Install the delivery boundary without waiting for the remote auth library.
+        // Sign-in can load later; report generation must never email automatically.
         for (let attempt = 0; attempt < 240; attempt += 1) {
             const app = window.executiveAssessment;
             if (app && window.GrowWithHRCompanyWorkspaceContinuity?.version && install(app)) {

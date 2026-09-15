@@ -21,7 +21,9 @@ const [schemaSource, fixtureSource, packageSource] = await Promise.all([
 const schema = JSON.parse(schemaSource);
 const fixture = JSON.parse(fixtureSource);
 const packageJson = JSON.parse(packageSource);
-const ajv = new Ajv2020({ allErrors: true, strict: true });
+// withdrawnAt is declared on the containing object; the conditional only
+// requires it. Keep the frozen JSON Schema contract and all validation rules.
+const ajv = new Ajv2020({ allErrors: true, strict: true, strictRequired: false });
 addFormats(ajv);
 const validate = ajv.compile(schema);
 

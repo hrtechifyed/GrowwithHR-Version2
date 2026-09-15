@@ -61,4 +61,10 @@ for (const file of pages) {
 }
 assert.equal(withRoot('../', 'index.html#home'), '../index.html#home');
 assert.equal(withRoot('', 'index.html#home'), 'index.html#home');
+for (const pathname of ['/', '/GrowwithHR-Version2/']) {
+  location.pathname = pathname;
+  assert.equal(inferActiveNav(), 'home', `${pathname}: directory entry must be Home`);
+  const $ = load(buildHeader('', inferActiveNav()).innerHTML);
+  assert.equal($('a[data-nav-key="home"]').attr('aria-current'), 'page');
+}
 console.log(`Shared Home navigation checks passed across ${pages.length} public pages.`);

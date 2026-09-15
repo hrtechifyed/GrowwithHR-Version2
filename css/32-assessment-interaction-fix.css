@@ -1,0 +1,28 @@
+/* Native controls remain clickable and keyboard accessible without covering
+   the label text or intercepting clicks on the rest of the choice card. */
+.analyze-company-page .advisory-choice-card,
+.analyze-company-page .advisory-choice-pill,
+.analyze-company-page .advisory-checkbox-card {
+    position: relative;
+}
+
+.analyze-company-page .advisory-choice-card input,
+.analyze-company-page .advisory-choice-pill input,
+.analyze-company-page .advisory-checkbox-card input {
+    position: absolute;
+    inset: 16px auto auto 14px;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    opacity: 1;
+    cursor: pointer;
+    pointer-events: auto;
+    accent-color: var(--advisory-gold, #ffad66);
+    z-index: 2;
+}
+
+.analyze-company-page .advisory-choice-card__surface,
+.analyze-company-page .advisory-choice-pill > span,
+.analyze-company-page .advisory-checkbox-card > span {
+    padding-inline-start: 44px;
+}

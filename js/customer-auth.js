@@ -212,8 +212,8 @@
                 if (mode === "signup") {
                     const result = await signUp(email, pass);
                     if (!result.session) {
-                        setStatus("Account created. Check your email to confirm it, then return here and sign in.");
                         setMode("signin");
+                        setStatus("Account created. Check your email to confirm it, then return here and sign in.");
                         return;
                     }
                 } else {

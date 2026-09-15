@@ -214,7 +214,7 @@ assert.match(methodology, /CC BY 4\.0/);
 const privacy = fs.readFileSync(new URL("../more-info.html", import.meta.url), "utf8");
 assert.match(privacy, /Report download and delivery activity/);
 assert.match(privacy, /not intended to contain the structural findings/i);
-assert.match(privacy, /one-time opaque handoff token/i);
+assert.doesNotMatch(privacy, /Workspace Recovery Code|one-time opaque handoff token/i);
 
 const homepage = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 assert.match(homepage, />Understand My Company</);

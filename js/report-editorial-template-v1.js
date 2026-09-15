@@ -162,8 +162,8 @@
             ["Working model", clean(data.workModel || data.workingModel)],
             ["Employees", formatCount(data.employees ?? data.employeeCount ?? data.headcount)],
             ["Women employees", formatAnswer(data.womenEmployees ?? data.femaleEmployees ?? data.hasWomenEmployees)],
-            ["Contractors", formatCount(data.contractors ?? data.contractWorkers ?? data.contractorCount, "0")],
-            ["Workers", formatCount(data.workers ?? data.workerCount ?? data.workmen, "0")],
+            ["Contractors", formatCount(data.contractors ?? data.contractWorkers ?? data.contractorCount)],
+            ["Workers", formatCount(data.workers ?? data.workerCount ?? data.workmen)],
             ["Operating states", states],
             ["Planned workforce", formatCount(data.plannedEmployees ?? data.plannedHeadcount ?? data.futureEmployees ?? data.targetHeadcount, "")]
         ].filter(([, value]) => clean(value));
@@ -769,6 +769,12 @@
         renderMethodologyAndScope(canvas);
         canvas.nextPage();
         renderDetailedAppendix(canvas, obligations, data);
+        canvas.nextPage();
+        canvas.sectionHeading("End of Report", "09");
+        canvas.serif("GrowWithHR", { size: 24, after: 5 });
+        canvas.text("HRTechify | People • Technology • Growth", { after: 8 });
+        canvas.mono(`Report ID: ${clean(data.reportId, "Not allocated")}`, { after: 4 });
+        canvas.text("Keep this report with your assessment records. Reassess when your company facts change.");
 
         addDocumentChrome(doc, logo, context);
         return serialise(doc, data);

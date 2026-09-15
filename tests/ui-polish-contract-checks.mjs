@@ -3,10 +3,11 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-const [siteShell, shellCss, uiCss, homepage, homepageRuntime, officialResources, moreInfo, hub, workforce] = await Promise.all([
+const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, officialResources, moreInfo, hub, workforce] = await Promise.all([
   read("js/site-shell.js"),
   read("css/18-site-shell.css"),
   read("css/25-ui-polish.css"),
+  read("css/31-approved-template.css"),
   read("index.html"),
   read("app.js"),
   read("official-resources.html"),
@@ -43,10 +44,13 @@ assert.match(uiCss, /:focus-visible/);
 assert.match(uiCss, /grid-template-columns: minmax\(0, 1fr\) auto minmax\(0, 1fr\)/);
 assert.match(uiCss, /body\.intelligence-hub-page/);
 assert.match(uiCss, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(approvedCss, /site-nav-link\[href\$="my-reports\.html"\][\s\S]*display:none/i);
+assert.match(approvedCss, /intelligence-hub-page \.analysis-workspace[\s\S]*display:none/i);
 
 assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn">Understand My Company/);
 assert.match(homepage, /href="sample-reports\.html" class="secondary-btn">Explore Sample Reports/);
 assert.match(homepage, /Current Product/i);
+assert.doesNotMatch(homepage, /Open My Reports|Recovery Code|recover previous saved company/i);
 assert.doesNotMatch(homepage, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(homepage, /Leadership Intelligence \(Planned\)/);
 assert.doesNotMatch(homepageRuntime, /fetch\(/);
@@ -56,7 +60,6 @@ assert.match(hub, /Multiple specialist analysis engines/);
 assert.match(hub, /COMPANY INTELLIGENCE ORCHESTRATOR/);
 assert.match(hub, /workforce-capability-planning\.html/);
 assert.match(hub, /analysis-engine-grid/);
-assert.match(hub, /Recover your Company Workspace/);
 
 assert.match(workforce, /One analysis\. Three planning lenses\./);
 assert.match(workforce, /Implementation economics/);
@@ -65,7 +68,10 @@ assert.match(workforce, /Methodology &amp; Rules/);
 assert.doesNotMatch(officialResources, /sticky-card-debug\.js/);
 assert.match(officialResources, /Workforce &amp; Capability Planning/);
 assert.match(moreInfo, /Progress on this device/);
-assert.match(moreInfo, /Reusable Company Workspace/);
+assert.doesNotMatch(moreInfo, /Reusable Company Workspace|Workspace Recovery Code|one-time opaque handoff token/i);
 assert.match(moreInfo, /Anurag Sinha/);
+assert.match(moreInfo, /How can I contact HRTechify\?/);
+assert.match(moreInfo, /hrtechifyed@gmail\.com/);
+assert.match(moreInfo, /HRTechify on LinkedIn/);
 
 console.log("GrowWithHR unified navigation and UI polish contracts passed.");

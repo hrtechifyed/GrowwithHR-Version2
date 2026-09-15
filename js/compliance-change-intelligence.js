@@ -18,9 +18,9 @@
         const answers = object(app?.answers);
         return {
             employees: answers.employees,
-            workers: answers.workers || answers.workerCount,
-            contractors: answers.contractors || answers.contractWorkers || answers.contractorCount,
-            womenEmployees: answers.womenEmployees || answers.femaleEmployees,
+            workers: answers.workers ?? answers.workerCount,
+            contractors: answers.contractors ?? answers.contractWorkers ?? answers.contractorCount,
+            womenEmployees: answers.womenEmployees ?? answers.femaleEmployees,
             operatingStates: answers.operatingStates || answers.primaryState || answers.state,
             operatingStateCount: answers.operatingStateCount || answers.locations,
             workModel: answers.workModel,
@@ -38,9 +38,9 @@
         const answers = object(compliance.answers || compliance);
         return {
             employees: answers.employees ?? shared.employees,
-            workers: answers.workers || answers.workerCount,
-            contractors: answers.contractors || answers.contractWorkers || answers.contractorCount,
-            womenEmployees: answers.womenEmployees || answers.femaleEmployees,
+            workers: answers.workers ?? answers.workerCount,
+            contractors: answers.contractors ?? answers.contractWorkers ?? answers.contractorCount,
+            womenEmployees: answers.womenEmployees ?? answers.femaleEmployees,
             operatingStates: answers.operatingStates || answers.primaryState || answers.state || shared.primaryState,
             operatingStateCount: answers.operatingStateCount || answers.locations || shared.locations,
             workModel: answers.workModel || shared.workModel,
@@ -103,7 +103,12 @@
                     }
                 }
             };
-            return original(enriched);
+            const result = await original(enriched);
+            app.lastChangeReport = {
+                inputChanges: changes,
+                changeIntelligence: enriched.report.changeIntelligence
+            };
+            return result;
         };
         Object.defineProperty(app, INSTALL_FLAG, { value: true });
         window.GrowWithHRComplianceChangeIntelligence = Object.freeze({ version: VERSION, install, compare });

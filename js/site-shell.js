@@ -8,7 +8,7 @@
 (function siteShellBootstrap(window, document) {
     "use strict";
 
-    const THEME_VERSION = "20260908-shared-home-navigation";
+    const THEME_VERSION = "20260915-application-audit";
 
     const ANALYZE_ITEMS = Object.freeze([
         { key: "analysis-overview", label: "Company Analysis Overview", href: "intelligence-hub.html" },
@@ -77,7 +77,9 @@
     }
 
     function currentFileName() {
-        return (window.location.pathname || "").split("/").filter(Boolean).pop() || "index.html";
+        const pathname = window.location.pathname || "";
+        if (!pathname || pathname.endsWith("/")) return "index.html";
+        return pathname.split("/").filter(Boolean).pop() || "index.html";
     }
 
     function inferActiveNav() {

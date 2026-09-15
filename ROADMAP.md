@@ -1,13 +1,13 @@
 # GrowWithHR Product Roadmap
 
-**Updated:** 1 September 2026  
+**Updated:** 15 September 2026
 **Current release candidate:** `v0.20.4-prototype.1`  
 **Product classification:** research-grade prototype  
-**Current customer focus:** two decision engines + Change Intelligence
+**Current customer focus:** three decision engines + Change Intelligence
 
 ## Product principle
 
-GrowWithHR will not expand into a long list of HR modules until the two current products are strong, explainable, repeatable and commercially useful.
+GrowWithHR will not expand into a long list of HR modules until the three current products are strong, explainable, repeatable and commercially useful.
 
 The current hierarchy is:
 
@@ -15,7 +15,8 @@ The current hierarchy is:
 GrowWithHR
 ├─ Organization Structure & Growth — flagship
 ├─ HR Compliance Readiness — supporting capability
-├─ Change Intelligence — recurring layer across both engines
+├─ Workforce & Capability Planning — strategy-to-capacity planning
+├─ Change Intelligence — recurring layer across the current engines
 ├─ Executive Reports — monetisable decision output
 └─ Sources & Methodology — trust and explainability layer
 ```
@@ -65,6 +66,16 @@ The following remain prohibited claims:
 - “legally compliant”;
 - “proof of compliance”;
 - AI-selected applicable law without the deterministic governed contract.
+
+### Workforce & Capability Planning
+
+Available in the current release and now surfaced consistently on the homepage:
+
+- business strategy, critical capabilities and workforce demand;
+- comparison of CIPD, capability-led and scenario/work-redesign planning lenses;
+- Build / Buy / Borrow / Bind / Bot / Move implementation choices;
+- planning horizon, time and cost trade-offs;
+- reusable company facts and executive report delivery.
 
 ### Change Intelligence
 
@@ -251,4 +262,4 @@ Do not add these merely to make the product look larger:
 - payroll / ATS / HRIS features;
 - fabricated universal HR benchmarks.
 
-The next stage remains: **two outstanding decision products, a credible recurring Change Intelligence layer and reports users are willing to pay for.**
+The next stage remains: **three outstanding decision products, a credible recurring Change Intelligence layer and reports users are willing to pay for.**
