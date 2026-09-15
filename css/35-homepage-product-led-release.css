@@ -1,0 +1,14 @@
+@import url("34-homepage-product-led.css?v=20260915-product-led-v1");
+
+/* Direct homepage release layer. Loaded separately from styles.css so the shared shell cannot roll the homepage back to a cached pre-redesign bundle. */
+@media screen {
+  body.home-page,
+  body.home-page.has-site-shell {
+    --brand-gold:#ffd84d;
+    --brand-orange:#ffc107;
+    --gradient-brand:linear-gradient(135deg,#fff176 0%,#ffd54f 48%,#ffb300 100%);
+    --site-shell-orange:#ffc107;
+    --site-shell-orange-bright:#fff176;
+    --site-shell-focus:rgba(255,216,77,.72);
+  }
+}
