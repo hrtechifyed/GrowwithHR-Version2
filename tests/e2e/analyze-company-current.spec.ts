@@ -31,8 +31,7 @@ test.describe("Company Analysis entry", () => {
   test("routes the homepage through one Company Analysis hub before a specialist engine", async ({ page }) => {
     await page.goto("/index.html");
 
-    const primaryCta = page.locator(".hero-actions a.primary-btn");
-    await expect(primaryCta).toHaveText("Understand My Company");
+    const primaryCta = page.getByRole("link", { name: "Start an Assessment", exact: true }).first();
     await expect(primaryCta).toHaveAttribute("href", "intelligence-hub.html");
 
     await primaryCta.click();

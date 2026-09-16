@@ -4,8 +4,12 @@ import fs from "node:fs";
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
 const home = read("index.html");
-assert.match(home, /Grow your company without guessing/i);
-assert.match(home, /Clear capabilities\. Clear boundaries\./);
+assert.match(home, /Clear HR insights for/i);
+assert.match(home, /Sources visible/i);
+assert.match(home, /Reasoning explained/i);
+assert.match(home, /Missing information flagged/i);
+assert.match(home, /Action-oriented guidance/i);
+assert.match(home, /No arbitrary scores/i);
 assert.doesNotMatch(home, /Open My Reports|Recovery Code|recover previous saved company/i);
 assert.doesNotMatch(home, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(home, /Leadership Intelligence \(Planned\)/);

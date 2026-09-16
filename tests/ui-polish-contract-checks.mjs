@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, officialResources, moreInfo, hub, workforce] = await Promise.all([
+const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, officialResources, moreInfo, hub, workforce, productHomeCss] = await Promise.all([
   read("js/site-shell.js"),
   read("css/18-site-shell.css"),
   read("css/25-ui-polish.css"),
@@ -13,7 +13,8 @@ const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, offic
   read("official-resources.html"),
   read("more-info.html"),
   read("intelligence-hub.html"),
-  read("workforce-capability-planning.html")
+  read("workforce-capability-planning.html"),
+  read("css/34-homepage-product-led.css")
 ]);
 
 assert.match(siteShell, /<strong>GrowWithHR<\/strong> by HRTechify/);
@@ -47,14 +48,20 @@ assert.match(uiCss, /@media \(prefers-reduced-motion: reduce\)/);
 assert.match(approvedCss, /site-nav-link\[href\$="my-reports\.html"\][\s\S]*display:none/i);
 assert.match(approvedCss, /intelligence-hub-page \.analysis-workspace[\s\S]*display:none/i);
 
-assert.match(homepage, /href="intelligence-hub\.html" class="primary-btn">Understand My Company/);
-assert.match(homepage, /href="sample-reports\.html" class="secondary-btn">Explore Sample Reports/);
-assert.match(homepage, /Current Product/i);
+assert.match(homepage, /class="ph-primary" href="intelligence-hub\.html">Start an Assessment/);
+assert.match(homepage, /class="ph-secondary" href="sample-reports\.html">View a Sample Report/);
+assert.match(homepage, /data-testid="home-product-preview"/);
+assert.match(homepage, /data-testid="home-report-preview"/);
+assert.match(homepage, /No arbitrary scores/i);
+assert.match(homepage, /Review may be required/);
 assert.doesNotMatch(homepage, /Open My Reports|Recovery Code|recover previous saved company/i);
 assert.doesNotMatch(homepage, /Talent Intelligence \(Planned\)/);
 assert.doesNotMatch(homepage, /Leadership Intelligence \(Planned\)/);
 assert.doesNotMatch(homepageRuntime, /fetch\(/);
 assert.doesNotMatch(homepageRuntime, /setInterval\(/);
+assert.match(productHomeCss, /\.ph-hero-grid/);
+assert.match(productHomeCss, /\.ph-report-window/);
+assert.match(productHomeCss, /@media \(max-width: 760px\)/);
 
 assert.match(hub, /Multiple specialist analysis engines/);
 assert.match(hub, /COMPANY INTELLIGENCE ORCHESTRATOR/);
