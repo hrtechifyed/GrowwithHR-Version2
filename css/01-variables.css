@@ -5,6 +5,10 @@
    Version : v0.10.0-beta
 ========================================================== */
 
+/* Load the canonical action-button component even on isolated product pages
+   that consume the core design-system modules without styles.css. */
+@import url("36-unified-action-buttons.css?v=20260918-unified-buttons-v1");
+
 :root{
 
     /* ======================================================
