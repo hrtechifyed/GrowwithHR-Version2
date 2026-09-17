@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, officialResources, moreInfo, hub, workforce, productHomeCss] = await Promise.all([
+const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, officialResources, moreInfo, hub, workforce, productHomeCss, styles, variablesCss, unifiedButtonsCss, homepageReleaseCss] = await Promise.all([
   read("js/site-shell.js"),
   read("css/18-site-shell.css"),
   read("css/25-ui-polish.css"),
@@ -14,7 +14,11 @@ const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, offic
   read("more-info.html"),
   read("intelligence-hub.html"),
   read("workforce-capability-planning.html"),
-  read("css/34-homepage-product-led.css")
+  read("css/34-homepage-product-led.css"),
+  read("styles.css"),
+  read("css/01-variables.css"),
+  read("css/36-unified-action-buttons.css"),
+  read("css/35-homepage-product-led-release.css")
 ]);
 
 assert.match(siteShell, /<strong>GrowWithHR<\/strong> by HRTechify/);
@@ -80,5 +84,33 @@ assert.match(moreInfo, /Anurag Sinha/);
 assert.match(moreInfo, /How can I contact HRTechify\?/);
 assert.match(moreInfo, /hrtechifyed@gmail\.com/);
 assert.match(moreInfo, /HRTechify on LinkedIn/);
+
+/* Action-button design contract: one canonical component must be loaded by both
+   bundled and isolated pages and cover every current product button family. */
+assert.match(styles, /36-unified-action-buttons\.css/);
+assert.match(variablesCss, /36-unified-action-buttons\.css/);
+assert.match(homepageReleaseCss, /36-unified-action-buttons\.css/);
+for (const selector of [
+  ".primary-btn",
+  ".secondary-btn",
+  ".ph-card-action",
+  ".org-primary",
+  ".org-secondary",
+  ".wcp-primary",
+  ".wcp-secondary",
+  ".dna-primary-button",
+  ".dna-secondary-button",
+  ".gwh-web-primary",
+  ".gwh-web-secondary",
+  ".gwh-auth-submit"
+]) {
+  assert.ok(unifiedButtonsCss.includes(selector), `Unified button system must include ${selector}`);
+}
+assert.match(unifiedButtonsCss, /--gwh-action-height:\s*54px/);
+assert.match(unifiedButtonsCss, /border-bottom:\s*3px solid var\(--gwh-action-edge\)/);
+assert.match(unifiedButtonsCss, /translateY\(-3px\)/);
+assert.match(unifiedButtonsCss, /:focus-visible/);
+assert.match(unifiedButtonsCss, /prefers-reduced-motion/);
+assert.doesNotMatch(unifiedButtonsCss, /site-nav-toggle|site-nav-analyze__toggle|site-nav-more__toggle|accordion-trigger/);
 
 console.log("GrowWithHR unified navigation and UI polish contracts passed.");
