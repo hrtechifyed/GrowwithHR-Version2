@@ -1,0 +1,412 @@
+/* ==========================================================
+   GrowWithHR unified action button system
+   ----------------------------------------------------------
+   Every action button uses one identical visual treatment on
+   every screen. Print layouts are intentionally untouched.
+========================================================== */
+
+@media screen {
+  :root {
+    --gwh-action-yellow-start: #ffe97d;
+    --gwh-action-yellow-end: #ffc21a;
+    --gwh-action-ink: #201700;
+    --gwh-action-edge: #c98d00;
+    --gwh-action-radius: 12px;
+    --gwh-action-height: 54px;
+    --gwh-action-shadow: 0 8px 18px rgba(0,0,0,.30), 0 2px 4px rgba(0,0,0,.24);
+    --gwh-action-shadow-hover: 0 13px 26px rgba(0,0,0,.34), 0 3px 6px rgba(0,0,0,.24);
+    --gwh-action-focus: #fff3a3;
+  }
+
+  /* One shared button component across all current action classes and action containers. */
+  body :is(
+    .primary-btn,
+    .secondary-btn,
+    .analysis-action,
+    .analysis-method,
+    .hub-engine-card__action,
+    .buyer-card__action,
+    .modal-primary,
+    .modal-secondary,
+    .btn-primary,
+    .btn-secondary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .report-access-secondary,
+    .cta-button,
+    .action-primary,
+    .action-secondary,
+    .exec-primary-btn,
+    .exec-secondary-btn,
+    .ph-primary,
+    .ph-secondary,
+    .ph-card-action,
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
+    button[type="submit"]
+  ) {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    min-height: var(--gwh-action-height) !important;
+    max-width: 100%;
+    padding: 10px 18px !important;
+    border: 1px solid rgba(255,239,153,.90) !important;
+    border-bottom: 3px solid var(--gwh-action-edge) !important;
+    border-radius: var(--gwh-action-radius) !important;
+    background: linear-gradient(135deg, var(--gwh-action-yellow-start) 0%, var(--gwh-action-yellow-end) 100%) !important;
+    color: var(--gwh-action-ink) !important;
+    box-shadow: var(--gwh-action-shadow) !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
+  }
+
+  body :is(
+    .primary-btn,
+    .secondary-btn,
+    .analysis-action,
+    .analysis-method,
+    .hub-engine-card__action,
+    .buyer-card__action,
+    .modal-primary,
+    .modal-secondary,
+    .btn-primary,
+    .btn-secondary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .report-access-secondary,
+    .cta-button,
+    .action-primary,
+    .action-secondary,
+    .exec-primary-btn,
+    .exec-secondary-btn,
+    .ph-primary,
+    .ph-secondary,
+    .ph-card-action,
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
+    button[type="submit"]
+  ):hover {
+    transform: translateY(-3px) !important;
+    filter: brightness(1.04);
+    box-shadow: var(--gwh-action-shadow-hover) !important;
+  }
+
+  body :is(
+    .primary-btn,
+    .secondary-btn,
+    .analysis-action,
+    .analysis-method,
+    .hub-engine-card__action,
+    .buyer-card__action,
+    .modal-primary,
+    .modal-secondary,
+    .btn-primary,
+    .btn-secondary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .report-access-secondary,
+    .cta-button,
+    .action-primary,
+    .action-secondary,
+    .exec-primary-btn,
+    .exec-secondary-btn,
+    .ph-primary,
+    .ph-secondary,
+    .ph-card-action,
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
+    button[type="submit"]
+  ):active {
+    transform: translateY(1px) !important;
+    border-bottom-width: 1px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,.24) !important;
+  }
+
+  body :is(
+    .primary-btn,
+    .secondary-btn,
+    .analysis-action,
+    .analysis-method,
+    .hub-engine-card__action,
+    .buyer-card__action,
+    .modal-primary,
+    .modal-secondary,
+    .btn-primary,
+    .btn-secondary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .report-access-secondary,
+    .cta-button,
+    .action-primary,
+    .action-secondary,
+    .exec-primary-btn,
+    .exec-secondary-btn,
+    .ph-primary,
+    .ph-secondary,
+    .ph-card-action,
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
+    button[type="submit"]
+  ):focus-visible {
+    outline: 3px solid var(--gwh-action-focus) !important;
+    outline-offset: 4px !important;
+  }
+
+  /* Every right-arrow CTA uses the same contained action icon. */
+  body :is(
+    .primary-btn,
+    .secondary-btn,
+    .analysis-action,
+    .analysis-method,
+    .hub-engine-card__action,
+    .buyer-card__action,
+    .modal-primary,
+    .modal-secondary,
+    .btn-primary,
+    .btn-secondary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .report-access-secondary,
+    .cta-button,
+    .action-primary,
+    .action-secondary,
+    .exec-primary-btn,
+    .exec-secondary-btn,
+    .ph-primary,
+    .ph-secondary,
+    .ph-card-action,
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary
+  ) > i.fa-arrow-right {
+    display: inline-grid !important;
+    place-items: center !important;
+    width: 34px !important;
+    height: 34px !important;
+    flex: 0 0 34px !important;
+    margin: -2px -6px -2px 2px !important;
+    border-radius: 50% !important;
+    background: #211800 !important;
+    color: #ffd84d !important;
+    font-size: .92rem !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08) !important;
+    transition: transform .16s ease, background-color .16s ease !important;
+  }
+
+  body :is(
+    .primary-btn,
+    .secondary-btn,
+    .analysis-action,
+    .analysis-method,
+    .hub-engine-card__action,
+    .buyer-card__action,
+    .modal-primary,
+    .modal-secondary,
+    .btn-primary,
+    .btn-secondary,
+    .assessment-next,
+    .assessment-primary,
+    .report-access-button,
+    .report-access-primary,
+    .report-access-secondary,
+    .cta-button,
+    .action-primary,
+    .action-secondary,
+    .exec-primary-btn,
+    .exec-secondary-btn,
+    .ph-primary,
+    .ph-secondary,
+    .ph-card-action,
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary
+  ):hover > i.fa-arrow-right {
+    transform: translateX(3px) !important;
+    background: #171100 !important;
+  }
+
+  /* The three homepage product CTAs keep equal compact widths on desktop. */
+  body.home-page .ph-product-card .ph-card-action {
+    align-self: flex-start;
+    justify-content: space-between !important;
+    width: min(100%, 340px) !important;
+    text-align: left !important;
+  }
+
+  @media (max-width: 720px) {
+    body.home-page .ph-product-card .ph-card-action {
+      width: 100% !important;
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body :is(
+      .primary-btn,
+      .secondary-btn,
+      .analysis-action,
+      .analysis-method,
+      .hub-engine-card__action,
+      .buyer-card__action,
+      .modal-primary,
+      .modal-secondary,
+      .btn-primary,
+      .btn-secondary,
+      .assessment-next,
+      .assessment-primary,
+      .report-access-button,
+      .report-access-primary,
+      .report-access-secondary,
+      .cta-button,
+      .action-primary,
+      .action-secondary,
+      .exec-primary-btn,
+      .exec-secondary-btn,
+      .ph-primary,
+      .ph-secondary,
+      .ph-card-action,
+      .nav-cta,
+      .org-primary,
+      .org-secondary,
+      .wcp-primary,
+      .wcp-secondary,
+      .dna-primary-button,
+      .dna-secondary-button,
+      .gwh-web-primary,
+      .gwh-web-secondary,
+      .hub-confirm-dialog__cancel,
+      .hub-confirm-dialog__delete,
+      .gwh-auth-submit,
+      [data-auth-signout],
+      .analysis-recover-form button,
+      .analysis-workspace-actions a,
+      .analysis-workspace-actions button,
+      button[type="submit"]
+    ),
+    body :is(
+      .primary-btn,
+      .secondary-btn,
+      .analysis-action,
+      .analysis-method,
+      .hub-engine-card__action,
+      .buyer-card__action,
+      .modal-primary,
+      .modal-secondary,
+      .btn-primary,
+      .btn-secondary,
+      .assessment-next,
+      .assessment-primary,
+      .report-access-button,
+      .report-access-primary,
+      .report-access-secondary,
+      .cta-button,
+      .action-primary,
+      .action-secondary,
+      .exec-primary-btn,
+      .exec-secondary-btn,
+      .ph-primary,
+      .ph-secondary,
+      .ph-card-action,
+      .nav-cta,
+      .org-primary,
+      .org-secondary,
+      .wcp-primary,
+      .wcp-secondary,
+      .dna-primary-button,
+      .dna-secondary-button,
+      .gwh-web-primary,
+      .gwh-web-secondary
+    ) > i.fa-arrow-right {
+      transition: none !important;
+    }
+  }
+}
