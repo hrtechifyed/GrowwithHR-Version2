@@ -18,7 +18,7 @@
     --gwh-action-focus: #fff3a3;
   }
 
-  /* One shared button component across all current action classes. */
+  /* One shared button component across all current action classes and action containers. */
   body :is(
     .primary-btn,
     .secondary-btn,
@@ -44,6 +44,21 @@
     .ph-secondary,
     .ph-card-action,
     .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
     button[type="submit"]
   ) {
     box-sizing: border-box !important;
@@ -97,6 +112,21 @@
     .ph-secondary,
     .ph-card-action,
     .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
     button[type="submit"]
   ):hover {
     transform: translateY(-3px) !important;
@@ -129,6 +159,21 @@
     .ph-secondary,
     .ph-card-action,
     .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
     button[type="submit"]
   ):active {
     transform: translateY(1px) !important;
@@ -161,6 +206,21 @@
     .ph-secondary,
     .ph-card-action,
     .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary,
+    .hub-confirm-dialog__cancel,
+    .hub-confirm-dialog__delete,
+    .gwh-auth-submit,
+    [data-auth-signout],
+    .analysis-recover-form button,
+    .analysis-workspace-actions a,
+    .analysis-workspace-actions button,
     button[type="submit"]
   ):focus-visible {
     outline: 3px solid var(--gwh-action-focus) !important;
@@ -192,7 +252,15 @@
     .ph-primary,
     .ph-secondary,
     .ph-card-action,
-    .nav-cta
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary
   ) > i.fa-arrow-right {
     display: inline-grid !important;
     place-items: center !important;
@@ -232,7 +300,15 @@
     .ph-primary,
     .ph-secondary,
     .ph-card-action,
-    .nav-cta
+    .nav-cta,
+    .org-primary,
+    .org-secondary,
+    .wcp-primary,
+    .wcp-secondary,
+    .dna-primary-button,
+    .dna-secondary-button,
+    .gwh-web-primary,
+    .gwh-web-secondary
   ):hover > i.fa-arrow-right {
     transform: translateX(3px) !important;
     background: #171100 !important;
@@ -279,6 +355,21 @@
       .ph-secondary,
       .ph-card-action,
       .nav-cta,
+      .org-primary,
+      .org-secondary,
+      .wcp-primary,
+      .wcp-secondary,
+      .dna-primary-button,
+      .dna-secondary-button,
+      .gwh-web-primary,
+      .gwh-web-secondary,
+      .hub-confirm-dialog__cancel,
+      .hub-confirm-dialog__delete,
+      .gwh-auth-submit,
+      [data-auth-signout],
+      .analysis-recover-form button,
+      .analysis-workspace-actions a,
+      .analysis-workspace-actions button,
       button[type="submit"]
     ),
     body :is(
@@ -305,7 +396,15 @@
       .ph-primary,
       .ph-secondary,
       .ph-card-action,
-      .nav-cta
+      .nav-cta,
+      .org-primary,
+      .org-secondary,
+      .wcp-primary,
+      .wcp-secondary,
+      .dna-primary-button,
+      .dna-secondary-button,
+      .gwh-web-primary,
+      .gwh-web-secondary
     ) > i.fa-arrow-right {
       transition: none !important;
     }
