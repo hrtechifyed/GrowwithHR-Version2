@@ -1,4 +1,4 @@
-@import url("34-homepage-product-led.css?v=20260915-product-led-v1");
+@import url("34-homepage-product-led.css?v=20260917-product-led-v2");
 
 /* Direct homepage release layer. Loaded separately from styles.css so the shared shell cannot roll the homepage back to a cached pre-redesign bundle. */
 @media screen {
@@ -10,5 +10,76 @@
     --site-shell-orange:#ffc107;
     --site-shell-orange-bright:#fff176;
     --site-shell-focus:rgba(255,216,77,.72);
+  }
+
+  /* Product-card CTAs should read instantly as interactive buttons, not banners. */
+  body.home-page.has-site-shell .ph-product-card .ph-card-action {
+    align-self: flex-start;
+    justify-content: space-between;
+    width: min(100%, 340px);
+    min-height: 54px;
+    padding: 10px 12px 10px 20px;
+    border: 1px solid rgba(255,239,153,.9) !important;
+    border-bottom: 3px solid #c98d00 !important;
+    border-radius: 12px;
+    background: linear-gradient(135deg,#ffe97d 0%,#ffc21a 100%) !important;
+    color: #201700 !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.30), 0 2px 4px rgba(0,0,0,.24) !important;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 850;
+    line-height: 1.2;
+    text-align: left;
+    transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  }
+
+  body.home-page.has-site-shell .ph-product-card .ph-card-action i {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border-radius: 50%;
+    background: #211800;
+    color: #ffd84d;
+    font-size: .92rem;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    transition: transform .16s ease, background-color .16s ease;
+  }
+
+  body.home-page.has-site-shell .ph-product-card .ph-card-action:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.04);
+    box-shadow: 0 13px 26px rgba(0,0,0,.34), 0 3px 6px rgba(0,0,0,.24) !important;
+  }
+
+  body.home-page.has-site-shell .ph-product-card .ph-card-action:hover i {
+    transform: translateX(3px);
+    background: #171100;
+  }
+
+  body.home-page.has-site-shell .ph-product-card .ph-card-action:active {
+    transform: translateY(1px);
+    border-bottom-width: 1px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,.28) !important;
+  }
+
+  body.home-page.has-site-shell .ph-product-card .ph-card-action:focus-visible {
+    outline: 3px solid #fff3a3 !important;
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 720px) {
+    body.home-page.has-site-shell .ph-product-card .ph-card-action {
+      width: 100%;
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body.home-page.has-site-shell .ph-product-card .ph-card-action,
+    body.home-page.has-site-shell .ph-product-card .ph-card-action i {
+      transition: none;
+    }
   }
 }
