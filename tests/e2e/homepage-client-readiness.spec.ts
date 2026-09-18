@@ -13,8 +13,8 @@ test.describe("homepage client readiness", () => {
     await expect(page.getByRole("link", { name: /Plan Workforce & Capabilities/i })).toBeVisible();
     const cards = page.locator("#capabilities .buyer-card");
     await expect(cards).toHaveCount(3);
-    await expect(page.getByRole("link", { name: /Identify My Company’s HR Compliance Readiness/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Analyze My Organization Structure & Growth/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Assess Compliance Readiness/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Analyze Organization Structure/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Open My Reports/i })).toHaveCount(0);
     await expect(page.locator("body")).not.toContainText(/Recovery Code|recover previous saved company/i);
     expect(problems).toEqual([]);
@@ -40,8 +40,9 @@ test.describe("homepage client readiness", () => {
 
 test("homepage explains the source and GrowWithHR rule boundary", async ({ page }) => {
   await page.goto("/index.html", { waitUntil: "networkidle" });
-  await expect(page.locator("#compliance-engine-title")).toHaveText("Every recommendation shows what it is based on.");
-  await expect(page.locator("[data-testid=\"compliance-engine-flow\"] .engine-step")).toHaveCount(4);
-  await expect(page.getByText("GrowWithHR shows how those criteria produced the result.", { exact: false })).toBeVisible();
-  await expect(page.getByText("The relevant public source shows the underlying principle or authority.", { exact: false })).toBeVisible();
+  await expect(page.locator("[data-testid=\"home-report-preview\"]")).toBeVisible();
+  await expect(page.getByText("Company information", { exact: true })).toBeVisible();
+  await expect(page.getByText("Evaluation criteria", { exact: true })).toBeVisible();
+  await expect(page.getByText("Public source context", { exact: true })).toBeVisible();
+  await expect(page.getByText("Missing information flagged", { exact: true })).toBeVisible();
 });
