@@ -22,9 +22,9 @@ const outcome = studio.compare({
 
 assert.equal(outcome.error, undefined);
 assert.match(outcome.growth.structure, /Management capacity may tighten/);
-assert.match(outcome.growth.workforce, /capability pressure/i);
+assert.match(outcome.growth.workforce, /declines by 15 percentage points/i);
 assert.ok(outcome.growth.compliance.some((item) => /Operating-location change/i.test(item)));
-assert.ok(outcome.growth.compliance.some((item) => /workforce-size change/i.test(item)));
+assert.ok(outcome.growth.compliance.some((item) => /Headcount change/i.test(item)));
 assert.equal(outcome.current.peopleCost, 100000000);
 assert.equal(outcome.growth.peopleCost, 140000000);
 assert.equal(outcome.growth.costDelta, 40000000);
@@ -45,3 +45,5 @@ assert.match(hub, /Open Scenario Studio/);
 assert.match(hub, /transparent, editable starting assumptions/i);
 
 console.log("Decision Scenario Studio checks passed.");
+const runtime = fs.readFileSync(path.resolve("js/decision-scenario-studio.js"), "utf8");
+assert.doesNotMatch(runtime, /< 60|< 80|>= 20/);
