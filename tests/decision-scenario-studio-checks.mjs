@@ -21,7 +21,7 @@ const outcome = studio.compare({
 }, 1000000, "INR");
 
 assert.equal(outcome.error, undefined);
-assert.match(outcome.growth.structure, /Management capacity may tighten/);
+assert.match(outcome.growth.structure, /Manager capacity grows more slowly than workforce size/);
 assert.match(outcome.growth.workforce, /declines by 15 percentage points/i);
 assert.ok(outcome.growth.compliance.some((item) => /Operating-location change/i.test(item)));
 assert.ok(outcome.growth.compliance.some((item) => /Headcount change/i.test(item)));
