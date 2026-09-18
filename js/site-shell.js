@@ -15,6 +15,7 @@
         { key: "organization", label: "Organization & Growth", href: "organization-intelligence.html" },
         { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" },
         { key: "workforce-capability", label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
+        { key: "scenario-studio", label: "Decision Scenario Studio", href: "decision-scenario-studio.html" },
         { key: "change-intelligence", label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" }
     ]);
 
@@ -92,6 +93,7 @@
             "analyze-company.html": "analyze",
             "workforce-capability-planning.html": "analyze",
             "workforce-capability-report.html": "analyze",
+            "decision-scenario-studio.html": "analyze",
             "my-reports.html": "reports",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
