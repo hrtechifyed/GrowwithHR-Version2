@@ -47,3 +47,17 @@ assert.match(hub, /transparent, editable starting assumptions/i);
 console.log("Decision Scenario Studio checks passed.");
 const runtime = fs.readFileSync(path.resolve("js/decision-scenario-studio.js"), "utf8");
 assert.doesNotMatch(runtime, /< 60|< 80|>= 20/);
+
+const founderCurrent = { employees: 12, managers: 0, layers: 0, locations: 1, capabilityCoverage: 90 };
+const founderGrowth = studio.presetFromCurrent(founderCurrent, studio.PRESETS.growth);
+assert.equal(founderGrowth.managers, 0);
+assert.equal(founderGrowth.layers, 1);
+const founderOutcome = studio.compare({
+  current: founderCurrent,
+  conservative: studio.presetFromCurrent(founderCurrent, studio.PRESETS.conservative),
+  growth: founderGrowth
+}, null, "INR");
+assert.equal(founderOutcome.error, undefined);
+assert.equal(founderOutcome.growth.scenarioRatio, null);
+assert.match(founderOutcome.growth.structure, /without adding people-manager roles/i);
+assert.doesNotMatch(runtime, /notice\.innerHTML/);
