@@ -49,8 +49,8 @@
   function presetFromCurrent(current, preset) {
     return {
       employees: Math.max(1, Math.round(current.employees * (1 + preset.employeeGrowth))),
-      managers: Math.max(1, Math.round(current.managers * (1 + preset.managerGrowth))),
-      layers: Math.max(1, Math.round(current.layers + preset.layerDelta)),
+      managers: Math.max(0, Math.round(current.managers * (1 + preset.managerGrowth))),
+      layers: Math.max(0, Math.round(current.layers + preset.layerDelta)),
       locations: Math.max(1, Math.round(current.locations + preset.locationDelta)),
       capabilityCoverage: clamp(Math.round(current.capabilityCoverage + preset.capabilityDelta), 0, 100)
     };
@@ -65,7 +65,7 @@
   function validateScenario(scenario, name) {
     const missing = FIELDS.filter((field)=>scenario[field] == null);
     if (missing.length) return `${name} is missing: ${missing.join(", ")}.`;
-    if (scenario.employees < 1 || scenario.managers < 1 || scenario.layers < 1 || scenario.locations < 1) return `${name} must use values of at least 1 for employees, managers, layers and locations.`;
+    if (scenario.employees < 1 || scenario.managers < 0 || scenario.layers < 0 || scenario.locations < 1) return `${name} must use at least 1 employee and location; people managers and reporting layers may be 0.`;
     if (scenario.capabilityCoverage < 0 || scenario.capabilityCoverage > 100) return `${name} capability coverage must be between 0 and 100.`;
     if (scenario.managers > scenario.employees) return `${name} cannot have more people managers than employees.`;
     return "";
@@ -73,15 +73,21 @@
 
   function analyzeScenario(current, scenario, costPerEmployee, currency) {
     const employeeGrowth = ((scenario.employees - current.employees) / current.employees) * 100;
-    const managerGrowth = ((scenario.managers - current.managers) / current.managers) * 100;
-    const currentRatio = current.employees / current.managers;
-    const scenarioRatio = scenario.employees / scenario.managers;
-    const ratioChange = ((scenarioRatio - currentRatio) / currentRatio) * 100;
+    const managerGrowth = current.managers === 0 ? (scenario.managers === 0 ? 0 : null) : ((scenario.managers - current.managers) / current.managers) * 100;
+    const currentRatio = current.managers === 0 ? null : current.employees / current.managers;
+    const scenarioRatio = scenario.managers === 0 ? null : scenario.employees / scenario.managers;
+    const ratioChange = currentRatio == null || scenarioRatio == null ? null : ((scenarioRatio - currentRatio) / currentRatio) * 100;
     const capabilityDelta = scenario.capabilityCoverage - current.capabilityCoverage;
 
     let structure = "Structure variables remain broadly aligned with Current";
     const structureReasons = [];
-    if (employeeGrowth > managerGrowth) {
+    if (current.managers === 0 && scenario.managers === 0 && scenario.employees !== current.employees) {
+      structure = "Workforce size changes without adding people-manager roles";
+      structureReasons.push(`employees change by ${pct(employeeGrowth)} while people-manager count remains 0`);
+    } else if (current.managers === 0 && scenario.managers > 0) {
+      structure = "People-manager roles are introduced";
+      structureReasons.push(`people-manager count changes from 0 to ${scenario.managers}`);
+    } else if (managerGrowth != null && employeeGrowth > managerGrowth) {
       structure = "Manager capacity grows more slowly than workforce size";
       structureReasons.push(`employees change by ${pct(employeeGrowth)} while people managers change by ${pct(managerGrowth)}`);
     }
@@ -97,7 +103,7 @@
     } else if (scenario.locations < current.locations) {
       structureReasons.push(`operating locations reduce from ${current.locations} to ${scenario.locations}`);
     }
-    if (ratioChange !== 0) structureReasons.push(`employees-per-manager changes by ${pct(ratioChange)} versus Current`);
+    if (ratioChange != null && ratioChange !== 0) structureReasons.push(`employees-per-manager changes by ${pct(ratioChange)} versus Current`);
     if (!structureReasons.length) structureReasons.push("manager count, reporting layers and operating locations match Current");
 
     let workforce = "Critical capability coverage is maintained at the Current estimate";
@@ -114,7 +120,8 @@
     const costDelta = peopleCost == null ? null : peopleCost - currentCost;
 
     const actions = [];
-    if (employeeGrowth > managerGrowth) actions.push("Test management capacity because workforce size grows faster than the people-manager population.");
+    if (current.managers === 0 && scenario.managers === 0 && scenario.employees !== current.employees) actions.push("Decide how leadership and people-management accountability will scale if headcount changes without people-manager roles.");
+    else if (managerGrowth != null && employeeGrowth > managerGrowth) actions.push("Test management capacity because workforce size grows faster than the people-manager population.");
     if (scenario.layers !== current.layers) actions.push("Define the decision-rights and coordination rationale for the changed reporting-layer design.");
     if (scenario.locations !== current.locations) actions.push("Design cross-location governance and refresh location-dependent compliance readiness.");
     if (capabilityDelta < 0) actions.push("Choose a Build · Buy · Borrow · Bind · Bot · Move response for the projected capability-coverage decline.");
@@ -174,6 +181,7 @@
   }
   function showError(message){error.textContent=message;error.hidden=false;}
   function hideError(){error.hidden=true;error.textContent="";}
+  function managerRatioText(analysis) { return analysis.scenarioRatio == null ? "No people managers" : `${round(analysis.scenarioRatio,1)} employees per manager`; }
   function resultCard(label, facts, analysis) {
     const growthText=label==="Current"?"Baseline":`${pct(analysis.employeeGrowth)} employees vs Current`;
     return `<article class="scenario-summary-card"><div class="section-tag">${label.toUpperCase()}</div><h3>${growthText}</h3><dl>
@@ -187,14 +195,14 @@
     const names=[["Current","current"],["Conservative","conservative"],["Growth","growth"]];
     summaryGrid.innerHTML=names.map(([label,key])=>resultCard(label,outcome.facts[key],outcome[key])).join("");
     comparisonTable.innerHTML=`<div class="scenario-table-wrap"><table class="scenario-comparison"><thead><tr><th>Decision signal</th><th>Current</th><th>Conservative</th><th>Growth</th></tr></thead><tbody>
-      <tr><td>Employees / managers</td>${names.map(([,key])=>`<td>${outcome.facts[key].employees} / ${outcome.facts[key].managers}<br><small>${round(outcome[key].scenarioRatio,1)} employees per manager</small></td>`).join("")}</tr>
+      <tr><td>Employees / managers</td>${names.map(([,key])=>`<td>${outcome.facts[key].employees} / ${outcome.facts[key].managers}<br><small>${managerRatioText(outcome[key])}</small></td>`).join("")}</tr>
       <tr><td>Layers / locations</td>${names.map(([,key])=>`<td>${outcome.facts[key].layers} layers · ${outcome.facts[key].locations} locations</td>`).join("")}</tr>
       <tr><td>Capability coverage</td>${names.map(([,key])=>`<td>${outcome.facts[key].capabilityCoverage}%<br><small>${outcome[key].workforce}</small></td>`).join("")}</tr>
       <tr><td>Leadership actions</td>${names.map(([,key])=>`<td>${outcome[key].actions.map((a)=>`• ${a}`).join("<br>")}</td>`).join("")}</tr>
     </tbody></table></div>`;
     const growth=outcome.growth, conservative=outcome.conservative;
     questions.innerHTML=[
-      ["Management capacity", growth.managerGrowth < growth.employeeGrowth ? "What management capacity, role redesign or governance change is required if employee growth continues to outpace manager growth?" : "What would have to change for current management capacity to stop being sufficient?"],
+      ["Management capacity", growth.managerGrowth == null ? "What people-management model is required as manager roles are introduced or redesigned?" : growth.managerGrowth < growth.employeeGrowth ? "What management capacity, role redesign or governance change is required if employee growth continues to outpace manager growth?" : "What would have to change for current management capacity to stop being sufficient?"],
       ["Critical capability", growth.capabilityDelta < 0 ? "Which capability gap is most likely to block the Growth scenario, and which Build · Buy · Borrow · Bind · Bot · Move response is feasible?" : "Which capability becomes strategically critical first as the Growth scenario scales?"],
       ["Operating footprint", outcome.facts.growth.locations > outcome.facts.current.locations ? "Which decisions, HR processes and compliance checks become location-dependent when the operating footprint expands?" : "What location or work-model change would materially alter this scenario?"],
       ["Scenario choice", `Which assumptions explain the difference between Conservative (${pct(conservative.employeeGrowth)}) and Growth (${pct(growth.employeeGrowth)}) headcount, and who owns validating them?`]
@@ -224,6 +232,6 @@
   const reusable=FIELDS.filter((field)=>workspaceCurrent[field]!=null);
   if(reusable.length){
     setScenario("current",workspaceCurrent);
-    notice.innerHTML=`Recovered baseline detected for <strong>${workspace?.companyName || "your company"}</strong>. ${reusable.length} current scenario values were pre-filled from the saved Company Workspace. Confirm them and add critical capability coverage before generating scenarios.`;
+    notice.textContent=`Recovered baseline detected for ${workspace?.companyName || "your company"}. ${reusable.length} current scenario values were pre-filled from the saved Company Workspace. Confirm them and add critical capability coverage before generating scenarios.`;
   }
 })(typeof window !== "undefined" ? window : globalThis, typeof document !== "undefined" ? document : null);
