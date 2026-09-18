@@ -40,7 +40,7 @@
     .analysis-engine-card a.analysis-action{display:inline-flex;align-items:center;justify-content:center;gap:8px;align-self:flex-start;margin-top:auto;min-height:46px;padding:11px 18px;border-radius:999px;background:var(--gradient-brand);color:#fff;font-weight:850;text-decoration:none}
     .analysis-engine-card a.analysis-method{margin-top:10px;color:var(--brand-gold);font-size:.86rem;font-weight:750}
     .analysis-methodology-note{margin-top:24px;padding:17px 18px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.025);color:var(--text-secondary);line-height:1.6}
-    .analysis-change{padding:64px 0;background:var(--bg-secondary)}
+    .analysis-scenario{padding:64px 0}\n    .analysis-scenario-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:24px;align-items:center;padding:30px;border:1px solid rgba(255,176,0,.24);border-radius:var(--radius-lg);background:linear-gradient(145deg,rgba(255,176,0,.09),rgba(255,255,255,.025));box-shadow:var(--shadow-md)}\n    .analysis-scenario-card h2{margin:8px 0 10px;font-size:clamp(1.8rem,4vw,3rem)}.analysis-scenario-card p,.analysis-scenario-card li{color:var(--text-secondary);line-height:1.6}.analysis-scenario-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.analysis-scenario-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:11px 18px;border-radius:999px;background:var(--gradient-brand);color:#fff;text-decoration:none;font-weight:850}\n    .analysis-scenario{padding:64px 0}\n    .analysis-change{padding:64px 0;background:var(--bg-secondary)}
     .analysis-change-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:22px}
     .analysis-change-card{padding:26px;border:1px solid var(--glass-border);border-radius:var(--radius-lg);background:var(--gradient-card)}
     .analysis-change-card h3{margin:8px 0 10px}.analysis-change-card p,.analysis-change-card li{color:var(--text-secondary);line-height:1.6}
@@ -52,7 +52,7 @@
     .analysis-recover-form button{min-height:46px;padding:11px 16px;border:0;border-radius:999px;background:var(--gradient-brand);color:#fff;font-weight:850;cursor:pointer}
     .analysis-workspace-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.analysis-workspace-actions a,.analysis-workspace-actions button{min-height:40px;padding:9px 13px;border:1px solid rgba(255,255,255,.13);border-radius:999px;background:transparent;color:var(--text-primary);text-decoration:none;font-weight:750;cursor:pointer}.analysis-workspace-actions .delete{color:#fecaca;border-color:rgba(239,68,68,.35)}
     .analysis-status-message{min-height:1.4em;margin-top:11px;color:var(--text-secondary);font-size:.9rem}
-    @media(max-width:900px){.analysis-engine-grid,.analysis-status-grid{grid-template-columns:1fr}.analysis-change-grid,.analysis-workspace-card{grid-template-columns:1fr}.analysis-recover-form{grid-template-columns:1fr}.analysis-orchestrator__head{flex-direction:column}.analysis-overview-shell{width:min(calc(100% - 28px),1180px)}}
+    @media(max-width:900px){.analysis-engine-grid,.analysis-status-grid{grid-template-columns:1fr}.analysis-change-grid,.analysis-workspace-card,.analysis-scenario-card{grid-template-columns:1fr}.analysis-recover-form{grid-template-columns:1fr}.analysis-orchestrator__head{flex-direction:column}.analysis-overview-shell{width:min(calc(100% - 28px),1180px)}}
   </style>
 </head>
 <body class="intelligence-hub-page" data-active-nav="analyze">
@@ -114,6 +114,27 @@
           </article>
         </div>
         <div class="analysis-methodology-note"><strong>Transparency standard:</strong> material findings should expose the company facts used, GrowWithHR rule ID, framework/source basis, assumptions or missing information, confidence level and what could change the result. AI may assist with interpretation and mapping, but does not silently create company facts or act as the final decision authority.</div>
+      </div>
+    </section>
+
+
+    <section class="analysis-scenario" aria-labelledby="scenarioStudioTitle">
+      <div class="analysis-overview-shell">
+        <div class="analysis-scenario-card">
+          <div>
+            <div class="section-tag">DECISION SCENARIO STUDIO</div>
+            <h2 id="scenarioStudioTitle">Test a growth assumption before turning it into a plan.</h2>
+            <p>Compare Current, Conservative and Growth cases across five company variables. The Studio translates those assumptions into structural pressure, critical-capability implications, compliance-review triggers and optional people-cost deltas.</p>
+            <div class="analysis-scenario-actions"><a href="decision-scenario-studio.html">Open Scenario Studio <i class="fa-solid fa-arrow-right"></i></a></div>
+          </div>
+          <div>
+            <ul>
+              <li>Reuses a recovered Company Workspace baseline where available.</li>
+              <li>Presets are transparent, editable starting assumptions — not forecasts or benchmarks.</li>
+              <li>Compliance output is a reassessment trigger, never a legal determination.</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
