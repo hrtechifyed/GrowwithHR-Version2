@@ -21,7 +21,18 @@ const REPORT = {
     remoteWorkforce: "25–50%",
     locations: 1,
     countries: 1,
-    priorities: []
+    priorities: [],
+    workers: 5,
+    contractors: 2,
+    indiaOperations: true,
+    establishmentType: "Private limited company",
+    operatingStates: ["Karnataka"],
+    womenEmployees: "yes",
+    esiWageEligibility: "yes",
+    bonusWageEligibility: "yes",
+    workerCategories: ["employees"],
+    usesPower: "no",
+    manufacturingOperations: "no"
 };
 
 test.describe(
