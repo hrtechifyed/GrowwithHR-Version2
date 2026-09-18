@@ -95,6 +95,7 @@ jobs:
       - name: Run journey and scenario regression checks
         run: >
           npm run test:static &&
+          npm run test:scenario-studio &&
           npm run test:frontend &&
           npm run test:journeys &&
           npm run test:input-combinations &&
