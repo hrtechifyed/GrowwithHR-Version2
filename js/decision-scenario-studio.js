@@ -65,7 +65,7 @@
   function validateScenario(scenario, name) {
     const missing = FIELDS.filter((field)=>scenario[field] == null);
     if (missing.length) return `${name} is missing: ${missing.join(", ")}.`;
-    if (scenario.employees < 1 || scenario.managers < 0 || scenario.layers < 0 || scenario.locations < 1) return `${name} must use at least 1 employee and location; people managers and reporting layers may be 0.`;
+    if (!["employees","managers","layers","locations"].every((field)=>Number.isInteger(scenario[field]))) return `${name} must use whole numbers for employees, people managers, reporting layers and operating locations.`;\n    if (scenario.employees < 1 || scenario.managers < 0 || scenario.layers < 0 || scenario.locations < 1) return `${name} must use at least 1 employee and location; people managers and reporting layers may be 0.`;
     if (scenario.capabilityCoverage < 0 || scenario.capabilityCoverage > 100) return `${name} capability coverage must be between 0 and 100.`;
     if (scenario.managers > scenario.employees) return `${name} cannot have more people managers than employees.`;
     return "";
