@@ -92,7 +92,7 @@ test.describe("Complete assessment and advisory delivery", () => {
     });
 
     await page.goto("/");
-    await page.locator(".analyze-redirect-section a.primary-btn").click();
+    await page.getByRole("link", { name: "Start an Assessment" }).click();
     await expect(page).toHaveURL(/\/intelligence-hub\.html$/);
     await page.locator('.analysis-action[href="compliance-intelligence.html"]').click();
     await expect(page).toHaveURL(/\/compliance-intelligence\.html$/);
