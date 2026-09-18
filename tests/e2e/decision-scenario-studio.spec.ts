@@ -23,7 +23,8 @@ test('Decision Scenario Studio generates editable scenarios and compares them', 
 });
 
 test('Decision Scenario Studio reuses known Company Workspace baseline facts without inventing capability coverage', async ({ page }) => {
-  await page.addInitScript(() => {
+  await page.goto('/decision-scenario-studio.html');
+  await page.evaluate(() => {
     sessionStorage.setItem('growwithhr.workspace', JSON.stringify({
       reportId: 'GWHR-TEST-001',
       accessKey: 'TEST-CODE',
@@ -40,8 +41,7 @@ test('Decision Scenario Studio reuses known Company Workspace baseline facts wit
       }
     }));
   });
-
-  await page.goto('/decision-scenario-studio.html');
+  await page.reload();
 
   await expect(page.locator('#scenarioReuseNotice')).toContainText('Scenario Fixture Ltd');
   await expect(page.getByLabel('Current employees')).toHaveValue('240');
