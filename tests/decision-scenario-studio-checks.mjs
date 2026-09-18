@@ -61,3 +61,14 @@ assert.equal(founderOutcome.error, undefined);
 assert.equal(founderOutcome.growth.scenarioRatio, null);
 assert.match(founderOutcome.growth.structure, /without adding people-manager roles/i);
 assert.doesNotMatch(runtime, /notice\.innerHTML/);
+
+assert.match(studio.compare({
+  current: { employees: 12.5, managers: 1, layers: 1, locations: 1, capabilityCoverage: 90 },
+  conservative: { employees: 13, managers: 1, layers: 1, locations: 1, capabilityCoverage: 90 },
+  growth: { employees: 14, managers: 1, layers: 1, locations: 1, capabilityCoverage: 90 }
+}, null, "INR").error, /whole numbers/i);
+assert.match(studio.compare({
+  current,
+  conservative: studio.presetFromCurrent(current, studio.PRESETS.conservative),
+  growth: studio.presetFromCurrent(current, studio.PRESETS.growth)
+}, -1, "INR").error, /0 or greater/i);
