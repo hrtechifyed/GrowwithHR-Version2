@@ -77,46 +77,51 @@
     const currentRatio = current.employees / current.managers;
     const scenarioRatio = scenario.employees / scenario.managers;
     const ratioChange = ((scenarioRatio - currentRatio) / currentRatio) * 100;
+    const capabilityDelta = scenario.capabilityCoverage - current.capabilityCoverage;
 
-    let structure = "Structure broadly keeps pace with the scenario";
+    let structure = "Structure variables remain broadly aligned with Current";
     const structureReasons = [];
-    if (employeeGrowth > 5 && managerGrowth + 5 < employeeGrowth) {
-      structure = "Management capacity may tighten";
-      structureReasons.push("employee growth materially outpaces manager growth");
+    if (employeeGrowth > managerGrowth) {
+      structure = "Manager capacity grows more slowly than workforce size";
+      structureReasons.push(`employees change by ${pct(employeeGrowth)} while people managers change by ${pct(managerGrowth)}`);
     }
-    if (scenario.layers >= current.layers + 2) {
-      structure = "Hierarchy expansion needs explicit design review";
-      structureReasons.push("two or more reporting layers are added");
-    } else if (scenario.layers > current.layers) {
-      structureReasons.push("an additional reporting layer is introduced");
+    if (scenario.layers > current.layers) {
+      if (structure === "Structure variables remain broadly aligned with Current") structure = "Reporting hierarchy expands";
+      structureReasons.push(`reporting layers increase from ${current.layers} to ${scenario.layers}`);
+    } else if (scenario.layers < current.layers) {
+      structureReasons.push(`reporting layers reduce from ${current.layers} to ${scenario.layers}`);
     }
-    if (scenario.locations > current.locations) structureReasons.push("the operating footprint becomes more distributed");
-    if (Math.abs(ratioChange) >= 15) structureReasons.push(`employees-per-manager changes by ${pct(ratioChange)} versus Current`);
-    if (!structureReasons.length) structureReasons.push("manager capacity, layers and locations do not materially diverge from Current");
+    if (scenario.locations > current.locations) {
+      if (structure === "Structure variables remain broadly aligned with Current") structure = "Operating footprint becomes more distributed";
+      structureReasons.push(`operating locations increase from ${current.locations} to ${scenario.locations}`);
+    } else if (scenario.locations < current.locations) {
+      structureReasons.push(`operating locations reduce from ${current.locations} to ${scenario.locations}`);
+    }
+    if (ratioChange !== 0) structureReasons.push(`employees-per-manager changes by ${pct(ratioChange)} versus Current`);
+    if (!structureReasons.length) structureReasons.push("manager count, reporting layers and operating locations match Current");
 
-    let workforce = "Critical capability coverage appears supported";
-    if (scenario.capabilityCoverage < 60) workforce = "Critical capability gap requires an explicit response";
-    else if (scenario.capabilityCoverage < 80) workforce = "Critical capability pressure is visible";
-    else if (employeeGrowth >= 25 && scenario.capabilityCoverage < 90) workforce = "Growth increases capability resilience pressure";
+    let workforce = "Critical capability coverage is maintained at the Current estimate";
+    if (capabilityDelta < 0) workforce = `Critical capability coverage declines by ${Math.abs(round(capabilityDelta,1))} percentage points versus Current`;
+    else if (capabilityDelta > 0) workforce = `Critical capability coverage improves by ${round(capabilityDelta,1)} percentage points versus Current`;
 
     const compliance = [];
     if (scenario.locations !== current.locations) compliance.push("Operating-location change: refresh location-dependent HR Compliance Readiness.");
-    if (Math.abs(employeeGrowth) >= 20) compliance.push("Material workforce-size change: refresh workforce-threshold and scale-dependent compliance checks.");
-    if (!compliance.length) compliance.push("No new review trigger arises from these five scenario variables alone; existing obligations still require normal review.");
+    if (scenario.employees !== current.employees) compliance.push("Headcount change: refresh any headcount-dependent HR Compliance Readiness checks.");
+    if (!compliance.length) compliance.push("These five scenario variables do not introduce a new reassessment trigger; existing obligations still require normal review.");
 
     const peopleCost = costPerEmployee == null ? null : scenario.employees * costPerEmployee;
     const currentCost = costPerEmployee == null ? null : current.employees * costPerEmployee;
     const costDelta = peopleCost == null ? null : peopleCost - currentCost;
 
     const actions = [];
-    if (employeeGrowth > 5 && managerGrowth + 5 < employeeGrowth) actions.push("Test management capacity before locking the headcount plan.");
-    if (scenario.layers > current.layers) actions.push("Define the decision rights that justify the added layer.");
-    if (scenario.locations > current.locations) actions.push("Design cross-location governance and refresh location-dependent compliance readiness.");
-    if (scenario.capabilityCoverage < 80) actions.push("Choose a Build · Buy · Borrow · Bind · Bot · Move response for the critical capability gap.");
+    if (employeeGrowth > managerGrowth) actions.push("Test management capacity because workforce size grows faster than the people-manager population.");
+    if (scenario.layers !== current.layers) actions.push("Define the decision-rights and coordination rationale for the changed reporting-layer design.");
+    if (scenario.locations !== current.locations) actions.push("Design cross-location governance and refresh location-dependent compliance readiness.");
+    if (capabilityDelta < 0) actions.push("Choose a Build · Buy · Borrow · Bind · Bot · Move response for the projected capability-coverage decline.");
     if (!actions.length) actions.push("Validate the assumptions with business and HR owners before converting the scenario into a plan.");
 
     return {
-      employeeGrowth, managerGrowth, currentRatio, scenarioRatio, ratioChange,
+      employeeGrowth, managerGrowth, currentRatio, scenarioRatio, ratioChange, capabilityDelta,
       structure, structureReasons, workforce, compliance,
       peopleCost, currentCost, costDelta, currency, actions
     };
@@ -189,8 +194,8 @@
     </tbody></table></div>`;
     const growth=outcome.growth, conservative=outcome.conservative;
     questions.innerHTML=[
-      ["Management capacity", growth.managerGrowth + 5 < growth.employeeGrowth ? "What management capacity, role redesign or governance change is required if employee growth continues to outpace manager growth?" : "What would have to change for current management capacity to stop being sufficient?"],
-      ["Critical capability", outcome.facts.growth.capabilityCoverage < 80 ? "Which capability gap is most likely to block the Growth scenario, and which Build · Buy · Borrow · Bind · Bot · Move response is feasible?" : "Which capability becomes strategically critical first as the Growth scenario scales?"],
+      ["Management capacity", growth.managerGrowth < growth.employeeGrowth ? "What management capacity, role redesign or governance change is required if employee growth continues to outpace manager growth?" : "What would have to change for current management capacity to stop being sufficient?"],
+      ["Critical capability", growth.capabilityDelta < 0 ? "Which capability gap is most likely to block the Growth scenario, and which Build · Buy · Borrow · Bind · Bot · Move response is feasible?" : "Which capability becomes strategically critical first as the Growth scenario scales?"],
       ["Operating footprint", outcome.facts.growth.locations > outcome.facts.current.locations ? "Which decisions, HR processes and compliance checks become location-dependent when the operating footprint expands?" : "What location or work-model change would materially alter this scenario?"],
       ["Scenario choice", `Which assumptions explain the difference between Conservative (${pct(conservative.employeeGrowth)}) and Growth (${pct(growth.employeeGrowth)}) headcount, and who owns validating them?`]
     ].map(([title,text])=>`<div class="scenario-question"><strong>${title}</strong>${text}</div>`).join("");
