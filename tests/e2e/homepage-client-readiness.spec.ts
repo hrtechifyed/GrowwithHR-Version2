@@ -11,7 +11,7 @@ test.describe("homepage client readiness", () => {
     await page.goto("/index.html", { waitUntil: "networkidle" });
 
     await expect(page.getByRole("link", { name: /Plan Workforce & Capabilities/i })).toBeVisible();
-    const cards = page.locator("#capabilities .buyer-card");
+    const cards = page.locator("#capabilities .ph-product-card");
     await expect(cards).toHaveCount(3);
     await expect(page.getByRole("link", { name: /Assess Compliance Readiness/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Analyze Organization Structure/i })).toBeVisible();
@@ -23,7 +23,7 @@ test.describe("homepage client readiness", () => {
   test("mobile capabilities remain usable without horizontal page overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/index.html", { waitUntil: "networkidle" });
-    await expect(page.locator("#capabilities .buyer-card")).toHaveCount(3);
+    await expect(page.locator("#capabilities .ph-product-card")).toHaveCount(3);
 
     const overflow = await page.evaluate(() => (
       document.documentElement.scrollWidth - document.documentElement.clientWidth
