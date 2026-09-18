@@ -221,4 +221,4 @@
     setScenario("current",workspaceCurrent);
     notice.innerHTML=`Recovered baseline detected for <strong>${workspace?.companyName || "your company"}</strong>. ${reusable.length} current scenario values were pre-filled from the saved Company Workspace. Confirm them and add critical capability coverage before generating scenarios.`;
   }
-})(window, document);
+})(typeof window !== "undefined" ? window : globalThis, typeof document !== "undefined" ? document : null);
