@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decision Scenario Studio | GrowWithHR</title>
+  <meta name="description" content="Compare current, conservative and growth company scenarios across organization structure, workforce capability pressure, compliance-review triggers and people-cost assumptions.">
+  <link rel="stylesheet" href="styles.css?v=20260918-scenario-studio-v1">
+  <link rel="stylesheet" href="css/37-decision-scenario-studio.css?v=20260918-scenario-studio-v1">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/site-shell.js" defer></script>
+</head>
+<body class="scenario-studio-page" data-active-nav="analyze">
+  <main class="scenario-shell">
+    <section class="scenario-hero" aria-labelledby="scenarioTitle">
+      <div>
+        <div class="section-tag">GROWWITHHR · DECISION SCENARIO STUDIO</div>
+        <h1 id="scenarioTitle">See how a company decision could <span>change the people system.</span></h1>
+        <p>Compare three editable planning scenarios before committing to a growth assumption. GrowWithHR shows structural pressure, capability implications, compliance-review triggers and people-cost deltas without turning the scenario into a prediction.</p>
+      </div>
+      <aside class="scenario-hero-card">
+        <strong>Five scenario variables</strong>
+        <span>Employees · people managers · reporting layers · operating locations · critical capability coverage</span>
+        <small>Optional people-cost inputs remain company assumptions. No salary benchmark is invented.</small>
+      </aside>
+    </section>
+
+    <section id="scenarioReuseNotice" class="scenario-notice" aria-live="polite">
+      No recovered Company Workspace detected. Enter a current baseline below, or use the fictional example.
+    </section>
+
+    <section class="scenario-boundary">
+      <strong>Decision boundary:</strong> this Studio applies disclosed planning heuristics to user-supplied scenario facts. It does not forecast business outcomes, score individual employees, select applicable law, certify compliance, or treat the preset scenarios as benchmarks.
+    </section>
+
+    <section class="scenario-panel" aria-labelledby="baselineHeading">
+      <div class="scenario-panel-head">
+        <div><div class="section-tag">1 · BUILD THE COMPARISON</div><h2 id="baselineHeading">Current, Conservative and Growth</h2><p>Current is your confirmed or manually entered baseline. Conservative and Growth are editable planning cases.</p></div>
+        <div class="scenario-tools">
+          <button id="loadExample" class="scenario-secondary" type="button">Load fictional example</button>
+          <button id="generatePresets" class="scenario-primary" type="button">Generate starting scenarios</button>
+        </div>
+      </div>
+
+      <div class="scenario-table-wrap">
+        <table class="scenario-input-table">
+          <thead><tr><th>Scenario variable</th><th>Current</th><th>Conservative</th><th>Growth</th></tr></thead>
+          <tbody>
+            <tr><th><label for="currentEmployees">Employees</label><small>Total organization headcount</small></th><td><input id="currentEmployees" data-scenario="current" data-field="employees" type="number" min="1"></td><td><input id="conservativeEmployees" data-scenario="conservative" data-field="employees" type="number" min="1"></td><td><input id="growthEmployees" data-scenario="growth" data-field="employees" type="number" min="1"></td></tr>
+            <tr><th><label for="currentManagers">People managers</label><small>Managers with people accountability</small></th><td><input id="currentManagers" data-scenario="current" data-field="managers" type="number" min="1"></td><td><input id="conservativeManagers" data-scenario="conservative" data-field="managers" type="number" min="1"></td><td><input id="growthManagers" data-scenario="growth" data-field="managers" type="number" min="1"></td></tr>
+            <tr><th><label for="currentLayers">Reporting layers</label><small>Use the same definition across all three cases</small></th><td><input id="currentLayers" data-scenario="current" data-field="layers" type="number" min="1"></td><td><input id="conservativeLayers" data-scenario="conservative" data-field="layers" type="number" min="1"></td><td><input id="growthLayers" data-scenario="growth" data-field="layers" type="number" min="1"></td></tr>
+            <tr><th><label for="currentLocations">Operating locations</label><small>Material operating locations, not every remote employee location</small></th><td><input id="currentLocations" data-scenario="current" data-field="locations" type="number" min="1"></td><td><input id="conservativeLocations" data-scenario="conservative" data-field="locations" type="number" min="1"></td><td><input id="growthLocations" data-scenario="growth" data-field="locations" type="number" min="1"></td></tr>
+            <tr><th><label for="currentCapability">Critical capability coverage (%)</label><small>Your planning estimate for availability of the critical capability</small></th><td><input id="currentCapability" data-scenario="current" data-field="capabilityCoverage" type="number" min="0" max="100"></td><td><input id="conservativeCapability" data-scenario="conservative" data-field="capabilityCoverage" type="number" min="0" max="100"></td><td><input id="growthCapability" data-scenario="growth" data-field="capabilityCoverage" type="number" min="0" max="100"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="scenario-cost-assumption">
+        <div><label for="scenarioCurrency">Currency</label><select id="scenarioCurrency"><option value="INR">INR</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select></div>
+        <div><label for="annualPeopleCost">Average annual people cost per employee</label><input id="annualPeopleCost" type="number" min="0" placeholder="Optional"><small>Use your own fully loaded planning assumption. Leave blank to keep cost unestimated.</small></div>
+      </div>
+
+      <details class="scenario-preset-detail"><summary>What do the starting presets assume?</summary><p><strong>Conservative:</strong> employees +15%, managers +10%, same layers and locations, capability coverage −5 percentage points. <strong>Growth:</strong> employees +40%, managers +25%, one additional layer, one additional location, capability coverage −10 percentage points. These are editable illustration presets, not external benchmarks or forecasts.</p></details>
+
+      <div class="scenario-actions">
+        <button id="compareScenarios" class="scenario-primary" type="button">Compare scenarios →</button>
+        <a class="scenario-secondary" href="intelligence-hub.html">Back to Company Analysis</a>
+      </div>
+      <p id="scenarioError" class="scenario-error" role="alert" hidden></p>
+    </section>
+
+    <section id="scenarioResults" class="scenario-results" hidden aria-live="polite">
+      <div class="scenario-results-head"><div><div class="section-tag">2 · DECISION IMPACT</div><h2>What changes across the three scenarios?</h2><p>Each result is derived from the five scenario facts above plus the optional cost assumption.</p></div></div>
+      <div id="scenarioSummaryGrid" class="scenario-summary-grid"></div>
+
+      <section class="scenario-panel">
+        <div class="section-tag">COMPARISON DETAIL</div>
+        <div id="scenarioComparisonTable"></div>
+      </section>
+
+      <section class="scenario-panel">
+        <div class="section-tag">LEADERSHIP QUESTIONS</div>
+        <h2>Questions to resolve before choosing a scenario</h2>
+        <div id="scenarioLeadershipQuestions" class="scenario-question-grid"></div>
+      </section>
+
+      <section class="scenario-panel scenario-method">
+        <div class="section-tag">HOW TO READ THIS</div>
+        <p><strong>Structure:</strong> compares manager capacity, hierarchy and location complexity against the Current scenario; it does not apply a universal span-of-control benchmark. <strong>Workforce:</strong> uses the capability-coverage input as a planning signal, not an employee score. <strong>Compliance review:</strong> identifies when changed facts justify refreshing HR Compliance Readiness; it does not determine applicable law. <strong>Cost:</strong> is calculated only from the company-supplied annual people-cost assumption.</p>
+      </section>
+    </section>
+  </main>
+
+  <script src="js/decision-scenario-studio.js"></script>
+  <script src="js/build-marker.js"></script>
+</body>
+</html>
