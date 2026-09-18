@@ -7,6 +7,7 @@ on:
     paths:
       - "index.html"
       - "intelligence-hub.html"
+      - "decision-scenario-studio.html"
       - "compliance-intelligence.html"
       - "app.js"
       - "sample-advisory-report.html"
@@ -27,6 +28,7 @@ on:
       - "css/29-layered-dark.css"
       - "css/31-approved-template.css"
       - "css/32-assessment-interaction-fix.css"
+      - "css/37-decision-scenario-studio.css"
       - "css/assessment-choice-help.css"
       - "data/assessment/**"
       - "data/schema/**"
@@ -49,6 +51,7 @@ on:
       - "js/compliance-change-intelligence.js"
       - "js/latest-report-delivery-guard-v1.js"
       - "js/site-shell.js"
+      - "js/decision-scenario-studio.js"
       - "js/product-positioning.js"
       - "js/report-runtime-corrections.js"
       - "js/report-sequence-controller.js"
@@ -75,6 +78,7 @@ on:
     paths:
       - "index.html"
       - "intelligence-hub.html"
+      - "decision-scenario-studio.html"
       - "compliance-intelligence.html"
       - "app.js"
       - "sample-advisory-report.html"
@@ -95,6 +99,7 @@ on:
       - "css/29-layered-dark.css"
       - "css/31-approved-template.css"
       - "css/32-assessment-interaction-fix.css"
+      - "css/37-decision-scenario-studio.css"
       - "css/assessment-choice-help.css"
       - "data/assessment/**"
       - "data/schema/**"
@@ -117,6 +122,7 @@ on:
       - "js/compliance-change-intelligence.js"
       - "js/latest-report-delivery-guard-v1.js"
       - "js/site-shell.js"
+      - "js/decision-scenario-studio.js"
       - "js/product-positioning.js"
       - "js/report-runtime-corrections.js"
       - "js/report-sequence-controller.js"
@@ -206,6 +212,7 @@ jobs:
           tests/e2e/visual-story-report-v021.spec.ts
           tests/e2e/founder-intelligence-roadmap.spec.ts
           tests/e2e/assessment-choice-help.spec.ts
+          tests/e2e/decision-scenario-studio.spec.ts
           --project=chromium
       - name: Upload Playwright report
         if: always()
