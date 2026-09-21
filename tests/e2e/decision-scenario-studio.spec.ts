@@ -54,3 +54,26 @@ test('Decision Scenario Studio reuses known Company Workspace baseline facts wit
   await expect(page.locator('#scenarioError')).toContainText('Complete the five Current values');
   await expect(page.locator('#scenarioResults')).toBeHidden();
 });
+
+test('Decision Scenario Studio blocks invalid counts and negative people cost', async ({ page }) => {
+  await page.goto('/decision-scenario-studio.html');
+  await page.getByRole('button', { name: 'Load fictional example' }).click();
+
+  const results = page.locator('#scenarioResults');
+  const error = page.locator('#scenarioError');
+
+  await page.getByLabel('Current employees').fill('12.5');
+  await page.getByRole('button', { name: /Compare scenarios/i }).click();
+
+  await expect(error).toBeVisible();
+  await expect(error).toContainText('must use whole numbers');
+  await expect(results).toBeHidden();
+
+  await page.getByLabel('Current employees').fill('120');
+  await page.locator('#annualPeopleCost').fill('-100');
+  await page.getByRole('button', { name: /Compare scenarios/i }).click();
+
+  await expect(error).toBeVisible();
+  await expect(error).toContainText('Annual people cost must be 0 or greater');
+  await expect(results).toBeHidden();
+});
