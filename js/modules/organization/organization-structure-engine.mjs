@@ -50,6 +50,47 @@ function stringArray(value) {
     return text(value).split(",").map(item => item.trim()).filter(Boolean);
 }
 
+function normalizeFunctionOwnership(value) {
+    const allowed = new Set(["clear-owner", "shared", "founder", "unclear", "dont-know"]);
+    if (!Array.isArray(value)) return [];
+    const seen = new Set();
+    return value.map(item => {
+        const name = text(item?.name ?? item?.function);
+        const ownership = text(item?.ownership).toLowerCase();
+        if (!name || !allowed.has(ownership)) return null;
+        const key = name.toLowerCase();
+        if (seen.has(key)) return null;
+        seen.add(key);
+        return { name, ownership };
+    }).filter(Boolean);
+}
+
+function functionalOwnershipMetrics(facts) {
+    const entries = facts.functionOwnership || [];
+    const counts = {
+        clearOwner: 0,
+        shared: 0,
+        founder: 0,
+        unclear: 0,
+        unknown: 0
+    };
+    entries.forEach(item => {
+        if (item.ownership === "clear-owner") counts.clearOwner += 1;
+        else if (item.ownership === "shared") counts.shared += 1;
+        else if (item.ownership === "founder") counts.founder += 1;
+        else if (item.ownership === "unclear") counts.unclear += 1;
+        else counts.unknown += 1;
+    });
+    const mappedCount = entries.length - counts.unknown;
+    return {
+        entries,
+        counts,
+        mappedCount,
+        totalFunctions: Math.max(facts.departments.length, entries.length),
+        unmappedCount: Math.max(0, Math.max(facts.departments.length, entries.length) - mappedCount)
+    };
+}
+
 function choice(value, allowed) {
     const normalized = text(value).toLowerCase();
     return allowed.includes(normalized) ? normalized : "";
@@ -83,6 +124,7 @@ function normalizeOrganizationInput(input = {}) {
         founderDirectReports: optionalNumber(organization.founderDirectReports ?? input.founderDirectReports),
         operatingLocationCount,
         departments: stringArray(organization.departments ?? input.departments),
+        functionOwnership: normalizeFunctionOwnership(organization.functionOwnership ?? input.functionOwnership),
         founderDecisions: text(organization.founderDecisions ?? input.founderDecisions),
         expansion: text(organization.expansion ?? input.expansion),
         managerRole: choice(
@@ -246,6 +288,7 @@ function derivedMetrics(facts) {
         ? facts.expectedEmployees12Months / managerCount
         : null;
     const context = managementContext(facts);
+    const ownership = functionalOwnershipMetrics(facts);
 
     return {
         currentEmployeeToManagerRatio: currentSpan === null ? null : Number(currentSpan.toFixed(1)),
@@ -253,6 +296,10 @@ function derivedMetrics(facts) {
         projectedEmployeeToManagerRatioIfManagerCountUnchanged:
             projectedSpan === null ? null : Number(projectedSpan.toFixed(1)),
         departmentCount: facts.departments.length,
+        functionOwnership: ownership.entries,
+        functionOwnershipCounts: ownership.counts,
+        functionOwnershipMappedCount: ownership.mappedCount,
+        functionOwnershipUnmappedCount: ownership.unmappedCount,
         operatingLocationCount: facts.operatingLocationCount,
         managementContextKnownFactors: context.knownFactors,
         managementContextPressurePoints: context.points,
@@ -302,6 +349,7 @@ function factMetadata(facts, metrics) {
     confirmed("organization.reportingLevels", facts.reportingLevels !== null);
     confirmed("organization.founderDirectReports", facts.founderDirectReports !== null);
     confirmed("organization.departments", facts.departments.length > 0);
+    confirmed("organization.functionOwnership", facts.functionOwnership.length > 0, CONFIDENCE.MEDIUM);
     confirmed("organization.managerRole", Boolean(facts.managerRole) && facts.managerRole !== "dont-know");
     confirmed("organization.workComplexity", Boolean(facts.workComplexity) && facts.workComplexity !== "dont-know");
     confirmed("organization.workStandardization", Boolean(facts.workStandardization) && facts.workStandardization !== "dont-know");
@@ -319,6 +367,7 @@ function factMetadata(facts, metrics) {
     derived("workforce.expectedHeadcountGrowthPercent", metrics.expectedHeadcountGrowthPercent !== null, ["workforce.totalEmployees", "workforce.expectedEmployees12Months"]);
     derived("organization.projectedEmployeeToManagerRatioIfManagerCountUnchanged", metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged !== null, ["workforce.expectedEmployees12Months", "organization.peopleManagerCount"]);
     derived("organization.managementContextBand", metrics.managementContextKnownFactors >= 3, ["organization.managerRole", "organization.workComplexity", "organization.workStandardization", "organization.teamIndependence", "organization.coachingIntensity", "geography.operatingLocationCount"]);
+    derived("organization.functionalOwnershipMappedCount", metrics.functionOwnershipMappedCount > 0, ["organization.departments", "organization.functionOwnership"]);
     derived("organization.founderDecisionCategories", metrics.founderDecisionCategories.length > 0, ["organization.founderDecisions"]);
     derived("organization.expansionSignals", metrics.expansionSignals.length > 0, ["organization.expansion"]);
 
@@ -506,29 +555,79 @@ function reportingArchitecture(facts) {
     });
 }
 
-function functionalOwnership(facts) {
+function functionalOwnership(facts, metrics) {
     const departments = facts.departments.length;
-    if (!departments) {
+    const ownership = metrics.functionOwnership || [];
+    const counts = metrics.functionOwnershipCounts || { clearOwner: 0, shared: 0, founder: 0, unclear: 0, unknown: 0 };
+
+    if (!departments && !ownership.length) {
         return finding({
             id: "ORG-OWNERSHIP-001", area: "functional-ownership",
-            status: facts.employees !== null && facts.employees > 20 ? STATUS.ACTION : STATUS.NEEDS_INFORMATION,
-            title: facts.employees !== null && facts.employees > 20 ? "Functional ownership needs to be made explicit" : "Functional ownership needs more information",
+            status: facts.employees !== null && facts.employees > 20 ? STATUS.WATCH : STATUS.NEEDS_INFORMATION,
+            title: facts.employees !== null && facts.employees > 20 ? "Functional ownership is not yet visible" : "Functional ownership needs more information",
             factsUsed: facts.employees !== null ? ["workforce.totalEmployees"] : [],
-            whyItMatters: "Named functions or responsibility domains make ownership boundaries visible and reduce ambiguity as work becomes more specialized.",
-            action: "List the main functions and identify who owns each function's outcomes and recurring decisions.",
+            whyItMatters: "Named functions and explicit accountability make responsibility boundaries visible as work becomes more specialized.",
+            action: "List the main functions and indicate whether each has a clear accountable owner, shared ownership, founder ownership, or no clear owner.",
             growthTrigger: "Reassess whenever a new function or business line is introduced.",
             confidence: facts.employees !== null ? CONFIDENCE.MEDIUM : CONFIDENCE.LOW,
-            missingFacts: ["organization.departments"]
+            missingFacts: ["organization.departments", "organization.functionOwnership"]
         });
     }
-    const status = facts.employees !== null && facts.employees > 30 && departments < 3 ? STATUS.WATCH : STATUS.STABLE;
+
+    if (!ownership.length || metrics.functionOwnershipMappedCount === 0) {
+        return finding({
+            id: "ORG-OWNERSHIP-001", area: "functional-ownership", status: STATUS.NEEDS_INFORMATION,
+            title: "Functions are visible, but accountability has not been mapped",
+            factsUsed: departments ? ["organization.departments"] : [],
+            whyItMatters: String(departments || ownership.length) + " function" + ((departments || ownership.length) === 1 ? "" : "s") + " are visible, but GrowWithHR cannot yet distinguish clear ownership from shared, founder-dependent or unclear accountability.",
+            action: "Map accountability for the main functions. Employee names are not required.",
+            growthTrigger: "Reassess when ownership changes or a new function is introduced.",
+            confidence: CONFIDENCE.LOW,
+            missingFacts: ["organization.functionOwnership"]
+        });
+    }
+
+    let status = STATUS.STABLE;
+    if (counts.unclear >= 2 || (counts.shared + counts.unclear) >= 3) {
+        status = STATUS.ACTION;
+    } else if (
+        counts.unclear >= 1 ||
+        counts.shared >= 1 ||
+        (facts.employees !== null && facts.employees > 30 && counts.founder >= 2) ||
+        (facts.employees !== null && facts.employees > 15 && counts.founder >= 1)
+    ) {
+        status = STATUS.WATCH;
+    }
+
+    const issueParts = [];
+    if (counts.unclear) issueParts.push(String(counts.unclear) + " without a clear owner");
+    if (counts.shared) issueParts.push(String(counts.shared) + " with shared or overlapping ownership");
+    if (counts.founder) issueParts.push(String(counts.founder) + " owned directly by the founder/CEO");
+    if (metrics.functionOwnershipUnmappedCount) issueParts.push(String(metrics.functionOwnershipUnmappedCount) + " not yet mapped");
+
+    const title = status === STATUS.ACTION
+        ? "Functional ownership is a structural bottleneck"
+        : status === STATUS.WATCH
+            ? "Functional ownership has concentration or overlap to review"
+            : "Functional accountability is broadly explicit";
+
     return finding({
-        id: "ORG-OWNERSHIP-001", area: "functional-ownership", status,
-        title: status === STATUS.WATCH ? "Functional ownership may be thin for current scale" : "Named functional ownership provides a usable structural base",
-        factsUsed: ["organization.departments", ...(facts.employees !== null ? ["workforce.totalEmployees"] : [])],
-        whyItMatters: `${departments} function${departments === 1 ? "" : "s"} or department${departments === 1 ? "" : "s"} were recorded. Clear ownership matters more than the number of labels, but sparse coverage can signal overloaded or implicit responsibility boundaries.`,
-        action: status === STATUS.STABLE ? "Keep function ownership current as responsibilities change." : "Check whether all critical business outcomes have an explicit owner, even if the company keeps a lean formal structure.",
-        growthTrigger: "Reassess when a new product, location, or specialist function is added.", confidence: CONFIDENCE.MEDIUM
+        id: "ORG-OWNERSHIP-001", area: "functional-ownership", status, title,
+        factsUsed: ["organization.departments", "organization.functionOwnership"],
+        whyItMatters: issueParts.length
+            ? "Across the supplied functions, " + issueParts.join(", ") + ". GrowWithHR treats these as accountability signals, not as assessments of individual leaders."
+            : "All " + String(metrics.functionOwnershipMappedCount) + " mapped functions have a clear accountable owner recorded.",
+        action: status === STATUS.STABLE
+            ? "Keep function accountability current as responsibilities, teams and interfaces change."
+            : "Clarify one accountable outcome owner for the functions with overlap, ambiguity or avoidable founder concentration; then define the handoffs and decisions that remain shared.",
+        growthTrigger: "Reassess when new functions, leaders, locations or business lines are introduced.",
+        confidence: metrics.functionOwnershipUnmappedCount ? CONFIDENCE.MEDIUM : CONFIDENCE.HIGH,
+        context: {
+            ownershipMap: ownership,
+            counts,
+            mappedCount: metrics.functionOwnershipMappedCount,
+            unmappedCount: metrics.functionOwnershipUnmappedCount
+        }
     });
 }
 
@@ -807,8 +906,98 @@ function executiveSummary(findings, summary) {
     return "Your supplied structural facts do not create an immediate GrowWithHR action or watch trigger. Reassess when headcount, reporting lines, locations, work design or decision ownership change materially.";
 }
 
+function statusRankForMap(status) {
+    return STATUS_RANK[status] ?? 99;
+}
+
+function buildBottleneckMap(findings) {
+    const byId = new Map(findings.map(item => [item.id, item]));
+    const definitions = [
+        {
+            id: "decision",
+            label: "Decision flow",
+            findingIds: ["ORG-DECISIONS-001", "ORG-FOUNDER-001"],
+            whatToReview: "Decision rights, escalation paths and avoidable executive concentration."
+        },
+        {
+            id: "ownership",
+            label: "Functional ownership",
+            findingIds: ["ORG-OWNERSHIP-001", "ORG-CLARITY-001"],
+            whatToReview: "Accountable owners, overlapping responsibilities and role boundaries."
+        },
+        {
+            id: "management",
+            label: "Management capacity",
+            findingIds: ["ORG-CAPACITY-001"],
+            whatToReview: "Manager load, work context and where management capacity may constrain execution."
+        },
+        {
+            id: "coordination",
+            label: "Coordination",
+            findingIds: ["ORG-COORDINATION-001", "ORG-GOVERNANCE-001"],
+            whatToReview: "Recurring handoffs, cross-functional forums and operating cadence."
+        },
+        {
+            id: "hierarchy",
+            label: "Structure & layers",
+            findingIds: ["ORG-REPORTING-001", "ORG-LOCATION-001"],
+            whatToReview: "Reporting architecture, location complexity and whether layers have a clear purpose."
+        },
+        {
+            id: "growth",
+            label: "Growth readiness",
+            findingIds: ["ORG-GROWTH-001"],
+            whatToReview: "Whether the current operating model is ready for planned headcount or expansion."
+        }
+    ];
+
+    const items = definitions.map(definition => {
+        const contributing = definition.findingIds.map(id => byId.get(id)).filter(Boolean);
+        const sorted = [...contributing].sort((a, b) => statusRankForMap(a.status) - statusRankForMap(b.status));
+        const lead = sorted[0] || null;
+        return {
+            id: definition.id,
+            label: definition.label,
+            status: lead?.status || STATUS.NEEDS_INFORMATION,
+            signal: lead?.title || "More information is needed.",
+            whatToReview: definition.whatToReview,
+            sourceFindingIds: contributing.map(item => item.id)
+        };
+    });
+
+    const ranked = [...items].sort((a, b) => statusRankForMap(a.status) - statusRankForMap(b.status));
+    return {
+        items,
+        primary: ranked[0] || null
+    };
+}
+
+function ownershipMapForReport(facts) {
+    return (facts.functionOwnership || []).map(item => ({
+        name: item.name,
+        ownership: item.ownership,
+        label: item.ownership === "clear-owner"
+            ? "Clear accountable owner"
+            : item.ownership === "shared"
+                ? "Shared / overlapping ownership"
+                : item.ownership === "founder"
+                    ? "Founder / CEO owns directly"
+                    : item.ownership === "unclear"
+                        ? "No clear accountable owner"
+                        : "Not mapped",
+        status: item.ownership === "clear-owner"
+            ? STATUS.STABLE
+            : item.ownership === "unclear"
+                ? STATUS.ACTION
+                : item.ownership === "dont-know"
+                    ? STATUS.NEEDS_INFORMATION
+                    : STATUS.WATCH
+    }));
+}
+
 function reportModel(facts, metrics, findings, scenario, missingFacts) {
     const summary = statusSummary(findings);
+    const bottleneckMap = buildBottleneckMap(findings);
     const priorities = priorityFindings(findings, 3);
     const primary = priorities[0] || null;
     const uniqueSources = [];
@@ -861,10 +1050,15 @@ function reportModel(facts, metrics, findings, scenario, missingFacts) {
             expectedHeadcountGrowthPercent: metrics.expectedHeadcountGrowthPercent,
             projectedEmployeeToManagerRatioIfManagerCountUnchanged: metrics.projectedEmployeeToManagerRatioIfManagerCountUnchanged,
             managementContextBand: metrics.managementContextBand,
+            functionOwnershipMappedCount: metrics.functionOwnershipMappedCount,
+            functionOwnershipCounts: metrics.functionOwnershipCounts,
             founderDecisionCategories: metrics.founderDecisionCategories,
             expansionSignals: metrics.expansionSignals
         },
         findingIds: findings.map(item => item.id),
+        functionalOwnershipMap: ownershipMapForReport(facts),
+        bottleneckMap: bottleneckMap.items,
+        primaryBottleneck: bottleneckMap.primary,
         scenario,
         missingFacts,
         assumptions: [
@@ -885,7 +1079,7 @@ function analyzeOrganizationStructure(input = {}) {
         managementCapacity(facts, metrics),
         founderSpan(facts, metrics),
         reportingArchitecture(facts),
-        functionalOwnership(facts),
+        functionalOwnership(facts, metrics),
         roleClarityFinding(facts),
         decisionRightsFinding(facts, metrics),
         governanceFinding(facts),
@@ -899,7 +1093,7 @@ function analyzeOrganizationStructure(input = {}) {
 
     return {
         module: "organization",
-        version: "1.2.0-contextual-structure",
+        version: "1.3.0-ownership-bottlenecks",
         generatedAt: new Date().toISOString(),
         authority: "deterministic-structural-prototype",
         methodology: FRAMEWORK,
@@ -937,6 +1131,8 @@ export {
     managementContext,
     contextualSpanStatus,
     founderDecisionCategories,
-    expansionSignals
+    expansionSignals,
+    functionalOwnershipMetrics,
+    buildBottleneckMap
 };
 export default analyzeOrganizationStructure;
