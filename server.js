@@ -821,6 +821,83 @@ app.get("/api/health", (request, response) => {
     });
 });
 
+app.get("/api/email-status", async (request, response) => {
+    const missing = getMissingEnvironmentVariables();
+    const deployedCommit =
+        process.env.RENDER_GIT_COMMIT ||
+        "unknown";
+
+    if (missing.length) {
+        return response.status(503).json({
+            ok: false,
+            provider: "gmail-api",
+            gmailConfigured: false,
+            gmailConnected: false,
+            senderValid: false,
+            senderMatchesProfile: false,
+            missingVariables: missing,
+            deployedCommit
+        });
+    }
+
+    const sender = cleanText(
+        process.env.GMAIL_USER
+    ).toLowerCase();
+
+    if (!isValidEmail(sender)) {
+        return response.status(503).json({
+            ok: false,
+            provider: "gmail-api",
+            gmailConfigured: true,
+            gmailConnected: false,
+            senderValid: false,
+            senderMatchesProfile: false,
+            error: "GMAIL_USER is not a valid email address.",
+            deployedCommit
+        });
+    }
+
+    try {
+        const profile = await gmailApi.users.getProfile({
+            userId: "me"
+        });
+        const profileEmail = cleanText(
+            profile?.data?.emailAddress
+        ).toLowerCase();
+        const senderMatchesProfile =
+            Boolean(profileEmail) &&
+            profileEmail === sender;
+
+        return response.status(
+            senderMatchesProfile ? 200 : 503
+        ).json({
+            ok: senderMatchesProfile,
+            provider: "gmail-api",
+            gmailConfigured: true,
+            gmailConnected: true,
+            senderValid: true,
+            senderMatchesProfile,
+            deployedCommit
+        });
+    } catch (error) {
+        console.error(
+            "Gmail API connectivity check failed:",
+            error?.response?.data || error
+        );
+        return response.status(503).json({
+            ok: false,
+            provider: "gmail-api",
+            gmailConfigured: true,
+            gmailConnected: false,
+            senderValid: true,
+            senderMatchesProfile: false,
+            error:
+                "Gmail API credentials could not be validated.",
+            deployedCommit
+        });
+    }
+});
+
 app.post(
     "/api/send-advisory",
     emailLimiter,
