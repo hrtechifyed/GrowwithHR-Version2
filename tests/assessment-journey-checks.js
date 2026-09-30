@@ -39,8 +39,8 @@ const delivery = read("js/executive-assessment/advisory-delivery.js");
 ========================================================== */
 
 includes(home, 'id="home"', "The homepage hero must remain available.");
-includes(home, 'href="intelligence-hub.html"', "The homepage must route Company Insights through the intelligence hub.");
-includes(home, "Start an Assessment", "The approved homepage assessment CTA must remain visible.");
+includes(home, 'href="organization-intelligence.html"', "The homepage must route the primary buyer journey directly to Organization & Growth.");
+includes(home, "Analyze Organization &amp; Growth", "The approved homepage assessment CTA must remain visible.");
 includes(home, 'href="sample-reports.html"', "The homepage must expose the sample-report route.");
 includes(home, "View a Sample Report", "The homepage sample-report CTA must remain visible.");
 includes(home, 'data-testid="home-product-preview"', "The homepage qualitative product preview is required.");
