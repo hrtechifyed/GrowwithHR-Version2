@@ -245,7 +245,7 @@ function cover(doc, state, payload, logoData) {
         `Company: ${payload.companyName}`,
         `Report ID: ${payload.reportId}`,
         `Generated: ${formatDate(payload.generatedAt)}`,
-        `Framework: ${cleanText(payload.framework.name,"GrowWithHR Organization Structure Assessment Framework")} v${cleanText(payload.framework.version,"1.1")}`
+        `Framework: ${cleanText(payload.framework.name,"GrowWithHR Organization Structure Assessment Framework")} v${cleanText(payload.framework.version,"1.2")}`
     ];
     identity.forEach((line,index)=>doc.text(doc.splitTextToSize(line,CONTENT_W-16),PAGE.left+8,identityY+24+index*8,{maxWidth:CONTENT_W-16}));
 
