@@ -181,6 +181,7 @@ assert.equal(FRAMEWORK.version, "1.2");
 assert.ok(Array.isArray(FRAMEWORK.changeLog) && FRAMEWORK.changeLog.length >= 2);
 assert.ok(FRAMEWORK.lastReviewed);
 assert.equal(SOURCES["OPENSTAX-SPAN-CONTEXT"].access, "Free public source");
+assert.match(SOURCES["OPENSTAX-SPAN-CONTEXT"].license, /CC BY-NC-SA 4\.0/i);
 assert.match(SOURCES["OPENSTAX-ORG-DESIGN"].license, /CC BY-NC-SA 4\.0/i);
 assert.match(SOURCES["OPENSTAX-ORG-DESIGN"].scopeNote || "", /commercial reuse/i);
 assert.match(SOURCES["GOVS003-ORG-DESIGN"].scopeNote || "", /UK government/i);
