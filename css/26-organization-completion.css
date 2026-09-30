@@ -2,6 +2,22 @@
 .org-context-intro{grid-column:1/-1;margin:0;padding:14px 16px;border:1px solid rgba(79,139,255,.2);border-radius:12px;background:rgba(37,99,235,.07);color:var(--text-secondary);line-height:1.55;}
 .org-framework-field{align-content:start;padding:14px 16px;border:1px solid rgba(255,176,0,.2);border-radius:12px;background:rgba(255,176,0,.055);}
 .org-framework-field strong{color:#ffe09a;}
+.org-ownership-builder{padding:16px;border:1px solid rgba(79,139,255,.2);border-radius:14px;background:rgba(37,99,235,.055);}
+.org-ownership-builder__head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;}
+.org-ownership-builder__head strong{display:block;color:#eaf1ff;font-size:.98rem;}
+.org-ownership-builder__head small{display:block;margin-top:5px;}
+.org-ownership-rows{display:grid;gap:10px;margin-top:14px;}
+.org-ownership-row{display:grid;grid-template-columns:minmax(150px,.75fr) minmax(220px,1.25fr);gap:12px;align-items:center;padding:10px 12px;border:1px solid rgba(255,255,255,.09);border-radius:11px;background:rgba(255,255,255,.025);}
+.org-ownership-row__name{font-weight:780;color:#f5f7fb;}
+.org-bottleneck-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
+.org-bottleneck-card{padding:14px;border:1px solid var(--glass-border);border-radius:14px;background:rgba(255,255,255,.03);}
+.org-bottleneck-card h4{margin:8px 0 6px;font-size:.98rem;color:#f8fafc;}
+.org-bottleneck-card p{margin:0;color:var(--text-muted);font-size:.88rem;line-height:1.45;}
+.org-ownership-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px;}
+.org-ownership-map__item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 12px;border:1px solid var(--glass-border);border-radius:11px;background:rgba(255,255,255,.025);}
+.org-ownership-map__item strong{font-size:.92rem;color:#f8fafc;}
+.org-ownership-map__item span:last-child{font-size:.82rem;color:var(--text-secondary);text-align:right;}
+
 .org-field-status{display:inline-flex;align-items:center;margin-left:7px;padding:2px 7px;border-radius:999px;font-size:.66rem;font-weight:850;letter-spacing:.035em;vertical-align:middle;}
 .org-field-status.is-required{background:rgba(255,176,0,.13);border:1px solid rgba(255,176,0,.28);color:#ffe09a;}
 .org-field-status.is-optional{background:rgba(148,163,184,.10);border:1px solid rgba(148,163,184,.18);color:#b8c3d4;}
@@ -19,7 +35,8 @@
 .org-report-actions button[disabled]{opacity:.58;cursor:wait;transform:none;}
 
 @media(max-width:900px){.org-rule-grid,.org-history-grid{grid-template-columns:1fr}}
-@media(max-width:700px){.org-context-intro{grid-column:auto}.org-report-actions{width:100%}.org-report-actions>*{flex:1 1 150px}}
+@media(max-width:900px){.org-bottleneck-map{grid-template-columns:repeat(2,minmax(0,1fr))}.org-ownership-map{grid-template-columns:1fr}}
+@media(max-width:700px){.org-context-intro{grid-column:auto}.org-report-actions{width:100%}.org-report-actions>*{flex:1 1 150px}.org-ownership-row{grid-template-columns:1fr}.org-bottleneck-map{grid-template-columns:1fr}.org-ownership-map__item{align-items:flex-start;flex-direction:column}.org-ownership-map__item span:last-child{text-align:left}}
 
 @media print{
   .org-delivery-status{display:none!important}
