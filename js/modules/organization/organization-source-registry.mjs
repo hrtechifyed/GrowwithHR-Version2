@@ -4,7 +4,7 @@ const FRAMEWORK = Object.freeze({
     version: "1.2",
     access: "Free public methodology",
     methodologyUrl: "organization-structure-methodology.html",
-    lastReviewed: "2026-08-17",
+    lastReviewed: "2026-09-30",
     reviewOwner: "GrowWithHR organisation-design methodology",
     statement: "GrowWithHR applies deterministic structural rules to company facts, then shows the public evidence used to support the underlying organization-design principle. A source supports the principle; it does not automatically prescribe GrowWithHR's status threshold unless the finding explicitly says so.",
     changeLog: Object.freeze([
