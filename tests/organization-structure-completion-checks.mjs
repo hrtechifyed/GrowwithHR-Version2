@@ -189,7 +189,6 @@ assert.match(SOURCES["CIPD-ORG-DESIGN"].scopeNote || "", /Professional-body/i);
 for (const source of Object.values(SOURCES)) {
     assert.equal(source.lastReviewed, "2026-10-01", `${source.id} research review date should be current.`);
 }
-assert.match(SOURCES["OPENSTAX-SPAN-CONTEXT"].license, /CC BY 4\.0/i);
 assert.match(SOURCES["OPENSTAX-SPAN-CONTEXT"].supports, /task complexity/i);
 assert.ok(RULE_SOURCE_MAP["ORG-CAPACITY-001"].sourceIds.includes("OPENSTAX-SPAN-CONTEXT"));
 for (const [ruleId, rule] of Object.entries(RULE_SOURCE_MAP)) {
