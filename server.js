@@ -832,9 +832,9 @@ app.get("/api/email-status", async (request, response) => {
             ok: false,
             provider: "gmail-api",
             gmailConfigured: false,
-            gmailConnected: false,
+            oauthConnected: false,
+            sendScopeAvailable: false,
             senderValid: false,
-            senderMatchesProfile: false,
             missingVariables: missing,
             deployedCommit
         });
@@ -849,50 +849,72 @@ app.get("/api/email-status", async (request, response) => {
             ok: false,
             provider: "gmail-api",
             gmailConfigured: true,
-            gmailConnected: false,
+            oauthConnected: false,
+            sendScopeAvailable: false,
             senderValid: false,
-            senderMatchesProfile: false,
             error: "GMAIL_USER is not a valid email address.",
             deployedCommit
         });
     }
 
     try {
-        const profile = await gmailApi.users.getProfile({
-            userId: "me"
-        });
-        const profileEmail = cleanText(
-            profile?.data?.emailAddress
-        ).toLowerCase();
-        const senderMatchesProfile =
-            Boolean(profileEmail) &&
-            profileEmail === sender;
+        const accessTokenResult =
+            await oauth2Client.getAccessToken();
+        const accessToken = cleanText(
+            accessTokenResult?.token ||
+            accessTokenResult
+        );
+        if (!accessToken) {
+            throw new Error(
+                "Google OAuth did not return an access token."
+            );
+        }
+
+        const tokenInfo =
+            await oauth2Client.getTokenInfo(
+                accessToken
+            );
+        const scopes = new Set(
+            Array.isArray(tokenInfo?.scopes)
+                ? tokenInfo.scopes
+                : []
+        );
+        const sendScopes = [
+            "https://mail.google.com/",
+            "https://www.googleapis.com/auth/gmail.modify",
+            "https://www.googleapis.com/auth/gmail.compose",
+            "https://www.googleapis.com/auth/gmail.send"
+        ];
+        const sendScopeAvailable =
+            sendScopes.some(
+                (scope) => scopes.has(scope)
+            );
 
         return response.status(
-            senderMatchesProfile ? 200 : 503
+            sendScopeAvailable ? 200 : 503
         ).json({
-            ok: senderMatchesProfile,
+            ok: sendScopeAvailable,
             provider: "gmail-api",
             gmailConfigured: true,
-            gmailConnected: true,
+            oauthConnected: true,
+            sendScopeAvailable,
             senderValid: true,
-            senderMatchesProfile,
             deployedCommit
         });
     } catch (error) {
         console.error(
-            "Gmail API connectivity check failed:",
+            "Gmail OAuth connectivity check failed:",
             error?.response?.data || error
         );
         return response.status(503).json({
             ok: false,
             provider: "gmail-api",
             gmailConfigured: true,
-            gmailConnected: false,
+            oauthConnected: false,
+            sendScopeAvailable: false,
             senderValid: true,
-            senderMatchesProfile: false,
             error:
-                "Gmail API credentials could not be validated.",
+                "Gmail OAuth credentials could not be validated for sending.",
             deployedCommit
         });
     }
