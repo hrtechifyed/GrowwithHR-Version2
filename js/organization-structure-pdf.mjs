@@ -245,7 +245,7 @@ function cover(doc, state, payload, logoData) {
         `Company: ${payload.companyName}`,
         `Report ID: ${payload.reportId}`,
         `Generated: ${formatDate(payload.generatedAt)}`,
-        `Framework: ${cleanText(payload.framework.name,"GrowWithHR Organization Structure Assessment Framework")} v${cleanText(payload.framework.version,"1.1")}`
+        `Framework: ${cleanText(payload.framework.name,"GrowWithHR Organization Structure Assessment Framework")} v${cleanText(payload.framework.version,"1.2")}`
     ];
     identity.forEach((line,index)=>doc.text(doc.splitTextToSize(line,CONTENT_W-16),PAGE.left+8,identityY+24+index*8,{maxWidth:CONTENT_W-16}));
 
@@ -265,6 +265,8 @@ function executiveSection(doc,state,payload,logoData){
     heading(doc,state,"Key structural metrics",2,"Executive Overview",logoData);
     const m=model.metrics||{}; labelValue(doc,state,"Employees",m.employees??payload.facts.employees,"Executive Overview",logoData); labelValue(doc,state,"People managers",m.peopleManagers??"Not provided","Executive Overview",logoData); labelValue(doc,state,"Employees per manager",m.currentEmployeeToManagerRatio??"Not available","Executive Overview",logoData); labelValue(doc,state,"12-month headcount",m.expectedEmployees12Months??"Not provided","Executive Overview",logoData); labelValue(doc,state,"Management context",cleanText(m.managementContextBand,"Not enough context").replaceAll("-"," "),"Executive Overview",logoData);
     const primary=model.primaryConstraint; if(primary){heading(doc,state,"Primary constraint",2,"Executive Overview",logoData);statusChip(doc,state,primary.status,"Executive Overview",logoData);paragraph(doc,state,primary.title,{bold:true,size:10.5,pageTitle:"Executive Overview"},logoData);paragraph(doc,state,primary.whyItMatters,{pageTitle:"Executive Overview"},logoData);infoBox(doc,state,"What to do next",primary.action,BRAND.goldSoft,"Executive Overview",logoData);}
+    if((model.bottleneckMap||[]).length){heading(doc,state,"Organization bottleneck map",2,"Executive Overview",logoData);paragraph(doc,state,"This map groups existing deterministic findings; it is not a separate score.",{size:8.3,color:BRAND.muted,pageTitle:"Executive Overview"},logoData);(model.bottleneckMap||[]).forEach((item)=>infoBox(doc,state,item.label,statusLabel(item.status)+". "+cleanText(item.signal),statusSoft(item.status),"Executive Overview",logoData));}
+    if((model.functionalOwnershipMap||[]).length){heading(doc,state,"Functional ownership",2,"Executive Overview",logoData);(model.functionalOwnershipMap||[]).forEach((item)=>labelValue(doc,state,item.name,item.label,"Executive Overview",logoData));}
     heading(doc,state,"Top priorities",2,"Executive Overview",logoData); (model.priorities||[]).slice(0,3).forEach((item,index)=>infoBox(doc,state,`${index+1}. ${item.title}`,item.action,BRAND.soft,"Executive Overview",logoData));
 }
 

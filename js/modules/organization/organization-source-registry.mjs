@@ -1,13 +1,14 @@
 const FRAMEWORK = Object.freeze({
     id: "GWHR-ORG-FRAMEWORK-1",
     name: "GrowWithHR Organization Structure Assessment Framework",
-    version: "1.1",
+    version: "1.2",
     access: "Free public methodology",
     methodologyUrl: "organization-structure-methodology.html",
-    lastReviewed: "2026-08-17",
+    lastReviewed: "2026-09-30",
     reviewOwner: "GrowWithHR organisation-design methodology",
     statement: "GrowWithHR applies deterministic structural rules to company facts, then shows the public evidence used to support the underlying organization-design principle. A source supports the principle; it does not automatically prescribe GrowWithHR's status threshold unless the finding explicitly says so.",
     changeLog: Object.freeze([
+        Object.freeze({ version: "1.2", date: "2026-09-30", note: "Added explicit functional-ownership mapping and a deterministic organization bottleneck map across decision flow, ownership, management capacity, coordination, structure and growth readiness." }),
         Object.freeze({ version: "1.1", date: "2026-08-17", note: "Added contextual management-capacity factors, founder-decision and expansion signals, governed report metadata and explicit source/rule version traceability." }),
         Object.freeze({ version: "1.0", date: "2026-08-17", note: "Initial public Organization Structure methodology and source registry." })
     ])
@@ -162,10 +163,10 @@ const RULE_SOURCE_MAP = Object.freeze({
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-OWNERSHIP-001": Object.freeze({
-        version: "1.1",
+        version: "1.2",
         sourceIds: ["GOVS003-ACCOUNTABILITY", "GOVS003-ORG-DESIGN", "GOVS003-PRINCIPLES", "OPENSTAX-ORG-DESIGN"],
-        ruleBasis: "GrowWithHR checks whether important functions and ownership boundaries are visible enough for the supplied scale. It does not require a particular department count as a universal model.",
-        lastReviewed: "2026-08-17",
+        ruleBasis: "GrowWithHR checks whether important functions are visible and whether each supplied function has clear, shared, founder-held, unclear or unmapped accountability. It uses those user-supplied ownership states as structural signals and does not assess the capability or performance of individual leaders.",
+        lastReviewed: "2026-09-30",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-CLARITY-001": Object.freeze({
