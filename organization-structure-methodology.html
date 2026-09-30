@@ -80,7 +80,7 @@ document.getElementById("sourceGrid").innerHTML = Object.values(SOURCES).map((so
       <div class="org-kicker org-kicker--small">${escapeHtml(source.access)}</div>
       <h3>${escapeHtml(source.title)}</h3>
       <p>${escapeHtml(source.supports)}</p>
-      <p class="org-source-meta">${escapeHtml(source.publisher)} · ${escapeHtml(source.section)}<br>${escapeHtml(source.license)}<br>Last reviewed: ${escapeHtml(source.lastReviewed || "Not recorded")}</p>
+      <p class="org-source-meta">${escapeHtml(source.publisher)} · ${escapeHtml(source.section)}<br>${escapeHtml(source.license)}<br>Last reviewed: ${escapeHtml(source.lastReviewed || "Not recorded")}</p>\n      ${source.scopeNote ? `<p class="org-source-meta"><strong>Research scope:</strong> ${escapeHtml(source.scopeNote)}</p>` : ""}
       <p class="org-source-meta"><strong>Connected GrowWithHR rules:</strong> ${ruleIds.map(escapeHtml).join(", ") || "None"}</p>
       <a class="org-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">Open source ↗</a>
     </article>
