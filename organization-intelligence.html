@@ -21,50 +21,50 @@
 
   <form id="organizationForm" class="org-form-card">
     <h2>Tell us how your company is organized today</h2>
-    <p class="org-subtle">Use what you know. Missing information is shown rather than guessed.</p>
+    <p class="org-subtle"><strong>Start with five basics.</strong> Company name, work email, industry, employee count and operating locations are required. Everything else is optional — answer what you know. Missing information is shown rather than guessed.</p>
     <div class="org-grid">
       <h3 class="org-section-title">Company context</h3>
-      <div class="org-field"><label for="companyName">Company name</label><input id="companyName" required></div>
-      <div class="org-field"><label for="email">Work email</label><input id="email" type="email" required></div>
-      <div class="org-field"><label for="industry">Industry</label><input id="industry" required></div>
-      <div class="org-field"><label for="employees">Current employees</label><input id="employees" type="number" min="1" required></div>
+      <div class="org-field"><label for="companyName">Company name <span class="org-field-status is-required">Required</span></label><input id="companyName" required></div>
+      <div class="org-field"><label for="email">Work email <span class="org-field-status is-required">Required</span></label><input id="email" type="email" required><small>Required to create and recover your reusable Company Workspace.</small></div>
+      <div class="org-field"><label for="industry">Industry <span class="org-field-status is-required">Required</span></label><input id="industry" list="orgIndustryOptions" autocomplete="off" placeholder="Start typing, e.g. restaurant, cloud kitchen, SaaS" required><datalist id="orgIndustryOptions"></datalist><small id="industryHelp">Start typing and choose a suggestion. If your industry is not listed, you can still enter it.</small></div>
+      <div class="org-field"><label for="employees">Current employees <span class="org-field-status is-required">Required</span></label><input id="employees" type="number" min="1" required></div>
       <div class="org-field">
-        <label for="growthStage">Growth stage</label>
+        <label for="growthStage">Growth stage <span class="org-field-status is-optional">Optional</span></label>
         <select id="growthStage"><option value="">I don’t know / not set</option><option>Startup</option><option>Growth</option><option>Scaling</option><option>Enterprise</option></select>
       </div>
       <div class="org-field">
-        <label for="expectedEmployees">Expected employees in 12 months</label>
+        <label for="expectedEmployees">Expected employees in 12 months <span class="org-field-status is-optional">Optional</span></label>
         <input id="expectedEmployees" type="number" min="1" placeholder="Leave blank if unknown">
         <small>This is a planning assumption for the 12-month scenario, not a forecast.</small>
       </div>
 
       <h3 class="org-section-title">Organization structure</h3>
-      <div class="org-field"><label for="managerCount">People managers</label><input id="managerCount" type="number" min="0" placeholder="Leave blank if unknown"><small>Count roles with direct people-management responsibility.</small></div>
-      <div class="org-field"><label for="reportingLevels">Reporting layers between employee and CEO</label><input id="reportingLevels" type="number" min="0" placeholder="Leave blank if unknown"></div>
-      <div class="org-field"><label for="founderDirectReports">Founder/CEO direct reports</label><input id="founderDirectReports" type="number" min="0" placeholder="Leave blank if unknown"></div>
-      <div class="org-field"><label for="locations">Operating locations</label><input id="locations" type="number" min="1" value="1" required></div>
-      <div class="org-field wide"><label for="departments">Functions or departments</label><input id="departments" placeholder="Sales, Product, Engineering, Finance, People"><small>Use the functions you actually operate; formal department names are not required.</small></div>
+      <div class="org-field"><label for="managerCount">People managers <span class="org-field-status is-optional">Optional</span></label><input id="managerCount" type="number" min="0" placeholder="Leave blank if unknown"><small>Count roles with direct people-management responsibility.</small></div>
+      <div class="org-field"><label for="reportingLevels">Reporting layers between employee and CEO <span class="org-field-status is-optional">Optional</span></label><input id="reportingLevels" type="number" min="0" placeholder="Leave blank if unknown"></div>
+      <div class="org-field"><label for="founderDirectReports">Founder/CEO direct reports <span class="org-field-status is-optional">Optional</span></label><input id="founderDirectReports" type="number" min="0" placeholder="Leave blank if unknown"></div>
+      <div class="org-field"><label for="locations">Operating locations <span class="org-field-status is-required">Required</span></label><input id="locations" type="number" min="1" value="1" required></div>
+      <div class="org-field wide"><label for="departments">Functions or departments <span class="org-field-status is-optional">Optional</span></label><input id="departments" placeholder="Sales, Product, Engineering, Finance, People"><small>Use the functions you actually operate; formal department names are not required.</small></div>
 
       <h3 class="org-section-title">Management-capacity context</h3>
       <p class="org-context-intro">A management span is not interpreted from one ratio alone. These questions help GrowWithHR understand the work and interaction context. You can select “I don’t know.”</p>
       <div class="org-field">
-        <label for="managerRole">What do people managers spend most of their time doing?</label>
+        <label for="managerRole">What do people managers spend most of their time doing? <span class="org-field-status is-optional">Optional</span></label>
         <select id="managerRole"><option value="dont-know">I don’t know</option><option value="manager-only">Primarily managing and coordinating</option><option value="player-coach">A mix of managing and individual work</option><option value="hands-on-specialist">Mostly hands-on specialist work plus management</option></select>
       </div>
       <div class="org-field">
-        <label for="workComplexity">How complex or variable is the work inside teams?</label>
+        <label for="workComplexity">How complex or variable is the work inside teams? <span class="org-field-status is-optional">Optional</span></label>
         <select id="workComplexity"><option value="dont-know">I don’t know</option><option value="routine">Mostly routine / predictable</option><option value="mixed">A mix of routine and complex work</option><option value="complex">Mostly complex / judgment-intensive</option></select>
       </div>
       <div class="org-field">
-        <label for="workStandardization">How standardized or repeatable is the work?</label>
+        <label for="workStandardization">How standardized or repeatable is the work? <span class="org-field-status is-optional">Optional</span></label>
         <select id="workStandardization"><option value="dont-know">I don’t know</option><option value="high">Highly standardized</option><option value="mixed">Mixed standardization</option><option value="low">Low standardization / many exceptions</option></select>
       </div>
       <div class="org-field">
-        <label for="teamIndependence">How independently can teams handle routine work and decisions?</label>
+        <label for="teamIndependence">How independently can teams handle routine work and decisions? <span class="org-field-status is-optional">Optional</span></label>
         <select id="teamIndependence"><option value="dont-know">I don’t know</option><option value="high">High independence</option><option value="mixed">Mixed independence</option><option value="low">Low independence / frequent manager involvement</option></select>
       </div>
       <div class="org-field">
-        <label for="coachingIntensity">How much manager interaction or coaching is typically required?</label>
+        <label for="coachingIntensity">How much manager interaction or coaching is typically required? <span class="org-field-status is-optional">Optional</span></label>
         <select id="coachingIntensity"><option value="dont-know">I don’t know</option><option value="low">Low</option><option value="medium">Moderate</option><option value="high">High</option></select>
         <small>GrowWithHR uses these factors as structural context; they do not measure whether an individual manager is “good” or “bad.”</small>
       </div>
@@ -75,23 +75,23 @@
 
       <h3 class="org-section-title">Ownership and operating model</h3>
       <div class="org-field">
-        <label for="roleClarity">How clear are role responsibilities?</label>
+        <label for="roleClarity">How clear are role responsibilities? <span class="org-field-status is-optional">Optional</span></label>
         <select id="roleClarity"><option value="dont-know">I don’t know</option><option value="clear">Generally clear</option><option value="mixed">Clear in some areas, overlapping in others</option><option value="unclear">Often unclear or duplicated</option></select>
       </div>
       <div class="org-field">
-        <label for="decisionRights">How clear is ownership of recurring decisions?</label>
+        <label for="decisionRights">How clear is ownership of recurring decisions? <span class="org-field-status is-optional">Optional</span></label>
         <select id="decisionRights"><option value="dont-know">I don’t know</option><option value="clear">Generally clear</option><option value="mixed">Mixed — some decisions bounce between roles</option><option value="unclear">Often unclear or founder-dependent</option></select>
       </div>
       <div class="org-field">
-        <label for="governanceCadence">Main cross-functional operating review</label>
+        <label for="governanceCadence">Main cross-functional operating review <span class="org-field-status is-optional">Optional</span></label>
         <select id="governanceCadence"><option value="dont-know">I don’t know</option><option value="weekly">Weekly</option><option value="biweekly">Every two weeks</option><option value="monthly">Monthly</option><option value="ad-hoc">Ad hoc / when issues arise</option><option value="none">No recurring review</option></select>
       </div>
       <div class="org-field">
-        <label for="coordinationFriction">Cross-functional coordination friction</label>
+        <label for="coordinationFriction">Cross-functional coordination friction <span class="org-field-status is-optional">Optional</span></label>
         <select id="coordinationFriction"><option value="dont-know">I don’t know</option><option value="low">Low — handoffs usually work</option><option value="some">Some recurring friction</option><option value="high">High — handoffs or decisions regularly stall</option></select>
       </div>
-      <div class="org-field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval?</label><textarea id="founderDecisions" placeholder="For example: hiring approvals, pricing, customer exceptions, compensation, major spend — or leave blank if unknown"></textarea><small>This answer now contributes to the Founder Dependency and Decision Rights findings when recurring approval categories are identifiable.</small></div>
-      <div class="org-field wide"><label for="expansion">Planned expansion in the next 12 months</label><textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea><small>This answer now contributes to Growth Readiness and Location Complexity when expansion signals are identifiable.</small></div>
+      <div class="org-field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval? <span class="org-field-status is-optional">Optional</span></label><textarea id="founderDecisions" placeholder="For example: hiring approvals, pricing, customer exceptions, compensation, major spend — or leave blank if unknown"></textarea><small>This answer now contributes to the Founder Dependency and Decision Rights findings when recurring approval categories are identifiable.</small></div>
+      <div class="org-field wide"><label for="expansion">Planned expansion in the next 12 months <span class="org-field-status is-optional">Optional</span></label><textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea><small>This answer now contributes to Growth Readiness and Location Complexity when expansion signals are identifiable.</small></div>
     </div>
     <div class="org-actions">
       <button class="org-primary" type="submit">Generate Organization Structure Report →</button>
@@ -102,6 +102,7 @@
 </main>
 
 <script src="js/company-workspace-client.js"></script>
+<script src="js/executive-assessment/industry-catalog.js"></script>
 <script type="module">
 import { analyzeOrganizationStructure } from "./js/modules/organization/organization-structure-engine.mjs";
 
@@ -119,6 +120,42 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
   function apiBase(){return location.origin==="https://hrtechifyed.github.io"?"https://growwithhr.onrender.com":"";}
 
   let recovered = readWorkspace();
+  let industryCatalog = null;
+
+  async function setupIndustrySuggestions(){
+    const input=document.getElementById("industry");
+    const datalist=document.getElementById("orgIndustryOptions");
+    const module=window.GrowWithHRModules?.IndustryCatalog;
+    if(!input||!datalist||!module?.create)return;
+    try{
+      industryCatalog=module.create();
+      const result=await industryCatalog.load();
+      const seen=new Set();
+      (result.searchOptions||[]).forEach((option)=>{
+        const raw=String(option.value||"").trim();
+        if(!raw)return;
+        const key=raw.toLowerCase();
+        if(seen.has(key))return;
+        seen.add(key);
+        const resolved=industryCatalog.resolve(raw);
+        const canonical=resolved?.name||raw;
+        const item=document.createElement("option");
+        item.value=raw;
+        item.label=raw===canonical
+          ? `${canonical}${resolved?.category?` · ${resolved.category}`:""}`
+          : `${raw} → ${canonical}`;
+        datalist.appendChild(item);
+      });
+      const normalizeIndustry=()=>{
+        const resolved=industryCatalog?.resolve(input.value);
+        if(resolved)input.value=resolved.name;
+      };
+      input.addEventListener("change",normalizeIndustry);
+      input.addEventListener("blur",normalizeIndustry);
+    }catch(error){
+      console.warn("GrowWithHR industry suggestions could not be loaded.",error);
+    }
+  }
 
   async function redeemWorkspaceHandoff(){
     const params=new URLSearchParams(location.search);const token=params.get("handoff");
@@ -147,6 +184,7 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
 
   await redeemWorkspaceHandoff();
   prefillRecoveredWorkspace();
+  await setupIndustrySuggestions();
 
   function buildFacts(){
     const employees=numberOrNull("employees");const expectedEmployees=numberOrNull("expectedEmployees");const locations=numberOrNull("locations");
