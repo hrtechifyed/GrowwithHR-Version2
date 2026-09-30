@@ -16,6 +16,13 @@ function baseInput(overrides = {}) {
         reportingLevels: 2,
         founderDirectReports: 5,
         departments: ["Sales", "Product", "Engineering", "Finance", "People"],
+        functionOwnership: [
+            { name: "Sales", ownership: "clear-owner" },
+            { name: "Product", ownership: "clear-owner" },
+            { name: "Engineering", ownership: "clear-owner" },
+            { name: "Finance", ownership: "clear-owner" },
+            { name: "People", ownership: "clear-owner" }
+        ],
         managerRole: "manager-only",
         workComplexity: "routine",
         workStandardization: "high",
@@ -123,6 +130,37 @@ assert.equal(expansionLocation.status, "watch", "Geographic expansion must mater
 assert.deepEqual(expansion.derivedMetrics.expansionSignals.sort(), ["geography", "offering"].sort());
 assert.ok(expansionGrowth.factsUsed.includes("organization.expansion"));
 
+const ownershipPressure = analyzeOrganizationStructure(baseInput({
+    organization: {
+        functionOwnership: [
+            { name: "Sales", ownership: "clear-owner" },
+            { name: "Product", ownership: "shared" },
+            { name: "Engineering", ownership: "clear-owner" },
+            { name: "Finance", ownership: "unclear" },
+            { name: "People", ownership: "unclear" }
+        ]
+    }
+}));
+const ownershipFinding = ownershipPressure.findings.find((item) => item.id === "ORG-OWNERSHIP-001");
+assert.equal(ownershipFinding.status, "action", "Multiple unclear/shared functional ownership signals should become an action finding.");
+assert.ok(ownershipFinding.factsUsed.includes("organization.functionOwnership"));
+assert.equal(ownershipPressure.derivedMetrics.functionOwnershipCounts.unclear, 2);
+assert.equal(ownershipPressure.reportModel.functionalOwnershipMap.length, 5);
+assert.equal(ownershipPressure.reportModel.functionalOwnershipMap.find((item) => item.name === "Finance")?.status, "action");
+assert.equal(ownershipPressure.reportModel.bottleneckMap.length, 6);
+assert.equal(ownershipPressure.reportModel.bottleneckMap.find((item) => item.id === "ownership")?.status, "action");
+assert.equal(ownershipPressure.reportModel.primaryBottleneck?.status, "action");
+assert.match(ownershipPressure.reportModel.bottleneckMap.find((item) => item.id === "ownership")?.whatToReview || "", /accountable owners/i);
+
+const ownershipMissing = analyzeOrganizationStructure(baseInput({
+    organization: { functionOwnership: [] }
+}));
+assert.equal(
+    ownershipMissing.findings.find((item) => item.id === "ORG-OWNERSHIP-001")?.status,
+    "needs-information",
+    "Named functions without ownership mapping should remain an information gap rather than being scored negatively."
+);
+
 const model = founderHeavy.reportModel;
 assert.equal(model.schemaVersion, "1.0");
 assert.equal(model.reportType, "organization-structure");
@@ -135,7 +173,7 @@ assert.ok(model.ruleVersions["ORG-CAPACITY-001"]);
 assert.match(model.confidenceMeaning, /not statistical/i);
 assert.match(model.assumptions.join(" "), /not a forecast/i);
 
-assert.equal(FRAMEWORK.version, "1.1");
+assert.equal(FRAMEWORK.version, "1.2");
 assert.ok(Array.isArray(FRAMEWORK.changeLog) && FRAMEWORK.changeLog.length >= 2);
 assert.ok(FRAMEWORK.lastReviewed);
 assert.equal(SOURCES["OPENSTAX-SPAN-CONTEXT"].access, "Free public source");
@@ -178,6 +216,13 @@ for (const optionalField of ["managerCount", "reportingLevels", "founderDirectRe
 }
 assert.match(assessmentPage, /org-field-status is-required/);
 assert.match(assessmentPage, /org-field-status is-optional/);
+assert.match(assessmentPage, /id=["']functionOwnershipRows["']/);
+assert.match(assessmentPage, /data-function-ownership/);
+assert.match(assessmentPage, /collectFunctionOwnership/);
+assert.match(assessmentPage, /Clear accountable owner/);
+assert.match(assessmentPage, /Shared or overlapping ownership/);
+assert.match(assessmentPage, /Founder \/ CEO owns directly/);
+assert.match(assessmentPage, /No clear accountable owner/);
 
 const hub = fs.readFileSync(new URL("../intelligence-hub.html", import.meta.url), "utf8");
 assert.match(hub, /createHandoff/);
@@ -200,6 +245,10 @@ assert.match(reportRuntime, /"downloaded"/);
 assert.match(reportRuntime, /payload\.reportModel/);
 assert.match(reportRuntime, /buildChangeIntelligence/);
 assert.match(reportRuntime, /GrowWithHR rule/);
+assert.match(reportRuntime, /ORGANIZATION BOTTLENECK MAP/);
+assert.match(reportRuntime, /FUNCTIONAL OWNERSHIP/);
+assert.match(reportRuntime, /bottleneckMapHtml/);
+assert.match(reportRuntime, /ownershipMapHtml/);
 
 const pdfRuntime = fs.readFileSync(new URL("../js/organization-structure-pdf.mjs", import.meta.url), "utf8");
 assert.match(pdfRuntime, /HRTECHIFY · GROWWITHHR/);
@@ -207,6 +256,8 @@ assert.match(pdfRuntime, /Framework & Evidence/);
 assert.match(pdfRuntime, /Public source/);
 assert.match(pdfRuntime, /not a forecast/i);
 assert.match(pdfRuntime, /ruleVersion/);
+assert.match(pdfRuntime, /Organization bottleneck map/);
+assert.match(pdfRuntime, /Functional ownership/);
 
 const handoffServer = fs.readFileSync(new URL("../server-workspace-handoff.js", import.meta.url), "utf8");
 assert.match(handoffServer, /HANDOFF_TTL_MS = 5 \* 60 \* 1000/);
