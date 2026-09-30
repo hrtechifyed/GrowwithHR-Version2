@@ -31,18 +31,29 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          url="${PAGES_BASE_URL}/index.html?growwithhr_commit=${GITHUB_SHA}"
-          expected_sha="$(sha256sum index.html | cut -d' ' -f1)"
+          index_url="${PAGES_BASE_URL}/index.html?growwithhr_commit=${GITHUB_SHA}"
+          org_url="${PAGES_BASE_URL}/organization-structure-report.html?growwithhr_commit=${GITHUB_SHA}"
+          expected_index_sha="$(sha256sum index.html | cut -d' ' -f1)"
+          expected_org_sha="$(sha256sum organization-structure-report.html | cut -d' ' -f1)"
           for attempt in $(seq 1 60); do
-            if curl -fsSL --connect-timeout 15 --max-time 45 "$url" -o /tmp/github-pages-index.html 2>/dev/null && \
-               printf '%s  %s\n' "$expected_sha" /tmp/github-pages-index.html | sha256sum --check --status; then
-              echo "GitHub Pages exposes the expected index.html content for commit ${GITHUB_SHA}."
+            index_ok=false
+            org_ok=false
+            if curl -fsSL --connect-timeout 15 --max-time 45 "$index_url" -o /tmp/github-pages-index.html 2>/dev/null && \
+               printf '%s  %s\n' "$expected_index_sha" /tmp/github-pages-index.html | sha256sum --check --status; then
+              index_ok=true
+            fi
+            if curl -fsSL --connect-timeout 15 --max-time 45 "$org_url" -o /tmp/github-pages-organization-report.html 2>/dev/null && \
+               printf '%s  %s\n' "$expected_org_sha" /tmp/github-pages-organization-report.html | sha256sum --check --status; then
+              org_ok=true
+            fi
+            if [[ "$index_ok" == "true" && "$org_ok" == "true" ]]; then
+              echo "GitHub Pages exposes the expected homepage and Organization report content for commit ${GITHUB_SHA}."
               exit 0
             fi
-            echo "GitHub Pages not updated yet (attempt $attempt/60)."
+            echo "GitHub Pages not fully updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "GitHub Pages did not expose the expected index.html content for commit ${GITHUB_SHA} within the smoke window." >&2
+          echo "GitHub Pages did not expose the expected homepage and Organization report content for commit ${GITHUB_SHA} within the smoke window." >&2
           exit 1
 
       - name: Validate GitHub Pages founder report route
@@ -68,22 +79,33 @@ jobs:
           grep -Fq 'id="orgReportRoot"' <<<"$body"
           grep -Fq 'js/organization-structure-report.mjs' <<<"$body"
 
-      - name: Wait for Render homepage release
+      - name: Wait for Render release
         shell: bash
         run: |
           set -euo pipefail
-          url="https://growwithhr.onrender.com/index.html?growwithhr_commit=${GITHUB_SHA}"
-          expected_sha="$(sha256sum index.html | cut -d' ' -f1)"
+          index_url="https://growwithhr.onrender.com/index.html?growwithhr_commit=${GITHUB_SHA}"
+          org_url="https://growwithhr.onrender.com/organization-structure-report.html?growwithhr_commit=${GITHUB_SHA}"
+          expected_index_sha="$(sha256sum index.html | cut -d' ' -f1)"
+          expected_org_sha="$(sha256sum organization-structure-report.html | cut -d' ' -f1)"
           for attempt in $(seq 1 60); do
-            if curl -fsSL --connect-timeout 20 --max-time 60 "$url" -o /tmp/render-index.html 2>/dev/null && \
-               printf '%s  %s\n' "$expected_sha" /tmp/render-index.html | sha256sum --check --status; then
-              echo "Render exposes the expected index.html content for commit ${GITHUB_SHA}."
+            index_ok=false
+            org_ok=false
+            if curl -fsSL --connect-timeout 20 --max-time 60 "$index_url" -o /tmp/render-index.html 2>/dev/null && \
+               printf '%s  %s\n' "$expected_index_sha" /tmp/render-index.html | sha256sum --check --status; then
+              index_ok=true
+            fi
+            if curl -fsSL --connect-timeout 20 --max-time 60 "$org_url" -o /tmp/render-organization-report.html 2>/dev/null && \
+               printf '%s  %s\n' "$expected_org_sha" /tmp/render-organization-report.html | sha256sum --check --status; then
+              org_ok=true
+            fi
+            if [[ "$index_ok" == "true" && "$org_ok" == "true" ]]; then
+              echo "Render exposes the expected homepage and Organization report content for commit ${GITHUB_SHA}."
               exit 0
             fi
-            echo "Render homepage not updated yet (attempt $attempt/60)."
+            echo "Render release not fully updated yet (attempt $attempt/60)."
             sleep 10
           done
-          echo "Render did not expose the expected index.html content for commit ${GITHUB_SHA} within the smoke window." >&2
+          echo "Render did not expose the expected homepage and Organization report content for commit ${GITHUB_SHA} within the smoke window." >&2
           exit 1
 
       - name: Validate Render founder report route
