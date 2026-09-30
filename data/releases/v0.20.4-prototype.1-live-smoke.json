@@ -1,7 +1,7 @@
 {
   "releaseVersion": "0.20.4-prototype.1",
-  "checkedAt": "2026-09-30T12:35:22Z",
-  "sourceCommitSha": "d56ed8f27f013d69e3abd78a08b4295d74da1f20",
+  "checkedAt": "2026-09-30T19:28:30Z",
+  "sourceCommitSha": "1b31c023e9b5e6fafc8f672690a8391ffdba07ec",
   "status": "passed",
   "checks": {
     "githubPagesHomepage": {
@@ -13,6 +13,11 @@
       "singleReportRouteVisible": true,
       "darkReportOptionAbsent": true
     },
+    "githubPagesOrganizationReport": {
+      "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/organization-structure-report.html?sample=1",
+      "routeVisible": true,
+      "reportRuntimeVisible": true
+    },
     "renderHomepage": {
       "url": "https://growwithhr.onrender.com/index.html",
       "versionVisible": true
@@ -21,6 +26,19 @@
       "url": "https://growwithhr.onrender.com/executive-advisory-report.html",
       "singleReportRouteVisible": true,
       "darkReportOptionAbsent": true
+    },
+    "renderOrganizationReport": {
+      "url": "https://growwithhr.onrender.com/organization-structure-report.html?sample=1",
+      "routeVisible": true,
+      "reportRuntimeVisible": true
+    },
+    "emailDelivery": {
+      "url": "https://growwithhr.onrender.com/api/email-status",
+      "provider": "gmail-api",
+      "gmailConfigured": true,
+      "oauthConnected": true,
+      "sendScopeAvailable": true,
+      "senderValid": true
     },
     "reportIdRegistry": {
       "url": "https://growwithhr.onrender.com/api/report-id/status",
