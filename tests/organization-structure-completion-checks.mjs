@@ -296,13 +296,16 @@ assert.match(serverEntry, /handleOrganizationReportRequest/);
 
 const serverRuntime = fs.readFileSync(new URL("../server.js", import.meta.url), "utf8");
 assert.match(serverRuntime, /\/api\/email-status/);
-assert.match(serverRuntime, /gmailApi\.users\.getProfile/);
-assert.match(serverRuntime, /senderMatchesProfile/);
+assert.match(serverRuntime, /oauth2Client\.getAccessToken/);
+assert.match(serverRuntime, /oauth2Client\.getTokenInfo/);
+assert.match(serverRuntime, /gmail\.send/);
+assert.match(serverRuntime, /sendScopeAvailable/);
 
 const smokeWorkflow = fs.readFileSync(new URL("../.github/workflows/live-release-smoke.yml", import.meta.url), "utf8");
 assert.match(smokeWorkflow, /Validate live Gmail API connectivity/);
 assert.match(smokeWorkflow, /organization-structure-report\.html\?sample=1/);
-assert.match(smokeWorkflow, /gmailConnected == true/);
+assert.match(smokeWorkflow, /oauthConnected == true/);
+assert.match(smokeWorkflow, /sendScopeAvailable == true/);
 
 const methodology = fs.readFileSync(new URL("../organization-structure-methodology.html", import.meta.url), "utf8");
 assert.match(methodology, /Version history/i);
