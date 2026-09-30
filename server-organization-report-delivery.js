@@ -62,14 +62,14 @@ function decodePdf(pdf = {}) {
         .replace(/^data:application\/pdf;base64,/i, "")
         .replace(/\s/g, "");
     if (!raw || !/^[a-zA-Z0-9+/=]+$/.test(raw)) {
-        throw Object.assign(new Error("The Organization Structure PDF is missing or invalid."), { statusCode: 400 });
+        throw Object.assign(new Error("The Organization Structure & Growth PDF is missing or invalid."), { statusCode: 400 });
     }
     const content = Buffer.from(raw, "base64");
     if (!content.length || content.subarray(0, 5).toString("ascii") !== "%PDF-") {
         throw Object.assign(new Error("The generated Organization Structure attachment is not a valid PDF."), { statusCode: 400 });
     }
     if (content.length > MAX_PDF_BYTES) {
-        throw Object.assign(new Error("The generated Organization Structure report is larger than the supported delivery limit."), { statusCode: 413 });
+        throw Object.assign(new Error("The generated Organization Structure & Growth report is larger than the supported delivery limit."), { statusCode: 413 });
     }
     return { filename: safeFilename(pdf.filename), content, contentType: "application/pdf" };
 }
@@ -149,17 +149,17 @@ function customerMessage(lead = {}, report = {}, filename = "") {
     const recipientName = cleanText(lead.name, "there");
     const companyName = cleanText(report.companyName || lead.companyName, "your organisation");
     const frameworkName = cleanText(report.frameworkName, "GrowWithHR Organization Structure Assessment Framework");
-    const frameworkVersion = cleanText(report.frameworkVersion, "1.1");
+    const frameworkVersion = cleanText(report.frameworkVersion, "1.2");
     const methodologyUrl = cleanText(
         report.methodologyUrl,
         "https://hrtechifyed.github.io/GrowwithHR-Version2/organization-structure-methodology.html"
     );
     const reportId = cleanText(report.reportId, "Local analysis");
-    const subject = `Your GrowWithHR Organization Structure Report for ${companyName}`;
+    const subject = `Your GrowWithHR Organization Structure & Growth Report for ${companyName}`;
     const text = [
         `Hello ${recipientName},`,
         "",
-        `Your GrowWithHR Organization Structure Report for ${companyName} is attached as ${filename}.`,
+        `Your GrowWithHR Organization Structure & Growth Report for ${companyName} is attached as ${filename}.`,
         "",
         "The report explains the structural findings from the facts you supplied, the GrowWithHR rule used for each finding, and the exact free/public source supporting the underlying organization-design principle.",
         "",
@@ -175,20 +175,20 @@ function customerMessage(lead = {}, report = {}, filename = "") {
         FOUNDER_LINKEDIN_URL
     ].join("\n");
 
-    const html = `<!doctype html><html lang="en"><body style="margin:0;background:#05070B;font-family:Inter,Segoe UI,Arial,sans-serif;color:#223347"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:32px 14px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;background:#fff;border-collapse:separate;border-spacing:0;border-radius:18px;overflow:hidden"><tr><td style="height:7px;background:linear-gradient(90deg,#FFB000,#FF7A00,#FF4D00)"></td></tr><tr><td style="padding:32px 38px;background:#0A1020"><div style="color:#FFB000;font-size:12px;font-weight:800;letter-spacing:.14em">HRTECHIFY · GROWWITHHR</div><h1 style="margin:10px 0 0;color:#fff;font-size:28px;line-height:1.25">Your Organization Structure Report</h1><p style="margin:12px 0 0;color:#CBD5E1;font-size:15px;line-height:1.6">Structural guidance, transparent rules and public source links for ${escapeHtml(companyName)}</p></td></tr><tr><td style="padding:34px 38px 38px"><p style="font-size:16px;line-height:1.7">Hello ${escapeHtml(recipientName)},</p><p style="font-size:16px;line-height:1.7;color:#334155">Your GrowWithHR Organization Structure Report for <strong>${escapeHtml(companyName)}</strong> is attached as one PDF.</p><div style="padding:18px 20px;background:#FFF7ED;border-left:4px solid #FF7A00;color:#334155;line-height:1.65"><strong>What makes the recommendations traceable</strong><br>Each finding shows the company facts used, the GrowWithHR rule that interpreted those facts, and the free/public source supporting the underlying organization-design principle.</div><h2 style="margin:28px 0 10px;color:#0A1020;font-size:21px">Framework used</h2><p style="font-size:15px;line-height:1.7;color:#334155"><strong>${escapeHtml(frameworkName)} v${escapeHtml(frameworkVersion)}</strong><br><a href="${escapeHtml(methodologyUrl)}" style="color:#B45309">View the framework and source library</a><br>Report ID: ${escapeHtml(reportId)}</p><p style="font-size:14px;line-height:1.7;color:#64748B">The 12-month section is a deterministic scenario based on the assumptions supplied; it is not a forecast. This product evaluates organization structure and operating patterns, not individual employee or manager capability.</p><p style="font-size:16px;line-height:1.65">Warm Wishes,<br>${escapeHtml(FOUNDER_NAME)}<br>Founder, HRTechify<br><a href="${FOUNDER_LINKEDIN_URL}">${FOUNDER_LINKEDIN_URL}</a></p></td></tr></table></td></tr></table></body></html>`;
+    const html = `<!doctype html><html lang="en"><body style="margin:0;background:#05070B;font-family:Inter,Segoe UI,Arial,sans-serif;color:#223347"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:32px 14px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;background:#fff;border-collapse:separate;border-spacing:0;border-radius:18px;overflow:hidden"><tr><td style="height:7px;background:linear-gradient(90deg,#FFB000,#FF7A00,#FF4D00)"></td></tr><tr><td style="padding:32px 38px;background:#0A1020"><div style="color:#FFB000;font-size:12px;font-weight:800;letter-spacing:.14em">HRTECHIFY · GROWWITHHR</div><h1 style="margin:10px 0 0;color:#fff;font-size:28px;line-height:1.25">Your Organization Structure & Growth Report</h1><p style="margin:12px 0 0;color:#CBD5E1;font-size:15px;line-height:1.6">Structural guidance, transparent rules and public source links for ${escapeHtml(companyName)}</p></td></tr><tr><td style="padding:34px 38px 38px"><p style="font-size:16px;line-height:1.7">Hello ${escapeHtml(recipientName)},</p><p style="font-size:16px;line-height:1.7;color:#334155">Your GrowWithHR Organization Structure & Growth Report for <strong>${escapeHtml(companyName)}</strong> is attached as one PDF.</p><div style="padding:18px 20px;background:#FFF7ED;border-left:4px solid #FF7A00;color:#334155;line-height:1.65"><strong>What makes the recommendations traceable</strong><br>Each finding shows the company facts used, the GrowWithHR rule that interpreted those facts, and the free/public source supporting the underlying organization-design principle.</div><h2 style="margin:28px 0 10px;color:#0A1020;font-size:21px">Framework used</h2><p style="font-size:15px;line-height:1.7;color:#334155"><strong>${escapeHtml(frameworkName)} v${escapeHtml(frameworkVersion)}</strong><br><a href="${escapeHtml(methodologyUrl)}" style="color:#B45309">View the framework and source library</a><br>Report ID: ${escapeHtml(reportId)}</p><p style="font-size:14px;line-height:1.7;color:#64748B">The 12-month section is a deterministic scenario based on the assumptions supplied; it is not a forecast. This product evaluates organization structure and operating patterns, not individual employee or manager capability.</p><p style="font-size:16px;line-height:1.65">Warm Wishes,<br>${escapeHtml(FOUNDER_NAME)}<br>Founder, HRTechify<br><a href="${FOUNDER_LINKEDIN_URL}">${FOUNDER_LINKEDIN_URL}</a></p></td></tr></table></td></tr></table></body></html>`;
     return { subject, text, html };
 }
 
 function activityFields(event = {}) {
     return {
-        "Report type": "Organization Structure Report",
+        "Report type": "Organization Structure & Growth Report",
         Event: cleanText(event.event, "unknown"),
         Company: cleanText(event.companyName, "Not provided"),
         User: cleanText(event.email, "Not provided"),
         "Report ID": cleanText(event.reportId, "Local analysis"),
         File: cleanText(event.filename, "Not provided"),
         Framework: cleanText(event.framework, "GrowWithHR Organization Structure Assessment Framework"),
-        "Framework version": cleanText(event.frameworkVersion, "1.1"),
+        "Framework version": cleanText(event.frameworkVersion, "1.2"),
         "Occurred at": cleanText(event.occurredAt, new Date().toISOString())
     };
 }
@@ -202,8 +202,8 @@ function internalActivityMessage(event = {}) {
         .join("");
     return {
         subject: `GrowWithHR Organization report ${eventName}: ${companyName}`,
-        text: ["GrowWithHR Organization Structure report activity.", "", ...Object.entries(fields).map(([key, value]) => `${key}: ${value}`)].join("\n"),
-        html: `<!doctype html><html><body style="font-family:Arial,sans-serif;padding:24px;color:#1f2937"><h2>GrowWithHR Organization Structure report activity</h2><p>Operational metadata only; structural findings are not included in this notification.</p><table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table></body></html>`
+        text: ["GrowWithHR Organization Structure & Growth report activity.", "", ...Object.entries(fields).map(([key, value]) => `${key}: ${value}`)].join("\n"),
+        html: `<!doctype html><html><body style="font-family:Arial,sans-serif;padding:24px;color:#1f2937"><h2>GrowWithHR Organization Structure & Growth report activity</h2><p>Operational metadata only; structural findings are not included in this notification.</p><table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table></body></html>`
     };
 }
 
@@ -214,7 +214,7 @@ function readJsonBody(request) {
         request.on("data", (chunk) => {
             size += chunk.length;
             if (size > MAX_REQUEST_BYTES) {
-                reject(Object.assign(new Error("The Organization Structure report request is too large."), { statusCode: 413 }));
+                reject(Object.assign(new Error("The Organization Structure & Growth report request is too large."), { statusCode: 413 }));
                 request.destroy();
                 return;
             }
@@ -224,7 +224,7 @@ function readJsonBody(request) {
             try {
                 resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"));
             } catch (_error) {
-                reject(Object.assign(new Error("The Organization Structure report request contains invalid JSON."), { statusCode: 400 }));
+                reject(Object.assign(new Error("The Organization Structure & Growth report request contains invalid JSON."), { statusCode: 400 }));
             }
         });
         request.on("error", reject);
@@ -273,9 +273,18 @@ async function processDelivery(request, response) {
         const body = await readJsonBody(request);
         const lead = body.lead || {};
         const report = body.report || {};
+        const authenticatedEmail = cleanText(request.growwithhrCustomer?.email).toLowerCase();
+        if (!isValidEmail(authenticatedEmail)) {
+            writeJson(response, 401, { error: "A valid authenticated customer session is required before report delivery." });
+            return;
+        }
         const recipient = cleanText(lead.email || report.recipientEmail).toLowerCase();
         if (!isValidEmail(recipient)) {
             writeJson(response, 400, { error: "A valid recipient email address is required." });
+            return;
+        }
+        if (recipient !== authenticatedEmail) {
+            writeJson(response, 403, { error: "The complete report can only be emailed to the authenticated work email." });
             return;
         }
         const attachment = decodePdf(body.pdf || {});
@@ -315,9 +324,9 @@ async function processDelivery(request, response) {
             sentAt: new Date().toISOString()
         });
     } catch (error) {
-        console.error("Organization Structure report delivery failed:", error?.response?.data || error);
+        console.error("Organization Structure & Growth report delivery failed:", error?.response?.data || error);
         writeJson(response, Number(error.statusCode) || 502, {
-            error: error?.response?.data?.error?.message || error.message || "The Organization Structure report email could not be sent."
+            error: error?.response?.data?.error?.message || error.message || "The Organization Structure & Growth report email could not be sent."
         });
     }
 }
@@ -332,7 +341,7 @@ async function processActivity(request, response) {
         const event = body.event || {};
         const allowedEvents = new Set(["downloaded", "generated", "viewed"]);
         if (!allowedEvents.has(cleanText(event.event))) {
-            writeJson(response, 400, { error: "Unsupported Organization Structure report activity." });
+            writeJson(response, 400, { error: "Unsupported Organization Structure & Growth report activity." });
             return;
         }
         const missing = missingEnvironmentVariables();
@@ -348,7 +357,7 @@ async function processActivity(request, response) {
         const internal = await sendInternalActivity(gmailClient(), sender, event);
         writeJson(response, 200, { ok: true, internalStatus: internal.status, internalSent: internal.sent });
     } catch (error) {
-        console.error("Organization Structure report activity failed:", error);
+        console.error("Organization Structure & Growth report activity failed:", error);
         writeJson(response, 202, { ok: true, internalStatus: "failed" });
     }
 }

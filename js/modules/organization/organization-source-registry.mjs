@@ -4,7 +4,7 @@ const FRAMEWORK = Object.freeze({
     version: "1.2",
     access: "Free public methodology",
     methodologyUrl: "organization-structure-methodology.html",
-    lastReviewed: "2026-09-30",
+    lastReviewed: "2026-10-01",
     reviewOwner: "GrowWithHR organisation-design methodology",
     statement: "GrowWithHR applies deterministic structural rules to company facts, then shows the public evidence used to support the underlying organization-design principle. A source supports the principle; it does not automatically prescribe GrowWithHR's status threshold unless the finding explicitly says so.",
     changeLog: Object.freeze([
@@ -24,9 +24,10 @@ const SOURCES = Object.freeze({
         section: "7.5 Degree of Centralization — factors affecting span of control",
         url: "https://openstax.org/books/introduction-business-2e/pages/7-5-degree-of-centralization",
         access: "Free public source",
-        license: "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+        license: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+        scopeNote: "General business textbook used as a principle source; it does not prescribe GrowWithHR numeric span thresholds. GrowWithHR links to and paraphrases the principle rather than reproducing source text; commercial reuse of source text requires appropriate permission.",
         supports: "Treating span of control contextually using task complexity, worker location, delegation, manager-worker interaction and workforce capability rather than applying one universal span number.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "OPENSTAX-ORG-DESIGN": Object.freeze({
         id: "OPENSTAX-ORG-DESIGN",
@@ -35,9 +36,10 @@ const SOURCES = Object.freeze({
         section: "10.1 Organizational Structures and Design",
         url: "https://openstax.org/books/principles-management/pages/10-1-organizational-structures-and-design",
         access: "Free public source",
-        license: "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+        license: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+        scopeNote: "General management textbook used for organization-design concepts. GrowWithHR links to and paraphrases principles rather than reproducing copyrighted source text; commercial reuse of source text requires appropriate permission.",
         supports: "Using specialization, command-and-control, span of control, centralization and formalization as connected organization-design variables whose appropriate balance depends on circumstances and objectives.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-PRINCIPLES": Object.freeze({
         id: "GOVS003-PRINCIPLES",
@@ -47,8 +49,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#2-principles`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Proportionate governance, traceable accountabilities and responsibilities, and matching work to available capability and capacity.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-GOVERNANCE": Object.freeze({
         id: "GOVS003-GOVERNANCE",
@@ -58,8 +61,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#41-governance-and-management-framework`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Authority limits, decision-making roles, degrees of autonomy, reporting structures, roles and accountabilities.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-DECISIONS": Object.freeze({
         id: "GOVS003-DECISIONS",
@@ -69,8 +73,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#44-decision-making`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Timely decisions based on evidence, defined criteria, stakeholder consultation and appropriate approval roles.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-ACCOUNTABILITY": Object.freeze({
         id: "GOVS003-ACCOUNTABILITY",
@@ -80,8 +85,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#451-overview`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Defining activities, outputs and outcomes for which roles are responsible, including who each role is accountable to.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-ORG-DESIGN": Object.freeze({
         id: "GOVS003-ORG-DESIGN",
@@ -91,8 +97,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#511-organisation-design`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Aligning operating design with business purpose and strategy, including reporting lines, work, roles, structures, tools, processes and culture.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-WORKFORCE": Object.freeze({
         id: "GOVS003-WORKFORCE",
@@ -102,8 +109,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#512-workforce-planning`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Planning future workforce size, shape, composition and locations and keeping those factors aligned to business plans.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVS003-ANALYSIS": Object.freeze({
         id: "GOVS003-ANALYSIS",
@@ -113,8 +121,9 @@ const SOURCES = Object.freeze({
         url: `${GOVS003_URL}#514-analysis-and-insight`,
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Using management information and external research to build an evidence base and model scenarios and outcomes against long-term strategy.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "GOVUK-SPANS-LAYERS": Object.freeze({
         id: "GOVUK-SPANS-LAYERS",
@@ -124,8 +133,9 @@ const SOURCES = Object.freeze({
         url: "https://www.gov.uk/government/publications/civil-service-people-plan-2024-2027/civil-service-people-plan-2024-2027-html#spans-and-layers",
         access: "Free public source",
         license: "Open Government Licence v3.0",
+        scopeNote: "UK government functional guidance used only as a public governance/organization-design principle source; it is not treated as a private-sector benchmark.",
         supports: "Treating spans and layers as organization-design variables that can affect decision speed and line-management quality. It does not publish a universal numeric span benchmark.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     }),
     "CIPD-ORG-DESIGN": Object.freeze({
         id: "CIPD-ORG-DESIGN",
@@ -135,8 +145,9 @@ const SOURCES = Object.freeze({
         url: "https://www.cipd.org/en/knowledge/factsheets/organisational-development-design-factsheet/",
         access: "Free public reference",
         license: "Copyright retained by CIPD; linked as a public reference",
+        scopeNote: "Professional-body guidance used as a general organization-design reference; it is not treated as a numeric benchmark.",
         supports: "Viewing organisation design as alignment of structure with strategy and considering the wider system rather than only the organisation chart.",
-        lastReviewed: "2026-08-17"
+        lastReviewed: "2026-10-01"
     })
 });
 
@@ -145,77 +156,77 @@ const RULE_SOURCE_MAP = Object.freeze({
         version: "1.1",
         sourceIds: ["OPENSTAX-SPAN-CONTEXT", "OPENSTAX-ORG-DESIGN", "GOVUK-SPANS-LAYERS", "GOVS003-WORKFORCE"],
         ruleBasis: "GrowWithHR interprets management span together with work complexity, standardization, manager role, team independence, coaching intensity and operating-location context. Any numeric guardrails used by GrowWithHR are prototype triggers, not published external benchmarks.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-FOUNDER-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-GOVERNANCE", "GOVS003-ACCOUNTABILITY", "GOVS003-DECISIONS", "OPENSTAX-ORG-DESIGN"],
         ruleBasis: "GrowWithHR combines founder/CEO direct-report concentration with the important decisions the company says still require founder approval. The direct-report guardrails remain GrowWithHR prototype triggers, not source-prescribed limits.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-REPORTING-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVUK-SPANS-LAYERS", "GOVS003-ORG-DESIGN", "GOVS003-GOVERNANCE", "OPENSTAX-ORG-DESIGN"],
         ruleBasis: "GrowWithHR compares reporting layers with current headcount and other structural signals to flag potentially under-defined or overly layered structures. Numeric layer/headcount guardrails are GrowWithHR prototype triggers.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-OWNERSHIP-001": Object.freeze({
         version: "1.2",
         sourceIds: ["GOVS003-ACCOUNTABILITY", "GOVS003-ORG-DESIGN", "GOVS003-PRINCIPLES", "OPENSTAX-ORG-DESIGN"],
         ruleBasis: "GrowWithHR checks whether important functions are visible and whether each supplied function has clear, shared, founder-held, unclear or unmapped accountability. It uses those user-supplied ownership states as structural signals and does not assess the capability or performance of individual leaders.",
-        lastReviewed: "2026-09-30",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-CLARITY-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-ACCOUNTABILITY", "GOVS003-PRINCIPLES", "OPENSTAX-ORG-DESIGN"],
         ruleBasis: "GrowWithHR interprets the company's own report of role clarity against public principles that responsibilities, reporting relationships and accountability should be understandable for the operating model being used.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-DECISIONS-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-GOVERNANCE", "GOVS003-DECISIONS", "GOVS003-ACCOUNTABILITY", "OPENSTAX-SPAN-CONTEXT"],
         ruleBasis: "GrowWithHR interprets the company's reported decision ownership together with the important decisions still requiring founder approval. It uses those facts as a centralization and escalation signal rather than prescribing one decision-rights framework.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-GOVERNANCE-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-GOVERNANCE", "GOVS003-DECISIONS"],
         ruleBasis: "GrowWithHR uses the presence and regularity of a cross-functional operating review as a structural governance signal. The cadence categories are GrowWithHR interpretation, not a source-mandated meeting frequency.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-COORDINATION-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-ORG-DESIGN", "CIPD-ORG-DESIGN", "OPENSTAX-ORG-DESIGN"],
         ruleBasis: "GrowWithHR uses reported recurring handoff friction as an indicator that roles, interfaces, reporting relationships or decision paths may need redesign.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-GROWTH-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-WORKFORCE", "GOVS003-ANALYSIS", "GOVS003-ORG-DESIGN", "CIPD-ORG-DESIGN"],
         ruleBasis: "GrowWithHR compares today's structure with the user's 12-month headcount and expansion assumptions to create a deterministic planning scenario. Growth and span guardrails are GrowWithHR prototype triggers, not source benchmarks.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-LOCATION-001": Object.freeze({
         version: "1.1",
         sourceIds: ["OPENSTAX-SPAN-CONTEXT", "GOVS003-WORKFORCE", "GOVS003-ORG-DESIGN", "GOVS003-GOVERNANCE"],
         ruleBasis: "GrowWithHR uses current and planned operating-location complexity as a coordination and local-versus-central ownership signal. Any location-count guardrail is a GrowWithHR prototype trigger.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     }),
     "ORG-SCENARIO-HEADCOUNT-001": Object.freeze({
         version: "1.1",
         sourceIds: ["GOVS003-WORKFORCE", "GOVS003-ANALYSIS", "OPENSTAX-SPAN-CONTEXT"],
         ruleBasis: "GrowWithHR models a simple 'headcount changes, manager count unchanged' scenario from user-supplied assumptions and applies the same disclosed contextual management-capacity logic. It is not a forecast.",
-        lastReviewed: "2026-08-17",
+        lastReviewed: "2026-10-01",
         reviewOwner: "GrowWithHR organisation-design methodology"
     })
 });
