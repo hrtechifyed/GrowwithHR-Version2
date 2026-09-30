@@ -51,15 +51,15 @@ includes(siteShell, "setBackgroundInert", "The mobile navigation must prevent in
 
 const home = read("index.html");
 includes(home, 'id="home"', "The homepage hero must remain available.");
-includes(home, 'href="intelligence-hub.html"', "The primary assessment CTA must route through the intelligence hub.");
-includes(home, "Start an Assessment", "The primary homepage assessment CTA must remain visible.");
+includes(home, 'href="organization-intelligence.html"', "The primary assessment CTA must route directly to the flagship Organization & Growth experience.");
+includes(home, "Analyze Organization &amp; Growth", "The primary homepage assessment CTA must remain visible.");
 includes(home, 'href="sample-reports.html"', "The sample reports CTA must route through the sample-report hub.");
 includes(home, "View a Sample Report", "The sample report CTA must remain visible.");
 includes(home, 'data-testid="home-product-preview"', "The homepage must show a qualitative product preview.");
 includes(home, 'data-testid="home-report-preview"', "The homepage must show a report preview.");
 includes(home, 'data-testid="home-capabilities-stack"', "The current product cards must remain visible.");
 includes(home, "Organization Structure &amp; Growth · Flagship", "Organization Structure & Growth must remain the flagship product.");
-includes(home, "Where could our structure constrain growth?", "Organization Structure must retain a clear growth-oriented buyer question.");
+includes(home, "Where could our organization constrain growth?", "Organization Structure must retain a clear growth-oriented buyer question.");
 includes(home, "No arbitrary scores", "The homepage must explicitly avoid arbitrary score framing.");
 includes(home, "Review may be required", "The homepage preview must use qualitative statuses.");
 assert(!home.includes('data-testid="home-executive-stack"'), "The retired legacy intelligence-card preview must not reappear.");
