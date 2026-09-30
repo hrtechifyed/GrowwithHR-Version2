@@ -2,6 +2,11 @@
 .org-context-intro{grid-column:1/-1;margin:0;padding:14px 16px;border:1px solid rgba(79,139,255,.2);border-radius:12px;background:rgba(37,99,235,.07);color:var(--text-secondary);line-height:1.55;}
 .org-framework-field{align-content:start;padding:14px 16px;border:1px solid rgba(255,176,0,.2);border-radius:12px;background:rgba(255,176,0,.055);}
 .org-framework-field strong{color:#ffe09a;}
+.org-field-status{display:inline-flex;align-items:center;margin-left:7px;padding:2px 7px;border-radius:999px;font-size:.66rem;font-weight:850;letter-spacing:.035em;vertical-align:middle;}
+.org-field-status.is-required{background:rgba(255,176,0,.13);border:1px solid rgba(255,176,0,.28);color:#ffe09a;}
+.org-field-status.is-optional{background:rgba(148,163,184,.10);border:1px solid rgba(148,163,184,.18);color:#b8c3d4;}
+.org-structure-page #industryHelp{display:block;}
+.org-structure-page #industry[list]{background-image:linear-gradient(45deg,transparent 50%,#94a3b8 50%),linear-gradient(135deg,#94a3b8 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px;}
 .org-delivery-status{margin:0 0 18px;padding:12px 14px;border:1px solid rgba(34,197,94,.25);border-radius:12px;background:rgba(34,197,94,.08);color:#b8f4ca;line-height:1.5;}
 .org-delivery-status.is-error{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08);color:#ffb4b4;}
 .org-rule-id{margin:0 0 7px!important;color:#ffe09a!important;font-size:.86rem;}

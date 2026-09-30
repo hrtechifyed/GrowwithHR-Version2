@@ -157,6 +157,27 @@ assert.match(assessmentPage, /history\.replaceState/);
 assert.match(assessmentPage, /Recovery Code was not placed in the URL/);
 assert.match(assessmentPage, /organization\.founderDecisions/);
 assert.match(assessmentPage, /organization\.expansion/);
+assert.match(assessmentPage, /list=["']orgIndustryOptions["']/);
+assert.match(assessmentPage, /<datalist id=["']orgIndustryOptions["']/);
+assert.match(assessmentPage, /executive-assessment\/industry-catalog\.js/);
+assert.match(assessmentPage, /setupIndustrySuggestions/);
+assert.match(assessmentPage, /Start with five basics/);
+for (const requiredField of ["companyName", "email", "industry", "employees", "locations"]) {
+    assert.match(
+        assessmentPage,
+        new RegExp(`<[^>]+id=["']${requiredField}["'][^>]*required`),
+        `${requiredField} should remain required.`
+    );
+}
+for (const optionalField of ["managerCount", "reportingLevels", "founderDirectReports", "expectedEmployees", "departments"]) {
+    assert.doesNotMatch(
+        assessmentPage,
+        new RegExp(`<[^>]+id=["']${optionalField}["'][^>]*required`),
+        `${optionalField} should remain optional.`
+    );
+}
+assert.match(assessmentPage, /org-field-status is-required/);
+assert.match(assessmentPage, /org-field-status is-optional/);
 
 const hub = fs.readFileSync(new URL("../intelligence-hub.html", import.meta.url), "utf8");
 assert.match(hub, /createHandoff/);
