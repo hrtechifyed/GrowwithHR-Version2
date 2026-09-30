@@ -37,7 +37,7 @@ assert.match(html, /does not forecast business outcomes/i);
 assert.match(html, /not external benchmarks or forecasts/i);
 
 const shell = fs.readFileSync(path.resolve("js/site-shell.js"), "utf8");
-assert.match(shell, /Decision Scenario Studio/);
+assert.match(shell, /Model a Decision/);
 assert.match(shell, /decision-scenario-studio\.html/);
 
 const hub = fs.readFileSync(path.resolve("intelligence-hub.html"), "utf8");
