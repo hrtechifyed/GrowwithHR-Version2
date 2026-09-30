@@ -28,30 +28,19 @@ async function seedSavedBriefing(page: Page, currentMoment = 2): Promise<void> {
 }
 
 test.describe("Company Analysis entry", () => {
-  test("routes the homepage through one Company Analysis hub before a specialist engine", async ({ page }) => {
+  test("routes the homepage directly to the flagship Organization & Growth experience", async ({ page }) => {
     await page.goto("/index.html");
 
-    const primaryCta = page.getByRole("link", { name: "Start an Assessment", exact: true }).first();
-    await expect(primaryCta).toHaveAttribute("href", "intelligence-hub.html");
+    const primaryCta = page.getByRole("link", { name: "Analyze Organization & Growth", exact: true }).first();
+    await expect(primaryCta).toHaveAttribute("href", "organization-intelligence.html");
 
     await primaryCta.click();
-    await expect(page).toHaveURL(/intelligence-hub\.html$/);
-    await expect(page.locator(".analysis-overview-hero h1")).toContainText("One company view");
-    await expect(page.locator("#orchestratorTitle")).toContainText("The orchestrator coordinates");
+    await expect(page).toHaveURL(/organization-intelligence\.html$/);
+    await expect(page.getByRole("heading", { name: /organization/i }).first()).toBeVisible();
 
-    await expect(page.getByRole("link", {
-      name: /Assess HR Compliance Readiness/i
-    })).toHaveAttribute("href", "compliance-intelligence.html");
-
-    const organizationLink = page.getByRole("link", {
-      name: /Analyze Organization & Growth/i
-    });
-    await expect(organizationLink).toHaveAttribute("href", "organization-intelligence.html");
-    await expect(organizationLink).not.toHaveAttribute("target", "_blank");
-
-    await expect(page.getByRole("link", {
-      name: /Plan Workforce & Capabilities/i
-    })).toHaveAttribute("href", "workforce-capability-planning.html");
+    await page.getByRole("button", { name: /Analyze/i }).click();
+    await expect(page.getByRole("link", { name: "HR Compliance Readiness", exact: true })).toHaveAttribute("href", "compliance-intelligence.html");
+    await expect(page.getByRole("link", { name: "Model a Decision", exact: true })).toHaveAttribute("href", "decision-scenario-studio.html");
   });
 });
 
