@@ -116,15 +116,15 @@ jobs:
           url="https://growwithhr.onrender.com/api/email-status"
           for attempt in $(seq 1 30); do
             body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
-            if jq -e '.ok == true and .provider == "gmail-api" and .gmailConfigured == true and .gmailConnected == true and .senderValid == true and .senderMatchesProfile == true' <<<"$body" >/dev/null 2>&1; then
+            if jq -e '.ok == true and .provider == "gmail-api" and .gmailConfigured == true and .oauthConnected == true and .sendScopeAvailable == true and .senderValid == true' <<<"$body" >/dev/null 2>&1; then
               echo "$body" > /tmp/email-status.json
-              echo "Gmail API OAuth and configured sender are valid."
+              echo "Gmail OAuth refresh and send-capable scope are valid."
               exit 0
             fi
             echo "Gmail API connectivity is not ready yet (attempt $attempt/30)."
             sleep 10
           done
-          echo "Live Gmail API status did not confirm a valid OAuth connection and sender match." >&2
+          echo "Live Gmail API status did not confirm a valid OAuth refresh token and send-capable Gmail scope." >&2
           exit 1
 
       - name: Validate live report ID registry durability
@@ -213,8 +213,9 @@ jobs:
                 "url": "https://growwithhr.onrender.com/api/email-status",
                 "provider": "gmail-api",
                 "gmailConfigured": true,
-                "gmailConnected": true,
-                "senderMatchesProfile": true
+                "oauthConnected": true,
+                "sendScopeAvailable": true,
+                "senderValid": true
               },
               "reportIdRegistry": {
                 "url": "https://growwithhr.onrender.com/api/report-id/status",
