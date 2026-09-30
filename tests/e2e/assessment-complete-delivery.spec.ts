@@ -92,9 +92,8 @@ test.describe("Complete assessment and advisory delivery", () => {
     });
 
     await page.goto("/");
-    await page.getByRole("link", { name: "Start an Assessment" }).first().click();
-    await expect(page).toHaveURL(/\/intelligence-hub\.html$/);
-    await page.locator('.analysis-action[href="compliance-intelligence.html"]').click();
+    await page.getByRole("button", { name: /Analyze/i }).click();
+    await page.getByRole("link", { name: "HR Compliance Readiness", exact: true }).click();
     await expect(page).toHaveURL(/\/compliance-intelligence\.html$/);
     await page.getByRole("button", { name: "Start my advisory" }).click();
 

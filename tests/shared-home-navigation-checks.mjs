@@ -51,8 +51,9 @@ for (const file of pages) {
   assert.equal(home.find('svg[aria-hidden="true"]').length, 1);
   assert.equal(nav.find('a.site-product-name').attr('href'), 'index.html#home');
   assert.equal(nav.find('a.site-brand-logo').length, 0, 'The logo must stay outside the navigation capsule.');
-  const items = [home, nav.find('.site-nav-analyze__toggle'), nav.find('a[data-nav-key="reports"]'), nav.find('a[data-nav-key="resources"]'), nav.find('.site-nav-more__toggle')];
+  const items = [home, nav.find('.site-nav-analyze__toggle'), nav.find('a[data-nav-key="resources"]'), nav.find('.site-nav-more__toggle')];
   assert.ok(items.every(item => item.length === 1), `${route}: all canonical navigation items must remain available`);
+  assert.equal(nav.find('#siteAnalyzeMenu a').length, 3, `${route}: Analyze must stay focused on the three primary buyer actions`);
   const signature = nav.find('#siteNavLinks').text().replace(/\s+/g, ' ').trim();
   if (baseline === null) baseline = signature;
   assert.equal(signature, baseline, `${route}: navigation content must match the homepage`);

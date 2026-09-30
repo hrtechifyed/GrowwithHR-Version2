@@ -11,20 +11,20 @@
     const THEME_VERSION = "20260915-application-audit";
 
     const ANALYZE_ITEMS = Object.freeze([
-        { key: "analysis-overview", label: "Company Analysis Overview", href: "intelligence-hub.html" },
         { key: "organization", label: "Organization & Growth", href: "organization-intelligence.html" },
         { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" },
-        { key: "workforce-capability", label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
-        { key: "scenario-studio", label: "Decision Scenario Studio", href: "decision-scenario-studio.html" },
-        { key: "change-intelligence", label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" }
+        { key: "scenario-studio", label: "Model a Decision", href: "decision-scenario-studio.html" }
     ]);
 
     const NAV_ITEMS = Object.freeze([
-        { key: "reports", label: "My Reports", href: "my-reports.html" },
         { key: "resources", label: "Sources & Methodology", href: "official-resources.html" }
     ]);
 
     const MORE_ITEMS = Object.freeze([
+        { label: "Company Analysis Overview", href: "intelligence-hub.html" },
+        { label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" },
+        { label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
+        { label: "My Reports", href: "my-reports.html" },
         { label: "Sample Reports", href: "sample-reports.html" },
         { label: "Security & Data", href: "security.html" },
         { label: "Terms", href: "terms.html" },
@@ -94,7 +94,7 @@
             "workforce-capability-planning.html": "analyze",
             "workforce-capability-report.html": "analyze",
             "decision-scenario-studio.html": "analyze",
-            "my-reports.html": "reports",
+            "my-reports.html": "more",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
             "workforce-capability-methodology.html": "resources",
@@ -116,7 +116,7 @@
             compliance: "analyze",
             workforce: "analyze",
             "workforce-capability": "analyze",
-            reports: "reports",
+            reports: "more",
             resources: "resources",
             sample: "more",
             more: "more"

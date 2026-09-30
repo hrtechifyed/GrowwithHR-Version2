@@ -14,7 +14,10 @@ The public GrowWithHR experience is deliberately concentrated on two decision pr
 
 Primary customer navigation is intentionally simple:
 
-**Organization & Growth · HR Compliance Readiness · My Reports · Sources & Methodology**
+**Analyze → Organization & Growth · HR Compliance Readiness · Model a Decision**  
+**Sources & Methodology · More**
+
+Company Analysis Overview, Change Intelligence, Workforce & Capability Planning, My Reports, samples, security and legal pages remain available as secondary destinations rather than competing with the three primary buyer actions.
 
 Complete fictional sample reports remain public so prospective users can inspect report format and depth.
 
