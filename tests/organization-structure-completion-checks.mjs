@@ -217,12 +217,13 @@ assert.match(privacy, /not intended to contain the structural findings/i);
 assert.doesNotMatch(privacy, /Workspace Recovery Code|one-time opaque handoff token/i);
 
 const homepage = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
-assert.match(homepage, />Start an Assessment/);
+assert.match(homepage, />Analyze Organization &amp; Growth/);
 assert.match(homepage, />View a Sample Report/);
 assert.match(homepage, /Organization Structure &amp; Growth · Flagship/);
-assert.match(homepage, /Where could our structure constrain growth\?/);
+assert.match(homepage, /Where could our organization constrain growth\?/);
 assert.match(homepage, /No arbitrary scores/i);
 assert.match(homepage, /data-testid="home-report-preview"/);
+assert.match(homepage, /Decision Scenario Studio/);
 assert.doesNotMatch(homepage, /Organization Structure \(Available\)/);
 assert.doesNotMatch(homepage, />Analyze My Company</);
 assert.doesNotMatch(homepage, />View Sample Advisory</);
