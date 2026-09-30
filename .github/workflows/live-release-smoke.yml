@@ -58,6 +58,16 @@ jobs:
             exit 1
           fi
 
+      - name: Validate GitHub Pages organization report route
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="${PAGES_BASE_URL}/organization-structure-report.html?sample=1"
+          body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url")"
+          grep -Fq "Organization Structure &amp; Growth Report | GrowWithHR" <<<"$body"
+          grep -Fq 'id="orgReportRoot"' <<<"$body"
+          grep -Fq 'js/organization-structure-report.mjs' <<<"$body"
+
       - name: Wait for Render homepage release
         shell: bash
         run: |
@@ -88,6 +98,34 @@ jobs:
             echo "Dark report option is still visible on the Render founder report route." >&2
             exit 1
           fi
+
+      - name: Validate Render organization report route
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/organization-structure-report.html?sample=1"
+          body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url")"
+          grep -Fq "Organization Structure &amp; Growth Report | GrowWithHR" <<<"$body"
+          grep -Fq 'id="orgReportRoot"' <<<"$body"
+          grep -Fq 'js/organization-structure-report.mjs' <<<"$body"
+
+      - name: Validate live Gmail API connectivity
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/api/email-status"
+          for attempt in $(seq 1 30); do
+            body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url" 2>/dev/null || true)"
+            if jq -e '.ok == true and .provider == "gmail-api" and .gmailConfigured == true and .gmailConnected == true and .senderValid == true and .senderMatchesProfile == true' <<<"$body" >/dev/null 2>&1; then
+              echo "$body" > /tmp/email-status.json
+              echo "Gmail API OAuth and configured sender are valid."
+              exit 0
+            fi
+            echo "Gmail API connectivity is not ready yet (attempt $attempt/30)."
+            sleep 10
+          done
+          echo "Live Gmail API status did not confirm a valid OAuth connection and sender match." >&2
+          exit 1
 
       - name: Validate live report ID registry durability
         shell: bash
@@ -152,6 +190,11 @@ jobs:
                 "singleReportRouteVisible": true,
                 "darkReportOptionAbsent": true
               },
+              "githubPagesOrganizationReport": {
+                "url": "${PAGES_BASE_URL}/organization-structure-report.html?sample=1",
+                "routeVisible": true,
+                "reportRuntimeVisible": true
+              },
               "renderHomepage": {
                 "url": "https://growwithhr.onrender.com/index.html",
                 "versionVisible": true
@@ -160,6 +203,18 @@ jobs:
                 "url": "https://growwithhr.onrender.com/executive-advisory-report.html",
                 "singleReportRouteVisible": true,
                 "darkReportOptionAbsent": true
+              },
+              "renderOrganizationReport": {
+                "url": "https://growwithhr.onrender.com/organization-structure-report.html?sample=1",
+                "routeVisible": true,
+                "reportRuntimeVisible": true
+              },
+              "emailDelivery": {
+                "url": "https://growwithhr.onrender.com/api/email-status",
+                "provider": "gmail-api",
+                "gmailConfigured": true,
+                "gmailConnected": true,
+                "senderMatchesProfile": true
               },
               "reportIdRegistry": {
                 "url": "https://growwithhr.onrender.com/api/report-id/status",
