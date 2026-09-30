@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const { customerMessage, decodePdf } = require("../server-organization-report-delivery.js");
 
 import {
     analyzeOrganizationStructure
@@ -177,6 +181,13 @@ assert.equal(FRAMEWORK.version, "1.2");
 assert.ok(Array.isArray(FRAMEWORK.changeLog) && FRAMEWORK.changeLog.length >= 2);
 assert.ok(FRAMEWORK.lastReviewed);
 assert.equal(SOURCES["OPENSTAX-SPAN-CONTEXT"].access, "Free public source");
+assert.match(SOURCES["OPENSTAX-ORG-DESIGN"].license, /CC BY-NC-SA 4\.0/i);
+assert.match(SOURCES["OPENSTAX-ORG-DESIGN"].scopeNote || "", /commercial reuse/i);
+assert.match(SOURCES["GOVS003-ORG-DESIGN"].scopeNote || "", /UK government/i);
+assert.match(SOURCES["CIPD-ORG-DESIGN"].scopeNote || "", /Professional-body/i);
+for (const source of Object.values(SOURCES)) {
+    assert.equal(source.lastReviewed, "2026-10-01", `${source.id} research review date should be current.`);
+}
 assert.match(SOURCES["OPENSTAX-SPAN-CONTEXT"].license, /CC BY 4\.0/i);
 assert.match(SOURCES["OPENSTAX-SPAN-CONTEXT"].supports, /task complexity/i);
 assert.ok(RULE_SOURCE_MAP["ORG-CAPACITY-001"].sourceIds.includes("OPENSTAX-SPAN-CONTEXT"));
@@ -236,6 +247,7 @@ const reportPage = fs.readFileSync(new URL("../organization-structure-report.htm
 assert.match(reportPage, /downloadReport/);
 assert.match(reportPage, /emailReport/);
 assert.match(reportPage, /jspdf\/2\.5\.1/);
+assert.match(reportPage, /Organization Structure &amp; Growth Report \| GrowWithHR/);
 
 const reportRuntime = fs.readFileSync(new URL("../js/organization-structure-report.mjs", import.meta.url), "utf8");
 assert.match(reportRuntime, /organization-structure-pdf\.mjs/);
@@ -258,6 +270,7 @@ assert.match(pdfRuntime, /not a forecast/i);
 assert.match(pdfRuntime, /ruleVersion/);
 assert.match(pdfRuntime, /Organization bottleneck map/);
 assert.match(pdfRuntime, /Functional ownership/);
+assert.match(pdfRuntime, /cleanText\(f\.version,"1\.2"\)/);
 
 const handoffServer = fs.readFileSync(new URL("../server-workspace-handoff.js", import.meta.url), "utf8");
 assert.match(handoffServer, /HANDOFF_TTL_MS = 5 \* 60 \* 1000/);
@@ -266,7 +279,10 @@ assert.match(handoffServer, /handoffs\.delete\(token\)/, "Handoff token must be 
 assert.match(handoffServer, /Cache-Control.*no-store/);
 
 const deliveryServer = fs.readFileSync(new URL("../server-organization-report-delivery.js", import.meta.url), "utf8");
-assert.match(deliveryServer, /Your GrowWithHR Organization Structure Report/);
+assert.match(deliveryServer, /Your GrowWithHR Organization Structure & Growth Report/);
+assert.match(deliveryServer, /request\.growwithhrCustomer/);
+assert.match(deliveryServer, /authenticated work email/);
+assert.match(deliveryServer, /frameworkVersion, "1\.2"/);
 assert.match(deliveryServer, /Framework and sources/);
 assert.match(deliveryServer, /Structural findings are not included|structural findings are not included/i);
 assert.match(deliveryServer, /Report type/);
@@ -277,11 +293,22 @@ const serverEntry = fs.readFileSync(new URL("../server-entry.js", import.meta.ur
 assert.match(serverEntry, /handleWorkspaceHandoffRequest/);
 assert.match(serverEntry, /handleOrganizationReportRequest/);
 
+const serverRuntime = fs.readFileSync(new URL("../server.js", import.meta.url), "utf8");
+assert.match(serverRuntime, /\/api\/email-status/);
+assert.match(serverRuntime, /gmailApi\.users\.getProfile/);
+assert.match(serverRuntime, /senderMatchesProfile/);
+
+const smokeWorkflow = fs.readFileSync(new URL("../.github/workflows/live-release-smoke.yml", import.meta.url), "utf8");
+assert.match(smokeWorkflow, /Validate live Gmail API connectivity/);
+assert.match(smokeWorkflow, /organization-structure-report\.html\?sample=1/);
+assert.match(smokeWorkflow, /gmailConnected == true/);
+
 const methodology = fs.readFileSync(new URL("../organization-structure-methodology.html", import.meta.url), "utf8");
 assert.match(methodology, /Version history/i);
 assert.match(methodology, /sourceRuleIds/);
 assert.match(methodology, /Rule register/i);
 assert.match(methodology, /CC BY 4\.0/);
+assert.match(methodology, /Research scope/);
 
 const privacy = fs.readFileSync(new URL("../more-info.html", import.meta.url), "utf8");
 assert.match(privacy, /Report download and delivery activity/);
@@ -310,5 +337,21 @@ assert.match(variables, /--type-body:1rem/);
 assert.match(typography, /#screen-overview > \.org-panel:first-child h2/);
 assert.match(typography, /font-size: clamp\(1\.625rem, 2vw, 2rem\)/);
 assert.match(typography, /\.intelligence-hub-page \.hero-actions[\s\S]*display: none !important/);
+
+const defaultEmail = customerMessage(
+    { name: "Pilot User", companyName: "Pilot Co" },
+    { companyName: "Pilot Co", reportId: "GWHR-2026-0001-AA01" },
+    "GrowWithHR-Organization-Growth-Pilot-Co.pdf"
+);
+assert.match(defaultEmail.subject, /Organization Structure & Growth Report/);
+assert.match(defaultEmail.text, /Framework used: GrowWithHR Organization Structure Assessment Framework v1\.2/);
+assert.match(defaultEmail.html, /Organization Structure Report|Organization Structure & Growth Report/);
+const decodedPdf = decodePdf({
+    filename: "pilot-report.pdf",
+    base64: Buffer.from("%PDF-1.4\n1 0 obj\n<<>>\nendobj\n%%EOF", "utf8").toString("base64")
+});
+assert.equal(decodedPdf.filename, "pilot-report.pdf");
+assert.equal(decodedPdf.contentType, "application/pdf");
+assert.ok(decodedPdf.content.length > 5);
 
 console.log("Organization Structure completion checks passed.");
