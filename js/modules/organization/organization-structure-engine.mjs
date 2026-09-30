@@ -991,7 +991,9 @@ function ownershipMapForReport(facts) {
                 ? STATUS.ACTION
                 : item.ownership === "dont-know"
                     ? STATUS.NEEDS_INFORMATION
-                    : STATUS.WATCH
+                    : item.ownership === "founder" && (facts.employees === null || facts.employees <= 15)
+                        ? STATUS.STABLE
+                        : STATUS.WATCH
     }));
 }
 
