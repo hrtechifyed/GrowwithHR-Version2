@@ -13,8 +13,8 @@ test.describe("homepage client readiness", () => {
     await expect(page.getByRole("link", { name: /Model a Decision/i })).toBeVisible();
     const cards = page.locator("#capabilities .ph-product-card");
     await expect(cards).toHaveCount(3);
-    await expect(page.getByRole("link", { name: /Review Compliance Readiness/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /Analyze Organization & Growth/i })).toBeVisible();
+    await expect(cards.getByRole("link", { name: /Review Compliance Readiness/i })).toBeVisible();
+    await expect(cards.getByRole("link", { name: /Analyze Organization & Growth/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Open My Reports/i })).toHaveCount(0);
     await expect(page.locator("body")).not.toContainText(/Recovery Code|recover previous saved company/i);
     expect(problems).toEqual([]);
