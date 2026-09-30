@@ -312,7 +312,7 @@ const methodology = fs.readFileSync(new URL("../organization-structure-methodolo
 assert.match(methodology, /Version history/i);
 assert.match(methodology, /sourceRuleIds/);
 assert.match(methodology, /Rule register/i);
-assert.match(methodology, /CC BY 4\.0/);
+assert.match(methodology, /CC BY-NC-SA 4\.0/);
 assert.match(methodology, /Research scope/);
 
 const privacy = fs.readFileSync(new URL("../more-info.html", import.meta.url), "utf8");
