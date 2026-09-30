@@ -262,6 +262,7 @@ assert.match(reportRuntime, /ORGANIZATION BOTTLENECK MAP/);
 assert.match(reportRuntime, /FUNCTIONAL OWNERSHIP/);
 assert.match(reportRuntime, /bottleneckMapHtml/);
 assert.match(reportRuntime, /ownershipMapHtml/);
+assert.doesNotMatch(reportRuntime, /lead:\{name:clean\(payload\.data\?\.shared\?\.companyName/);
 
 const pdfRuntime = fs.readFileSync(new URL("../js/organization-structure-pdf.mjs", import.meta.url), "utf8");
 assert.match(pdfRuntime, /HRTECHIFY · GROWWITHHR/);
@@ -343,11 +344,12 @@ assert.match(typography, /font-size: clamp\(1\.625rem, 2vw, 2rem\)/);
 assert.match(typography, /\.intelligence-hub-page \.hero-actions[\s\S]*display: none !important/);
 
 const defaultEmail = customerMessage(
-    { name: "Pilot User", companyName: "Pilot Co" },
+    { companyName: "Pilot Co" },
     { companyName: "Pilot Co", reportId: "GWHR-2026-0001-AA01" },
     "GrowWithHR-Organization-Growth-Pilot-Co.pdf"
 );
 assert.match(defaultEmail.subject, /Organization Structure & Growth Report/);
+assert.match(defaultEmail.text, /^Hello there,/);
 assert.match(defaultEmail.text, /Framework used: GrowWithHR Organization Structure Assessment Framework v1\.2/);
 assert.match(defaultEmail.html, /Organization Structure Report|Organization Structure & Growth Report/);
 const decodedPdf = decodePdf({
