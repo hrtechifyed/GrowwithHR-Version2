@@ -24,8 +24,8 @@ const SOURCES = Object.freeze({
         section: "7.5 Degree of Centralization — factors affecting span of control",
         url: "https://openstax.org/books/introduction-business-2e/pages/7-5-degree-of-centralization",
         access: "Free public source",
-        license: "Creative Commons Attribution 4.0 International (CC BY 4.0)",
-        scopeNote: "General business textbook used as a principle source; it does not prescribe GrowWithHR numeric span thresholds.",
+        license: "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+        scopeNote: "General business textbook used as a principle source; it does not prescribe GrowWithHR numeric span thresholds. GrowWithHR links to and paraphrases the principle rather than reproducing source text; commercial reuse of source text requires appropriate permission.",
         supports: "Treating span of control contextually using task complexity, worker location, delegation, manager-worker interaction and workforce capability rather than applying one universal span number.",
         lastReviewed: "2026-10-01"
     }),
