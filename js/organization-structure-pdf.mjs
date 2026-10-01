@@ -113,6 +113,7 @@ function pageHeader(doc, title, pageNumber, logoData = "") {
     doc.setDrawColor(...BRAND.line); doc.line(PAGE.left, PAGE.height - 13, PAGE.width - PAGE.right, PAGE.height - 13);
     doc.setFontSize(7.2); doc.setTextColor(...BRAND.muted);
     doc.text("GrowWithHR · Organization Structure & Growth", PAGE.left, PAGE.height - 8);
+    doc.text("© 2026 HRTechify. All rights reserved.", PAGE.width / 2, PAGE.height - 8, { align: "center" });
     doc.text(`Page ${pageNumber}`, PAGE.width - PAGE.right, PAGE.height - 8, { align: "right" });
 }
 

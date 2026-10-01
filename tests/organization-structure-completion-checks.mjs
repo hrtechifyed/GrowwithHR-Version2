@@ -271,6 +271,8 @@ assert.match(pdfRuntime, /not a forecast/i);
 assert.match(pdfRuntime, /ruleVersion/);
 assert.match(pdfRuntime, /Organization bottleneck map/);
 assert.match(pdfRuntime, /Functional ownership/);
+assert.match(pdfRuntime, /© 2026 HRTechify\. All rights reserved\./);
+assert.match(pdfRuntime, /assets\/hrtechify-logo\.png/);
 assert.match(pdfRuntime, /cleanText\(f\.version,"1\.2"\)/);
 
 const handoffServer = fs.readFileSync(new URL("../server-workspace-handoff.js", import.meta.url), "utf8");
