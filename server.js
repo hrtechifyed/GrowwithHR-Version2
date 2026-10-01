@@ -53,7 +53,7 @@ function encodeMimeHeader(value) {
 function safeFilename(value) {
     let filename = cleanText(
         value,
-        "GrowWithHR-Advisory.pdf"
+        "GrowWithHR-HR-Compliance-Readiness-Report.pdf"
     )
         .replace(/[^a-zA-Z0-9._-]/g, "-")
         .replace(/-+/g, "-")
@@ -231,26 +231,26 @@ function createCustomerEmail({
     const logoUrl =
         "https://growwithhr.onrender.com/assets/hrtechify-logo.png";
     const subject =
-        `Your GrowWithHR Executive Advisory for ${companyName}`;
+        `Your GrowWithHR HR Compliance Readiness Report for ${companyName}`;
 
     const text = [
         `Hello ${recipientName},`,
         "",
-        "Thank you for completing the GrowWithHR Executive Advisory assessment.",
+        "Thank you for completing the GrowWithHR HR Compliance Readiness review.",
         "",
-        `Your personalised advisory report for ${companyName} is attached to this email as a PDF.`,
+        `Your personalised HR Compliance Readiness report for ${companyName} is attached to this email as a PDF.`,
         "",
         "Inside your report, you will find:",
         "",
-        "• A summary of your organisation's current priorities",
-        "• Areas that may require leadership attention",
-        "• Practical recommendations and next steps",
+        "• A summary of the HR compliance-readiness areas evaluated",
+        "• Areas that may require review or additional information",
+        "• Source-backed context and practical next actions",
         "",
-        "We recommend reviewing the report with the relevant members of your leadership team and identifying the actions that are most important for your current stage of growth.",
+        "Review the report with the relevant business and People stakeholders, verify legal requirements where needed, and decide which review actions matter most now.",
         "",
-        "If you have questions or would like support turning the recommendations into a practical action plan, reply directly to this email.",
+        "If you have questions about the report or want to share feedback on the Founding Beta, reply directly to this email.",
         "",
-        "This advisory is provided for general strategic guidance. It does not replace legal, financial, compliance, or other professional advice.",
+        "This is a research-grade HR compliance-readiness report. It is not legal advice, legal certification or proof of compliance.",
         "",
         "Warm Wishes,",
         FOUNDER_NAME,
@@ -714,9 +714,9 @@ function createInternalEmail({
     };
 
     const subject =
-        `New GrowWithHR advisory lead: ${companyName}`;
+        `New GrowWithHR HR Compliance Readiness lead: ${companyName}`;
     const text = [
-        "A new GrowWithHR advisory assessment was completed.",
+        "A new GrowWithHR HR Compliance Readiness review was completed.",
         "",
         ...Object.entries(fields).map(
             ([key, value]) => `${key}: ${value}`
@@ -735,7 +735,7 @@ function createInternalEmail({
     const html = `<!doctype html>
 <html lang="en">
 <body style="margin:0;padding:24px;font-family:Arial,sans-serif;color:#1f2937">
-<h2>New GrowWithHR advisory assessment</h2>
+<h2>New GrowWithHR HR Compliance Readiness review</h2>
 <table cellspacing="0" cellpadding="0" border="1" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table>
 </body>
 </html>`;
