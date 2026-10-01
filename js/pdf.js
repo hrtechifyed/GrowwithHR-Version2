@@ -287,7 +287,7 @@
                 new Date().toISOString(),
             source: cleanText(
                 report.source || lead.source,
-                "Executive Advisory Briefing"
+                "HR Compliance Readiness"
             )
         };
     }
@@ -660,30 +660,30 @@
             runningTitle: cleanText(
                 payload.runningTitle,
                 isSample
-                    ? "GrowWithHR Sample Executive Advisory"
-                    : "GrowWithHR Executive Advisory"
+                    ? "GrowWithHR Sample HR Compliance Readiness Report"
+                    : "GrowWithHR HR Compliance Readiness Report"
             ),
             coverLabel: cleanText(
                 payload.coverLabel,
                 isSample
-                    ? "ILLUSTRATIVE SAMPLE EXECUTIVE ADVISORY"
-                    : "PERSONALISED EXECUTIVE ADVISORY"
+                    ? "ILLUSTRATIVE SAMPLE HR COMPLIANCE READINESS"
+                    : "PERSONALISED HR COMPLIANCE READINESS"
             ),
             coverTitle: cleanText(
                 payload.coverTitle,
-                "Executive Advisory"
+                "HR Compliance Readiness Report"
             ),
             coverIntro: cleanText(
                 payload.coverIntro,
                 isSample
-                    ? "A fictional, illustrative leadership document demonstrating how GrowWithHR turns organisation information into a structured executive people advisory."
-                    : "A confidential leadership document prepared from the organisation context shared through the GrowWithHR Executive Advisory Briefing."
+                    ? "A fictional, illustrative report demonstrating how GrowWithHR turns company information into structured HR compliance-readiness findings and next actions."
+                    : "A confidential HR Compliance Readiness report prepared from the company context shared through GrowWithHR."
             ),
             coverNote: cleanText(
                 payload.coverNote,
                 isSample
                     ? "This sample uses fictional organisation information. It is provided for demonstration only and is not legal, tax or regulatory advice."
-                    : "This advisory supports leadership discussion and prioritisation. It is not legal, tax or regulatory advice."
+                    : "This report supports HR compliance-readiness review and prioritisation. It is not legal advice, legal certification or proof of compliance."
             )
         };
     }
@@ -1358,24 +1358,24 @@
         if (options.isSample) {
             writer.subheading("Illustrative sample notice");
             writer.paragraph(
-                "This sample advisory uses fictional company, workforce and leadership information. It does not describe or assess any real organisation or individual."
+                "This sample compliance-readiness report uses fictional company and workforce information. It does not describe or assess any real organisation or individual."
             );
         } else {
             writer.subheading("Confidentiality notice");
             writer.paragraph(
-                "This Executive Advisory has been prepared for the organisation and recipient identified in this document. It is intended to support internal leadership discussion and should be shared only with appropriate stakeholders."
+                "This HR Compliance Readiness report has been prepared for the organisation and recipient identified in this document. It is intended to support internal review and should be shared only with appropriate stakeholders."
             );
 
             writer.subheading("Privacy and data handling");
             writer.paragraph(
-                "GrowWithHR uses the information submitted through the Executive Advisory Briefing to prepare and deliver the advisory. Optional marketing communication remains subject to the separate choice selected by the user."
+                "GrowWithHR uses the information submitted through HR Compliance Readiness to prepare and deliver this report. Optional marketing communication remains subject to the separate choice selected by the user."
             );
         }
 
-        writer.subheading("Advisory disclaimer");
+        writer.subheading("Readiness boundary");
         writer.paragraph(
             options.isSample
-                ? "This document is provided only to demonstrate the structure and style of a GrowWithHR Executive Advisory. Its observations and recommendations are illustrative and must not be treated as legal, tax, accounting, employment-law or regulatory advice."
+                ? "This document is provided only to demonstrate the structure and style of a GrowWithHR HR Compliance Readiness report. Its findings are illustrative and must not be treated as legal advice, legal certification or proof of compliance."
                 : "This document provides general business and people-management guidance based on information supplied by the user. It is not legal, tax, accounting, employment-law or regulatory advice. Requirements should be verified with qualified professionals and current official sources before action is taken."
         );
 
@@ -1414,16 +1414,16 @@
 
         doc.setProperties({
             title: documentOptions.isSample
-                ? `Sample Executive Advisory - ${model.companyName}`
-                : `Executive Advisory - ${model.companyName}`,
+                ? `Sample HR Compliance Readiness Report - ${model.companyName}`
+                : `HR Compliance Readiness Report - ${model.companyName}`,
             subject: documentOptions.isSample
-                ? "HRTechify GrowWithHR Illustrative Sample Advisory"
-                : "GrowWithHR Personalised Executive Advisory",
+                ? "HRTechify GrowWithHR Illustrative HR Compliance Readiness Report"
+                : "GrowWithHR Personalised HR Compliance Readiness Report",
             author: "HRTechify",
             creator: `GrowWithHR PDF ${PDF_VERSION}`,
             keywords: documentOptions.isSample
-                ? "HRTechify, GrowWithHR, sample advisory, fictional company"
-                : "HRTechify, GrowWithHR, executive advisory, people strategy"
+                ? "HRTechify, GrowWithHR, sample compliance readiness, fictional company"
+                : "HRTechify, GrowWithHR, HR compliance readiness, people governance"
         });
 
         renderAdvisoryDocument(
