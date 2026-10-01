@@ -194,8 +194,8 @@ test.describe("v0.20 contextual report intelligence", () => {
             }));
         }, { key: ASSESSMENT_KEY });
 
-        await page.reload({ waitUntil: "domcontentloaded" });
-        await page.getByRole("button", { name: /Continue my advisory/ }).click();
+        await page.goto("/compliance-intelligence.html", { waitUntil: "domcontentloaded" });
+        await page.getByRole("button", { name: /Continue compliance review/ }).click();
 
         const section = page.locator('[data-industry-adaptive="manufacturing"]');
         await expect(section).toBeVisible();
