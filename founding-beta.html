@@ -18,7 +18,7 @@
       <h1 id="betaTitle">Use GrowWithHR on a <span>real company question.</span></h1>
       <p class="beta-lead">We are inviting a small group of founders and People leaders to test GrowWithHR with actual organization facts, challenge the findings and help us understand where the product creates real decision value.</p>
       <div class="ph-actions">
-        <a class="ph-primary" href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20Founding%20Beta%20Request&body=Hi%20HRTechify%2C%0A%0AI%27d%20like%20to%20test%20GrowWithHR.%0A%0ACompany%3A%0AApprox.%20employees%3A%0ARole%3A%0AThe%20organization%20or%20HR%20compliance%20question%20I%27m%20working%20through%3A%0A%0AThanks%2C">Request a beta invite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        <a class="ph-primary" href="#betaRequest">Request a beta invite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
         <a class="ph-secondary" href="sample-reports.html">Inspect sample reports <i class="fa-regular fa-file-lines" aria-hidden="true"></i></a>
       </div>
     </div>
@@ -96,16 +96,37 @@
     <div class="beta-boundary-links"><a href="terms.html">Terms</a><a href="security.html">Security &amp; Data</a><a href="more-info.html#privacy">Privacy</a><a href="official-resources.html">Sources &amp; Methodology</a></div>
   </section>
 
+  <section id="betaRequest" class="beta-section beta-request-section" aria-labelledby="betaRequestTitle">
+    <div class="beta-request-copy">
+      <p class="ph-kicker">Request access</p>
+      <h2 id="betaRequestTitle">Tell us what you want to test.</h2>
+      <p>Use a real company question. We only ask for enough information to understand whether the current beta is relevant.</p>
+      <p class="beta-request-note">Do not include confidential employee-level medical, payroll, disciplinary, performance or complaint information.</p>
+    </div>
+    <form id="betaRequestForm" class="beta-request-form" novalidate>
+      <div class="beta-field"><label for="betaName">Your name <span>Required</span></label><input id="betaName" name="name" autocomplete="name" required maxlength="120"></div>
+      <div class="beta-field"><label for="betaEmail">Work email <span>Required</span></label><input id="betaEmail" name="email" type="email" autocomplete="email" required maxlength="180"></div>
+      <div class="beta-field"><label for="betaCompany">Company <span>Required</span></label><input id="betaCompany" name="company" autocomplete="organization" required maxlength="160"></div>
+      <div class="beta-field"><label for="betaEmployees">Approx. employees <span>Optional</span></label><input id="betaEmployees" name="employees" type="number" min="1" max="1000000"></div>
+      <div class="beta-field"><label for="betaRole">Your role <span>Optional</span></label><select id="betaRole" name="role"><option value="">Select closest option</option><option>Founder / CEO</option><option>Business leader</option><option>CHRO / Head of HR</option><option>HR / People leader</option><option>Other</option></select></div>
+      <div class="beta-field beta-field--wide"><label for="betaQuestion">What company question do you want to test? <span>Required</span></label><textarea id="betaQuestion" name="question" rows="4" maxlength="1200" required placeholder="For example: We are growing from 120 to 180 people and I want to know whether our ownership and management structure will keep up."></textarea></div>
+      <div class="beta-honeypot" aria-hidden="true"><label for="betaWebsite">Website</label><input id="betaWebsite" name="website" tabindex="-1" autocomplete="off"></div>
+      <div class="beta-form-actions"><button id="betaSubmit" class="ph-primary" type="submit">Send beta request <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button><p id="betaStatus" role="status" aria-live="polite"></p></div>
+      <p class="beta-privacy">Your request is sent to HRTechify so we can respond about the Founding Beta. See <a href="more-info.html#privacy">Privacy</a> and <a href="security.html">Security &amp; Data</a>.</p>
+    </form>
+  </section>
+
   <section class="beta-final" aria-labelledby="betaFinalTitle">
     <div>
       <p class="ph-kicker">Founders &amp; People leaders</p>
       <h2 id="betaFinalTitle">Bring the company question you are actually working through.</h2>
       <p>Tell us your company size, your role and the organization or HR compliance-readiness question you want to test.</p>
     </div>
-    <a class="ph-primary" href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20Founding%20Beta%20Request&body=Hi%20HRTechify%2C%0A%0AI%27d%20like%20to%20test%20GrowWithHR.%0A%0ACompany%3A%0AApprox.%20employees%3A%0ARole%3A%0AThe%20organization%20or%20HR%20compliance%20question%20I%27m%20working%20through%3A%0A%0AThanks%2C">Request a beta invite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    <div class="beta-final-actions"><a class="ph-primary" href="#betaRequest">Request a beta invite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a><a class="beta-text-link" href="mailto:hrtechifyed@gmail.com?subject=GrowWithHR%20Founding%20Beta">Prefer email? Contact HRTechify</a></div>
   </section>
 </main>
 <footer class="footer"><div class="container"><div class="footer-content"><p>GrowWithHR by HRTechify</p><p><a href="more-info.html#about">About</a> · <a href="security.html">Security &amp; Data</a> · <a href="terms.html">Terms</a> · <a href="more-info.html#privacy">Privacy</a> · <a href="more-info.html#contact">Contact</a></p><p>© 2026 HRTechify. All rights reserved.</p></div></div></footer>
+<script src="js/beta-interest.js"></script>
 <script src="js/build-marker.js"></script>
 </body>
 </html>
