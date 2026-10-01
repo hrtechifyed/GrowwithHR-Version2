@@ -17,7 +17,7 @@ const BRAND = Object.freeze({
 
 const PAGE = Object.freeze({ width: 210, height: 297, left: 18, right: 18, top: 22, bottom: 20 });
 const CONTENT_W = PAGE.width - PAGE.left - PAGE.right;
-const LOGO_ASSET = "assets/hrtechify-logo.png";
+const LOGO_ASSET = "assets/hrtechify-logo.png"; // Canonical HRTechify site logo.
 let logoDataPromise = null;
 
 function cleanText(value, fallback = "") {
@@ -148,11 +148,14 @@ function paragraph(doc, state, text, options = {}, logoData = "") {
 
 function heading(doc, state, text, level = 2, pageTitle = "Organization Structure & Growth", logoData = "") {
     const size = level === 1 ? 20 : level === 2 ? 14 : 10.5;
-    ensureSpace(doc, state, 12, pageTitle, logoData);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(size); doc.setTextColor(...BRAND.navy);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(size);
     const lines = doc.splitTextToSize(cleanText(text), CONTENT_W);
+    const lineStep = level === 1 ? 8.6 : level === 2 ? 6.9 : 5.3;
+    const after = level === 1 ? 5 : level === 2 ? 4 : 3.4;
+    ensureSpace(doc, state, lines.length * lineStep + after + 2, pageTitle, logoData);
+    doc.setTextColor(...BRAND.navy);
     doc.text(lines, PAGE.left, state.y, { lineHeightFactor: 1.08 });
-    state.y += lines.length * (level === 1 ? 8 : level === 2 ? 6.5 : 5) + 2;
+    state.y += lines.length * lineStep + after;
 }
 
 function labelValue(doc, state, label, value, pageTitle, logoData = "") {
@@ -201,13 +204,21 @@ function statusOverview(doc, state, summary = {}, pageTitle, logoData = "") {
 
 function infoBox(doc, state, title, body, fill, pageTitle, logoData = "") {
     const innerW = CONTENT_W - 14;
-    doc.setFontSize(9); const bodyLines = doc.splitTextToSize(cleanText(body), innerW);
-    const h = 14 + bodyLines.length * 4.2 + 6;
-    ensureSpace(doc, state, h + 4, pageTitle, logoData);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6);
+    const titleLines = doc.splitTextToSize(cleanText(title), innerW);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6);
+    const bodyLines = doc.splitTextToSize(cleanText(body), innerW);
+    const titleHeight = Math.max(4.8, titleLines.length * 4.9);
+    const bodyHeight = Math.max(4.2, bodyLines.length * 4.2);
+    const h = 8 + titleHeight + 3 + bodyHeight + 7;
+    ensureSpace(doc, state, h + 5, pageTitle, logoData);
     doc.setFillColor(...fill); doc.setDrawColor(...BRAND.line); doc.roundedRect(PAGE.left, state.y - 4, CONTENT_W, h, 3, 3, "FD");
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6); doc.setTextColor(...BRAND.navy); doc.text(cleanText(title), PAGE.left + 7, state.y + 4, { maxWidth: innerW });
-    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6); doc.setTextColor(...BRAND.text); doc.text(bodyLines, PAGE.left + 7, state.y + 11, { lineHeightFactor: 1.14, maxWidth: innerW });
-    state.y += h + 3;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6); doc.setTextColor(...BRAND.navy);
+    doc.text(titleLines, PAGE.left + 7, state.y + 4, { lineHeightFactor: 1.08, maxWidth: innerW });
+    const bodyY = state.y + 4 + titleHeight + 3;
+    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6); doc.setTextColor(...BRAND.text);
+    doc.text(bodyLines, PAGE.left + 7, bodyY, { lineHeightFactor: 1.14, maxWidth: innerW });
+    state.y += h + 5;
 }
 
 function linkLine(doc, state, label, title, url, pageTitle, logoData = "") {
@@ -302,7 +313,9 @@ function scenarioSection(doc,state,payload,logoData){
 }
 
 function evidenceSection(doc,state,payload,logoData){
-    addPage(doc,state,"Framework & Evidence",logoData); heading(doc,state,"Framework & Evidence",1,"Framework & Evidence",logoData); const f=payload.framework||{};
+    addPage(doc,state,"Framework & Evidence",logoData);
+    heading(doc,state,"Framework & Evidence",1,"Framework & Evidence",logoData);
+    const f=payload.framework||{};
     labelValue(doc,state,"Framework",cleanText(f.name,"GrowWithHR Organization Structure Assessment Framework"),"Framework & Evidence",logoData); labelValue(doc,state,"Version",cleanText(f.version,"1.2"),"Framework & Evidence",logoData); labelValue(doc,state,"Access",cleanText(f.access,"Free public methodology"),"Framework & Evidence",logoData); labelValue(doc,state,"Last reviewed",cleanText(f.lastReviewed,"Not recorded"),"Framework & Evidence",logoData); paragraph(doc,state,f.statement,{color:BRAND.muted,pageTitle:"Framework & Evidence"},logoData);
     if(f.methodologyUrl)linkLine(doc,state,"Methodology","GrowWithHR Organization Structure methodology and source library",f.methodologyUrl,"Framework & Evidence",logoData);
     heading(doc,state,"Public source library used",2,"Framework & Evidence",logoData); (payload.reportModel.sources||[]).forEach((source)=>{paragraph(doc,state,source.title,{bold:true,pageTitle:"Framework & Evidence"},logoData);labelValue(doc,state,"Publisher",source.publisher,"Framework & Evidence",logoData);if(source.license)labelValue(doc,state,"Licence / rights",source.license,"Framework & Evidence",logoData);if(source.scopeNote)paragraph(doc,state,`Research scope: ${source.scopeNote}`,{size:8.0,color:BRAND.muted,pageTitle:"Framework & Evidence"},logoData);paragraph(doc,state,`Used for: ${source.supports}`,{size:8.2,color:BRAND.muted,pageTitle:"Framework & Evidence"},logoData);linkLine(doc,state,"Link",source.url,source.url,"Framework & Evidence",logoData);state.y+=2;});
