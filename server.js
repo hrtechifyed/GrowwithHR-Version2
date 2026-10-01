@@ -53,7 +53,7 @@ function encodeMimeHeader(value) {
 function safeFilename(value) {
     let filename = cleanText(
         value,
-        "GrowWithHR-Advisory.pdf"
+        "GrowWithHR-HR-Compliance-Readiness-Report.pdf"
     )
         .replace(/[^a-zA-Z0-9._-]/g, "-")
         .replace(/-+/g, "-")
@@ -231,26 +231,26 @@ function createCustomerEmail({
     const logoUrl =
         "https://growwithhr.onrender.com/assets/hrtechify-logo.png";
     const subject =
-        `Your GrowWithHR Executive Advisory for ${companyName}`;
+        `Your GrowWithHR HR Compliance Readiness Report for ${companyName}`;
 
     const text = [
         `Hello ${recipientName},`,
         "",
-        "Thank you for completing the GrowWithHR Executive Advisory assessment.",
+        "Thank you for completing the GrowWithHR HR Compliance Readiness review.",
         "",
-        `Your personalised advisory report for ${companyName} is attached to this email as a PDF.`,
+        `Your personalised HR Compliance Readiness report for ${companyName} is attached to this email as a PDF.`,
         "",
         "Inside your report, you will find:",
         "",
-        "• A summary of your organisation's current priorities",
-        "• Areas that may require leadership attention",
-        "• Practical recommendations and next steps",
+        "• A summary of the HR compliance-readiness areas evaluated",
+        "• Areas that may require review or additional information",
+        "• Source-backed context and practical next actions",
         "",
-        "We recommend reviewing the report with the relevant members of your leadership team and identifying the actions that are most important for your current stage of growth.",
+        "Review the report with the relevant business and People stakeholders, verify legal requirements where needed, and decide which review actions matter most now.",
         "",
-        "If you have questions or would like support turning the recommendations into a practical action plan, reply directly to this email.",
+        "If you have questions about the report or want to share feedback on the Founding Beta, reply directly to this email.",
         "",
-        "This advisory is provided for general strategic guidance. It does not replace legal, financial, compliance, or other professional advice.",
+        "This is a research-grade HR compliance-readiness report. It is not legal advice, legal certification or proof of compliance.",
         "",
         "Warm Wishes,",
         FOUNDER_NAME,
@@ -714,9 +714,9 @@ function createInternalEmail({
     };
 
     const subject =
-        `New GrowWithHR advisory lead: ${companyName}`;
+        `New GrowWithHR HR Compliance Readiness lead: ${companyName}`;
     const text = [
-        "A new GrowWithHR advisory assessment was completed.",
+        "A new GrowWithHR HR Compliance Readiness review was completed.",
         "",
         ...Object.entries(fields).map(
             ([key, value]) => `${key}: ${value}`
@@ -735,7 +735,7 @@ function createInternalEmail({
     const html = `<!doctype html>
 <html lang="en">
 <body style="margin:0;padding:24px;font-family:Arial,sans-serif;color:#1f2937">
-<h2>New GrowWithHR advisory assessment</h2>
+<h2>New GrowWithHR HR Compliance Readiness review</h2>
 <table cellspacing="0" cellpadding="0" border="1" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table>
 </body>
 </html>`;
@@ -803,6 +803,94 @@ const emailLimiter = rateLimit({
             "Too many email requests. Please try again later."
     }
 });
+
+app.post(
+    "/api/beta-interest",
+    emailLimiter,
+    async (request, response) => {
+        try {
+            const body = request.body || {};
+            const honeypot = cleanText(body.website);
+            if (honeypot) {
+                return response.json({ ok: true });
+            }
+
+            const name = cleanText(body.name).slice(0, 120);
+            const email = cleanText(body.email).toLowerCase().slice(0, 180);
+            const company = cleanText(body.company).slice(0, 160);
+            const employees = cleanText(body.employees).slice(0, 24);
+            const role = cleanText(body.role).slice(0, 120);
+            const question = cleanText(body.question).slice(0, 1200);
+
+            if (!name || !company || !question || !isValidEmail(email)) {
+                return response.status(400).json({
+                    error: "Name, company, a valid work email and the company question are required."
+                });
+            }
+
+            const missing = getMissingEnvironmentVariables();
+            if (missing.length) {
+                return response.status(503).json({
+                    error: "Beta request delivery is not configured."
+                });
+            }
+
+            const sender = cleanText(process.env.GMAIL_USER).toLowerCase();
+            const internalRecipient = cleanText(
+                process.env.INTERNAL_NOTIFICATION_EMAIL,
+                sender
+            ).toLowerCase();
+
+            if (!isValidEmail(sender) || !isValidEmail(internalRecipient)) {
+                return response.status(503).json({
+                    error: "Beta request delivery is not configured."
+                });
+            }
+
+            const fields = {
+                Name: name,
+                "Work email": email,
+                Company: company,
+                "Approx. employees": employees || "Not provided",
+                Role: role || "Not provided",
+                "Company question": question,
+                Source: "GrowWithHR Founding Beta page",
+                Submitted: new Date().toISOString()
+            };
+
+            const textBody = [
+                "New GrowWithHR Founding Beta request",
+                "",
+                ...Object.entries(fields).map(([key, value]) => `${key}: ${value}`)
+            ].join("\n");
+
+            const rows = Object.entries(fields)
+                .map(([key, value]) =>
+                    `<tr><th align="left" style="padding:8px;vertical-align:top">${escapeHtml(key)}</th><td style="padding:8px">${escapeHtml(value)}</td></tr>`
+                )
+                .join("");
+
+            await sendGmailApiMessage({
+                from: `"GrowWithHR" <${sender}>`,
+                to: internalRecipient,
+                replyTo: email,
+                subject: `GrowWithHR Founding Beta request — ${company}`,
+                text: textBody,
+                html: `<!doctype html><html lang="en"><body style="margin:0;padding:24px;font-family:Arial,sans-serif;color:#1f2937"><h2>New GrowWithHR Founding Beta request</h2><table cellspacing="0" cellpadding="0" border="1" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table></body></html>`
+            });
+
+            return response.json({ ok: true });
+        } catch (error) {
+            console.error(
+                "GrowWithHR Founding Beta request failed:",
+                error?.response?.data || error
+            );
+            return response.status(500).json({
+                error: "We could not send the beta request. Please try again or email HRTechify."
+            });
+        }
+    }
+);
 
 app.get("/api/health", (request, response) => {
     const missing =

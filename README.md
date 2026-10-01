@@ -4,7 +4,7 @@ GrowWithHR is an HR decision-support prototype from HRTechify. It converts struc
 
 > **Core authority principle:** rules decide. Governed sources substantiate. AI explains. For HR Compliance Readiness, the deterministic rule decides the product status/source scope first; RAG and the provider cannot create facts, choose applicable law, change the fixed result or certify compliance.
 
-## Current customer product — 1 September 2026
+## Current customer product — 1 October 2026
 
 The public GrowWithHR experience is deliberately concentrated on two decision products and one recurring layer rather than a long list of future HR modules:
 
@@ -14,10 +14,10 @@ The public GrowWithHR experience is deliberately concentrated on two decision pr
 
 Primary customer navigation is intentionally simple:
 
-**Analyze → Organization & Growth · HR Compliance Readiness · Model a Decision**  
+**Analyze → Organization & Growth · HR Compliance Readiness**  
 **Sources & Methodology · More**
 
-Company Analysis Overview, Change Intelligence, Workforce & Capability Planning, My Reports, samples, security and legal pages remain available as secondary destinations rather than competing with the three primary buyer actions.
+Founding Beta, Company Analysis Overview, Change Intelligence, Workforce & Capability Planning, My Reports, samples, security and legal pages remain available as secondary destinations rather than competing with the two primary buyer actions. Scenario Studio remains implemented but is intentionally hidden from the current public buyer experience.
 
 Complete fictional sample reports remain public so prospective users can inspect report format and depth.
 
@@ -47,7 +47,7 @@ Browser authentication uses only the Supabase publishable key. Privileged Supaba
 
 ## Current release candidate
 
-**Updated:** 1 September 2026  
+**Updated:** 1 October 2026  
 **Version line:** `v0.20.4-prototype.1`  
 **Release theme:** product hardening, Change Intelligence and authenticated complete-report delivery  
 **Release classification:** research-grade prototype / prerelease  

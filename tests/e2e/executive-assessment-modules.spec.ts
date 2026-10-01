@@ -484,7 +484,7 @@ test.describe(
                         "button",
                         {
                             name:
-                                "Start my advisory"
+                                "Start compliance review"
                         }
                     )
                     .click();
@@ -732,7 +732,7 @@ test.describe(
                         "button",
                         {
                             name:
-                                "Start my advisory"
+                                "Start compliance review"
                         }
                     )
                     .click();
@@ -798,7 +798,7 @@ test.describe(
                         "button",
                         {
                             name:
-                                "Start my advisory"
+                                "Start compliance review"
                         }
                     )
                     .click();

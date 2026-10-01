@@ -1,7 +1,7 @@
 {
   "name": "growitwithhr",
   "version": "0.20.4-prototype.1",
-  "description": "GrowItWithHR Compliance Monitoring Engine",
+  "description": "GrowWithHR organization and HR compliance decision-support beta",
   "main": "server.js",
   "engines": {
     "node": ">=20"
