@@ -1237,7 +1237,7 @@
         writer.addSectionPage();
         writer.sectionHeading(
             "Executive perspective",
-            "Coach HRTechify's Perspective",
+            "GrowWithHR Perspective",
             "People capability becomes a strategic business capability when growth introduces greater complexity, dependency and leadership risk."
         );
         model.perspective.forEach((text) => {
@@ -1379,9 +1379,9 @@
                 : "This document provides general business and people-management guidance based on information supplied by the user. It is not legal, tax, accounting, employment-law or regulatory advice. Requirements should be verified with qualified professionals and current official sources before action is taken."
         );
 
-        writer.subheading("About Coach HRTechify");
+        writer.subheading("About GrowWithHR");
         writer.paragraph(
-            "Coach HRTechify is designed to help founders, business leaders and People/HR leaders understand the organisational implications of growth and identify practical next steps."
+            "GrowWithHR is designed to help founders, business leaders and People/HR leaders review organization and HR compliance-readiness questions with visible reasoning and practical next actions."
         );
 
         writer.drawFooters();
@@ -1436,8 +1436,8 @@
         const filename = cleanText(
             payload.filename,
             documentOptions.isSample
-                ? "HRTechify-Sample-Executive-Advisory.pdf"
-                : `GrowWithHR-Advisory-${escapeFilename(model.companyName)}.pdf`
+                ? "GrowWithHR-Sample-HR-Compliance-Readiness.pdf"
+                : `GrowWithHR-HR-Compliance-Readiness-${escapeFilename(model.companyName)}.pdf`
         );
 
         const dataUri = doc.output("datauristring");
