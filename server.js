@@ -804,6 +804,94 @@ const emailLimiter = rateLimit({
     }
 });
 
+app.post(
+    "/api/beta-interest",
+    emailLimiter,
+    async (request, response) => {
+        try {
+            const body = request.body || {};
+            const honeypot = cleanText(body.website);
+            if (honeypot) {
+                return response.json({ ok: true });
+            }
+
+            const name = cleanText(body.name).slice(0, 120);
+            const email = cleanText(body.email).toLowerCase().slice(0, 180);
+            const company = cleanText(body.company).slice(0, 160);
+            const employees = cleanText(body.employees).slice(0, 24);
+            const role = cleanText(body.role).slice(0, 120);
+            const question = cleanText(body.question).slice(0, 1200);
+
+            if (!name || !company || !question || !isValidEmail(email)) {
+                return response.status(400).json({
+                    error: "Name, company, a valid work email and the company question are required."
+                });
+            }
+
+            const missing = getMissingEnvironmentVariables();
+            if (missing.length) {
+                return response.status(503).json({
+                    error: "Beta request delivery is not configured."
+                });
+            }
+
+            const sender = cleanText(process.env.GMAIL_USER).toLowerCase();
+            const internalRecipient = cleanText(
+                process.env.INTERNAL_NOTIFICATION_EMAIL,
+                sender
+            ).toLowerCase();
+
+            if (!isValidEmail(sender) || !isValidEmail(internalRecipient)) {
+                return response.status(503).json({
+                    error: "Beta request delivery is not configured."
+                });
+            }
+
+            const fields = {
+                Name: name,
+                "Work email": email,
+                Company: company,
+                "Approx. employees": employees || "Not provided",
+                Role: role || "Not provided",
+                "Company question": question,
+                Source: "GrowWithHR Founding Beta page",
+                Submitted: new Date().toISOString()
+            };
+
+            const textBody = [
+                "New GrowWithHR Founding Beta request",
+                "",
+                ...Object.entries(fields).map(([key, value]) => `${key}: ${value}`)
+            ].join("\n");
+
+            const rows = Object.entries(fields)
+                .map(([key, value]) =>
+                    `<tr><th align="left" style="padding:8px;vertical-align:top">${escapeHtml(key)}</th><td style="padding:8px">${escapeHtml(value)}</td></tr>`
+                )
+                .join("");
+
+            await sendGmailApiMessage({
+                from: `"GrowWithHR" <${sender}>`,
+                to: internalRecipient,
+                replyTo: email,
+                subject: `GrowWithHR Founding Beta request — ${company}`,
+                text: textBody,
+                html: `<!doctype html><html lang="en"><body style="margin:0;padding:24px;font-family:Arial,sans-serif;color:#1f2937"><h2>New GrowWithHR Founding Beta request</h2><table cellspacing="0" cellpadding="0" border="1" style="border-collapse:collapse;border-color:#d1d5db">${rows}</table></body></html>`
+            });
+
+            return response.json({ ok: true });
+        } catch (error) {
+            console.error(
+                "GrowWithHR Founding Beta request failed:",
+                error?.response?.data || error
+            );
+            return response.status(500).json({
+                error: "We could not send the beta request. Please try again or email HRTechify."
+            });
+        }
+    }
+);
+
 app.get("/api/health", (request, response) => {
     const missing =
         getMissingEnvironmentVariables();
