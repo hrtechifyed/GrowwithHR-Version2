@@ -1121,7 +1121,7 @@
                 setFont("normal", 7.3);
                 setTextColor(BRAND.muted);
                 doc.text(
-                    "(c) 2026 HRTechify. All Rights Reserved.",
+                    "© 2026 HRTechify. All rights reserved.",
                     PAGE.marginLeft,
                     y + 4.4
                 );
