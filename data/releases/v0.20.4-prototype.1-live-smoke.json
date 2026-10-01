@@ -1,7 +1,7 @@
 {
   "releaseVersion": "0.20.4-prototype.1",
-  "checkedAt": "2026-10-01T04:59:50Z",
-  "sourceCommitSha": "ffecf741a7932ede409b6000380b6c3f29637cf9",
+  "checkedAt": "2026-10-01T06:27:14Z",
+  "sourceCommitSha": "ec398e46d126e0ae6df9834e868fd701482271c6",
   "status": "passed",
   "checks": {
     "githubPagesHomepage": {
@@ -45,9 +45,9 @@
       "storageBackend": "cloudflare-durable-object",
       "durableStorageConfigured": true,
       "sequencePolicy": "global-non-resetting-symmetric-alpha-numeric",
-      "issuedCount": 3,
-      "lastReportId": "GWHR-2026-0904-AA03",
-      "lastSuffix": "AA03"
+      "issuedCount": 4,
+      "lastReportId": "GWHR-2026-1001-AA04",
+      "lastSuffix": "AA04"
     },
     "legalRagStatus": {
       "url": "https://growwithhr.onrender.com/api/legal-rag/status",
