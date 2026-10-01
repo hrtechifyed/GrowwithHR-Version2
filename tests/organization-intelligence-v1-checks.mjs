@@ -179,7 +179,7 @@ assert.match(page, /analyzeOrganizationStructure/);
 assert.match(page, /I don’t know/);
 assert.match(page, /factRegistry/);
 assert.match(page, /does not score people/i);
-assert.match(page, /Source transparency/i);
+assert.match(page, /How findings are supported/i);
 assert.match(page, /organization-structure-methodology\.html/);
 assert.doesNotMatch(page, /Organization Score/i);
 

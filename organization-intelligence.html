@@ -11,15 +11,37 @@
 </head>
 <body class="org-structure-page" data-active-nav="analyze">
 <main class="org-shell">
-  <div class="org-kicker">GrowWithHR · Organization Structure &amp; Growth Engine</div>
-  <h1 class="org-title">Analyze My <span>Organization Structure &amp; Growth</span></h1>
-  <p class="org-lead">See whether your current management capacity, reporting lines, ownership and operating cadence fit the company today — and what may create friction as you grow.</p>
+  <section class="analysis-product-hero analysis-product-hero--org" aria-labelledby="orgPageTitle">
+    <div class="analysis-product-hero__copy">
+      <div class="org-kicker">GrowWithHR · Organization Structure &amp; Growth</div>
+      <h1 id="orgPageTitle" class="org-title">See where your <span>organization could constrain growth.</span></h1>
+      <p class="org-lead">Use the facts you know today. GrowWithHR turns them into a structured view of ownership, management capacity, bottlenecks and growth readiness.</p>
+      <div class="analysis-product-hero__actions">
+        <a class="org-primary" href="#organizationForm">Start analysis</a>
+        <a class="org-secondary" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View sample report</a>
+      </div>
+    </div>
+    <div class="analysis-output-grid" aria-label="What the report covers">
+      <article class="analysis-output-card"><span>01</span><strong>Structural bottlenecks</strong><small>Where pressure or friction is showing up.</small></article>
+      <article class="analysis-output-card"><span>02</span><strong>Functional ownership</strong><small>Where accountability is clear, shared or missing.</small></article>
+      <article class="analysis-output-card"><span>03</span><strong>Management capacity</strong><small>How work context changes the structural picture.</small></article>
+      <article class="analysis-output-card"><span>04</span><strong>Growth readiness</strong><small>What may need attention as the company changes.</small></article>
+    </div>
+  </section>
 
-  <div id="reuseNotice" class="org-banner">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR analyses during the workspace period.</div>
-  <div class="org-boundary"><strong>What this does:</strong> The Organization Structure &amp; Growth Engine evaluates structural facts and operating patterns. It does not score people, assess individual capability, recommend dismissals, determine compensation, or decide legal applicability. “I don’t know” is a valid answer.</div>
-  <div class="org-evidence-note"><strong>Source transparency:</strong> every finding in your report shows the public source supporting the organization-design principle and the separate GrowWithHR rule that interpreted your facts. Management-capacity questions use contextual factors reflected in free OpenStax material rather than claiming one universal span-of-control benchmark. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">See methodology & sources ↗</a></div>
+  <div id="reuseNotice" class="org-banner org-banner--compact">Starting fresh. Shared company facts entered here can be reused by other GrowWithHR analyses during the workspace period.</div>
+  <div class="analysis-trust-row">
+    <details class="analysis-trust-card">
+      <summary>What this analysis does</summary>
+      <p>The Organization Structure &amp; Growth Engine evaluates structural facts and operating patterns. It does not score people, assess individual capability, recommend dismissals, determine compensation, or decide legal applicability. “I don’t know” is a valid answer.</p>
+    </details>
+    <details class="analysis-trust-card">
+      <summary>How findings are supported</summary>
+      <p>Every finding shows the public source supporting the organization-design principle and the separate GrowWithHR rule that interpreted your facts. Management-capacity questions use contextual factors rather than claiming one universal span-of-control benchmark. <a class="org-link" href="organization-structure-methodology.html" target="_blank" rel="noopener">See methodology &amp; sources ↗</a></p>
+    </details>
+  </div>
 
-  <form id="organizationForm" class="org-form-card">
+  <form id="organizationForm" class="org-form-card org-form-card--guided">
     <h2>Tell us how your company is organized today</h2>
     <p class="org-subtle"><strong>Start with five basics.</strong> Company name, work email, industry, employee count and operating locations are required. Everything else is optional — answer what you know. Missing information is shown rather than guessed.</p>
     <div class="org-grid">
@@ -190,6 +212,66 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
     })).filter(item=>item.name);
   }
 
+  function enhanceOrganizationExperience(){
+    const grid=document.querySelector("#organizationForm .org-grid");
+    if(!grid||grid.dataset.enhanced==="true")return;
+    grid.dataset.enhanced="true";
+    const titles=[...grid.querySelectorAll(":scope > .org-section-title")];
+    const sectionMeta=[
+      {key:"company",label:"Company context",hint:"The five basics that anchor the analysis.",open:true},
+      {key:"structure",label:"Organization structure",hint:"Managers, layers, locations, functions and ownership.",open:true},
+      {key:"capacity",label:"Management capacity",hint:"Optional context that makes the structural reading more useful.",open:false},
+      {key:"operating",label:"Ownership & operating model",hint:"Optional signals on decision flow and coordination.",open:false}
+    ];
+    const rail=document.createElement("aside");
+    rail.className="org-assessment-rail";
+    rail.setAttribute("aria-label","Organization analysis sections");
+    const railIntro=document.createElement("div");
+    railIntro.className="org-assessment-rail__intro";
+    railIntro.innerHTML="<span>YOUR ANALYSIS</span><strong>Build the picture in four parts</strong><small>Only the five basics are required. Open the deeper sections when you have the information.</small>";
+    rail.appendChild(railIntro);
+    const nav=document.createElement("nav");
+    nav.className="org-assessment-rail__nav";
+    rail.appendChild(nav);
+
+    titles.forEach((title,index)=>{
+      const meta=sectionMeta[index]||{key:"section-"+index,label:title.textContent.trim(),hint:"",open:false};
+      const details=document.createElement("details");
+      details.className="org-question-section";
+      details.dataset.sectionKey=meta.key;
+      if(meta.open)details.open=true;
+      const summary=document.createElement("summary");
+      summary.className="org-question-section__summary";
+      summary.innerHTML=`<span class="org-question-section__number">0${index+1}</span><span class="org-question-section__heading"><strong>${meta.label}</strong><small>${meta.hint}</small></span><span class="org-question-section__chevron" aria-hidden="true">⌄</span>`;
+      const body=document.createElement("div");
+      body.className="org-question-section__body";
+      let node=title.nextSibling;
+      while(node&&!(node.nodeType===1&&node.classList?.contains("org-section-title"))){
+        const next=node.nextSibling;
+        body.appendChild(node);
+        node=next;
+      }
+      title.replaceWith(details);
+      details.append(summary,body);
+
+      const button=document.createElement("button");
+      button.type="button";
+      button.className="org-assessment-rail__item";
+      button.innerHTML=`<span>0${index+1}</span><strong>${meta.label}</strong>`;
+      button.addEventListener("click",()=>{
+        details.open=true;
+        details.scrollIntoView({behavior:"smooth",block:"start"});
+      });
+      nav.appendChild(button);
+    });
+
+    const form=document.getElementById("organizationForm");
+    const layout=document.createElement("div");
+    layout.className="org-assessment-layout";
+    form.parentNode.insertBefore(layout,form);
+    layout.append(rail,form);
+  }
+
   async function setupIndustrySuggestions(){
     const input=document.getElementById("industry");
     const datalist=document.getElementById("orgIndustryOptions");
@@ -253,6 +335,7 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
 
   await redeemWorkspaceHandoff();
   prefillRecoveredWorkspace();
+  enhanceOrganizationExperience();
   renderFunctionOwnershipRows();
   document.getElementById("departments")?.addEventListener("input",renderFunctionOwnershipRows);
   await setupIndustrySuggestions();

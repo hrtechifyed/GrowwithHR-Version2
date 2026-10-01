@@ -1086,8 +1086,12 @@ resolveReportUrl() {
                 resumeMessage.textContent =
                     "Your progress is saved.";
 
+                const resumeLabel =
+                    document.body?.classList?.contains("compliance-intelligence-page")
+                        ? "Continue compliance review"
+                        : "Continue my advisory";
                 resumeButton.innerHTML =
-                    "Continue my advisory " +
+                    resumeLabel + " " +
                     '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
             }
         }

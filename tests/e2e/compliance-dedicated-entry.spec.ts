@@ -58,10 +58,10 @@ test.describe("Dedicated Compliance entry", () => {
     await expect(page.getByRole("link", { name: "HR Compliance Readiness", exact: true })).toHaveAttribute("href", "compliance-intelligence.html");
     await expect(page.locator("#firstVisitActions")).toBeVisible();
     await expect(page.locator("#resumePanel")).toBeHidden();
-    await expect(page.getByRole("button", { name: "Start my advisory" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "View a sample advisory" })).toHaveAttribute("href", "sample-advisory-report.html");
+    await expect(page.getByRole("button", { name: "Start compliance review" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "View sample report" })).toHaveAttribute("href", "sample-advisory-report.html");
 
-    await page.getByRole("button", { name: "Start my advisory" }).click();
+    await page.getByRole("button", { name: "Start compliance review" }).click();
     await expect(page.locator("#landingScreen")).toBeHidden();
     await expect(page.locator("#conversationWorkspace")).toBeVisible();
     await expect(page.locator("#storyForm")).toBeVisible();
@@ -75,7 +75,7 @@ test.describe("Dedicated Compliance entry", () => {
     await expect(page.locator("#firstVisitActions")).toBeHidden();
     await expect(page.locator("#resumePanel")).toBeVisible();
     await expect(page.locator("#resumeMessage")).toHaveText("Your progress is saved.");
-    await expect(page.getByRole("button", { name: /Continue my advisory/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Continue compliance review/ })).toBeVisible();
   });
 
   test("legacy Compliance URL remains functional during migration", async ({ page }) => {

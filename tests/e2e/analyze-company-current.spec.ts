@@ -40,7 +40,8 @@ test.describe("Company Analysis entry", () => {
 
     await page.getByRole("button", { name: /Analyze/i }).click();
     await expect(page.getByRole("link", { name: "HR Compliance Readiness", exact: true })).toHaveAttribute("href", "compliance-intelligence.html");
-    await expect(page.getByRole("link", { name: "Model a Decision", exact: true })).toHaveAttribute("href", "decision-scenario-studio.html");
+    await expect(page.getByRole("link", { name: "Organization & Growth", exact: true })).toHaveAttribute("href", "organization-intelligence.html");
+    await expect(page.getByRole("link", { name: "Model a Decision", exact: true })).toHaveCount(0);
   });
 });
 

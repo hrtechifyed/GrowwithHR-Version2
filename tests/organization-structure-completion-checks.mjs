@@ -331,7 +331,7 @@ assert.match(homepage, /Organization Structure &amp; Growth · Flagship/);
 assert.match(homepage, /Where could our organization constrain growth\?/);
 assert.match(homepage, /No arbitrary scores/i);
 assert.match(homepage, /data-testid="home-report-preview"/);
-assert.match(homepage, /Decision Scenario Studio/);
+assert.doesNotMatch(homepage, /Decision Scenario Studio|Model a Decision|decision-scenario-studio\.html/);
 assert.doesNotMatch(homepage, /Organization Structure \(Available\)/);
 assert.doesNotMatch(homepage, />Analyze My Company</);
 assert.doesNotMatch(homepage, />View Sample Advisory</);

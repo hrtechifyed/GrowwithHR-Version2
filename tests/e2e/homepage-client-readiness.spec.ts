@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("homepage client readiness", () => {
-  test("desktop shows the three current product capabilities", async ({ page }) => {
+  test("desktop shows the two public product capabilities", async ({ page }) => {
     const problems: string[] = [];
     page.on("console", message => {
       if (["error", "warning"].includes(message.type())) problems.push(`${message.type()}: ${message.text()}`);
@@ -10,9 +10,9 @@ test.describe("homepage client readiness", () => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/index.html", { waitUntil: "networkidle" });
 
-    await expect(page.getByRole("link", { name: /Model a Decision/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Model a Decision/i })).toHaveCount(0);
     const cards = page.locator("#capabilities .ph-product-card");
-    await expect(cards).toHaveCount(3);
+    await expect(cards).toHaveCount(2);
     await expect(cards.getByRole("link", { name: /Review Compliance Readiness/i })).toBeVisible();
     await expect(cards.getByRole("link", { name: /Analyze Organization & Growth/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /Open My Reports/i })).toHaveCount(0);
@@ -23,7 +23,7 @@ test.describe("homepage client readiness", () => {
   test("mobile capabilities remain usable without horizontal page overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/index.html", { waitUntil: "networkidle" });
-    await expect(page.locator("#capabilities .ph-product-card")).toHaveCount(3);
+    await expect(page.locator("#capabilities .ph-product-card")).toHaveCount(2);
 
     const overflow = await page.evaluate(() => (
       document.documentElement.scrollWidth - document.documentElement.clientWidth

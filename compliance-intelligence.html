@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Executive Advisory Briefing | HRTechify</title>
+    <title>HR Compliance Readiness | GrowWithHR by HRTechify</title>
     
     <meta
         name="description"
-        content="Complete the HRTechify Executive Advisory Briefing and receive personalised guidance based on your business, workforce and growth plans.">
+        content="Review HR compliance readiness with guided company questions, visible information gaps, governed source context and growth triggers.">
 
     <!-- Shared design system -->
     <link rel="stylesheet" href="css/01-variables.css">
@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/18-site-shell.css">
     <link rel="stylesheet" href="css/29-report-access.css">
     <link rel="stylesheet" href="css/31-approved-template.css">
+    <link rel="stylesheet" href="css/37-analysis-experience.css?v=20261001-guided-analysis">
     <link rel="stylesheet" href="css/32-assessment-interaction-fix.css">
 
     <link
@@ -33,11 +34,11 @@
 </head>
 
 <body
-    class="analyze-company-page"
+    class="analyze-company-page compliance-intelligence-page"
     data-active-nav="analyze">
     
     <a class="advisory-skip-link" href="#mainContent">
-        Skip to advisory briefing
+        Skip to compliance review
     </a>
     
     <main id="mainContent" class="advisory-main">
@@ -55,11 +56,19 @@
     class="advisory-entry"
     aria-labelledby="entryTitle">
 
-    <h1
-        id="entryTitle"
-        class="advisory-visually-hidden">
-        HRTechify Executive Advisory Briefing
-    </h1>
+    <header class="analysis-product-hero analysis-product-hero--compliance">
+        <div class="analysis-product-hero__copy">
+            <div class="analysis-product-kicker">GrowWithHR · HR Compliance Readiness</div>
+            <h1 id="entryTitle">See what needs attention <span>before it becomes a compliance problem.</span></h1>
+            <p>Answer a guided set of company questions. GrowWithHR shows which areas may need review, what information is missing, and the source and rule behind each finding.</p>
+        </div>
+        <div class="analysis-output-grid" aria-label="What the compliance report covers">
+            <article class="analysis-output-card"><span>01</span><strong>Areas to review</strong><small>See which compliance topics may require attention.</small></article>
+            <article class="analysis-output-card"><span>02</span><strong>Missing information</strong><small>Unknown facts stay visible instead of being guessed.</small></article>
+            <article class="analysis-output-card"><span>03</span><strong>Source &amp; rule basis</strong><small>Trace why each finding appears.</small></article>
+            <article class="analysis-output-card"><span>04</span><strong>Growth triggers</strong><small>See what changes may require reassessment.</small></article>
+        </div>
+    </header>
 
     <!-- ==================================================
          COMPACT HERO AND ACTIONS
@@ -77,11 +86,10 @@
             </span>
 
             <div class="advisory-entry__reassurance-copy">
-                <strong>Built for decision-makers</strong>
+                <strong>A guided compliance review</strong>
 
                 <small>
-                    For founders, business leaders and People leads.
-                    Approximate figures are fine.
+                    For founders, business leaders and People leads. Answer what you know; missing facts remain visible.
                 </small>
             </div>
         </div>
@@ -99,7 +107,7 @@
                     type="button"
                     data-testid="begin-executive-assessment">
 
-                    Start my advisory
+                    Start compliance review
 
                     <i
                         class="fa-solid fa-arrow-right"
@@ -110,7 +118,7 @@
                     class="advisory-secondary-button advisory-secondary-button--large"
                     href="sample-advisory-report.html">
 
-                    View a sample advisory
+                    View sample report report
 
                     <i
                         class="fa-solid fa-arrow-up-right-from-square"
@@ -146,7 +154,7 @@
                         class="advisory-primary-button advisory-primary-button--large"
                         type="button">
 
-                        Continue my advisory
+                        Continue compliance review
 
                         <i
                             class="fa-solid fa-arrow-right"
@@ -190,7 +198,7 @@
                     class="fa-solid fa-sparkles"
                     aria-hidden="true"></i>
 
-                A guided executive briefing
+                What the review gives you
             </div>
 
             <h2
@@ -201,58 +209,26 @@
 
             <ul
                 class="advisory-feature-grid"
-                aria-label="Advisory briefing details">
+                aria-label="What your compliance review will show">
 
                 <li class="advisory-feature-card">
-                    <span
-                        class="advisory-feature-card__icon"
-                        aria-hidden="true">
-                        <i class="fa-regular fa-clock"></i>
-                    </span>
-
-                    <span class="advisory-feature-card__copy">
-                        <strong>5–7 minutes</strong>
-                        <small>Focused and practical</small>
-                    </span>
+                    <span class="advisory-feature-card__icon" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    <span class="advisory-feature-card__copy"><strong>Review areas</strong><small>Topics requiring attention</small></span>
                 </li>
 
                 <li class="advisory-feature-card">
-                    <span
-                        class="advisory-feature-card__icon"
-                        aria-hidden="true">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </span>
-
-                    <span class="advisory-feature-card__copy">
-                        <strong>Four chapters</strong>
-                        <small>Business to growth</small>
-                    </span>
+                    <span class="advisory-feature-card__icon" aria-hidden="true"><i class="fa-solid fa-circle-question"></i></span>
+                    <span class="advisory-feature-card__copy"><strong>Information gaps</strong><small>What is still unknown</small></span>
                 </li>
 
                 <li class="advisory-feature-card">
-                    <span
-                        class="advisory-feature-card__icon"
-                        aria-hidden="true">
-                        <i class="fa-regular fa-pen-to-square"></i>
-                    </span>
-
-                    <span class="advisory-feature-card__copy">
-                        <strong>Review first</strong>
-                        <small>Check before generating</small>
-                    </span>
+                    <span class="advisory-feature-card__icon" aria-hidden="true"><i class="fa-solid fa-link"></i></span>
+                    <span class="advisory-feature-card__copy"><strong>Evidence trail</strong><small>Source and rule context</small></span>
                 </li>
 
                 <li class="advisory-feature-card">
-                    <span
-                        class="advisory-feature-card__icon"
-                        aria-hidden="true">
-                        <i class="fa-regular fa-envelope"></i>
-                    </span>
-
-                    <span class="advisory-feature-card__copy">
-                        <strong>Work email required</strong>
-                        <small>Used for delivery</small>
-                    </span>
+                    <span class="advisory-feature-card__icon" aria-hidden="true"><i class="fa-solid fa-arrow-trend-up"></i></span>
+                    <span class="advisory-feature-card__copy"><strong>Growth triggers</strong><small>When to reassess</small></span>
                 </li>
             </ul>
         </section>
@@ -267,7 +243,7 @@
                 role="list">
 
                 <span class="advisory-story-preview__label">
-                    Your organisation story
+                    Your company context
                 </span>
 
                 <div
@@ -353,7 +329,7 @@
 
                 <aside class="advisory-chapter-rail" aria-label="Advisory chapters">
                     <div class="advisory-chapter-rail__heading">
-                        <span>Your advisory journey</span>
+                        <span>Your compliance review</span>
                         <strong id="desktopTimeRemaining">About 5 minutes remaining</strong>
                     </div>
 
@@ -424,7 +400,7 @@
                             id="progressTrack"
                             class="advisory-progress-track"
                             role="progressbar"
-                            aria-label="Advisory briefing progress"
+                            aria-label="Compliance review progress"
                             aria-valuemin="0"
                             aria-valuemax="7"
                             aria-valuenow="1">
@@ -486,8 +462,8 @@
                 hidden>
                 <article class="advisory-review-card">
                     <div class="advisory-panel-heading">
-                        <span class="advisory-panel-eyebrow">Your organisation story</span>
-                        <h2 id="reviewTitle">Here’s the story we heard.</h2>
+                        <span class="advisory-panel-eyebrow">Your company context</span>
+                        <h2 id="reviewTitle">Review the company context you provided.</h2>
                         <p>
                             Scan the summary, edit anything that has changed, and then we’ll use
                             this context to prepare your advisory.
@@ -760,7 +736,7 @@
 
                     <div class="advisory-panel-heading">
                         <span class="advisory-panel-eyebrow">Briefing complete</span>
-                        <h2 id="successTitle">Your advisory is ready.</h2>
+                        <h2 id="successTitle">Your compliance report is ready.</h2>
                         <p>
                             Built around your organisation’s current stage—not a generic score or checklist.
                         </p>
@@ -777,7 +753,7 @@
 
                     <div class="advisory-success-actions">
                         <button id="viewReportButton" class="advisory-primary-button" type="button">
-                            Open my advisory
+                            Open my report
                             <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                         </button>
 

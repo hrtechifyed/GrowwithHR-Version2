@@ -53,7 +53,8 @@ for (const file of pages) {
   assert.equal(nav.find('a.site-brand-logo').length, 0, 'The logo must stay outside the navigation capsule.');
   const items = [home, nav.find('.site-nav-analyze__toggle'), nav.find('a[data-nav-key="resources"]'), nav.find('.site-nav-more__toggle')];
   assert.ok(items.every(item => item.length === 1), `${route}: all canonical navigation items must remain available`);
-  assert.equal(nav.find('#siteAnalyzeMenu a').length, 3, `${route}: Analyze must stay focused on the three primary buyer actions`);
+  assert.equal(nav.find('#siteAnalyzeMenu a').length, 2, `${route}: Analyze must expose only Organization & Growth and HR Compliance Readiness`);
+  assert.equal(nav.find('#siteAnalyzeMenu').text().includes('Model a Decision'), false, `${route}: Scenario Studio must stay hidden from public navigation`);
   const signature = nav.find('#siteNavLinks').text().replace(/\s+/g, ' ').trim();
   if (baseline === null) baseline = signature;
   assert.equal(signature, baseline, `${route}: navigation content must match the homepage`);

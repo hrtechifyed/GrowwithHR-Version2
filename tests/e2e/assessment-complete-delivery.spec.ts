@@ -95,7 +95,7 @@ test.describe("Complete assessment and advisory delivery", () => {
     await page.getByRole("button", { name: /Analyze/i }).click();
     await page.getByRole("link", { name: "HR Compliance Readiness", exact: true }).click();
     await expect(page).toHaveURL(/\/compliance-intelligence\.html$/);
-    await page.getByRole("button", { name: "Start my advisory" }).click();
+    await page.getByRole("button", { name: "Start compliance review" }).click();
 
     await page.locator("#companyName").fill("End-to-End Test Company");
     await page.locator("#industry").fill("People analytics platform");
