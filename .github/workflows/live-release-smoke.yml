@@ -79,6 +79,16 @@ jobs:
           grep -Fq 'id="orgReportRoot"' <<<"$body"
           grep -Fq 'js/organization-structure-report.mjs' <<<"$body"
 
+      - name: Validate GitHub Pages Founding Beta route
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="${PAGES_BASE_URL}/founding-beta.html"
+          body="$(curl -fsSL --connect-timeout 15 --max-time 45 "$url")"
+          grep -Fq "GrowWithHR · Founding Beta" <<<"$body"
+          grep -Fq 'id="betaRequestForm"' <<<"$body"
+          grep -Fq 'js/beta-interest.js' <<<"$body"
+
       - name: Wait for Render release
         shell: bash
         run: |
@@ -130,6 +140,16 @@ jobs:
           grep -Fq "Organization Structure &amp; Growth Report | GrowWithHR" <<<"$body"
           grep -Fq 'id="orgReportRoot"' <<<"$body"
           grep -Fq 'js/organization-structure-report.mjs' <<<"$body"
+
+      - name: Validate Render Founding Beta route
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://growwithhr.onrender.com/founding-beta.html"
+          body="$(curl -fsSL --connect-timeout 20 --max-time 60 "$url")"
+          grep -Fq "GrowWithHR · Founding Beta" <<<"$body"
+          grep -Fq 'id="betaRequestForm"' <<<"$body"
+          grep -Fq 'js/beta-interest.js' <<<"$body"
 
       - name: Validate live Gmail API connectivity
         shell: bash
@@ -217,6 +237,11 @@ jobs:
                 "routeVisible": true,
                 "reportRuntimeVisible": true
               },
+              "githubPagesFoundingBeta": {
+                "url": "${PAGES_BASE_URL}/founding-beta.html",
+                "routeVisible": true,
+                "requestFormVisible": true
+              },
               "renderHomepage": {
                 "url": "https://growwithhr.onrender.com/index.html",
                 "versionVisible": true
@@ -230,6 +255,11 @@ jobs:
                 "url": "https://growwithhr.onrender.com/organization-structure-report.html?sample=1",
                 "routeVisible": true,
                 "reportRuntimeVisible": true
+              },
+              "renderFoundingBeta": {
+                "url": "https://growwithhr.onrender.com/founding-beta.html",
+                "routeVisible": true,
+                "requestFormVisible": true
               },
               "emailDelivery": {
                 "url": "https://growwithhr.onrender.com/api/email-status",
