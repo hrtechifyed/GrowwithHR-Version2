@@ -12,8 +12,7 @@
 
     const ANALYZE_ITEMS = Object.freeze([
         { key: "organization", label: "Organization & Growth", href: "organization-intelligence.html" },
-        { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" },
-        { key: "scenario-studio", label: "Model a Decision", href: "decision-scenario-studio.html" }
+        { key: "compliance", label: "HR Compliance Readiness", href: "compliance-intelligence.html" }
     ]);
 
     const NAV_ITEMS = Object.freeze([
