@@ -37,12 +37,12 @@ assert.match(html, /does not forecast business outcomes/i);
 assert.match(html, /not external benchmarks or forecasts/i);
 
 const shell = fs.readFileSync(path.resolve("js/site-shell.js"), "utf8");
-assert.match(shell, /Model a Decision/);
-assert.match(shell, /decision-scenario-studio\.html/);
+assert.doesNotMatch(shell, /label: "Model a Decision"/);
+assert.doesNotMatch(shell, /key: "scenario-studio"/);
 
 const hub = fs.readFileSync(path.resolve("intelligence-hub.html"), "utf8");
-assert.match(hub, /Open Scenario Studio/);
-assert.match(hub, /transparent, editable starting assumptions/i);
+assert.doesNotMatch(hub, /Open Scenario Studio/);
+assert.doesNotMatch(hub, /DECISION SCENARIO STUDIO/);
 
 console.log("Decision Scenario Studio checks passed.");
 const runtime = fs.readFileSync(path.resolve("js/decision-scenario-studio.js"), "utf8");
