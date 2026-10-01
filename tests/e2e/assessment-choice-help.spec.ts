@@ -30,6 +30,7 @@ test('organization help preserves unknown values and supports keyboard dismissal
   await page.goto('/organization-intelligence.html');
   const select = page.locator('#decisionRights');
   await expect(select).toHaveValue('dont-know');
+  await page.getByRole('button', { name: /Ownership & operating model/i }).click();
   await page.getByRole('button', { name: /Explain How clear is ownership of recurring decisions/i }).click();
   await expect(page.getByRole('dialog')).toContainText('founder/CEO intervention');
   await page.keyboard.press('Escape');
