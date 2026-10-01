@@ -57,7 +57,7 @@ test.describe("Analyze My Company", () => {
     await expect(page.locator("[data-site-shell-header]")).toHaveCount(1);
     await expect(page.locator("#firstVisitActions")).toBeVisible();
     await expect(page.locator("#resumePanel")).toBeHidden();
-    await expect(page.getByRole("button", { name: "Start my advisory" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Start compliance review" })).toBeVisible();
     await expect(page.getByRole("link", { name: "View a sample advisory" })).toBeVisible();
   });
 
@@ -68,7 +68,7 @@ test.describe("Analyze My Company", () => {
     await expect(page.locator("#firstVisitActions")).toBeHidden();
     await expect(page.locator("#resumePanel")).toBeVisible();
     await expect(page.locator("#resumeMessage")).toHaveText("Your progress is saved.");
-    await expect(page.getByRole("button", { name: /Continue my advisory/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Continue compliance review/ })).toBeVisible();
   });
 
   test("uses equal-width desktop panels", async ({ page }) => {
@@ -85,7 +85,7 @@ test.describe("Analyze My Company", () => {
   test("requires only name and email at contact capture", async ({ page }) => {
     await seedSavedBriefing(page, 6);
     await page.goto("/analyze-company.html");
-    await page.getByRole("button", { name: /Continue my advisory/ }).click();
+    await page.getByRole("button", { name: /Continue compliance review/ }).click();
 
     const founderLed = page.getByRole("radio", { name: /Founder-led/i });
     await expect(founderLed).toBeVisible();
