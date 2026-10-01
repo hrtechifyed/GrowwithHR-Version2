@@ -20,6 +20,7 @@
     ]);
 
     const MORE_ITEMS = Object.freeze([
+        { label: "Founding Beta", href: "founding-beta.html" },
         { label: "Company Analysis Overview", href: "intelligence-hub.html" },
         { label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" },
         { label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
@@ -96,6 +97,7 @@
             "my-reports.html": "more",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
+        "founding-beta.html": "more",
             "workforce-capability-methodology.html": "resources",
             "sample-reports.html": "more",
             "sample-advisory-report.html": "more",
