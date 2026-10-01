@@ -58,13 +58,13 @@
         const label = organization?.querySelector(".buyer-card__label");
         if (label && !/flagship/i.test(label.textContent || "")) label.textContent = "Organization Structure & Growth · Flagship";
         const focus = document.querySelector("#capabilities .focus-note");
-        if (focus) focus.textContent = "Start with one analysis and reuse your confirmed company facts across Organization, Compliance and Workforce & Capability Planning.";
+        if (focus) focus.textContent = "Start with Organization & Growth or HR Compliance Readiness and keep the reasoning, assumptions and missing information visible.";
     }
 
     function updateMetaDescription() {
         if (!document.body?.classList.contains("home-page")) return;
         const meta = document.querySelector('meta[name="description"]');
-        if (meta) meta.setAttribute("content", "GrowWithHR turns company facts into organization-growth decisions, HR compliance readiness, workforce and capability plans, and Change Intelligence.");
+        if (meta) meta.setAttribute("content", "GrowWithHR helps growing companies understand organization structure and review HR compliance readiness with visible reasoning, governed sources and practical next actions.");
     }
 
     function apply() {
