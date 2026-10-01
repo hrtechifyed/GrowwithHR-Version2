@@ -1,6 +1,6 @@
 /* ==========================================================
    GrowWithHR
-   Executive Advisory Report Mapper
+   HR Compliance Readiness Report Mapper
 
    Responsibility:
    - Convert assessment answers into the existing report shape
@@ -29,10 +29,10 @@
         window.GrowWithHRModules || {};
 
     const DEFAULT_REPORT_SOURCE =
-        "Executive Advisory Briefing v2";
+        "HR Compliance Readiness v2";
 
     const DEFAULT_LEAD_SOURCE =
-        "Executive Advisory Briefing";
+        "HR Compliance Readiness";
 
     /**
      * Returns the shared assessment definitions.
