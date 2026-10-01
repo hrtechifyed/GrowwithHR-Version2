@@ -84,7 +84,7 @@ test.describe(
                         "button",
                         {
                             name:
-                                "Start my advisory"
+                                "Start compliance review"
                         }
                     )
                     .click();
@@ -197,7 +197,7 @@ test.describe(
                     }
                 );
 
-                await page.getByRole("button", { name: "Start my advisory" }).click();
+                await page.getByRole("button", { name: "Start compliance review" }).click();
 
                 const industry = page.locator("#industry");
                 await industry.fill("H");
