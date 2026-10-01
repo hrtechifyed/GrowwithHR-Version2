@@ -1074,7 +1074,7 @@
                 );
                 setFont("normal", 6.2);
                 doc.text(
-                    "© 2026 All Rights Reserved",
+                    "© 2026 HRTechify. All rights reserved.",
                     PAGE.width / 2,
                     PAGE.footerSubY,
                     { align: "center" }

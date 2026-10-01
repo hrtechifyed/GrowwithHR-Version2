@@ -46,7 +46,7 @@ assert(pdfPolish.includes('doc.text("End of Report"'));
 assert(pdfPolish.includes("Why GrowWithHR suggests this:"));
 assert(pdfPolish.includes('doc.text("GrowWithHR"'));
 assert(pdfPolish.includes('"HRTechify - People • Technology • Growth"'));
-assert(pdfPolish.includes('"© 2026 All Rights Reserved"'));
+assert(pdfPolish.includes('"© 2026 HRTechify. All rights reserved."'));
 assert(pdfPolish.includes('`Page ${page - startPage + 1} of ${total}`'));
 assert(pdfPolish.includes('`Click here to download template for ${templateSubject(item, title)}`'));
 assert(pdfPolish.includes('"COMPLIANCE REVIEW"'));

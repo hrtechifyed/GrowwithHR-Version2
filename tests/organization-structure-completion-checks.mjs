@@ -272,6 +272,9 @@ assert.match(pdfRuntime, /ruleVersion/);
 assert.match(pdfRuntime, /Organization bottleneck map/);
 assert.match(pdfRuntime, /Functional ownership/);
 assert.match(pdfRuntime, /© 2026 HRTechify\. All rights reserved\./);
+assert.match(pdfRuntime, /const titleLines = doc\.splitTextToSize/);
+assert.match(pdfRuntime, /const titleHeight = Math\.max/);
+assert.match(pdfRuntime, /Canonical HRTechify site logo/);
 assert.match(pdfRuntime, /assets\/hrtechify-logo\.png/);
 assert.match(pdfRuntime, /cleanText\(f\.version,"1\.2"\)/);
 

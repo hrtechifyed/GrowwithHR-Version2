@@ -216,7 +216,8 @@
             doc.setFont("helvetica", "bold"); doc.setFontSize(7.2); doc.setTextColor(...colours.accent);
             doc.text("HRTechify · GrowWithHR", 16, 284);
             doc.setFont("helvetica", "normal"); doc.setFontSize(6.5); doc.setTextColor(...colours.muted);
-            doc.text(`Confidential · ${clean(companyName, "Your Organisation")}`, 16, 290, { maxWidth: 145 });
+            doc.text(`Confidential · ${clean(companyName, "Your Organisation")}`, 16, 290, { maxWidth: 90 });
+            doc.text("© 2026 HRTechify. All rights reserved.", 105, 290, { align: "center" });
             doc.text(`${page} / ${total}`, 194, 284, { align: "right" });
         }
     }
