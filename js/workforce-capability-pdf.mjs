@@ -4,7 +4,7 @@ const COLOURS = Object.freeze({
   paper: [246, 242, 232], ink: [35, 31, 27], muted: [105, 96, 84], rule: [205, 196, 179],
   gold: [194, 125, 31], navy: [20, 31, 51], red: [156, 62, 44], green: [50, 108, 76], blue: [53, 89, 138], white: [255,255,255]
 });
-const LOGO = "assets/hrtechify-logo.png";
+const LOGO = "assets/hrtechify-logo.png"; // Canonical HRTechify site logo.
 let logoPromise = null;
 
 function clean(value, fallback = "") { return String(value ?? "").replace(/\s+/g, " ").trim() || fallback; }
@@ -40,7 +40,10 @@ function createCanvas(doc, logo) {
     if (logo) { try { doc.addImage(logo, "PNG", PAGE.left, 4, 20, 8, undefined, "FAST"); } catch (_error) {} }
     doc.setFont("helvetica","bold"); doc.setFontSize(7.2); doc.setTextColor(...COLOURS.muted); doc.text(clean(title).toUpperCase(), PAGE.width - PAGE.right, 9, { align: "right", maxWidth: 100 });
     doc.setDrawColor(...COLOURS.rule); doc.line(PAGE.left, PAGE.height - 12, PAGE.width - PAGE.right, PAGE.height - 12);
-    doc.setFont("courier","normal"); doc.setFontSize(6.5); doc.setTextColor(...COLOURS.muted); doc.text("GrowWithHR by HRTechify", PAGE.left, PAGE.height - 7); doc.text(`Page ${state.page}`, PAGE.width - PAGE.right, PAGE.height - 7, { align: "right" });
+    doc.setFont("courier","normal"); doc.setFontSize(6.3); doc.setTextColor(...COLOURS.muted);
+    doc.text("GrowWithHR by HRTechify", PAGE.left, PAGE.height - 7);
+    doc.text("© 2026 HRTechify. All rights reserved.", PAGE.width / 2, PAGE.height - 7, { align: "center" });
+    doc.text(`Page ${state.page}`, PAGE.width - PAGE.right, PAGE.height - 7, { align: "right" });
   }
   function next(title) { if (state.page > 0) doc.addPage(); state.page += 1; state.y = PAGE.top; chrome(title); }
   function ensure(height, title) { if (state.y + height > PAGE.height - PAGE.bottom - 9) next(title); }
@@ -48,10 +51,31 @@ function createCanvas(doc, logo) {
   function mono(text, options = {}) { const size=options.size||6.8; const width=options.width||CONTENT; doc.setFont("courier", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(text), width); ensure(lines.length*3.4+(options.after??2), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.muted)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.12 }); state.y += lines.length*3.4+(options.after??2); }
   function text(textValue, options = {}) { const size=options.size||8.5; const width=options.width||CONTENT; doc.setFont("helvetica", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(textValue), width); ensure(lines.length*4.2+(options.after??3), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.18 }); state.y += lines.length*4.2+(options.after??3); }
   function serif(textValue, options = {}) { const size=options.size||15; const width=options.width||CONTENT; doc.setFont("times", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(textValue), width); ensure(lines.length*(size*.42)+(options.after??4), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.08 }); state.y += lines.length*(size*.42)+(options.after??4); }
-  function heading(number, title, intro = "") { mono(number, { bold:true, colour:COLOURS.gold, after:2 }); serif(title, { size:17, bold:true, after: intro?2:6 }); if (intro) text(intro, { colour:COLOURS.muted, after:7 }); }
+  function heading(number, title, intro = "") {
+    mono(number, { bold:true, colour:COLOURS.gold, after:3 });
+    serif(title, { size:17, bold:true, after: intro?4:8 });
+    if (intro) text(intro, { colour:COLOURS.muted, after:9 });
+  }
   function label(textValue, options={}) { mono(clean(textValue).toUpperCase(), { bold:true, size:6.6, colour:options.colour||COLOURS.muted, after:1.5 }); }
   function bullet(value, options={}) { const size=options.size||8.2; const width=CONTENT-8; doc.setFont("helvetica","normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(value),width); ensure(lines.length*4+2, options.pageTitle); doc.setFillColor(...(options.dotColour||COLOURS.gold)); doc.circle(PAGE.left+1.5,state.y-1.4,0.8,"F"); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines,PAGE.left+6,state.y,{lineHeightFactor:1.16}); state.y+=lines.length*4+2; }
-  function card(title, body, options={}) { const inner=CONTENT-14; doc.setFontSize(8.1); const lines=doc.splitTextToSize(clean(body),inner); const h=15+lines.length*4.1+5; ensure(h+4, options.pageTitle); doc.setFillColor(...(options.fill||[238,233,222])); doc.setDrawColor(...COLOURS.rule); doc.roundedRect(PAGE.left,state.y-4,CONTENT,h,3,3,"FD"); doc.setFont("helvetica","bold"); doc.setFontSize(9.2); doc.setTextColor(...(options.titleColour||COLOURS.ink)); doc.text(clean(title),PAGE.left+7,state.y+3,{maxWidth:inner}); doc.setFont("helvetica","normal"); doc.setFontSize(8.1); doc.setTextColor(...COLOURS.ink); doc.text(lines,PAGE.left+7,state.y+10,{lineHeightFactor:1.15,maxWidth:inner}); state.y+=h+4; }
+  function card(title, body, options={}) {
+    const inner=CONTENT-14;
+    doc.setFont("helvetica","bold"); doc.setFontSize(9.2);
+    const titleLines=doc.splitTextToSize(clean(title),inner);
+    doc.setFont("helvetica","normal"); doc.setFontSize(8.1);
+    const lines=doc.splitTextToSize(clean(body),inner);
+    const titleHeight=Math.max(4.6,titleLines.length*4.8);
+    const bodyHeight=Math.max(4.1,lines.length*4.1);
+    const h=8+titleHeight+3+bodyHeight+7;
+    ensure(h+5, options.pageTitle);
+    doc.setFillColor(...(options.fill||[238,233,222])); doc.setDrawColor(...COLOURS.rule); doc.roundedRect(PAGE.left,state.y-4,CONTENT,h,3,3,"FD");
+    doc.setFont("helvetica","bold"); doc.setFontSize(9.2); doc.setTextColor(...(options.titleColour||COLOURS.ink));
+    doc.text(titleLines,PAGE.left+7,state.y+3,{lineHeightFactor:1.08,maxWidth:inner});
+    const bodyY=state.y+3+titleHeight+3;
+    doc.setFont("helvetica","normal"); doc.setFontSize(8.1); doc.setTextColor(...COLOURS.ink);
+    doc.text(lines,PAGE.left+7,bodyY,{lineHeightFactor:1.15,maxWidth:inner});
+    state.y+=h+5;
+  }
   function link(labelText,url) { const target=clean(url); if (!target) return; ensure(7,"Sources & Methodology"); doc.setFont("helvetica","bold"); doc.setFontSize(7.6); doc.setTextColor(...COLOURS.blue); doc.text(clean(labelText),PAGE.left,state.y); if (/^https?:\/\//.test(target)) { try { doc.link(PAGE.left,state.y-4,CONTENT,6,{url:target}); } catch(_error){} } state.y+=6; }
   return { state, next, ensure, rule, mono, text, serif, heading, label, bullet, card, link, background };
 }
