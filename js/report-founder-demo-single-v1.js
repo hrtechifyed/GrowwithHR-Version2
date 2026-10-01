@@ -10,7 +10,7 @@
 
     const VERSION = "1.0.0-founder-demo-single-report";
     const TEMPLATE_ID = "hrtechify-founder-compliance-growth-v1";
-    const LOGO_ASSET = "assets/hrtechify-logo.png";
+    const LOGO_ASSET = "assets/hrtechify-logo.png"; // Canonical HRTechify site logo.
     const PAGE = Object.freeze({ width: 210, height: 297, left: 18, right: 192, top: 22, bottom: 265 });
     const COLOURS = Object.freeze({
         page: [255, 255, 255],
@@ -571,7 +571,8 @@
             doc.setFont("helvetica", "normal");
             doc.setFontSize(6.7);
             doc.setTextColor(...COLOURS.muted);
-            doc.text(`GrowWithHR · ${clean(data.reportId, "Research Prototype")}`, PAGE.left, 282, { maxWidth: 135 });
+            doc.text(`GrowWithHR · ${clean(data.reportId, "Research Prototype")}`, PAGE.left, 282, { maxWidth: 72 });
+            doc.text("© 2026 HRTechify. All rights reserved.", 105, 282, { align: "center" });
             doc.text(`${page} / ${total}`, PAGE.right, 282, { align: "right" });
         }
     }
