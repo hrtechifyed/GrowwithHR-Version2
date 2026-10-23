@@ -69,3 +69,42 @@
 .beta-text-link{font-size:.82rem;text-decoration:none;font-weight:700}
 @media(max-width:900px){.beta-request-section{grid-template-columns:1fr}.beta-request-copy{position:static}}
 @media(max-width:680px){.beta-request-form{grid-template-columns:1fr}.beta-field--wide,.beta-form-actions,.beta-privacy{grid-column:auto}}
+
+/* 23 Oct beta polish: give the two entry actions independent hit areas. */
+body.founding-beta-page .beta-hero .ph-actions{
+  display:flex;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  align-items:flex-start;
+  gap:20px !important;
+  margin:28px 0 0;
+}
+body.founding-beta-page .beta-hero .ph-actions > a{
+  margin:0 !important;
+  max-width:100%;
+  min-height:60px !important;
+  text-wrap:balance;
+}
+body.founding-beta-page .beta-hero .ph-actions > a.ph-secondary{
+  background:#261e16 !important;
+  color:#fff2d1 !important;
+  border:1px solid rgba(255,216,110,.58) !important;
+  border-bottom:3px solid rgba(255,216,110,.65) !important;
+  box-shadow:0 6px 16px rgba(0,0,0,.26) !important;
+}
+body.founding-beta-page .beta-hero .ph-actions > a.ph-secondary > i.fa-arrow-right{
+  background:#ffda59 !important;
+  color:#231900 !important;
+}
+@media(max-width:680px){
+  body.founding-beta-page .beta-hero .ph-actions{
+    width:100%;
+    gap:18px !important;
+  }
+  body.founding-beta-page .beta-hero .ph-actions > a{
+    width:100%;
+    justify-content:space-between !important;
+    text-align:left !important;
+    white-space:normal;
+  }
+}
