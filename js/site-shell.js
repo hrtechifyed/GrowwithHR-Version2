@@ -386,6 +386,39 @@
         document.body.appendChild(script);
     }
 
+    function bootstrapProductMeasurement(prefix) {
+        const path = window.location.pathname;
+        const isReport = /\/(organization-structure-report|compliance-intelligence|analyze-company)\.html$/.test(path);
+        const bootstrapFeedback = () => {
+            if (!isReport) return;
+            if (!document.querySelector("link[data-growwithhr-report-feedback]")) {
+                const css = document.createElement("link");
+                css.rel = "stylesheet";
+                css.href = withRoot(prefix, "css/39-report-feedback.css");
+                css.dataset.growwithhrReportFeedback = "";
+                document.head.appendChild(css);
+            }
+            if (!document.querySelector("script[data-growwithhr-report-feedback]")) {
+                const feedback = document.createElement("script");
+                feedback.src = withRoot(prefix, "js/report-feedback.js");
+                feedback.dataset.growwithhrReportFeedback = "";
+                document.body.appendChild(feedback);
+            }
+        };
+        if (window.GrowWithHRAnalytics) {
+            bootstrapFeedback();
+            return;
+        }
+        if (!document.querySelector("script[data-growwithhr-product-analytics]")) {
+            const script = document.createElement("script");
+            script.src = withRoot(prefix, "js/product-analytics.js");
+            script.dataset.growwithhrProductAnalytics = "";
+            script.addEventListener("load", bootstrapFeedback, { once: true });
+            script.addEventListener("error", bootstrapFeedback, { once: true });
+            document.body.appendChild(script);
+        }
+    }
+
     function removeHomepageTriggerStrip() {
         document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
     }
@@ -409,6 +442,7 @@
         bootstrapUiPolish();
         bootstrapOrganizationAutosave();
         bootstrapCompanyIntelligence(prefix);
+        bootstrapProductMeasurement(prefix);
         window.addEventListener("resize", updatePageOffsets);
     }
 

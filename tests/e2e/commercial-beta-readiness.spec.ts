@@ -66,6 +66,52 @@ test.describe("Commercial beta readiness", () => {
     await expect(page.getByRole("button", { name: /Start compliance review/i }).first()).toBeVisible();
   });
 
+  test("report feedback is optional and sends only a bounded anonymous answer", async ({ page }) => {
+    let captured: Record<string, unknown> | null = null;
+    await page.route("**/api/report-feedback", async route => {
+      captured = route.request().postDataJSON();
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) });
+    });
+    await page.goto("/organization-structure-report.html", { waitUntil: "networkidle" });
+    await page.waitForFunction(() => !!(window as any).GrowWithHRReportFeedback);
+    await page.evaluate(() => {
+      const summary = document.createElement("div");
+      summary.className = "gwh-report-glimpse";
+      document.querySelector("#screen-overview")?.appendChild(summary);
+      (window as any).GrowWithHRReportFeedback.mount();
+    });
+    await expect(page.locator("#gwhReportFeedback")).toBeVisible();
+    await page.locator('#gwhReportFeedback input[value="yes"]').check();
+    await page.locator("#gwhFeedbackComment").fill("Clear and useful recommendations.");
+    await page.getByRole("button", { name: "Share feedback" }).click();
+    await expect(page.locator("#gwhReportFeedback")).toContainText("Thank you. Your feedback has been shared with HRTechify.");
+    expect(captured).toEqual({
+      product: "organization",
+      rating: "yes",
+      comment: "Clear and useful recommendations.",
+      website: ""
+    });
+    await expect(page.locator("#gwhReportFeedbackForm")).toBeHidden();
+  });
+
+  test("feedback delivery failure does not claim success", async ({ page }) => {
+    await page.route("**/api/report-feedback", async route => {
+      await route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "temporarily unavailable" }) });
+    });
+    await page.goto("/compliance-intelligence.html", { waitUntil: "networkidle" });
+    await page.waitForFunction(() => !!(window as any).GrowWithHRReportFeedback);
+    await page.evaluate(() => {
+      const summary = document.createElement("div");
+      summary.id = "personalReportGlimpse";
+      document.body.appendChild(summary);
+      (window as any).GrowWithHRReportFeedback.mount();
+    });
+    await page.locator('#gwhReportFeedback input[value="partly"]').check();
+    await page.getByRole("button", { name: "Share feedback" }).click();
+    await expect(page.locator("#gwhFeedbackStatus")).toContainText("Feedback could not be sent");
+    await expect(page.locator("#gwhReportFeedbackForm")).toBeVisible();
+  });
+
   test("Compliance public experience uses one product name end to end", async ({ page }) => {
     await page.goto("/compliance-intelligence.html", { waitUntil: "networkidle" });
 

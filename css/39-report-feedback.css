@@ -1,0 +1,18 @@
+/* Optional report feedback — compact, responsive, separate from secured PDF delivery */
+.gwh-report-feedback{max-width:920px;margin:24px auto;padding:22px;border-radius:16px;border:1px solid rgba(180,190,205,.24);background:rgba(20,30,45,.75);color:#f6f8fb}
+.gwh-report-feedback h3{font-size:1.28rem;margin:0 0 8px;color:inherit}
+.gwh-report-feedback p{line-height:1.5;color:#cbd5e1}
+.gwh-report-feedback form{display:grid;gap:12px;margin-top:16px}
+.gwh-report-feedback fieldset{border:0;padding:0;margin:0}
+.gwh-report-feedback legend{font-weight:700;margin-bottom:12px;color:inherit}
+.gwh-feedback-options{display:flex;gap:10px;flex-wrap:wrap}
+.gwh-feedback-options label{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border:1px solid rgba(200,210,225,.3);border-radius:12px;cursor:pointer;background:rgba(255,255,255,.04);color:#f6f8fb}
+.gwh-feedback-options label:has(input:checked){border-color:#f5bc55;background:rgba(245,188,85,.13)}
+.gwh-report-feedback textarea{box-sizing:border-box;width:100%;min-height:74px;padding:12px;border-radius:10px;border:1px solid #64748b;background:#101c2e;color:#fff;font:inherit}
+.gwh-report-feedback textarea:focus-visible,.gwh-report-feedback button:focus-visible{outline:3px solid #f5bc55;outline-offset:2px}
+.gwh-report-feedback button{justify-self:start;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;background:#f2bb50;color:#172033}
+.gwh-report-feedback button:disabled{cursor:wait;opacity:.6}
+.gwh-report-feedback .gwh-feedback-privacy{font-size:.82rem;margin:0}
+.gwh-feedback-honeypot{position:absolute;left:-9999px;height:1px;width:1px;overflow:hidden}
+#gwhFeedbackStatus{margin:0;min-height:1.1rem}
+@media(max-width:680px){.gwh-report-feedback{padding:16px}.gwh-feedback-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.gwh-feedback-options label{padding:10px 7px;justify-content:center}}
