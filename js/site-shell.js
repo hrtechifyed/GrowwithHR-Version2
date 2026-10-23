@@ -143,8 +143,8 @@
         return `<a href="${escapeHtml(withRoot(prefix, item.href))}">${escapeHtml(item.label)}</a>`;
     }
 
-    function footerItemMarkup(item) {
-        return `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`;
+    function footerItemMarkup(item, prefix) {
+        return `<a href="${escapeHtml(withRoot(prefix, item.href))}">${escapeHtml(item.label)}</a>`;
     }
 
     function buildHeader(prefix, activeKey) {
@@ -176,14 +176,14 @@
         return header;
     }
 
-    function buildFooter() {
+    function buildFooter(prefix) {
         const footer = document.createElement("footer");
         footer.className = "site-footer";
         footer.dataset.siteShellFooter = "";
         footer.innerHTML = `
             <div class="site-footer__inner">
                 <p class="site-footer__brand-line"><strong>GrowWithHR</strong> by HRTechify</p>
-                <nav class="site-footer__nav" aria-label="Footer navigation">${FOOTER_ITEMS.map((item) => footerItemMarkup(item)).join("")}</nav>
+                <nav class="site-footer__nav" aria-label="Footer navigation">${FOOTER_ITEMS.map((item) => footerItemMarkup(item, prefix)).join("")}</nav>
                 <p class="site-footer__rights-line">${escapeHtml(FOOTER_RIGHTS)}</p>
             </div>`;
         return footer;
@@ -396,7 +396,7 @@
         const activeKey = inferActiveNav();
         ensureLayeredDarkVersion(prefix);
         const header = buildHeader(prefix, activeKey);
-        const footer = buildFooter();
+        const footer = buildFooter(prefix);
         removeHomepageTriggerStrip();
         placeHeader(header);
         placeFooter(footer);
