@@ -14,7 +14,7 @@ test("declining compliance reminders never subscribes or sends an enrollment req
         return { status: "active" };
       }
     };
-    const module = await import("../js/compliance-review-prompt.js");
+    const module = await import("./js/compliance-review-prompt.js");
     module.render(element, {
       reportId: "GWHR-2026-1010-AB12",
       accessKey: "test-credential-not-displayed",
@@ -49,7 +49,7 @@ test("Yes alone cannot enroll; final confirmation requires matching signed-in em
         return { access_token: "test-user-token" };
       }
     };
-    const module = await import("../js/compliance-review-prompt.js");
+    const module = await import("./js/compliance-review-prompt.js");
     module.render(element, {
       reportId: "GWHR-2026-1010-AB12",
       accessKey: "test-credential-not-displayed",
