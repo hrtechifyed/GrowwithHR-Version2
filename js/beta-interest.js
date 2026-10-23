@@ -39,7 +39,7 @@
     };
 
     submit.disabled = true;
-    setStatus("Sending your request…");
+    setStatus("Sharing your question…");
 
     try {
       const response = await fetch(endpoint(), {
@@ -58,13 +58,13 @@
 
       form.reset();
       setStatus(
-        "Request received. HRTechify will follow up about the Founding Beta.",
+        "Thanks — your message has been shared with HRTechify.",
         "success"
       );
     } catch (error) {
       setStatus(
         error?.message ||
-          "We could not send your request. You can email hrtechifyed@gmail.com instead.",
+          "We could not share your question. You can email hrtechifyed@gmail.com instead.",
         "error"
       );
     } finally {
