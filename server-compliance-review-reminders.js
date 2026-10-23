@@ -55,6 +55,25 @@ async function requireWorkspace(input) {
     if (Date.parse(workspace.expires_at) <= Date.now()) throw forbidden("The workspace has expired.", 410);
     return workspace;
 }
+async function verifySignedInRecipient(request, expectedEmail) {
+    const authorization = clean(request?.headers?.authorization);
+    if (!/^Bearer [a-zA-Z0-9._-]+$/.test(authorization)) {
+        throw forbidden("Sign in with your verified assessment work email before enabling reminders.", 401);
+    }
+    const url = clean(process.env.SUPABASE_URL).replace(/\/+$/, "") + "/auth/v1/user";
+    const response = await fetch(url, {
+        headers: {
+            apikey: clean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+            Authorization: authorization
+        }
+    });
+    if (!response.ok) throw forbidden("Your login session has expired. Sign in again.", 401);
+    const user = await response.json();
+    if (!user.email_confirmed_at || clean(user.email).toLowerCase() !== clean(expectedEmail).toLowerCase()) {
+        throw forbidden("Use the verified work email linked to the completed assessment.", 403);
+    }
+}
+
 async function status(input) {
     const workspace = await requireWorkspace(input);
     const row = await getReminder(workspace.id);
@@ -62,10 +81,11 @@ async function status(input) {
     return publicState(row);
 }
 
-async function enroll(input) {
+async function enroll(input, request) {
     const workspace = await requireWorkspace(input);
     const reportId = clean(input.reportId);
     const verifiedEmail = clean(workspace.email).toLowerCase();
+    await verifySignedInRecipient(request, verifiedEmail);
     if (clean(input.email).toLowerCase() !== verifiedEmail || !verifiedEmail) {
         throw forbidden("Confirm the original work email associated with this workspace.", 403);
     }
@@ -107,8 +127,9 @@ async function enroll(input) {
     return publicState(rows?.[0]);
 }
 
-async function manage(input) {
+async function manage(input, request) {
     const workspace = await requireWorkspace(input);
+    await verifySignedInRecipient(request, workspace.email);
     const action = clean(input.action);
     if (!["pause", "resume", "stop"].includes(action)) throw forbidden("Unsupported reminder action.");
     const row = await getReminder(workspace.id);
@@ -270,8 +291,8 @@ async function dispatch(request, response, path) {
         const input = await readBody(request);
         const operation = path.split("/").pop();
         const result = operation === "status" ? await status(input)
-            : operation === "enroll" ? await enroll(input)
-            : operation === "manage" ? await manage(input)
+            : operation === "enroll" ? await enroll(input, request)
+            : operation === "manage" ? await manage(input, request)
             : await unsubscribe(input);
         reply(response, 200, { ok: true, ...result });
     } catch (error) {
