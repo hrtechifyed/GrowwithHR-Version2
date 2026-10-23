@@ -51,9 +51,13 @@ for (const file of pages) {
   assert.equal(home.find('svg[aria-hidden="true"]').length, 1);
   assert.equal(nav.find('a.site-product-name').attr('href'), 'index.html#home');
   assert.equal(nav.find('a.site-brand-logo').length, 0, 'The logo must stay outside the navigation capsule.');
-  const items = [home, nav.find('.site-nav-analyze__toggle'), nav.find('a[data-nav-key="resources"]'), nav.find('.site-nav-more__toggle')];
+  const items = [home, nav.find('.site-nav-analyze__toggle'), nav.find('a[data-nav-key="sample"]'), nav.find('.site-nav-more__toggle')];
   assert.ok(items.every(item => item.length === 1), `${route}: all canonical navigation items must remain available`);
   assert.equal(nav.find('#siteAnalyzeMenu a').length, 2, `${route}: Analyze must expose only Organization & Growth and HR Compliance Readiness`);
+  assert.equal(nav.find('a[data-nav-key="sample"]').attr('href'), 'sample-reports.html', `${route}: Samples remain directly accessible`);
+  const moreLabels = nav.find('#siteMoreMenu a').map((_index, element) => $(element).text()).get();
+  assert.deepEqual(moreLabels, ['About', 'Security & Data', 'Privacy', 'Terms', 'Sources & Methodology'], `${route}: More must stay focused on five trust links`);
+  assert.equal(nav.find('#siteMoreMenu').text().includes('Workforce & Capability Planning'), false, `${route}: unreleased capability stays out of More`);
   assert.equal(nav.find('#siteAnalyzeMenu').text().includes('Model a Decision'), false, `${route}: Scenario Studio must stay hidden from public navigation`);
   const signature = nav.find('#siteNavLinks').text().replace(/\s+/g, ' ').trim();
   if (baseline === null) baseline = signature;

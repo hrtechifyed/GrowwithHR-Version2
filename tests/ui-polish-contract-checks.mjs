@@ -23,17 +23,17 @@ const [siteShell, shellCss, uiCss, approvedCss, homepage, homepageRuntime, offic
 
 assert.match(siteShell, /<strong>GrowWithHR<\/strong> by HRTechify/);
 assert.match(siteShell, /mailto:hrtechifyed@gmail\.com/);
-assert.match(siteShell, /Company Analysis Overview/);
+assert.doesNotMatch(siteShell, /label: "Company Analysis Overview"/, "Overview should not crowd the public beta More menu.");
 assert.match(siteShell, /Organization & Growth/);
 assert.match(siteShell, /HR Compliance Readiness/);
 assert.doesNotMatch(siteShell, /label: "Model a Decision"/);
-assert.match(siteShell, /Workforce & Capability Planning/);
-assert.match(siteShell, /Change Intelligence/);
+assert.doesNotMatch(siteShell, /label: "Workforce & Capability Planning"/, "Future modules should not be promoted in the beta menu.");
+assert.doesNotMatch(siteShell, /label: "Change Intelligence"/, "Advanced capabilities should not crowd More.");
 assert.match(siteShell, /site-nav-analyze__toggle/);
 assert.match(siteShell, /site-nav-analyze__menu/);
 assert.match(siteShell, /My Reports/);
 assert.match(siteShell, /Sources & Methodology/);
-assert.match(siteShell, /Sample Reports/);
+assert.match(siteShell, /key: "sample", label: "Sample Reports"/);
 assert.match(siteShell, /© 2026 HRTechify\. All rights reserved\./);
 assert.match(siteShell, /setBackgroundInert/);
 assert.match(siteShell, /event\.key !== "Tab"/);

@@ -134,8 +134,10 @@ test.describe("Shared report navigation", () => {
     await expect(page.locator(".site-nav-link:visible")).toHaveCount(2);
     await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveCount(1);
     await expect(page.getByRole("button", { name: /Analyze/i })).toHaveCount(1);
-    await expect(page.getByRole("link", { name: "My Reports", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("link", { name: "Sources & Methodology", exact: true })).toHaveCount(1);
+    await expect(page.locator(".site-footer__nav a[href='my-reports.html']")).toHaveCount(1);
+    await expect(page.locator(".site-nav-links > a[data-nav-key='sample']")).toHaveAttribute("href", "sample-reports.html");
     await expect(page.getByRole("button", { name: /More/i })).toHaveCount(1);
+    await page.locator(".site-nav-more__toggle").click();
+    await expect(page.getByRole("link", { name: "Sources & Methodology", exact: true })).toHaveCount(1);
   });
 });
