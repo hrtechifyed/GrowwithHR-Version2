@@ -23,6 +23,7 @@ const mail = [];
 process.env.SUPABASE_URL = "https://zyypqpzloeczvkyfdznm.supabase.co";
 process.env.SUPABASE_SERVICE_ROLE_KEY = "test-service-key-only";
 process.env.GMAIL_USER = "test-sender@example.org";
+process.env.WORKSPACE_ENCRYPTION_SECRET = "test-only-strong-32-byte-workspace-encryption-secret";
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async url => {
   assert.match(String(url), /\/auth\/v1\/user$/);
