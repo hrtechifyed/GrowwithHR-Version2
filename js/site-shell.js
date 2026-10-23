@@ -16,24 +16,20 @@
     ]);
 
     const NAV_ITEMS = Object.freeze([
-        { key: "resources", label: "Sources & Methodology", href: "official-resources.html" }
+        { key: "sample", label: "Sample Reports", href: "sample-reports.html" }
     ]);
 
     const MORE_ITEMS = Object.freeze([
-        { label: "Founding Beta", href: "founding-beta.html" },
-        { label: "Company Analysis Overview", href: "intelligence-hub.html" },
-        { label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" },
-        { label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
-        { label: "My Reports", href: "my-reports.html" },
-        { label: "Sample Reports", href: "sample-reports.html" },
-        { label: "Security & Data", href: "security.html" },
-        { label: "Terms", href: "terms.html" },
         { label: "About", href: "more-info.html#about" },
+        { label: "Security & Data", href: "security.html" },
         { label: "Privacy", href: "more-info.html#privacy" },
-        { label: "Contact", href: "more-info.html#contact" }
+        { label: "Terms", href: "terms.html" },
+        { label: "Sources & Methodology", href: "official-resources.html" }
     ]);
 
     const FOOTER_ITEMS = Object.freeze([
+        { label: "Founding Beta", href: "founding-beta.html" },
+        { label: "My Reports", href: "my-reports.html" },
         { label: "About", href: "more-info.html#about" },
         { label: "Privacy", href: "more-info.html#privacy" },
         { label: "Contact", href: "mailto:hrtechifyed@gmail.com" }
@@ -95,11 +91,11 @@
             "workforce-capability-report.html": "analyze",
             "decision-scenario-studio.html": "analyze",
             "my-reports.html": "more",
-            "official-resources.html": "resources",
-            "organization-structure-methodology.html": "resources",
+            "official-resources.html": "more",
+            "organization-structure-methodology.html": "more",
         "founding-beta.html": "more",
-            "workforce-capability-methodology.html": "resources",
-            "sample-reports.html": "more",
+            "workforce-capability-methodology.html": "more",
+            "sample-reports.html": "sample",
             "sample-advisory-report.html": "more",
             "executive-advisory-report.html": "more",
             "more-info.html": "more",
@@ -118,8 +114,8 @@
             workforce: "analyze",
             "workforce-capability": "analyze",
             reports: "more",
-            resources: "resources",
-            sample: "more",
+            resources: "more",
+            sample: "sample",
             more: "more"
         };
         return aliases[explicit] || "";
