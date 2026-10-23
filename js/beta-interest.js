@@ -32,7 +32,10 @@
       role: String(data.get("role") || "").trim(),
       question: String(data.get("question") || "").trim(),
       website: String(data.get("website") || "").trim(),
-      source: "founding-beta"
+      source: "founding-beta",
+      utmSource: String(new URLSearchParams(location.search).get("utm_source") || "").slice(0, 100),
+      utmMedium: String(new URLSearchParams(location.search).get("utm_medium") || "").slice(0, 100),
+      utmCampaign: String(new URLSearchParams(location.search).get("utm_campaign") || "").slice(0, 100)
     };
 
     submit.disabled = true;
