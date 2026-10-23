@@ -20,6 +20,7 @@
     ]);
 
     const MORE_ITEMS = Object.freeze([
+        { label: "Founding Beta", href: "founding-beta.html" },
         { label: "Company Analysis Overview", href: "intelligence-hub.html" },
         { label: "Change Intelligence", href: "intelligence-hub.html#changeIntelligence" },
         { label: "Workforce & Capability Planning", href: "workforce-capability-planning.html" },
@@ -33,8 +34,8 @@
     ]);
 
     const FOOTER_ITEMS = Object.freeze([
-        { label: "About", href: "https://hrtechifyed.github.io/The-Corporatex/index.html#about" },
-        { label: "Privacy", href: "https://hrtechifyed.github.io/The-Corporatex/privacy-safety.html" },
+        { label: "About", href: "more-info.html#about" },
+        { label: "Privacy", href: "more-info.html#privacy" },
         { label: "Contact", href: "mailto:hrtechifyed@gmail.com" }
     ]);
 
@@ -96,6 +97,7 @@
             "my-reports.html": "more",
             "official-resources.html": "resources",
             "organization-structure-methodology.html": "resources",
+        "founding-beta.html": "more",
             "workforce-capability-methodology.html": "resources",
             "sample-reports.html": "more",
             "sample-advisory-report.html": "more",
@@ -141,8 +143,8 @@
         return `<a href="${escapeHtml(withRoot(prefix, item.href))}">${escapeHtml(item.label)}</a>`;
     }
 
-    function footerItemMarkup(item) {
-        return `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`;
+    function footerItemMarkup(item, prefix) {
+        return `<a href="${escapeHtml(withRoot(prefix, item.href))}">${escapeHtml(item.label)}</a>`;
     }
 
     function buildHeader(prefix, activeKey) {
@@ -174,14 +176,14 @@
         return header;
     }
 
-    function buildFooter() {
+    function buildFooter(prefix) {
         const footer = document.createElement("footer");
         footer.className = "site-footer";
         footer.dataset.siteShellFooter = "";
         footer.innerHTML = `
             <div class="site-footer__inner">
                 <p class="site-footer__brand-line"><strong>GrowWithHR</strong> by HRTechify</p>
-                <nav class="site-footer__nav" aria-label="Footer navigation">${FOOTER_ITEMS.map((item) => footerItemMarkup(item)).join("")}</nav>
+                <nav class="site-footer__nav" aria-label="Footer navigation">${FOOTER_ITEMS.map((item) => footerItemMarkup(item, prefix)).join("")}</nav>
                 <p class="site-footer__rights-line">${escapeHtml(FOOTER_RIGHTS)}</p>
             </div>`;
         return footer;
@@ -394,7 +396,7 @@
         const activeKey = inferActiveNav();
         ensureLayeredDarkVersion(prefix);
         const header = buildHeader(prefix, activeKey);
-        const footer = buildFooter();
+        const footer = buildFooter(prefix);
         removeHomepageTriggerStrip();
         placeHeader(header);
         placeFooter(footer);

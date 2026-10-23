@@ -84,7 +84,7 @@ test.describe("Dedicated Compliance entry", () => {
 
     await expect(page).toHaveURL(/\/analyze-company\.html\?engine=compliance$/);
     await expect(page.locator("#firstVisitActions")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Start my advisory" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Start compliance review" })).toBeVisible();
     await expect(page.locator("#assessmentShell")).toBeVisible();
   });
 

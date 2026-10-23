@@ -1077,10 +1077,10 @@ resolveReportUrl() {
 
             if (isCompleted) {
                 resumeMessage.textContent =
-                    "Your completed advisory is available on this device.";
+                    "Your completed compliance review is available on this device.";
 
                 resumeButton.innerHTML =
-                    "Open my saved advisory " +
+                    "Open my saved compliance review " +
                     '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
             } else {
                 resumeMessage.textContent =
@@ -1089,7 +1089,7 @@ resolveReportUrl() {
                 const resumeLabel =
                     document.body?.classList?.contains("compliance-intelligence-page")
                         ? "Continue compliance review"
-                        : "Continue my advisory";
+                        : "Continue compliance review";
                 resumeButton.innerHTML =
                     resumeLabel + " " +
                     '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
@@ -1107,7 +1107,7 @@ resolveReportUrl() {
             this.showMoment(0);
 
             this.announce(
-                "Executive Advisory Briefing started."
+                "HR Compliance Readiness review started."
             );
         }
 
@@ -1135,7 +1135,7 @@ resolveReportUrl() {
         requestRestart() {
             const shouldRestart =
                 window.confirm(
-                    "Start the advisory again? Your saved answers on this device will be cleared."
+                    "Start the compliance review again? Your saved answers on this device will be cleared."
                 );
 
             if (!shouldRestart) {
@@ -1488,7 +1488,7 @@ resolveReportUrl() {
                     .nextButton
                     .innerHTML =
                     finalMoment
-                        ? "Review my organisation story " +
+                        ? "Review my company context " +
                             '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>'
                         : "Continue " +
                             '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
@@ -1509,7 +1509,7 @@ resolveReportUrl() {
             );
 
             this.announce(
-                "Your organisation story is ready to review."
+                "Your company context is ready to review."
             );
         }
 
@@ -1526,7 +1526,7 @@ resolveReportUrl() {
             );
 
             this.announce(
-                "Final step. Enter your name and work email to generate the advisory."
+                "Final step. Enter your name and work email to generate the compliance report."
             );
         }
 
@@ -1550,7 +1550,7 @@ resolveReportUrl() {
             );
 
             this.announce(
-                "Your advisory is ready."
+                "Your compliance report is ready."
             );
         }
 
@@ -2531,7 +2531,7 @@ resolveReportUrl() {
                     });
 
                 this.announce(
-                    "Enter your name and a valid email address before generating your advisory.",
+                    "Enter your name and a valid email address before generating your compliance report.",
                     true
                 );
             }
@@ -2691,12 +2691,12 @@ resolveReportUrl() {
                 this.showSuccess();
             } catch (error) {
                 console.error(
-                    "GrowWithHR: advisory generation or delivery failed.",
+                    "GrowWithHR: compliance report generation or delivery failed.",
                     error
                 );
 
                 this.showGenerationError(
-                    "Your answers are safe, but we couldn’t finish the advisory delivery. Try again without completing the briefing again."
+                    "Your answers are safe, but we couldn’t finish the compliance report delivery. Try again without completing the review again."
                 );
             } finally {
                 this.isSubmitting =
@@ -2747,8 +2747,8 @@ resolveReportUrl() {
 
             this.configureGenerationLabels([
                 "Organising your context",
-                "Building your advisory document",
-                "Sending your advisory"
+                "Building your compliance report",
+                "Sending your compliance report"
             ]);
 
             this.resetGenerationSteps();
@@ -2831,7 +2831,7 @@ resolveReportUrl() {
                 this.elements
                     .loadingMessage
                     .textContent =
-                    "Your advisory is ready.";
+                    "Your compliance report is ready.";
             }
         }
 
@@ -3130,7 +3130,7 @@ resolveReportUrl() {
             );
 
             this.announce(
-                "We could not prepare the advisory yet. Your answers are saved.",
+                "We could not prepare the compliance report yet. Your answers are saved.",
                 true
             );
         }
@@ -3252,7 +3252,7 @@ resolveReportUrl() {
                 );
 
                 this.announce(
-                    "We could not download the PDF just yet. Open the advisory and use Print instead.",
+                    "We could not download the PDF just yet. Open the compliance report and use Print instead.",
                     true
                 );
             } finally {
@@ -3272,7 +3272,7 @@ resolveReportUrl() {
 
             if (!reportWindow) {
                 this.announce(
-                    "Allow pop-ups to open the printable advisory.",
+                    "Allow pop-ups to open the printable compliance report.",
                     true
                 );
 
@@ -3373,7 +3373,7 @@ resolveReportUrl() {
                 );
             } catch (error) {
                 console.error(
-                    "GrowWithHR: advisory resend failed.",
+                    "GrowWithHR: compliance report resend failed.",
                     error
                 );
 

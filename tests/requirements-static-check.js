@@ -37,8 +37,8 @@ for (const file of htmlFiles) {
 const siteShell = read("js/site-shell.js");
 includes(siteShell, "<strong>GrowWithHR</strong> by HRTechify", "The shared footer must use the approved GrowWithHR brand line.");
 includes(siteShell, "© 2026 HRTechify. All rights reserved.", "The shared footer must use the approved rights line.");
-includes(siteShell, "https://hrtechifyed.github.io/The-Corporatex/index.html#about", "The shared footer must link to the HRTechify corporate About page.");
-includes(siteShell, "https://hrtechifyed.github.io/The-Corporatex/privacy-safety.html", "The shared footer must link to the HRTechify corporate Privacy page.");
+includes(siteShell, "more-info.html#about", "The shared footer must link to the GrowWithHR About page.");
+includes(siteShell, "more-info.html#privacy", "The shared footer must link to the GrowWithHR privacy page.");
 includes(siteShell, "mailto:hrtechifyed@gmail.com", "The shared footer must link Contact to HRTechify email.");
 includes(siteShell, "removeHomepageTriggerStrip", "The shared shell must remove the redundant homepage buyer-trigger strip.");
 includes(siteShell, 'class="site-nav-toggle"', "The shared shell must provide mobile navigation.");

@@ -78,7 +78,7 @@ test.describe(
 
                 await page.getByRole(
                     "button",
-                    { name: "Start my advisory" }
+                    { name: "Start compliance review" }
                 ).click();
 
                 await page.locator("#companyName").fill(
@@ -140,7 +140,7 @@ test.describe(
 
                 await page.getByRole(
                     "button",
-                    { name: "Start my advisory" }
+                    { name: "Start compliance review" }
                 ).click();
 
                 await page.locator("#nextButton").click();

@@ -72,7 +72,7 @@ test('framework help stays inside its card and can change a framework choice', a
 
 test('question overview follows the current assessment screen', async ({ page }) => {
   await page.goto('/analyze-company.html');
-  await page.getByRole('button', { name: 'Start my advisory' }).click();
+  await page.getByRole('button', { name: 'Start compliance review' }).click();
   await page.locator('#companyName').fill('Question Guide Fixture');
   await page.locator('#industry').fill('Software');
   await page.locator('#nature').fill('Software products for businesses');

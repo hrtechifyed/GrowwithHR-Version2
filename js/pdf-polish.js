@@ -238,15 +238,15 @@
         const recommendations = (baseModel.recommendations || []).map((item) => ({
             ...item,
             source: selectedSet.has(item.title) ? "selected" : "suggested",
-            sourceLabel: selectedSet.has(item.title) ? "Selected by you" : "Company DNA suggestion",
+            sourceLabel: selectedSet.has(item.title) ? "Selected by you" : "Company context suggestion",
             suggestionReason: suggestionReasons[item.title] || ""
         }));
         const selectedText = selectedPriorities.length
             ? `Leadership selected ${sentenceList(selectedPriorities)} as the immediate priority${selectedPriorities.length === 1 ? "" : " areas"}.`
             : "No specific priority was selected, so the report uses the company profile to identify an initial leadership focus.";
         const suggestedText = suggestedPriorities.length
-            ? `The Company DNA review also identified ${sentenceList(suggestedPriorities)} as complementary strategic priorities for leadership consideration.`
-            : "The Company DNA review did not add a separate priority beyond the areas selected by leadership.";
+            ? `The company context review also identified ${sentenceList(suggestedPriorities)} as complementary strategic priorities for leadership consideration.`
+            : "The company context review did not add a separate priority beyond the areas selected by leadership.";
         const executiveSummary = unique([
             ...(baseModel.executiveSummary || []).filter(
                 (text) => !/next-stage people agenda|shaped around/i.test(cleanText(text))
@@ -1139,7 +1139,7 @@
         const executiveSummaryPage = writer.startTopic(
             "EXECUTIVE SUMMARY",
             "What Matters Next",
-            "Your leadership selections remain the primary focus of this advisory. Complementary Company DNA insights are presented separately to help you consider the broader capabilities needed for resilient, sustainable growth."
+            "Your leadership selections remain the primary focus of this advisory. Complementary company context insights are presented separately to help you consider the broader capabilities needed for resilient, sustainable growth."
         );
         contents.push({ title: "Executive Summary", page: executiveSummaryPage });
         writer.subheading("Organisation and market context");
@@ -1157,9 +1157,9 @@
         }
 
         if (model.suggestedPriorities.length) {
-            writer.subheading("Additional Strategic Priorities Informed by Your Company DNA");
+            writer.subheading("Additional priorities informed by your company context");
             writer.paragraph(
-                "While this report highlights the areas that require the most immediate attention based on your stated priorities, your Company DNA also points to complementary capabilities that merit leadership consideration. Strengthening the areas below can improve organisational resilience, support sustainable growth and prepare the business for its next stage of development.",
+                "While this report highlights the areas that require the most immediate attention based on your stated priorities, your company context also points to complementary capabilities that merit leadership consideration. Strengthening the areas below can improve organisational resilience, support sustainable growth and prepare the business for its next stage of development.",
                 { spacingAfter: 5 }
             );
             writer.numberedList(
@@ -1180,7 +1180,7 @@
         const recommendationsPage = writer.startTopic(
             "RECOMMENDED ACTIONS",
             "Strategic Recommendations",
-            "Recommendations are grouped by source so leadership-selected priorities remain distinct from complementary Company DNA suggestions."
+            "Recommendations are grouped by source so leadership-selected priorities remain distinct from complementary company context suggestions."
         );
         contents.push({ title: "Strategic Recommendations", page: recommendationsPage });
         const selectedRecommendations = (model.recommendations || []).filter(
@@ -1206,7 +1206,7 @@
         }
 
         if (suggestedRecommendations.length) {
-            writer.subheading("Additional Strategic Priorities Informed by Your Company DNA");
+            writer.subheading("Additional priorities informed by your company context");
             writer.paragraph(
                 "These recommendations draw on organisation characteristics such as workforce size, work model, operating footprint, hiring direction and People/HR support. They are complementary considerations and do not replace the priorities selected by leadership.",
                 { spacingAfter: 6 }
@@ -1216,7 +1216,7 @@
             );
             writer.summaryTable(
                 suggestedRecommendations.map((recommendation) => [
-                    `${cleanText(recommendation.title)} (Company DNA suggestion)`,
+                    `${cleanText(recommendation.title)} (company context suggestion)`,
                     cleanText(
                         recommendation.suggestionReason || recommendation.observation,
                         "Supports organisational readiness"
@@ -1245,7 +1245,7 @@
         const roadmapPage = writer.startTopic(
             "0–90 DAYS ROADMAP",
             "Your First Steps",
-            "Each action is labelled to show whether it comes from a priority selected by leadership or a complementary Company DNA suggestion."
+            "Each action is labelled to show whether it comes from a priority selected by leadership or a complementary company context suggestion."
         );
         contents.push({ title: "0–90 Days Roadmap", page: roadmapPage });
         writer.roadmap(model.roadmap);
@@ -1258,7 +1258,7 @@
         contents.push({ title: "Looking Ahead", page: lookingAheadPage });
         writer.bulletList(model.opportunities);
         writer.paragraph(
-            `${model.companyName} should begin with the priorities selected by leadership, then review the separate Company DNA suggestions as supporting considerations alongside business performance.`
+            `${model.companyName} should begin with the priorities selected by leadership, then review the separate company context suggestions as supporting considerations alongside business performance.`
         );
 
         const importantInformationPage = writer.startTopic(

@@ -11,7 +11,7 @@
 
     const SAMPLE_REPORT = {
         companyName: "Acme Technologies Pvt. Ltd.",
-        recipientName: "Illustrative Executive Leadership",
+        recipientName: "Illustrative People Leadership Team",
         recipientRole: "Fictional sample organisation",
         industry: "Information Technology and SaaS",
         nature:
@@ -46,7 +46,7 @@
             "Workforce planning"
         ],
         generatedAt: new Date().toISOString(),
-        source: "HRTechify illustrative sample advisory"
+        source: "HRTechify illustrative HR Compliance Readiness sample"
     };
 
     function getElements() {
@@ -84,7 +84,7 @@
 
         showStatus(
             status,
-            "Preparing your HRTechify sample advisory..."
+            "Preparing your HRTechify compliance-readiness sample..."
         );
 
         try {
@@ -101,18 +101,18 @@
 
             await pdfService.downloadAdvisoryPdf({
                 isSample: true,
-                filename: "HRTechify-Sample-Executive-Advisory.pdf",
-                runningTitle: "GrowWithHR Sample Executive Advisory",
-                coverLabel: "ILLUSTRATIVE SAMPLE EXECUTIVE ADVISORY",
-                coverTitle: "Executive Advisory",
+                filename: "GrowWithHR-Sample-HR-Compliance-Readiness.pdf",
+                runningTitle: "GrowWithHR Sample HR Compliance Readiness Report",
+                coverLabel: "ILLUSTRATIVE SAMPLE HR COMPLIANCE READINESS",
+                coverTitle: "HR Compliance Readiness Report",
                 coverIntro:
-                    "A fictional, illustrative leadership document demonstrating how GrowWithHR turns organisation information into a structured executive people advisory.",
+                    "A fictional, illustrative report demonstrating how GrowWithHR turns company information into structured HR compliance-readiness findings and next actions.",
                 report: SAMPLE_REPORT
             });
 
             showStatus(
                 status,
-                "Your sample advisory download has started."
+                "Your sample HR Compliance Readiness report download has started."
             );
         } catch (error) {
             console.error(

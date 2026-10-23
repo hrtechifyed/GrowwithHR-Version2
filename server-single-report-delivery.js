@@ -66,7 +66,7 @@ function escapeHtml(value) {
 }
 
 function safeFilename(value) {
-    let filename = cleanText(value, "GrowWithHR-HR-Compliance-Growth-Report.pdf")
+    let filename = cleanText(value, "GrowWithHR-HR-Compliance-Readiness-Report.pdf")
         .replace(/[^a-zA-Z0-9._-]/g, "-")
         .replace(/-+/g, "-")
         .slice(0, 160);
@@ -161,24 +161,24 @@ function buildRawEmail({ from, to, bcc = [], replyTo, subject, text, html, attac
 function customerMessage(lead = {}, report = {}, filename) {
     const recipientName = cleanText(lead.name, "there");
     const companyName = cleanText(report.companyName || lead.companyName, "your organisation");
-    const subject = `Your GrowWithHR HR Compliance & Growth Report for ${companyName}`;
+    const subject = `Your GrowWithHR HR Compliance Readiness Report for ${companyName}`;
     const text = [
         `Hello ${recipientName},`,
         "",
-        `Your GrowWithHR HR Compliance & Growth Report for ${companyName} is attached: ${filename}.`,
+        `Your GrowWithHR HR Compliance Readiness Report for ${companyName} is attached: ${filename}.`,
         "",
-        "The report summarises the HR compliance areas identified from the company facts supplied, information that could change unresolved findings, growth-related reassessment triggers and practical founder next steps.",
+        "The report summarises HR compliance areas that may require review, information that could change unresolved findings, growth-related reassessment triggers and practical next actions.",
         "",
         "GrowWithHR identifies applicability from deterministic rules. It does not certify whether each obligation has already been completed or whether the company is legally compliant or non-compliant.",
         "",
-        "This is a research-prototype report and is not legal advice or a legal opinion.",
+        "This is research-grade decision support from the GrowWithHR Founding Beta. It is not legal advice, legal certification or proof of compliance.",
         "",
         "Warm Wishes,",
         FOUNDER_NAME,
         "Founder, HRTechify",
         FOUNDER_LINKEDIN_URL
     ].join("\n");
-    const html = `<!doctype html><html lang="en"><body style="margin:0;background:#f3f6fa;font-family:Inter,Segoe UI,Arial,sans-serif;color:#223347"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:32px 14px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;background:#fff;border:1px solid #e1e7ef"><tr><td style="padding:34px 38px;border-top:5px solid #d97706"><div style="color:#d97706;font-size:12px;font-weight:800;letter-spacing:.14em">HRTECHIFY · GROWWITHHR</div><h1 style="margin:10px 0 0;color:#0a2342;font-size:27px;line-height:1.2">Your HR Compliance & Growth Report</h1></td></tr><tr><td style="padding:10px 38px 38px"><p style="font-size:16px;line-height:1.7">Hello ${escapeHtml(recipientName)},</p><p style="font-size:16px;line-height:1.7;color:#334155">Your report for <strong>${escapeHtml(companyName)}</strong> is attached as one PDF.</p><div style="padding:18px 20px;background:#f8fafc;border-left:4px solid #d97706;color:#334155;line-height:1.65">It covers the compliance areas identified from the facts you supplied, missing information that could change findings, growth-related reassessment triggers and founder next steps.</div><p style="font-size:14px;line-height:1.7;color:#64748b">GrowWithHR identifies applicability from deterministic rules. It does not certify whether obligations have already been completed or whether the company is legally compliant or non-compliant.</p><p style="font-size:13px;line-height:1.7;color:#64748b">Research Prototype · Not legal advice or a legal opinion.</p><p style="font-size:16px;line-height:1.65">Warm Wishes,<br>${escapeHtml(FOUNDER_NAME)}<br>Founder, HRTechify<br><a href="${FOUNDER_LINKEDIN_URL}">${FOUNDER_LINKEDIN_URL}</a></p></td></tr></table></td></tr></table></body></html>`;
+    const html = `<!doctype html><html lang="en"><body style="margin:0;background:#f3f6fa;font-family:Inter,Segoe UI,Arial,sans-serif;color:#223347"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:32px 14px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;background:#fff;border:1px solid #e1e7ef"><tr><td style="padding:34px 38px;border-top:5px solid #d97706"><div style="color:#d97706;font-size:12px;font-weight:800;letter-spacing:.14em">HRTECHIFY · GROWWITHHR</div><h1 style="margin:10px 0 0;color:#0a2342;font-size:27px;line-height:1.2">Your HR Compliance Readiness Report</h1></td></tr><tr><td style="padding:10px 38px 38px"><p style="font-size:16px;line-height:1.7">Hello ${escapeHtml(recipientName)},</p><p style="font-size:16px;line-height:1.7;color:#334155">Your report for <strong>${escapeHtml(companyName)}</strong> is attached as one PDF.</p><div style="padding:18px 20px;background:#f8fafc;border-left:4px solid #d97706;color:#334155;line-height:1.65">It covers HR compliance areas that may require review, missing information that could change findings, growth-related reassessment triggers and practical next actions.</div><p style="font-size:14px;line-height:1.7;color:#64748b">GrowWithHR identifies applicability from deterministic rules. It does not certify whether obligations have already been completed or whether the company is legally compliant or non-compliant.</p><p style="font-size:13px;line-height:1.7;color:#64748b">Founding Beta · Research-grade decision support · Not legal advice, certification or proof of compliance.</p><p style="font-size:16px;line-height:1.65">Warm Wishes,<br>${escapeHtml(FOUNDER_NAME)}<br>Founder, HRTechify<br><a href="${FOUNDER_LINKEDIN_URL}">${FOUNDER_LINKEDIN_URL}</a></p></td></tr></table></td></tr></table></body></html>`;
     return { subject, text, html };
 }
 

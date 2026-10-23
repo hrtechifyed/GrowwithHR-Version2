@@ -118,8 +118,8 @@ includes(storage, "window.localStorage.removeItem", "Users must be able to clear
    Report mapping
 ========================================================== */
 
-includes(reportMapper, '"Executive Advisory Briefing v2"', "Generated reports must retain their current source identifier.");
-includes(reportMapper, '"Executive Advisory Briefing"', "Generated leads must retain their current source identifier.");
+includes(reportMapper, '"HR Compliance Readiness v2"', "Generated reports must retain their current product source identifier.");
+includes(reportMapper, '"HR Compliance Readiness"', "Generated leads must retain their current product source identifier.");
 includes(reportMapper, "normaliseNumber", "Report mapping must normalise workforce and location numbers.");
 includes(reportMapper, "remoteReportValue", "Remote-work answers must remain mapped into report data.");
 
