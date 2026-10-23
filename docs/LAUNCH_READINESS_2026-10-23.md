@@ -1,5 +1,12 @@
 # GrowWithHR — Founding Beta launch gate (23 October 2026)
 
+## Free product usage: current launch policy
+- Both public assessments are open to visitors immediately. The Founding Beta contact form is **optional feedback**, not an invitation gate.
+- Do not introduce checkout, payment details, paid plans, subscriptions, upgrades or paid-report calls to action during this audience-building phase.
+- Keep transactional report transport, identity verification and deliverability operations out of the public marketing narrative. Preserve secure backend handling, recipient verification, and complete truthful disclosures inside the report access, privacy and security experiences.
+- An assessment's on-screen output is an executive overview; do **not** promise the complete personalized PDF is public or available anonymously.
+- Future monetization requires a separate explicit launch decision. Do not silently activate payments through existing backend report delivery.
+
 ## Scope
 The public promise is **two products only**: Organization Structure & Growth, and HR Compliance Readiness. The Founding Beta is free to try. There is no claim of legal certification, company-specific legal advice, or employee assessment.
 
