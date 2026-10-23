@@ -384,6 +384,7 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
       reportPayload.persistenceWarning="GrowWithHR could not save this analysis to your reusable workspace just now.";
     }
     sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
+    window.GrowWithHRAnalytics?.trackOnce("assessment_completed", "organization");
     location.href="organization-structure-report.html#overview";
     button.disabled=false;button.textContent=original;
   });
