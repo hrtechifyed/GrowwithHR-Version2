@@ -256,6 +256,7 @@ function workspaceResponse(workspace, companyData = null) {
         createdAt: workspace.created_at,
         updatedAt: workspace.updated_at,
         lastAnalysisCompletedAt: workspace.last_analysis_completed_at,
+        lastComplianceReportId: workspace.last_compliance_report_id || "",
         expiresAt: workspace.expires_at,
         reminderDueAt: workspace.reminder_due_at,
         companyData
@@ -284,6 +285,7 @@ async function createWorkspace(input = {}) {
             company_name: cleanText(input.companyName),
             encrypted_company_data: encryptJson(input.companyData || {}),
             completed_engines: completedEngine ? [completedEngine] : [],
+            last_compliance_report_id: completedEngine === "compliance" ? reportId : null,
             created_at: now.toISOString(),
             updated_at: now.toISOString(),
             last_analysis_completed_at: now.toISOString(),
@@ -336,6 +338,7 @@ async function completeAnalysis(input = {}) {
             report_ids: reportIds,
             encrypted_company_data: encryptJson(mergedData),
             completed_engines: engines,
+            last_compliance_report_id: completedEngine === "compliance" ? newReportId : workspace.last_compliance_report_id,
             company_name: cleanText(input.companyName, workspace.company_name),
             updated_at: now.toISOString(),
             last_analysis_completed_at: now.toISOString(),
@@ -345,6 +348,18 @@ async function completeAnalysis(input = {}) {
         })
     });
 
+    if (completedEngine === "compliance") {
+        // A new compliance audit never silently inherits the previous
+        // audit's reminder consent. A prior schedule becomes superseded.
+        await supabase(`compliance_review_reminders?workspace_id=eq.${encodeURIComponent(workspace.id)}`, {
+            method: "PATCH",
+            body: JSON.stringify({
+                status: "superseded", next_review_at: null,
+                claimed_at: null, unsubscribe_token_hash: null,
+                updated_at: now.toISOString()
+            })
+        });
+    }
     return workspaceResponse(rows?.[0], mergedData);
 }
 
@@ -489,6 +504,8 @@ async function deleteWorkspaceData(workspace, { reason = "expiry" } = {}) {
             updated_at: deletedAt
         })
     });
+
+    await supabase(`compliance_review_reminders?workspace_id=eq.${encodeURIComponent(workspace.id)}`, { method: "DELETE" });
 
     let notification = { sent: false };
     try {
@@ -692,5 +709,10 @@ module.exports = {
     generateAccessKey,
     hashAccessKey,
     mergeCompanyData,
-    supabaseAuthHeaders
+    supabaseAuthHeaders,
+    supabase,
+    findWorkspace,
+    verifyAccess,
+    sendPlainEmail,
+    configured
 };
