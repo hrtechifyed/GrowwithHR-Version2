@@ -58,7 +58,7 @@ test.describe("Analyze My Company", () => {
     await expect(page.locator("#firstVisitActions")).toBeVisible();
     await expect(page.locator("#resumePanel")).toBeHidden();
     await expect(page.getByRole("button", { name: "Start compliance review" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "View a sample advisory" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "View sample report" })).toBeVisible();
   });
 
   test("shows only the returning-user state when progress exists", async ({ page }) => {
