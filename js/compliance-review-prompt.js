@@ -82,17 +82,27 @@ export function render(host, workspace) {
         active.hidden = true;
         setStatus("");
     };
+    function offerReconsider() {
+        if (section.querySelector('[data-review-reconsider]')) return;
+        const reconsider = document.createElement("button");
+        reconsider.type = "button";
+        reconsider.dataset.reviewReconsider = "";
+        reconsider.textContent = "Set up reminders";
+        reconsider.addEventListener("click", () => {
+            reconsider.remove();
+            sessionStorage.removeItem(dismissKey);
+            showChoice();
+            setStatus("");
+        });
+        status.insertAdjacentElement("afterend", reconsider);
+    }
     choices.querySelector('[data-action="no"]').addEventListener("click", () => {
         // Skipping is not consent: no backend request.
         sessionStorage.setItem(dismissKey, "yes");
         choices.hidden = true;
         form.hidden = true;
         setStatus("No reminders scheduled. You can enable them from this assessment later.");
-        const reconsider = document.createElement("button");
-        reconsider.type = "button";
-        reconsider.textContent = "Set up reminders";
-        reconsider.addEventListener("click", () => { reconsider.remove(); showChoice(); setStatus(""); });
-        status.insertAdjacentElement("afterend", reconsider);
+        offerReconsider();
     });
     choices.querySelector('[data-action="yes"]').addEventListener("click", enable);
     section.querySelector('[data-action="back"]').addEventListener("click", showChoice);
@@ -152,6 +162,7 @@ export function render(host, workspace) {
     if (sessionStorage.getItem(dismissKey) === "yes") {
         choices.hidden = true;
         setStatus("You have not opted in to compliance review reminders.");
+        offerReconsider();
     }
     api.reviewReminderStatus(workspace.reportId, workspace.accessKey)
         .then(result => {
