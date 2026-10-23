@@ -250,21 +250,57 @@ function cover(doc, state, payload, logoData) {
     doc.text(doc.splitTextToSize("Executive structural diagnostic, Change Intelligence and a 12-month planning scenario with transparent rules and public evidence.",135),PAGE.left,78,{lineHeightFactor:1.2});
 
     const identityY = 111;
-    doc.setFillColor(...BRAND.navySoft); doc.roundedRect(PAGE.left,identityY,CONTENT_W,56,4,4,"F");
-    doc.setFont("helvetica","bold"); doc.setFontSize(8.5); doc.setTextColor(...BRAND.gold); doc.text("REPORT IDENTITY",PAGE.left+8,identityY+13);
-    doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(255,255,255);
     const identity = [
-        `Company: ${payload.companyName}`,
-        `Report ID: ${payload.reportId}`,
-        `Generated: ${formatDate(payload.generatedAt)}`,
-        `Framework: ${cleanText(payload.framework.name,"GrowWithHR Organization Structure Assessment Framework")} v${cleanText(payload.framework.version,"1.2")}`
-    ];
-    identity.forEach((line,index)=>doc.text(doc.splitTextToSize(line,CONTENT_W-16),PAGE.left+8,identityY+24+index*8,{maxWidth:CONTENT_W-16}));
+        ["Company", payload.companyName],
+        ["Report ID", payload.reportId],
+        ["Generated", formatDate(payload.generatedAt)],
+        ["Framework", `${cleanText(payload.framework.name,"GrowWithHR Organization Structure Assessment Framework")} v${cleanText(payload.framework.version,"1.2")}`]
+    ].map(([label, value]) => {
+        const full = `${label}: ${cleanText(value, "Not provided")}`;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.7);
+        // The detailed pages contain full values. Prevent extremely long client
+        // strings from overflowing this limited-height cover identity panel.
+        const lines = doc.splitTextToSize(full, CONTENT_W - 16);
+        return lines.length > 2 ? [lines[0], `${lines[1].slice(0, -3)}...`] : lines;
+    });
+    const identityHeight = 18 + identity.reduce((height, lines) => height + Math.max(7, lines.length * 4.1 + 2), 0);
+    doc.setFillColor(...BRAND.navySoft);
+    doc.roundedRect(PAGE.left, identityY, CONTENT_W, identityHeight, 4, 4, "F");
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(...BRAND.gold);
+    doc.text("REPORT IDENTITY", PAGE.left + 8, identityY + 12);
+    let identityTextY = identityY + 22;
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(8.7);
+    doc.setTextColor(255,255,255);
+    identity.forEach((lines) => {
+        doc.text(lines, PAGE.left + 8, identityTextY, {
+            lineHeightFactor: 1.15,
+            maxWidth: CONTENT_W - 16
+        });
+        identityTextY += Math.max(7, lines.length * 4.1 + 2);
+    });
 
-    doc.setFillColor(255,248,232); doc.roundedRect(PAGE.left,184,CONTENT_W,45,4,4,"F");
-    doc.setFont("helvetica","bold"); doc.setFontSize(9.5); doc.setTextColor(146,64,14); doc.text("HOW TO READ THIS REPORT",PAGE.left+8,197);
-    doc.setFont("helvetica","normal"); doc.setFontSize(8.6); doc.setTextColor(67,43,20);
-    doc.text(doc.splitTextToSize("Public sources support the underlying organisation-design principle. GrowWithHR's deterministic rule explains how that principle was applied to the facts supplied. Prototype guardrails are not presented as universal external benchmarks.",CONTENT_W-16),PAGE.left+8,207,{lineHeightFactor:1.15});
+    const readNote = "Public sources support the underlying organisation-design principle. GrowWithHR's deterministic rule explains how that principle was applied to the facts supplied. Prototype guardrails are not universal external benchmarks.";
+    const noteY = Math.max(190, identityY + identityHeight + 9);
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(8.4);
+    const noteLines = doc.splitTextToSize(readNote, CONTENT_W - 16);
+    const noteHeight = 22 + noteLines.length * 4;
+    doc.setFillColor(255,248,232);
+    doc.roundedRect(PAGE.left, noteY, CONTENT_W, noteHeight, 4, 4, "F");
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(9.5);
+    doc.setTextColor(146,64,14);
+    doc.text("HOW TO READ THIS REPORT", PAGE.left + 8, noteY + 11);
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(8.4);
+    doc.setTextColor(67,43,20);
+    doc.text(noteLines, PAGE.left + 8, noteY + 19, {
+        lineHeightFactor: 1.15, maxWidth: CONTENT_W - 16
+    });
     doc.setFontSize(8); doc.setTextColor(203,213,225); doc.text(payload.sample ? "Illustrative sample · Fictional company data" : "Complete personalised PDF · Delivered by authenticated email",PAGE.left,270);
 }
 
