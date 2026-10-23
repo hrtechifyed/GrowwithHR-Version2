@@ -63,7 +63,7 @@
 
         statusElement.hidden = false;
         statusElement.textContent = message;
-        statusElement.style.color = isError ? "#ff6b75" : "#9da9bc";
+        statusElement.classList.toggle("is-error", isError);
     }
 
     async function downloadSamplePdf() {

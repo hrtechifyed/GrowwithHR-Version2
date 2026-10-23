@@ -206,6 +206,8 @@ jobs:
           tests/e2e/analyze-company-v3-contract-workforce-wave5k.spec.ts
           tests/e2e/analyze-company-v3-social-security-wave5l.spec.ts
           tests/e2e/homepage-client-readiness.spec.ts
+          tests/e2e/commercial-beta-readiness.spec.ts
+          tests/e2e/public-ui-collision-audit.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
           tests/e2e/report-intelligence-v020.spec.ts

@@ -28,8 +28,8 @@ test.describe("Commercial beta readiness", () => {
     await page.goto("/founding-beta.html?utm_source=linkedin&utm_medium=organic&utm_campaign=founding-beta", { waitUntil: "networkidle" });
 
     await expect(page.getByRole("heading", { name: /Use GrowWithHR on a real company question/i })).toBeVisible();
-    await expect(page.getByText("Organization & Growth", { exact: true })).toBeVisible();
-    await expect(page.getByText("HR Compliance Readiness", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Organization & Growth", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "HR Compliance Readiness", exact: true })).toBeVisible();
     await expect(page.getByText("Founding Beta, not certification.")).toBeVisible();
     await expect(page.getByRole("link", { name: /Start free Organization assessment/i })).toHaveAttribute("href", "organization-intelligence.html");
     await expect(page.getByRole("link", { name: /Try HR Compliance Readiness/i }).first()).toHaveAttribute("href", "compliance-intelligence.html");
@@ -46,6 +46,12 @@ test.describe("Commercial beta readiness", () => {
     await page.getByRole("button", { name: /Share my company question/i }).click();
 
     await expect(page.locator("#betaStatus")).toContainText(/message has been shared with HRTechify/i);
+    const betaFeedbackSpacing = await page.evaluate(() => {
+      const button = document.querySelector("#betaSubmit")!.getBoundingClientRect();
+      const confirmation = document.querySelector("#betaStatus")!.getBoundingClientRect();
+      return confirmation.top - button.bottom;
+    });
+    expect(betaFeedbackSpacing, "Optional beta feedback should not crowd the submit button").toBeGreaterThanOrEqual(8);
     expect(captured?.company).toBe("Example Growth Co");
     expect(captured?.email).toBe("founder@example.com");
     expect(captured?.source).toBe("founding-beta");
@@ -170,7 +176,7 @@ test.describe("Commercial beta readiness", () => {
     await expect(page.locator("body")).not.toContainText(/Executive Advisory Briefing|Generate my advisory|Building your advisory/i);
 
     await page.goto("/sample-advisory-report.html", { waitUntil: "networkidle" });
-    await expect(page.getByRole("heading", { name: "HR Compliance Readiness Report" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "HR Compliance Readiness Report", exact: true })).toBeVisible();
     await expect(page.locator("body")).not.toContainText("Executive Advisory Report");
   });
 });
