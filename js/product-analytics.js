@@ -4,7 +4,7 @@
  */
 (() => {
   "use strict";
-  const UMAMI_WEBSITE_ID = ""; // Paste the public Umami Website ID here to activate tracking.
+  const UMAMI_WEBSITE_ID = "e41d89b2-f9b4-441d-9018-d15e14c7bbd8"; // Public Umami tracking identifier (not a secret).
   const EVENT_NAMES = new Set([
     "assessment_started", "assessment_completed", "report_viewed",
     "full_report_requested", "feedback_submitted", "return_visit"
