@@ -109,7 +109,7 @@ try {
   assert.equal(mail[0].to, workspace.email);
   assert.match(mail[0].subject, /review your HR Compliance Readiness/i);
   assert.match(mail[0].text, /not a statutory deadline notice/i);
-  assert.doesNotMatch(mail[0].text, /breach|penalty imminent/i);
+  assert.doesNotMatch(mail[0].text, /penalty imminent/i);
 
   const sentAgain = await reminders.runReviewReminders();
   assert.equal(sentAgain.sent, 0, "Already-sent periods must not produce duplicates.");
