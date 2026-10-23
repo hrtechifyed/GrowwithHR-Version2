@@ -50,10 +50,10 @@ assert.doesNotMatch(shellSource, /26-header-brand-lockup\.css/,
     "The shared shell must not load a second navbar geometry layer.");
 assert.match(shellSource, /<strong>GrowWithHR<\/strong> by HRTechify/,
     "The shared shell must expose the approved left-aligned GrowWithHR footer brand line.");
-assert.match(shellSource, /The-Corporatex\/index\.html#about/,
-    "The footer About link must point to the HRTechify corporate About page.");
-assert.match(shellSource, /The-Corporatex\/privacy-safety\.html/,
-    "The footer Privacy link must point to the HRTechify corporate privacy page.");
+assert.match(shellSource, /more-info\.html#about/,
+    "The footer About link must remain within GrowWithHR.");
+assert.match(shellSource, /more-info\.html#privacy/,
+    "The footer Privacy link must use the current GrowWithHR privacy information.");
 assert.match(shellSource, /mailto:hrtechifyed@gmail\.com/,
     "The footer Contact link must open email to HRTechify.");
 assert.match(shellSource, /removeHomepageTriggerStrip/,
