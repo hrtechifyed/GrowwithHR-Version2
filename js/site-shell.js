@@ -386,6 +386,30 @@
         document.body.appendChild(script);
     }
 
+    function bootstrapProductMeasurement(prefix) {
+        if (!document.querySelector("script[data-growwithhr-product-analytics]")) {
+            const script = document.createElement("script");
+            script.src = withRoot(prefix, "js/product-analytics.js");
+            script.dataset.growwithhrProductAnalytics = "";
+            document.body.appendChild(script);
+        }
+        const path = window.location.pathname;
+        if (!/\/(organization-structure-report|compliance-intelligence|analyze-company)\.html$/.test(path)) return;
+        if (!document.querySelector("link[data-growwithhr-report-feedback]")) {
+            const css = document.createElement("link");
+            css.rel = "stylesheet";
+            css.href = withRoot(prefix, "css/39-report-feedback.css");
+            css.dataset.growwithhrReportFeedback = "";
+            document.head.appendChild(css);
+        }
+        if (!document.querySelector("script[data-growwithhr-report-feedback]")) {
+            const script = document.createElement("script");
+            script.src = withRoot(prefix, "js/report-feedback.js");
+            script.dataset.growwithhrReportFeedback = "";
+            document.body.appendChild(script);
+        }
+    }
+
     function removeHomepageTriggerStrip() {
         document.querySelectorAll(".buyer-value-strip").forEach((item) => item.remove());
     }
@@ -409,6 +433,7 @@
         bootstrapUiPolish();
         bootstrapOrganizationAutosave();
         bootstrapCompanyIntelligence(prefix);
+        bootstrapProductMeasurement(prefix);
         window.addEventListener("resize", updatePageOffsets);
     }
 
