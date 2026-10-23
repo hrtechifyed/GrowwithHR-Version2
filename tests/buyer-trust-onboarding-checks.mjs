@@ -77,13 +77,15 @@ assert.match(workspace, /GrowWithHRCompanyWorkspace\.recover/);
 assert.match(workspace, /completedEngines/);
 
 const shell = read("js/site-shell.js");
-assert.match(shell, /label: "Company Analysis Overview"/);
+assert.doesNotMatch(shell, /label: "Company Analysis Overview"/, "The overview remains available by direct link, not in the beta navigation.");
 assert.match(shell, /label: "Organization & Growth"/);
 assert.match(shell, /label: "HR Compliance Readiness"/);
-assert.match(shell, /label: "Workforce & Capability Planning"/);
-assert.match(shell, /label: "Change Intelligence"/);
+assert.doesNotMatch(shell, /label: "Workforce & Capability Planning"/, "Advanced features stay off the public beta navigation.");
+assert.doesNotMatch(shell, /label: "Change Intelligence"/, "Advanced features stay off the public beta navigation.");
 assert.match(shell, /<span>Analyze<\/span>/);
 assert.match(shell, /label: "My Reports"/);
+assert.match(shell, /label: "Founding Beta"/);
+assert.match(shell, /key: "sample", label: "Sample Reports"/);
 assert.match(shell, /label: "Sources & Methodology"/);
 assert.match(shell, /site-nav-analyze/);
 
@@ -99,4 +101,4 @@ assert.match(approvedCss, /site-nav-link\[href\$="my-reports\.html"\][\s\S]*disp
 assert.match(approvedCss, /intelligence-hub-page \.analysis-workspace[\s\S]*display:none/i,
   "The recovery workspace must stay hidden from the current public Analyze experience.");
 
-console.log("Buyer trust, unified Analyze navigation and Workforce & Capability onboarding checks passed.");
+console.log("Buyer trust, two-product beta navigation and Workforce & Capability onboarding checks passed.");
