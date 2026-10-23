@@ -8,7 +8,8 @@ test.describe("Commercial beta readiness", () => {
     await expect(page.locator("#capabilities .ph-product-card")).toHaveCount(2);
     await expect(page.getByText("Founding Beta", { exact: true }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Explore the Founding Beta/i })).toHaveAttribute("href", "founding-beta.html");
-    await expect(page.locator("body")).not.toContainText(/Decision scenario|Scenario comparisons|Model a Decision/i);
+    await expect(page.locator("body")).not.toContainText(/Decision scenario|Scenario comparisons|Model a Decision|checkout|subscribe now|pricing plans/i);
+    await expect(page.getByRole("link", { name: /Start free Organization assessment/i })).toHaveAttribute("href", "organization-intelligence.html");
     await expect(page.locator("head link[rel=canonical]")).toHaveAttribute("href", "https://hrtechifyed.github.io/GrowwithHR-Version2/");
     await expect(page.getByText("Free to explore during our Founding Beta.", { exact: false })).toBeVisible();
   });
@@ -30,6 +31,11 @@ test.describe("Commercial beta readiness", () => {
     await expect(page.getByText("Organization & Growth", { exact: true })).toBeVisible();
     await expect(page.getByText("HR Compliance Readiness", { exact: true })).toBeVisible();
     await expect(page.getByText("Founding Beta, not certification.")).toBeVisible();
+    await expect(page.getByRole("link", { name: /Start free Organization assessment/i })).toHaveAttribute("href", "organization-intelligence.html");
+    await expect(page.getByRole("link", { name: /Try HR Compliance Readiness/i }).first()).toHaveAttribute("href", "compliance-intelligence.html");
+    await expect(page.getByText("Optional founder feedback")).toBeVisible();
+    await expect(page.getByRole("link", { name: /Request a beta invite/i })).toHaveCount(0);
+    await expect(page.locator("body")).not.toContainText(/Secure complete-report delivery|checkout|pay now|subscribe now|pricing plans/i);
 
     await page.locator("#betaName").fill("Founder Test");
     await page.locator("#betaEmail").fill("founder@example.com");
@@ -37,15 +43,27 @@ test.describe("Commercial beta readiness", () => {
     await page.locator("#betaEmployees").fill("150");
     await page.locator("#betaRole").selectOption({ label: "Founder / CEO" });
     await page.locator("#betaQuestion").fill("We are growing quickly and want to test whether ownership and management structure will keep up.");
-    await page.getByRole("button", { name: /Send beta request/i }).click();
+    await page.getByRole("button", { name: /Share my company question/i }).click();
 
-    await expect(page.locator("#betaStatus")).toContainText(/Request received/i);
+    await expect(page.locator("#betaStatus")).toContainText(/message has been shared with HRTechify/i);
     expect(captured?.company).toBe("Example Growth Co");
     expect(captured?.email).toBe("founder@example.com");
     expect(captured?.source).toBe("founding-beta");
     expect(captured?.utmSource).toBe("linkedin");
     expect(captured?.utmMedium).toBe("organic");
     expect(captured?.utmCampaign).toBe("founding-beta");
+  });
+
+  test("Visitors can start both free assessments without requesting an invite", async ({ page }) => {
+    await page.goto("/founding-beta.html", { waitUntil: "networkidle" });
+    await page.getByRole("link", { name: /Start free Organization assessment/i }).click();
+    await expect(page).toHaveURL(/organization-intelligence\.html$/);
+    await expect(page.locator("#organizationForm")).toBeVisible();
+
+    await page.goto("/founding-beta.html", { waitUntil: "networkidle" });
+    await page.getByRole("link", { name: /Try HR Compliance Readiness/i }).first().click();
+    await expect(page).toHaveURL(/compliance-intelligence\.html$/);
+    await expect(page.getByRole("button", { name: /Start compliance review/i }).first()).toBeVisible();
   });
 
   test("Compliance public experience uses one product name end to end", async ({ page }) => {
