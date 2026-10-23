@@ -34,8 +34,8 @@
     ]);
 
     const FOOTER_ITEMS = Object.freeze([
-        { label: "About", href: "https://hrtechifyed.github.io/The-Corporatex/index.html#about" },
-        { label: "Privacy", href: "https://hrtechifyed.github.io/The-Corporatex/privacy-safety.html" },
+        { label: "About", href: "more-info.html#about" },
+        { label: "Privacy", href: "more-info.html#privacy" },
         { label: "Contact", href: "mailto:hrtechifyed@gmail.com" }
     ]);
 
