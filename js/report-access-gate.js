@@ -162,6 +162,7 @@
         gate.id = "fullReportAccessGate";
         gate.innerHTML = `<div id="customerAuthMount"></div><div class="gwh-full-report-access"><button id="emailFullReportButton" class="gwh-full-report-button" type="button" disabled>Email my complete report</button><p id="fullReportDeliveryStatus" role="status" aria-live="polite">Sign in with the assessment work email to enable delivery.</p></div>`;
         actions?.insertAdjacentElement("beforebegin", gate);
+        window.GrowWithHRAnalytics?.trackOnce("assessment_completed", "compliance");
         const emailButton = gate.querySelector("#emailFullReportButton");
         const deliveryStatus = gate.querySelector("#fullReportDeliveryStatus");
         const expectedEmail = firstEmail(app.lead?.email);
