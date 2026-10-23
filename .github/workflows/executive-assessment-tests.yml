@@ -208,6 +208,7 @@ jobs:
           tests/e2e/homepage-client-readiness.spec.ts
           tests/e2e/commercial-beta-readiness.spec.ts
           tests/e2e/public-ui-collision-audit.spec.ts
+          tests/e2e/compliance-review-reminders.spec.ts
           tests/e2e/presentation-polish.spec.ts
           tests/e2e/m5-compliance-workspace.spec.ts
           tests/e2e/report-intelligence-v020.spec.ts
