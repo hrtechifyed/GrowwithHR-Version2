@@ -9,6 +9,8 @@ test.describe("Commercial beta readiness", () => {
     await expect(page.getByText("Founding Beta", { exact: true }).first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Explore the Founding Beta/i })).toHaveAttribute("href", "founding-beta.html");
     await expect(page.locator("body")).not.toContainText(/Decision scenario|Scenario comparisons|Model a Decision/i);
+    await expect(page.locator("head link[rel=canonical]")).toHaveAttribute("href", "https://hrtechifyed.github.io/GrowwithHR-Version2/");
+    await expect(page.getByText("Free to explore during our Founding Beta.", { exact: false })).toBeVisible();
   });
 
   test("Founding Beta page provides a working request conversion path", async ({ page }) => {
@@ -22,7 +24,7 @@ test.describe("Commercial beta readiness", () => {
       });
     });
 
-    await page.goto("/founding-beta.html", { waitUntil: "networkidle" });
+    await page.goto("/founding-beta.html?utm_source=linkedin&utm_medium=organic&utm_campaign=founding-beta", { waitUntil: "networkidle" });
 
     await expect(page.getByRole("heading", { name: /Use GrowWithHR on a real company question/i })).toBeVisible();
     await expect(page.getByText("Organization & Growth", { exact: true })).toBeVisible();
@@ -41,6 +43,9 @@ test.describe("Commercial beta readiness", () => {
     expect(captured?.company).toBe("Example Growth Co");
     expect(captured?.email).toBe("founder@example.com");
     expect(captured?.source).toBe("founding-beta");
+    expect(captured?.utmSource).toBe("linkedin");
+    expect(captured?.utmMedium).toBe("organic");
+    expect(captured?.utmCampaign).toBe("founding-beta");
   });
 
   test("Compliance public experience uses one product name end to end", async ({ page }) => {
