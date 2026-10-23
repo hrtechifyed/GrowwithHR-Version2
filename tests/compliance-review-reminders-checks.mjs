@@ -52,7 +52,7 @@ workspaceApi.supabase = async (path, options = {}) => {
     return [record];
   }
   if (path.startsWith("compliance_review_reminders?unsubscribe_token_hash=eq.")) {
-    return record?.unsubscribe_token_hash === path.split("eq.")[1] ? [record] : [];
+    return record?.unsubscribe_token_hash === path.split("unsubscribe_token_hash=eq.")[1]?.split("&")[0] ? [record] : [];
   }
   if (!path.startsWith("compliance_review_reminders?")) {
     throw new Error("Unexpected DB path " + path);
