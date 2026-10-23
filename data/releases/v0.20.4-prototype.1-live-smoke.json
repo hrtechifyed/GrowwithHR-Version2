@@ -1,7 +1,7 @@
 {
   "releaseVersion": "0.20.4-prototype.1",
-  "checkedAt": "2026-10-01T12:01:11Z",
-  "sourceCommitSha": "30fa82fa02c2fd679f445724a0723c936e72ab78",
+  "checkedAt": "2026-10-23T06:57:24Z",
+  "sourceCommitSha": "eb979fd226de32d23d76912733b5ba1a7a7ced69",
   "status": "passed",
   "checks": {
     "githubPagesHomepage": {
@@ -18,6 +18,11 @@
       "routeVisible": true,
       "reportRuntimeVisible": true
     },
+    "githubPagesFoundingBeta": {
+      "url": "https://hrtechifyed.github.io/GrowwithHR-Version2/founding-beta.html",
+      "routeVisible": true,
+      "requestFormVisible": true
+    },
     "renderHomepage": {
       "url": "https://growwithhr.onrender.com/index.html",
       "versionVisible": true
@@ -31,6 +36,11 @@
       "url": "https://growwithhr.onrender.com/organization-structure-report.html?sample=1",
       "routeVisible": true,
       "reportRuntimeVisible": true
+    },
+    "renderFoundingBeta": {
+      "url": "https://growwithhr.onrender.com/founding-beta.html",
+      "routeVisible": true,
+      "requestFormVisible": true
     },
     "emailDelivery": {
       "url": "https://growwithhr.onrender.com/api/email-status",
