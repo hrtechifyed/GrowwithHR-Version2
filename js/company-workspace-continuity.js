@@ -93,6 +93,7 @@
             email: clean(workspace?.email, previous?.email),
             companyName: clean(workspace?.companyName, previous?.companyName),
             completedEngines: workspace?.completedEngines || previous?.completedEngines || [],
+            lastComplianceReportId: clean(workspace?.lastComplianceReportId, previous?.lastComplianceReportId),
             expiresAt: clean(workspace?.expiresAt, previous?.expiresAt),
             companyData: workspace?.companyData || companyData || previous?.companyData || {}
         };
@@ -163,6 +164,11 @@
         const warning = runtime.warning ? `<p><strong>Workspace notice:</strong> ${runtime.warning}</p>` : "";
         panel.hidden = false;
         panel.innerHTML = `<h3 style="margin:0 0 10px;color:#0a2342">Use this company information again</h3><p><strong>Report ID:</strong> <code>${clean(workspace.reportId)}</code></p>${access}<p>Your reusable company information is stored in the GrowWithHR database until <strong>${formatDate(workspace.expiresAt)}</strong>. We will email you seven days before scheduled deletion and again after deletion.</p>${warning}<p style="margin-bottom:0"><a href="intelligence-hub.html" style="font-weight:800;color:#0a2342">Return to Analyze My Company →</a></p>`;
+        // The reminder consent prompt is separate from mandatory six-month
+        // retention notices and appears only for this completed compliance audit.
+        void import("./compliance-review-prompt.js")
+            .then(module => module.render(panel, workspace))
+            .catch(() => { /* no reminder UI or consent if unavailable */ });
     }
 
     function install(app) {

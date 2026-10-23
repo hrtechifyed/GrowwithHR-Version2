@@ -16,6 +16,7 @@ const { handleWorkforceCapabilityReportRequest } = require("./server-workforce-c
 const { handleCustomerReportGate } = require("./server-customer-report-gate");
 const { handleWorkspaceHandoffRequest } = require("./server-workspace-handoff");
 const { handleCompanyWorkspaceRequest, startCompanyWorkspaceRetentionScheduler } = require("./server-company-workspace");
+const { handleReviewReminderRequest, startReviewReminderScheduler } = require("./server-compliance-review-reminders");
 
 const DEFAULT_CROSS_ORIGIN_ALLOWLIST = new Set([
     "https://hrtechifyed.github.io"
@@ -105,6 +106,7 @@ function installApiCors() {
                 if (handleReportIdRequest(request, response)) return;
                 if (handleWorkspaceHandoffRequest(request, response)) return;
                 if (handleCompanyWorkspaceRequest(request, response)) return;
+                if (handleReviewReminderRequest(request, response)) return;
                 if (handleCustomerReportGate(request, response, {
                     compliance: handleSingleReportDeliveryRequest,
                     organization: handleOrganizationReportRequest,
@@ -126,4 +128,5 @@ function installApiCors() {
 
 installApiCors();
 startCompanyWorkspaceRetentionScheduler();
+startReviewReminderScheduler();
 require("./server");

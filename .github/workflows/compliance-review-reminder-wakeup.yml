@@ -1,0 +1,34 @@
+name: Wake Compliance Review Reminder Scheduler
+
+# Render instances may sleep on low-cost plans. A lightweight daily health
+# request gives the in-process, opt-in-only scheduler a chance to run.
+# This job never sends mail itself and never enrolls anyone.
+on:
+  schedule:
+    - cron: "37 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: growwithhr-review-reminder-wakeup
+  cancel-in-progress: true
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Wake GrowWithHR backend
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --retry 5 --retry-all-errors --retry-delay 10 \
+            --connect-timeout 25 --max-time 120 \
+            -fsS https://growwithhr.onrender.com/api/health > /dev/null
+          # First scheduler sweep runs 45s after server startup.
+          sleep 65
+          curl --connect-timeout 25 --max-time 90 \
+            -fsS https://growwithhr.onrender.com/api/health > /dev/null
+          echo "Backend was awake for the consent-only review sweep."

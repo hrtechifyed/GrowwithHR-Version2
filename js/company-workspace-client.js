@@ -26,10 +26,10 @@
         return `${base}${path}`;
     }
 
-    async function post(path, payload) {
+    async function post(path, payload, accessToken = "") {
         const response = await fetch(endpoint(path), {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}) },
             body: JSON.stringify(payload || {}),
             credentials: "omit"
         });
@@ -73,6 +73,12 @@
         create,
         recover: (reportId, accessKey) => post("/api/company-workspace/recover", { reportId, accessKey }),
         complete,
+        reviewReminderStatus: (reportId, accessKey) =>
+            post("/api/company-workspace/review-reminders/status", { reportId, accessKey }),
+        enrollReviewReminder: (payload, accessToken) =>
+            post("/api/company-workspace/review-reminders/enroll", payload, accessToken),
+        manageReviewReminder: (payload, accessToken) =>
+            post("/api/company-workspace/review-reminders/manage", payload, accessToken),
         erase: (reportId, accessKey) => post("/api/company-workspace/delete", { reportId, accessKey }),
         createHandoff: (reportId, accessKey, target = "organization-structure") =>
             post("/api/company-workspace/handoff/create", { reportId, accessKey, target }),

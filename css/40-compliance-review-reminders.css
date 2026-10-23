@@ -1,0 +1,17 @@
+/* Optional compliance reassessment reminders. Scoped to the post-audit card. */
+.gwh-review-optin{box-sizing:border-box;margin:22px 0 0;padding:22px;border:1px solid #d2dce8;border-radius:16px;background:#f7fbff;color:#223047;line-height:1.55;text-align:left;max-width:100%}
+.gwh-review-optin h3{font-size:1.15rem;line-height:1.35;color:#0a2342;margin:0 0 9px}
+.gwh-review-optin p{margin:7px 0 13px;color:#334155}
+.gwh-review-choice,.gwh-review-active{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.gwh-review-choice button,.gwh-review-confirm button,.gwh-review-active button{border:1px solid #b3c2d5;border-radius:9px;padding:11px 15px;min-height:44px;background:#fff;color:#0a2342;font:inherit;font-weight:700;cursor:pointer;max-width:100%;white-space:normal}
+.gwh-review-choice button[data-action="yes"],.gwh-review-confirm button[type="submit"]{background:#ffc83e;color:#241c06;border-color:#ddaa20}
+.gwh-review-optin button:focus-visible,.gwh-review-optin select:focus-visible{outline:3px solid #da8b12;outline-offset:3px}
+.gwh-review-optin button:disabled{opacity:.6;cursor:wait}
+.gwh-review-confirm{display:grid;gap:10px;max-width:500px}
+.gwh-review-confirm label{font-size:.9rem;font-weight:700}
+.gwh-review-confirm [data-email]{margin:0;font-weight:600;overflow-wrap:anywhere}
+.gwh-review-confirm select{background:#fff;color:#17243b;border:1px solid #9daec5;border-radius:8px;padding:10px;font:inherit;max-width:100%}
+.gwh-review-optin .gwh-review-notice{font-size:.85rem;color:#475569}
+.gwh-review-status{margin:12px 0 0;min-height:1rem;font-size:.88rem;overflow-wrap:anywhere}
+.gwh-review-status.is-error{color:#991b1b}
+@media(max-width:600px){.gwh-review-optin{padding:16px}.gwh-review-choice button,.gwh-review-active button{flex:1 1 100%}}
