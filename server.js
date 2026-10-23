@@ -821,6 +821,9 @@ app.post(
             const employees = cleanText(body.employees).slice(0, 24);
             const role = cleanText(body.role).slice(0, 120);
             const question = cleanText(body.question).slice(0, 1200);
+            const utmSource = cleanText(body.utmSource).slice(0, 100);
+            const utmMedium = cleanText(body.utmMedium).slice(0, 100);
+            const utmCampaign = cleanText(body.utmCampaign).slice(0, 100);
 
             if (!name || !company || !question || !isValidEmail(email)) {
                 return response.status(400).json({
@@ -855,6 +858,9 @@ app.post(
                 Role: role || "Not provided",
                 "Company question": question,
                 Source: "GrowWithHR Founding Beta page",
+                "Campaign source": utmSource || "Not provided",
+                "Campaign medium": utmMedium || "Not provided",
+                "Campaign name": utmCampaign || "Not provided",
                 Submitted: new Date().toISOString()
             };
 
