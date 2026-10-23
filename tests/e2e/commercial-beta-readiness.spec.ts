@@ -112,6 +112,56 @@ test.describe("Commercial beta readiness", () => {
     await expect(page.locator("#gwhReportFeedbackForm")).toBeVisible();
   });
 
+  test("beta buttons have comfortable separation and clear hierarchy on desktop and mobile", async ({ page }) => {
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: 850 });
+      await page.goto("/founding-beta.html", { waitUntil: "networkidle" });
+      const first = page.locator(".beta-hero .ph-actions > a.ph-primary");
+      const second = page.locator(".beta-hero .ph-actions > a.ph-secondary");
+      await expect(first).toBeVisible();
+      await expect(second).toBeVisible();
+      const spacing = await first.evaluate((el) => {
+        const other = el.parentElement?.querySelector(".ph-secondary");
+        if (!other) throw new Error("Secondary action missing");
+        const main = el.getBoundingClientRect();
+        const supporting = other.getBoundingClientRect();
+        return {
+          gap: supporting.top - main.bottom,
+          primaryBackground: getComputedStyle(el).backgroundImage,
+          secondaryBackground: getComputedStyle(other).backgroundImage
+        };
+      });
+      expect(spacing.gap).toBeGreaterThanOrEqual(15);
+      expect(spacing.primaryBackground).not.toBe(spacing.secondaryBackground);
+      if (width === 390) {
+        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+        expect(overflow).toBeLessThanOrEqual(2);
+      }
+    }
+  });
+
+  test("short More menu retains trust links while beta and report access stay reachable", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 850 });
+    await page.goto("/founding-beta.html", { waitUntil: "networkidle" });
+    await expect(page.locator('.site-nav-links > a[data-nav-key="sample"]')).toHaveAttribute("href", "sample-reports.html");
+    await page.locator(".site-nav-more__toggle").click();
+    const menu = page.locator("#siteMoreMenu");
+    await expect(menu).toBeVisible();
+    await expect(menu.locator("a")).toHaveCount(5);
+    expect(await menu.locator("a").allTextContents()).toEqual([
+      "About", "Security & Data", "Privacy", "Terms", "Sources & Methodology"
+    ]);
+    await expect(page.locator(".site-footer__nav").getByRole("link", { name: "My Reports" })).toHaveAttribute("href", "my-reports.html");
+    await expect(page.locator(".site-footer__nav").getByRole("link", { name: "Founding Beta" })).toHaveAttribute("href", "founding-beta.html");
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/founding-beta.html", { waitUntil: "networkidle" });
+    await page.locator(".site-nav-toggle").click();
+    await page.locator(".site-nav-more__toggle").click();
+    await expect(page.locator("#siteMoreMenu a")).toHaveCount(5);
+    await expect(page.locator("#siteMoreMenu")).toBeVisible();
+  });
+
   test("Compliance public experience uses one product name end to end", async ({ page }) => {
     await page.goto("/compliance-intelligence.html", { waitUntil: "networkidle" });
 
