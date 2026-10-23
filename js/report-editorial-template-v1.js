@@ -195,7 +195,7 @@
         return {
             productLine: clean(supplied.productLine || data.reportProductLine, "GrowWithHR — HR Compliance & Growth"),
             prototypeLabel: clean(supplied.prototypeLabel || data.prototypeLabel, "Research prototype"),
-            headline: clean(supplied.headline, `${company},\ncompliance-ready\nor not.`),
+            headline: clean(supplied.headline, "HR Compliance Readiness"),
             dek: clean(supplied.dek, `${summary}. The report preserves the deterministic finding, its trigger, the company facts used, and the next action without inferring missing information.`)
         };
     }
@@ -342,46 +342,71 @@
         function keyValueGrid(rows, columns = 4) {
             const items = rows.filter(([, value]) => clean(value));
             if (!items.length) return;
-            const width = (PAGE.right - PAGE.left) / columns;
-            const rowCount = Math.ceil(items.length / columns);
-            const cellHeight = 28;
-            ensure(rowCount * cellHeight + 3);
-            const startY = y;
-            items.forEach(([label, value], index) => {
-                const col = index % columns;
-                const row = Math.floor(index / columns);
-                const x = PAGE.left + col * width;
-                const top = startY + row * cellHeight;
-                doc.setDrawColor(...COLOURS.rule);
-                doc.setLineWidth(0.22);
-                doc.rect(x, top, width, cellHeight, "S");
-                font("helvetica", "normal");
-                doc.setFontSize(6.3);
-                doc.setTextColor(...COLOURS.muted);
-                doc.text(split(label, width - 8), x + 4, top + 6, { maxWidth: width - 8, lineHeightFactor: 1.1 });
-                font("courier", "normal");
-                doc.setFontSize(8.3);
-                doc.setTextColor(...COLOURS.ink);
-                doc.text(split(value, width - 8), x + 4, top + 14, { maxWidth: width - 8, lineHeightFactor: 1.25 });
-            });
-            y = startY + rowCount * cellHeight + 5;
+            const count = Math.min(4, Math.max(1, Number(columns) || 4));
+            const width = (PAGE.right - PAGE.left) / count;
+            const prepared = items.map(([label, value]) => ({
+                labelLines: split(label, width - 8),
+                valueLines: split(value, width - 8)
+            }));
+            for (let start = 0; start < prepared.length; start += count) {
+                const row = prepared.slice(start, start + count);
+                const cellHeight = Math.max(28, ...row.map((cell) =>
+                    19 + cell.labelLines.length * lineHeight(6.3, 1.1) +
+                    cell.valueLines.length * lineHeight(8.3, 1.25)
+                ));
+                ensure(cellHeight + 5);
+                const top = y;
+                row.forEach((cell, col) => {
+                    const x = PAGE.left + col * width;
+                    doc.setDrawColor(...COLOURS.rule);
+                    doc.setLineWidth(0.22);
+                    doc.rect(x, top, width, cellHeight, "S");
+                    font("helvetica", "normal");
+                    doc.setFontSize(6.3);
+                    doc.setTextColor(...COLOURS.muted);
+                    doc.text(cell.labelLines, x + 4, top + 6, {
+                        maxWidth: width - 8, lineHeightFactor: 1.1
+                    });
+                    font("courier", "normal");
+                    doc.setFontSize(8.3);
+                    doc.setTextColor(...COLOURS.ink);
+                    const valueY = top + 8 + cell.labelLines.length * lineHeight(6.3, 1.1);
+                    doc.text(cell.valueLines, x + 4, valueY, {
+                        maxWidth: width - 8, lineHeightFactor: 1.25
+                    });
+                });
+                y = top + cellHeight + 5;
+            }
         }
 
         function metadataGrid(rows) {
-            const width = (PAGE.right - PAGE.left) / rows.length;
+            const items = rows.filter(([, value]) => clean(value));
+            if (!items.length) return;
+            const width = (PAGE.right - PAGE.left) / items.length;
+            const cells = items.map(([label, value]) => ({
+                labelLines: split(label, width - 5),
+                valueLines: split(value, width - 5)
+            }));
+            const height = Math.max(19, ...cells.map((cell) =>
+                9 + cell.labelLines.length * lineHeight(6.2, 1.1) +
+                cell.valueLines.length * lineHeight(7.2, 1.18)
+            ));
+            ensure(height + 5);
             const startY = y;
-            rows.forEach(([label, value], index) => {
+            cells.forEach((cell, index) => {
                 const x = PAGE.left + index * width;
                 font("helvetica", "normal");
                 doc.setFontSize(6.2);
                 doc.setTextColor(...COLOURS.muted);
-                doc.text(label, x, startY);
+                doc.text(cell.labelLines, x, startY, { maxWidth: width - 5, lineHeightFactor: 1.1 });
                 font("courier", "normal");
                 doc.setFontSize(7.2);
                 doc.setTextColor(...COLOURS.ink);
-                doc.text(split(value, width - 4), x, startY + 6, { maxWidth: width - 4, lineHeightFactor: 1.18 });
+                doc.text(cell.valueLines, x, startY + 4 + cell.labelLines.length * lineHeight(6.2, 1.1), {
+                    maxWidth: width - 5, lineHeightFactor: 1.18
+                });
             });
-            y += 19;
+            y += height + 5;
         }
 
         function statusStrip(groups) {
@@ -550,12 +575,14 @@
         const scaleMax = Math.max(thresholdMax * 1.1, current * 1.1, 1);
         const x = PAGE.left;
         const width = PAGE.right - PAGE.left;
-        const barY = canvas.getY() + 10;
         const barH = 10;
-        const blockHeight = 35 + Math.min(16, numeric.length * 3.2);
+        const blockHeight = 56 + Math.min(20, numeric.length * 4);
         canvas.ensure(blockHeight);
         canvas.smallLabel(title, { bold: true, colour: COLOURS.ink, after: 1 });
         canvas.mono(`Current: ${current}`, { size: 7.3, x: PAGE.right - 35, width: 35, align: "right", after: 2, noEnsure: true });
+        // Position the chart AFTER the header text. Calculating this before the
+        // labels allowed the trigger bar to collide with its heading.
+        const barY = canvas.getY() + 7;
         doc.setFillColor(...COLOURS.page);
         doc.setDrawColor(...COLOURS.rule);
         doc.setLineWidth(0.24);
@@ -590,7 +617,7 @@
             const labelX = Math.min(PAGE.right - labelWidth, Math.max(PAGE.left, tx - labelWidth / 2));
             doc.text(canvas.split(label, labelWidth), labelX, barY + barH + 8 + (index % 2) * 4.5, { maxWidth: labelWidth, lineHeightFactor: 1.08, align: "center" });
         });
-        canvas.setY(barY + barH + 22 + Math.min(12, byThreshold.size * 2));
+        canvas.setY(barY + barH + 25 + Math.min(12, byThreshold.size * 3));
     }
 
     function renderGrowthTriggers(canvas, doc, assessment, data) {
