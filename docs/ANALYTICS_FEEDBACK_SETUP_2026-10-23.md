@@ -9,14 +9,13 @@ Events have only a fixed product property (`organization` or `compliance`). Succ
 
 The Founding Beta and both assessments continue to work if Umami is unavailable or not configured. Report-view feedback does not require authentication or payment. It uses `POST /api/report-feedback` on the existing Render/Gmail backend. A 400-character optional comment is sent to HRTechify's internal notification mailbox. The form has a honeypot and rate limiting; email addresses, links and likely phone numbers are blocked in comments. The full-report authentication, PDF and report recipient matching are unchanged.
 
-## Activate Umami (one manual setup)
+## Umami activated — owner configuration received
 
-1. Open https://cloud.umami.is and create a Website with the domain `hrtechifyed.github.io`.
-2. Copy the **public Website ID** (UUID). The ID is not an API secret.
-3. Edit `js/product-analytics.js`: set `const UMAMI_WEBSITE_ID = "<your UUID>";` and merge through CI. Until this value is set, the tracker deliberately makes **zero requests** to Umami.
-4. In a standard browser on the published Pages site (Do Not Track disabled), visit the homepage and test one assessment. Check Umami's Realtime and Events views. Validate events and data fields, and that no values from the URL query or fragment arrive in Umami.
-5. Do **not** configure a tracker ID for staging or test domains, nor add any email or identifying data.
-6. Configure an Umami funnel: pageview → assessment_started → assessment_completed → report_viewed → feedback_submitted. Break down by the `product` property. `full_report_requested` is an optional secondary event.
+The owner supplied a public Website ID on 23 October 2026, and `js/product-analytics.js` now loads Umami Cloud on the official GitHub Pages host `hrtechifyed.github.io`. The public ID is configured in source; no API key, email password or Umami account credential is stored in GrowWithHR. Analytics remains excluded from staging and other hostnames.
+
+**Production verification:** Visit the deployed [GrowWithHR homepage](https://hrtechifyed.github.io/GrowwithHR-Version2/) in a browser with Do Not Track disabled, then open Umami's Realtime view for GrowWithHR. Complete an assessment using fictional company information and inspect Events for `assessment_started`, `assessment_completed` and `report_viewed`. Ensure event properties show only the `product` field (and `rating` after feedback); verify URL query strings and fragments are never received. A successful deploy verifies the integration is served, **not** that the authenticated Umami dashboard has accepted events.
+
+Configure an Umami funnel: pageview → assessment_started → assessment_completed → report_viewed → feedback_submitted. Filter by the `product` property. `full_report_requested` is an optional secondary event.
 
 ## Verify real feedback receipt
 
