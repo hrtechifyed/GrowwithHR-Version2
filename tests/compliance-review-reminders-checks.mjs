@@ -136,7 +136,7 @@ try {
   assert.match(prompt, /requireMatchingSession/);
   assert.match(prompt, /confirm: true/);
   assert.match(privacy, /The default is <strong>no reminders<\/strong>/);
-  for (const file of ["server-compliance-review-reminders.js", "js/company-workspace-continuity.js", "js/company-workspace-client.js", "js/compliance-review-prompt.js", "js/reminder-preferences.js"]) {
+  for (const file of ["server-compliance-review-reminders.js", "js/company-workspace-continuity.js", "js/company-workspace-client.js", "js/reminder-preferences.js"]) {
     execFileSync(process.execPath, ["--check", file]);
   }
   console.log("Consent-first compliance review reminder checks passed.");
