@@ -898,6 +898,72 @@ app.post(
     }
 );
 
+const reportFeedbackLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: "Too many feedback requests. Please try again later." }
+});
+
+app.post("/api/report-feedback", reportFeedbackLimiter, async (request, response) => {
+    const body = request.body || {};
+    if (typeof body !== "object" || Array.isArray(body)) {
+        return response.status(400).json({ error: "Invalid feedback." });
+    }
+    if (cleanText(body.website)) return response.json({ ok: true }); // honeypot
+
+    const product = cleanText(body.product);
+    const rating = cleanText(body.rating);
+    const rawComment = body.comment;
+    if (
+        !["organization", "compliance"].includes(product) ||
+        !["yes", "partly", "no"].includes(rating) ||
+        (rawComment !== undefined && typeof rawComment !== "string")
+    ) {
+        return response.status(400).json({ error: "Choose a valid feedback response." });
+    }
+    const comment = cleanText(rawComment);
+    if (
+        comment.length > 400 ||
+        /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(comment) ||
+        /https?:\/\//i.test(comment) ||
+        /(?:\+?\d[\s()-]*){10,}/.test(comment)
+    ) {
+        return response.status(400).json({
+            error: "Please remove contact details, links or sensitive information from your feedback."
+        });
+    }
+
+    const missing = getMissingEnvironmentVariables();
+    const sender = cleanText(process.env.GMAIL_USER).toLowerCase();
+    const internalRecipient = cleanText(process.env.INTERNAL_NOTIFICATION_EMAIL, sender).toLowerCase();
+    if (missing.length || !isValidEmail(sender) || !isValidEmail(internalRecipient)) {
+        return response.status(503).json({ error: "Feedback is temporarily unavailable." });
+    }
+    try {
+        const feedbackText = [
+            "GrowWithHR report usefulness feedback", "",
+            "Product: " + product,
+            "Answer: " + rating,
+            "Optional comment: " + (comment || "No comment provided"),
+            "Submitted: " + new Date().toISOString()
+        ].join("\n");
+        await sendGmailApiMessage({
+            from: `"GrowWithHR Feedback" <${sender}>`,
+            to: internalRecipient,
+            subject: "GrowWithHR report feedback — " + product + " — " + rating,
+            text: feedbackText,
+            html: `<!doctype html><html lang="en"><body style="font-family:Arial,sans-serif"><h2>GrowWithHR report feedback</h2><p>Product: <strong>${escapeHtml(product)}</strong></p><p>Answer: <strong>${escapeHtml(rating)}</strong></p><p>Optional comment: ${escapeHtml(comment || "No comment provided")}</p></body></html>`
+        });
+        return response.json({ ok: true });
+    } catch (_error) {
+        // Never log the submitted comment or customer details.
+        console.error("GrowWithHR report feedback delivery failed.");
+        return response.status(500).json({ error: "Feedback could not be sent. Please try again." });
+    }
+});
+
 app.get("/api/health", (request, response) => {
     const missing =
         getMissingEnvironmentVariables();
