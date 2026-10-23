@@ -57,7 +57,12 @@
 .beta-field input:focus,.beta-field select:focus,.beta-field textarea:focus{border-color:rgba(255,176,0,.56);box-shadow:0 0 0 3px rgba(255,176,0,.09)}
 .beta-field textarea{resize:vertical;min-height:120px;line-height:1.5}
 .beta-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.beta-form-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:4px}
+/* Form confirmations and failures also need a separate row on small screens. */
+.beta-form-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:4px;min-width:0}
+.beta-form-actions #betaStatus:not(:empty){flex:0 0 100%;width:100%;min-width:0;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);overflow-wrap:anywhere}
+.beta-form-actions #betaStatus.is-error{background:rgba(251,113,133,.08)}
+.beta-form-actions #betaStatus.is-success{background:rgba(134,239,172,.07)}
+@media(max-width:680px){.beta-form-actions button{width:100%;justify-content:center;white-space:normal}}
 .beta-form-actions button{border:0;cursor:pointer}
 .beta-form-actions button:disabled{opacity:.55;cursor:wait}
 #betaStatus{margin:0;color:var(--text-secondary,#cbd5e1);font-size:.86rem}
