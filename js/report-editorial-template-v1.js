@@ -344,10 +344,17 @@
             if (!items.length) return;
             const count = Math.min(4, Math.max(1, Number(columns) || 4));
             const width = (PAGE.right - PAGE.left) / count;
-            const prepared = items.map(([label, value]) => ({
-                labelLines: split(label, width - 8),
-                valueLines: split(value, width - 8)
-            }));
+            const prepared = items.map(([label, value]) => {
+                // jsPDF wrapping uses the current font metrics, so measure each
+                // cell with the same font and size used when drawing it.
+                font("helvetica", "normal");
+                doc.setFontSize(6.3);
+                const labelLines = split(label, width - 8);
+                font("courier", "normal");
+                doc.setFontSize(8.3);
+                const valueLines = split(value, width - 8);
+                return { labelLines, valueLines };
+            });
             for (let start = 0; start < prepared.length; start += count) {
                 const row = prepared.slice(start, start + count);
                 const cellHeight = Math.max(28, ...row.map((cell) =>
@@ -383,10 +390,15 @@
             const items = rows.filter(([, value]) => clean(value));
             if (!items.length) return;
             const width = (PAGE.right - PAGE.left) / items.length;
-            const cells = items.map(([label, value]) => ({
-                labelLines: split(label, width - 5),
-                valueLines: split(value, width - 5)
-            }));
+            const cells = items.map(([label, value]) => {
+                font("helvetica", "normal");
+                doc.setFontSize(6.2);
+                const labelLines = split(label, width - 5);
+                font("courier", "normal");
+                doc.setFontSize(7.2);
+                const valueLines = split(value, width - 5);
+                return { labelLines, valueLines };
+            });
             const height = Math.max(19, ...cells.map((cell) =>
                 9 + cell.labelLines.length * lineHeight(6.2, 1.1) +
                 cell.valueLines.length * lineHeight(7.2, 1.18)
