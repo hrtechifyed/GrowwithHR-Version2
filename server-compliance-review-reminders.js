@@ -23,6 +23,13 @@ const forbidden = (message, statusCode = 400) =>
     Object.assign(new Error(message), { statusCode });
 const nowIso = () => new Date().toISOString();
 const hash = value => crypto.createHash("sha256").update(clean(value)).digest("hex");
+function stableUnsubscribeToken(workspaceId, consentedAt) {
+    const secret = clean(process.env.WORKSPACE_ENCRYPTION_SECRET || process.env.REPORT_ID_ALLOCATOR_SECRET);
+    if (!secret) throw forbidden("Reminder protection is not configured.", 503);
+    return crypto.createHmac("sha256", secret)
+        .update("growwithhr-review-unsubscribe:" + workspaceId + ":" + consentedAt)
+        .digest("base64url");
+}
 
 function monthsFrom(date, n) {
     return workspaceApi.addCalendarMonths(new Date(date), n).toISOString();
@@ -103,8 +110,9 @@ async function enroll(input, request) {
     if (existing?.status === "active" && existing.snapshot_report_id === reportId && existing.cadence === cadence) {
         return publicState(existing); // repeated confirmations must not create duplicate schedules
     }
-    const token = crypto.randomBytes(32).toString("base64url");
     const now = nowIso();
+    // Keep all links issued for one explicit consent valid until revoked.
+    const token = stableUnsubscribeToken(workspace.id, now);
     const rows = await workspaceApi.supabase(`${TABLE}?on_conflict=workspace_id`, {
         method: "POST",
         prefer: "resolution=merge-duplicates,return=representation",
@@ -228,13 +236,13 @@ async function runReviewReminders() {
                 });
                 continue;
             }
-            // Unsubscribe token is stored hashed. Mint and persist a rotated
-            // token before sending; the raw token only appears in recipient email.
-            const token = crypto.randomBytes(32).toString("base64url");
+            // Each consent has a stable HMAC-derived token. Old reminder emails
+            // remain unsubscribable; only a hash is stored in Supabase.
+            const token = stableUnsubscribeToken(row.workspace_id, row.consented_at);
+            if (hash(token) !== row.unsubscribe_token_hash) {
+                throw new Error("Reminder unsubscribe identity has changed.");
+            }
             const next = monthsFrom(new Date(), row.cadence === "monthly" ? 1 : 3);
-            await workspaceApi.supabase(`${TABLE}?workspace_id=eq.${encodeURIComponent(row.workspace_id)}&status=eq.active&claimed_at=eq.${encodeURIComponent(now)}`, {
-                method: "PATCH", body: JSON.stringify({ unsubscribe_token_hash: hash(token) })
-            });
             const message = reviewEmail(workspace, row, token);
             const delivery = await workspaceApi.sendPlainEmail(workspace.email, message.subject, message.text);
             if (!delivery.sent) throw new Error("Reminder email provider unavailable");
