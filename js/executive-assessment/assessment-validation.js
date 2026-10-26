@@ -716,8 +716,8 @@
         requireWholeNumber(
             result,
             "employees",
-            "Enter an approximate employee count. Zero is valid when there are currently no employees.",
-            0
+            "Enter a whole number of employees (at least 1).",
+            1
         );
 
         [

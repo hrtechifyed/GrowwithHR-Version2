@@ -369,6 +369,23 @@
         import("./ui-polish.js").catch((error) => console.error("GrowWithHR UI polish failed to initialize", error));
     }
 
+    function bootstrapFieldInputValidation(prefix) {
+        if (!document.querySelector("link[data-growwithhr-field-validation]")) {
+            const css = document.createElement("link");
+            css.rel = "stylesheet";
+            css.href = withRoot(prefix, "css/41-field-input-validation.css");
+            css.dataset.growwithhrFieldValidation = "";
+            document.head.appendChild(css);
+        }
+        if (!window.GrowWithHRFieldValidation &&
+            !document.querySelector("script[data-growwithhr-field-validation]")) {
+            const script = document.createElement("script");
+            script.src = withRoot(prefix, "js/field-input-validation.js");
+            script.dataset.growwithhrFieldValidation = "";
+            document.body.appendChild(script);
+        }
+    }
+
     function bootstrapOrganizationAutosave() {
         if (!document.getElementById("organizationForm")) return;
         import("./organization-autosave.js").catch((error) => console.error("GrowWithHR organization autosave failed to initialize", error));
@@ -436,6 +453,7 @@
         updatePageOffsets();
         bootstrapHomepageIntelligenceGraph();
         bootstrapUiPolish();
+        bootstrapFieldInputValidation(prefix);
         bootstrapOrganizationAutosave();
         bootstrapCompanyIntelligence(prefix);
         bootstrapProductMeasurement(prefix);
