@@ -582,7 +582,7 @@
                     helper: "A rounded number is perfectly fine.",
                     placeholder: "Example: 75",
                     required: true,
-                    min: 1,
+                    min: 0,
                     value:
                         answers.employees ??
                         ""
