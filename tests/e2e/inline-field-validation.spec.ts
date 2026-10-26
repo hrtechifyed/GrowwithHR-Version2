@@ -81,7 +81,19 @@ test.describe("GrowWithHR inline field validation", () => {
     await expect(page.locator("#employees")).toBeVisible();
     await expect(page.locator("#employees")).toHaveAttribute("min", "1");
     await page.locator("#employees").fill("0");
+    console.log("VALIDATION PRE", JSON.stringify(await page.evaluate(() => {
+      const field = document.getElementById("employees") as HTMLInputElement;
+      const next = document.getElementById("nextButton") as HTMLButtonElement;
+      return { value: field?.value, min: field?.min, fieldForm: field?.form?.id,
+        nextForm: next?.form?.id, customMessage: (window as any).GrowWithHRFieldValidation?.messageFor(field),
+        moment: (window as any).executiveAssessment?.currentMoment };
+    })));
     await page.locator("#nextButton").click();
+    console.log("VALIDATION POST", JSON.stringify(await page.evaluate(() => ({
+      moment: (window as any).executiveAssessment?.currentMoment,
+      fieldStillPresent: Boolean(document.getElementById("employees")),
+      nextType: (document.getElementById("nextButton") as HTMLButtonElement)?.type
+    }))));
     await expect(page.locator("#employees")).toHaveAttribute("aria-invalid", "true");
     await expect(page.locator("#employees").locator("xpath=..")).toContainText("at least 1");
     await page.locator("#employees").fill("20");
