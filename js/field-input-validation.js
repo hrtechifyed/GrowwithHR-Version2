@@ -183,10 +183,17 @@
 
   document.addEventListener("submit", event => {
     const form = event.target;
-    // The compliance wizard and report-contact step have their own
-    // multi-field validators, summaries and step-navigation handling.
-    // Preserve those submit handlers; inline feedback still works on blur.
-    if (["storyForm", "leadCaptureForm"].includes(form?.id)) return;
+    // Keep the compliance wizard's existing multi-field validation for
+    // required answers, but enforce native numeric constraints first. Some
+    // compatibility journeys historically allowed zero employees.
+    if (form?.id === "storyForm") {
+      const badNumbers = [...form.querySelectorAll('input[type="number"]')]
+        .some(field => applicable(field) && Boolean(messageFor(field)));
+      if (!badNumbers) return;
+    } else if (form?.id === "leadCaptureForm") {
+      // The lead-contact step has its own error summary and email validator.
+      return;
+    }
     if (!form?.querySelectorAll || validateForm(form)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
