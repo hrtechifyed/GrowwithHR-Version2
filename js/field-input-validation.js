@@ -56,7 +56,9 @@
           validity.stepMismatch)) {
         return `Enter a whole number for ${label.toLowerCase()} (no decimals or negative values).`;
       }
-      const min = field.getAttribute("min");
+      // The legacy compliance field can internally normalize the HTML min.
+      // Enforce the actual business rule before submission instead.
+      const min = field.id === "employees" ? "1" : field.getAttribute("min");
       if (min !== null && numeric < Number(min)) {
         return field.id === "employees" || field.id === "betaEmployees"
           ? "Number of employees must be at least 1."
