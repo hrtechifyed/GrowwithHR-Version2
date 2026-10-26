@@ -181,6 +181,21 @@
     if (applicable(field) && field.classList.contains("growwithhr-invalid")) validateField(field);
   }, true);
 
+  // Some legacy wizard navigation handlers can act on the Continue click
+  // before a submit event reaches the shared document listener.
+  document.addEventListener("click", event => {
+    const next = event.target?.closest?.("#nextButton");
+    if (!next) return;
+    const form = next.form;
+    if (form?.id !== "storyForm") return;
+    const badNumbers = [...form.querySelectorAll('input[type="number"]')]
+      .some(field => applicable(field) && Boolean(messageFor(field)));
+    if (!badNumbers) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    validateForm(form);
+  }, true);
+
   document.addEventListener("submit", event => {
     const form = event.target;
     // Keep the compliance wizard's existing multi-field validation for
