@@ -183,6 +183,10 @@
 
   document.addEventListener("submit", event => {
     const form = event.target;
+    // The compliance wizard and report-contact step have their own
+    // multi-field validators, summaries and step-navigation handling.
+    // Preserve those submit handlers; inline feedback still works on blur.
+    if (["storyForm", "leadCaptureForm"].includes(form?.id)) return;
     if (!form?.querySelectorAll || validateForm(form)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
