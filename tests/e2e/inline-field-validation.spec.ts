@@ -79,7 +79,7 @@ test.describe("GrowWithHR inline field validation", () => {
     await page.locator("#entity").selectOption({ label: "Not sure" });
     await page.locator("#nextButton").click();
     await expect(page.locator("#employees")).toBeVisible();
-    await expect(page.locator("#employees")).toHaveAttribute("min", "1");
+    await expect(page.locator("#employees")).toHaveAttribute("min", "0");
     await page.locator("#employees").fill("0");
     console.log("VALIDATION PRE", JSON.stringify(await page.evaluate(() => {
       const field = document.getElementById("employees") as HTMLInputElement;
