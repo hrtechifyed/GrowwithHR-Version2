@@ -26,7 +26,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22.23.4'
       - name: Validate M4 model syntax
         run: node --check js/assessment-v3/explainable-intelligence-model.js
       - name: Validate M4 PDF transparency syntax
