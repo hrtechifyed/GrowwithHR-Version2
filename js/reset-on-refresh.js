@@ -1,147 +1,98 @@
 (() => {
     "use strict";
 
-    const body = document.body;
-    const scope = String(body?.dataset?.refreshResetScope || "").trim();
+    // This script runs before each assessment's initialization scripts.
+    // Never clear a completed report, saved workspace or authentication/consent.
+    const scope = String(document.body?.dataset?.refreshResetScope || "").trim();
+    if (!["organization", "compliance"].includes(scope)) return;
 
-    if (!scope) return;
+    const ORGANIZATION_DRAFT_PREFIX = "growwithhr.organization.draft.v1";
+    const COMPLIANCE_DRAFT_KEY = "growwithhr-advisory-briefing-v2";
+    const WORKSPACE_SESSION_KEY = "growwithhr.workspace";
+    const PAGE_RESET_KEY = "growwithhr.start-fresh.page-reset";
 
-    const KEYS = Object.freeze({
-        organization: Object.freeze({
-            session: [
-                "growwithhr.workspace",
-                "growwithhr.workspace.previous",
-                "growwithhr.organization.report"
-            ],
-            local: []
-        }),
-        compliance: Object.freeze({
-            session: [],
-            local: [
-                "growwithhr-advisory-briefing-v2",
-                "growwithhr-report",
-                "growwithhr-lead",
-                "growwithhr-advisory-delivery-v1"
-            ]
-        })
-    });
-
-    const keys = KEYS[scope];
-    if (!keys) return;
-
-    function remove(storage, names) {
-        names.forEach((name) => {
-            try { storage.removeItem(name); }
-            catch (_error) {}
-        });
+    function store() {
+        try { return window.localStorage; } catch (_error) { return null; }
     }
 
-    function hasStoredData() {
-        const has = (storage, names) =>
-            names.some((name) => {
-                try { return storage.getItem(name) !== null; }
-                catch (_error) { return false; }
-            });
-
-        return (
-            has(window.sessionStorage, keys.session) ||
-            has(window.localStorage, keys.local)
-        );
-    }
-
-    function isReloadNavigation() {
+    function organizationDraftKey() {
         try {
-            const entry =
-                performance.getEntriesByType("navigation")[0];
+            const workspace = JSON.parse(window.sessionStorage.getItem(WORKSPACE_SESSION_KEY) || "null");
+            return workspace?.reportId
+                ? ORGANIZATION_DRAFT_PREFIX + ":" + workspace.reportId
+                : ORGANIZATION_DRAFT_PREFIX + ":local";
+        } catch (_error) {
+            return ORGANIZATION_DRAFT_PREFIX + ":local";
+        }
+    }
 
-            if (entry?.type) {
-                return entry.type === "reload";
+    function readDraft() {
+        const storage = store();
+        if (!storage) return null;
+        const key = scope === "organization" ? organizationDraftKey() : COMPLIANCE_DRAFT_KEY;
+        try {
+            const raw = storage.getItem(key);
+            if (!raw) return null;
+            const value = JSON.parse(raw);
+            if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+            if (scope === "organization") {
+                if (value.version !== 1 || !value.values || typeof value.values !== "object") return null;
+                if (!Object.keys(value.values).length) return null;
+            } else if (!value.started || value.completed) {
+                // Completed assessments are not unfinished drafts.
+                return null;
             }
+            return { key, value };
+        } catch (_error) {
+            return null;
+        }
+    }
 
-            return (
-                performance.navigation?.type ===
-                performance.navigation?.TYPE_RELOAD
-            );
+    function clearDraft(draft) {
+        const storage = store();
+        if (!storage || !draft) return false;
+        try {
+            if (scope === "compliance") {
+                // The legacy assessment snapshot also contains marketingConsent;
+                // preserve it while discarding only the unfinished draft state.
+                const consent = draft.value?.lead?.marketingConsent === true;
+                if (consent) {
+                    storage.setItem(draft.key, JSON.stringify({
+                        started: false,
+                        completed: false,
+                        currentMoment: 0,
+                        answers: {},
+                        lead: { marketingConsent: true }
+                    }));
+                } else {
+                    storage.removeItem(draft.key);
+                }
+            } else {
+                storage.removeItem(draft.key);
+            }
+            return true;
         } catch (_error) {
             return false;
         }
     }
 
-    function removeHandoffFromUrl() {
-        if (scope !== "organization") return;
-
-        try {
-            const url = new URL(window.location.href);
-            if (!url.searchParams.has("handoff")) return;
-            url.searchParams.delete("handoff");
-            history.replaceState(
-                null,
-                "",
-                url.pathname +
-                    (url.searchParams.toString()
-                        ? "?" + url.searchParams.toString()
-                        : "") +
-                    url.hash
-            );
-        } catch (_error) {}
+    // No prompt without a persisted, unfinished assessment draft.
+    const draft = readDraft();
+    if (draft) {
+        const startFresh = window.confirm(
+            "Start a new assessment?\n\n" +
+            "Yes — clear your unsaved answers for this assessment and start fresh.\n" +
+            "No — keep your answers and continue.\n\n" +
+            "Completed reports, saved workspaces, sign-in and reminder preferences will not be deleted."
+        );
+        if (startFresh) clearDraft(draft);
     }
 
-    function clearPageData() {
-        remove(window.sessionStorage, keys.session);
-        remove(window.localStorage, keys.local);
-        removeHandoffFromUrl();
-    }
-
-    const reloaded = isReloadNavigation();
-
-    if (reloaded) {
-        clearPageData();
-    }
-
-    let dirty = !reloaded && hasStoredData();
-
-    function markDirty(event) {
-        const target = event?.target;
-        if (
-            target &&
-            target.closest &&
-            target.closest("form")
-        ) {
-            dirty = true;
-        }
-    }
-
-    document.addEventListener(
-        "input",
-        markDirty,
-        true
-    );
-
-    document.addEventListener(
-        "change",
-        markDirty,
-        true
-    );
-
-    window.addEventListener(
-        "beforeunload",
-        (event) => {
-            if (!dirty) return;
-
-            event.preventDefault();
-            event.returnValue = "";
-        }
-    );
-
-    window.GrowWithHRRefreshReset =
-        Object.freeze({
-            scope,
-            clearPageData,
-            markClean: () => {
-                dirty = false;
-            },
-            markDirty: () => {
-                dirty = true;
-            }
-        });
+    // Compatibility API for existing callers: deliberately draft-scoped.
+    window.GrowWithHRRefreshReset = Object.freeze({
+        scope,
+        clearPageData: () => clearDraft(readDraft()),
+        markClean: () => {},
+        markDirty: () => {}
+    });
 })();
