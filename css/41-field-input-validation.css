@@ -1,0 +1,23 @@
+/* Shared inline validation; applies to dynamic and static assessment fields. */
+.growwithhr-invalid {
+  border-color: #d35a4e !important;
+  outline: 2px solid #d35a4e;
+  outline-offset: 1px;
+}
+.growwithhr-invalid:focus-visible {
+  outline: 3px solid #d35a4e;
+  outline-offset: 2px;
+}
+.growwithhr-validation-message {
+  display: block;
+  margin: 6px 0 0;
+  color: #ff9f90;
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.growwithhr-validation-message[hidden] { display: none !important; }
+@media (prefers-color-scheme: light) {
+  .growwithhr-validation-message { color: #aa3029; }
+}
