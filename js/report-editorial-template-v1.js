@@ -246,12 +246,14 @@
         function text(value, options = {}) {
             const content = clean(value);
             if (!content) return 0;
-            const size = Number(options.size || 9);
+            const size = Number(options.size || 10);
             const width = Number(options.width || PAGE.right - PAGE.left);
-            const factor = Number(options.factor || 1.25);
+            const factor = Number(options.factor || 1.42);
+            font(options.font || "helvetica", options.bold ? "bold" : (options.style || "normal"));
+            doc.setFontSize(size);
             const lines = split(content, width);
             const height = Math.max(lineHeight(size, factor), lines.length * lineHeight(size, factor));
-            const after = Number(options.after ?? 3);
+            const after = Number(options.after ?? 4);
             if (!options.noEnsure) ensure(height + after);
             font(options.font || "helvetica", options.bold ? "bold" : (options.style || "normal"));
             doc.setFontSize(size);
@@ -304,22 +306,24 @@
         function card(title, body, options = {}) {
             const width = Number(options.width || 190);
             const x = Number(options.x ?? PAGE.left);
+            font("helvetica", "bold"); doc.setFontSize(11);
             const titleLines = split(title, width - 12);
+            font("helvetica", "normal"); doc.setFontSize(9.5);
             const bodyLines = split(body, width - 12);
-            const height = 7 + titleLines.length * lineHeight(10.5, 1.16) + bodyLines.length * lineHeight(8.3, 1.28) + 8;
+            const height = 7 + titleLines.length * lineHeight(11, 1.25) + bodyLines.length * lineHeight(9.5, 1.42) + 8;
             ensure(height + 4);
             doc.setDrawColor(...COLOURS.rule);
             doc.setLineWidth(0.28);
             doc.rect(x, y - 2, width, height, "S");
-            font("times", "normal");
-            doc.setFontSize(10.5);
+            font("helvetica", "bold");
+            doc.setFontSize(11);
             doc.setTextColor(...(options.titleColour || COLOURS.ink));
-            doc.text(titleLines, x + 6, y + 5, { lineHeightFactor: 1.16, maxWidth: width - 12 });
-            const bodyY = y + 7 + titleLines.length * lineHeight(10.5, 1.16);
+            doc.text(titleLines, x + 6, y + 5, { lineHeightFactor: 1.25, maxWidth: width - 12 });
+            const bodyY = y + 7 + titleLines.length * lineHeight(11, 1.25);
             font("helvetica", "normal");
-            doc.setFontSize(8.3);
-            doc.setTextColor(...COLOURS.muted);
-            doc.text(bodyLines, x + 6, bodyY, { lineHeightFactor: 1.28, maxWidth: width - 12 });
+            doc.setFontSize(9.5);
+            doc.setTextColor(...COLOURS.ink);
+            doc.text(bodyLines, x + 6, bodyY, { lineHeightFactor: 1.42, maxWidth: width - 12 });
             y += height + 4;
         }
 
@@ -327,15 +331,16 @@
             const content = clean(value);
             if (!content) return;
             const width = Number(options.width || 176);
+            font("helvetica", "normal"); doc.setFontSize(9.5);
             const lines = split(content, width);
-            const height = Math.max(3.8, lines.length * lineHeight(8.2, 1.28));
+            const height = Math.max(4.5, lines.length * lineHeight(9.5, 1.4));
             ensure(height + 2.5);
             doc.setFillColor(...(options.dotColour || COLOURS.ink));
             doc.circle(PAGE.left + 1.8, y - 1.4, 0.55, "F");
             font("helvetica", "normal");
-            doc.setFontSize(8.2);
+            doc.setFontSize(9.5);
             doc.setTextColor(...(options.colour || COLOURS.ink));
-            doc.text(lines, PAGE.left + 6, y, { lineHeightFactor: 1.28, maxWidth: width });
+            doc.text(lines, PAGE.left + 6, y, { lineHeightFactor: 1.4, maxWidth: width });
             y += height + 2.5;
         }
 
