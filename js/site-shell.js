@@ -313,6 +313,13 @@
     }
 
     function ensurePolishStyles(prefix) {
+        if (!document.querySelector('link[data-growwithhr-reading-rhythm], link[href*="42-reading-rhythm.css"]')) {
+            const reading = document.createElement("link");
+            reading.rel = "stylesheet";
+            reading.href = `${withRoot(prefix,"css/42-reading-rhythm.css")}?v=20261127`;
+            reading.dataset.growwithhrReadingRhythm = "";
+            document.head.appendChild(reading);
+        }
         if (!document.querySelector("link[data-growwithhr-ui-polish]")) {
             const link = document.createElement("link");
             link.rel = "stylesheet";
