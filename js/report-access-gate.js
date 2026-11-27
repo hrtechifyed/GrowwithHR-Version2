@@ -77,7 +77,10 @@
             ? payload.answers.operatingStates.length
             : clean(payload.answers.operatingStateCount || payload.answers.locations, "Not provided");
         const complianceCount = Array.isArray(model?.compliance) ? model.compliance.length : statValue(model, ["complianceAreaCount", "applicableCount"], "Generated");
-        const changeCount = list(app.lastPdfDocument?.inputChanges || payload.report?.inputChanges).length;
+        const comparison = payload.report?.changeIntelligence;
+        const changes = list(comparison?.changes ?? payload.report?.inputChanges ?? app.lastPdfDocument?.inputChanges);
+        const changeCount = comparison?.baselineAvailable === false ? "No baseline" : changes.length;
+        const headcountChange = changes.find(item => item.field === "employees");
         return `
             <section class="gwh-report-glimpse" id="personalReportGlimpse" aria-labelledby="personalReportGlimpseTitle">
                 <div class="gwh-report-glimpse__head">
@@ -90,6 +93,7 @@
                     <div class="gwh-report-stat"><strong>${esc(complianceCount)}</strong><span>Readiness areas evaluated</span></div>
                     <div class="gwh-report-stat"><strong>${esc(changeCount)}</strong><span>Facts changed since prior baseline</span></div>
                 </div>
+                ${headcountChange ? `<p><strong>Employee count changed:</strong> ${esc(headcountChange.before)} → ${esc(headcountChange.after)}</p>` : ""}
                 <ul class="gwh-report-glimpse__priorities">
                     ${priorities.map((item, index) => `<li><strong>${index + 1}. ${esc(item.title)}</strong>${item.body ? `<br>${esc(item.body)}` : ""}</li>`).join("") || "<li><strong>Executive interpretation prepared.</strong><br>The complete report contains the detailed readiness findings, evidence, missing information and next actions.</li>"}
                 </ul>
