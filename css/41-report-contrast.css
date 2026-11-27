@@ -1,0 +1,28 @@
+/* Report surface/foreground pairs. Keep scoped to reports, not global app theme. */
+body.has-site-shell .gwh-report-glimpse,
+body.has-site-shell .gwh-auth-card,
+body.has-site-shell .wcp-glimpse,
+body.has-site-shell .org-design-editor {
+  --text-primary:#172033;--text-secondary:#334155;--text-muted:#475569;--brand-gold:#795400;
+  color:#172033!important;background:#fff!important;border:1px solid #cbd5e1!important;
+}
+body.has-site-shell :is(.gwh-report-glimpse,.gwh-auth-card,.wcp-glimpse,.org-design-editor) :is(h1,h2,h3,h4,strong,label,summary){color:#172033!important}
+body.has-site-shell :is(.gwh-report-glimpse,.gwh-auth-card,.wcp-glimpse,.org-design-editor) :is(p,small,.org-subtle){color:#475569!important}
+body.has-site-shell :is(.gwh-report-glimpse,.wcp-glimpse) :is(.gwh-report-stat,.org-bottleneck-card,.org-ownership-map__item){color:#172033!important;background:#f1f5f9!important;border-color:#cbd5e1!important}
+body.has-site-shell :is(.gwh-report-glimpse,.wcp-glimpse) :is(.gwh-report-glimpse__label,.gwh-report-glimpse__lock,.org-eyebrow,.wcp-eyebrow){color:#795400!important}
+body.has-site-shell .gwh-report-glimpse .org-panel{background:#fff!important;color:#172033!important;border-color:#cbd5e1!important}
+body.has-site-shell :is(.gwh-auth-card,.org-design-editor) :is(input,textarea){background:#fff!important;color:#172033!important;border:1px solid #64748b!important}
+body.has-site-shell :is(.gwh-auth-card,.org-design-editor) :is(input,textarea)::placeholder{color:#64748b!important}
+body.has-site-shell :is(.gwh-auth-submit,.gwh-full-report-button){color:#241900!important;background:#ffcf4d!important}
+body.has-site-shell :is(.gwh-auth-card,.gwh-report-glimpse) :is(a){color:#174b87!important}
+body.has-site-shell .gwh-auth-card .is-error{color:#991b1b!important}
+body.has-site-shell .org-design-editor{padding:clamp(16px,3vw,28px);border-radius:16px;margin:20px 0}
+.org-design-editor label{display:block;font-weight:700;margin:14px 0 8px}
+.org-design-editor textarea{width:100%;box-sizing:border-box;padding:12px;border-radius:8px;font:13px/1.55 monospace;resize:vertical}
+body.has-site-shell .org-design-editor button{background:#142238!important;color:#fff!important;border-color:#142238!important}
+.org-design-preview{overflow:auto;background:#fff;padding:16px;border:1px solid #cbd5e1;border-radius:10px;text-align:center}
+.org-design-preview svg{max-width:100%;height:auto}
+.org-design-preview .org-design-root{display:inline-block;padding:10px 20px;background:#142238;color:#fff!important;border-radius:8px}
+.org-design-nodes{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:18px;border-top:2px solid #64748b;padding-top:12px}
+.org-design-nodes span{padding:10px;background:#eef4ff;color:#172033;border:1px solid #64748b;border-radius:8px;overflow-wrap:anywhere}
+@media print{.org-design-editor textarea,.org-design-editor .org-actions{display:none!important}.org-design-preview{break-inside:avoid}}
