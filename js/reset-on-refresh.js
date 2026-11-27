@@ -94,7 +94,7 @@
 
     const reloaded = isReloadNavigation();
 
-    if (reloaded) {
+    if (reloaded && scope !== "organization") {
         clearPageData();
     }
 
