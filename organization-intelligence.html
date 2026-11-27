@@ -413,10 +413,14 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
     event.preventDefault();
     const emailInput=document.getElementById("email");
     if(!window.GrowWithHREmailValidation.isValidEmail(emailInput.value)){emailInput.setCustomValidity(window.GrowWithHREmailValidation.message);emailInput.reportValidity();return;}
-    const button=form.querySelector('button[type="submit"]');const original=button.textContent;button.disabled=true;button.textContent="Generating…";
+    const button=form.querySelector('button[type="submit"]');if(button.disabled)return;
+    const original=button.textContent;button.disabled=true;
     const data=buildFacts();
+    const completeness=window.GrowWithHRCompleteness.organization(data);
+    if(!await window.GrowWithHRCompleteness.confirmIncomplete(completeness)){button.disabled=false;return;}
+    button.textContent="Generating…";
     const analysis=analyzeOrganizationStructure(data);
-    const reportPayload={data,analysis,reportModel:analysis.reportModel,reportId:"",workspace:null,persistenceWarning:""};
+    const reportPayload={data,analysis,completeness,reportModel:analysis.reportModel,reportId:"",workspace:null,persistenceWarning:""};
     sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
     try{
       const persisted=await persistWorkspace(data,analysis);
