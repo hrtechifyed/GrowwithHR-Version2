@@ -58,7 +58,7 @@ function assertReportId(value) {
 
 function assertEmail(value) {
     const email = cleanText(value).toLowerCase();
-    if (!/^[^\s@;,]+@[^\s@;,]+\.[^\s@;,]+$/.test(email)) {
+    if (!require("./js/email-validation.js").isValidEmail(email)) {
         throw Object.assign(new Error("A valid email address is required."), { statusCode: 400 });
     }
     return email;
