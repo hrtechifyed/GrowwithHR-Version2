@@ -12,7 +12,7 @@ const FOUNDER_NAME = "Anurag Sinha";
 const FOUNDER_LINKEDIN_URL = "https://www.linkedin.com/in/anuragsinha1009/";
 
 function cleanText(value, fallback = "") { return String(value ?? "").trim() || fallback; }
-function validEmail(value) { return /^[^\s@;,]+@[^\s@;,]+\.[^\s@;,]+$/.test(cleanText(value)); }
+function validEmail(value) { return require("./js/email-validation.js").isValidEmail(value); }
 function safeHeader(value) { return cleanText(value).replace(/[\r\n]+/g, " "); }
 function escapeHtml(value) { return cleanText(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 function encodeHeader(value) { return `=?UTF-8?B?${Buffer.from(safeHeader(value),"utf8").toString("base64")}?=`; }
