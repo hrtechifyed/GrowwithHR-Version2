@@ -68,6 +68,7 @@
 
     async function signIn(email, password) {
         const userEmail = emailKey(email);
+        if (window.GrowWithHREmailValidation && !window.GrowWithHREmailValidation.isValidEmail(userEmail)) throw new Error(window.GrowWithHREmailValidation.message);
         if (!userEmail || !clean(password)) throw new Error("Enter your work email and password.");
         const supabaseClient = await getClient();
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email: userEmail, password });
@@ -77,6 +78,7 @@
 
     async function signUp(email, password) {
         const userEmail = emailKey(email);
+        if (window.GrowWithHREmailValidation && !window.GrowWithHREmailValidation.isValidEmail(userEmail)) throw new Error(window.GrowWithHREmailValidation.message);
         if (!userEmail) throw new Error("Enter your work email.");
         if (clean(password).length < MIN_PASSWORD_LENGTH) throw new Error(`Use at least ${MIN_PASSWORD_LENGTH} characters for your password.`);
         const supabaseClient = await getClient();
