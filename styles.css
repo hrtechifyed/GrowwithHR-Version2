@@ -15,7 +15,7 @@
 @import url("css/15-print.css");
 @import url("css/16-homepage-refresh.css");
 @import url("css/19-presentation-polish.css");
-@import url("css/21-logo-restore.css?v=20261127-stable-logo");
+@import url("css/21-logo-restore.css");
 @import url("css/22-home-graph-rotation.css");
 @import url("css/23-compliance-engine.css");
 @import url("css/24-intelligence-hub.css");
@@ -26,7 +26,7 @@
 @import url("css/29-layered-dark.css?v=20260901-layered-dark-global");
 @import url("css/29-report-access.css");
 @import url("css/30-workforce-capability.css");
-@import url("css/18-site-shell.css?v=20261127-stable-logo");
+@import url("css/18-site-shell.css");
 @import url("css/31-approved-template.css?v=20260915-yellow-release-v2");
 @import url("css/33-yellow-action-highlight.css?v=20260915-yellow-release-v2");
 @import url("css/35-official-resources-layout.css?v=20260916-card-layout-fix");
@@ -35,4 +35,5 @@
 @import url("css/38-commercial-beta.css?v=20261023-public-ui-sweep");
 @import url("css/40-compliance-review-reminders.css");
 @import url("css/41-report-contrast.css?v=20261127-founder-audit");
+@import url("css/42-reading-rhythm.css?v=20261127");
 @import url("css/32-assessment-interaction-fix.css");
