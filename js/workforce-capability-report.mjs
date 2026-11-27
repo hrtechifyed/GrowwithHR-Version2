@@ -47,6 +47,7 @@ function frameworkMarkup(item) {
 }
 
 function renderFullSample(payload) {
+  const completeness=payload.completeness||window.GrowWithHRCompleteness.workforce(payload.data,payload.analysis);
   const plan=payload.plan;
   subtitle.textContent=`Complete fictional sample for ${payload.data.company.name}. Example data only.`;
   content.innerHTML=`
