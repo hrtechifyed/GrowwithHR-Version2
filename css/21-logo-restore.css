@@ -1,6 +1,5 @@
 /* Restore the established HRTechify artwork while visually removing its dark tile inside the navbar. */
 .site-brand-logo img {
-    content: url("../assets/hrtechify-logo.png") !important;
     object-fit: contain;
     mix-blend-mode: screen;
     background: transparent;
