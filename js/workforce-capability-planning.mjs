@@ -410,6 +410,8 @@ finalizeButton.addEventListener("click", async () => {
     return;
   }
   finalizeButton.disabled = true;
+  const completeness=window.GrowWithHRCompleteness.workforce(buildInput(),latestAnalysis);
+  if(!await window.GrowWithHRCompleteness.confirmIncomplete(completeness)){finalizeButton.disabled=false;return;}
   finalizeStatus.textContent = "Creating your implementation plan and saving the confirmed company baseline…";
   try {
     const input = buildInput();
@@ -417,6 +419,7 @@ finalizeButton.addEventListener("click", async () => {
     const persisted = await persistWorkspace(input, plan);
     const payload = {
       data: input,
+      completeness,
       analysis: latestAnalysis,
       plan,
       reportId: persisted.reportId,
