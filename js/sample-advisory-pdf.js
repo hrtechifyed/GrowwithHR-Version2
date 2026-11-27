@@ -19,7 +19,7 @@
         founded: "2019",
         entity: "Private Limited Company",
         fundingStage: "Growth funded",
-        employees: 86,
+        employees: 42,
         contractWorkers: 12,
         interns: 4,
         apprentices: 0,
