@@ -2613,8 +2613,13 @@ resolveReportUrl() {
                 return;
             }
 
-            this.isSubmitting =
-                true;
+            this.isSubmitting = true;
+            const completeness = window.GrowWithHRCompleteness.compliance({answers:{...this.answers},lead:{...this.lead},report:this.writeReportData()});
+            if (!await window.GrowWithHRCompleteness.confirmIncomplete(completeness)) {
+                this.isSubmitting = false;
+                return;
+            }
+            this.reportCompleteness = completeness;
 
             this.setGenerateButtonState(
                 true
@@ -2628,6 +2633,7 @@ resolveReportUrl() {
                         .createModuleContext()
                 );
 
+            records.report.completeness = this.reportCompleteness;
             Storage.writeLead(
                 records.lead
             );
