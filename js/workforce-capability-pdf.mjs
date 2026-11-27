@@ -113,6 +113,8 @@ function renderExecutive(canvas,payload) {
   const plan=payload.plan; const data=payload.data; const findings=list(plan.findings);
   canvas.next("Executive Summary"); canvas.heading("01","Executive summary","The executive answer first: strategy, major gaps and the implementation direction selected by the user.");
   canvas.serif(plan.overallPosition?.headline||"Planning position",{size:18,bold:true,after:7});
+  const completeness=payload.completeness||window.GrowWithHRCompleteness?.workforce(data,payload.analysis||plan);
+  if(completeness?.incomplete){canvas.card("Incomplete-input report","Some information was not supplied or confirmed. Recommendations are limited to available facts. Complete the missing information and regenerate before relying on the plan.");completeness.missing.forEach(item=>canvas.bullet(item,{dotColour:COLOURS.blue}));}
   canvas.label("Business objective"); canvas.text(data.strategy?.objective||"Not supplied",{after:6});
   const critical=findings.filter(item=>["confirmed-gap","capacity-gap","likely-gap","capacity-pressure","fragile-coverage"].includes(item.status));
   canvas.label("Highest-priority findings");
