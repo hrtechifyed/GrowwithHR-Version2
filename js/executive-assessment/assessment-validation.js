@@ -130,6 +130,8 @@
      * @returns {boolean}
      */
     function isValidEmail(email) {
+        if(window.GrowWithHREmailValidation)return window.GrowWithHREmailValidation.isValidEmail(email);
+        if(/\.(?:con|cmo|ocm|comm|coom|comn|nte|ogr|orgg|nett)$/i.test(String(email||"").trim()))return false;
         const helper =
             utils().isValidEmail;
 
@@ -1043,7 +1045,7 @@
             result.valid = false;
 
             result.errors.email =
-                "Enter a valid email address, such as name@company.com.";
+                "Enter a valid work email address, such as name@company.com. Check for domain typos.";
 
             if (
                 !result
