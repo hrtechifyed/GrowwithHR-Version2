@@ -29,3 +29,37 @@ test("Acme web sample and PDF fixture have the same employee count", async ({ pa
   expect(displayed).toBe(42);
   expect(count).toBe(displayed);
 });
+
+test("organization assessment rejects .con and permits correcting the address", async ({ page }) => {
+  await page.goto("/organization-intelligence.html");
+  await page.locator("#companyName").fill("Fictional Audit Co");
+  await page.locator("#email").fill("founder@example.con");
+  await page.locator("#industry").fill("Technology");
+  await page.locator("#employees").fill("48");
+  await page.locator("#organizationForm button[type=submit]").click();
+  await expect(page.locator("#email")).toHaveJSProperty("validationMessage", "Enter a valid work email address. Check the spelling of the domain (for example, .com rather than .con).");
+  await page.locator("#email").fill("founder@example.com");
+  await expect(page.locator("#email")).toHaveJSProperty("validationMessage", "");
+});
+
+test("shared email validation rejects common mistakes without blocking corporate domains", async ({ page }) => {
+  await page.goto("/organization-intelligence.html");
+  const results=await page.evaluate(() => {
+    const validate=(window as any).GrowWithHREmailValidation.isValidEmail;
+    return ["founder@company.con","founder@company..com","bad@@company.com","founder@company.com","founder+qa@company.co.in","founder@company.tech"].map(validate);
+  });
+  expect(results).toEqual([false,false,false,true,true,true]);
+});
+
+test("organization sample provides editable Mermaid source and a downloadable .mmd", async ({ page }) => {
+  await page.goto("/organization-structure-report.html?sample=1");
+  const source=page.locator("#orgMermaidSource");
+  await expect(source).toBeVisible();
+  await expect(source).toHaveValue(/flowchart TD[\s\S]*Founder \/ CEO[\s\S]*Engineering/);
+  await source.fill('flowchart TD\nCEO["CEO"] --> A["New function"]');
+  const download=page.waitForEvent("download");
+  await page.getByRole("button",{name:"Download .mmd"}).click();
+  expect((await download).suggestedFilename()).toMatch(/\.mmd$/);
+  await page.getByRole("button",{name:"Reset proposal"}).click();
+  await expect(source).toHaveValue(/Engineering/);
+});
