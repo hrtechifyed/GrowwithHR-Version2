@@ -40,7 +40,7 @@ function confirmIncomplete(status){
     actions.append(back,proceed);dialog.append(title,intro,list,actions);document.body.append(dialog);
     let approved=false;dialog.addEventListener("close",()=>{dialog.remove();resolve(approved);},{once:true});
     back.addEventListener("click",()=>dialog.close());proceed.addEventListener("click",()=>{approved=true;dialog.close();});
-    dialog.showModal();back.focus();
+    if(typeof dialog.showModal==="function"){dialog.showModal();back.focus();}else{dialog.remove();resolve(root.confirm("Your report will be incomplete. Missing: "+status.missing.join("; ")+"\nGenerate incomplete report?"));}
   });
 }
 root.GrowWithHRCompleteness=Object.freeze({organization,compliance,workforce,message,confirmIncomplete,unknown});
