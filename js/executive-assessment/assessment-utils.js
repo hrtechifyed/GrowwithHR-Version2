@@ -433,6 +433,8 @@
      * @returns {boolean}
      */
     function isValidEmail(email) {
+        if(window.GrowWithHREmailValidation)return window.GrowWithHREmailValidation.isValidEmail(email);
+        if(/\.(?:con|cmo|ocm|comm|coom|comn|nte|ogr|orgg|nett)$/i.test(String(email||"").trim()))return false;
         return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(
             String(email || "")
         );
