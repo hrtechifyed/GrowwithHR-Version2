@@ -95,3 +95,29 @@ test("shared logo stays bounded during desktop and mobile navigation", async ({ 
     expect(stylesheet).not.toContain("20260915-application-audit");
   }
 });
+
+test("incomplete organization report requires acknowledgment without losing answers", async ({ page }) => {
+  await page.goto("/organization-intelligence.html");
+  await page.locator("#companyName").fill("Fictional Audit Co");
+  await page.locator("#email").fill("founder@example.com");
+  await page.locator("#industry").fill("Technology");
+  await page.locator("#employees").fill("48");
+  await page.locator("#organizationForm button[type=submit]").click();
+  const dialog=page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText("Your report will be incomplete");
+  await expect(dialog).toContainText("People managers");
+  await dialog.getByRole("button",{name:"Return to assessment"}).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.locator("#companyName")).toHaveValue("Fictional Audit Co");
+  await expect(page.locator("#organizationForm button[type=submit]")).toBeEnabled();
+});
+
+test("completeness distinguishes zero and explicit no from unknown inputs", async ({ page }) => {
+  await page.goto("/organization-intelligence.html");
+  const result=await page.evaluate(()=>{
+    const api=(window as any).GrowWithHRCompleteness;
+    return [0,false,"none","dont-know","",null].map(api.unknown);
+  });
+  expect(result).toEqual([false,false,false,true,true,true]);
+});
