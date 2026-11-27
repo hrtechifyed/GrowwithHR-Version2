@@ -2614,7 +2614,7 @@ resolveReportUrl() {
             }
 
             this.isSubmitting = true;
-            const completeness = window.GrowWithHRCompleteness.compliance({answers:{...this.answers},lead:{...this.lead},report:this.writeReportData()});
+            const completeness = window.GrowWithHRCompleteness.compliance({answers:{...this.answers},lead:{...this.lead},report:ReportMapper.buildReportData(this.createModuleContext())});
             if (!await window.GrowWithHRCompleteness.confirmIncomplete(completeness)) {
                 this.isSubmitting = false;
                 return;
