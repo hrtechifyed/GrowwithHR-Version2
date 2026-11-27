@@ -97,8 +97,10 @@ async function bindPersonalizedAccess(payload){document.getElementById("printRep
 
 const payload=currentPayload();
 if(!payload){document.getElementById("screen-overview").innerHTML="<section class='org-panel'><h2>No report found</h2><p>Run the Organization Structure & Growth assessment first.</p><a class='org-primary' href='organization-intelligence.html'>Start assessment</a></section>";}else{
+    payload.completeness=payload.completeness||window.GrowWithHRCompleteness.organization(payload.data);
     payload.changeIntelligence=buildChangeIntelligence(payload);if(payload.reportModel)payload.reportModel.changeIntelligence=payload.changeIntelligence;
     if(payload.sample){renderSampleFull(payload);mountOrganizationDesign(document.getElementById("screen-overview"),payload);bindSampleNavigation(payload);}else{renderPersonalizedGlimpse(payload);bindPersonalizedAccess(payload);}
+    if(payload.completeness.incomplete){const warning=document.createElement("aside");warning.className="gwh-incomplete-report";warning.innerHTML=`<strong>Incomplete-input report</strong><p>${esc(window.GrowWithHRCompleteness.message(payload.completeness))}</p><p><strong>Missing:</strong> ${esc(payload.completeness.missing.join("; "))}</p>`;document.getElementById("screen-overview").prepend(warning);}
 }
 
 window.GrowWithHROrganizationReport=Object.freeze({version:"2.1.0-ownership-bottlenecks",reportModel:(payload)=>payload?.reportModel||{},downloadPdf,emailPdf,buildChangeIntelligence});
