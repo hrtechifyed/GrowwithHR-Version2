@@ -372,6 +372,7 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
   enhanceOrganizationExperience();
   renderFunctionOwnershipRows();
   document.getElementById("departments")?.addEventListener("input",renderFunctionOwnershipRows);
+  document.getElementById("email").addEventListener("input",event=>event.target.setCustomValidity(""));
   form.addEventListener("input",saveDraft);
   form.addEventListener("change",saveDraft);
   document.getElementById("discardOrgDraft").addEventListener("click",()=>{
@@ -409,6 +410,8 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
 
   form.addEventListener("submit",async(event)=>{
     event.preventDefault();
+    const emailInput=document.getElementById("email");
+    if(!window.GrowWithHREmailValidation.isValidEmail(emailInput.value)){emailInput.setCustomValidity(window.GrowWithHREmailValidation.message);emailInput.reportValidity();return;}
     const button=form.querySelector('button[type="submit"]');const original=button.textContent;button.disabled=true;button.textContent="Generating…";
     const data=buildFacts();
     const analysis=analyzeOrganizationStructure(data);
