@@ -8,6 +8,8 @@
   <link rel="canonical" href="https://hrtechifyed.github.io/GrowwithHR-Version2/organization-intelligence.html">
   <link rel="stylesheet" href="styles.css?v=20260901-layered-dark-global">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script src="js/email-validation.js"></script>
+  <script src="js/report-completeness.js"></script>
   <script src="js/site-shell.js" defer></script>
 </head>
 <body class="org-structure-page" data-active-nav="analyze" data-refresh-reset-scope="organization">
@@ -127,7 +129,9 @@
       <div class="org-field wide"><label for="founderDecisions">Which important decisions still require founder/CEO approval? <span class="org-field-status is-optional">Optional</span></label><textarea id="founderDecisions" placeholder="For example: hiring approvals, pricing, customer exceptions, compensation, major spend — or leave blank if unknown"></textarea><small>This answer now contributes to the Founder Dependency and Decision Rights findings when recurring approval categories are identifiable.</small></div>
       <div class="org-field wide"><label for="expansion">Planned expansion in the next 12 months <span class="org-field-status is-optional">Optional</span></label><textarea id="expansion" placeholder="New location, business line, acquisition, rapid hiring, or none"></textarea><small>This answer now contributes to Growth Readiness and Location Complexity when expansion signals are identifiable.</small></div>
     </div>
+    <p id="orgDraftStatus" class="org-subtle" role="status">Draft answers stay in this browser tab until submitted or discarded.</p>
     <div class="org-actions">
+      <button class="org-secondary" type="button" id="discardOrgDraft">Discard unsaved draft</button>
       <button class="org-primary" type="submit">Generate Organization Structure Report →</button>
       <a class="org-secondary" href="intelligence-hub.html">Back to Company Insights</a>
       <a class="org-secondary" href="organization-structure-report.html?sample=1" target="_blank" rel="noopener">View Sample Report</a>
@@ -144,6 +148,9 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
 (async () => {
   const SESSION_KEY = "growwithhr.workspace";
   const REPORT_KEY = "growwithhr.organization.report";
+  const DRAFT_KEY = "growwithhr.organization.draft.v1";
+  const DRAFT_FIELDS = [...formFieldIds()].map(el=>el.id);
+  function formFieldIds(){ return document.querySelectorAll("#organizationForm input[id], #organizationForm select[id], #organizationForm textarea[id]"); }
   const form = document.getElementById("organizationForm");
   const reuseNotice = document.getElementById("reuseNotice");
 
@@ -335,11 +342,45 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
     recoveredFunctionOwnership=Array.isArray(organization.functionOwnership)?organization.functionOwnership:[];
   }
 
+  function draftContext(){return String(recovered?.reportId||"");}
+  function clearDraft(){try{sessionStorage.removeItem(DRAFT_KEY);}catch(_error){}}
+  function saveDraft(){
+    try{
+      const fields=Object.fromEntries(DRAFT_FIELDS.map(id=>[id,document.getElementById(id).value]));
+      sessionStorage.setItem(DRAFT_KEY,JSON.stringify({context:draftContext(),fields,ownership:collectFunctionOwnership()}));
+      document.getElementById("orgDraftStatus").textContent="Draft saved in this browser tab.";
+      window.GrowWithHRRefreshReset?.markClean();
+    }catch(_error){
+      document.getElementById("orgDraftStatus").textContent="Draft could not be saved. Keep this tab open to avoid losing answers.";
+    }
+  }
+  function restoreDraft(){
+    try{
+      const draft=JSON.parse(sessionStorage.getItem(DRAFT_KEY)||"null");
+      if(!draft||draft.context!==draftContext())return;
+      for(const id of DRAFT_FIELDS){
+        if(typeof draft.fields?.[id]==="string")document.getElementById(id).value=draft.fields[id];
+      }
+      recoveredFunctionOwnership=Array.isArray(draft.ownership)?draft.ownership:[];
+      document.getElementById("orgDraftStatus").textContent="Your unsaved draft has been restored.";
+    }catch(_error){}
+  }
+
+  if(new URLSearchParams(location.search).has("handoff"))clearDraft();
   await redeemWorkspaceHandoff();
   prefillRecoveredWorkspace();
+  restoreDraft();
   enhanceOrganizationExperience();
   renderFunctionOwnershipRows();
   document.getElementById("departments")?.addEventListener("input",renderFunctionOwnershipRows);
+  document.getElementById("email").addEventListener("input",event=>event.target.setCustomValidity(""));
+  form.addEventListener("input",saveDraft);
+  form.addEventListener("change",saveDraft);
+  document.getElementById("discardOrgDraft").addEventListener("click",()=>{
+    clearDraft();
+    window.GrowWithHRRefreshReset?.markClean();
+    location.reload();
+  });
   await setupIndustrySuggestions();
 
   function buildFacts(){
@@ -370,10 +411,16 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
 
   form.addEventListener("submit",async(event)=>{
     event.preventDefault();
-    const button=form.querySelector('button[type="submit"]');const original=button.textContent;button.disabled=true;button.textContent="Generating…";
+    const emailInput=document.getElementById("email");
+    if(!window.GrowWithHREmailValidation.isValidEmail(emailInput.value)){emailInput.setCustomValidity(window.GrowWithHREmailValidation.message);emailInput.reportValidity();return;}
+    const button=form.querySelector('button[type="submit"]');if(button.disabled)return;
+    const original=button.textContent;button.disabled=true;
     const data=buildFacts();
+    const completeness=window.GrowWithHRCompleteness.organization(data);
+    if(!await window.GrowWithHRCompleteness.confirmIncomplete(completeness)){button.disabled=false;return;}
+    button.textContent="Generating…";
     const analysis=analyzeOrganizationStructure(data);
-    const reportPayload={data,analysis,reportModel:analysis.reportModel,reportId:"",workspace:null,persistenceWarning:""};
+    const reportPayload={data,analysis,completeness,reportModel:analysis.reportModel,reportId:"",workspace:null,persistenceWarning:""};
     sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
     try{
       const persisted=await persistWorkspace(data,analysis);
@@ -385,6 +432,8 @@ import { analyzeOrganizationStructure } from "./js/modules/organization/organiza
     }
     sessionStorage.setItem(REPORT_KEY,JSON.stringify(reportPayload));
     window.GrowWithHRAnalytics?.trackOnce("assessment_completed", "organization");
+    if(!reportPayload.persistenceWarning)clearDraft();
+    window.GrowWithHRRefreshReset?.markClean();
     location.href="organization-structure-report.html#overview";
     button.disabled=false;button.textContent=original;
   });

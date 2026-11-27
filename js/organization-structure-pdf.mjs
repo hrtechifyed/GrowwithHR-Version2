@@ -1,3 +1,4 @@
+import { buildOrganizationDesign } from "./modules/organization/organization-design.mjs";
 const BRAND = Object.freeze({
     navy: [10, 16, 32],
     navySoft: [24, 34, 53],
@@ -60,6 +61,8 @@ function normalizePayload(payload = {}) {
     const facts = analysis.facts || {};
     return {
         analysis,
+        design: buildOrganizationDesign(payload.data),
+        completeness: payload.completeness || window.GrowWithHRCompleteness?.organization(payload.data),
         reportModel,
         facts,
         findings: Array.isArray(analysis.findings) ? analysis.findings : [],
@@ -135,14 +138,15 @@ function wrap(doc, text, width, size = 9.4) {
 }
 
 function paragraph(doc, state, text, options = {}, logoData = "") {
-    const size = options.size || 9.4;
+    const size = options.size || 10;
     const width = options.width || CONTENT_W;
-    const lineHeight = options.lineHeight || 4.55;
+    const lineHeight = options.lineHeight || Math.max(4.8, size * 0.49);
+    doc.setFont("helvetica", options.bold ? "bold" : "normal");
     const lines = wrap(doc, text, width, size);
     ensureSpace(doc, state, lines.length * lineHeight + 3, options.pageTitle || "Organization Structure & Growth", logoData);
     doc.setFont("helvetica", options.bold ? "bold" : "normal");
     doc.setFontSize(size); doc.setTextColor(...(options.color || BRAND.text));
-    doc.text(lines, options.x || PAGE.left, state.y, { lineHeightFactor: 1.14 });
+    doc.text(lines, options.x || PAGE.left, state.y, { lineHeightFactor: 1.35 });
     state.y += lines.length * lineHeight + (options.after ?? 2.5);
 }
 
@@ -204,20 +208,20 @@ function statusOverview(doc, state, summary = {}, pageTitle, logoData = "") {
 
 function infoBox(doc, state, title, body, fill, pageTitle, logoData = "") {
     const innerW = CONTENT_W - 14;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11);
     const titleLines = doc.splitTextToSize(cleanText(title), innerW);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5);
     const bodyLines = doc.splitTextToSize(cleanText(body), innerW);
-    const titleHeight = Math.max(4.8, titleLines.length * 4.9);
-    const bodyHeight = Math.max(4.2, bodyLines.length * 4.2);
+    const titleHeight = Math.max(4.8, titleLines.length * 5.4);
+    const bodyHeight = Math.max(4.2, bodyLines.length * 5.1);
     const h = 8 + titleHeight + 3 + bodyHeight + 7;
     ensureSpace(doc, state, h + 5, pageTitle, logoData);
     doc.setFillColor(...fill); doc.setDrawColor(...BRAND.line); doc.roundedRect(PAGE.left, state.y - 4, CONTENT_W, h, 3, 3, "FD");
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6); doc.setTextColor(...BRAND.navy);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...BRAND.navy);
     doc.text(titleLines, PAGE.left + 7, state.y + 4, { lineHeightFactor: 1.08, maxWidth: innerW });
     const bodyY = state.y + 4 + titleHeight + 3;
-    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6); doc.setTextColor(...BRAND.text);
-    doc.text(bodyLines, PAGE.left + 7, bodyY, { lineHeightFactor: 1.14, maxWidth: innerW });
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(...BRAND.text);
+    doc.text(bodyLines, PAGE.left + 7, bodyY, { lineHeightFactor: 1.4, maxWidth: innerW });
     state.y += h + 5;
 }
 
@@ -312,10 +316,39 @@ function executiveSection(doc,state,payload,logoData){
     heading(doc,state,"Status overview",2,"Executive Overview",logoData); statusOverview(doc,state,model.statusSummary||{},"Executive Overview",logoData);
     heading(doc,state,"Key structural metrics",2,"Executive Overview",logoData);
     const m=model.metrics||{}; labelValue(doc,state,"Employees",m.employees??payload.facts.employees,"Executive Overview",logoData); labelValue(doc,state,"People managers",m.peopleManagers??"Not provided","Executive Overview",logoData); labelValue(doc,state,"Employees per manager",m.currentEmployeeToManagerRatio??"Not available","Executive Overview",logoData); labelValue(doc,state,"12-month headcount",m.expectedEmployees12Months??"Not provided","Executive Overview",logoData); labelValue(doc,state,"Management context",cleanText(m.managementContextBand,"Not enough context").replaceAll("-"," "),"Executive Overview",logoData);
+    if(payload.completeness?.incomplete){heading(doc,state,"Incomplete-input report",2,"Executive Overview",logoData);paragraph(doc,state,"Some information was not supplied or confirmed. Findings and recommendations are limited to available facts. Complete the missing information and regenerate before relying on this report.",{bold:true,pageTitle:"Executive Overview"},logoData);for(const missing of payload.completeness.missing)paragraph(doc,state,"Missing: "+missing,{pageTitle:"Executive Overview"},logoData);}
     const primary=model.primaryConstraint; if(primary){heading(doc,state,"Primary constraint",2,"Executive Overview",logoData);statusChip(doc,state,primary.status,"Executive Overview",logoData);paragraph(doc,state,primary.title,{bold:true,size:10.5,pageTitle:"Executive Overview"},logoData);paragraph(doc,state,primary.whyItMatters,{pageTitle:"Executive Overview"},logoData);infoBox(doc,state,"What to do next",primary.action,BRAND.goldSoft,"Executive Overview",logoData);}
     if((model.bottleneckMap||[]).length){heading(doc,state,"Organization bottleneck map",2,"Executive Overview",logoData);paragraph(doc,state,"This map groups existing deterministic findings; it is not a separate score.",{size:8.3,color:BRAND.muted,pageTitle:"Executive Overview"},logoData);(model.bottleneckMap||[]).forEach((item)=>infoBox(doc,state,item.label,statusLabel(item.status)+". "+cleanText(item.signal),statusSoft(item.status),"Executive Overview",logoData));}
     if((model.functionalOwnershipMap||[]).length){heading(doc,state,"Functional ownership",2,"Executive Overview",logoData);(model.functionalOwnershipMap||[]).forEach((item)=>labelValue(doc,state,item.name,item.label,"Executive Overview",logoData));}
     heading(doc,state,"Top priorities",2,"Executive Overview",logoData); (model.priorities||[]).slice(0,3).forEach((item,index)=>infoBox(doc,state,`${index+1}. ${item.title}`,item.action,BRAND.soft,"Executive Overview",logoData));
+}
+
+function designSection(doc,state,payload,logoData){
+    const title="Proposed Organization Design"; const design=payload.design;
+    addPage(doc,state,title,logoData); heading(doc,state,title,1,title,logoData);
+    paragraph(doc,state,design.note,{pageTitle:title},logoData);
+    if(design.nodes.length){
+      const groups=[];for(let i=0;i<design.nodes.length;i+=6)groups.push(design.nodes.slice(i,i+6));
+      for(const group of groups){
+        ensureSpace(doc,state,110,title,logoData);
+        const x=PAGE.left,y=state.y,w=CONTENT_W;
+        doc.setFillColor(...BRAND.navy);doc.roundedRect(x+w/2-32,y,64,12,2,2,"F");
+        doc.setFont("helvetica","bold");doc.setFontSize(10);doc.setTextColor(255,255,255);doc.text("Founder / CEO",x+w/2,y+8,{align:"center"});
+        doc.setDrawColor(82,103,130);doc.line(x+w/2,y+12,x+w/2,y+18);
+        let bottom=y+18;
+        group.forEach((node,i)=>{
+          const col=i%2,row=Math.floor(i/2),cw=(w-8)/2,bx=x+col*(cw+8),by=y+24+row*23;
+          doc.setDrawColor(82,103,130);doc.line(x+w/2,y+18,x+w/2,by-4);doc.line(x+w/2,by-4,bx+cw/2,by-4);doc.line(bx+cw/2,by-4,bx+cw/2,by);
+          doc.setFillColor(...BRAND.blueSoft);doc.roundedRect(bx,by,cw,19,2,2,"FD");
+          doc.setFont("helvetica","bold");doc.setFontSize(8.5);doc.setTextColor(...BRAND.text);
+          const lines=doc.splitTextToSize(node.owner,cw-8).slice(0,3);doc.text(lines,bx+cw/2,by+5,{align:"center",lineHeightFactor:1.1});
+          bottom=Math.max(bottom,by+19);
+        });state.y=bottom+8;
+      }
+    }
+    heading(doc,state,"Editable Mermaid source",2,title,logoData);
+    paragraph(doc,state,"Copy the following code into a Mermaid-compatible editor. The PDF diagram is static; the source is editable.",{pageTitle:title},logoData);
+    for(const line of design.mermaid.split("\n"))paragraph(doc,state,line,{size:8,color:BRAND.text,pageTitle:title},logoData);
 }
 
 function changeSection(doc,state,payload,logoData){
@@ -364,7 +397,7 @@ async function generateOrganizationStructurePdf(payload={},options={}){
     const JsPDF=jsPDFConstructor(); if(!JsPDF)throw new Error("The GrowWithHR PDF library is unavailable.");
     const normalized=normalizePayload(payload); normalized.framework={...normalized.framework,methodologyUrl:absoluteMethodologyUrl(normalized.framework)};
     const logoData=await loadLogoDataUrl(); const doc=new JsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true}); const state={page:0,y:0};
-    cover(doc,state,normalized,logoData); executiveSection(doc,state,normalized,logoData); changeSection(doc,state,normalized,logoData); findingSection(doc,state,normalized,logoData); scenarioSection(doc,state,normalized,logoData); evidenceSection(doc,state,normalized,logoData);
+    cover(doc,state,normalized,logoData); executiveSection(doc,state,normalized,logoData); designSection(doc,state,normalized,logoData); changeSection(doc,state,normalized,logoData); findingSection(doc,state,normalized,logoData); scenarioSection(doc,state,normalized,logoData); evidenceSection(doc,state,normalized,logoData);
     const filename=`GrowWithHR-Organization-Growth-${cleanFilename(normalized.companyName)}.pdf`; const mode=cleanText(options.mode,"download");
     if(mode==="download"){doc.save(filename);return{filename,pageCount:doc.getNumberOfPages()};}
     if(mode==="blob")return{filename,blob:doc.output("blob"),pageCount:doc.getNumberOfPages()};

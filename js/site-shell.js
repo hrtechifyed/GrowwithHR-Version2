@@ -150,7 +150,7 @@
         header.innerHTML = `
             <div class="site-header-shell__inner">
                 <a class="site-brand-logo" href="${escapeHtml(withRoot(prefix, "index.html#home"))}" aria-label="GrowWithHR home">
-                    <img src="${escapeHtml(withRoot(prefix, "assets/hrtechify-logo.png"))}" alt="HRTechify">
+                    <img src="${escapeHtml(withRoot(prefix, "assets/hrtechify-logo.png"))}" alt="HRTechify" width="82" height="82" style="max-width:82px;max-height:82px;object-fit:contain;">
                 </a>
                 <nav class="site-nav-glass" aria-label="Primary navigation">
                     <a class="site-product-name" href="${escapeHtml(withRoot(prefix, "index.html#home"))}">GrowWithHR</a>
@@ -312,26 +312,14 @@
         document.documentElement.style.setProperty("--site-shell-header-height", "0px");
     }
 
-    function ensureLayeredDarkVersion(prefix) {
-        const sharedStyles = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => {
-            const source = (item.getAttribute("href") || "").replace(/[?#].*$/, "");
-            return /(?:^|\/)styles\.css$/.test(source);
-        });
-        if (sharedStyles) {
-            const source = (sharedStyles.getAttribute("href") || withRoot(prefix, "styles.css")).replace(/[?#].*$/, "");
-            sharedStyles.setAttribute("href", `${source}?v=${THEME_VERSION}`);
-            sharedStyles.dataset.growwithhrThemeVersion = THEME_VERSION;
-            return;
-        }
-        const directTheme = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((item) => /(?:^|\/)css\/29-layered-dark\.css(?:[?#].*)?$/.test(item.getAttribute("href") || ""));
-        if (directTheme) {
-            const source = (directTheme.getAttribute("href") || withRoot(prefix, "css/29-layered-dark.css")).replace(/[?#].*$/, "");
-            directTheme.setAttribute("href", `${source}?v=${THEME_VERSION}`);
-            directTheme.dataset.growwithhrThemeVersion = THEME_VERSION;
-        }
-    }
-
     function ensurePolishStyles(prefix) {
+        if (!document.querySelector('link[data-growwithhr-reading-rhythm], link[href*="42-reading-rhythm.css"]')) {
+            const reading = document.createElement("link");
+            reading.rel = "stylesheet";
+            reading.href = `${withRoot(prefix,"css/42-reading-rhythm.css")}?v=20261127`;
+            reading.dataset.growwithhrReadingRhythm = "";
+            document.head.appendChild(reading);
+        }
         if (!document.querySelector("link[data-growwithhr-ui-polish]")) {
             const link = document.createElement("link");
             link.rel = "stylesheet";
@@ -423,7 +411,7 @@
         if (!document.body) return;
         const prefix = inferRootPrefix();
         const activeKey = inferActiveNav();
-        ensureLayeredDarkVersion(prefix);
+        // Never replace an already loaded stylesheet during navigation: doing so can expose intrinsic image sizes before the replacement CSS arrives.
         const header = buildHeader(prefix, activeKey);
         const footer = buildFooter(prefix);
         removeHomepageTriggerStrip();

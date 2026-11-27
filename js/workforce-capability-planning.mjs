@@ -148,7 +148,7 @@ function buildInput() {
 
 function validateInput(input) {
   if (!input.company.name) return "Company name is required.";
-  if (!/^[^\s@;,]+@[^\s@;,]+\.[^\s@;,]+$/.test(input.company.email)) return "A valid work email is required.";
+  if (!window.GrowWithHREmailValidation.isValidEmail(input.company.email)) return "A valid work email is required.";
   if (!input.company.industry) return "Industry is required.";
   if (!Number.isFinite(input.company.currentEmployees) || input.company.currentEmployees < 1) return "Current employee count is required.";
   if (!input.strategy.objective) return "State the business objective the workforce plan must enable.";
@@ -410,6 +410,8 @@ finalizeButton.addEventListener("click", async () => {
     return;
   }
   finalizeButton.disabled = true;
+  const completeness=window.GrowWithHRCompleteness.workforce(buildInput(),latestAnalysis);
+  if(!await window.GrowWithHRCompleteness.confirmIncomplete(completeness)){finalizeButton.disabled=false;return;}
   finalizeStatus.textContent = "Creating your implementation plan and saving the confirmed company baseline…";
   try {
     const input = buildInput();
@@ -417,6 +419,7 @@ finalizeButton.addEventListener("click", async () => {
     const persisted = await persistWorkspace(input, plan);
     const payload = {
       data: input,
+      completeness,
       analysis: latestAnalysis,
       plan,
       reportId: persisted.reportId,

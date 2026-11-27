@@ -49,7 +49,7 @@ function createCanvas(doc, logo) {
   function ensure(height, title) { if (state.y + height > PAGE.height - PAGE.bottom - 9) next(title); }
   function rule(after = 6) { ensure(4 + after, "Workforce & Capability Planning"); doc.setDrawColor(...COLOURS.rule); doc.line(PAGE.left, state.y, PAGE.width - PAGE.right, state.y); state.y += after; }
   function mono(text, options = {}) { const size=options.size||6.8; const width=options.width||CONTENT; doc.setFont("courier", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(text), width); ensure(lines.length*3.4+(options.after??2), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.muted)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.12 }); state.y += lines.length*3.4+(options.after??2); }
-  function text(textValue, options = {}) { const size=options.size||8.5; const width=options.width||CONTENT; doc.setFont("helvetica", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(textValue), width); ensure(lines.length*4.2+(options.after??3), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.18 }); state.y += lines.length*4.2+(options.after??3); }
+  function text(textValue, options = {}) { const size=options.size||10; const width=options.width||CONTENT; doc.setFont("helvetica", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(textValue), width); ensure(lines.length*5.1+(options.after??3), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.4 }); state.y += lines.length*5.1+(options.after??3); }
   function serif(textValue, options = {}) { const size=options.size||15; const width=options.width||CONTENT; doc.setFont("times", options.bold?"bold":"normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(textValue), width); ensure(lines.length*(size*.42)+(options.after??4), options.pageTitle); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines, options.x||PAGE.left, state.y, { lineHeightFactor:1.08 }); state.y += lines.length*(size*.42)+(options.after??4); }
   function heading(number, title, intro = "") {
     mono(number, { bold:true, colour:COLOURS.gold, after:3 });
@@ -57,23 +57,23 @@ function createCanvas(doc, logo) {
     if (intro) text(intro, { colour:COLOURS.muted, after:9 });
   }
   function label(textValue, options={}) { mono(clean(textValue).toUpperCase(), { bold:true, size:6.6, colour:options.colour||COLOURS.muted, after:1.5 }); }
-  function bullet(value, options={}) { const size=options.size||8.2; const width=CONTENT-8; doc.setFont("helvetica","normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(value),width); ensure(lines.length*4+2, options.pageTitle); doc.setFillColor(...(options.dotColour||COLOURS.gold)); doc.circle(PAGE.left+1.5,state.y-1.4,0.8,"F"); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines,PAGE.left+6,state.y,{lineHeightFactor:1.16}); state.y+=lines.length*4+2; }
+  function bullet(value, options={}) { const size=options.size||9.5; const width=CONTENT-8; doc.setFont("helvetica","normal"); doc.setFontSize(size); const lines=doc.splitTextToSize(clean(value),width); ensure(lines.length*4.9+3, options.pageTitle); doc.setFillColor(...(options.dotColour||COLOURS.gold)); doc.circle(PAGE.left+1.5,state.y-1.4,0.8,"F"); doc.setTextColor(...(options.colour||COLOURS.ink)); doc.text(lines,PAGE.left+6,state.y,{lineHeightFactor:1.4}); state.y+=lines.length*4.9+3; }
   function card(title, body, options={}) {
     const inner=CONTENT-14;
-    doc.setFont("helvetica","bold"); doc.setFontSize(9.2);
+    doc.setFont("helvetica","bold"); doc.setFontSize(11);
     const titleLines=doc.splitTextToSize(clean(title),inner);
-    doc.setFont("helvetica","normal"); doc.setFontSize(8.1);
+    doc.setFont("helvetica","normal"); doc.setFontSize(9.5);
     const lines=doc.splitTextToSize(clean(body),inner);
-    const titleHeight=Math.max(4.6,titleLines.length*4.8);
-    const bodyHeight=Math.max(4.1,lines.length*4.1);
+    const titleHeight=Math.max(4.6,titleLines.length*5.3);
+    const bodyHeight=Math.max(4.1,lines.length*5.1);
     const h=8+titleHeight+3+bodyHeight+7;
     ensure(h+5, options.pageTitle);
     doc.setFillColor(...(options.fill||[238,233,222])); doc.setDrawColor(...COLOURS.rule); doc.roundedRect(PAGE.left,state.y-4,CONTENT,h,3,3,"FD");
-    doc.setFont("helvetica","bold"); doc.setFontSize(9.2); doc.setTextColor(...(options.titleColour||COLOURS.ink));
+    doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(...(options.titleColour||COLOURS.ink));
     doc.text(titleLines,PAGE.left+7,state.y+3,{lineHeightFactor:1.08,maxWidth:inner});
     const bodyY=state.y+3+titleHeight+3;
-    doc.setFont("helvetica","normal"); doc.setFontSize(8.1); doc.setTextColor(...COLOURS.ink);
-    doc.text(lines,PAGE.left+7,bodyY,{lineHeightFactor:1.15,maxWidth:inner});
+    doc.setFont("helvetica","normal"); doc.setFontSize(9.5); doc.setTextColor(...COLOURS.ink);
+    doc.text(lines,PAGE.left+7,bodyY,{lineHeightFactor:1.4,maxWidth:inner});
     state.y+=h+5;
   }
   function link(labelText,url) { const target=clean(url); if (!target) return; ensure(7,"Sources & Methodology"); doc.setFont("helvetica","bold"); doc.setFontSize(7.6); doc.setTextColor(...COLOURS.blue); doc.text(clean(labelText),PAGE.left,state.y); if (/^https?:\/\//.test(target)) { try { doc.link(PAGE.left,state.y-4,CONTENT,6,{url:target}); } catch(_error){} } state.y+=6; }
@@ -113,6 +113,8 @@ function renderExecutive(canvas,payload) {
   const plan=payload.plan; const data=payload.data; const findings=list(plan.findings);
   canvas.next("Executive Summary"); canvas.heading("01","Executive summary","The executive answer first: strategy, major gaps and the implementation direction selected by the user.");
   canvas.serif(plan.overallPosition?.headline||"Planning position",{size:18,bold:true,after:7});
+  const completeness=payload.completeness||window.GrowWithHRCompleteness?.workforce(data,payload.analysis||plan);
+  if(completeness?.incomplete){canvas.card("Incomplete-input report","Some information was not supplied or confirmed. Recommendations are limited to available facts. Complete the missing information and regenerate before relying on the plan.");completeness.missing.forEach(item=>canvas.bullet(item,{dotColour:COLOURS.blue}));}
   canvas.label("Business objective"); canvas.text(data.strategy?.objective||"Not supplied",{after:6});
   const critical=findings.filter(item=>["confirmed-gap","capacity-gap","likely-gap","capacity-pressure","fragile-coverage"].includes(item.status));
   canvas.label("Highest-priority findings");

@@ -15,7 +15,7 @@ function cleanText(value, fallback = "") {
 }
 
 function isValidEmail(value) {
-    return /^[^\s@;,]+@[^\s@;,]+\.[^\s@;,]+$/.test(cleanText(value));
+    return require("./js/email-validation.js").isValidEmail(value);
 }
 
 function recipientList(lead = {}, report = {}) {

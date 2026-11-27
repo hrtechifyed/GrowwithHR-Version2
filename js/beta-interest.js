@@ -38,6 +38,7 @@
       utmCampaign: String(new URLSearchParams(location.search).get("utm_campaign") || "").slice(0, 100)
     };
 
+    if (!window.GrowWithHREmailValidation.isValidEmail(payload.email)) { setStatus(window.GrowWithHREmailValidation.message,"error"); return; }
     submit.disabled = true;
     setStatus("Sharing your question…");
 

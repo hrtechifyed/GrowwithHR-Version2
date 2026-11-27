@@ -301,6 +301,7 @@ async function handleAllocation(request, response) {
         if (request.method === "OPTIONS") { response.statusCode = 204; response.end(); return; }
         if (request.method !== "POST") { writeJson(response, 405, { error: "Method not allowed." }); return; }
         const input = await readJsonBody(request);
+        if(input.email && !require("./js/email-validation.js").isValidEmail(input.email)){writeJson(response,400,{error:"A valid work email address is required. Check the domain spelling."});return;}
         const record = await allocateReportId(input);
         writeJson(response, record.replayed ? 200 : 201, {
             ok: true,

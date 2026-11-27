@@ -47,10 +47,11 @@ function frameworkMarkup(item) {
 }
 
 function renderFullSample(payload) {
+  const completeness=payload.completeness||window.GrowWithHRCompleteness.workforce(payload.data,payload.analysis);
   const plan=payload.plan;
   subtitle.textContent=`Complete fictional sample for ${payload.data.company.name}. Example data only.`;
   content.innerHTML=`
-    <section class="wcp-panel"><div class="wcp-eyebrow">EXECUTIVE SUMMARY · FICTIONAL SAMPLE</div><h2>${esc(plan.overallPosition.headline)}</h2><p><strong>Strategy:</strong> ${esc(payload.data.strategy.objective)}</p><div class="wcp-metric-grid"><div><strong>${esc(payload.data.company.currentEmployees)}</strong><span>Current employees</span></div><div><strong>${esc(payload.data.company.expectedEmployees)}</strong><span>Planning horizon employees</span></div><div><strong>${esc(plan.findings.filter(item=>item.status.includes("gap")).length)}</strong><span>Gap findings</span></div><div><strong>${esc(plan.selectedApproachLabel)}</strong><span>Selected approach</span></div></div></section>
+    <section class="wcp-panel"><div class="wcp-eyebrow">EXECUTIVE SUMMARY · FICTIONAL SAMPLE</div><h2>${esc(plan.overallPosition.headline)}</h2><p><strong>Strategy:</strong> ${esc(payload.data.strategy.objective)}</p>${completeness.incomplete?`<aside class="gwh-incomplete-report"><strong>Incomplete-input report</strong><p>${esc(window.GrowWithHRCompleteness.message(completeness))}</p><p><strong>Missing:</strong> ${esc(completeness.missing.join("; "))}</p></aside>`:""}<div class="wcp-metric-grid"><div><strong>${esc(payload.data.company.currentEmployees)}</strong><span>Current employees</span></div><div><strong>${esc(payload.data.company.expectedEmployees)}</strong><span>Planning horizon employees</span></div><div><strong>${esc(plan.findings.filter(item=>item.status.includes("gap")).length)}</strong><span>Gap findings</span></div><div><strong>${esc(plan.selectedApproachLabel)}</strong><span>Selected approach</span></div></div></section>
     <section class="wcp-panel"><div class="wcp-eyebrow">FRAMEWORK COMPARISON</div><h2>Three lenses retained in the decision record</h2><div class="wcp-framework-comparison">${plan.frameworkComparisons.map(frameworkMarkup).join("")}</div></section>
     <section class="wcp-panel"><div class="wcp-eyebrow">GAP ANALYSIS</div><h2>Capability and workforce findings</h2><div class="wcp-findings-grid">${plan.findings.map(findingMarkup).join("")}</div></section>
     <section class="wcp-panel"><div class="wcp-eyebrow">IMPLEMENTATION ROADMAP</div><h2>12–36 month plan</h2>${plan.roadmap.map(period=>`<div class="wcp-result-card" style="margin-top:10px"><h3>${esc(period.horizon)}</h3><ul>${list(period.actions).map(action=>`<li>${esc(action)}</li>`).join("")}</ul></div>`).join("")}</section>`;
@@ -60,6 +61,7 @@ function renderFullSample(payload) {
 }
 
 function renderPersonalizedGlimpse(payload) {
+  const completeness=payload.completeness||window.GrowWithHRCompleteness.workforce(payload.data,payload.analysis);
   const plan=payload.plan; const gapCount=plan.findings.filter(item=>["confirmed-gap","likely-gap","capacity-gap"].includes(item.status)).length;
   subtitle.textContent=`Executive glimpse for ${payload.data.company.name}. The complete report is email-only after sign-in.`;
   printButton.hidden=true; downloadButton.hidden=true;

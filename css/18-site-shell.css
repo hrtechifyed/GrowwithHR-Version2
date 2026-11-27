@@ -79,8 +79,8 @@ body.site-nav-open {
     text-decoration: none;
     pointer-events: auto;
     isolation: isolate;
-    overflow: visible;
-    transition: transform 180ms ease, filter 180ms ease;
+    overflow: hidden;
+    transition: none;
 }
 
 .site-brand-logo::before {
@@ -99,12 +99,14 @@ body.site-nav-open {
     height: 100%;
     object-fit: contain;
     object-position: center;
+    max-width: 100%;
+    max-height: 100%;
     filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.26));
 }
 
 .site-brand-logo:hover {
-    transform: translateY(-1px) scale(1.025);
-    filter: saturate(1.05);
+    transform: none;
+    filter: none;
 }
 
 .site-brand-logo:focus-visible {

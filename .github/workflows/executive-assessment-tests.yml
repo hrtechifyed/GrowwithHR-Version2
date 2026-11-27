@@ -216,6 +216,7 @@ jobs:
           tests/e2e/founder-intelligence-roadmap.spec.ts
           tests/e2e/assessment-choice-help.spec.ts
           tests/e2e/decision-scenario-studio.spec.ts
+          tests/e2e/founder-audit-hotfix.spec.ts
           --project=chromium
       - name: Upload Playwright report
         if: always()

@@ -1,6 +1,6 @@
+/* Canonical artwork assets/hrtechify-logo.png is set in the image markup, not replaced by CSS. */
 /* Restore the established HRTechify artwork while visually removing its dark tile inside the navbar. */
 .site-brand-logo img {
-    content: url("../assets/hrtechify-logo.png") !important;
     object-fit: contain;
     mix-blend-mode: screen;
     background: transparent;
