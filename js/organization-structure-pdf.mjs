@@ -1,3 +1,4 @@
+import { buildOrganizationDesign } from "./modules/organization/organization-design.mjs";
 const BRAND = Object.freeze({
     navy: [10, 16, 32],
     navySoft: [24, 34, 53],
@@ -60,6 +61,7 @@ function normalizePayload(payload = {}) {
     const facts = analysis.facts || {};
     return {
         analysis,
+        design: buildOrganizationDesign(payload.data),
         reportModel,
         facts,
         findings: Array.isArray(analysis.findings) ? analysis.findings : [],
@@ -318,6 +320,34 @@ function executiveSection(doc,state,payload,logoData){
     heading(doc,state,"Top priorities",2,"Executive Overview",logoData); (model.priorities||[]).slice(0,3).forEach((item,index)=>infoBox(doc,state,`${index+1}. ${item.title}`,item.action,BRAND.soft,"Executive Overview",logoData));
 }
 
+function designSection(doc,state,payload,logoData){
+    const title="Proposed Organization Design"; const design=payload.design;
+    addPage(doc,state,title,logoData); heading(doc,state,title,1,title,logoData);
+    paragraph(doc,state,design.note,{pageTitle:title},logoData);
+    if(design.nodes.length){
+      const groups=[];for(let i=0;i<design.nodes.length;i+=6)groups.push(design.nodes.slice(i,i+6));
+      for(const group of groups){
+        ensureSpace(doc,state,110,title,logoData);
+        const x=PAGE.left,y=state.y,w=CONTENT_W;
+        doc.setFillColor(...BRAND.navy);doc.roundedRect(x+w/2-32,y,64,12,2,2,"F");
+        doc.setFont("helvetica","bold");doc.setFontSize(10);doc.setTextColor(255,255,255);doc.text("Founder / CEO",x+w/2,y+8,{align:"center"});
+        doc.setDrawColor(82,103,130);doc.line(x+w/2,y+12,x+w/2,y+18);
+        let bottom=y+18;
+        group.forEach((node,i)=>{
+          const col=i%2,row=Math.floor(i/2),cw=(w-8)/2,bx=x+col*(cw+8),by=y+24+row*23;
+          doc.setDrawColor(82,103,130);doc.line(x+w/2,y+18,x+w/2,by-4);doc.line(x+w/2,by-4,bx+cw/2,by-4);doc.line(bx+cw/2,by-4,bx+cw/2,by);
+          doc.setFillColor(...BRAND.blueSoft);doc.roundedRect(bx,by,cw,19,2,2,"FD");
+          doc.setFont("helvetica","bold");doc.setFontSize(8.5);doc.setTextColor(...BRAND.text);
+          const lines=doc.splitTextToSize(node.owner,cw-8).slice(0,3);doc.text(lines,bx+cw/2,by+5,{align:"center",lineHeightFactor:1.1});
+          bottom=Math.max(bottom,by+19);
+        });state.y=bottom+8;
+      }
+    }
+    heading(doc,state,"Editable Mermaid source",2,title,logoData);
+    paragraph(doc,state,"Copy the following code into a Mermaid-compatible editor. The PDF diagram is static; the source is editable.",{pageTitle:title},logoData);
+    for(const line of design.mermaid.split("\n"))paragraph(doc,state,line,{size:8,color:BRAND.text,pageTitle:title},logoData);
+}
+
 function changeSection(doc,state,payload,logoData){
     const change=payload.changeIntelligence; if(!change?.baselineAvailable && !(change?.changes||[]).length)return;
     addPage(doc,state,"Change Intelligence",logoData); heading(doc,state,"Change Intelligence",1,"Change Intelligence",logoData);
@@ -364,7 +394,7 @@ async function generateOrganizationStructurePdf(payload={},options={}){
     const JsPDF=jsPDFConstructor(); if(!JsPDF)throw new Error("The GrowWithHR PDF library is unavailable.");
     const normalized=normalizePayload(payload); normalized.framework={...normalized.framework,methodologyUrl:absoluteMethodologyUrl(normalized.framework)};
     const logoData=await loadLogoDataUrl(); const doc=new JsPDF({orientation:"portrait",unit:"mm",format:"a4",compress:true}); const state={page:0,y:0};
-    cover(doc,state,normalized,logoData); executiveSection(doc,state,normalized,logoData); changeSection(doc,state,normalized,logoData); findingSection(doc,state,normalized,logoData); scenarioSection(doc,state,normalized,logoData); evidenceSection(doc,state,normalized,logoData);
+    cover(doc,state,normalized,logoData); executiveSection(doc,state,normalized,logoData); designSection(doc,state,normalized,logoData); changeSection(doc,state,normalized,logoData); findingSection(doc,state,normalized,logoData); scenarioSection(doc,state,normalized,logoData); evidenceSection(doc,state,normalized,logoData);
     const filename=`GrowWithHR-Organization-Growth-${cleanFilename(normalized.companyName)}.pdf`; const mode=cleanText(options.mode,"download");
     if(mode==="download"){doc.save(filename);return{filename,pageCount:doc.getNumberOfPages()};}
     if(mode==="blob")return{filename,blob:doc.output("blob"),pageCount:doc.getNumberOfPages()};
