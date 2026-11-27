@@ -138,14 +138,15 @@ function wrap(doc, text, width, size = 9.4) {
 }
 
 function paragraph(doc, state, text, options = {}, logoData = "") {
-    const size = options.size || 9.4;
+    const size = options.size || 10;
     const width = options.width || CONTENT_W;
-    const lineHeight = options.lineHeight || 4.55;
+    const lineHeight = options.lineHeight || Math.max(4.8, size * 0.49);
+    doc.setFont("helvetica", options.bold ? "bold" : "normal");
     const lines = wrap(doc, text, width, size);
     ensureSpace(doc, state, lines.length * lineHeight + 3, options.pageTitle || "Organization Structure & Growth", logoData);
     doc.setFont("helvetica", options.bold ? "bold" : "normal");
     doc.setFontSize(size); doc.setTextColor(...(options.color || BRAND.text));
-    doc.text(lines, options.x || PAGE.left, state.y, { lineHeightFactor: 1.14 });
+    doc.text(lines, options.x || PAGE.left, state.y, { lineHeightFactor: 1.35 });
     state.y += lines.length * lineHeight + (options.after ?? 2.5);
 }
 
@@ -207,20 +208,20 @@ function statusOverview(doc, state, summary = {}, pageTitle, logoData = "") {
 
 function infoBox(doc, state, title, body, fill, pageTitle, logoData = "") {
     const innerW = CONTENT_W - 14;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11);
     const titleLines = doc.splitTextToSize(cleanText(title), innerW);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5);
     const bodyLines = doc.splitTextToSize(cleanText(body), innerW);
-    const titleHeight = Math.max(4.8, titleLines.length * 4.9);
-    const bodyHeight = Math.max(4.2, bodyLines.length * 4.2);
+    const titleHeight = Math.max(4.8, titleLines.length * 5.4);
+    const bodyHeight = Math.max(4.2, bodyLines.length * 5.1);
     const h = 8 + titleHeight + 3 + bodyHeight + 7;
     ensureSpace(doc, state, h + 5, pageTitle, logoData);
     doc.setFillColor(...fill); doc.setDrawColor(...BRAND.line); doc.roundedRect(PAGE.left, state.y - 4, CONTENT_W, h, 3, 3, "FD");
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9.6); doc.setTextColor(...BRAND.navy);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...BRAND.navy);
     doc.text(titleLines, PAGE.left + 7, state.y + 4, { lineHeightFactor: 1.08, maxWidth: innerW });
     const bodyY = state.y + 4 + titleHeight + 3;
-    doc.setFont("helvetica", "normal"); doc.setFontSize(8.6); doc.setTextColor(...BRAND.text);
-    doc.text(bodyLines, PAGE.left + 7, bodyY, { lineHeightFactor: 1.14, maxWidth: innerW });
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(...BRAND.text);
+    doc.text(bodyLines, PAGE.left + 7, bodyY, { lineHeightFactor: 1.4, maxWidth: innerW });
     state.y += h + 5;
 }
 
