@@ -798,6 +798,8 @@
         const canvas = buildCanvas(doc, logo);
 
         renderFrontPage(canvas, data, groups, context);
+        const completeness=payload.report?.completeness || window.GrowWithHRCompleteness?.compliance(payload);
+        if(completeness?.incomplete||groups.missing.length||list(assessment.missingFacts).length){canvas.card("Incomplete-input report","Some information was not supplied or confirmed. Findings are limited to available facts. Affected conclusions may be provisional or unavailable. Complete the missing information and regenerate before relying on the report.",{titleColour:COLOURS.red});if(completeness?.missing?.length)completeness.missing.forEach(item=>canvas.bullet(item,{dotColour:COLOURS.red}));}
         canvas.nextPage();
         renderCompliancePosition(canvas, obligations, groups);
         canvas.nextPage();
