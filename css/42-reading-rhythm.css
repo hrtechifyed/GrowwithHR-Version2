@@ -1,0 +1,40 @@
+/* GrowWithHR reading rhythm: no copy removal, no collapsed information, no brand recoloring. */
+@media screen {
+body.has-site-shell {
+ --type-display:clamp(2rem,3.2vw,3.25rem);
+ --type-page-title:clamp(1.875rem,2.8vw,2.75rem);
+ --type-section:clamp(1.375rem,1.9vw,1.875rem);
+ --type-card:clamp(1.0625rem,1.35vw,1.25rem);
+ --type-body:1rem;--type-meta:.875rem;--line-body:1.68;--line-heading:1.28;
+ font-family:Inter,system-ui,"Segoe UI",Arial,sans-serif!important;
+ font-weight:400;
+}
+body.has-site-shell :is(main,article,.org-report-screen,.gwh-report-glimpse,.wcp-glimpse) :is(p,li){
+ line-height:1.68;overflow-wrap:break-word;
+}
+body.has-site-shell :is(main,article) p{max-inline-size:78ch;margin-block:.55em .9em}
+body.has-site-shell :is(main,article) :is(h1,h2,h3,h4){font-weight:650;line-height:1.28;letter-spacing:-.018em;overflow-wrap:break-word}
+body.has-site-shell :is(main,article) :is(h2,h3,h4){margin-block:0 .65em}
+body.has-site-shell :is(main,article) h2:not(:first-child){margin-block-start:1.2em}
+body.has-site-shell :is(main,article) :is(ul,ol):not([class]){padding-inline-start:1.4em;margin-block:.6em 1em}
+body.has-site-shell :is(main,article) :is(ul,ol):not([class])>li+li{margin-block-start:.45em}
+body.has-site-shell :is(.org-panel,.org-finding-card,.wcp-panel,.wcp-result-card,.gwh-report-glimpse,.gwh-auth-card,.gwh-web-section,.buyer-card,.analysis-output-card,.org-question-section){
+ min-width:0;overflow-wrap:break-word;
+}
+body.has-site-shell :is(.org-panel,.org-finding-card,.wcp-panel,.wcp-result-card,.gwh-report-glimpse,.gwh-web-section){padding:clamp(18px,2.8vw,32px)}
+body.has-site-shell :is(.org-panel,.org-finding-card,.wcp-panel,.wcp-result-card,.gwh-web-section)+:is(.org-panel,.org-finding-card,.wcp-panel,.wcp-result-card,.gwh-web-section){margin-block-start:20px}
+body.has-site-shell :is(.org-action-box,.gwh-report-glimpse__priorities li,.wcp-priority-list li){padding:14px 16px;line-height:1.65}
+body.has-site-shell :is(.org-panel,.org-finding-card,.wcp-panel,.wcp-result-card,.gwh-report-glimpse,.gwh-web-section) :is(p,li){font-size:1rem;line-height:1.68}
+body.has-site-shell :is(.org-field,.wcp-field) label{font-weight:600;line-height:1.45}
+body.has-site-shell :is(.org-field,.wcp-field) small{font-size:.875rem;line-height:1.55}
+body.has-site-shell :is(.org-field,.wcp-field) :is(input,textarea,select){font-size:1rem;line-height:1.4}
+body.has-site-shell :is(.gwh-report-stat,.org-metric-grid>div,.wcp-metric-grid>div) strong{font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+body.has-site-shell :is(.gwh-report-stat,.org-metric-grid>div,.wcp-metric-grid>div) span{line-height:1.5}
+body.has-site-shell :is(.org-panel,.wcp-panel,.gwh-web-section) table{font-size:.9375rem;line-height:1.55}
+body.has-site-shell :is(.org-panel,.wcp-panel,.gwh-web-section) :is(th,td){padding:10px 12px;vertical-align:top}
+@media(max-width:600px){
+ body.has-site-shell :is(main,article) :is(p,li){max-inline-size:100%}
+ body.has-site-shell :is(.org-panel,.org-finding-card,.wcp-panel,.wcp-result-card,.gwh-report-glimpse,.gwh-web-section){padding:16px}
+ body.has-site-shell :is(.org-panel,.wcp-panel,.gwh-web-section) :is(th,td){padding:8px}
+}
+}
