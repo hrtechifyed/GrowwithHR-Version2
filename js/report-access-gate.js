@@ -70,6 +70,7 @@
     function buildGlimpse(app) {
         const payload = currentPayload(app);
         const model = previewModel(payload);
+        const completeness=app.reportCompleteness||window.GrowWithHRCompleteness?.compliance(payload);
         const priorities = pickPriorities(model, payload.answers);
         const company = clean(payload.answers.companyName || payload.report.companyName, "Your organisation");
         const employees = clean(payload.answers.employees ?? payload.answers.employeeCount, "Not provided");
@@ -87,6 +88,7 @@
                     <div><span class="gwh-report-glimpse__label">YOUR REPORT GLIMPSE</span><h3 id="personalReportGlimpseTitle">${esc(company)} · HR Compliance Readiness</h3><p>The complete PDF has been generated from your supplied company facts. Only a concise preview is shown here.</p></div>
                     <span class="gwh-report-glimpse__lock"><i class="fa-solid fa-lock" aria-hidden="true"></i> Full detail email-only</span>
                 </div>
+                ${completeness?.incomplete ? `<aside class="gwh-incomplete-report"><strong>Incomplete-input report</strong><p>${esc(window.GrowWithHRCompleteness.message(completeness))}</p><p><strong>Missing:</strong> ${esc(completeness.missing.join("; "))}</p></aside>` : ""}
                 <div class="gwh-report-glimpse__stats">
                     <div class="gwh-report-stat"><strong>${esc(employees)}</strong><span>Employees supplied</span></div>
                     <div class="gwh-report-stat"><strong>${esc(states)}</strong><span>Operating footprint supplied</span></div>
