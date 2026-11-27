@@ -63,3 +63,35 @@ test("organization sample provides editable Mermaid source and a downloadable .m
   await page.getByRole("button",{name:"Reset proposal"}).click();
   await expect(source).toHaveValue(/Engineering/);
 });
+
+test("shared logo stays bounded during desktop and mobile navigation", async ({ page }) => {
+  await page.addInitScript(() => {
+    const samples: number[] = [];
+    (window as any).__logoWidths = samples;
+    function sample() {
+      const image = document.querySelector(".site-brand-logo img");
+      if (image) samples.push(image.getBoundingClientRect().width);
+      requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  });
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/index.html");
+    await expect(page.locator(".site-brand-logo img")).toBeVisible();
+    await page.locator(".site-brand-logo").hover();
+    await expect(page.locator(".site-brand-logo")).toHaveCSS("transform", "none");
+    if (width < 900) await page.getByRole("button", { name: "Open navigation" }).click();
+    await page.locator('a[data-nav-key="sample"]').click();
+    await expect(page).toHaveURL(/sample-reports\.html/);
+    const image = page.locator(".site-brand-logo img");
+    await expect(image).toBeVisible();
+    await expect(image).toHaveAttribute("width", "82");
+    await expect(image).toHaveAttribute("height", "82");
+    await page.waitForFunction(() => (window as any).__logoWidths.length > 2);
+    const peak = await page.evaluate(() => Math.max(...(window as any).__logoWidths));
+    expect(peak).toBeLessThanOrEqual(83);
+    const stylesheet = await page.locator('link[rel="stylesheet"][href*="styles.css"]').first().getAttribute("href");
+    expect(stylesheet).not.toContain("20260915-application-audit");
+  }
+});
