@@ -121,3 +121,16 @@ test("completeness distinguishes zero and explicit no from unknown inputs", asyn
   });
   expect(result).toEqual([false,false,false,true,true,true]);
 });
+
+test("shared reading rhythm is present on customer pages without horizontal overflow", async ({ page }) => {
+  for (const width of [1440,390]) {
+    await page.setViewportSize({width,height:900});
+    for(const path of ["/index.html","/organization-intelligence.html","/compliance-intelligence.html","/sample-reports.html","/organization-structure-report.html?sample=1","/more-info.html"]){
+      await page.goto(path);
+      await expect(page.locator("body")).toHaveClass(/has-site-shell/);
+      await page.waitForFunction(()=>getComputedStyle(document.body).getPropertyValue("--line-body").trim()==="1.68");
+      const metrics=await page.evaluate(()=>({viewport:document.documentElement.clientWidth,document:document.documentElement.scrollWidth}));
+      expect(metrics.document, path+" at "+width).toBeLessThanOrEqual(metrics.viewport+2);
+    }
+  }
+});
